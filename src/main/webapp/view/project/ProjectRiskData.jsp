@@ -6,7 +6,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
-    
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>   
    
 <!DOCTYPE html>
 <html>
@@ -14,79 +14,10 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
+<spring:url value="/resources/css/projectModule/projectRiskData.css" var="projectRiskDataCss"/>
+<link rel="stylesheet" type="text/css" href="${projectRiskDataCss}">
+
 <title>Briefing </title>
-
-
- <style type="text/css">
- 
- p{
-  text-align: justify;
-  text-justify: inter-word;
-}
-
-  label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-  
- td
- {
- 	padding: 5px;
- }
- th
- {
- 	
- 	text-align: center;
- 	
- }
- 
-
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-.table button {
-    background-color: Transparent !important;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    text-align: left !important;
-}
-.table td{
-	padding:5px ;
-}
- 
- 
-  
- .textcenter{
- 	
- 	text-align: center;
- }
- .border
- {
- 	border: 1px solid black;
- }
- .textleft{
- 	text-align: left;
- }
-
-
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-</style>
-
 
 <meta charset="ISO-8859-1">
 
@@ -132,7 +63,7 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 					<div class="col-md-12">
-					<div class="row card-header" style="margin-left: -13px;width: 102%;">
+					<div class="row card-header ml13-width102">
 			   			<div class="col-md-6">
 			   			<%if(riskmatrixdata==null){ %>
 							<h4>Add Risk Data (<%=riskdata[7]!=null?StringEscapeUtils.escapeHtml4(riskdata[7].toString()): " - " %>)</h4>
@@ -150,7 +81,7 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 						   <div class="col-md-12" align="center">
 							<%if(riskmatrixdata==null){ %>
 							    <form method="post" action="ProjectRiskDataSubmit.htm" >
-							    	<table  style="border-collapse: collapse; border: 0px; width:100%; ">
+							    	<table  class="tbl-border">
 							    		<tr>
 								    		<td>	
 								    				<label ><b>Project : </b></label> 	
@@ -162,7 +93,7 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 														} 
 													}%>						    			
 								    		</td>
-								    		<td style="width: 60%">
+								    		<td class="width60per">
 							    					<label ><b>Description : </b></label> <%=riskdata[1]!=null?StringEscapeUtils.escapeHtml4(riskdata[1].toString()): " - " %> 
 								    		</td>
 								    		
@@ -184,22 +115,22 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 								    </table>
 								    <br>
 								    <br>
-							    	<table  style="border-collapse: collapse; border: 0px; width:40%;float: left; " >
+							    	<table  class="tbl-border2">
 								    	<tr>
-								    		<td style="width: 7%">
-								    			<label style="text-decoration: underline;"><b>Severity </b>  </label>
+								    		<td class="width7per">
+								    			<label class="txt-decoration"><b>Severity </b>  </label>
 								    		</td> 
-								    		<td style="width: 2%">
+								    		<td class="width2per">
 								    			<b>X</b>
 								    		</td> 
-								    		<td style="width: 7%">
-								    			<label style="text-decoration: underline;"><b>Probability </b>  </label>
+								    		<td class="width7per">
+								    			<label class="txt-decoration"><b>Probability </b>  </label>
 								    		</td> 
-								    		<td style="width: 2%">
+								    		<td class="width2per">
 								    			<b>=</b>
 								    		</td> 
-								    		<td style="width: 7%">
-								    			<label style="text-decoration: underline;"><b>RPN </b>  </label>
+								    		<td class="width7per">
+								    			<label class="txt-decoration"><b>RPN </b>  </label>
 								    		</td> 
 								    	</tr>
 							    		<tr>
@@ -231,46 +162,46 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 							    			</td> 
 							    			
 							    			<td >
-									    		<span style="font-weight: 600" id="RPN"></span>					    				
+									    		<span class="fw-600" id="RPN"></span>					    				
 							    			</td>
 							    		</tr>	
 							    	</table>
 							    	<br>	
 							    	<br>
-							    	<table style="border-collapse: collapse; border: 0px; width:100%; margin-top:80px; ">
+							    	<table class="tbl-border3">
 							    		<tr>
-							    			<td style="width: 20%">
-							    				<label ><b>Mitigation Plans</b>  :<span class="mandatory" style="color: red;">*</span></label> 
+							    			<td class="width20per">
+							    				<label ><b>Mitigation Plans</b>  :<span class="mandatory red-color">*</span></label> 
 							    			</td> 
-							    			<td colspan="5" style="max-width: 40%">
-									    		<input class="form-control" type="text" name="mitigationplans"  required  maxlength="950" style="line-height: 4">							    				
+							    			<td colspan="5" class="max-width-40">
+									    		<input class="form-control lh4" type="text" name="mitigationplans"  required  maxlength="950">							    				
 							    			</td>
 							    		</tr>		
 							    		<tr>
-							    			<td style="width: 20%">
-							    				<label ><b>Impact</b> : <span class="mandatory" style="color: red;">*</span></label> 
+							    			<td class="width20per">
+							    				<label ><b>Impact</b> : <span class="mandatory width20per">*</span></label> 
 							    			</td> 
-							    			<td colspan="5" style="max-width: 40%">
-									    		<input class="form-control" type="text" name="Impact"  required  maxlength="1000" style="line-height: 4">							    				
+							    			<td colspan="5" class="max-width-40">
+									    		<input class="form-control lh4" type="text" name="Impact"  required  maxlength="1000">							    				
 							    			</td>
 							    		</tr>	
 							    		<tr>
-							    			<td style="width: 20%">
-							    				<label ><b>Category</b>  : <span class="mandatory" style="color: red;">*</span></label> 
+							    			<td class="width20per">
+							    				<label ><b>Category</b>  : <span class="mandatory red-color">*</span></label> 
 							    			</td> 
-							    			<td colspan="1" style="max-width: 40%">
-									    		<select class="form-control" name="category" required="required" style="width:20% ">
+							    			<td colspan="1" class="max-width-40">
+									    		<select class="form-control width20per" name="category" required="required">
 									    			<option value="I">Internal</option>
 									    			<option value="E">External</option>
 									    		</select>				    				
 							    			</td>
 							    		</tr>	
 							    		<tr>
-							    			<td style="width: 20%">
-							    				<label ><b>Type</b>  : <span class="mandatory" style="color: red;">*</span></label> 
+							    			<td class="width20per">
+							    				<label ><b>Type</b>  : <span class="mandatory red-color">*</span></label> 
 							    			</td> 
-							    			<td colspan="1" style="max-width: 40%">
-									    		<select class="form-control" name="risk_type" required="required" style="width:20% ">
+							    			<td colspan="1" class="max-width-40">
+									    		<select class="form-control width20per" name="risk_type" required="required">
 									    			<%for(Object[] risktpye : risktypelist){ %>
 									    				<option value="<%=risktpye[0]%>"><%=risktpye[1]!=null?StringEscapeUtils.escapeHtml4(risktpye[1].toString()): " - "%></option>
 									    			<%} %>
@@ -280,8 +211,8 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 							    							
 							    		<tr>
 							    			<td colspan="2" class="center">
-							    				<button type="submit" class="btn btn-sm submit" style="margin-top: 15px;" >SUBMIT</button>
-							    				<button type="button" class="btn btn-sm back" style="margin-top: 15px;" onclick="submitForm('backfrm');" >BACK</button>
+							    				<button type="submit" class="btn btn-sm submit mt15px">SUBMIT</button>
+							    				<button type="button" class="btn btn-sm back mt15px" onclick="submitForm('backfrm');" >BACK</button>
 							    			</td>
 							    		</tr>	    		
 									</table>
@@ -295,7 +226,7 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 							  <% }else{ %>
 							  		 <form method="post" action="ProjectRiskDataEdit.htm" id="editrevform" >
 											    
-								    	<table  style="border-collapse: collapse; border: 0px; width:100%; ">
+								    	<table  class="tbl-border">
 								    		<tr>
 									    		<td>	
 									    				<label ><b>Project : </b></label> 	
@@ -307,7 +238,7 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 															} 
 														}%>						    			
 									    		</td>
-									    		<td style="width: 60%">
+									    		<td class="width60per">
 								    					<label ><b>Description : </b></label> <%=riskdata[1]!=null?StringEscapeUtils.escapeHtml4(riskdata[1].toString()): " - " %> 
 									    		</td>
 									    		
@@ -329,22 +260,22 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 									    </table>
 									    <br>
 									    <br>
-								    	<table  style="border-collapse: collapse; border: 0px; width:40%;float: left; " >
+								    	<table  class="tbl-border2">
 									    	<tr>
-									    		<td style="width: 7%">
-									    			<label style="text-decoration: underline;"><b>Severity </b>  </label>
+									    		<td class="width7per">
+									    			<label class="txt-decoration"><b>Severity </b>  </label>
 									    		</td> 
-									    		<td style="width: 2%">
+									    		<td class="width2per">
 									    			<b>X</b>
 									    		</td> 
-									    		<td style="width: 7%">
-									    			<label style="text-decoration: underline;"><b>Probability </b>  </label>
-									    		</td> 
-									    		<td style="width: 2%">
+									    		<td class="width7per">
+									    			<label class="txt-decoration"><b>Probability </b>  </label>
+									    		</td>
+									    		<td class="width2per">
 									    			<b>=</b>
 									    		</td> 
-									    		<td style="width: 7%">
-									    			<label style="text-decoration: underline;"><b>RPN </b>  </label>
+									    		<td class="width7per">
+									    			<label class="txt-decoration"><b>RPN </b>  </label>
 									    		</td> 
 									    	</tr>
 								    		<tr>
@@ -372,46 +303,46 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 								    			</td> 
 								    			
 								    			<td >
-										    		<span style="font-weight: 600" id="RPN"></span>					    				
+										    		<span class="fw-600" id="RPN"></span>					    				
 								    			</td>
 								    		</tr>	
 								    	</table>
 								    	<br>	
 								    	<br>
-								    	<table style="border-collapse: collapse; border: 0px; width:100%; margin-top:80px; ">
+								    	<table class="tbl-border3">
 								    		<tr>
-								    			<td style="width: 12%">
-								    				<label ><b>Mitigation Plans :</b> <span class="mandatory" style="color: red;">*</span> </label> 
+								    			<td class="width12per">
+								    				<label ><b>Mitigation Plans :</b> <span class="mandatory red-color">*</span> </label> 
 								    			</td> 
-								    			<td colspan="5" style="max-width: 40%">
-										    		<input class="form-control" type="text" name="mitigationplans" value="<%=riskmatrixdata[6]!=null?StringEscapeUtils.escapeHtml4(riskmatrixdata[6].toString()): "" %>" required  maxlength="950" style="line-height: 4">							    				
+								    			<td colspan="5" class="max-width-40">
+										    		<input class="form-control lh4" type="text" name="mitigationplans" value="<%=riskmatrixdata[6]!=null?StringEscapeUtils.escapeHtml4(riskmatrixdata[6].toString()): "" %>" required  maxlength="950">							    				
 								    			</td>
 								    		</tr>		
 								    		<tr>
-								    			<td style="width: 12%">
-								    				<label ><b>Impact :</b> <span class="mandatory" style="color: red;">*</span> </label> 
+								    			<td class="width12per">
+								    				<label ><b>Impact :</b> <span class="mandatory red-color">*</span> </label> 
 								    			</td> 
-								    			<td colspan="5" style="max-width: 40%">
-										    		<input class="form-control" type="text" name="Impact" value="<%=riskmatrixdata[10]!=null?StringEscapeUtils.escapeHtml4(riskmatrixdata[10].toString()): "" %>" required  maxlength="1000" style="line-height: 4">							    				
+								    			<td colspan="5" class="max-width-40">
+										    		<input class="form-control  lh4" type="text" name="Impact" value="<%=riskmatrixdata[10]!=null?StringEscapeUtils.escapeHtml4(riskmatrixdata[10].toString()): "" %>" required  maxlength="1000">							    				
 								    			</td>
 								    		</tr>	
 								    		<tr>
-								    			<td style="width: 20%">
-								    				<label ><b>Category</b>: <span class="mandatory" style="color: red;">*</span></label> 
+								    			<td class="width20per">
+								    				<label ><b>Category</b>: <span class="mandatory red-color">*</span></label> 
 								    			</td> 
-								    			<td colspan="1" style="max-width: 40%">
-										    		<select class="form-control" name="category" required="required" style="width:20% ">
+								    			<td colspan="1" class="max-width-40">
+										    		<select class="form-control width20per" name="category" required="required">
 										    			<option value="I" <%if(riskmatrixdata[11].toString().equalsIgnoreCase("I")){ %> selected <%} %> >Internal</option>
 										    			<option value="E" <%if(riskmatrixdata[11].toString().equalsIgnoreCase("E")){ %> selected <%} %> >External</option>
 										    		</select>				    				
 								    			</td>
 								    		</tr>	
 								    		<tr>
-								    			<td style="width: 20%">
-								    				<label ><b>Type</b> : <span class="mandatory" style="color: red;">*</span></label> 
+								    			<td class="width20per">
+								    				<label ><b>Type</b> : <span class="mandatory red-color">*</span></label> 
 								    			</td> 
-								    			<td colspan="1" style="max-width: 40%">
-										    		<select class="form-control" name="risk_type" required="required" style="width:20% ">
+								    			<td colspan="1" class="max-width-40">
+										    		<select class="form-control width20per" name="risk_type" required="required">
 										    			<%for(Object[] risktpye : risktypelist){ %>
 										    				<option value="<%=risktpye[0]%>" <%if(riskmatrixdata[12].toString().equalsIgnoreCase(risktpye[0].toString())){ %> selected <%} %>><%=risktpye[1]!=null?StringEscapeUtils.escapeHtml4(risktpye[1].toString()): " - "%></option>
 										    			<%} %>
@@ -420,31 +351,31 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 								    		</tr>
 								    <%if(riskmatrixdata!=null && riskmatrixdata[13]!=null && riskmatrixdata[13].toString().equalsIgnoreCase("C")){ %>
 								    		<tr>
-								    			<td style="width: 20%">
+								    			<td class="width20per">
 								    				<label ><b>Status</b> : </label> 
 								    			</td> 
-								    			<td colspan="1" style="max-width: 40%">Closed</td>
+								    			<td colspan="1" class="max-width-40">Closed</td>
 								    		</tr>
 								    		
 								    		<tr>
-								    			<td style="width: 20%">
+								    			<td class="width20per">
 								    				<label ><b>Remarks</b> : </label> 
 								    			</td> 
-								    			<td colspan="1" style="max-width: 40%"><%=riskmatrixdata[14]!=null?StringEscapeUtils.escapeHtml4(riskmatrixdata[14].toString()): " - "%></td>
+								    			<td colspan="1" class="max-width-40"><%=riskmatrixdata[14]!=null?StringEscapeUtils.escapeHtml4(riskmatrixdata[14].toString()): " - "%></td>
 								    		</tr>	
 								    	<%}%>						
 								    		<tr>
 								    			<td colspan="2" class="center" >
 									    			<%if(riskmatrixdata[13]!=null && riskmatrixdata[13].toString().equalsIgnoreCase("O")){if(Long.parseLong(riskmatrixdata[7].toString())==0){ %>
-									    				<button type="submit" class="btn btn-sm edit" style="margin-top: 15px;" onclick="return confirm('Are You Sure to Edit ?');">EDIT</button>
+									    				<button type="submit" class="btn btn-sm edit mt15px" onclick="return confirm('Are You Sure to Edit ?');">EDIT</button>
 									    				<input type="hidden" name="actionassignid" value="<%=riskdata[8]%>"/>
 									    			<%}%>
-									    				<button type="button" class="btn btn-sm submit"  style="margin-top: 15px;" onclick="return appendrev('editrevform');" >REVISE</button>
+									    				<button type="button" class="btn btn-sm submit mt15px" onclick="return appendrev('editrevform');" >REVISE</button>
 									    			<%}if(riskmatrixdata!=null && riskmatrixdata[13]!=null && riskmatrixdata[13].toString().equalsIgnoreCase("O") && logintype!=null && logintype.equalsIgnoreCase("A") || logintype.equalsIgnoreCase("P") || logintype.equalsIgnoreCase("Z") || logintype.equalsIgnoreCase("C")|| logintype.equalsIgnoreCase("I")  ){%>
 									   <!--------------------------------- Close button Only for Admin , Director , project Director  ----------------------------->
-									    				<button type="button" class="btn btn-danger btn-sm revoke" style="margin-top: 15px;" onclick="CloseRiskmodal('<%=riskmatrixdata[0]%>','<%=riskdata[0]%>');"  >CLOSE RISK </button>
+									    				<button type="button" class="btn btn-danger btn-sm revoke mt15px" onclick="CloseRiskmodal('<%=riskmatrixdata[0]%>','<%=riskdata[0]%>');"  >CLOSE RISK </button>
 									    			<%}%>	
-									    				<button type="button" class="btn btn-sm back" style="margin-top: 15px;" onclick="submitForm('backfrm');"  >BACK</button>
+									    				<button type="button" class="btn btn-sm back mt15px" onclick="submitForm('backfrm');"  >BACK</button>
 									    		</td>
 								    		</tr>	    		
 										</table>
@@ -484,16 +415,16 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 						<table class="table table-bordered table-hover table-striped table-condensed "  id="myTable" >		
 							<thead>
 								<tr>
-									<th style="width: 5%;" >No</th>
-									<th style="width: 25%;" >Description</th>
-									<th style="width: 5%;" >Severity</th> 
-									<th style="width: 5%;" >Probability</th>
-									<th style="width: 5%;" >RPN</th>	
-									<th style="width: 15%;" >Mitigation Plans</th>							
-								 	<th style="width: 25%;" > Impact</th>
-								 	<th style="width: 10%;" > Revised on</th>
-								 	<th style="width: 5%;" >Category</th>
-								 	<th style="width: 5%;" > Type</th>
+									<th class="width5per" >No</th>
+									<th class="w-25" >Description</th>
+									<th class="width5per" >Severity</th> 
+									<th class="width5per" >Probability</th>
+									<th class="width5per" >RPN</th>	
+									<th class="width15per" >Mitigation Plans</th>							
+								 	<th class="w-25" > Impact</th>
+								 	<th class="width10per" > Revised on</th>
+								 	<th class="width5per" >Category</th>
+								 	<th class="width5per" > Type</th>
 								 	
 								</tr>
 							</thead>
@@ -524,10 +455,10 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 	
 	</div>
 	<div class="modal fade" id="Closefeedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 53% !important;height: 45%;">
-				<div class="modal-content "  style="min-height: 45%;">
-				    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
-				    	<h4 class="modal-title" id="model-card-header" style="color: #145374">Close Risk </h4>
+			<div class="modal-dialog modal-dialog-centered maxwidth53-height45" role="document">
+				<div class="modal-content min-height-45">
+				    <div class="modal-header modal-header-bg">
+				    	<h4 class="modal-title close-risk" id="model-card-header">Close Risk </h4>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
 					          <span aria-hidden="true">&times;</span>
 				        </button>
@@ -559,7 +490,7 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
 	  	      			<label ><b>Description : </b></label> <%=riskdata[1]!=null?StringEscapeUtils.escapeHtml4(riskdata[1].toString()): " - " %>
 	  	      		</div>
 					<div class="col-md-12" > <label ><b>Remarks : </b></label><br>
-  	      		    		<textarea rows="3" maxlength="999"  style="display:block; " class="form-control"  id="Remarks" name="Remarks"  placeholder="Enter Remarks..!!"  required="required"></textarea>
+  	      		    		<textarea rows="3" maxlength="999" class="form-control dis-block"  id="Remarks" name="Remarks"  placeholder="Enter Remarks..!!"  required="required"></textarea>
   	      		    </div>
   	      		</div>
   	      		<br>

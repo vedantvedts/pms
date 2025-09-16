@@ -10,50 +10,19 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/roadMapModule/roadMapDetails.css" var="roadMapDetails" />
+<link href="${roadMapDetails}" rel="stylesheet" />
 
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b{
-	font-family: 'Lato',sans-serif;
-}
-
-.select2-container {
-	width: 300px !important;
-}
-</style>
 </head>
 <body>
 <%
 List<Object[]> divisionList = (List<Object[]>)request.getAttribute("divisionList");
-
-//List<String> annualTargetsList = Arrays.asList("Others","Hiring Consultant","Proof of Concept","Lab Setup","Creation of Infrastructure","Creation of Test Facility","Literature Survey",
-//											   "Market Survey","Research & Exploration","Concept Development","Concept Refinment & Detailing","Feasibility Study",
-//											   "Prelim Design of Sub-Systems/ Systems","Detailed Design of Sub-Systems/ Systems","PRC/PDR Completion","CDR Completion","Project Planning",
-//											   "Project Santion","Selection of DCPP/DP/LSI","Signing La TOT","IV & V","Sub-System Realisation","Sub-System Testing","SOFT Qualification",
-//											   "System Integration","System Calibration","System Validation","System Installation at Site","Internal Evacuation","Technical Demo",
-//											   "User Trials","PVT","Acceptance by User","MET Trials","Availability of All CRUS","Availability of All ....","Approval of QA Plan",
-//											   "Modelling & Simulation","Platform Modification","HILS Test","Open Range Test","EW Qualification","SOI","Documentation"
-//											   );
 
 
 List<AnnualTargets> annualTargetsList = (List<AnnualTargets>)request.getAttribute("annualTargetsList");
@@ -92,7 +61,7 @@ FormatConverter fc = new FormatConverter();
 			<!-- <div class="col-md-2"></div> -->
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-	  				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+	  				<div class="card-header custom-header">
 	                    <h3 class="text-white">Road Map <%if(roadMap!=null) {%>Edit<%} else{%>Add<%} %></h3>
 	        		</div>
 	
@@ -101,20 +70,20 @@ FormatConverter fc = new FormatConverter();
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							<div class="row">
 								<div class="col-md-12">
-									<table class="table table-bordered table-hover table-striped table-condensed " style="border: 1px solid black !important;background-color:white;font-family: 'Montserrat', sans-serif; width: 50%;" >
+									<table class="table table-bordered table-hover table-striped table-condensed custom-table">
 										<tr>
 											<th >
-												<label style="margin-bottom: -10px;">Road Map For </label><span class="mandatory" style="color: red;">*</span>
+												<label >Road Map For </label><span class="mandatory text-danger">*</span>
 											</th>
 											 <td >
-												<select class="form-control" required="required" id="roadMapType" name="roadMapType" onchange="validateRoadMapType('Add')" style="width: 60%;">
+												<select class="form-control w-60" required="required" id="roadMapType" name="roadMapType" onchange="validateRoadMapType('Add')">
 													<option value="N" <%if(roadMap!=null && roadMap.getRoadMapType()!=null && roadMap.getRoadMapType().equalsIgnoreCase("N")) {%>selected<%} %> >New Project</option>
 													<%-- <option value="E" <%if(roadMap!=null && roadMap.getRoadMapType()!=null && roadMap.getRoadMapType().equalsIgnoreCase("E")) {%>selected<%} %>>Existing Project</option>
 													<option value="P" <%if(roadMap!=null && roadMap.getRoadMapType()!=null && roadMap.getRoadMapType().equalsIgnoreCase("P")) {%>selected<%} %>>Pre-Project</option> --%>
 												</select>
 											</td>
 											<th id="existingprojectth" >
-												<label style="margin-bottom: -10px;">Existing Project </label><span class="mandatory" style="color: red;">*</span>
+												<label class="mb-n10">Existing Project </label><span class="mandatory text-danger">*</span>
 											</th>
 											<td id="existingprojecttd" >
 												<select class="form-control selectdee existing" id="projectId" name="projectId" onchange="getProjectDetails()" data-live-search="true">
@@ -122,7 +91,7 @@ FormatConverter fc = new FormatConverter();
 				  								</select>
 											</td>
 											<th id="preprojectth" >
-												<label style="margin-bottom: -10px;">Pre-Project </label><span class="mandatory" style="color: red;">*</span>
+												<label class="mb-n10">Pre-Project </label><span class="mandatory text-danger">*</span>
 											</th>
 											<td id="preprojecttd" >
 												<select class="form-control selectdee" id="initiationId" name="initiationId" onchange="getProjectDetails()" data-live-search="true">
@@ -138,20 +107,20 @@ FormatConverter fc = new FormatConverter();
 								<div class="col-md-12">
 									<div class="tables">
 	  									<div class="table-responsive">
-	   										<table class="table table-bordered table-hover table-striped table-condensed " style="border: 1px solid black !important;background-color:white;font-family: 'Montserrat', sans-serif;" >
+	   										<table class="table table-bordered table-hover table-striped table-condensed cs-table">
 												<thead>
 													<tr>
 														<th>
-															<label class="control-label">Title</label><span class="mandatory" style="color: red;">*</span>
+															<label class="control-label">Title</label><span class="mandatory text-danger">*</span>
 														</th>
-														<td style="width: 30%;">
+														<td class="w-30">
 															<input class="form-control" type="text" name="projectTitle" id="projectTitle" maxlength="2000" placeholder="Enter Maximum 2000 Characters"
 															<%if(roadMap!=null && roadMap.getProjectTitle()!=null) {%>value="<%=roadMap.getProjectTitle() %>"<%} %> required>	
 														</td>
-														<th style="width: 8%;" id="divisionth">
-															<label class="control-label">Division</label><span class="mandatory" style="color: red;">*</span>
+														<th class="w-8" id="divisionth">
+															<label class="control-label">Division</label><span class="mandatory text-danger">*</span>
 														</th>
-														<td style="width: 12%;" id="divisiontd">
+														<td class="w-12" id="divisiontd">
 															<select class="form-control selectdee" id="divisionId" name="divisionId" data-live-search="true">
 					   											<option value="" disabled="disabled" selected="selected">--Select--</option>
 					   											<% for (Object[] obj : divisionList) {%>
@@ -160,23 +129,23 @@ FormatConverter fc = new FormatConverter();
 					  										</select>
 														</td>
 														<th>
-															<label class="control-label">Start Date</label><span class="mandatory" style="color: red;">*</span>
+															<label class="control-label">Start Date</label><span class="mandatory text-danger">*</span>
 														</th>
-														<td style="width: 10%;">
-															<input class="form-control" type="text" name="startDate" id="startDate"required readonly style="background: #fff;"
+														<td class="w-10">
+															<input class="form-control date-readonly" type="text" name="startDate" id="startDate"required readonly
 															<%if(roadMap!=null && roadMap.getStartDate()!=null) {%>value="<%=fc.SqlToRegularDate(roadMap.getStartDate()) %>"<%} %> >	
 														</td>
 														<th>
-															<label class="control-label">End Date</label><span class="mandatory" style="color: red;">*</span>
+															<label class="control-label">End Date</label><span class="mandatory text-danger">*</span>
 														</th>
-														<td style="width: 10%;">
-															<input class="form-control" type="text" name="endDate" id="endDate" required readonly style="background: #fff;"
+														<td class="w-10">
+															<input class="form-control date-readonly" type="text" name="endDate" id="endDate" required readonly
 															<%if(roadMap!=null && roadMap.getEndDate()!=null) {%>value="<%=fc.SqlToRegularDate(roadMap.getEndDate()) %>"<%} %>>
 														</td>
 													</tr>
 													<tr>
-														<th colspan="1" style="vertical-align: top;">
-															<label class="control-label">Aim & Objects</label><span class="mandatory" style="color: red;">*</span>
+														<th colspan="1" class="align-top">
+															<label class="control-label">Aim & Objects</label><span class="mandatory text-danger">*</span>
 														</th>
 														<td colspan="7">
 															<textarea class="form-control" name="aimObjectives" id="aimObjectives" maxlength="5000" rows="2" cols="75" placeholder="Enter Maximum 5000 characters" required><%if(roadMap!=null && roadMap.getAimObjectives()!=null) {%><%=roadMap.getAimObjectives() %><%} %></textarea>
@@ -184,7 +153,7 @@ FormatConverter fc = new FormatConverter();
 													</tr>
 													<tr>
 														<th colspan="1">
-															<label class="control-label">Scope</label><span class="mandatory" style="color: red;">*</span>
+															<label class="control-label">Scope</label><span class="mandatory text-danger">*</span>
 														</th>
 														<td colspan="7">
 															<input class="form-control" type="text" name="scope" id="scope" maxlength="1000" placeholder="Enter Maximum 1000 characters"
@@ -194,10 +163,10 @@ FormatConverter fc = new FormatConverter();
 													</tr>
 													<tr>
 														<th colspan="1">
-															<label class="control-label">Reference</label><span class="mandatory" style="color: red;">*</span>
+															<label class="control-label">Reference</label><span class="mandatory text-danger">*</span>
 														</th>
 														<td colspan="1">
-															<select class="form-control selectdee" id="references" name="references" data-live-search="true" required style="width: 50%;" onchange="otherReferenceHandle()">
+															<select class="form-control selectdee w-50" id="references" name="references" data-live-search="true" required  onchange="otherReferenceHandle()">
 					   											<option value="" disabled="disabled" selected="selected">--Select--</option>
 					   											<% for (String ref : referencesList) {%>
 																	<option value="<%=ref%>" <%if(roadMap!=null && roadMap.getReference()!=null && roadMap.getReference().equalsIgnoreCase(ref)) {%>selected<%} %> ><%=ref!=null?StringEscapeUtils.escapeHtml4(ref): " - "%></option>
@@ -205,14 +174,14 @@ FormatConverter fc = new FormatConverter();
 					  										</select>
 														</td>
 														<th colspan="1" class="othersreftd">
-															<label class="control-label">Others</label><span class="mandatory" style="color: red;">*</span>
+															<label class="control-label">Others</label><span class="mandatory text-danger">*</span>
 														</th>
 														<td colspan="1" class="othersreftd">
 															<input class="form-control" type="text" name="otherReference" id="otherReference" maxlength="1000" placeholder="Enter Other Reference"
 															<%if(roadMap!=null && roadMap.getOtherReference()!=null) {%>value="<%=roadMap.getOtherReference() %>"<%} %> >
 														</td>
 														<th colspan="1">
-															<label class="control-label">Cost</label><span class="mandatory" style="color: red;">*</span>
+															<label class="control-label">Cost</label><span class="mandatory text-danger">*</span>
 														</th>
 														<td colspan="1">
 															<input class="form-control decimal-format" type="text" name="projectCost" id="projectCost" maxlength="15" placeholder="Enter Cost in rupees"
@@ -230,10 +199,10 @@ FormatConverter fc = new FormatConverter();
 								<div class="col-md-6">
 									<div class="tables">
 	  									<div class="table-responsive">
-	   										<table class="table table-bordered table-hover table-striped table-condensed " style="border: 1px solid black !important;background-color:white;font-family: 'Montserrat', sans-serif;width: 100% !important;" >
-												<thead style="text-align: center;">
+	   										<table class="table table-bordered table-hover table-striped table-condensed cs-table w-100">
+												<thead class="text-center">
 													<tr>
-														<th style="">Annual Year</th>
+														<th >Annual Year</th>
 														<th >Annual Targets</th>
 													</tr>
 												</thead>
@@ -251,8 +220,8 @@ FormatConverter fc = new FormatConverter();
 													%>
 													<%if(OrigAnnualYear!=TempAnnualYear){ %>
 														<tr>
-															<td style="text-align: center;">
-																<input type="text" class="form-control" name="annualYear" value="<%=target.getAnnualYear() %>" required readonly style="text-align: center;">
+															<td class="text-center">
+																<input type="text" class="form-control text-center" name="annualYear" value="<%=target.getAnnualYear() %>" required readonly>
 															</td>
 															<td>
 																<select class="form-control selectdee annualTargets" id="annualTargets<%=target.getAnnualYear() %>" name="annualTargets<%=target.getAnnualYear() %>" data-placeholder="Select Annual Targets" data-live-search="true" onchange="othersCheckHandle(<%=target.getAnnualYear() %>)" multiple="multiple">
@@ -286,35 +255,35 @@ FormatConverter fc = new FormatConverter();
 									</div>
 								</div>
 								<div class="col-md-3" id="othersdiv">
-									<div class="card" style="border-color: #00DADA;">
-										<h5 class="heading ml-4 mt-3" id="" style="font-weight: 500; color: #31708f;">Add Others</h5>
+									<div class="card cs-card">
+										<h5 class="heading ml-4 mt-3 custom-add-other" id="">Add Others</h5>
 										<hr>
 										<div class="card-body bg-light mt-1">
-											<table style="width:100%;" id="otherstable">
-												<thead style = "background-color: #055C9D; color: white;text-align: center;">
+											<table class="w-100" id="otherstable">
+												<thead class="custom-thead">
 													<tr>
-												    	<th style="padding: 0px 5px 0px 5px;">Others</th>
+												    	<th class="px-5px py-0">Others</th>
 												    	
-														<td style="width: 5%;">
-															<button form="otherform" type="button" class=" btn btn_add_others "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5">
+															<button form="otherform" type="button" class=" btn btn_add_others "> <i class="btn btn-sm fa fa-plus text-success p-0"></i></button>
 														</td>
 													</tr>
 												</thead>
 									 			<tbody>
 									 					
 													<tr class="tr_clone_others">
-														<td style="padding: 10px 5px 0px 5px;" >
+														<td class="cs-otherdata">
 															<input type="text" form="otherform" class="form-control no-html-tag" name="otherdata" id="otherdata" placeholder="Enter Maximum 1000 characters" maxlength="1000" required="required">
 														</td>	
 														
-														<td style="width: 5% ; ">
-															<button form="otherform" type="button" class=" btn btn_rem_others" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5">
+															<button form="otherform" type="button" class=" btn btn_rem_others" > <i class="btn btn-sm fa fa-minus text-danger p-0"></i></button>
 														</td>									
 													</tr>
 														
 												</tbody> 
 											</table>
-											<div align="center" style="margin-top: 15px;">
+											<div align="center" class="mt-15">
 													<button form="otherform" type="button" class="btn btn-sm add" name="submit" onclick="addOthers()">ADD</button>
 													<input form="otherform" type="hidden" id="othersforyear">
 													<input form="otherform" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -585,14 +554,13 @@ function populateAnnualTargets() {
         if (!existingRows[i]) {
             // Row does not exist, create new row
             rows += '<tr>';
-            rows += '<td style="text-align: center;"><input type="text" class="form-control" name="annualYear" value="' + i + '" required readonly style="text-align: center;"></td>';
+            rows += '<td class="text-center"><input type="text" class="form-control text-center" name="annualYear" value="' + i + '" required readonly></td>';
             rows += '<td><select class="form-control selectdee annualTargets" id="annualTargets' + i + '" name="annualTargets' + i + '" data-live-search="true" data-placeholder="Select Annual Targets" onchange="othersCheckHandle('+i+')" multiple ><option value="Others">Others</option>';
             // Append options
             <% for(AnnualTargets annualTarget : annualTargetsList) {%>
             rows += '<option value="<%=annualTarget.getAnnualTargetId() %>" ><%=annualTarget.getAnnualTarget()%></option>';
             <%}%>
             rows += '</select></td>';
-           /*  rows += '<td class="otherstd" style="display: none;"><input type="text" class="form-control others" name="others" id="others' + i + '" style="display: none;" placeholder="Enter Maximum 1000 characters"></td>'; */
             rows += '</tr>';
         }
     }

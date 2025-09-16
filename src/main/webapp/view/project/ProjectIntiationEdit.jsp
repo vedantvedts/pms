@@ -2,37 +2,15 @@
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+<spring:url value="/resources/css/projectModule/projectIntiationEdit.css" var="projectIntiationEdit" />
+<link href="${projectIntiationEdit}" rel="stylesheet" />
 <title>PROJECT INT  EDIT</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-.form-group {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-
-</style>
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -69,14 +47,14 @@ FormatConverter fc = new FormatConverter();
 
 <div class="container">
 	
-	<div class="row" style="">
+	<div class="row">
 		<div class="col-md-12">
 
  			<div class="card shadow-nohover" >
 				
-				<div class="card-header" style=" /* background: linear-gradient(to right, #334d50, #cbcaa5); */ /* background-color:rgba(6,103,200,1); */ background-color: #055C9D;margin-top: ">
+				<div class="card-header cs-header">
                     <b class="text-white">SECTION I: PROJECT INITIATION EDIT</b> 
-                    <span class="text-white" style="float:right;font-weight: 600"><%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> Main Project : <%=ProjectEditData[18]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[18].toString()): " - " %> <%} %> </span>
+                    <span class="text-white cs-span"><%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> Main Project : <%=ProjectEditData[18]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[18].toString()): " - " %> <%} %> </span>
         		</div>
         
         		<div class="card-body">
@@ -123,7 +101,7 @@ FormatConverter fc = new FormatConverter();
                     		<div class="col-md-3 ">
 		                   		<div class="form-group">
 		                            <label class="control-label">Nodal Lab</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <span class="mandatory cs-span-color">*</span>
 		  							<select class="custom-select selectdee" id="NodalLab" required="required" name="NodalLab" <%if(ProjectEditData[17].toString().equalsIgnoreCase("N")){ %> disabled  <%} %> >
 											    <option disabled="true"  selected value="">Choose...</option>
 											   	<% for (Object[] obj : NodalLabList) {%>
@@ -188,9 +166,9 @@ FormatConverter fc = new FormatConverter();
 		                    </div> 
 		                    
 		                    <div class="col-md-4 ">
-	                        	<div class="form-group" id="Remarks" style="display:none;">
+	                        	<div class="form-group dis-none" id="Remarks">
 		                            <label class="control-label">Remarks</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <span class="mandatory cs-span-color">*</span>
 		  							<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Remarks" name="Remarks" <%if(ProjectEditData[16]!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(ProjectEditData[16].toString())%>" <%} %> maxlength="255" placeholder="Enter Remark" >
 		                        </div>
 	       					</div> 
@@ -248,7 +226,7 @@ FormatConverter fc = new FormatConverter();
 		         		<div class="row">
 		         			<div class="col-md-3">
 		         				<div class="form-group">
-			                    	<label class="control-label">Probable Start Date</label><span class="mandatory" style="color: #cd0a0a;">*</span>
+			                    	<label class="control-label">Probable Start Date</label><span class="mandatory cs-span-color">*</span>
 									<input type="text" class="form-control" required="required" id="startDate" name="startDate" <% if (ProjectEditData[22]!=null){ %>  value="<%=fc.SqlToRegularDate(ProjectEditData[22].toString())%>" <%} %>>
 			                    </div>
 		         			</div>
@@ -256,8 +234,6 @@ FormatConverter fc = new FormatConverter();
          				<hr>
          
         				<div class="form-group" align="center">
-								<!--  <input type="submit" class="btn btn-primary btn-sm "  value="SUBMIT"> 
-								 <a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectIntiationList.htm" >Back</a> -->
 								 
 								 <button type="submit" class="btn btn-primary btn-sm submit"  value="SUBMIT"  name="sub" onclick="return confirm('Are you sure you want to submit this form?')" >SUBMIT</button>
 								 <input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >

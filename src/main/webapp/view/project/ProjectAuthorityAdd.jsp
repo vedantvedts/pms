@@ -3,35 +3,16 @@
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+<spring:url value="/resources/css/projectModule/projectAuthorityAdd.css" var="projectAuthorityAdd" />
+<link href="${projectAuthorityAdd}" rel="stylesheet" />
 <title>PROJECT REFERENCE  ADD</title>
-<style type="text/css">
 
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b{
-	font-family: 'Lato',sans-serif;
-}
-
-</style>
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -66,7 +47,7 @@ String filesize=(String) request.getAttribute("filesize");
 
 
 <div class="container">
-	<div class="row" style="">
+	<div class="row">
 
 		<div class="col-md-12">
 
@@ -77,8 +58,8 @@ String filesize=(String) request.getAttribute("filesize");
 					 	<div class="col-md-3">
 					 		<h3>Reference</h3>
 					 	</div>
-					 	<div class="col-md-9 " style="">
-							<b style="color: green;float: right;">Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %> (<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</b> 
+					 	<div class="col-md-9 ">
+							<b class="cs-title">Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %> (<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</b> 
 					 	</div>
 					 </div>
 		  		</div>
@@ -145,13 +126,13 @@ String filesize=(String) request.getAttribute("filesize");
 							
 								<div class="col-md-1 ">
 									 <div class="form-group">
-										<input type="submit" class="btn btn-primary btn-sm submit " onclick="Add(myfrm)" value="SUBMIT" name="sub" style="margin-top: 40px;"> 
+										<input type="submit" class="btn btn-primary btn-sm submit mt-40" onclick="Add(myfrm)" value="SUBMIT" name="sub"> 
 									 </div>
 								</div>   
 				
 				          		<div class="col-md-1 ">
 									 <div class="form-group">
-									 	<input type="submit" class="btn btn-secondary btn-sm back " formnovalidate="formnovalidate"  value="BACK"   name="sub" style="margin-top: 40px;" >
+									 	<input type="submit" class="btn btn-secondary btn-sm back mt-40" formnovalidate="formnovalidate"  value="BACK" name="sub">
 									</div>
 								</div>
 							
@@ -218,7 +199,7 @@ String filesize=(String) request.getAttribute("filesize");
 					         	
 					         	<div class="col-md-3 ">
 					         		<label class="control-label">Download</label><br>
-				                    <a  href="ProjectAuthorityDownload.htm?AuthorityFileId=<%=ProjectAuthorityDetails[7] %>" target="_blank"><i class="fa fa-download fa-2x" style="padding: 0px 25px; margin-top: 5px"></i>
+				                    <a  href="ProjectAuthorityDownload.htm?AuthorityFileId=<%=ProjectAuthorityDetails[7] %>" target="_blank"><i class="fa fa-download fa-2x cs-download"></i>
 				                    </a>
 				           		</div>               
 				            
@@ -232,13 +213,13 @@ String filesize=(String) request.getAttribute("filesize");
 							
 								<div class="col-md-1 ">
 									 <div class="form-group">
-										<input type="submit" class="btn btn-primary btn-sm submit " onclick="validate()" value="SUBMIT" name="sub" style="margin-top: 40px;"> 
+										<input type="submit" class="btn btn-primary btn-sm submit mt-40" onclick="validate()" value="SUBMIT" name="sub"> 
 									 </div>
 								</div>   
 				
 				          		<div class="col-md-1 ">
 									 <div class="form-group">
-									 	<input type="submit" class="btn btn-secondary btn-sm back " formnovalidate="formnovalidate"  value="BACK"   name="sub" style="margin-top: 40px;" >
+									 	<input type="submit" class="btn btn-secondary btn-sm back mt-40" formnovalidate="formnovalidate"  value="BACK" name="sub">
 									</div>
 								</div>
 							

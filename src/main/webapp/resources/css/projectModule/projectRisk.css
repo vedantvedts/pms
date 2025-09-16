@@ -1,0 +1,89 @@
+p {
+	text-align: justify;
+	text-justify: inter-word;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+th {
+	text-align: center;
+}
+
+.table .font {
+	font-family: 'Muli', sans-serif !important;
+	font-style: normal;
+	font-size: 13px;
+	font-weight: 400 !important;
+}
+
+.table button {
+	background-color: Transparent !important;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	outline: none;
+	text-align: left !important;
+}
+
+.table td {
+	padding: 5px;
+}
+
+.textcenter {
+	text-align: center;
+}
+
+.border {
+	border: 1px solid black;
+}
+
+.textleft {
+	text-align: left;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+.cs-header{
+	margin-left: -13px;
+	width: 102%;
+}
+
+.mt-n8{
+	margin-top: -8px;
+}
+
+.cs-select{
+	width: 200px;
+}
+
+.w-5{
+	width: 5%;
+}
+.w-10{
+	width: 10%;
+}
+.w-15{
+	width: 15%;
+}
+.w-17{
+	width: 17%;
+}
+.w-33{
+	width: 33%;
+}
+
+.disp-flex{
+	display: flex;
+}
+
+
+

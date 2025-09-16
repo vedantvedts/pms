@@ -6,116 +6,16 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
-    
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>    
    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/projectModule/projectDataView.css" var="ExternalCSS" />     
+<link href="${ExternalCSS}" rel="stylesheet" />
 <title>Briefing </title>
-
-
- <style type="text/css">
- 
- p{
-  text-align: justify;
-  text-justify: inter-word;
-}
-
-  
- th
- {
- 	border: 0;
- 	text-align: center;
- 	padding: 5px;
- }
- 
- td
- {
- 	border: 0;
- 	padding: 5px;
- }
- 
-  }
- .textcenter{
- 	
- 	text-align: center;
- }
- .border
- {
- 	border: 1px solid black;
- }
- .textleft{
- 	text-align: left;
- }
-
-summary[role=button] {
-  background-color: white;
-  color: black;
-  border: 1px solid black ;
-  border-radius:5px;
-  padding: 0.5rem;
-  cursor: pointer;
-  
-}
-summary[role=button]:hover
- {
-color: white;
-border-radius:15px;
-background-color: #4a47a3;
-
-}
- summary[role=button]:focus
-{
-color: white;
-border-radius:5px;
-background-color: #4a47a3;
-border: 0px ;
-
-}
-summary::marker{
-	
-}
-details { 
-  margin-bottom: 5px;  
-}
-details  .content {
-background-color:white;
-padding: 0 1rem ;
-align: center;
-border: 1px solid black;
-}
-
-.fill {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden
-}
-.fill img {
-    flex-shrink: 0;
-    min-width: 100%;
-    min-height: 100%
-}
-
-  label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-.card-header{
-	
-}
-
-.col-md-12{
-    padding-left:0px;
-    padding-right:0px;
- }
-</style>
-
 
 <meta charset="ISO-8859-1">
 
@@ -160,20 +60,20 @@ String pearlimg=  (String)request.getAttribute("pearlimg");
 <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card shadow-nohover" style="margin-right:10px;margin-left:10px;margin-bottom:40px;">
+				<div class="card shadow-nohover style1">
 					<div class="col-md-12">
 						<div class="row card-header">
 				   			<div class="col-md-6">
 								<h3> Project Data </h3>
 							</div>
 										
-							<div class="col-md-6 justify-content-end" style="float: right;margin-top: -1%;">
-								<table style="float: right;" >
+							<div class="col-md-6 justify-content-end style2">
+								<table class="style3" >
 									<tr>
 										<td ><h4>Project :</h4></td>
 										<td >
 											<form method="post" action="ProjectData.htm" id="projectchange">
-												<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+												<select class="form-control items style4" name="projectid"  required="required" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 													<option disabled  selected value="">Choose...</option>
 													<%for(Object[] obj : projectslist){ 
 													String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
@@ -205,17 +105,12 @@ String pearlimg=  (String)request.getAttribute("pearlimg");
 						   <div class="col-md-12">
 						   		
 							    <form method="post" action="ProjectDataEditSubmit.htm" enctype="multipart/form-data" id="editrevform" >
-							    	<table  style="border-collapse: collapse; border: 0px; width:100%; ">
-							    		<%-- <tr>
-							    			<td><figure class="fill"><img style="width: 10cm; height: 10cm" <%if(configimgb64!=null && configimgb64.length()>0){ %> src="data:image/*;base64,<%=configimgb64%>" alt="Configuration"<%}else{ %> alt="File Not Found" <%} %> ></figure></td>
-							    			<td><figure class="fill"><img style="width: 10cm; height: 10cm" <%if(producttree!=null && producttree.length()>0){ %> src="data:image/*;base64,<%=producttree%>" alt="Product Tree/WBS"<%}else{ %> alt="File Not Found" <%} %>  ></figure></td>
-							    			<td><figure class="fill"><img style="width: 10cm; height: 10cm" <%if(pearlimg!=null && pearlimg.length()>0){ %> src="data:image/*;base64,<%=pearlimg%>"  alt="PEARL"<%}else{ %> alt="File Not Found" <%} %> ></figure></td>
-							    		</tr> --%>
+							    	<table class="style5">
 							    		<tr>
 									    	<td>
 									    		<label><b>1. System Configuration </b>  </label> 
 									    		<%if(projectdatadetails[3]!=null){ %>
-									    		<button  type="submit" class="btn btn-sm "  style="margin-left: 3rem;"  name="filename" value="sysconfig" formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button>
+									    		<button  type="submit" class="btn btn-sm style6" name="filename" value="sysconfig" formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button>
 									    		<button type="button" class="btn btn-sm ml-2"  onclick="showModal('sysconfig',<%=projectdatadetails[0]%>)"><img src="view/images/preview3.png"></button>
 									    		</label>
 									    		<%} %>
@@ -226,7 +121,7 @@ String pearlimg=  (String)request.getAttribute("pearlimg");
 									    	<td>
 									    		<label ><b>2. Product Tree</b>  </label>
 									    		<%if(projectdatadetails[5]!=null){ %>
-									    		<button  type="submit" class="btn btn-sm "  style="margin-left: 3rem;" name="filename" value="protree"  formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button></label>
+									    		<button  type="submit" class="btn btn-sm style6" name="filename" value="protree"  formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button></label>
 									    		<button type="button" class="btn btn-sm ml-2" onclick="showModal('protree',<%=projectdatadetails[0]%>)"><img src="view/images/preview3.png"></button>
 									    		<%} %>
 									    		<input class="form-control" type="file" name="producttreeimg" id="producttreeimg" accept="application/pdf , image/* "  onchange=" editcheck('producttreeimg',1)" >
@@ -235,7 +130,7 @@ String pearlimg=  (String)request.getAttribute("pearlimg");
 									    	<td>
 												<label><b>3. PEARL/TRL </b>
 												<%if(projectdatadetails[6]!=null){ %>
-												<button  type="submit" class="btn btn-sm "  style="margin-left: 3rem;" name="filename" value="pearl"  formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button></label>
+												<button  type="submit" class="btn btn-sm style6" name="filename" value="pearl"  formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button></label>
 												<button type="button" class="btn btn-sm ml-2" onclick="showModal('pearl',<%=projectdatadetails[0]%>)"><img src="view/images/preview3.png"></button>
 												<%} %>  
 												<input class="form-control" type="file" name="pearlimg" id="pearlimg" accept="application/pdf , image/* " onchange=" editcheck('pearlimg',1)" >
@@ -245,7 +140,7 @@ String pearlimg=  (String)request.getAttribute("pearlimg");
 											<td>
 										    	<label ><b>4. System Specification </b>
 										    	<%if(projectdatadetails[4]!=null){ %>  
-										    	<button  type="submit" class="btn btn-sm "  style="margin-left: 3rem;" name="filename" value="sysspecs"  formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button></label>
+										    	<button  type="submit" class="btn btn-sm style6" name="filename" value="sysspecs"  formaction="ProjectDataSystemSpecsFileDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button></label>
 										    	<button class="btn btn-sm ml-2" type="button" onclick="showModal('sysspecs',<%=projectdatadetails[0]%>)"><img src="view/images/preview3.png"></button>
 										    	<%} %>
 										    	<input class="form-control" type="file" name="systemspecsfile" id="sysspec" accept="application/pdf , image/* "  onchange=" editcheck('sysspec',1)" >
@@ -254,7 +149,7 @@ String pearlimg=  (String)request.getAttribute("pearlimg");
 											
 											<td>
 												<label ><b>5. Project Stage</b></label><br>
-												<select class="form-control items" name="projectstageid"  required="required" style="width: 100%"  data-live-search="true" data-container="body" >
+												<select class="form-control items style7" name="projectstageid"  required="required"  data-live-search="true" data-container="body" >
 													<option disabled  selected value="">Choose...</option>
 												<%for(Object[] obj : projectstagelist){ %>
 													<option <%if(projectdatadetails[7].toString().equals(obj[0].toString())) { %>selected <%} %>  value=<%=obj[0]%> > <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
@@ -277,7 +172,7 @@ String pearlimg=  (String)request.getAttribute("pearlimg");
 										</tr>
 										<tr>
 											<td colspan="3">
-												<span><b style="color: red">Note :</b><br> &nbsp; 1) Please Upload Files in PDF and Image Files Only <br> &nbsp; 2) Please Upload Images With Aspect Ratio of 1920 X 1080</span>
+												<span><b class="style8">Note :</b><br> &nbsp; 1) Please Upload Files in PDF and Image Files Only <br> &nbsp; 2) Please Upload Images With Aspect Ratio of 1920 X 1080</span>
 											</td>
 										</tr>
 										<tr>
@@ -317,7 +212,7 @@ String pearlimg=  (String)request.getAttribute("pearlimg");
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="longdivmodal"  data-backdrop="static">
   <div class="modal-dialog modal-lg">
     
-    <div class="modal-content mt-2 mb-2" id="modalcontent" style="width:154%;margin-left:-26%;display: flex;align-items: center;justify-content: center;">
+    <div class="modal-content mt-2 mb-2 style9" id="modalcontent">
      
     </div>
   </div>
@@ -430,58 +325,15 @@ function showModal(a,b){
 		success:function(result){
 			var ajaxresult=JSON.parse(result);
 			if(ajaxresult[0]==="pdf"){
-				$('#modalcontent').html('<button type="button" style="margin-left: 96%;color:red;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><iframe width="100%" height="600" src="data:application/pdf;base64,'+ajaxresult[1]+'"></iframe>');
+				$('#modalcontent').html('<button type="button" class="close style10" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><iframe width="100%" height="600" src="data:application/pdf;base64,'+ajaxresult[1]+'"></iframe>');
 			}
 			else{
-			$('#modalcontent').html(' <button type="button" style="margin-left: 96%;color:red;" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><img style="max-width:25cm;max-height:17cm;margin-bottom:1%;margin-top:1%;" src="data:image/'+ajaxresult[0]+';base64,'+ajaxresult[1]+'">')	
+			$('#modalcontent').html(' <button type="button" class="close style10" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><img class="style11" src="data:image/'+ajaxresult[0]+';base64,'+ajaxresult[1]+'">')	
 			}
 		}
 	})
 }
 </script>
-
-
-<!-- <script type="text/javascript">
-
-$('.edititemsdd').select2();
-$('.items').select2();
-$("table").on('click','.tr_clone_addbtn' ,function() {
-   $('.items').select2("destroy");        
-   var $tr = $('.tr_clone').last('.tr_clone');
-   var $clone = $tr.clone();
-   $tr.after($clone);
-   $('.items').select2();
-   $clone.find('.items' ).select2('val', '');    
-   $clone.find("input").val("").end();
-   /* $clone.find("input:number").val("").end();
-   	  $clone.find("input:file").val("").end() 
-   */  
-});
-</script>
-	 -->
-
-
-<!-- <script type="text/javascript">
-
-		var coll = document.getElementsByClassName("collapsiblediv");
-		var i;
-		
-		for (i = 0; i < coll.length; i++) {
-		  coll[i].addEventListener("click", function() {
-		    this.classList.toggle("activea");
-		    var content = this.nextElementSibling;
-		    if (content.style.display === "block") {
-		      content.style.display = "none";
-		    } else {
-		      content.style.display = "block";
-		    }
-		  });
-		}
-		
-		
-
-</script> -->
-
 
 </body>
 </html>

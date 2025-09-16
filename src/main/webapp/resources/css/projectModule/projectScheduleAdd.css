@@ -1,0 +1,74 @@
+.input-group-text {
+	font-weight: bold;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+hr {
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+b {
+	font-family: 'Lato', sans-serif;
+}
+
+.fa-trash {
+	color: #ec0101;
+}
+
+.fa-pencil-square-o {
+	color: orange;
+}
+
+.form-group {
+	margin-top: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+.w-300px{
+	width: 300px;
+}
+
+.w-200px{
+	width: 200px;
+}
+
+.w-300px{
+	width: 300px;
+}
+
+.w-150px{
+	width: 150px;
+}
+
+.w-100px{
+	width: 100px;
+}
+
+.mt-30{
+	margin-top: 30px;
+}
+
+.w-400px{
+	width: 400px; 
+}
+
+.w-146px{
+	width: 146px; 
+}
+
+.cs-mileadd{
+	background-color:#f9fae1;
+}
+
+
+
+
+
+
+

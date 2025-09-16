@@ -3,49 +3,15 @@
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/projectModule/projectCostAdd.css" var="projectCostAdd" />
+<link href="${projectCostAdd}" rel="stylesheet" />
 <title>PROJECT COST  ADD</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b{
-	font-family: 'Lato',sans-serif;
-}
-      label{
-      	font-size:14px;
-      	
-      }
-      
-      
-      .table thead tr th{
-background-color: aliceblue;
-text-align: left;
-
-}
-.table thead tr td{
-background-color: #f9fae1;
-
-}
-</style>
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -81,7 +47,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 
 <div class="container-fluid">
 	
-	<div class="row" style="">
+	<div class="row">
 		<div class="col-md-12">
 
  			<div class="card shadow-nohover" >
@@ -89,13 +55,13 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 		  		<div class="card-header">
 		  			<div class="row" >
 		  				<div class="col-md-1"><h3>Cost </h3></div>
-						<div class="col-md-11" style="float: right;">
+						<div class="col-md-11 float-right">
 		 					<form action="ProjectCostAddSubmit.htm" method="POST" name="myfrm3" id="myfrm3" >
-		   						<b style="color: green;">Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %> (<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;Fe Cost :&nbsp;&#8377; <%if(ProjectDetailes[14]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[14].toString())) %><%}else{%>0.00<%} %>&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;Re Cost  :&nbsp;&nbsp;&#8377;<%if(ProjectDetailes[15]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[15].toString())) %><%}else{ %>0.00<%} %> &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp; Total Cost  :&nbsp;&nbsp;&#8377; <%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())) %><%}else{ %>0.00<%} %> 
+		   						<b class="text-success">Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %> (<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;Fe Cost :&nbsp;&#8377; <%if(ProjectDetailes[14]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[14].toString())) %><%}else{%>0.00<%} %>&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;Re Cost  :&nbsp;&nbsp;&#8377;<%if(ProjectDetailes[15]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[15].toString())) %><%}else{ %>0.00<%} %> &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp; Total Cost  :&nbsp;&nbsp;&#8377; <%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())) %><%}else{ %>0.00<%} %> 
 		   
 								<%--    || &nbsp;&nbsp;&nbsp;&nbsp;Cost Utilized:&nbsp;<%=nfc.convert(TotalIntiationCost) %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Remaining Cost :&nbsp;<%if(ProjectDetailes[8]!=null){%><%=nfc.convert(Double.parseDouble(ProjectDetailes[8].toString())-TotalIntiationCost) %><%}else{ %><%=TotalIntiationCost %><%} %> --%>  
 								 	
-		  	 	 				<input type="submit" class="btn btn-primary btn-sm submit back"   value="BACK"   name="sub" style="float: right" >
+		  	 	 				<input type="submit" class="btn btn-primary btn-sm submit back float-right"   value="BACK"   name="sub">
 		  						</b>
 		  						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 								<input type="hidden" name="IntiationId"	value="<%=IntiationId %>" /> 		
@@ -148,7 +114,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 			                     </div>
 			               </div> 
                  
-			              <div class="col-md-1 " style="margin-top: 35px;">
+			              <div class="col-md-1 mt-35">
 			              	 <button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub"  onclick="return confirm('Are You Sure To Add ?');"> SUBMIT</button>
  			              </div>      
                                      
@@ -188,7 +154,7 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 								<tr>
 								<form action="ProjectCostEditSubmit.htm" method="POST" name="myfrm<%=obj[0] %>" id="myfrm<%=obj[0] %>" >	
 									
-		 							<td style="width: 400px;">
+		 							<td class="w-400px">
 		 						
 		 								<select class="custom-select" id="Item" required="required" name="Item" >
 									    	<option disabled="true"  selected value="">Choose...</option>
@@ -200,11 +166,11 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 	 							 		</select>
 	 							 	</td>
 	 							 	
-									<td style="width: 550px;">
+									<td class="w-550px">
 					   					<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="ItemDetail" name="ItemDetail" required="required" value="<%=obj[4] %>">                     
 									</td>
-									<td style="text-align: right">
-										<input type="text" class="form-control decimal-format "  aria-describedby="inputGroup-sizing-sm" id="Cost" name="Cost" min="1" required="required" value="<%=obj[5].toString().split("\\.")[0] %>" style="text-align:right;">
+									<td class="text-right">
+										<input type="text" class="form-control decimal-format text-right"  aria-describedby="inputGroup-sizing-sm" id="Cost" name="Cost" min="1" required="required" value="<%=obj[5].toString().split("\\.")[0] %>">
 									<td>
 							    
 							 			
@@ -226,10 +192,10 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 								
 	    					<tr>
 	    						<td colspan="2" align="right">
-	    							<b style="color: green;"> <%=entry.getKey()!=null?StringEscapeUtils.escapeHtml4(entry.getKey()): " - " %> Cost</b>
+	    							<b class="text-success"> <%=entry.getKey()!=null?StringEscapeUtils.escapeHtml4(entry.getKey()): " - " %> Cost</b>
 	    						</td>
 	    						<td  align="right">
-	    							<b style="color: green; text-align: right;">&#8377; <%=nfc.convert(cost) %></b>
+	    							<b class="text-success text-right">&#8377; <%=nfc.convert(cost) %></b>
 	    						</td>
 	    						<td></td>
 	    					</tr>
@@ -239,10 +205,10 @@ List<Object[]> BudgetHeadList=(List<Object[]>)request.getAttribute("BudgetHeadLi
 	    	
 							<tr>
 								<td colspan="2" align="right">
-									<b style="color: green;"> Total Cost</b>
+									<b class="text-success"> Total Cost</b>
 								</td>
 								<td>
-									<b style="color: green;">&#8377;<%=nfc.convert(totalcost) %></b>
+									<b class="text-success">&#8377;<%=nfc.convert(totalcost) %></b>
 								</td>
 								<td></td>
 							</tr>

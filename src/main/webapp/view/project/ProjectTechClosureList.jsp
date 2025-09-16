@@ -17,135 +17,10 @@
 
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>Technical Closure List</title>
-<style type="text/css">
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
+<spring:url value="/resources/css/projectModule/techClosure.css" var="techClosureCss"/>
+<link rel="stylesheet" type="text/css" href="${techClosureCss}">
 
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-.table button {
-   /*  background-color: Transparent !important; */
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    text-align: left !important;
-}
-.table td{
-	padding:5px !important;
-}
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-	
-.datatable-dashv1-list table tbody tr td{
-	padding: 8px 10px !important;
-}
-
-.table-project-n{
-	color: #005086;
-}
-
-#table thead tr th{
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td{
-	padding:2px 3px !important;
-}
-
-
-/* icon styles */
-
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:270px !important;
-}
-.table tbody tr td  {
-    vertical-align: middle;
-    text-align: center;
-    
-    white-space: nowrap;
-}
-
-.trup{
-	padding:6px 10px 6px 10px ;			
-	border-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-.trdown{
-	padding:0px 10px 5px 10px ;			
-	border-bottom-left-radius : 5px; 
-	border-bottom-right-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-
-
-</style>
 </head>
 <body>
 
@@ -230,12 +105,12 @@ font-weight: bold;
 			                                         
 			                           	<tr>
 			                           	
-				                            <th style=" text-align: center;" >SN</th>
-				                            <th style=" text-align: center;" >Particulars </th>
-		                                    <th style=" text-align: center;" >Revision No</th>
-		                                    <th style=" text-align: center;" >Issue Date </th>
-		                                    <th style=" text-align: center;" >Status</th>
-		                                    <th style=" text-align: center;" >Action</th>
+				                            <th class="text-center" >SN</th>
+				                            <th class="text-center" >Particulars </th>
+		                                    <th class="text-center" >Revision No</th>
+		                                    <th class="text-center" >Issue Date </th>
+		                                    <th class="text-center" >Status</th>
+		                                    <th class="text-center" >Action</th>
 		                                    
 		                                 </tr>      
 			        
@@ -254,8 +129,8 @@ font-weight: bold;
 			                            <td><%=obj[3]!=null?fc.SqlToRegularDate(obj[3].toString()):" - "%></td>
 			                            
 			                            <td >
-			                            <button type="submit" class="btn btn-sm btn-link  btn-status" formaction="ProjectTechClosureTransStatus.htm" value="<%=obj[0] %>" name="TechClosureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style="font-weight: 600;" formtarget="_blank">
-							    				<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+			                            <button type="submit" class="btn btn-sm btn-link  btn-status fw-600" formaction="ProjectTechClosureTransStatus.htm" value="<%=obj[0] %>" name="TechClosureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" formtarget="_blank">
+							    				<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> <i class="fa fa-telegram mt-03rem" aria-hidden="true"></i>
 							    			</button>
 			                            </td>
 			                            
@@ -271,7 +146,7 @@ font-weight: bold;
 											<div class="cc-rockmenu">
 												<div class="rolling">
 													<figure class="rolling_icon">
-														<img src="view/images/documentedit.png" style="width:25px;">
+														<img src="view/images/documentedit.png" class="icon-width-25">
 													</figure>
 													<span>Content</span>
 												</div>
@@ -283,7 +158,7 @@ font-weight: bold;
 											<div class="cc-rockmenu">
 												<div class="rolling" >
 													<figure class="rolling_icon">
-														<img src="view/images/docpaper.png" style="width:25px;">
+														<img src="view/images/docpaper.png" class="icon-width-25">
 													</figure>
 													<span>Doc Summary</span>
 												</div>
@@ -296,7 +171,7 @@ font-weight: bold;
 											<div class="cc-rockmenu">
 												<div class="rolling" >
 													<figure class="rolling_icon">
-														<img src="view/images/docdistrib.png" style="width:25px;">
+														<img src="view/images/docdistrib.png" class="icon-width-25">
 													</figure>
 													<span>Doc Distrib</span>
 												</div>
@@ -311,7 +186,7 @@ font-weight: bold;
 											<div class="cc-rockmenu">
 												<div class="rolling" >
 													<figure class="rolling_icon">
-														<img src="view/images/forward1.png" style="width:25px;">
+														<img src="view/images/forward1.png" class="icon-width-25">
 													</figure>
 													<span>Forward</span>
 												</div>
@@ -324,7 +199,7 @@ font-weight: bold;
 						    			
 						    			if(obj[4].toString().equalsIgnoreCase("TDG")){ %>
 						    				
-						    				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportFreezeDownload.htm" formtarget="blank" name="TechClosureId" value="<%=obj[0] %>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+						    				<button type="submit" class="btn btn-sm fw-600" formaction="TechnicalClosureReportFreezeDownload.htm" formtarget="blank" name="TechClosureId" value="<%=obj[0] %>" data-toggle="tooltip" data-placement="top" title="Download">
   										            <i class="fa fa-download"></i>
   									             </button>
   									             &nbsp;
@@ -333,21 +208,16 @@ font-weight: bold;
   									       <button type="submit" class="btn btn-warning btn-sm edit" name="Amend" value="<%=obj[1]%>//<%=Integer.parseInt(StringEscapeUtils.escapeHtml4(obj[2].toString())) + 1%>//<%=closureId!=null?StringEscapeUtils.escapeHtml4(closureId): " - "%>//<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>" formaction="AmendTechClosureList.htm" onclick="return confirm('Are You Sure To Amend')" >AMEND</button>
 						                 	
 						    			<%}else if(obj[4].toString().equalsIgnoreCase("TAM")) { %>
-						    				
-						    				
-											<%-- <button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=closureId%>/<%=obj[0]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
-  										            <i class="fa fa-download"></i>
-  									        </button>  --%>
   									        
   									        
-  									        <button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportFreezeDownload.htm" formtarget="blank" name="TechClosureId" value="<%=obj[0] %>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+  									        <button type="submit" class="btn btn-sm fw-600" formaction="TechnicalClosureReportFreezeDownload.htm" formtarget="blank" name="TechClosureId" value="<%=obj[0] %>" data-toggle="tooltip" data-placement="top" title="Download">
   										            <i class="fa fa-download"></i>
   									             </button>	
 						    			
 						    			
 						    			<% }else{%>
 						    				
-						    				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=closureId%>/<%=obj[0]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+						    				<button type="submit" class="btn btn-sm fw-600" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=closureId%>/<%=obj[0]%>" data-toggle="tooltip" data-placement="top" title="Download">
 									            <i class="fa fa-download"></i>
 								        </button>
 						    			
@@ -384,40 +254,40 @@ font-weight: bold;
 		     <%---------------------------------------------------------------------------Approval Flow Start------------------------------------------------------------------------------------------%>
                             
                                         <div class="row">
-				 		  					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For Technical Closure</b></div>
+				 		  					<div class="col-md-12 text-center"><b>Approval Flow For Technical Closure</b></div>
 				 	    				</div>
-				 	    				<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+				 	    				<div class="row apr-flow">
 			              					<table align="center"  >
 			               						<tr>
-			               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+			               							<td class="trup pd-bg">
 			                							PD -  <%=PDData[2]!=null?StringEscapeUtils.escapeHtml4(PDData[2].toString()): " - "%>
 			                						</td>
 			                		
 		                        					<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+			                						<td class="trup gd-bg">
 			                							GD - <%if(GD!=null) {%><%=GD[1]!=null?StringEscapeUtils.escapeHtml4(GD[1].toString()): " - " %> <%} else{%>GD<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
+			                						<td class="trup ad-bg">
 			                							AD - <%if(AD!=null) {%><%=AD[1]!=null?StringEscapeUtils.escapeHtml4(AD[1].toString()): " - " %> <%} else{%>AD<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #76ebcb 10%, transparent 115%);">
+			                						<td class="trup dpnc-bg">
 			                							GD-DP&C - <%if(GDDPandC!=null) {%><%=GDDPandC[1]!=null?StringEscapeUtils.escapeHtml4(GDDPandC[1].toString()): " - " %> <%} else{%>GD-DP&C<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #13f816 10%, transparent 115%);">
+			                						<td class="trup director-bg">
 			                							Director - <%if(Director!=null) {%><%=Director[1]!=null?StringEscapeUtils.escapeHtml4(Director[1].toString()): " - " %> <%} else{%>Director<%} %>
 			                	    				</td>
 			                	    				
@@ -425,7 +295,7 @@ font-weight: bold;
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #00c7e4 10%, transparent 115%);">
+			                						<td class="trup dg-bg">
 			                							Director General
 			                	    				</td>
 			               						</tr> 	
@@ -455,7 +325,7 @@ font-weight: bold;
       </div>
       <div class="modal-body" align="center">
         <form action="TechClosureList.htm" method="get">
-        	<table style="width: 100%;">
+        	<table class="w-100">
         		
         		<tr>
         			<th >Particulars : &nbsp; </th>
@@ -464,7 +334,7 @@ font-weight: bold;
         		
         		
         		<tr>
-        			<td colspan="2" style="text-align: center;">
+        			<td colspan="2" class="text-center">
         				<br>
         				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>Close</b></button>
         				<button class="btn btn-sm submit" onclick="return confirm('Are You Sure to Submit?');">Amend Document</button>
@@ -489,7 +359,7 @@ font-weight: bold;
 <%------------------------------------------------------------------Document Summary -------------------------------------------------%>
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="SummaryModal">
   <div class="modal-dialog modal-dialog-jump modal-lg ">
-    <div class="modal-content" style="width:137%;margin-left:-21%;">
+    <div class="modal-content ds-modal">
          <div class="modal-header" id="ModalHeader">
             <h5 class="modal-title" id="exampleModalLabel">Document Summary</h5>
                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -502,7 +372,7 @@ font-weight: bold;
    		 <form action="DocSummaryAdd.htm" method="post">
    		   <div class="row">
    			  <div class="col-md-4">
-   			       <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Additional Information:</label>
+   			       <label class="ds-field">Additional Information:</label>
    			  </div>
    			 <div class="col-md-8">
    				<textarea required="required" name="information"class="form-control" id="additionalReq" maxlength="4000"
@@ -512,7 +382,7 @@ font-weight: bold;
    			
    			<div class="row mt-2">
    			   <div class="col-md-4">
-   			       <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Abstract:</label>
+   			       <label class="ds-field">Abstract:</label>
    			   </div>
 	   			<div class="col-md-8">
 	   				<textarea required="required" name="abstract" class="form-control" id="" maxlength="4000"
@@ -522,7 +392,7 @@ font-weight: bold;
    			
    		<div class="row mt-2">
    			<div class="col-md-4">
-   			      <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Keywords:</label>
+   			      <label class="ds-field">Keywords:</label>
    			</div>
    			<div class="col-md-8">
    				<textarea required="required" name="keywords"
@@ -533,7 +403,7 @@ font-weight: bold;
    			
    		<div class="row mt-2">
    			   <div class="col-md-4">
-   			         <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Distribution:</label>
+   			         <label class="ds-field">Distribution:</label>
    			   </div>
    			<div class="col-md-8">
    				<input required="required" name="distribution" class="form-control" id="" maxlength="255"
@@ -542,7 +412,7 @@ font-weight: bold;
    		</div>
    				<div class="row mt-2">
    			       <div class="col-md-2">
-			   	       <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Prepared By:</label>
+			   	       <label class="ds-field">Prepared By:</label>
 			   	   </div>
 				   <div class="col-md-4">
 		   		       <select class="form-control selectdee"name="preparer" id=""data-width="100%" data-live-search="true"  required>
@@ -557,7 +427,7 @@ font-weight: bold;
    			     </div>
    			<div class="row mt-2">
 			   <div class="col-md-2">
-			   	        <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Reviewer:</label>
+			   	        <label class="ds-field">Reviewer:</label>
 			   </div>
 			 <div class="col-md-4">
 	   		     <select class="form-control selectdee"name="Reviewer" id=""data-width="100%" data-live-search="true"  required>
@@ -572,7 +442,7 @@ font-weight: bold;
    			</div>
    				
    				<div class="col-md-2">
-			   	      <label class="" style="font-size: 1rem;font-weight: bold;color:#07689f">Approver:</label>
+			   	      <label class="ds-field">Approver:</label>
 			   	</div>	
    				<div class="col-md-4">
 		   			<select class="form-control selectdee"name="Approver" id=""data-width="100%" data-live-search="true"  required>
@@ -607,8 +477,8 @@ font-weight: bold;
 <!--------------------------------------------------------------------------------- modal Open for Document Distribution --------------------------------------------------------------->
 <div class="modal fade" id="DistributionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document">
-    <div class="modal-content" style="width:100%;">
-      <div class="modal-header" id="ModalHeader" style="background: #055C9D ;color:white;">
+    <div class="modal-content tbl-width">
+      <div class="modal-header doc-dist-modal" id="ModalHeader">
         <h5 class="modal-title" >Document Sent to</h5>
            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true" class="text-light">&times;</span>
@@ -621,9 +491,9 @@ font-weight: bold;
 				<table class="table table-bordered" id="myTables">
 					<thead>
 						<tr>
-							<th style="text-align: center;">SN</th>
-							<th style="text-align: center;">Name</th>
-							<th style="text-align: center;">Designation</th>
+							<th class="text-center">SN</th>
+							<th class="text-center">Name</th>
+							<th class="text-center">Designation</th>
 						</tr>
 					</thead>
 					<tbody id="modal_table_body">
@@ -703,9 +573,9 @@ function DocumentDistribution(techclosureid,closureid){
 		
 		htmlStr += '<tr>';
 		
-		htmlStr += '<td class="tabledata" style="text-align: center;" >'+ (v+1) +  '</td>';
-		htmlStr += '<td class="tabledata" style="text-align: left;" >'+ result[v][1] + '</td>';
-		htmlStr += '<td class="tabledata" style="text-align: left;" >'+ result[v][2] + ' </td>';
+		htmlStr += '<td class="tabledata text-center">'+ (v+1) +  '</td>';
+		htmlStr += '<td class="tabledata text-left">'+ result[v][1] + '</td>';
+		htmlStr += '<td class="tabledata text-left">'+ result[v][2] + ' </td>';
 		
 		htmlStr += '</tr>';
 		}
@@ -717,7 +587,7 @@ function DocumentDistribution(techclosureid,closureid){
 			
 		htmlStr += '<tr>';
 		
-		htmlStr += '<td colspan="3" style="text-align: center;"> No Record Found </td>';
+		htmlStr += '<td colspan="3" class="text-center"> No Record Found </td>';
 		
 		htmlStr += '</tr>';
 		

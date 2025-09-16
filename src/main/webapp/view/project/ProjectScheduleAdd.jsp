@@ -3,49 +3,16 @@
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+<spring:url value="/resources/css/projectModule/projectScheduleAdd.css" var="projectScheduleAdd" />
+<link href="${projectScheduleAdd}" rel="stylesheet" />
 <title>PROJECT COST  ADD</title>
-<style type="text/css">
 
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b{
-	font-family: 'Lato',sans-serif;
-}
-
-.fa-trash{
-	color: #ec0101;
-}
-
-.fa-pencil-square-o{
-	color:orange;
-}
-
-.form-group {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-
-</style>
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -84,7 +51,7 @@ FormatConverter fc = new FormatConverter();
 
 
     <div class="container">
-<div class="row" style="">
+<div class="row">
 
 <div class="col-md-12">
 
@@ -95,7 +62,7 @@ FormatConverter fc = new FormatConverter();
 
 <div class="col-md-4" ><h3> Schedule</h3></div>
 <div class="col-md-8" >
- <b style="color: green; float: right;">Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %> (<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;Total Months :&nbsp;<%=ProjectDetailes[9]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[9].toString()): " - " %>	</b>
+ <b class="float-right text-success">Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %> (<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;Total Months :&nbsp;<%=ProjectDetailes[9]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[9].toString()): " - " %>	</b>
  </div>
 
  
@@ -141,16 +108,8 @@ FormatConverter fc = new FormatConverter();
 				                      <input type="hidden" name="initiationscheduleid" value="<%=obj[3] %>" /> 	
 				                      	
 									 	<td><input type="hidden" name="milestoneno" value="<%=obj[0] %>" /> 	MIL-<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td> 
-									 	<td style="width: 300px;"><input type="text" class="form-control" name="MilestoneActivityEdit"  required="required" value="<%=obj[1] %>" placeholder="Maximum 4000 Chararcters" maxlength="4000"></td> 
+									 	<td class="w-300px"><input type="text" class="form-control" name="MilestoneActivityEdit"  required="required" value="<%=obj[1] %>" placeholder="Maximum 4000 Chararcters" maxlength="4000"></td> 
 									 	<td >
-										<%--  	<select class="form-control selectdee"  name="MilestoneFrom">
-											 	<option <%if(obj[5]!=null) %> selected="selected" value="0"><%="0"%></option>
-												 	<%for(Object[]obje:ScheduleList){ %>
-												 		<%if(obje[0].toString().equalsIgnoreCase(obj[0].toString()))break;
-													 		else  { %>
-													 		<option value="<%=obje[0] %>" <%if(obj[5].toString().equalsIgnoreCase(obje[0].toString()) ){ %> selected="selected" <%} %>> <%=obje[0] %></option>
-												 	<%}} %>
-										 	</select>  --%>
 										 	 MIL-<%=obj[5] %> 
 									 		 <input type="hidden" name="MilestoneFrom" value="<%=obj[5]%>"> 
 									 	</td>
@@ -159,9 +118,9 @@ FormatConverter fc = new FormatConverter();
 									 		-
 									 		<%=obj[8]!=null?fc.SqlToRegularDate(obj[8].toString()):"" %>
 									 	</td>
-									   	<td style="width: 200px;"><input type="number" class="form-control " name="MilestoneMonthEdit" min="0" required="required" value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>"></td>
+									   	<td class="w-200px"><input type="number" class="form-control " name="MilestoneMonthEdit" min="0" required="required" value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>"></td>
 									   	<td><input type="text" class="form-control " name="MilestoneRemarkEdit"  required="required" value="<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>"></td>
-									    <td  style="width: 150px;">
+									    <td class="w-150px">
 							
 									  <button class="fa fa-pencil-square-o btn " type="submit"  onclick="return confirm('Are You Sure To Edit this Schedule?');"></button>
 										
@@ -189,18 +148,18 @@ FormatConverter fc = new FormatConverter();
         <form action="ProjectScheduleAddSubmit.htm" method="POST" name="myfrm1" id="myfrm1" >
       
 
-		<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
+		<table class="table  table-bordered table-hover table-striped table-condensed info shadow-nohover mt-30" id="myTable20">
 													<thead>  
 													<tr>
-													<th style="width: 400px; "><div align="center">Milestone Activity</div></th>
+													<th class="w-400px"><div align="center">Milestone Activity</div></th>
 													<th><div>Started From</div></th>
-													<th style="width: 146px;"><div style="">Milestone Month</div></th>
+													<th class="w-146px"><div >Milestone Month</div></th>
 													<th align="center"><div align="center">Remarks</div></th>
 													</tr>
 													<input type="hidden"  id="MilestoneAdd" value="1" />
 													<tr>
-														<td style="width: 300px;"><input type="text" class="form-control form-control" name="MilestoneActivity" id="MilestoneActivity0" required="required" placeholder="Maximum 4000 Chararcters" maxlength="4000"></td>                               	
-														<td style="width: 150px;">
+														<td class="w-300px"><input type="text" class="form-control form-control" name="MilestoneActivity" id="MilestoneActivity0" required="required" placeholder="Maximum 4000 Chararcters" maxlength="4000"></td>                               	
+														<td class="w-150px">
 														<select class="form-control selectdee" name="Milestonestarted" id="Milestonestarted0">
 														<option value="0 0 <%=LocalDate.now() %>"  selected="selected"	hidden="true">MIL-0</option>
 												 	    <%if(MilestoneTotalMonth.size()!=0){ %>
@@ -210,8 +169,8 @@ FormatConverter fc = new FormatConverter();
 														</select>
 														</td>
 		
-														<td style="width: 100px;"><input type="number" class="form-control form-control" name="MilestoneMonth" id="MilestoneMonth0" min="0" required="required"></td>
-														<td style="width: 300px;">	<input type="text" class="form-control form-control" name="MilestoneRemark" id="MilestoneRemark0"  required="required" placeholder="Maximum 250 Chararcters" maxlength="250"></td>
+														<td class="w-100px"><input type="number" class="form-control form-control" name="MilestoneMonth" id="MilestoneMonth0" min="0" required="required"></td>
+														<td class="w-300px">	<input type="text" class="form-control form-control" name="MilestoneRemark" id="MilestoneRemark0"  required="required" placeholder="Maximum 250 Chararcters" maxlength="250"></td>
 													</tr>
 													</thead>
 													</table>
@@ -265,7 +224,7 @@ var TotalMilestoneMonth="<%=ProjectDetailes[9]!=null?StringEscapeUtils.escapeHtm
 function MilestoneAdd(){
 	 
 	 var $MilestoneAdd = $("#MilestoneAdd").val(); 
-	 $("#myTable20").append("<tr id="+$MilestoneAdd+"><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneActivity' id='MilestoneActivity"+$MilestoneAdd+"' required='required'></td><td style='background-color:#f9fae1;'><input type='number' class='form-control form-control' name='MilestoneMonth' id='MilestoneMonth"+$MilestoneAdd+"' min='0'  required='required'></td><td style='background-color:#f9fae1;'><input type='text' class='form-control form-control' name='MilestoneRemark' id='MilestoneRemark"+$MilestoneAdd+"' required='required'></td></tr>");	
+	 $("#myTable20").append("<tr id="+$MilestoneAdd+"><td class='cs-mileadd'><input type='text' class='form-control form-control' name='MilestoneActivity' id='MilestoneActivity"+$MilestoneAdd+"' required='required'></td><td class='cs-mileadd'><input type='number' class='form-control form-control' name='MilestoneMonth' id='MilestoneMonth"+$MilestoneAdd+"' min='0'  required='required'></td><td class='cs-mileadd'><input type='text' class='form-control form-control' name='MilestoneRemark' id='MilestoneRemark"+$MilestoneAdd+"' required='required'></td></tr>");	
 	
 	 
 	 FimRowId=$MilestoneAdd+1;

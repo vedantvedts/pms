@@ -3,31 +3,15 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
-    
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>  
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/projectModule/projectApprovalTcc.css" var="projectApprovalTcc" />
+<link href="${projectApprovalTcc}" rel="stylesheet" />
 <title>PROJECT APPROVE TCC  LIST</title>
-<style>
-h6{
-	color:white;
-	font-family: 'Lato',sans-serif;
-	font-weight: 800;
-}
-.card-header{
-background-color: #07689f;
-color:white;
-}
-.card{
-	border:1px solid black;
-}
-
-</style>
-
-
 
 </head>
 <body>
@@ -66,17 +50,17 @@ NFormatConvertion nfc=new NFormatConvertion();
 
 	<div class="col-md-12">
 		
-		<h4 style="margin-top: -20px;color:#055C9D">Project Approvals</h4>
+		<h4 class="cs-project">Project Approvals</h4>
 	
 			<% if(ProjectApproveTccList.size()>0){
 				int count=1;
 					for(Object[] obj:ProjectApproveTccList){ %>
 	
-			<div class="card shadow-nohover"  style="">
+			<div class="card shadow-nohover">
 		
 				<div class="card-header">
 					<div class="row" >
-						<div class="col-md-11" style="margin-top: 4px">
+						<div class="col-md-11 mt-4">
 							<h6 ><%=count%> . &nbsp;&nbsp;&nbsp;Project Title : <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> (<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>)</h6>
 						</div>
 						
@@ -101,17 +85,12 @@ NFormatConvertion nfc=new NFormatConvertion();
 					      <tbody>
 						    
 						    		<tr>
-						    			<td style="width:20%"> <b>Project Category</b> </td>
+						    			<td class="w-20"> <b>Project Category</b> </td>
 						    			<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
-						    			<td rowspan="5" style="width:40%">
+						    			<td rowspan="5" class="w-20">
 						      				<textarea rows="6" type="text" class="form-control"   name="Remark" required="required"  placeholder="Enter Remarks here"></textarea>
 						    			</td>
 						    		</tr>
-						    		
-						    		<%-- <tr>
-						    			<td ><b>Project Title :</b></td>
-						    			<td><%=obj[2] %>(<%=obj[1] %>) </td>
-						    		</tr> --%>
 						    		
 						    		<tr>
 						    			<td> <b>Security Classification</b> </td>
@@ -138,8 +117,8 @@ NFormatConvertion nfc=new NFormatConvertion();
 						    			<td> <b>Duration (Months) :</b> </td>
 						    			<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 						    			<td >
-						    				<label style="font-size: 17px;font-family: 'Lato',sans-serif;"> <b>&nbsp;Action :&nbsp;&nbsp;&nbsp;</b> </label>
-						        			<select class="custom-select" id="Category<%=obj[5] %>" required="required" name="Status" onchange="myconfirm(this,'myfrm<%=obj[5] %>')" style="width:85%" >
+						    				<label class="cs-label"> <b>&nbsp;Action :&nbsp;&nbsp;&nbsp;</b> </label>
+						        			<select class="custom-select w-85" id="Category<%=obj[5] %>" required="required" name="Status" onchange="myconfirm(this,'myfrm<%=obj[5] %>')">
 					    						<option disabled="true"  selected value="">Choose...</option>
 
 					  						</select>
@@ -215,7 +194,7 @@ NFormatConvertion nfc=new NFormatConvertion();
 	        </div>
 	        </form>
 	        
-	        <form action="" method="POST" name="myfrm" id="myfrm" align="center" style="margin-bottom: 10px;margin-top: -25px">
+	        <form action="" method="POST" name="myfrm" id="myfrm" align="center" class="cs-form">
 				                
 				     	<button type="submit" class="btn btn-warning btn-sm prints" formaction="PfmsPrint.htm" formtarget="_blank"   >Print Executive Summary</button>&nbsp;&nbsp;
 							 

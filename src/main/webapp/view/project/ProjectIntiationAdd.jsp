@@ -6,82 +6,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<%-- <spring:url value="/resources/css/Multiselect1.css" var="Multiselect1Css" />     
-<link href="${Multiselect1Css}" rel="stylesheet" /> --%>
+<spring:url value="/resources/css/projectModule/projectIntiationAdd.css" var="projectIntiationAdd" />     
+<link href="${projectIntiationAdd}" rel="stylesheet" />
 <jsp:include page="../static/header.jsp"></jsp:include>
 
-<%--  <spring:url value="/resources/js/Multiselect1.js" var="Multiselect1js" />  
-<script src="${Multiselect1js}"></script>  --%>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>PROJECT INT  ADD</title>
-<style type="text/css">
 
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-.form-group {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.mandatory{
-	font-weight: 800;
-}
-
-#initiatedproject .select2-container{
-	width:38rem !important;
-}
-/* .spermission {
-  width: 100%;
-  height: 34px;
-  padding: 6px 90px;
-  font-size: 14px;
-  line-height: 1.42857143;
-  color: black;
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-}
- .spermission option {
-  font-size: 14px;
-  line-height: 1.42857143;
-  color: black;
-  background-color: #ffffff;
-  background-image: none;
-  border: 1px solid #cccccc;
-  border-radius: 4px;
-  padding: 5px 10px;
-  margin: 5px 0;
-}
- */
-option:checked {
-  background-color: #337ab7;
-  color: #fff;
-}
-.multiselect{
-padding: 4px 90px;
-background-color:white;
-border: 1px solid #ced4da;
-height: calc(2.25rem + 2px);
-}
-.select2-container {
-	width: 100% !important;
-}
-</style>
 </head>
 <body>
 <%
@@ -120,12 +50,12 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	
 	<form action="ProjectIntiationAdd.htm" method="POST" name="myfrm" id="myfrm" >
 	
-	<div class="row" style="margin-top: -1%">
+	<div class="row mt-n1p">
 		
-		<div class="col-md-3 ">
+		<div class="col-md-3">
 			<div class="form-group">
 		    	<label class="control-label">Project</label>
-		        <span class="mandatory" style="color: #cd0a0a;">*</span>
+		        <span class="mandatory text-danger">*</span>
 			    <select class="form-control custom-select " id="ismain"  required="" name="ismain" >
 					<option disabled="true"  selected value="">Choose...</option>
 					<option value="Y">Main</option>
@@ -137,7 +67,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		<div class="col-md-4 " id="initiatedproject" >
 			<div class="form-group" >
 		    	<label class="control-label">Pre-Project</label>
-		        	<span class="mandatory" style="color: #cd0a0a;">*</span>
+		        	<span class="mandatory text-danger">*</span>
 		            	<select class="custom-select selectdee" id="projectlist" required="required" name="initiationid">
 							<option disabled="true"  selected value="">Choose...</option>
 								<% for (Object[] obj : InitiatedProjectList) {%>
@@ -150,12 +80,12 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	</div>
 	
 	
-	<div class="row" style="" id="mainrow">
+	<div class="row" id="mainrow">
 		<div class="col-md-12">
 
  			<div class="card shadow-nohover" >
 					
-				<div class="card-header" style=" /* background: linear-gradient(to right, #334d50, #cbcaa5); */ /* background-color:rgba(6,103,200,1); */ background-color: #055C9D;margin-top: ">
+				<div class="card-header cs-header">
                     <b class="text-white">SECTION I: PROJECT INITIATION</b>
         		</div>
         
@@ -165,7 +95,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                    <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Project/Programme</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <span class="mandatory text-danger">*</span>
 			                            <select class="form-control custom-select pdd" id="ProjectProgramme"  required="" name="ProjectProgramme" >
 										    <option disabled="true"  selected value="">Choose...</option>
 										    <option value="PGM">Programme</option>
@@ -178,7 +108,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                    <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Category</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <span class="mandatory text-danger">*</span>
 		                            	<select class="custom-select pdd" id="ProjectType" required="required" name="ProjectType">
 										    <option disabled="true"  selected value="">Choose...</option>
 											 <% for (Object[] obj : PfmsCategoryList ) {%>
@@ -192,7 +122,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		         			<div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Security Classification</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <span class="mandatory text-danger">*</span>
 									    <select class="custom-select pdd" id="Category" required="required" name="Category">
 										    <option disabled="true"  selected value="">Choose...</option>
 										   	<% for (Object[] obj : ProjectTypeList) {%>
@@ -205,7 +135,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                    <div class="col-md-3 ">
 		                   		<div class="form-group">
 		                            <label class="control-label">Nodal Lab</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <span class="mandatory text-danger">*</span>
 		  							<select class="custom-select selectdee pdd" id="NodalLab" required="required" name="NodalLab">
 											    <option disabled="true"  selected value="">Choose...</option>
 											   	<% for (Object[] obj : NodalLabList) {%>
@@ -221,7 +151,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                    <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Project/Programme</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <span class="mandatory text-danger">*</span>
 			                            <select class="form-control custom-select pdd" id="ProjectProgrammeSub"  required="" name="ProjectProgramme" >
 										    <option disabled="true"  selected value="">Choose...</option>
 										    <option value="PGM">Programme</option>
@@ -234,7 +164,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                    <div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Category</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <span class="mandatory text-danger">*</span>
 		                            	<select class="custom-select pdd" id="ProjectTypeSub" required="required" name="ProjectType">
 										    <option disabled="true"  selected value="">Choose...</option>
 											 <% for (Object[] obj : PfmsCategoryList ) {%>
@@ -248,7 +178,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		         			<div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Security Classification</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <span class="mandatory text-danger">*</span>
 									    <select class="custom-select pdd" id="CategorySub" required="required" name="Category">
 										    <option disabled="true"  selected value="">Choose...</option>
 										   	<% for (Object[] obj : ProjectTypeList) {%>
@@ -261,7 +191,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 		                    <div class="col-md-3 ">
 		                   		<div class="form-group">
 		                            <label class="control-label">Nodal Lab</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <span class="mandatory text-danger">*</span>
 		  							<select class="custom-select selectdee pdd" id="NodalLabSub" required="required" name="NodalLab">
 											    <option disabled="true"  selected value="">Choose...</option>
 											   	<% for (Object[] obj : NodalLabList) {%>
@@ -278,7 +208,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                   <div class="col-md-2 ">
 	                        <div class="form-group">
 	                            <label class="control-label">Short Name</label>
-	                            	<span class="mandatory" style="color: #cd0a0a;">*</span>
+	                            	<span class="mandatory text-danger">*</span>
 	  									<input type="text" class="form-control alphanum-symbols-no-leading-space"  aria-describedby="inputGroup-sizing-sm" id="ShortName" name="ShortName" placeholder="Enter Short Name" required>
 	                        </div>
 	                    </div>
@@ -286,7 +216,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                	<div class="col-md-4">
 	                        <div class="form-group">
 	                            <label class="control-label">Project Title</label>
-	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+	                            <span class="mandatory text-danger">*</span>
 	  								<input type="text" class="form-control alphanum-symbols-no-leading-space" required="required" aria-describedby="inputGroup-sizing-sm" id="ProjectTitle" name="ProjectTitle" placeholder="Enter Project Title" >
 	                        </div>
 	                    </div> 
@@ -294,7 +224,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                    <div class="col-md-2 ">
                         	<div class="form-group">
 	                            <label class="control-label">Is Planned</label>
-	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+	                            <span class="mandatory text-danger">*</span>
 								 <select class="custom-select pdd" id="IsPlanned"  name="IsPlanned" required="required">
 								    <option disabled="true"  selected value="">--Select--</option>
 								     <option value="N">Non-Plan</option>
@@ -302,44 +232,11 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 								  </select>                   
        						</div>
        					</div>
-       					
-       			<!-- 		<div class="col-md-3 ">
-                        	<div class="form-group" id="Remarks" style="display:none;">
-	                            <label class="control-label">Remarks</label>
-	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
 
-	  							<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Remarks" name="Remarks" >
-
-	                        </div>
-	                      
-       					</div> -->
-	                    
-	                    
-	                    <!-- <div class="col-md-2 ">
-	                        <div class="form-group">
-	                            <label class="control-label">Is MultiLab</label>
-	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-								   <select class="custom-select" id="IsMultiLab" name="IsMultiLab" required>
-								    <option disabled="true"  selected value="choose">Choose...</option>
-								
-								    <option value="Y">Yes</option>
-								    <option value="N">No</option>
-								  </select>
-	                        </div>
-	                    </div>  -->   
 	                    <div class="col-md-4">
 						<div class="form-group"> 
 						<label class="control-label">Deliverable</label>
-						<!-- 	<select class="form-control selectdee" name="Deliverables" id="DeliverablesOutput" multiple>
-												<option>Prototype</option>
-												<option>Limited Series Production</option>
-												<option>Technology</option>
-												<option>Assembly or sub-assembly</option>
-												<option>Process</option>
-												<option> Others </option>
-												</select> -->
-			<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable" placeholder="Enter Deliverable"  maxlength="250" >
-												
+							<input type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable" placeholder="Enter Deliverable"  maxlength="250" >
 						</div>	                    
 	                    </div> 
 	                </div>
@@ -347,19 +244,10 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 					<hr>
                 	
                 	<div class="row">
-                
-	                     <!-- <div class="col-md-5 ">
-	                        <div class="form-group">
-	                            <label class="control-label">Deliverable</label>
-	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
-									<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="Deliverable" name="Deliverable" >
-	                        </div>
-	                    </div> -->  
-	                    
 	                    <div class="col-md-3 ">
 		                   		<div class="form-group">
 		                            <label class="control-label">PDD</label>
-		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            <span class="mandatory text-danger">*</span>
 		  							<select class="custom-select selectdee pdd" id="PDD" required="required" name="PDD">
 											    <option disabled="true"  selected value="">--Select--</option>
 											   	<% for (Object[] obj : EmployeeList) {%>
@@ -372,7 +260,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
        					<div class="col-md-3 ">
 		                        <div class="form-group">
 		                            <label class="control-label">Indicative Duration(Mos)</label>
-		                            	<span class="mandatory" style="color: #cd0a0a;">*</span>
+		                            	<span class="mandatory text-danger">*</span>
 		  									<input type="text" class="form-control numeric-only "  aria-describedby="inputGroup-sizing-sm" id="PCDuration" name="PCDuration" placeholder="Enter No. of Months" required>
 		                        </div>
 	                    	</div> 
@@ -380,7 +268,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                    <div class="col-md-3 ">
 	                        <div class="form-group">
 	                            <label class="control-label">Indicative Cost(Rs)</label>
-	                            	<span class="mandatory" style="color: #cd0a0a;">*</span>
+	                            	<span class="mandatory text-danger">*</span>
 	  									<input type="text" class="form-control decimal-format"  aria-describedby="inputGroup-sizing-sm" id="IndicativeCost" name="IndicativeCost" placeholder="Enter Indicative Months" required>
 	                        </div>
 	                    </div>  
@@ -388,7 +276,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
 	                     <div class="col-md-3">
 	                        <div class="form-group">
 	                            <label class="control-label">P&C DO Remarks</label>
-	                            <span class="mandatory" style="color: #cd0a0a;">*</span>
+	                            <span class="mandatory text-danger">*</span>
 									<input type="text" class="form-control" required="required" aria-describedby="inputGroup-sizing-sm" id="PCRemarks" name="PCRemarks" placeholder="Enter Remarks" >
 	                        </div>
 	                    </div>
@@ -403,7 +291,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
          		<div class="row">
          			<div class="col-md-3">
          				<div class="form-group">
-	                    	<label class="control-label">Probable Start Date</label><span class="mandatory" style="color: #cd0a0a;">*</span>
+	                    	<label class="control-label">Probable Start Date</label><span class="mandatory text-danger">*</span>
 							<input type="text" class="form-control" required="required" id="startDate" name="startDate" >
 	                    </div>
          			</div>
@@ -420,7 +308,7 @@ List<Object[]> EmployeeList=(List<Object[]>) request.getAttribute("EmployeeList"
    </div>    
         
 
-		<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 20px ">   </div>
+		<div class="card-footer cs-footer">   </div>
         
         </div>
 	</div>
