@@ -9,37 +9,12 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/action/actionWiseAllReports.css" var="actionWiseAllReports" />
+<link href="${actionWiseAllReports}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
 <title>Assignee List</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
 
-.table button{
-	
-	background-color: white !important;
-	border: 3px solid #17a2b8;
-	padding: .275rem .5rem !important;
-}
-
-.table button:hover {
-	color: black !important;
-	
-}
-#table tbody tr td {
-
-	    padding: 4px 3px !important;
-
-}
-</style>
 </head>
  
 <body>
@@ -69,20 +44,19 @@ h6{
 						<%if("C".equalsIgnoreCase(Type)){ %>Completed  <%} %>
 						<%if("P".equalsIgnoreCase(Type)){ %>Pending    <%} %>
 						<%if("D".equalsIgnoreCase(Type)){ %>Delayed  <%} %> Action Reports</h4>  
-							<div class="col-md-8" style="float: right; margin-top: -8px;">
+							<div class="col-md-8 div-margin" >
 								 <table>
-								 	<tr style="">
+								 	<tr >
 								 		
 								 		<td>
 											 Project :   &ensp;
 										</td>
 										
 										<td>
-											<form class="form-inline" method="post" action="ActionWiseAllReport.htm" name="myform" id="myform" style="float:right">
-				                            	<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId" style="width:220px !important">
+											<form class="form-inline float-right" method="post" action="ActionWiseAllReport.htm" name="myform" id="myform" >
+				                            	<select class="form-control selectdee width220" id="ProjectId" required="required" name="ProjectId" >
 				    									<option disabled="true"  selected value="">Choose...</option>
-				    									<%-- <option value="A" <%if(ProjectId.toString().equalsIgnoreCase("A")){ %>selected="selected" <%} %>>All</option>
-				    									<option value="0" <%if(ProjectId.toString().equalsIgnoreCase("0")){ %>selected="selected" <%} %>>General</option> --%>
+
 				    									
 				    										<% 
 				    										if(ProjectList!=null && ProjectList.size()>0){
@@ -140,7 +114,7 @@ h6{
 								  			</form>	
 								  		</td>
 										<td> 	 	
-									   		  <a type="submit"  class="btn btn-sm back" href="MainDashBoard.htm" style="margin-left :25px ;"> Back</a>
+									   		  <a type="submit"  class="btn btn-sm back margin-left25" href="MainDashBoard.htm" > Back</a>
 								   		</td>
 					   			
 					   			</tr>
@@ -202,14 +176,14 @@ h6{
 																		<td><%=obj[8]!=null?sdf.format(obj[8]):" - "%></td>																		
 																		<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%>, <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
 																	  	<td>Ext: <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - "%>, Mob: <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):" - "%></td>
-																		<td style="width:8% !important; "><%if(obj[14]!=null){ %>
-															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[14]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<td class="td-styl "><%if(obj[14]!=null){ %>
+															            <div class="progress div-progress" >
+															            <div class="progress-bar progress-bar-striped width-<%=obj[14]%>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															            <%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %>
 															            </div> 
 															            </div> <%}else{ %>
-															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															            <div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															            <div class="progress div-progress">
+															            <div class="progress-bar progressbar" role="progressbar" >
 															             Not Yet Started .
 															            </div>
 															            </div> <%} %></td>				

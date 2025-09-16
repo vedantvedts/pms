@@ -10,85 +10,12 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
- 
+<spring:url value="/resources/css/action/assigneeList.css" var="assigneeList" />
+<link href="${assigneeList}" rel="stylesheet" />
+
 
 <title>Assignee List</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-.spans{
-font-weight: 600;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
 
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 24px;
-	height: 22px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-a:hover {
-	color: white;
-}
-
-</style>
 </head>
  
 <body>
@@ -135,39 +62,29 @@ a:hover {
 
 						<div class="data-table-area mg-b-15">
 							<div class="container-fluid">
-								<!-- <form action="ProjectIntiationListSubmit.htm" method="POST" name="myfrm" > -->
 								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<div class="sparkline13-list">
 
 										<div class="sparkline13-graph">
 											<div class="datatable-dashv1-list custom-datatable-overright">
 												<div id="toolbar">
-												<!-- 	<select class="form-control dt-tb">
-														<option value="">Export Basic</option>
-														<option value="all">Export All</option>
-														<option value="selected">Export Selected</option>
-													</select> -->
+											
 													<span class="badge">PDC COLOR CODES:</span>
 												<span class="badge badge-primary  p-2">PDC ON TODAY</span>
 												<span class="badge badge-success p-2">UPCOMING PDC</span>
 												<span class="badge badge-danger p-2">MISSED PDC</span>
 												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+										<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+
 													<thead>
 
 														<tr>
 															<th>SN</th>
 															<th>Action Id</th>
-															<th style="">Action Item</th>
+															<th >Action Item</th>
 															<th class="width-110px">PDC</th>
 															<th class="width-110px">Assigned Date</th>								
-														 	<th style="">Assigner</th>	
+														 	<th >Assigner</th>	
 														 	<th>Remarks</th>
 														 	<th class="width-140px">Action</th>
 														</tr>
@@ -184,7 +101,7 @@ a:hover {
 															<%if(obj[5]!=null && obj[5].toString().length()>100){ %>
 																<%=StringEscapeUtils.escapeHtml4(obj[5].toString()).substring(0, 100) %>
 																<input type="hidden" value='"<%=obj[5].toString()%>"' id="td<%=obj[0].toString()%>">
-																 <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[0].toString()%>','<%=obj[9].toString()%>')">show more..</span>
+																 <span class="modified-span" onclick="showAction('<%=obj[0].toString()%>','<%=obj[9].toString()%>')">show more..</span>
 															<%}else { %>
 																<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - " %>
 															<%} %>
@@ -203,7 +120,7 @@ a:hover {
 															<td class="left width">		
 																
 															<form name="myForm1" id="myForm1" action="ActionSubLaunch.htm" method="POST" 
-																	style="display: inline">
+																	class="d-inline">
 
 																	<button class="btn btn-sm editable-click" name="sub" value="Details" 	>
 																		<div class="cc-rockmenu">
@@ -233,10 +150,7 @@ a:hover {
 															                      </div>
 															                     </div>
 															                  </button> 
-															                 <%-- <button type="submit"  class="btn btn-sm" name="ActionAssignid" value="<%=obj[10]%>" formtarget="blank" title="Action Tree"  formaction="ActionTree.htm" formmethod="POST"  >
-																				<!-- <i class="fa fa-solid fa-sitemap" style=" font-size: 30px; color: #CE7777;"></i> -->
-																				<img src="view/images/tree.png"  >
-																		    </button>  --%>
+
 																		    <button type="submit"  class="btn btn-sm editable-click" name="ActionAssignid" value="<%=obj[10]%>" formtarget="blank" title="Action Tree"    formaction="ActionTree.htm" formmethod="POST"  >
 																				<div class="cc-rockmenu">
 																				 <div class="rolling">	
@@ -254,7 +168,7 @@ a:hover {
 														</tr>
 												<% count++; } }else{%>
 												<tr>
-													<td colspan="6" style="text-align: center">No List Found</td>
+													<td colspan="6" class="text-center">No List Found</td>
 												</tr>
 												<%} %>
 											</tbody>
@@ -288,9 +202,9 @@ a:hover {
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header" style="height:50px;">
+      <div class="modal-header" class="div-height50">
         <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:red;">
+        <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -323,6 +237,15 @@ a:hover {
 				format : 'DD-MM-YYYY'
 			}
 		});
+	
+	 $(document).ready(function(){
+		  $("#myTable12").DataTable({
+		 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+		 "pagingType": "simple",
+		 "pageLength": 10
+
+		});
+	});
 	
 		
 		function showAction(a,b){

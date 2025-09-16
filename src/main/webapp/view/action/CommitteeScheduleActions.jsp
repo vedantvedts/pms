@@ -10,221 +10,13 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<%-- <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
-<spring:url value="/resources/ckeditor/content.css" var="contentCss" /> 
-<script src="${ckeditor}"></script>
-<link href="${contentCss}" rel="stylesheet" />
---%>
+<spring:url value="/resources/css/action/committeeScheduleActions.css" var="committeeScheduleActions" />
+<link href="${committeeScheduleActions}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
 
 <title>COMMITTEE SCHEDULE ACTION</title>
 
-
-
-<style>
-.bs-example {
-	margin: 20px;
-}
-
-.accordion .fa {
-	margin-right: 0.5rem;
-}
-</style>
-
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-.note-editable {
-	line-height: 1.0;
-}
-
-.panel-info {
-	border-color: #bce8f1;
-}
-
-.panel {
-	margin-bottom: 10px;
-	background-color: #fff;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
-
-.panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-	color: #1d5987;
-}
-
-.panel-title {
-	margin-top: 0;
-	margin-bottom: 0;
-	font-size: 13px;
-	color: inherit;
-	font-weight: bold;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-div {
-	display: block;
-}
-
-element.style {
-	
-}
-
-.olre-body .panel-info .panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-heading {
-	padding: 3px 10px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.panel-heading {
-	padding: 3px 10px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.panel-heading {
-	padding: 3px 10px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.panel-heading {
-	padding: 3px 10px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.panel-heading {
-	padding: 3px 10px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.p-5 {
-	padding: 5px;
-}
-
-.panel-heading {
-	padding: 10px 15px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-user agent stylesheet
-div {
-	display: block;
-}
-
-.panel-info {
-	border-color: #bce8f1;
-}
-
-.form-check {
-	margin: 0px 4%;
-}
-</style>
 </head>
 
 
@@ -281,11 +73,11 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 <% } %>
 
 
-	<nav class="navbar navbar-light bg-light" style="margin-top: -1%">
+	<nav class="navbar navbar-light bg-light" >
 		<a class="navbar-brand"> <b
-			style="color: #585858; font-size: 19px; font-weight: bold; text-align: left; float: left"><span
-				style="color: #31708f"><%=committeescheduleeditdata!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()):"" %> </span> <span
-				style="color: #31708f; font-size: 15px"> (Meeting Date and
+			class="b-styl"><span
+				class="span1"><%=committeescheduleeditdata!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()):"" %> </span> <span
+				class="span2"> (Meeting Date and
 					Time : <%=committeescheduleeditdata!=null?sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())):""%>
 					- <%=committeescheduleeditdata!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[3].toString()):"" %>)
 			</span></b>
@@ -294,7 +86,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 
 		<%if(MinutesBack.equalsIgnoreCase("minutesback")){ %>
 		<!-- Prudhvi - 13/03/2024 -->
-		<a class="btn  btn-sm back"
+		<a class="btn  btn-sm back custom-a"
 		    <%if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {%>
 		    	href="RODScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata!=null?committeescheduleeditdata[6]:"" %>"
 		    <%} else if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>	
@@ -304,14 +96,13 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 		    <%} else{%>
 				href="CommitteeScheduleMinutes.htm?committeescheduleid=<%=committeescheduleeditdata!=null?committeescheduleeditdata[6]:"" %>"
 			<%} %>
-			style="margin-left: 50px; font-size: 12px; font-weight: bold; width: 62px; margin-top: -2px;">BACK</a>
+		>BACK</a>
 
 		<%} %>
 
 		<%if(!MinutesBack.equalsIgnoreCase("minutesback")){ %>
 
-		<a class="btn  btn-sm back" href="ActionList.htm"
-			style="margin-left: 50px; font-size: 12px; font-weight: bold; width: 62px; margin-top: -2px;">BACK</a>
+		<a class="btn  btn-sm back custom-a" href="ActionList.htm" >BACK</a>
 
 		<%} %>
 
@@ -323,8 +114,8 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 		<div class="row">
 
 			<div class="col-md-5">
-				<div class="card" style="border-color: #00DADA; margin-top: 2%;">
-					<div class="card-body" <%if(committeescheduledata!=null && committeescheduledata.size()>5) {%>style="height: 70vh;overflow: auto;background-image: repeating-linear-gradient(45deg, #ffffff 40%, #C4DDFF) !important;"<%} else{%>style=" background-image: repeating-linear-gradient(45deg, #ffffff 40%, #C4DDFF) !important;"<%} %>>
+				<div class="card card-border" >
+					<div  <%if(committeescheduledata!=null && committeescheduledata.size()>5) {%>class="card-body if-true"<%} else{%>class="card-body if-false"<%} %>>
 				<div>
 						<% 
 						String prev=""; // for holding the point number
@@ -338,15 +129,15 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 							
 							%>
 
-						<div class="panel panel-info" style="margin-top: 10px;">
+						<div class="panel panel-info margin-top10" >
 
 							<div class="panel-heading " id="div<%=obj[0].toString()%>">
 								<h4 class="panel-title" id="<%=obj[0].toString()%>">
-									<span style="font-size: 14px">
+									<span class="font-size14">
 										<%=(ccmFlag!=null&&ccmFlag.equalsIgnoreCase("Y")?"3":(dmcFlag!=null&&dmcFlag.equalsIgnoreCase("Y")?"1":obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):" - ") )+"."+(count++) +". "%> <%-- <%=obj[4] %> --%>  
 									<input type="hidden" id="Data<%=obj[0].toString()%>" value="<%=obj[1].toString()%>">
 									<%if(obj[1]!=null && obj[1].toString().length()>50) {%>
-									<%=StringEscapeUtils.escapeHtml4(obj[1].toString().substring(0,50)) %><span style="font-size: 11px;color:crimson;cursor: pointer;" onclick='showModal("<%=obj[0].toString()%>")'>&nbsp;( view more)</span>
+									<%=StringEscapeUtils.escapeHtml4(obj[1].toString().substring(0,50)) %><span class="cursor-pointer" onclick='showModal("<%=obj[0].toString()%>")'>&nbsp;( view more)</span>
 									<%}else {%>
 									<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %>
 									<%} %>	
@@ -359,7 +150,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 										 <%if("R".equalsIgnoreCase(obj[2].toString())){%>Recommendation Task<%} %> )
 									</span>
 								</h4>
-								<div style="float: right !important; margin-top: -25px;">
+								<div class="div-negative">
 									<form name="myForm<%=obj[0] %>" id="myFormgen<%=obj[0] %>" action="ItemSpecAdd.htm" method="post">
 										<input type="hidden" name="specname" value="myFormgen<%=obj[0] %>"> 
 										<input type="hidden" name="ScheduleId" value="<%=obj[3] %>"> 
@@ -372,13 +163,13 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 										<input type="hidden" name="type" value="<%=obj[2] %>" readonly="readonly"> 
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 										<input type="submit" name="sub" <%if(!obj[11].toString().equalsIgnoreCase("0")){ %>
-											class="btn btn-warning btn-sm" <%}else{ %>
-											class="btn btn-info btn-sm"
+											class="btn btn-warning btn-sm width50" <%}else{ %>
+											class="btn btn-info btn-sm width50"
 											<%}if(specname!=null&&specname.equalsIgnoreCase("myFormgen"+obj[0])){ %>
 											id="GenAdd" <%} %> <%if(specname==null){ %> id="GenAdd"
 											<%} %> onclick="FormName('myFormgen<%=obj[0] %>')"
 											value="Assign"
-											style="width: 50px; height: 24px; font-size: 10px; font-weight: bold; text-align: justify;" />
+										 />
 
 									</form>
 								</div>
@@ -394,21 +185,21 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 
 			</div>
 			<!-- col-md-5 end -->
-			<div class="col-md-7" style="">
+			<div class="col-md-7" ">
 
-				<div class="card" style="margin-top: 2%;">
-					<div class="card-header" style="background-color: #055C9D;">
+				<div class="card margin2" >
+					<div class="card-header card-color" >
 						<div class="row">
 
 							<div class="col-sm-5" align="left">
-								<h6 style="color: white; font-weight: bold; font-size: 1.2rem !important" align="left"></h6>
+								<h6 class="custom-h6"></h6>
 							</div>
 
 							<div class="col-sm-7" align="left">
-								<div class="input-group" style="margin-top: -8px;">
+								<div class="input-group input-gr" >
 									<input type="text" class="form-control" placeholder="Search Action Id to Link Old Action" name="ItemDescription" id="ItemDescriptionSearch">
 									<div class="input-group-append">
-										<button class="btn btn-secondary" type="button" style="font-size: 10px;" id="ItemDescriptionSearchBtn">
+										<button class="btn btn-secondary font-size10" type="button"  id="ItemDescriptionSearchBtn">
 											<i class="fa fa-search"></i>
 										</button>
 									</div>
@@ -418,13 +209,13 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 					</div>
 					<div class="card-body" >
 						<form name="specadd" id="specadd" action="CommitteeActionSubmit.htm" method="post" >
-							<div class="row" style="margin-top: -35px">
+							<div class="row margin-top30" >
 								<div class="col-md-12" align="left">
-									<label> <b id="iditemspec" style="font-size: 18px"></b>
-										<b id="iditemsubspecofsub" style="font-size: 18px"></b> <b
-										id="iditemsubspec" style="font-size: 18px"></b><b
-										id="iditemsubspecofsubspec" style="font-size: 18px"></b> <b
-										id="action" style="font-size: 18px"></b> <input type="hidden"
+									<label> <b id="iditemspec" class="font-size18"></b>
+										<b id="iditemsubspecofsub" class="font-size18"></b> <b
+										id="iditemsubspec" class="font-size18"></b><b
+										id="iditemsubspecofsubspec" class="font-size18"></b> <b
+										id="action" class="font-size18"></b> <input type="hidden"
 										name="scheduleminutesid" id="minutesidadd"> <input
 										type="hidden" name="ScheduleId" id="ScheduleAdd"> <input
 										type="hidden" name="ProjectId" id="ProjectAdd"> <input
@@ -446,12 +237,12 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 								</div>
 
 								<div class="col-sm-10" align="left">
-									<div class="form-group" style="text-align: justify;">
+									<div class="form-group" class="text-justify">
 										<label>Action Item: <span class="mandatory"
-											style="color: red;">*</span>
+											>*</span>
 										</label><br>
-										<b id="iditem" style="font-size: 18px"></b> 
-										<input type="hidden" name="Item" id="additem" style="width: 100%" maxlength="1000">
+										<b id="iditem" class="font-size18"></b> 
+										<input type="hidden" name="Item" id="additem" class="width-100" maxlength="1000">
 									</div>
 								</div>
 								<div class="col-md-1" align="left"></div>
@@ -459,7 +250,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 								<div class="col-sm-3" align="left">
 									<div class="form-group">
 										<label>PDC: <span class="mandatory"
-											style="color: red;">*</span></label> 
+											>*</span></label> 
 											<input class="form-control " name="DateCompletion" id="DateCompletion" required="required" placeholder=""> 
 											<input type="hidden" name="meetingdate" value="<%=committeescheduleeditdata!=null?committeescheduleeditdata[2]:""%>">
 									</div>
@@ -488,7 +279,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 								<div class="col-sm-3" align="left">
 									<div class="form-group">
 										<label>Lab: <span class="mandatory"
-											style="color: red;">* </span></label> <select
+											>* </span></label> <select
 											class="form-control selectdee" name="AssigneeLabCode"
 											id="AssigneeLabCode" onchange="AssigneeEmpList();">
 											<%for(Object[] lab : Alllablist){%>
@@ -507,35 +298,17 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 								<div class="col-sm-4" align="left">
 									<div class="form-group">
 										<label> Assignee : </label>
-										<%-- <%if(Long.parseLong(projectid)>0){ %>
-												<div style="float: right;"  > <label>All &nbsp; : &nbsp;&nbsp;</label>
-													<input type="checkbox" style="float: right; margin-top : 6px;" id="allempcheckbox" onchange="changeempdd()" >
-												</div>
-											<%} %> --%>
 										<br> <select class="form-control selectdee"
 											name="Assignee" id="Assignee"<%if(committeescheduleeditdata!=null && committees.contains(committeescheduleeditdata[8].toString())) {%> required="required" <%} %>
 									onchange="removeAttri()"		data-live-search="true" data-placeholder="Select Assignee"
 											multiple>
 
 
-											<%--  <%for(Object[] obj:EmpList){ %>	
-																								
-																						<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
-																								
-																						<%} %> --%>
 										</select>
 									</div>
 								</div>
 
-						<!-- 		<div class="col-sm-4" align="left">
-									<div class="form-group" id="OldList">
-										<label> Old Action No : </label><br> <select
-											class="form-control selectdee " name="OldActionNo"
-											id="OldActionNoId" hidden="hidden" data-live-search="true"
-											style="width: 100%"></select>
-									</div>
-								</div> -->
-								<!-- Prudhvi - 13/03/2024 -->
+
 								<%if(committeescheduleeditdata!=null && !committees.contains(committeescheduleeditdata[8].toString()) && rodflag==null) {%>
 								<div class="col-sm-4" align="left" id="main">
 									<div class="form-group" >
@@ -556,10 +329,10 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 								<div class="col-sm-4" align="left"></div>
 								<div class="col-sm-6" align="left">
 									<br> <input type="submit" name="sub"
-										style="margin-top: 10px;" class="btn  btn-sm submit"
+										class="btn  btn-sm submit margin-top10"
 										form="specadd" id="adding" value="SUBMIT"
 										onclick="return confirm('Are you sure To Submit?')" />
-									<button class="btn  btn-sm back" style="margin-top: 10px;"
+									<button class="btn  btn-sm back margin-top10" 
 										onclick="resetSubmit()">Reset</button>
 									<input type="hidden" name="${_csrf.parameterName}"
 										value="${_csrf.token}" />
@@ -572,15 +345,14 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 							<!-- Form End -->
 
 							<div class="table-responsive">
-								<table class="table table-bordered table-hover table-striped table-condensed"
-									id="myTabl" style="margin-top: 20px; width: 98%;">
+								<table class="table table-bordered table-hover table-striped table-condensed margin-top20 width-98" id="myTabl" >
 									<thead>
 										<tr>
-											<th style="text-align: left;">Action Item</th>
-											<th style="">PDC</th>
-											<th style="">Assigned On</th>
-											<th style="">Assignee</th>
-											<th style="">Action</th>
+											<th class="text-left">Action Item</th>
+											<th >PDC</th>
+											<th >Assigned On</th>
+											<th >Assignee</th>
+											<th >Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -619,19 +391,19 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 <div class="modal fade bd-example-modal-lg" id="employeeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content" >
-      <div class="modal-header" style="background-color:#C4DDFF;">
+      <div class="modal-header modal-bg" >
         <h5 class="modal-title" id="modalHeader" >Modal title</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body" >
-      <div style="display:flex;justify-content: center;height: 58vh; overflow-y: auto;">
-        <table class="table table-bordered" style="width: 80%;" >
+      <div class="custom-div">
+        <table class="table table-bordered width-80%">
   		<thead class="bg-light">
     	<tr>
-   		<th style="width:12%;">SL No.</th>
-   		<th style="text-align: center;">Employee</th>
+   		<th class="width-12">SL No.</th>
+   		<th class="text-center">Employee</th>
     	</tr>
   		</thead>
   		<tbody id="modalTable">
@@ -657,7 +429,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body" id="modalbody" style="font-size: 1.15rem;">
+      <div class="modal-body fontrem" id="modalbody" >
       
       </div>
 
@@ -671,7 +443,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 		role="dialog" aria-labelledby="exampleModalCenterTitle"
 		aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content" style="margin-left: -13%; width: 37rem;">
+			<div class="modal-content md-cnt" >
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLongTitle"></h5>
 					<button type="button" class="close" data-dismiss="modal"
@@ -684,12 +456,11 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 						<div class="row">
 							<div class="col-md-3">
 								<label
-									style="font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px">PDC
+									class="cstm-label">PDC
 									:</label>
 							</div>
-							<div class="col-md-4" style="margin-left: -6%;">
-								<input class="form-control " name="PDCDate" id="PDCDate"
-									style="width: 261%;">
+							<div class="col-md-4 margin-left" >
+								<input class="form-control width261" name="PDCDate" id="PDCDate">
 							</div>
 						</div>
 
@@ -697,13 +468,13 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 							<div class="col-md-3 mt-3">
 								<div class="form-group">
 									<label
-										style="font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px">Lab
+										class="cstm-label">Lab
 										:</label>
 								</div>
 								</div>
-								<div class="col-md-8 mt-3" style="margin-left: -6%;">
-									<select class="form-control selectdee" name="AssigneeLab" onchange="labChange()"
-										id="AssigneeLabName" style="width: 118%;">
+								<div class="col-md-8 mt-3 margin-left" >
+									<select class="form-control selectdee width118" name="AssigneeLab" onchange="labChange()"
+										id="AssigneeLabName" >
 										
 									</select>
 								</div>
@@ -712,13 +483,12 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 						<div class="row mt-2">
 							<div class="col-md-3">
 								<label
-									style="font-family: 'Lato', sans-serif; font-weight: 700; font-size: 16px">
+									class="cstm-label">
 									Assignee : </label>
 							</div>
-							<div class="col-md-8" style="margin-left: -6%;">
-								<select class="form-control selectdee " name="AssigneeId"
-									id="AssigneeUpdate" data-live-search="true"
-									style="width: 118%;">
+							<div class="col-md-8 margin-left" >
+								<select class="form-control selectdee width118" name="AssigneeId"
+									id="AssigneeUpdate" data-live-search="true">
 
 								</select>
 							</div>
@@ -1005,11 +775,11 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 	    		    		    var tempday2 = moment(JSON.stringify(values[i][10]), "MMM-DD-YYYY");
 	    		    			var pdcday= moment(tempday2).format("DD-MM-YYYY");
 	    		    			   
-	    		    			markup += "<tr><td  style='overflow-wrap: break-word; word-break: break-all; white-space: normal;max-width:20%;min-width:20%;'> "+  values[i][5]+"<br>"+"<b>(" + values[i][9] + ")</b>"  + "</td><td style='width:15%;'> "+  formatday1  + "</td><td style='width:15%;'> "+  formatday  + "</td><td style='width:20%;'> "+  values[i][1] +', '+values[i][2] +'('+values[i][8] +')' + "</td>";
-	    		    		    markup += "<td style='width:13%;text-align:center;'>";
+	    		    			markup += "<tr><td  class='script-td'> "+  values[i][5]+"<br>"+"<b>(" + values[i][9] + ")</b>"  + "</td><td class='width-15'> "+  formatday1  + "</td><td class='width-15'> "+  formatday  + "</td><td class='width-20'> "+  values[i][1] +', '+values[i][2] +'('+values[i][8] +')' + "</td>";
+	    		    		    markup += "<td class='width-13 text-center'>";
 	    		    			if (values[i][6]==="A") {
-	    		    			    markup += "<button class='btn btn-sm' type='button' onclick=\"actionEditform('" + values[i][9] + "','" + pdcday + "','" + values[i][0] + "','" + values[i][11] + "','" + values[i][12] + "','" + values[i][13] + "','" + values[i][8] + "','" + values[i][14] + "')\"><i class='fa fa-pencil-square-o' aria-hidden='true' style='color:#0839ff;font-size: 18px;'></i></button>";
-	    		    			    markup += "<button class='btn btn-sm' type='button' onclick=\"actionDelete('" + values[i][0] + "','" + values[i][12] + "','" + values[i][13] + "')\"><i class='fa fa-trash' aria-hidden='true' style='color:red;font-size: 18px;'></i></button>";
+	    		    			    markup += "<button class='btn btn-sm' type='button' onclick=\"actionEditform('" + values[i][9] + "','" + pdcday + "','" + values[i][0] + "','" + values[i][11] + "','" + values[i][12] + "','" + values[i][13] + "','" + values[i][8] + "','" + values[i][14] + "')\"><i class='fa fa-pencil-square-o icon-col' aria-hidden='true' ></i></button>";
+	    		    			    markup += "<button class='btn btn-sm' type='button' onclick=\"actionDelete('" + values[i][0] + "','" + values[i][12] + "','" + values[i][13] + "')\"><i class='fa fa-trash icon-col2' aria-hidden='true' ></i></button>";
 	    		    			} else {
 	    		    				 markup += "--";
                                 }
@@ -1165,7 +935,7 @@ function showEmployee(){
 				  $('#employeeModal').modal('show');
 				  var html="";
 				  for(var i=0;i<ajaxresult.length;i++){
-					 html=html+"<tr><td style='text-align:center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
+					 html=html+"<tr><td class='text-center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
 				  }
 				  $('#modalTable').html(html);
 			  }
@@ -1174,7 +944,7 @@ function showEmployee(){
  				$('#employeeModal').modal('show');
  				  var html="";
 				  for(var i=0;i<ajaxresult.length;i++){
-					 html=html+"<tr><td style='text-align:center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
+					 html=html+"<tr><td class='text-center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
 				  }
 				  $('#modalTable').html(html);
 			  }
@@ -1183,7 +953,7 @@ function showEmployee(){
  				$('#employeeModal').modal('show');
  				  var html="";
 				  for(var i=0;i<ajaxresult.length;i++){
-					 html=html+"<tr><td style='text-align:center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
+					 html=html+"<tr><td class='text-center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
 				  }
 				  $('#modalTable').html(html);
 			  }
@@ -1192,7 +962,7 @@ function showEmployee(){
  				$('#employeeModal').modal('show');
  				  var html="";
 				  for(var i=0;i<ajaxresult.length;i++){
-					 html=html+"<tr><td style='text-align:center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
+					 html=html+"<tr><td class='text-center'>"+(i+1)+"</td><td>"+ajaxresult[i][1]+"</td></tr>"; 
 				  }
 				  $('#modalTable').html(html);
 			  }
@@ -1219,7 +989,7 @@ function showEmployee(){
  function actionEditform(actionno,pdc,mainid,assigneeId,actionAssignId,scheduleId,assigneeLab,projectid){
 	 
 		$('#exampleModalAction').modal('show');   
-		$('#exampleModalAction .modal-title').html('<span style="color: #C2185B;">Action No : '+ actionno);
+		$('#exampleModalAction .modal-title').html('<span class="span-col">Action No : '+ actionno);
 	    $('#PDCDate').val(pdc);
 	    $('#ActionMainId').val(mainid);
 	    $('#ActionAssignId').val(actionAssignId);

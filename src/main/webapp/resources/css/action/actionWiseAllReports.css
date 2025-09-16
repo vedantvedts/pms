@@ -1,0 +1,64 @@
+label {
+	font-weight: bold;
+	font-size: 13px;
+}
+
+body {
+	background-color: #f2edfa;
+	overflow-x: hidden !important;
+}
+
+h6 {
+	text-decoration: none !important;
+}
+
+.table button {
+	background-color: white !important;
+	border: 3px solid #17a2b8;
+	padding: .275rem .5rem !important;
+}
+
+.table button:hover {
+	color: black !important;
+}
+
+#table tbody tr td {
+	padding: 4px 3px !important;
+}
+
+.div-margin {
+	float: right;
+	margin-top: -8px;
+}
+
+.width220 {
+	width: 220px !important
+}
+
+.select2-container--below {
+	width: 100% !important;
+}
+
+.select2-container--default {
+	width: 100% !important;
+}
+
+.margin-left25 {
+	margin-left: 25px;
+}
+
+.td-styl {
+	width: 8% !important;
+}
+
+.div-progress {
+	background-color: #cdd0cb !important;
+	height: 1.4rem !important;
+}
+
+.progressbar {
+	width: 100%;
+	background-color: #cdd0cb !important;
+	color: black;
+	font-weight: bold;
+}
