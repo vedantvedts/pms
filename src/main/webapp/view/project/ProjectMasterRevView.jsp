@@ -1,87 +1,16 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*, com.vts.pfms.*, java.text.SimpleDateFormat, java.text.DecimalFormat" %>
+           <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%> 
   
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/projectModule/projectMasterRevView.css" var="ExternalCSS" /> 
+<link href="${ExternalCSS}" rel="stylesheet" />
 <title>Project View</title>
-<style>
-label {
-	font-size: 14px;
-}
-
-.input-group-text {
-	font-weight: bold;
-}
-
-label {
-	font-weight: 800;
-	font-size: 16px;
-	color: #07689f;
-}
-
-hr {
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b {
-	font-family: 'Lato', sans-serif;
-}
-.background{
-    text-align:center;
-    padding-top: .35rem;
-    padding-bottom: .35rem;
-    background-color: rgba(253, 253, 253, 0.5);
-	border-bottom: 1px solid rgba(46, 0, 117, 0.2);
-	border-left: 1px solid rgba(46, 0, 117, 0.2);
-   
-}
- .mild-bg {
-    background-color: #651682; 
-    color: #fff;
-  }
-  .original{
-  	height: 5px;
-  }
-  .name {
-   	  color: #257b88;
-	  border-radius: 4px;
-	  padding: 5px 10px;
-}
-
-.revname {
-   	  color: #887d25;
-	  border-radius: 4px;
-	  padding: 5px 3px;
-}
-	.card{
-		    border-radius: 4px; 
-		    margin: auto;
-			width: 95%;
-			box-sizing: border-box;
-	}
-
-	.sc{
-		color: white;	
-	}
-	.para{
-		text-align: justify;
-	}
-	.text-danger {
-	  color: #8c3434 !important;
-	  }
-	 .colors{
-	 		color: #257b88;
-	 }
-	 .rev-colors{
-			color:#887d25;	 
-	 }
-	  
-</style>
 </head>
 <body>
 <% 
@@ -98,16 +27,16 @@ b {
 %>
 
 <div class="card-header"><h4>Project View</h4></div>
-<div class="card shadow-nohover" style="background-color: #DDD;">
+<div class="card shadow-nohover style1" >
     <!-- Original Section -->
-    <div class="row mild-bg original" style="height: 25px;width: 100%;margin: auto;">
+    <div class="row mild-bg original style2">
         <div class="col-md-12 d-flex justify-content-center">
             <div><strong>ORIGINAL</strong></div> 
         </div>
     </div>
 
     <!-- Project Details -->
-    <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+    <div class="row style3">
         <div class="col-md-4 background d-flex align-items-center">
             <div class="name"><strong>Project Main:</strong></div>   
             <div class="ml-2">
@@ -121,7 +50,7 @@ b {
     </div>
 
     <!--  Three Column  -->
-  <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
      <div class="col-sm-3 background d-flex align-items-center">
         <div class="name"><strong>Project Number:</strong></div> 
             <div class="ml-2"><%= ProjectOriginalData[27]!=null?StringEscapeUtils.escapeHtml4(ProjectOriginalData[27].toString()): " - " %></div>
@@ -141,7 +70,7 @@ b {
   </div>
   <!--  Three Column  -->
 <!--  Four Column  -->
-  <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
     
     <div class="col-sm-3 background d-flex align-items-center">
      <div class="name"><strong>End User:</strong></div>
@@ -171,7 +100,7 @@ b {
   </div>
   <!--  Four Column  -->
   <!--  three Column  -->
-  <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
     <div class="col-sm-3 background d-flex align-items-center">
       <div class="name"><strong>Project Sanction Letter No:</strong></div>
       <div class="ml-2"><%= ProjectOriginalData[12]!=null?StringEscapeUtils.escapeHtml4(ProjectOriginalData[12].toString()): " - " %></div>
@@ -194,7 +123,7 @@ b {
   </div>
   <!--  three  Column  -->
   <!--  three Column  -->
-  <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
     <div class="col-sm-4 background d-flex align-items-center">
       <div class="name"><strong>Total Sanction Cost (&#8377;):</strong></div>
       <div class="ml-2"><%= ProjectOriginalData[16]!=null?StringEscapeUtils.escapeHtml4(ProjectOriginalData[16].toString()): " - " %></div>
@@ -211,7 +140,7 @@ b {
   </div>
   <!--  three  Column  -->
   <!--  Four Column  -->
-  <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
     <div class="col-sm-4 background d-flex align-items-center">
      <div class="name"><strong>Application:</strong></div>
      <div class="ml-2"><%= ProjectOriginalData[19]!=null?StringEscapeUtils.escapeHtml4(ProjectOriginalData[19].toString()): " - "%></div>
@@ -229,32 +158,32 @@ b {
     
   <!--  Four Column  -->
 <!--  Six Column  -->
-  <div class="row " style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
     <div class="col-sm-12 d-flex align-items-center ">
     	<div class="sc colors"> <strong>Scope:</strong></div>
     </div>
   </div>
-   <div class="row" style="margin-left: auto;margin-right: auto;">
+   <div class="row style4">
     <div class="col-sm-12 background d-flex align-items-center">
     	<div class="ml-2 para" ><%= ProjectOriginalData[22]!=null?StringEscapeUtils.escapeHtml4(ProjectOriginalData[22].toString()): " - " %></div>
     </div>
   </div>
-  <div class="row " style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
     <div class="col-sm-12 d-flex align-items-center">
     	<div class="sc colors"> <strong>Objective:</strong></div>
     </div>
   </div>
-   <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;" >
+   <div class="row style3" >
     <div class="col-sm-12 background d-flex align-items-center">
     	<div class="ml-2 para"><%= ProjectOriginalData[23]!=null?StringEscapeUtils.escapeHtml4(ProjectOriginalData[23].toString()): " - " %></div>
     </div>
   </div>
-   <div class="row " style="width: 100%;margin-left: auto;margin-right: auto;">
+   <div class="row style3">
     <div class="col-sm-12 d-flex align-items-center">
     	<div class="sc colors"> <strong>Deliverable:</strong></div>
     </div>
   </div>
-   <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+   <div class="row style3">
     <div class="col-sm-12 background d-flex align-items-center">
     	<div class="ml-2 para"><%= ProjectOriginalData[24]!=null?StringEscapeUtils.escapeHtml4(ProjectOriginalData[24].toString()): " - " %></div>
     </div>
@@ -270,15 +199,15 @@ b {
         for (Object[] obj : ProjectReviseList) {
             String revisionColor = revisionColors[colorIndex++];
     %>
-    <div class="card" style="background-color: #DDD;">
-        <div class="row mild-bg original" style="background-color: <%= revisionColor!=null?StringEscapeUtils.escapeHtml4(revisionColor): " - " %>;height: 25px;width: 100%;margin: auto;">
+    <div class="card style5">
+        <div class="row mild-bg original rev-color-<%= colorIndex %>">
             <div class="col-md-12 d-flex justify-content-center">
                 <div><strong>REVISION - <%= index++ %></strong></div> 
             </div>
         </div>
 
         <!-- Revision Details -->
-        <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+        <div class="row style3">
             <div class="col-md-4 background d-flex align-items-center">
                 <div class="revname"><strong>Project Number:</strong></div>   
                 <div class="ml-2"><%= obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></div>
@@ -291,7 +220,7 @@ b {
 
         <!--  Two Column  -->
 <!--  Three Column  -->
-  <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
      
     <div class="col-sm-3 background d-flex align-items-center">
     	<div class="revname"><strong>Project Unit Code:</strong> </div>
@@ -320,7 +249,7 @@ b {
   
   <!--  Four Column  -->
   <!--  three Column  -->
-  <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
     <div class="col-sm-3 background d-flex align-items-center">
       <div class="revname"><strong>Project Sanc Authority:</strong></div>
       <div class="ml-2"><%= obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %></div>
@@ -343,7 +272,7 @@ b {
   </div>
   <!--  three  Column  -->
   <!--  three Column  -->
-  <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
     <div class="col-sm-4 background d-flex align-items-center">
       <div class="revname"><strong>Total Sanction Cost (&#8377;):</strong></div>
       <div class="ml-2"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%></div>
@@ -361,7 +290,7 @@ b {
   <!--  three  Column  -->
   <!--  Four Column  -->
 
- <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+ <div class="row style3">
 	 <div class="col-sm-3 background d-flex align-items-center">
 	     <div class="revname"><strong>  Nodal & Participating Lab:</strong></div>
 	     <div class="ml-2"><%=obj[16]!=null?StringEscapeUtils.escapeHtml4(obj[16].toString()): " - "%></div>
@@ -383,42 +312,42 @@ b {
     
   <!--  Four Column  -->
 <!--  Six Column  -->
-  <div class="row " style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
     <div class="col-sm-12 d-flex align-items-center">
     	<div class="sc rev-colors"> <strong>Scope:</strong></div>
     </div>
   </div>
-   <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+   <div class="row style3">
     <div class="col-sm-12 background d-flex align-items-center">
     	<div class="ml-2 para" ><%= obj[19]!=null?StringEscapeUtils.escapeHtml4(obj[19].toString()): " - " %></div>
     </div>
   </div>
-  <div class="row " style="width: 100%;margin-left: auto;margin-right: auto;">
+  <div class="row style3">
     <div class="col-sm-12 d-flex align-items-center">
     	<div class="sc rev-colors"> <strong>Objective:</strong></div>
     </div>
   </div>
-   <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;" >
+   <div class="row style3" >
     <div class="col-sm-12 background d-flex align-items-center">
     	<div class="ml-2 para"><%= obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()): " - " %></div>
     </div>
   </div>
-   <div class="row " style="width: 100%;margin-left: auto;margin-right: auto;">
+   <div class="row style3">
     <div class="col-sm-12 d-flex align-items-center">
     	<div class="sc rev-colors"> <strong>Deliverable:</strong></div>
     </div>
   </div>
-   <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+   <div class="row style3">
     <div class="col-sm-12 background d-flex align-items-center">
     	<div class="ml-2 para"><%= obj[21]!=null?StringEscapeUtils.escapeHtml4(obj[21].toString()): " - " %></div>
     </div>
   </div>
-   <div class="row " style="width: 100%;margin-left: auto;margin-right: auto;">
+   <div class="row style3">
     <div class="col-sm-12 d-flex align-items-center">
     	<div class="sc rev-colors"> <strong>Remarks:</strong></div>
     </div>
   </div>
-   <div class="row" style="width: 100%;margin-left: auto;margin-right: auto;">
+   <div class="row style3">
     <div class="col-sm-12 background d-flex align-items-center">
     	<div class="ml-2 para"><%= obj[22]!=null?StringEscapeUtils.escapeHtml4(obj[22].toString()): " - " %></div>
     </div>

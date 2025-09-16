@@ -3,35 +3,16 @@
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/projectModule/projectMainAdd.css" var="projectMainAdd" />
+<link href="${projectMainAdd}" rel="stylesheet" />
 <title>PROJECT MAIN ADD</title>
-<style type="text/css">
 
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b{
-	font-family: 'Lato',sans-serif;
-}
-
-</style>
 </head>
 <body>
 <%
@@ -41,10 +22,6 @@ List<Object[]> OfficerList=(List<Object[]>) request.getAttribute("OfficerList");
 List<Object[]> securityClassificationList=(List<Object[]>) request.getAttribute("SecurityClassificationList");
 List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"); /* srikant */
 %>
-
-
-
-
 
 <% 
     String ses = (String) request.getParameter("result");
@@ -69,7 +46,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 		<div class="col-md-12">
 			<div class="card shadow-nohover">
 
-  <div class="card-header" style=" background-color: #055C9D;margin-top: ">
+  <div class="card-header cs-header">
                     <h3 class="text-white">Project Main Add</h3>
         		</div>
 
@@ -85,26 +62,24 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 								<div class="tables">
 									<div class="table-responsive">
 
-										<!-- changed the style -->
-
-										<table class="table table-bordered table-hover table-striped table-condensed " style="border: 1px solid black !important; background-color: white; font-family: 'Montserrat', sans-serif;">
+										<table class="table table-bordered table-hover table-striped table-condensed cs-table">
 											<thead>
 												<tr>
-													<th><label style="margin-bottom: -10px;">Project Code: <span class="mandatory" style="color: red;">*</span></label></th>
+													<th><label class="mb-n10">Project Code: <span class="mandatory text-danger">*</span></label></th>
 													<td><input type="text" name="pcode" placeholder="Enter Project Code"class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required"></td>
-													<th><label style="margin-bottom: -10px;">Project Name: <span class="mandatory" style="color: red;">*</span></label></th>
+													<th><label class="mb-n10">Project Name: <span class="mandatory text-danger">*</span></label></th>
 													<td><input type="text" name="pname" placeholder="Enter Project Name" class="form-control alphanum-symbols-no-leading-space" maxlength="255" required="required"></td>
 												</tr>
 
 												<tr>
-													<th><label style="margin-bottom: -10px;">Project Number: <span class="mandatory"style="color: red;">*</span></label></th>
+													<th><label class="mb-n10">Project Number: <span class="mandatory text-danger">*</span></label></th>
 													<td><input type="text" name="desc" placeholder="Enter Project No" class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required"></td>
-													<th><label style="margin-bottom: -10px;">Project Unit Code: <span class="mandatory" style="color: red;"></span></label></th>
+													<th><label class="mb-n10">Project Unit Code: <span class="mandatory text-danger"></span></label></th>
 													<td><input type="text" name="unicode" placeholder="Enter Project Unit Code" class="form-control alphanum-symbols-no-leading-space" maxlength="20" ></td>
 												</tr>
 												
 												<tr>
-													<th><label style="margin-bottom: -10px;"> End User:<span class="mandatory" style="color: red;">*</span></label></th>
+													<th><label class="mb-n10"> End User:<span class="mandatory text-danger">*</span></label></th>
 													<td>
 														<select name="enduser" 	class="form-control  form-control selectdee" data-width="100%" data-live-search="true">
 															<option disabled="disabled" selected="selected" value="">Choose...</option>
@@ -116,11 +91,11 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 															<option value="OH">Others</option>
 														</select>
 													</td>
-													<th><label style="margin-bottom: -10px;"> Project Short Name:<span class="mandatory" style="color: red;">*</span></label></th>
+													<th><label  class="mb-n10"> Project Short Name:<span class="mandatory text-danger">*</span></label></th>
 													<td><input type="text"   name="projectshortname" placeholder="Enter Project Short Name"	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required"></td> 
 												</tr>
 												<tr>
-													<th><label style="margin-bottom: -10px;">Category: <span class="mandatory" style="color: red;">*</span></label></th>
+													<th><label  class="mb-n10">Category: <span class="mandatory text-danger">*</span></label></th>
 													<td><select required="required" id="selectbasic"name="projecttype" class="form-control form-control selectpicker" data-width="80%" data-live-search="true">
 														<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<%
@@ -132,7 +107,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 															%>
 													</select></td>
 													
-													<th> <label style="margin-bottom: -10px;">Security Classification: <span class="mandatory" style="color: red;">*</span> </label></th>
+													<th> <label  class="mb-n10">Security Classification: <span class="mandatory text-danger">*</span> </label></th>
 													<td><select required="required" id="selectbasic"	name="securityClassification" class="form-control form-control selectpicker" data-width="80%" data-live-search="true">
 															<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<%
@@ -150,7 +125,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 												<tr>
 										              
 													
-													<th><label style="margin-bottom: -10px;">	Project Director: <span class="mandatory"	style="color: red;">*</span></label></th>
+													<th><label  class="mb-n10">	Project Director: <span class="mandatory text-danger">*</span></label></th>
 													<td><select required="required" name="projectdirector" class="form-control  form-control selectdee" id="officerPunchNo" data-width="100%"	data-live-search="true" >
 															<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<%
@@ -161,7 +136,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 															}}
 															%>
 													</select></td>
-													<th><label style="margin-bottom: -10px;">Is Main Work Center: <span class="mandatory" style="color: red;">*</span></label></th>
+													<th><label  class="mb-n10">Is Main Work Center: <span class="mandatory text-danger">*</span></label></th>
 													<td><select name="ismainwc"	class="form-control selectpicker" data-width="80%" required="required">
 														<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<option value="1">Yes</option>
@@ -169,7 +144,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 													</select></td>
 												</tr>
 												<tr>
-													<th><label style="margin-bottom: -10px;">	Project Sanc Authority: <span class="mandatory" style="color: red;">*</span></label></th>
+													<th><label class="mb-n10">	Project Sanc Authority: <span class="mandatory text-danger">*</span></label></th>
 													<td><select required="required" name="ProjectsancAuthority" class="form-control  form-control selectdee" data-width="100%" data-live-search="true" >
 														<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<option value="DIR" >DIR</option>
@@ -181,37 +156,37 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 														</select>
 															
 													</td>
-													<th><label style="margin-bottom: -10px;">Project Sanction Letter No: <span class="mandatory" style="color: red;">*</span></label></th>
+													<th><label  class="mb-n10">Project Sanction Letter No: <span class="mandatory text-danger">*</span></label></th>
 													<td><input type="text" name="sano" placeholder="Enter Project Sanc Letter No" class="form-control alphanum-symbols-no-leading-space" maxlength="100" required="required"></td>
 												</tr>
 
 												<tr>
-													<th><label style="margin-bottom: -10px;">Project Sanction Date: <span class="mandatory"style="color: red;">*</span></label></th>
+													<th><label class="mb-n10">Project Sanction Date: <span class="mandatory text-danger">*</span></label></th>
 													<td><input type="text" data-date-format="dd/mm/yyyy"readonly id="sanc-date" name="sadate" value=""class="form-control form-control"></td>
-													<th><label style="margin-bottom: -10px;">Total Sanction Cost (&#8377;): <span class="mandatory" style="color: red;">*</span></label></th>
+													<th><label  class="mb-n10">Total Sanction Cost (&#8377;): <span class="mandatory text-danger">*</span></label></th>
 													<td><input type="text" id="totalcostid" name="tsancost" class="form-control decimal-format"  value="0.0" ></td>
 												</tr>
 
 												<tr>
-													<th><label style="margin-bottom: -10px;">Board Of Reference: <span class="mandatory" style="color: red;">*</span></label></th>
+													<th><label  class="mb-n10">Board Of Reference: <span class="mandatory text-danger">*</span></label></th>
 													<td><select required="required" name="bor" class="form-control  form-control selectdee" data-width="100%" data-live-search="true" >
 															<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<option value="DMC">DMC</option>
 															<option value="CCM">CCM</option>
 														</select>
 													</td>
-													<th><label style="margin-bottom: -10px;">Sanction Cost FE (&#8377;): <span class="mandatory" style="color: red;">*</span></label></th>
+													<th><label  class="mb-n10">Sanction Cost FE (&#8377;): <span class="mandatory text-danger">*</span></label></th>
 													<td><input type="text" id="fecostid" name="sancostfe"class="form-control decimal-format" value="0.0"	maxlength="18" required="required"></td>
 												</tr>
 								<tr>
-										<th><label style="margin-bottom: -10px;">PDC:<span class="mandatory" style="color: red;">*</span></label></th>
+										<th><label  class="mb-n10">PDC:<span class="mandatory text-danger">*</span></label></th>
 										<td><input id="pdc-date" data-date-format="dd/mm/yyyy" readonly name="pdc" value="" class="form-control form-control"></td>
-										<th><label style="margin-bottom: -10px;">Sanction Cost RE (&#8377;): <span class="mandatory" style="color: red;">*</span></label></th>
+										<th><label  class="mb-n10">Sanction Cost RE (&#8377;): <span class="mandatory text-danger">*</span></label></th>
 										<td><input type="text" name="sancostre" id="Recostid" class="form-control decimal-format" value="0.0" maxlength="18" required="required"  readonly="readonly" ></td>
 								</tr>
 								<!-- srikant code start -->
 								<tr>
-										<th><label style="margin-bottom: -10px;">Platform: <span class="mandatory"	style="color: red;">*</span></label></th>
+										<th><label  class="mb-n10">Platform: <span class="mandatory text-danger">*</span></label></th>
 													<td><select required="required" name="platformName" class="form-control  form-control selectdee" id="platformName" data-width="100%"	data-live-search="true" >
 															<option disabled="disabled" value="" selected="selected">Choose..</option>
 															<%
@@ -225,23 +200,23 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 								</tr>
 								<!-- srikant code end -->		
 								<tr>
-									   <th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
+									   <th colspan="1"><label  class="mb-n10">Nodal & Participating Lab:<span class="mandatory text-danger">*</span></label></th>
 									   <td colspan="3"><input required="required" name="Nodal" placeholder="Enter Nodal & Participating Lab" class="form-control alphanum-symbols-no-leading-space" maxlength="250" /></td>
 								</tr>
 								<tr>
-										<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
+										<th colspan="1"><label  class="mb-n10">Application:<span class="mandatory text-danger">*</span></label></th>
 										<td colspan="3"><textarea required="required" name="application" placeholder="Enter maximum 50 charcters " class="form-control " maxlength="49" rows="1" cols="53"></textarea></td>
 								</tr>
 								<tr>
-										<th colspan="1"><label style="margin-bottom: -10px;">Scope:<span class="mandatory" style="color: red;">*</span></label></th>
+										<th colspan="1"><label  class="mb-n10">Scope:<span class="mandatory text-danger">*</span></label></th>
 										<td colspan="3"><textarea required="required" placeholder="Enter maximum 5000 charcters" name="scope" class="form-control " maxlength="5000" rows="3" cols="53"></textarea></td>
 								</tr>		
 								<tr>
-									<th colspan="1"><label style="margin-bottom: -10px;">Objective:<span class="mandatory" style="color: red;">*</span></label></th>
+									<th colspan="1"><label  class="mb-n10">Objective:<span class="mandatory text-danger">*</span></label></th>
 									<td colspan="3"><textarea required="required" name="Objective" placeholder="Enter maximum 5000 charcters" class="form-control " maxlength="5000"rows="3" cols="53"></textarea></td>
 								</tr>
 								<tr>
-									<th colspan="1"><label style="margin-bottom: -10px;">Deliverable:<span class="mandatory" style="color: red;">*</span></label></th>
+									<th colspan="1"><label  class="mb-n10">Deliverable:<span class="mandatory text-danger">*</span></label></th>
 									<td colspan="3"><textarea required="required"	name="Deliverable" class="form-control " placeholder="Enter maximum 5000 charcters" maxlength="5000" rows="3" cols="53"></textarea></td>
 								</tr>
 											</thead>
@@ -254,7 +229,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 									<table>
 										<tr>
 											<td>
-												<button type="submit" name="action" value="save" style="background-color: #AE4CCF;border-color: transparent	 ;" class="btn btn-primary btn-sm submit" onclick="return confirm('Are You Sure To Save!')">SAVE</button>
+												<button type="submit" name="action" value="save" class="btn btn-primary btn-sm submit cs-save" onclick="return confirm('Are You Sure To Save!')">SAVE</button>
 												<button type="submit" name="action" value="submit" class="btn btn-primary btn-sm submit" onclick="return confirm('Are You Sure To Submit!')">SUBMIT</button>
 												
 											</td>

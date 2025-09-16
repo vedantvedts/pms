@@ -587,8 +587,7 @@ function char_count(str, letter)
 	
 	function invite(){
 		<%if (rodscheduleeditdata[12] != null) {%>
-		var venue='<%=rodscheduleeditdata[12]%>
-	';
+		var venue='<%=rodscheduleeditdata[12]%>';
 <%} else {%>
 	var venue = '';
 <%}%>

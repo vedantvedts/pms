@@ -4,91 +4,15 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
-#button {
-   float: left;
-   width: 80%;
-   padding: 5px;
-   background: #dcdfe3;
-   color: black;
-   font-size: 17px;
-   border:none;
-   border-left: none;
-   cursor: pointer;
-}
 
-th{
- text-align : center;
-}
-
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-.btn-status {
-  position: relative;
-  z-index: 1; 
-}
-
-.btn-status:hover {
-  transform: scale(1.05);
-  z-index: 5;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-</style>
+<spring:url value="/resources/css/projectModule/closureApprovals.css" var="closureApprovalsCss"/>
+<link rel="stylesheet" type="text/css" href="${closureApprovalsCss}">
 </head>
 <body>
 <%
@@ -143,13 +67,13 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 				</div>
 				<div class="card-body">
 
-					<div class="row w-100" style="margin-bottom: 10px;">
+					<div class="row w-100 mb10px">
 						<div class="col-12">
-         					<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="background-color: #E1E5E8;padding:0px;">
-		  						<li class="nav-item" style="width: 50%;"  >
-		    						<div class="nav-link active" style="text-align: center;" id="pills-mov-property-tab" data-toggle="pill" data-target="#pills-mov-property" role="tab" aria-controls="pills-mov-property" aria-selected="true">
+         					<ul class="nav nav-pills mb-3 tablist-bgcolor" id="pills-tab" role="tablist">
+		  						<li class="nav-item w-50">
+		    						<div class="nav-link active text-center"s id="pills-mov-property-tab" data-toggle="pill" data-target="#pills-mov-property" role="tab" aria-controls="pills-mov-property" aria-selected="true">
 			   							<span>Pending</span> 
-										<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
+										<span class="badge badge-danger badge-counter count-badge ml-0">
 				   		 					<%if((SoCPendingList.size() + ACPPendingList.size() + TechClosurePendingList.size())>99 ){ %>
 				   								99+
 				   							<%}else{ %>
@@ -158,10 +82,10 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 				  						</span> 
 		    						</div>
 		  						</li>
-		  						<li class="nav-item"  style="width: 50%;">
-		    						<div class="nav-link" style="text-align: center;" id="pills-imm-property-tab" data-toggle="pill" data-target="#pills-imm-property" role="tab" aria-controls="pills-imm-property" aria-selected="false">
+		  						<li class="nav-item w-50">
+		    						<div class="nav-link text-center" id="pills-imm-property-tab" data-toggle="pill" data-target="#pills-imm-property" role="tab" aria-controls="pills-imm-property" aria-selected="false">
 		    	 						<span>Approved</span> 
-		    	 						<span class="badge badge-danger badge-counter count-badge" style="margin-left: 0px;">
+		    	 						<span class="badge badge-danger badge-counter count-badge ml-0">
 				   		 					<%if((SoCApprovedList.size() + ACPApprovedList.size() + TechClosureApprovedList.size())>99){ %>
 				   								99+
 				   							<%}else{ %>
@@ -188,13 +112,13 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
               									<table class="table table-hover  table-striped table-condensed table-bordered table-fixed" id="myTable">
 													<thead>
 														<tr>
-					   										<th style="">SN</th>
-					   										<th style="">Initiated By</th>
+					   										<th>SN</th>
+					   										<th>Initiated By</th>
 					   										<th>Project</th>
 					   										<!-- <th>CARSNo</th> -->
-					   										<th style="">Date</th>
-					   										<th style="">Approval for</th>
-                       										<th style="">Action</th>
+					   										<th>Date</th>
+					   										<th>Approval for</th>
+                       										<th>Action</th>
                   										</tr>
 													</thead>
                  									<tbody>
@@ -204,14 +128,14 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                          							 			for(Object[] form:SoCPendingList ){
                       							 		%>
                         									<tr>
-                            									<td style="text-align: center;width: 5%;"><%=++SN%></td>
-                            									<td style="width: 30%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
-                            									<td style="text-align: center;width: 10%;"><%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - "%> (<%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "%>)</td>
-                            									<td style="text-align: center;width: 10%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[7]!=null?StringEscapeUtils.escapeHtml4(form[7].toString()): " - "%></td>
-                            									<td style="text-align: center;width: 20%;">
+                            									<td class="text-center width5per"><%=++SN%></td>
+                            									<td class="width30per"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
+                            									<td class="text-center width10per"><%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - "%> (<%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "%>)</td>
+                            									<td class="text-center width10per"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td class="text-center width10per"><%=form[7]!=null?StringEscapeUtils.escapeHtml4(form[7].toString()): " - "%></td>
+                            									<td class="text-center width20per">
                             										
-																	<button type="submit" class="btn btn-sm view-icon" formaction="ProjectClosureSoCDetails.htm" name="closureSoCApprovals" value="<%=form[4]%>/Y/2" data-toggle="tooltip" data-placement="top" title="Closure SoC" style="font-weight: 600;" >
+																	<button type="submit" class="btn btn-sm view-icon fw-600" formaction="ProjectClosureSoCDetails.htm" name="closureSoCApprovals" value="<%=form[4]%>/Y/2" data-toggle="tooltip" data-placement="top" title="Closure SoC">
 								   										<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
@@ -243,14 +167,14 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                          							 			for(Object[] form:ACPPendingList ){
                       							 		%>
                         									<tr>
-                            									<td style="text-align: center;width: 5%;"><%=++SN%></td>
-                            									<td style="width: 30%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
-                            									<td style="text-align: center;width: 10%;"><%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - "%> (<%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "%>)</td>
-                            									<td style="text-align: center;width: 10%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td style="text-align: center;width: 10%;"><%=form[7]!=null?StringEscapeUtils.escapeHtml4(form[7].toString()): " - "%></td>
-                            									<td style="text-align: center;width: 20%;">
+                            									<td class="text-center width5per"><%=++SN%></td>
+                            									<td class="width30per"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
+                            									<td class="text-center width10per"><%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - "%> (<%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "%>)</td>
+                            									<td class="text-center width10per"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td class="text-center width10per"><%=form[7]!=null?StringEscapeUtils.escapeHtml4(form[7].toString()): " - "%></td>
+                            									<td class="text-center width20per">
                             										
-																	<button type="submit" class="btn btn-sm view-icon" formaction="ProjectClosureACPDetails.htm" name="closureACPApprovals" value="<%=form[4]%>/Y/2" data-toggle="tooltip" data-placement="top" title="Administrative Closure" style="font-weight: 600;" >
+																	<button type="submit" class="btn btn-sm view-icon fw-600" formaction="ProjectClosureACPDetails.htm" name="closureACPApprovals" value="<%=form[4]%>/Y/2" data-toggle="tooltip" data-placement="top" title="Administrative Closure">
 								   										<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
@@ -283,43 +207,42 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                          							 			for(Object[] form:TechClosurePendingList ){
                       							 		%>
                         									<tr>
-                            									<td style="text-align: center;width: 2%;"><%=++SN%></td>
-                            									<td style="width: 10%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
-                            									<td style="text-align: center;width: 5%;"><%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()):" - "%> (<%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "%>)</td>
-                            									<td style="text-align: center;width: 5%;"><%=fc.SqlToRegularDate(form[5].toString())%></td>
-                            									<td style="text-align: center;width: 5%;"><%=form[7]!=null?StringEscapeUtils.escapeHtml4(form[7].toString()): " - "%></td>
-                            									<td style="text-align: center;width: 20%;">
+                            									<td class="text-center width2per"><%=++SN%></td>
+                            									<td class="width10per"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
+                            									<td class="text-center width5per"><%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()):" - "%> (<%=form[9]!=null?StringEscapeUtils.escapeHtml4(form[9].toString()): " - "%>)</td>
+                            									<td class="text-center width5per"><%=fc.SqlToRegularDate(form[5].toString())%></td>
+                            									<td class="text-center width5per"><%=form[7]!=null?StringEscapeUtils.escapeHtml4(form[7].toString()): " - "%></td>
+                            									<td class="text-center width20per">
                             									
                             									
                             									
                             											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             											<div class="d-flex w-100">
                             												<div class="w-70">
-                            													<textarea rows="2" cols="70" class="form-control" name="remarks"  id="remarksarea" maxlength="2000" placeholder="Enter remarks here( max 250 characters )" style="width:98%;"></textarea>
+                            													<textarea rows="2" cols="70" class="form-control width98per" name="remarks"  id="remarksarea" maxlength="2000" placeholder="Enter remarks here( max 250 characters )"></textarea>
                             												</div>
 																			<div class="w-30">
 																			<%if(form[12]!=null && form[12].toString().equalsIgnoreCase("TDG")) { %>
 																			
-																			      <button type="button" class="btn btn-sm btn-success mt-1" name="Action" value="A"  onclick="OpenApproveModal('<%=form[10] %>','<%=form[4] %>')"
-																				      style="font-weight: 500" >
+																			      <button type="button" class="btn btn-sm btn-success mt-1 fw-500" name="Action" value="A"  onclick="OpenApproveModal('<%=form[10] %>','<%=form[4] %>')">
 																						 Approve
 								                                                   </button>
 								                                                   
 								                                                   
 								                                                   
-								                                                   <button type="button" class="btn btn-sm btn-danger mt-1" name="Action" value="R"  onclick="OpenReturnModal('<%=form[10] %>','<%=form[4] %>')" style="font-weight: 500"
+								                                                   <button type="button" class="btn btn-sm btn-danger mt-1 fw-500" name="Action" value="R"  onclick="OpenReturnModal('<%=form[10] %>','<%=form[4] %>')"
 																					        > Return
 																				</button>
 																			
 																			
 																			<%}else{ %>
-																				<button type="submit" class="btn btn-sm btn-success mt-1" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>/A" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate
-																				 style="font-weight: 500" onclick="return confirm('Are You Sure To Recommend );">
+																				<button type="submit" class="btn btn-sm btn-success mt-1 fw-500" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>/A" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate
+																				 onclick="return confirm('Are You Sure To Recommend );">
 																						 Recommend
 								                                               </button>
 								                                               
 								                                               
-								                                               <button type="submit" class="btn btn-sm btn-danger mt-1" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>/R" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate" style="font-weight: 500"
+								                                               <button type="submit" class="btn btn-sm btn-danger mt-1 fw-500" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>/R" formaction="projectTechClosureApprovalSubmit.htm" formmethod="GET" formnovalidate="formnovalidate"
 																					onclick="return confirm('Are You Sure To Return');"> Return
 																				</button>
 								                                               
@@ -330,7 +253,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 																			
 																			
 																			
-																				<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+																				<button type="submit" class="btn btn-sm fw-600" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=form[4]%>/<%=form[10]%>" data-toggle="tooltip" data-placement="top" title="Download">
 								   										            <i class="fa fa-download"></i>
 								   									             </button> 
 																				
@@ -352,9 +275,9 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 											<form method="post" action="ProjectClosureApprovals.htm" >
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 												<input type="hidden" name="tab" value="closed"/>
-												<div class="row w-100" style="margin-top: 10px;margin-bottom: 10px;">
-													<div class="col-md-12" style="float: right;">
-														<table style="float: right;">
+												<div class="row w-100 mt10px mb10px">
+												<div class="col-md-12 float-right">
+														<table class="float-right">
 															<tr>
 																<td> From Date :&nbsp; </td>
 							        							<td> 
@@ -384,9 +307,9 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 					   													<th>SN</th>
 					  													<th>Initiated By</th>
 					   													<th>Project</th>
-					   													<th style="">Approval for</th>
-                       													<th style="width: ">Status</th>
-                       													<th style="width: ">Action</th>
+					   													<th >Approval for</th>
+                       													<th >Status</th>
+                       													<th >Action</th>
                   													</tr>
 																</thead>
                  												<tbody>
@@ -396,18 +319,21 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                           													for(Object[] form:SoCApprovedList ) {
                        												%>
                         											<tr>
-                            											<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            											<td style="text-align: left;width: 22%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
-                            											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
-                            											<td style="text-align: center;width: 10%;"><%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "%> (<%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%></td>
-                            											<td style="text-align: center;width: 8%;"><%=form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %> </td>
-                            											<td style="text-align: center;width: 25%;">
-                            												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectClosureSoCTransStatus.htm" value="<%=form[4] %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    											<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+                            											<td class="text-center width5per"><%=++SNA%></td>
+                            											<td class="text-left width22per"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
+                            											<td class="text-center width10per"><%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "%> (<%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%></td>
+                            											<td class="text-center width8per"><%=form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %> </td>
+                            											<td class="text-center w-25">
+                            											<%
+																		   String colorCode = (String) form[9];
+																		   String className = "C" + colorCode.replace("#", "").toUpperCase();
+																		%>
+                            												<button type="submit" class="btn btn-sm btn-link w-50 btn-status fw-600 <%=className%>" formaction="ProjectClosureSoCTransStatus.htm" value="<%=form[4] %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" formtarget="_blank">
+								    											<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram flright-mt03" aria-hidden="true"></i>
 								    										</button>
 						 												</td>
-						 												<td style="text-align: center;width: 20%;">
-						 													<button type="submit" class="btn btn-sm view-icon" formaction="ProjectClosureSoCDetails.htm" name="closureSoCApprovals" value="<%=form[4]%>/N/2" data-toggle="tooltip" data-placement="top" title="Closure SoC" style="font-weight: 600;" >
+						 												<td class="text-center width20per">
+						 													<button type="submit" class="btn btn-sm view-icon fw-600" formaction="ProjectClosureSoCDetails.htm" name="closureSoCApprovals" value="<%=form[4]%>/N/2" data-toggle="tooltip" data-placement="top" title="Closure SoC">
 								   												<div class="cc-rockmenu">
 																					<div class="rolling">
 																						<figure class="rolling_icon">
@@ -438,18 +364,21 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                           													for(Object[] form:ACPApprovedList ) {
                        												%>
                         											<tr>
-                            											<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            											<td style="text-align: left;width: 22%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
-                            											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
-                            											<td style="text-align: center;width: 10%;"><%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "%> (<%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%>)</td>
-                            											<td style="text-align: center;width: 8%;"><%=form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %> </td>
-                            											<td style="text-align: center;width: 25%;">
-                            												<button type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectClosureACPTransStatus.htm" value="<%=form[4] %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    											<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+                            											<td class="text-center width22per"><%=++SNA%></td>
+                            											<td class="text-left width22per"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
+                            											<td class="text-center width10per"><%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "%> (<%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%>)</td>
+                            											<td class="text-center width8per"><%=form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - " %> </td>
+                            											<td class="text-center w-25">
+                            											<%
+																		   String colorCode = (String) form[9];
+																		   String className = "C" + colorCode.replace("#", "").toUpperCase();
+																		%>
+                            												<button type="submit" class="btn btn-sm btn-link w-50 btn-status fw-600 <%=className%>" formaction="ProjectClosureACPTransStatus.htm" value="<%=form[4] %>" name="closureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" formtarget="_blank">
+								    											<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram flright-mt03" aria-hidden="true"></i>
 								    										</button>
 						 												</td>
-						 												<td style="text-align: center;width: 20%;">
-						 													<button type="submit" class="btn btn-sm view-icon" formaction="ProjectClosureACPDetails.htm" name="closureACPApprovals" value="<%=form[4]%>/N/2" data-toggle="tooltip" data-placement="top" title="Administrative Closure" style="font-weight: 600;" >
+						 												<td class="text-center width20per">
+						 													<button type="submit" class="btn btn-sm view-icon fw-600" formaction="ProjectClosureACPDetails.htm" name="closureACPApprovals" value="<%=form[4]%>/N/2" data-toggle="tooltip" data-placement="top" title="Administrative Closure">
 								   												<div class="cc-rockmenu">
 																					<div class="rolling">
 																						<figure class="rolling_icon">
@@ -481,18 +410,21 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
                           													for(Object[] form:TechClosureApprovedList ) {
                        												%>
                         											<tr>
-                            											<td style="text-align: center;width: 5%;"><%=++SNA%></td>
-                            											<td style="text-align: left;width: 22%;"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
-                            											<%-- <td style="text-align: center;width: 5%;"><%=form[1] %> </td> --%>
-                            											<td style="text-align: center;width: 10%;"><%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "%> (<%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%>)</td>
-                            											<td style="text-align: center;width: 8%;"><%=form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - "%> </td>
-                            											<td style="text-align: center;width: 25%;">
-                            												<button form="tcrtrans" type="submit" class="btn btn-sm btn-link w-50 btn-status" formaction="ProjectTechClosureTransStatus.htm" value="<%=form[15] %>" name="TechClosureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=form[9] %>; font-weight: 600;" formtarget="_blank">
-								    											<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+                            											<td class="text-center width5per"><%=++SNA%></td>
+                            											<td class="text-left width22per"><%=form[2]!=null?StringEscapeUtils.escapeHtml4(form[2].toString()): " - "%>, <%=form[3]!=null?StringEscapeUtils.escapeHtml4(form[3].toString()): " - "%> (<%=form[1]!=null?StringEscapeUtils.escapeHtml4(form[1].toString()): " - "%>)</td>
+                            											<td class="text-center width10per"><%=form[13]!=null?StringEscapeUtils.escapeHtml4(form[13].toString()): " - "%> (<%=form[14]!=null?StringEscapeUtils.escapeHtml4(form[14].toString()): " - "%>)</td>
+                            											<td class="text-center width8per"><%=form[12]!=null?StringEscapeUtils.escapeHtml4(form[12].toString()): " - "%> </td>
+                            											<td class="text-center w-25">
+                            											<%
+																		   String colorCode = (String) form[9];
+																		   String className = "C" + colorCode.replace("#", "").toUpperCase();
+																		%>
+                            												<button form="tcrtrans" type="submit" class="btn btn-sm btn-link w-50 btn-status fw-600 <%=className%>" formaction="ProjectTechClosureTransStatus.htm" value="<%=form[15] %>" name="TechClosureId"  data-toggle="tooltip" data-placement="top" title="Transaction History" formtarget="_blank">
+								    											<%=form[8]!=null?StringEscapeUtils.escapeHtml4(form[8].toString()): " - " %> <i class="fa fa-telegram flright-mt03" aria-hidden="true"></i>
 								    										</button>
 						 												</td>
-						 												<td style="text-align: center;width: 20%;">
-						 													<button type="submit" class="btn btn-sm" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=form[4]%>/<%=form[15]%>" data-toggle="tooltip" data-placement="top" title="Download" style="font-weight: 600;" >
+						 												<td class="text-center width20per">
+						 													<button type="submit" class="btn btn-sm fw-600" formaction="TechnicalClosureReportDownload.htm" formtarget="blank" name="TechAndClosureId" value="<%=form[4]%>/<%=form[15]%>" data-toggle="tooltip" data-placement="top" title="Download">
                                                                                          <i class="fa fa-download"></i>
 								   									             </button> 	
 																			
@@ -523,11 +455,11 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 
 <div class="modal fade" id="ApprovalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-jump" role="document">
-    <div class="modal-content" style="width:100%;">
+    <div class="modal-content w-100">
       
         
            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true" class="text-light" style="color:red;">&times;</span>
+                <span aria-hidden="true" class="text-light red-color">&times;</span>
           </button>
       
       <div class="modal-body">

@@ -1,32 +1,17 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+
+<spring:url value="/resources/css/projectModule/projectEdit.css" var="projectEdit" />
+<link href="${projectEdit}" rel="stylesheet" />
 <title>PROJECT COST  EDIT</title>
-<style type="text/css">
 
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-
-</style>
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -37,15 +22,6 @@ Object[] ProjectCostEditData=(Object[])request.getAttribute("ProjectCostEditData
 Double TotalIntiationCost=(Double)request.getAttribute("TotalIntiationCost");
 List<Object[]> BudgetItemList=(List<Object[]>)request.getAttribute("BudgetItemList");
 %>
-
-
-
-
-
-
-
-
-
 
 
 <% 
@@ -72,13 +48,13 @@ List<Object[]> BudgetItemList=(List<Object[]>)request.getAttribute("BudgetItemLi
 
 
     <div class="container">
-<div class="row" style="">
+<div class="row">
 
 <div class="col-md-12">
 
  <div class="card shadow-nohover" >
   <div class="card-header">
-  <b style="color: green;">TITLE:&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;||&nbsp;COST:&nbsp;<%=ProjectDetailes[8]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[8].toString()): " - " %> </b>
+  <b class="text-success">TITLE:&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;||&nbsp;COST:&nbsp;<%=ProjectDetailes[8]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[8].toString()): " - " %> </b>
   </div>
         
         <div class="card-body">

@@ -19,263 +19,14 @@
 <spring:url value="/resources/css/projectdetails.css" var="projetdetailscss" />
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
+
+<spring:url value="/resources/css/projectModule/checklist.css" var="checklistCss"/>
+<link rel="stylesheet" type="text/css" href="${checklistCss}">
+
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
 <link href="${projetdetailscss}" rel="stylesheet" />
 
-<style type="text/css">
-
-.tab-pane p{
-	text-align: justify;
-	
-}
-
-.card-body{
-	padding: 0rem !important;
-}
-.navigation_btn{
-	margin: 1%;
-}
-
-.checklistpage {
-
-   margin: 1%;
-
-}
- .b{
-	background-color: #ebecf1;	
-}
-.a{
-	background-color: #d6e0f0;
-}
-
-.nav-link{
-	text-align: left;
-}
-.nav-tabs>.nav-item>.nav-link{
-	padding: 11px 15px !important;
-}
-body { 
-   font-family : "Lato", Arial, sans-serif !important;
-   overflow-x: hidden;
-}
-
-input,select,table,div,label,span {
-font-family : "Lato", Arial, sans-serif !important;
-}
-.text-center{
-	text-align: left !imporatant;
-}
-
-.control-label,.mandatory{
-float: left;
-font-weight: bold;
-font-size: 1rem;
-}
-.control-label{
-color: purple;
-}
-</style>
-
-<style type="text/css">
-
-.panel-info {
-	border-color: #bce8f1;
-}
-.panel {
-	margin-bottom: 10px;
-	background-color: #fff;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
-.panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-	color: #1d5987;
-}
-.panel-title {
-	margin-top: 0;
-	margin-bottom: 0;
-	font-size: 13px;
-	color: inherit;
-	font-weight: bold;
-	display: contents;
-}
-.buttonEd {
-	float: right;
-	margin-top: -0.5rem;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-div {
-	display: block;
-}
-
-
-.olre-body .panel-info .panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-heading {
-	padding: 18px 15px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.p-5 {
-	padding: 5px;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-user agent stylesheet
-div {
-	display: block;
-}
-
-.panel-info {
-	border-color: #bce8f1;
-}
-
-.rsqr-column{
- float : left;
-}
-
-.scrollclass::-webkit-scrollbar {
-    width:7px;
-}
-.scrollclass::-webkit-scrollbar-track {
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3); 
-    border-radius:5px;
-}
-.scrollclass::-webkit-scrollbar-thumb {
-    border-radius:5px;
-  /*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
-}
-.scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
- 	transition: 0.5s;
-}
-
-
-.trup{
-	padding:6px 10px 6px 10px ;			
-	border-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-.trdown{
-	padding:0px 10px 5px 10px ;			
-	border-bottom-left-radius : 5px; 
-	border-bottom-right-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-
-
-
-p
-{
-	text-align: justify !important;
-  	text-justify: inter-word;
-}
-p,td,th
-{
-  word-wrap: break-word;
-  word-break: normal ;
-}
-
-.textunderline{
-	text-decoration: underline;
-}
-
-
-</style>
-
-<style type="text/css">
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	/* font-weight: 800; */
-	font-size: 16px;
-	/* color:#07689f; */
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-.form-group {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-</style>
-
-<style type="text/css">
-
-#tabledata{
- margin-left : 30px;
- border-collapse : collapse;
- /* border : 1px solid black; */
- width : 98.5%;
-}
-#tabledata th{
- text-align : center;
- font-size: 14px;
-}
-#tabledata td{
- text-align : left;
- vertical-align: top;
- word-wrap: break-word;
- word-break: normal;
-}
-#tabledata td,th{
- /* border : 1px solid black; */
- padding : 5px;
-}
-
-#select2-LabCode-container,#select2-approverEmpId-container{
-	text-align: left;
-}
-
-.page-link{
-
-color:black;
-
-}
-</style>
 </head>
 <body>
 
@@ -348,10 +99,10 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
    		<div class="col-md-12">
        		<div class="card slider">
        			<!-- This is for Slider Headers -->
-         		<div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 0%;">
+         		<div class="card-header slider_header fs12">
              		<h4 class="category">Project Closure Check List - <%if(projectMaster!=null) {%><%=projectMaster.getProjectShortName()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectShortName()): " - "%> (<%=projectMaster.getProjectCode()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectCode()): " - "%>) <%} %>
 
-             			<a class="btn btn-info btn-sm  shadow-nohover back"
+             			<a class="btn btn-info btn-sm  shadow-nohover back back-btn"
              				<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y") ) {%>
                					href="ProjectClosureApprovals.htm"
                				<%} else if(isApproval!=null &&  isApproval.equalsIgnoreCase("N") ) {%>
@@ -360,15 +111,15 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
                					href="ProjectClosureList.htm"
                				<%} %>
              		
-             			  style="color: white!important;float: right;">Back</a>
+             			  >Back</a>
              		</h4>
-             		<hr style="margin: -8px 0px !important;">
+             		<hr class="margin-8px">
              	
          		</div>
          		
          		<!-- This is for Tab Panes -->
          		<div class="card">
-         			<div class="tab-content text-center" style="margin-top : 0.2rem;">
+         			<div class="tab-content text-left mt02rem">
          				<!-- *********** checklist Details ***********      --> 
                			<%if(chlistTabId!=null && chlistTabId.equalsIgnoreCase("1")){ %> 
          					<div class="tab-pane active" id="chlistdetails" role="tabpanel">
@@ -376,12 +127,12 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
               				<div class="tab-pane " id="chlistdetails" role="tabpanel">
                			<%} %>
                					<div class="container">
-									<div class="row" style="width: 140%; margin-left: -15rem;margin-top: 1rem;">
+									<div class="row width140-ml15-mt1">
 										<div class="col-md-12">
 											<div class="card shadow-nohover" >
 											
 											<form>
-												<div class="card-header" style=" /* background: linear-gradient(to right, #334d50, #cbcaa5); */ /* background-color:rgba(6,103,200,1); */ background-color: #055C9D;text-align: left;">
+												<div class="card-header bgcolor-taleft">
 								                    <b class="text-white" >Check List Details : 
 								                    <% if(chlist!=null) {%>
 								                    <button type="submit" class="btn btn-sm"  name="closureId" formmethod="get" formnovalidate="formnovalidate"
@@ -391,13 +142,13 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
                   					 							<%} %>
                   					 						</b> 
 								                    <hr>
-								                    <span class="text-white" style="float:right;font-weight: 600"> </span>
+								                    <span class="text-white float-right-fw600"> </span>
 							        			</div> 
 							        	</form>	
 							        
 							        <% int count=0; %>
 							        		
-												<div class="card-body" style="overflow:auto;">
+												<div class="card-body overflow-auto">
 								        		
 								        <form action="ProjectClosureCheckListDetailsSubmit.htm" method="POST" enctype="multipart/form-data" id="firstpagesubmit">		
 								        		<div class="" id="firstpage" >
@@ -408,7 +159,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												     	
 												    	 <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Project Appraisal Letter (PAR)</label>
+												                	<label class="control-label black-color"><%=++count %>. Project Appraisal Letter (PAR)</label>
 												                    
 												                </div>
 												            </div>
@@ -416,7 +167,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												    	<br>
 												    	<br>
 												    	
-												    	<div class="row" style="margin-left: 2%;margin-right: 2%;">
+												    	<div class="row ml2-mr2">
 												    		
 												        	<div class="col-md-2" >
 												        		<div class="form-group">
@@ -452,7 +203,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        		<div class="form-group">
 												                	<label class="control-label">Milestones :</label><span class="mandatory">*</span>
 												                	<%if(chlist!=null && chlist.getQARMilestone()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 						<button type="submit" class="btn btn-sm padding5px8px" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 	value="QARMilestonefile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="QARMilestone Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
@@ -464,7 +215,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        </div>
 												        
 												        
-												   <div class="row" style="margin-left: 2%;margin-right: 2%;">
+												   <div class="row ml2-mr2">
 												        
 												        
 												        <div class="col-md-2" >
@@ -488,7 +239,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        		<div class="form-group">
 												                	<label class="control-label">Cost Break-up (Activity wise, Period wise) </label><span class="mandatory">*</span>
 												                   <%if(chlist!=null && chlist.getQARCostBreakup()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 						<button type="submit" class="btn btn-sm padding5px8px" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 	value="QARCostBreakupfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
@@ -502,7 +253,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        		<div class="form-group">
 												                	<label class="control-label">List of non-consumable items required (at least costing more than Rs.10 lacs) </label><span class="mandatory">*</span>
 												                   <%if(chlist!=null && chlist.getQARNCItems()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 						<button type="submit" class="btn btn-sm padding5px8px" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 	value="QARNCItemsfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
@@ -518,7 +269,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        
 												       <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Revision in sanctioned cost if any &nbsp;
+												                	<label class="control-label black-color"><%=++count %>. Revision in sanctioned cost if any &nbsp;
 												                	<input type="checkbox" id="RevSancCost" name="RevSancCost" 
 												                	<%if (Rev!=null && Rev.size()>0){
 												                		for(Object[] obj : Rev) { 
@@ -530,16 +281,16 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												         <br>  
 												     
 												          
-												        <div class="row" style="margin-left: 2%;margin-right: 2%;" id="selectRevSancCost">       
-									                  <table style="width: 94%;margin-left: 3%;" id="tablesancrev">
-															<thead style = "background-color: #055C9D; color: white;text-align: center;">
+												        <div class="row ml2-mr2" id="selectRevSancCost">       
+									                  <table class="width94-ml3" id="tablesancrev">
+															<thead class="table-bgcolor">
 																<tr>
-																    <th style="width: 5%;padding: 0px 5px 0px 5px;">When requested</th>
-															    	<th style="width: 5%;padding: 0px 5px 0px 5px;">When granted</th>
-															    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Revised cost (in rupees)</th>
-															    	<th style="width: 15%;padding: 0px 5px 0px 5px;">Any reason specified</th>
-																    <td style="width: 5%;">
-																		<button type="button" class="btn btn_add_sancrev "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																    <th class="label-1">When requested</th>
+															    	<th class="label-1">When granted</th>
+															    	<th class="label-1">Revised cost (in rupees)</th>
+															    	<th class="label-2">Any reason specified</th>
+																    <td class="width-5per">
+																		<button type="button" class="btn btn_add_sancrev"> <i class="btn btn-sm fa fa-plus green-color"></i></button>
 																	</td>
 																</tr>
 															</thead>
@@ -550,27 +301,27 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																	  if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("SANC")){ a=1;%>
 																
 																<tr class="tr_clone_trialresults">
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-3">
 																	    <input type="text" class="form-control item" name="SCRequested" value="<%=fc.SqlToRegularDate(obj[2].toString())%>" id="SCRequested">
 																	</td>	
 																	
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-3">
 																	     <input type="text" class="form-control item" name="SCGranted"  value="<%=fc.SqlToRegularDate(obj[3].toString())%>" id="SCGranted">
 																	</td>
 																	
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
+																	<td class="label-3">
 																		<input type="number" class="form-control item" name="SCRevisionCost"  value="<%=df.format(Double.parseDouble(obj[4].toString()))%>" >
 																	</td>
 																	
-																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-4">
 																	
 																	    <input type="text" class="form-control item" name="SCReason"  value="<%= obj[6] != null ? StringEscapeUtils.escapeHtml4(obj[6].toString()) : "" %>" placeholder="Enter Reason">
 																	    
 																	</td>
 																		
 																		
-																	<td style="width: 5%;">
-																		 <button type="button" class="btn btn_rem_sancrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																	<td class="width-5per">
+																		 <button type="button" class="btn btn_rem_sancrev" ><i class="btn btn-sm fa fa-minus"></i></button>
 																	</td>									
 																</tr>
 																
@@ -578,27 +329,27 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																
 																<%if(a==0){ %>
 																<tr class="tr_clone_trialresults">
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-3">
 																	    <input type="text" class="form-control item" name="SCRequested" value="" id="SCRequested">
 																	</td>	
 																	
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-3">
 																	     <input type="text" class="form-control item" name="SCGranted"  value="" id="SCGranted">
 																	</td>
 																	
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
+																	<td class="label-3">
 																		<input type="number" class="form-control item" name="SCRevisionCost"  value="0" >
 																	</td>
 																	
-																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-4">
 																	
 																	    <input type="text" class="form-control item" name="SCReason"  value="" placeholder="Enter Reason">
 																	    
 																	</td>
 																		
 																		
-																	<td style="width: 5%;">
-																		 <button type="button" class="btn btn_rem_sancrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																	<td class="width-5per">
+																		 <button type="button" class="btn btn_rem_sancrev" ><i class="btn btn-sm fa fa-minus red-color"></i></button>
 																	</td>									
 																</tr>
 																<%} %>
@@ -613,7 +364,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          
 												           <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Revision in PDC if any &nbsp;<input type="checkbox" id="RevPDCCost" name="RevPDCCost"
+												                	<label class="control-label black-color"><%=++count %>. Revision in PDC if any &nbsp;<input type="checkbox" id="RevPDCCost" name="RevPDCCost"
 												                 <%if (Rev!=null && Rev.size()>0 ) {
 												                	 for(Object[] obj : Rev) { 
 																	 if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("PDC")){ %> checked <%}}} %> ></label>
@@ -625,16 +376,16 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												         <br>
 												         <br>   
 												            
-												        <div class="row" style="margin-left: 2%;margin-right: 2%;" id="selectRevPDCCost">      
-												           <table style="width: 94%;margin-left: 3%;" id="tablepdcrev">
-															<thead style = "background-color: #055C9D; color: white;text-align: center;">
+												        <div class="row ml2-mr2" id="selectRevPDCCost">      
+												           <table class="width94-ml3" id="tablepdcrev">
+															<thead class="bgcolor-white-tacenter">
 																<tr>
-																    <th style="width: 5%;padding: 0px 5px 0px 5px;">When requested</th>
-															    	<th style="width: 5%;padding: 0px 5px 0px 5px;">When granted</th>
-															    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Quantum/Revised PDC</th>
-															    	<th style="width: 15%;padding: 0px 5px 0px 5px;">Any reason specified</th>
-																    <td style="width: 5%;">
-																		<button type="button" class="btn btn_add_pdcrev "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																    <th class="label-1">When requested</th>
+															    	<th class="label-1">When granted</th>
+															    	<th class="label-1">Quantum/Revised PDC</th>
+															    	<th class="label-2">Any reason specified</th>
+																    <td class="width-5per">
+																		<button type="button" class="btn btn_add_pdcrev"> <i class="btn btn-sm fa fa-plus green-color"></i></button>
 																	</td>
 																</tr>
 															</thead>
@@ -645,27 +396,27 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																        if(obj[1]!=null && obj[1].toString().equalsIgnoreCase("PDC")){ b=1;%>
 																        
 																<tr class="tr_clone_results">
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-3" >
 																	    <input type="text" class="form-control item" name="PDCRequested" value="<%=fc.SqlToRegularDate(obj[2].toString())%>" id="PDCRequested">
 																	</td>	
 																	
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-3" >
 																	     <input type="text" class="form-control item" name="PDCGranted"  value="<%=fc.SqlToRegularDate(obj[3].toString())%>" id="PDCGranted">
 																	</td>
 																	
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
+																	<td class="label-3">
 																		<input type="text" class="form-control item" name="PDCRevised"  value="<%=fc.SqlToRegularDate(obj[5].toString())%>"  id="PDCRevised">
 																	</td>
 																	
-																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-4" >
 																	
 																	    <input type="text" class="form-control item" name="PDCReason"  value="<%=obj[6] != null ? StringEscapeUtils.escapeHtml4(obj[6].toString()) : "" %>" placeholder="Enter Reason">
 																	    
 																	</td>
 																		
 																		
-																	<td style="width: 5%;">
-																		 <button type="button" class="btn btn_rem_pdcrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																	<td class="width-5per">
+																		 <button type="button" class="btn btn_rem_pdcrev" ><i class="btn btn-sm fa fa-minus red-color"></i></button>
 																	</td>									
 																</tr>
 																
@@ -673,27 +424,27 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 																
 																<%if(b==0){ %>
 																<tr class="tr_clone_results">
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-3" >
 																	    <input type="text" class="form-control item" name="PDCRequested" id="PDCRequested">
 																	</td>	
 																	
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-3" >
 																	     <input type="text" class="form-control item" name="PDCGranted" id="PDCGranted">
 																	</td>
 																	
-																	<td style="width: 5%;padding: 10px 5px 0px 5px;">
+																	<td class="label-3">
 																		<input type="text" class="form-control item" name="PDCRevised" id="PDCRevised">
 																	</td>
 																	
-																	<td style="width: 15%;padding: 10px 5px 0px 5px;" >
+																	<td class="label-4" >
 																	
 																	    <input type="text" class="form-control item" name="PDCReason" placeholder="Enter Reason">
 																	    
 																	</td>
 																		
 																		
-																	<td style="width: 5%;">
-																		 <button type="button" class="btn btn_rem_pdcrev" ><i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																	<td class="width-5per">
+																		 <button type="button" class="btn btn_rem_pdcrev" ><i class="btn btn-sm fa fa-minus red-color"></i></button>
 																	</td>									
 																</tr>
 																
@@ -710,7 +461,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          
 												      <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Project Register</label>
+												                	<label class="control-label black-color"><%=++count %>. Project Register</label>
 												                    
 												                </div>
 												            </div>
@@ -718,7 +469,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												         <br>
 												              
 												          
-												     <div class="row" style="margin-left: 2%;margin-right: 2%;">         
+												     <div class="row ml2-mr2">         
 												          <div class="col-md-3" >
 												        		<div class="form-group">
 												                	<label class="control-label">Maintained in proper format</label><span class="mandatory">*</span>
@@ -739,7 +490,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="PRRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="PRRemark1" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPRRemark1()!=null) {%><%=chlist.getPRRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -767,7 +518,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="PRRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="PRRemark2" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPRRemark2()!=null) {%><%=chlist.getPRRemark2() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -777,13 +528,13 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												       
 												    <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Project expenditure Card</label>
+												                	<label class="control-label black-color"><%=++count %>. Project expenditure Card</label>
 												                 </div>
 												            </div>
 												           
 												         <br> 
 												      
-												       <div class="row" style="margin-left: 2%;margin-right: 2%;"> 
+												       <div class="row ml2-mr2"> 
 												               
 												          <div class="col-md-5" >
 												        		<div class="form-group">
@@ -802,7 +553,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="PECRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="PECRemark1" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getPECRemark1()!=null) {%><%=chlist.getPECRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -810,7 +561,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												            
 												        </div> 
 												        
-												         <div class="checklistpage"  style="text-align: center;">
+												         <div class="checklistpage text-center">
 												        
 												        <% if(chlist!=null && chlist.getQARObjective()!=null) { %>
 												        
@@ -828,7 +579,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 											   
 											   <br>
 												   
-												   <div class="pagin" style="display: flex; justify-content: center;padding-bottom:10px;"> 
+												   <div class="pagin pagination-display"> 
 																
 																	
 																	<div class="pagination">
@@ -860,14 +611,14 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												         
 												          <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Commitment register</label>
+												                	<label class="control-label black-color"><%=++count %>. Commitment register</label>
 												                    
 												                </div>
 												            </div> 
 												  
 												         <br>
 												  
-												     <div class="row" style="margin-left: 2%;margin-right: 2%;">         
+												     <div class="row ml2-mr2">         
 												          <div class="col-md-4" >
 												        		<div class="form-group">
 												                	<label class="control-label">Bring From</label><span class="mandatory">*</span>
@@ -886,7 +637,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                	<label class="control-label">Upload :</label><span class="mandatory">*</span>
 												                	
                             					 						<%if(chlist!=null && chlist.getCommittmentRegister()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 						<button type="submit" class="btn btn-sm padding5px8px" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 	value="CommittmentRegisterfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="CommittmentRegister Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
@@ -902,14 +653,14 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												         
 												            <div class="col-md-3" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Subsidiary register</label>
+												                	<label class="control-label black-color"><%=++count %>. Subsidiary register</label>
 												                    
 												                </div>
 												            </div> 
 												            
 												            <br>
 												          
-												        <div class="row" style="margin-left: 2%;margin-right: 2%;">         
+												        <div class="row ml2-mr2">         
 												          <div class="col-md-2" >
 												        		<div class="form-group">
 												                	<label class="control-label">Maintained Properly</label><span class="mandatory">*</span>
@@ -927,7 +678,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="SRRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="SRRemark1" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getSRRemark1()!=null) {%><%=chlist.getSRRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -939,14 +690,14 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        
 												        <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Procurement/ Accounting Procedure (consumable Stores)</label>
+												                	<label class="control-label black-color"><%=++count %>. Procurement/ Accounting Procedure (consumable Stores)</label>
 												                    
 												                </div>
 												            </div> 
 												        <br>
 												        <br>
 												        
-												      <div class="row" style="margin-left: 2%;margin-right: 2%;">         
+												      <div class="row ml2-mr2">         
 												          <div class="col-md-2" >
 												        		<div class="form-group">
 												                	<label class="control-label">Procedure followed </label><span class="mandatory">*</span>
@@ -964,7 +715,6 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												               <div class="col-md-6"  id="CSDrawn" >
 												                 <div class="form-group">
 												                	<label class="control-label">If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="CSDrawn"  type="checkbox"  <% if(chlist!=null && chlist.getCSDrawn()!=null && chlist.getCSDrawn().equalsIgnoreCase("Yes")) {%> checked <%} %> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="CSDrawn">
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getCSDrawn() !=null && chlist.getCSDrawn().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -980,7 +730,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              <div class="col-md-3"  id="CSReason">
 												                 <div class="form-group">
 												                	<label class="control-label">If not through main stores, reason thereof </label><span class="mandatory">*</span>
-												                    <textarea class="form-control form-control" name="CSReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
+												                    <textarea class="form-control form-control fs15px" name="CSReason" maxlength="3000" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCSReason()!=null) {%><%=chlist.getCSReason() %><%} %></textarea> 
 												                    
 												                </div>
@@ -1006,7 +756,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="CSRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="CSRemark1" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCSRemark1()!=null) {%><%=chlist.getCSRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1020,7 +770,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        
 												       <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Procurement/ Accounting Procedure (Non-consumable Stores)</label>
+												                	<label class="control-label black-color"><%=++count %>. Procurement/ Accounting Procedure (Non-consumable Stores)</label>
 												                    
 												                </div>
 												        </div> 
@@ -1028,7 +778,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        <br>
 												        <br> 
 												        
-												        <div class="row" style="margin-left: 2%;margin-right: 2%;">         
+												        <div class="row ml2-mr2">         
 												          <div class="col-md-2" >
 												        		<div class="form-group">
 												                	<label class="control-label">Procedure followed </label><span class="mandatory">*</span>
@@ -1045,9 +795,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              
 												              <div class="col-md-6"  id="NCSDrawn" >
 												                 <div class="form-group">
-												                	<label class="control-label">If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="NCSDrawn"  <% if(chlist!=null && chlist.getNCSDrawn()!=null && chlist.getNCSDrawn().equalsIgnoreCase("Yes")) {%> checked <%} %>  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
-												                    
+												                	<label class="control-label">If through main stores, drawn from main Stock Register through Demand-cum-issue voucher </label><span class="mandatory">*</span>												                    
 												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="NCSDrawn">
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getNCSDrawn() !=null && chlist.getNCSDrawn().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1062,7 +810,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              <div class="col-md-3"  id="NCSReason">
 												                 <div class="form-group">
 												                	<label class="control-label">If not through main stores, reason thereof </label><span class="mandatory">*</span>
-												                    <textarea class="form-control form-control" name="NCSReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
+												                    <textarea class="form-control form-control fs15px" name="NCSReason" maxlength="3000" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSReason()!=null) {%><%=chlist.getNCSReason() %><%} %></textarea> 
 												                    
 												                </div>
@@ -1089,7 +837,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="NCSRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="NCSRemark1" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark1()!=null) {%><%=chlist.getNCSRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1099,7 +847,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        </div>
 												        
 												        
-												        <div class="row" style="margin-left: 2%;margin-right: 2%;">         
+												        <div class="row ml2-mr2">         
 												         
 													         <div class="col-md-9" >
 													                 <div class="form-group">
@@ -1121,7 +869,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="NCSRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="NCSRemark2" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark2()!=null) {%><%=chlist.getNCSRemark2() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1150,7 +898,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="NCSRemark3" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="NCSRemark3" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getNCSRemark3()!=null) {%><%=chlist.getNCSRemark3() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1162,7 +910,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        
 												       <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Equipment</label>
+												                	<label class="control-label black-color"><%=++count %>. Equipment</label>
 												                </div>
 												        </div> 
 												            
@@ -1171,12 +919,12 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        
 												        
 												        
-												        <div class="row" style="margin-left: 2%;margin-right: 2%;">         
+												        <div class="row ml2-mr2">         
 												          <div class="col-md-4" >
 												        		<div class="form-group">
 												                	<label class="control-label">List out major non-consumable/ equipment procured</label><span class="mandatory">*</span>
 												                     <%if(chlist!=null && chlist.getEquipProcured()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 						<button type="submit" class="btn btn-sm padding5px8px" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 	value="EquipProcuredfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Equipment Procured Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
@@ -1189,9 +937,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                
 												               <div class="col-md-5" >
 												                 <div class="form-group">
-												                	<label class="control-label">Any major equipment not listed in Q.P.R has been purchased? </label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="EquipPurchased"  <% if(chlist!=null && chlist.getEquipPurchased()!=null && chlist.getEquipPurchased().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  id="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
-												                    
+												                	<label class="control-label">Any major equipment not listed in Q.P.R has been purchased? </label><span class="mandatory">*</span>												                    
 												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="EquipPurchased" id="checkbox">
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getEquipPurchased() !=null && chlist.getEquipPurchased().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1208,7 +954,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="EquipmentRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="EquipmentRemark1" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark1()!=null) {%><%=chlist.getEquipmentRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1217,7 +963,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              <div class="col-md-3"  id="EquipReason">
 												                 <div class="form-group">
 												                	<label class="control-label">If yes, reason assigned </label><span class="mandatory">*</span>
-												                     <textarea class="form-control form-control" name="EquipReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
+												                     <textarea class="form-control form-control fs15px" name="EquipReason" maxlength="3000" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" > <% if(chlist!=null && chlist.getEquipReason()!=null ) {%><%=chlist.getEquipReason()%><%} %></textarea> 
 												                </div>
 												              </div>
@@ -1226,12 +972,10 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        </div>
 												        
 												        
-												      <div class="row" style="margin-left: 2%;margin-right: 2%;">         
+												      <div class="row ml2-mr2">         
 												         <div class="col-md-7" >
 												                 <div class="form-group">
-												                	<label class="control-label">Any major equipment procured within one month before the PDC (give details and reason thereof) </label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="EquipProcuredBeforePDC" <% if(chlist!=null && chlist.getEquipProcuredBeforePDC()!=null  && chlist.getEquipProcuredBeforePDC().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  id="checkbox1" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
-												                    
+												                	<label class="control-label">Any major equipment procured within one month before the PDC (give details and reason thereof) </label><span class="mandatory">*</span>												                    
 												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="EquipProcuredBeforePDC" id="checkbox1">
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getEquipProcuredBeforePDC() !=null && chlist.getEquipProcuredBeforePDC().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1247,7 +991,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="EquipmentRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="EquipmentRemark2" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark2()!=null) {%><%=chlist.getEquipmentRemark2() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1259,7 +1003,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Attach if yes</label><span class="mandatory">*</span>
 												                     <%if(chlist!=null && chlist.getEquipProcuredBeforePDCAttach()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 						<button type="submit" class="btn btn-sm padding5px8px" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 	value="EquipProcuredBeforePDCfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="EquipProcuredBeforePDC Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
@@ -1270,12 +1014,10 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												               
 												        </div>
 												        
-												    <div class="row" style="margin-left: 2%;margin-right: 2%;">              
+												    <div class="row ml2-mr2">              
 												        <div class="col-md-8" >
 												                 <div class="form-group">
-												                	<label class="control-label">Any equipment bought on charge within one month before the PDC or after PDC (Give details and reasons thereof) </label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="EquipBoughtOnCharge"  <% if(chlist!=null && chlist.getEquipBoughtOnCharge()!=null  && chlist.getEquipBoughtOnCharge().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  id="checkbox2" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
-												                    
+												                	<label class="control-label">Any equipment bought on charge within one month before the PDC or after PDC (Give details and reasons thereof) </label><span class="mandatory">*</span>												                    
 												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="EquipBoughtOnCharge" id="checkbox2">
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getEquipBoughtOnCharge() !=null && chlist.getEquipBoughtOnCharge().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1292,7 +1034,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="EquipmentRemark3" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="EquipmentRemark3" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getEquipmentRemark3()!=null) {%><%=chlist.getEquipmentRemark3() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1313,14 +1055,14 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        
 												      <div class="col-md-4" >
 												        		<div class="form-group">
-												                	   <label class="control-label" style="color:black"><%=++count %>. Budget</label>
+												                	   <label class="control-label black-color"><%=++count %>. Budget</label>
 												                </div>
 												        </div>
 												            
 												        <br>
 												        <br>   
 												          
-												         <div class="row" style="margin-left: 2%;margin-right: 2%;">         
+												         <div class="row ml2-mr2">         
 												          
 												           <div class="col-md-5" >
 												                 <div class="form-group">
@@ -1339,7 +1081,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        		<div class="form-group">
 												                	<label class="control-label">Upload :</label><span class="mandatory">*</span>
 												                	<%if(chlist!=null && chlist.getBudgetDocument()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 						<button type="submit" class="btn btn-sm padding5px8px" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 	value="BudgetDocumentfile" formaction="ProjectClosureChecklistFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="BudgetDocument Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
@@ -1371,7 +1113,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="BudgetRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="BudgetRemark1" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark1()!=null) {%><%=chlist.getBudgetRemark1()%><%} %></textarea> 
                               		      							
 												                </div>
@@ -1381,7 +1123,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												              <div class="col-md-5" >
 												                 <div class="form-group">
 												                	<label class="control-label">What is the mechanism for monitoring/ control of head-wise expenditure? </label><span class="mandatory">*</span>
-												                    <textarea class="form-control form-control" name="BudgetMechanism" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
+												                    <textarea class="form-control form-control fs15px" name="BudgetMechanism" maxlength="3000" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetMechanism()!=null) {%><%=chlist.getBudgetMechanism() %><%} %></textarea> 
 												                    
 												                </div>
@@ -1419,7 +1161,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="BudgetRemark2" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="BudgetRemark2" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark2()!=null) {%><%=chlist.getBudgetRemark2() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1447,7 +1189,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="BudgetRemark3" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="BudgetRemark3" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark3()!=null) {%><%=chlist.getBudgetRemark3()%><%} %></textarea> 
                               		      							
 												                </div>
@@ -1472,7 +1214,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="BudgetRemark4" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="BudgetRemark4" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getBudgetRemark4()!=null) {%><%=chlist.getBudgetRemark4() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1482,7 +1224,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												            
 												            </div>  
 												              
-												              <div class="checklistpage"  style="text-align: center;">
+												              <div class="checklistpage text-center">
 												             
 												             
 												             <% if(chlist!=null && chlist.getCRBringFrom()!=null) {%>
@@ -1497,7 +1239,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 	            							         
 												   <br>
 												    
-												     <div class="pagin" style="display: flex;justify-content: center;padding-bottom:10px;"> 
+												     <div class="pagin pagination-display"> 
 																
 																	
 																	<div class="pagination">
@@ -1530,14 +1272,14 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												      
 												         <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Utilization of Equipment</label>
+												                	<label class="control-label black-color"><%=++count %>. Utilization of Equipment</label>
 												                </div>
 												        </div>
 												            
 												        <br>
 												        <br> 
 												        
-												      <div class="row" style="margin-left: 2%;margin-right: 2%;">
+												      <div class="row ml2-mr2">
 												          
 												          <div class="col-md-4" >
 												                 <div class="form-group">
@@ -1566,7 +1308,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="UtilizationRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="UtilizationRemark1" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getUtilizationRemark1()!=null) {%><%=chlist.getUtilizationRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1579,18 +1321,17 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          
 												          <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>. Staff Position</label>
+												                	<label class="control-label black-color"><%=++count %>. Staff Position</label>
 												                </div>
 												        </div> 
 												            
 												        <br>
 												        <br> 
 												          
-												     <div class="row" style="margin-left: 1%;margin-right: 1%;">      
+												     <div class="row ml2-mr2">      
 												         <div class="col-md-2" >
 												                 <div class="form-group">
 												                	<label class="control-label">Demanded as per Q.P.R</label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="SPdemand"  <% if(chlist!=null && chlist.getSPdemand()!=null  && chlist.getSPdemand().equalsIgnoreCase("Yes")) {%> checked <%} %>  type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
 												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="SPdemand" id="spdemand">
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getSPdemand() !=null && chlist.getSPdemand().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1607,7 +1348,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="StaffRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="StaffRemark1" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getStaffRemark1()!=null) {%><%=chlist.getStaffRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1615,7 +1356,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          
 												          
 												          
-												           <div class="col-md-4" style="display:none;" id="spactualposition">
+												           <div class="col-md-4 dis-none"  id="spactualposition">
 												                 <div class="form-group">
 												                	<label class="control-label">Actual position-held</label><span class="mandatory">*</span>
 												                    
@@ -1626,7 +1367,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          
 												          
 												          
-												           <div class="col-md-4" style="display:none;" id="spgeneralspecific">
+												           <div class="col-md-4 dis-none"  id="spgeneralspecific">
 												                 <div class="form-group">
 												                	<label class="control-label">General Specific (Category wise)</label><span class="mandatory">*</span>
 												                    
@@ -1642,19 +1383,17 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												      
 												       <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>.Civil Works</label>
+												                	<label class="control-label black-color"><%=++count %>.Civil Works</label>
 												                </div>
 												        </div> 
 												            
 												        <br>
 												        <br> 
 												          
-												         <div class="row" style="margin-left: 2%;margin-right: 2%;">      
+												         <div class="row ml2-mr2">      
 												         <div class="col-md-6" >
 												                 <div class="form-group">
-												                	<label class="control-label">Civil works are included in the estimated prepared before project sanction.</label><span class="mandatory">*</span>
-<%-- 												                    <input value="Yes" name="CWIncluded"  <% if(chlist!=null && chlist.getCWIncluded()!=null  && chlist.getCWIncluded().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
- --%>												                    
+												                	<label class="control-label">Civil works are included in the estimated prepared before project sanction.</label><span class="mandatory">*</span> --%>												                    
 												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="CWIncluded" id="cwincluded">
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getCWIncluded() !=null && chlist.getCWIncluded().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1669,7 +1408,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="CWRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="CWRemark1" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getCWRemark1()!=null) {%><%=chlist.getCWRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1725,9 +1464,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												          
 												           <div class="col-md-4"  id="cwdeviation">
 												                 <div class="form-group">
-												                	<label class="control-label">There are no deviations from the  admin   approval.</label><span class="mandatory">*</span>
-												                    <%-- <input value="Yes" name="CWDeviation"  <% if(chlist!=null && chlist.getCWDeviation()!=null  && chlist.getCWDeviation().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
-												                    
+												                	<label class="control-label">There are no deviations from the  admin   approval.</label><span class="mandatory">*</span>												                    
 												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="CWDeviation" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getCWDeviation() !=null && chlist.getCWDeviation().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1739,9 +1476,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												         
 												          <div class="col-md-7"  id="cwexpenditure">
 												                 <div class="form-group">
-												                	<label class="control-label">Expenditure is not incurred just for the sake of exhausting funds at the end of Project.</label><span class="mandatory">*</span>
-<%-- 												                    <input value="Yes" name="CWExpenditure"  <% if(chlist!=null && chlist.getCWExpenditure()!=null  && chlist.getCWExpenditure().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
- --%>												                    
+												                	<label class="control-label">Expenditure is not incurred just for the sake of exhausting funds at the end of Project.</label><span class="mandatory">*</span> --%>												                    
 												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="CWExpenditure" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getCWExpenditure() !=null && chlist.getCWExpenditure().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1757,7 +1492,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												      
 												      <div class="col-md-4" >
 												        		<div class="form-group">
-												                	<label class="control-label" style="color:black"><%=++count %>.Vehicles &emsp; <input type="checkbox" id="vehicle" name="VehicleChecked" <%if (chlist!=null && !chlist.getNoOfVehicleSanctioned().isEmpty()){ %> checked <%} %> ></label>
+												                	<label class="control-label black-color"><%=++count %>.Vehicles &emsp; <input type="checkbox" id="vehicle" name="VehicleChecked" <%if (chlist!=null && !chlist.getNoOfVehicleSanctioned().isEmpty()){ %> checked <%} %> ></label>
 												                	
 												                </div>
 												        </div> 
@@ -1765,7 +1500,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												        <br>
 												        <br> 
 												      
-												         <div class="row" style="margin-left: 2%;margin-right: 2%;" id="selectall">      
+												         <div class="row ml2-mr2">      
 												          <div class="col-md-3" >
 												                 <div class="form-group">
 												                	<label class="control-label">No. of vehicles sanctioned in the project </label><span class="mandatory">*</span>
@@ -1811,14 +1546,14 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												         
 												         <div class="col-md-4" >
 											        		<div class="form-group">
-											                	<label class="control-label" style="color:black"><%=++count %>. If the project is closed</label>
+											                	<label class="control-label black-color"><%=++count %>. If the project is closed</label>
 											                </div>
 												        </div> 
 												            
 												        <br>
 												        <br>
 												        
-												        <div class="row" style="margin-left: 2%;margin-right: 2%;">      
+												        <div class="row ml2-mr2">      
 												          <div class="col-md-3" >
 												                 <div class="form-group">
 												                	<label class="control-label">When the project finally closed</label><span class="mandatory">*</span>
@@ -1850,7 +1585,6 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												           <div class="col-md-4" >
 												                 <div class="form-group">
 												                	<label class="control-label">Whether  the  stated  objectives achieved.</label><span class="mandatory">*</span>
-                                                                    <%-- <input value="Yes" name="CRObjective" <% if(chlist!=null && chlist.getCRObjective()!=null  && chlist.getCRObjective().equalsIgnoreCase("Yes")) {%> checked <%} %> type="checkbox"  data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="80" data-height="10" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" > --%>
                                                                      <select class="form-control w-50" data-width="100%" data-live-search="true" name="CRObjective" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getCRObjective() !=null && chlist.getCRObjective().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1864,7 +1598,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                 <div class="form-group">
 												                	<label class="control-label">Remarks</label>
 												                   
-                              		      							<textarea class="form-control form-control" name="ProjectRemark1" maxlength="255" rows="1" cols="100" style="font-size: 15px;" 
+                              		      							<textarea class="form-control form-control fs15px" name="ProjectRemark1" maxlength="255" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><% if(chlist!=null && chlist.getProjectRemark1()!=null) {%><%=chlist.getProjectRemark1() %><%} %></textarea> 
                               		      							
 												                </div>
@@ -1889,7 +1623,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												               <div class="col-md-5" >
 												                 <div class="form-group">
 												                	<label class="control-label">Reason, if Cost Over-run</label><span class="mandatory">*</span>
-                                                                    <textarea class="form-control form-control" name="CRcostoverin" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
+                                                                    <textarea class="form-control form-control fs15px" name="CRcostoverin" maxlength="3000" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getCRcostoverin()!=null){%><%=chlist.getCRcostoverin()%><%}%></textarea> 											                    
 												                </div>
 												           </div>  
@@ -1924,13 +1658,13 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												                
 												                 <div class="form-group">
 												                	<label class="control-label">Overall Review Remarks/Recommendations </label><span class="mandatory">*</span>
-                                                                    <textarea class="form-control form-control" name="OverAllReason" maxlength="3000" rows="1" cols="100" style="font-size: 15px;" 
+                                                                    <textarea class="form-control form-control fs15px" name="OverAllReason" maxlength="3000" rows="1" cols="100" 
                               		  								 placeholder="Enter Reason" ><%if(chlist!=null && chlist.getRemarks()!=null){%><%=chlist.getRemarks()%><%}%></textarea> 											                    
 												                </div>
 												             </div>  
 												        </div> 
 												    
-														     <div class="checklistpage"  style="text-align: center;">
+														     <div class="checklistpage text-center">
 														     
 														             <% if(chlist!=null && chlist.getSPActualposition()!=null && !chlist.getSPActualposition().isEmpty()) { %>
 												                    
@@ -1945,7 +1679,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												    
 												    <br>
 												    
-												    <div class="pagin" style="display: flex; justify-content: center;padding-bottom:10px;"> 
+												    <div class="pagin pagination-display"> 
 																   <div class="pagination">
 																			
 																			<div class="page-item">
@@ -1967,7 +1701,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
                							</div>
                						</div>
                					</div>
-               					<div style="display: flex;justify-content: space-between;">
+               					<div class="disflex-juscontent">
                						<div></div>
 		               				
                					</div>

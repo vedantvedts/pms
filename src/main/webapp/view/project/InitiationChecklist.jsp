@@ -3,36 +3,15 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Checklist</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-<style type="text/css">
-
-td{
-	padding : 5px 10px;
-}
-
-.toggle.btn{
-	min-height: 2.0rem !important;
-	font-size: 0.95rem !important;
-	padding: 0.35rem 0.75rem !important;
-}
-
-.fa{
-	font-size: 1rem;
-}
-
-.nav-item
-{
-	padding: 0px;
-	cursor: pointer;
-}
-
-</style>
+<spring:url value="/resources/css/projectModule/initiationChecklist.css" var="initiationChecklist" />
+<link href="${initiationChecklist}" rel="stylesheet" />
 
 </head>
 <body>
@@ -71,42 +50,42 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				<div class="row">
 					<div class="col-6"><h4>CHECKLIST</h4></div>
 					<div class="col-6">
-						<h4 style="float: right;">Project &nbsp;&nbsp;:&nbsp;&nbsp;<%=initiationdata[9]!=null?StringEscapeUtils.escapeHtml4(initiationdata[9].toString()): " - " %> &nbsp;&nbsp;&nbsp;
-							<a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectIntiationList.htm" style="color: white!important; float: right;">BACK</a>
+						<h4 class="float-right">Project &nbsp;&nbsp;:&nbsp;&nbsp;<%=initiationdata[9]!=null?StringEscapeUtils.escapeHtml4(initiationdata[9].toString()): " - " %> &nbsp;&nbsp;&nbsp;
+							<a class="btn btn-info btn-sm  shadow-nohover back cs-back" href="ProjectIntiationList.htm">BACK</a>
 						</h4>
 					</div>
 				</div>
 			</div>
-			<div class="card-body" > <!-- style="overflow-y : auto; max-height:32rem  " -->
-				<div class="" style="margin-top: -20px;">
+			<div class="card-body" >
+				<div class="mt-n20">
 						<ul class="nav nav-pills nav-tabs nav-fill col-12" id="pills-tab" role="tablist">
 						  <li class="nav-item col-4">
-							  <div class="nav-link active" style="border: 1px solid #CCD1E4; "  id="cl1-tab" data-toggle="pill" href="#cl1" role="tab"  aria-selected="true" onclick="showtab(1)">
+							  <div class="nav-link active cs-nav"  id="cl1-tab" data-toggle="pill" href="#cl1" role="tab"  aria-selected="true" onclick="showtab(1)">
 								  Checklist - 1
-								  <button type="button" onclick="formsubmit(1)"  id="btn-cl1"  class="btn btn-sm btn-cl"  style="float: right;margin-top: -3px;"><i class="fa fa-download" aria-hidden="true"></i></button>
+								  <button type="button" onclick="formsubmit(1)"  id="btn-cl1"  class="btn btn-sm btn-cl cs-btn"><i class="fa fa-download" aria-hidden="true"></i></button>
 							  </div>
 						  </li>
 						  <li class="nav-item col-4">
-							  <div class="nav-link" id="cl2-tab" style="border: 1px solid #CCD1E4; " data-toggle="pill" href="#cl2" role="tab"  aria-selected="false" onclick="showtab(2)">
+							  <div class="nav-link cs-nav" id="cl2-tab" data-toggle="pill" href="#cl2" role="tab"  aria-selected="false" onclick="showtab(2)">
 								  Checklist - 2   
-								  <button type="button" onclick="formsubmit(2)" id="btn-cl2"  class="btn btn-sm btn-cl" style="float: right;margin-top: -3px;"><i class="fa fa-download" aria-hidden="true"></i></button> 
+								  <button type="button" onclick="formsubmit(2)" id="btn-cl2"  class="btn btn-sm btn-cl cs-btn"><i class="fa fa-download" aria-hidden="true"></i></button> 
 							  </div>
 						  </li>
 						  <li class="nav-item col-4">
-						    <div class="nav-link" id="cl3-tab" style="border: 1px solid #CCD1E4; " data-toggle="pill" href="#cl3" role="tab"  aria-selected="false" onclick="showtab(3)">
+						    <div class="nav-link cs-nav" id="cl3-tab" data-toggle="pill" href="#cl3" role="tab"  aria-selected="false" onclick="showtab(3)">
 						    	Checklist - 3
-						    	<button type="button" onclick="formsubmit(3)" id="btn-cl3"  class="btn btn-sm btn-cl"   style="float: right;margin-top: -3px;"><i class="fa fa-download" aria-hidden="true"></i></button>
+						    	<button type="button" onclick="formsubmit(3)" id="btn-cl3"  class="btn btn-sm btn-cl cs-btn"><i class="fa fa-download" aria-hidden="true"></i></button>
 						    </div>
 						  </li>
 						</ul>
 				</div>
 				
 				
-				<div class="tab-content" id="pills-tabContent"  style="overflow-y : auto; min-height:32rem ; max-height: 32rem; " >
+				<div class="tab-content cs-content" id="pills-tabContent">
 				  
 				  <div class="tab-pane show active" id="cl1" role="tabpanel" >
 				  		<div class=""  align="center"  >
-				  			<table style="margin: auto;width: 70%; margin-top: 15px;" >
+				  			<table class="cs-table">
 				  				
 				  				<% 	ArrayList<String> clsn1 =new  ArrayList<String>();
 				  					for(Object[] item : checklist){
@@ -116,7 +95,7 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  					%>
 				  				<tr>
 				  				
-				  					<td style="width: 10%; text-align: right; padding-top: 0px;">
+				  					<td class="cs-td">
 				  					
 				  						<%if(!clsn1.contains(item[2].toString() ))
 				  						{
@@ -128,14 +107,14 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  					</td>			
 				  					
 				  					
-				  					<td colspan="4"  style=" overflow-wrap: break-word; width: 60%">
+				  					<td colspan="4" class="cs-col4">
 				  						<%if(Integer.parseInt(item[3].toString())>0) { %>	
 				  							<%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %>
 				  						<%}else if(Integer.parseInt(item[3].toString())==0){ %>
 				  							<b><%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %></b>
 				  						<%} %>
 				  					</td>
-				  					<td style="width: 20%" >
+				  					<td class="w-20">
 				  						<%if(Integer.parseInt(item[3].toString())>0) { %>				  						
 				  							<input name="toggle" id="toggle_<%=item[0] %>" onchange="updateAnswer('<%=item[0] %>')"  type="checkbox" <%if(item[5]!= null && (item[5]).toString().equalsIgnoreCase("1")){ %> checked <%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="112" data-height="15" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 				  						<%} %>
@@ -148,7 +127,7 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  </div>
 				  <div class="tab-pane " id="cl2" role="tabpanel" >
 					 	<div class=""  align="center"  >
-				  			<table style="margin: auto; width: 70%;" >
+				  			<table class="cs-table1">
 				  				
 				  				
 				  				<% 	ArrayList<String> clsn2 =new  ArrayList<String>();
@@ -159,7 +138,7 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  					%>
 				  				<tr>
 				  				
-				  					<td style="width: 10%; text-align: right; padding-top: 0px;">
+				  					<td class="cs-td">
 				  					
 				  						<%if(!clsn2.contains(item[2].toString() ))
 				  						{
@@ -171,14 +150,14 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  					</td>			
 				  					
 				  					
-				  					<td colspan="4"  style=" overflow-wrap: break-word; width: 60%">
+				  					<td colspan="4" class="cs-col4">
 				  						<%if(Integer.parseInt(item[3].toString())>0) { %>	
 				  							<%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %>
 				  						<%}else if(Integer.parseInt(item[3].toString())==0){ %>
 				  							<b><%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %></b>
 				  						<%} %>
 				  					</td>
-				  					<td style="width: 20%" >
+				  					<td class="w-20">
 				  						<%if(Integer.parseInt(item[3].toString())>0) { %>				  						
 				  							<input name="toggle" id="toggle_<%=item[0] %>"  onchange="updateAnswer('<%=item[0] %>')"  type="checkbox" <%if(item[5]!= null && (item[5]).toString().equalsIgnoreCase("1")){ %> checked <%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="112" data-height="15" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 				  						<%} %>
@@ -192,7 +171,7 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  </div>
 				  <div class="tab-pane " id="cl3" role="tabpanel" >
 				  	<div class=""  align="center"  >
-				  			<table style="margin: auto; width: 70%;" >
+				  			<table class="cs-table1">
 				  								  				
 				  				<% 	ArrayList<String> clsn3 =new  ArrayList<String>();
 				  					for(Object[] item : checklist){
@@ -202,7 +181,7 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  					%>
 				  				<tr>
 				  				
-				  					<td style="width: 10%; text-align: right; padding-top: 0px;">
+				  					<td class="cs-td">
 				  					
 				  						<%if(!clsn3.contains(item[2].toString() ))
 				  						{
@@ -214,14 +193,14 @@ Object[] initiationdata= (Object[])request.getAttribute("initiationdata");
 				  					</td>			
 				  					
 				  					
-				  					<td colspan="4"  style=" overflow-wrap: break-word; width: 60%">
+				  					<td colspan="4" class="cs-col4">
 				  						<%if(Integer.parseInt(item[3].toString())>0) { %>	
 				  							<%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %>
 				  						<%}else if(Integer.parseInt(item[3].toString())==0){ %>
 				  							<b><%=item[4]!=null?StringEscapeUtils.escapeHtml4(item[4].toString()): " - " %></b>
 				  						<%} %>
 				  					</td>
-				  					<td style="width: 20%" >
+				  					<td class="w-20">
 				  						<%if(Integer.parseInt(item[3].toString())>0) { %>				  						
 				  							<input name="toggle" id="toggle_<%=item[0] %>"  onchange="updateAnswer('<%=item[0] %>')"  type="checkbox" <%if(item[5]!= null && (item[5]).toString().equalsIgnoreCase("1")){ %> checked <%}%> data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-width="112" data-height="15" data-on="<i class='fa fa-check' aria-hidden='true'></i> YES" data-off="<i class='fa fa-times' aria-hidden='true'></i> NO" >
 				  						<%} %>
