@@ -1,0 +1,93 @@
+.fa-file-text{
+	color:rgba(255,222,0,1);
+}
+
+.scroll {
+    max-height: 390px;
+    overflow-y: auto;
+}
+
+.scrollpolicy{
+ 	/* max-height: 515px; */
+    overflow-y: auto !important;
+}
+
+#versionerror{
+	display:none;
+}
+
+.projName{
+	margin-top: 2% !important;font-size: 113% !important;
+}
+
+.tabHeight{
+	max-height: 360px;
+}
+
+.m20{
+	margin-top: 20px; 
+}
+.m35{
+	margin-top: 35px; 
+}
+
+.h4S{
+	font-family: 'Lato', sans-serif;font-weight: 400
+}
+
+.ml7mt4{
+	margin-left:7rem;margin-top: 4rem
+}
+
+.h5S{
+	color:maroon;font-family: 'Lato', sans-serif;display: block;
+}
+
+.p43{
+	padding-right: 43px;padding-left: 43px; padding-bottom: 43px; padding-top: 8px 
+}
+.h4st{
+	font-family: 'Lato', sans-serif;font-weight: 800
+}
+
+.f1s{
+	font-size: 100%;margin-bottom: -1%;
+}
+
+.c2s{
+	color: red;font-weight: bold;
+}
+
+.d2s{
+	margin-top: 50px;margin-bottom: -6px
+}
+
+.e2s{
+	font-family: 'Lato', sans-serif;font-size: 15px;
+}
+.m-35{
+	margin-top: -35px;margin-bottom: -6px
+}
+
+.f2s{
+	font-family: 'Montserrat', sans-serif;
+}
+
+#captchaImage{
+	border:1px solid #ccc; padding:5px; margin-right:10px;
+}
+
+#captchaInput{
+max-width: 150px; margin-right: 10px;}
+
+.g2s{
+	display: flex; align-items: center;
+}
+
+.w150{
+	width:150%
+}
+
+.salert{
+	font-family: 'Lato', sans-serif;font-size: 15px;color:red;margin-bottom: 10px;
+}

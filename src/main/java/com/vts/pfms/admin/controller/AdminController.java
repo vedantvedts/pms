@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1440,7 +1441,16 @@ public class AdminController {
 		 
 		Gson json = new Gson();
 				
-		
+		 Enumeration<String> parameterNames = req.getParameterNames();
+	        while (parameterNames.hasMoreElements()) {
+	            String paramName = parameterNames.nextElement();
+	            String paramValue = req.getParameter(paramName).trim();
+	            System.out.println(paramName+"-----");
+	            if (paramValue != null && paramValue.matches(".*<[^>]+>.*")) {
+	                // Contains HTML tag → return -1
+	                return json.toJson(-1);
+	            }
+	        }
 		String expertNo = service.GenExpertNo();
 		Expert newExpert = new Expert();
 		newExpert.setTitle(req.getParameter("title"));

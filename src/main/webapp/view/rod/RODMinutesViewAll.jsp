@@ -855,7 +855,34 @@ th,td
 								<td class="std" style="text-align: justify;padding:2px">
 								<%=obj[5].toString() %>
 								</td>
-								<td class="std"><%=obj[10]!=null?sdf.format(sdf1.parse(obj[10].toString())):" - "  %></td>
+										<td class="std" style="text-align: center;">
+									<%	String actionstatuS = obj[3].toString();
+										int Progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
+										LocalDate pdcOrg = LocalDate.parse(obj[10].toString());
+										LocalDate lastDate = obj[16]!=null ? LocalDate.parse(obj[16].toString()): null;
+										LocalDate Today = LocalDate.now();
+										LocalDate endPdc=LocalDate.parse(obj[15].toString());
+									%> 
+					 				<% if(lastDate!=null && actionstatuS.equalsIgnoreCase("C") ){%>
+											<%if(actionstatuS.equals("C") && (pdcOrg.isAfter(lastDate) || pdcOrg.equals(lastDate))){%>
+											<span class="completed"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+											<%}else if(actionstatuS.equals("C") && pdcOrg.isBefore(lastDate)){ %>	
+											<span class="completeddelay"><%= sdf.format(sdf1.parse(obj[13].toString()))%> </span>
+											<%} %>	
+										<%}else{ %>
+												-									
+										<%} %>
+									<br>
+									<span <%if(endPdc.isAfter(Today) || endPdc.isEqual(Today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:black ;font-weight:bold;" <%} %>>
+									<%= sdf.format(sdf1.parse(obj[15].toString()))%>
+									</span>
+										<%if(!pdcOrg.equals(endPdc)) { %>
+									<br>
+									<span <%if(pdcOrg.isAfter(Today) || pdcOrg.isEqual(Today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:black ;font-weight:bold;" <%} %>>
+									<%= sdf.format(sdf1.parse(obj[10].toString()))%> 
+									</span>	
+									<%} %>
+								</td>
 								<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 								<td class="std">
 								<%if(obj[4]!= null){ %> 

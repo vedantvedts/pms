@@ -2,30 +2,16 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Milestone Activity Preview</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-overflow-x: hidden; 
-}
+ <spring:url value="/resources/css/milestone/milestoneActivityPreview.css" var="milestoneActivityPreview" />     
+<link href="${milestoneActivityPreview}" rel="stylesheet" />
 
-  .container-fluid form {
-    border: 2px solid #055C9D;
-    padding: 15px;
-    border-radius: 6px;
-    margin-top: 10px;
-    color:#055C9D;
-    background-color: #f9f9f9; /* optional for better visibility */
-  }
-</style>
 
 </head>
 <%
@@ -153,8 +139,8 @@ var s = '';
 	
 <body>
 
-  <nav class="navbar navbar-light bg-light" style="margin-top: -1%;">
-  	<div class="row text-danger m-3" style="font-weight: 600; font-size: 14px; "> 
+  <nav class="navbar navbar-light bg-light" >
+  	<div class="row text-danger m-3 fw600" > 
 Kindly note that only the Project Director, the Admin, and the OICs of the Parent Milestone are authorized to edit milestones.
 </div>
   <a class="navbar-brand"></a>
@@ -166,9 +152,9 @@ Kindly note that only the Project Director, the Admin, and the OICs of the Paren
   <%} %>
   <%} %>
   <%if(RevisionCount>0){ %>
-  <input type="submit" class="btn btn-primary btn-sm preview "  value="Compare" style="margin-left: 10px;" formaction="MilestoneActivityCompare.htm"> 		
+  <input type="submit" class="btn btn-primary btn-sm preview ml-1"  value="Compare"  formaction="MilestoneActivityCompare.htm"> 		
   <%} %>
-  <input type="submit" class="btn btn-primary btn-sm back "  value="Back" style="margin-left: 10px;"> 	
+  <input type="submit" class="btn btn-primary btn-sm back ml-1"  value="Back" > 	
 		     <input type="hidden" name="projectDirector" value ="<%=projectDirector%>">
       <input type="hidden" name="RevId"	value="<%=RevisionCount %>" /> 
       <input type="hidden" name="ProjectId"	value="<%=getMA[10] %>" /> 
@@ -201,28 +187,28 @@ Kindly note that only the Project Director, the Admin, and the OICs of the Paren
 <div class="container-fluid">
 <div class="row" >
 <div class="col-md-12">
-<div  class="panel-group" style="  "><h5 class="text-white" style="font-weight: bold;font-size: large;background-color: #055C9D; text-align: center;padding: 10px"><%=getMA[1]!=null?StringEscapeUtils.escapeHtml4(getMA[1].toString()): " - " %> Milestone Activity Details  </h5>  
+<div  class="panel-group" ><h5  class="mp-1"><%=getMA[1]!=null?StringEscapeUtils.escapeHtml4(getMA[1].toString()): " - " %> Milestone Activity Details  </h5>  
 <form   method="POST" action="MilestoneActivityEditSubmit.htm" id="form<%=getMA[0] %>M<%=getMA[10] %>">
 <div class="row container-fluid" >
                              <div class="col-md-1 " ><br><label class="control-label">Type</label>  <br>  <b >Main</b>                    		
                         	</div>
                     		<div class="col-md-5 " ><br>
                     		<label class="control-label"> Activity Name:</label> <br> 
-                    		 <textarea rows="1" cols="50" class="form-control "  <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=getMA[4]!=null?getMA[4].toString(): "" %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control mp2"  <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"    maxlength="1000" required="required"><%=getMA[4]!=null?getMA[4].toString(): "" %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-1 " align="center"><br>
                         	<label class="control-label">From:</label><br>
-                        	<input class="form-control " name="ValidFrom" id="DateCompletion"  value="<%=sdf.format(getMA[2]) %>"  required="required"  style="width:120px;" >
+                        	<input class="form-control width120" name="ValidFrom" id="DateCompletion"  value="<%=sdf.format(getMA[2]) %>"  required="required"  >
                         	
                         	</div>
                         	<div class="col-md-1 " align="center"><br>
                         		<label class="control-label">To:</label><br>
-                        	<input class="form-control form-control" name="ValidTo" id="DateCompletion2"  value="<%=sdf.format(getMA[3]) %>"  required="required" style="width:120px;" >
+                        	<input class="form-control form-control width120" name="ValidTo" id="DateCompletion2"  value="<%=sdf.format(getMA[3]) %>"  required="required" >
                         		</div>
                         		<div class="col-md-1 " align="center" ><br>
                     		<label class="control-label">Weightage <br> </label>
-                    		<input type="number" class="form-control " name="Weightage" id="Weightage<%=getMA[0] %>M<%=getMA[10] %>" required="required" min="1" max="100" value="<%=getMA[16]!=null?StringEscapeUtils.escapeHtml4(getMA[16].toString()): "" %>"  style="width:95px;">
+                    		<input type="number" class="form-control width95" name="Weightage" id="Weightage<%=getMA[0] %>M<%=getMA[10] %>" required="required" min="1" max="100" value="<%=getMA[16]!=null?StringEscapeUtils.escapeHtml4(getMA[16].toString()): "" %>"  >
 
                     		 
                         	</div>
@@ -258,7 +244,7 @@ Kindly note that only the Project Director, the Admin, and the OICs of the Paren
                        		<div class="row container-fluid" >
                         	<div class="col-md-1"><br></div>
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory" >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode1" id="labCode1M" required 
 								onchange="renderEmployeeList('1','M','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -277,7 +263,7 @@ Kindly note that only the Project Director, the Admin, and the OICs of the Paren
   									</select>
                         	</div>
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory"  >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode2" id="labCode2M" required 
 								onchange="renderEmployeeList('2','M','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -343,22 +329,22 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
 					                        	 <form   method="POST" action="MilestoneActivityEditSubmit.htm" id="form<%=getMA[0] %>A<%=ActivityA[0] %>">
 					
 						<div class="row container-fluid" >
-						    <div class="col-md-1 " ><label class="control-label" style="margin-left: 8px;"></label><br> <b style="margin-left: 8px;">A-<%=countA %></b><br>
+						    <div class="col-md-1 " ><label class="control-label ml-1" ></label><br> <b class="ml-1">A-<%=countA %></b><br>
                     		
                         	</div>
 						  <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityA[4]!=null?ActivityA[4].toString(): " - " %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control mp2" <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"    maxlength="1000" required="required"><%=ActivityA[4]!=null?ActivityA[4].toString(): " - " %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-1 " align="center"><br>
-                        	<input class="form-control " name="ValidFrom" id="DateCompletionA<%=ActivityA[0] %>"  value="<%=sdf.format(ActivityA[2]) %>"  required="required" style="width:120px;;" >
+                        	<input class="form-control width120" name="ValidFrom" id="DateCompletionA<%=ActivityA[0] %>"  value="<%=sdf.format(ActivityA[2]) %>"  required="required"  >
                         	
                         	</div>
                         	<div class="col-md-1 " align="center"><br>
-                        	<input class="form-control " name="ValidTo" id="DateCompletionA2<%=ActivityA[0] %>"  value="<%=sdf.format(ActivityA[3]) %>"  required="required"  style="width:120px;;" >
+                        	<input class="form-control width120" name="ValidTo" id="DateCompletionA2<%=ActivityA[0] %>"  value="<%=sdf.format(ActivityA[3]) %>"  required="required"  >
                         	</div>
                        		<div class="col-md-1 " align="center" ><br>      
-                   				<input type="number" class="form-control "  name="Weightage" id="Weightage<%=getMA[0] %>A<%=ActivityA[0] %>" required="required" min="0" max="100" value="<%=ActivityA[6]!=null?StringEscapeUtils.escapeHtml4(ActivityA[6].toString()): "" %>" style="width:95px;" >
+                   				<input type="number" class="form-control width95"  name="Weightage" id="Weightage<%=getMA[0] %>A<%=ActivityA[0] %>" required="required" min="0" max="100" value="<%=ActivityA[6]!=null?StringEscapeUtils.escapeHtml4(ActivityA[6].toString()): "" %>" >
                        		</div>
                        		<div class="col-md-2 " ><br>
                        			<%if(RevisionCount==0) { %>
@@ -391,7 +377,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                         	</div>
                         	
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory"  >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode1" id="labCode1A<%=ActivityA[0] %>" required 
 								onchange="renderEmployeeList('1','A<%=ActivityA[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -410,7 +396,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
   									</select>
                         	</div>
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory"  >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode2" id="labCode2A<%=ActivityA[0] %>" required 
 								onchange="renderEmployeeList('2','A<%=ActivityA[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -521,22 +507,22 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
 	                              <form   method="POST" action="MilestoneActivityEditSubmit.htm" id="form<%=ActivityA[0] %>B<%=ActivityB[0] %>">
 		
 						    <div class="row container-fluid" >
-						     <div class="col-md-1 " ><br> <label class="control-label"></label><b style="margin-left: 16px;">B-<%=countB %></b>
+						     <div class="col-md-1 " ><br> <label class="control-label"></label><b class="ml-1">B-<%=countB %></b>
                     		
                         	</div>
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityB[4]!=null?ActivityB[4].toString(): " - " %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control mp2" <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"    maxlength="1000" required="required"><%=ActivityB[4]!=null?ActivityB[4].toString(): " - " %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-1 " align="center"><br>
-                        	<input class="form-control " name="ValidFrom" id="DateCompletionB<%=ActivityA[0] %><%=ActivityB[0] %>"  value="<%=sdf.format(ActivityB[2]) %>"  required="required"  style="width:120px;;" >
+                        	<input class="form-control width120" name="ValidFrom" id="DateCompletionB<%=ActivityA[0] %><%=ActivityB[0] %>"  value="<%=sdf.format(ActivityB[2]) %>"  required="required"   >
                         	
                         	</div>
                         	<div class="col-md-1 " align="center"><br>
-                        	<input class="form-control " name="ValidTo" id="DateCompletionB2<%=ActivityA[0] %><%=ActivityB[0] %>"  value="<%=sdf.format(ActivityB[3]) %>"  required="required"  style="width:120px;;" >
+                        	<input class="form-control width120" name="ValidTo" id="DateCompletionB2<%=ActivityA[0] %><%=ActivityB[0] %>"  value="<%=sdf.format(ActivityB[3]) %>"  required="required"   >
                         		</div>
                             <div class="col-md-1 " align="center" ><br>      
-                    		<input type="number" class="form-control "  name="Weightage" id="Weightage<%=ActivityA[0] %>B<%=ActivityB[0] %>" required="required" min="0" max="100" value="<%=ActivityB[6]!=null?StringEscapeUtils.escapeHtml4(ActivityB[6].toString()): "" %>"  style="width:95px;" >
+                    		<input type="number" class="form-control width95"  name="Weightage" id="Weightage<%=ActivityA[0] %>B<%=ActivityB[0] %>" required="required" min="0" max="100" value="<%=ActivityB[6]!=null?StringEscapeUtils.escapeHtml4(ActivityB[6].toString()): "" %>"  >
                     		</div>
                     		<div class="col-md-2 " ><br>
                     			<%if(RevisionCount==0) { %>
@@ -571,7 +557,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                         	</div>
                         	
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory"  >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode1" id="labCode1B<%=ActivityA[0] %><%=ActivityB[0] %>" required 
 								onchange="renderEmployeeList('1','B<%=ActivityA[0] %><%=ActivityB[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -590,7 +576,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
   									</select>
                         	</div>
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory"  >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode2" id="labCode2B<%=ActivityA[0] %><%=ActivityB[0] %>" required 
 								onchange="renderEmployeeList('2','B<%=ActivityA[0] %><%=ActivityB[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -663,13 +649,14 @@ $('#DateCompletionB'+'<%=ActivityA[0] %><%=ActivityB[0] %>').on('change', functi
   
 $( document ).ready(function() {
     mindate=$('#DateCompletionB'+'<%=ActivityA[0] %><%=ActivityB[0] %>').val();
+    var dt2=$('#DateCompletionA2'+'<%=ActivityA[0] %>').val();
     $('#DateCompletionB2'+'<%=ActivityA[0] %><%=ActivityB[0] %>').prop("disabled",false);
     $('#DateCompletionB2'+'<%=ActivityA[0] %><%=ActivityB[0] %>').daterangepicker({
     	"singleDatePicker" : true,
     	"linkedCalendars" : false,
     	"showCustomRangeLabel" : true,
     	"minDate" :mindate,
-    	"maxDate" : dt1,
+    	"maxDate" : dt2,
     	"cancelClass" : "btn-default",
     	showDropdowns : true,
     	locale : {
@@ -699,23 +686,23 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
 					
 						<form   method="POST" action="MilestoneActivityEditSubmit.htm" id="form<%=ActivityB[0] %>C<%=ActivityC[0] %>">
                             <div class="row container-fluid" >
-                             <div class="col-md-1 " ><br> <label class="control-label"></label><b style="margin-left: 24px;">C-<%=countC %></b>
+                             <div class="col-md-1 " ><br> <label class="control-label"></label><b class="ml-2">C-<%=countC %></b>
                     		
                         	</div>
                         	
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityC[4]!=null?ActivityC[4].toString(): " - " %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control mp2 " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"    maxlength="1000" required="required"><%=ActivityC[4]!=null?ActivityC[4].toString(): " - " %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-1 " align="center"><br>
-                        	<input class="form-control " name="ValidFrom" id="DateCompletionC<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>"  value="<%=sdf.format(ActivityC[2]) %>"  required="required" style="width:120px;;" >
+                        	<input class="form-control width120" name="ValidFrom" id="DateCompletionC<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>"  value="<%=sdf.format(ActivityC[2]) %>"  required="required" >
                         	
                         	</div>
                         	<div class="col-md-1 " align="center"><br>
-                        	<input class="form-control " name="ValidTo" id="DateCompletionC2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>"  value="<%=sdf.format(ActivityC[3]) %>"  required="required"  style="width:120px;;" >
+                        	<input class="form-control width120" name="ValidTo" id="DateCompletionC2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>"  value="<%=sdf.format(ActivityC[3]) %>"  required="required"   >
                         		</div>
                         		<div class="col-md-1 " align="center" ><br>      
-                    		<input type="number" class="form-control " name="Weightage" id="Weightage<%=ActivityB[0] %>C<%=ActivityC[0] %>" required="required" min="0" max="100" value="<%=ActivityC[6]!=null?StringEscapeUtils.escapeHtml4(ActivityC[6].toString()): "" %>"  style="width:95px;">
+                    		<input type="number" class="form-control width95" name="Weightage" id="Weightage<%=ActivityB[0] %>C<%=ActivityC[0] %>" required="required" min="0" max="100" value="<%=ActivityC[6]!=null?StringEscapeUtils.escapeHtml4(ActivityC[6].toString()): "" %>"  >
                         	</div>
                         	
                         	<div class="col-md-2 " ><br>
@@ -749,7 +736,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                         	</div>
                         	
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory"  >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode1" id="labCode1C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required 
 								onchange="renderEmployeeList('1','C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -768,7 +755,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
   									</select>
                         	</div>
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory" >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode2" id="labCode2C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>" required 
 								onchange="renderEmployeeList('2','C<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -841,13 +828,14 @@ $('#DateCompletionC'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>').o
   
 $( document ).ready(function() {
     mindate=$('#DateCompletionC'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>').val();
+    var dt3=$('#DateCompletionB2'+'<%=ActivityA[0] %><%=ActivityB[0] %>').val();
     $('#DateCompletionC2'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>').prop("disabled",false);
     $('#DateCompletionC2'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>').daterangepicker({
     	"singleDatePicker" : true,
     	"linkedCalendars" : false,
     	"showCustomRangeLabel" : true,
     	"minDate" :mindate,
-    	"maxDate" : dt1,
+    	"maxDate" : dt3,
     	"cancelClass" : "btn-default",
     	showDropdowns : true,
     	locale : {
@@ -872,22 +860,22 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
 	                              <form  method="POST" action="MilestoneActivityEditSubmit.htm" id="form<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>">
 		
 						    <div class="row container-fluid" >
-						     <div class="col-md-1 " ><br> <label class="control-label"></label><b style="margin-left: 30px;">D-<%=countD %></b>
+						     <div class="col-md-1 " ><br> <label class="control-label"></label><b class="ml-2">D-<%=countD %></b>
                     		
                         	</div>
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityD[4]!=null?ActivityD[4].toString(): " - " %></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control mp2" <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"    maxlength="1000" required="required"><%=ActivityD[4]!=null?ActivityD[4].toString(): " - " %></textarea> 
                         	</div>
                         	
                         	<div class="col-md-1 " align="center"><br>
-                        	<input class="form-control " name="ValidFrom" id="DateCompletionB<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>"  value="<%=sdf.format(ActivityD[2]) %>"  required="required"  style="width:120px;;" >
+                        	<input class="form-control width120" name="ValidFrom" id="DateCompletionB<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>"  value="<%=sdf.format(ActivityD[2]) %>"  required="required"  " >
                         	
                         	</div>
                         	<div class="col-md-1 " align="center"><br>
-                        	<input class="form-control " name="ValidTo" id="DateCompletionB2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>"  value="<%=sdf.format(ActivityD[3]) %>"  required="required"  style="width:120px;;" >
+                        	<input class="form-control width120" name="ValidTo" id="DateCompletionB2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>"  value="<%=sdf.format(ActivityD[3]) %>"  required="required"   >
                         		</div>
                             <div class="col-md-1 " align="center" ><br>      
-                    		<input type="number" class="form-control "  name="Weightage" id="Weightage<%=ActivityC[0] %>D<%=ActivityD[0] %>" required="required" min="0" max="100" value="<%=ActivityD[6]!=null?StringEscapeUtils.escapeHtml4(ActivityD[6].toString()): " - " %>"  style="width:95px;" >
+                    		<input type="number" class="form-control width95"  name="Weightage" id="Weightage<%=ActivityC[0] %>D<%=ActivityD[0] %>" required="required" min="0" max="100" value="<%=ActivityD[6]!=null?StringEscapeUtils.escapeHtml4(ActivityD[6].toString()): " - " %>"   >
                         	</div>
                         	
                         	<div class="col-md-2 " ><br>
@@ -922,7 +910,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                         	</div>
                         	
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory" >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode1" id="labCode1D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required 
 								onchange="renderEmployeeList('1','D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -942,7 +930,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
   									</select>
                         	</div>
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory" >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode2" id="labCode2D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>" required 
 								onchange="renderEmployeeList('2','D<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -1013,13 +1001,14 @@ $('#DateCompletionB'+'<%=ActivityD[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=A
   
 $( document ).ready(function() {
     mindate=$('#DateCompletionB'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>').val();
+    var dt4=$('#DateCompletionC2'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>').val();
     $('#DateCompletionB2'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>').prop("disabled",false);
     $('#DateCompletionB2'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %>').daterangepicker({
     	"singleDatePicker" : true,
     	"linkedCalendars" : false,
     	"showCustomRangeLabel" : true,
     	"minDate" :mindate,
-    	"maxDate" : dt1,
+    	"maxDate" : dt4,
     	"cancelClass" : "btn-default",
     	showDropdowns : true,
     	locale : {
@@ -1048,23 +1037,23 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
 					
 						<form   method="POST" action="MilestoneActivityEditSubmit.htm" id="form<%=ActivityD[0] %>E<%=ActivityE[0] %>">
                             <div class="row container-fluid" >
-                             <div class="col-md-1 " ><br> <label class="control-label"></label><b style="margin-left: 36px;">E-<%=countE %></b>
+                             <div class="col-md-1 " ><br> <label class="control-label"></label><b class="ml-3">E-<%=countE %></b>
                     		
                         	</div>
                         	
 						    <div class="col-md-5 " ><br>
-                    		 <textarea rows="1" cols="50" class="form-control " <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"   style="width:100%;text-align: justify; " maxlength="1000" required="required"><%=ActivityE[4] !=null?ActivityE[4].toString(): " - "%></textarea> 
+                    		 <textarea rows="1" cols="50" class="form-control mp2" <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"    maxlength="1000" required="required"><%=ActivityE[4] !=null?ActivityE[4].toString(): " - "%></textarea> 
                         	</div>
                         	
-                        	<div class="col-md-1 " align="center"><br>
-                        	<input class="form-control " name="ValidFrom" id="DateCompletionC<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>"  value="<%=sdf.format(ActivityE[2]) %>"  required="required" style="width:120px;;" >
+                        	<div class="col-md-1 width120" align="center"><br>
+                        	<input class="form-control " name="ValidFrom" id="DateCompletionC<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>"  value="<%=sdf.format(ActivityE[2]) %>"  required="required"  >
                         	
                         	</div>
-                        	<div class="col-md-1 " align="center"><br>
-                        	<input class="form-control " name="ValidTo" id="DateCompletionC2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>"  value="<%=sdf.format(ActivityE[3]) %>"  required="required"  style="width:120px;;" >
+                        	<div class="col-md-1 width120" align="center"><br>
+                        	<input class="form-control " name="ValidTo" id="DateCompletionC2<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>"  value="<%=sdf.format(ActivityE[3]) %>"  required="required"   >
                         		</div>
                         		<div class="col-md-1 " align="center" ><br>      
-                    		<input type="number" class="form-control " name="Weightage" id="Weightage<%=ActivityD[0] %>E<%=ActivityE[0] %>" required="required" min="0" max="100" value="<%=ActivityE[6]!=null?StringEscapeUtils.escapeHtml4(ActivityE[6].toString()): "" %>"  style="width:95px;">
+                    		<input type="number" class="form-control width95" name="Weightage" id="Weightage<%=ActivityD[0] %>E<%=ActivityE[0] %>" required="required" min="0" max="100" value="<%=ActivityE[6]!=null?StringEscapeUtils.escapeHtml4(ActivityE[6].toString()): "" %>"  >
                         	</div>
                         	<div class="col-md-2 " ><br>
                         		<%if(RevisionCount==0) { %>
@@ -1096,7 +1085,7 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                         	</div>
                         	
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory" >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode1" id="labCode1E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required 
 								onchange="renderEmployeeList('1','E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -1117,7 +1106,7 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                         	</div>
                         	
                         	<div class="col-md-2"><br>
-                        		<label  >Lab: <span class="mandatory" style="color: red;" >*</span></label><br>
+                        		<label  >Lab: <span class="mandatory" >*</span></label><br>
                         		<select class="form-control selectdee" name="labCode2" id="labCode2E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>" required 
 								onchange="renderEmployeeList('2','E<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>','0')" data-placeholder= "Lab Name">
 								    <% for (Object[] lab : allLabList) { %>
@@ -1189,13 +1178,16 @@ $('#DateCompletionC'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=A
   
 $( document ).ready(function() {
     mindate=$('#DateCompletionC'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>').val();
+    var dt5=$('#DateCompletionC2'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %>').val();
+
+    
     $('#DateCompletionC2'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>').prop("disabled",false);
     $('#DateCompletionC2'+'<%=ActivityA[0] %><%=ActivityB[0] %><%=ActivityC[0] %><%=ActivityD[0] %><%=ActivityE[0] %>').daterangepicker({
     	"singleDatePicker" : true,
     	"linkedCalendars" : false,
     	"showCustomRangeLabel" : true,
     	"minDate" :mindate,
-    	"maxDate" : dt1,
+    	"maxDate" : dt5,
     	"cancelClass" : "btn-default",
     	showDropdowns : true,
     	locale : {

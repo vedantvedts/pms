@@ -36,143 +36,9 @@
 <spring:url value="/resources/js/input_validations.js" var="inputvalidationsjs" /> 
 <script src="${inputvalidationsjs}"></script>
 
-<style>
-.dropdown-item {
-	font-weight: 600 !important;
-	font-size: 15px;
-}
+<spring:url value="/resources/css/header/headerCss.css" var="headerCss" />     
+<link href="${headerCss}" rel="stylesheet" />
 
-.fa-circle {
-	font-size: 7px !important;
-	color: #43658b;
-}
-
-.nav-link {
-	font-weight: 200;
-}
-.note-editable li
-{
-list-style-type: inherit;
-text-align: left;
-}
-/* Multi level dropdown */
-@media ( min-width : 992px) {
-	.dropdown-menu .dropdown-toggle:after {
-		border-top: .3em solid transparent;
-		border-right: 0;
-		border-bottom: .3em solid transparent;
-		border-left: .3em solid;
-	}
-	.dropdown-menu .dropdown-menu {
-		margin-left: 0;
-		margin-right: 0;
-	}
-	.dropdown-menu li {
-		position: relative;
-	}
-	.nav-item .submenu {
-		display: none;
-		position: absolute;
-		left: 100%;
-		top: -7px;
-	}
-	.nav-item .submenu-left {
-		right: 100%;
-		left: auto;
-	}
-	.dropdown-menu>li:hover {
-		background-color: #f1f1f1
-	}
-	.dropdown-menu>li:hover>.submenu {
-		display: block;
-	}
-}
-
-hr {
-	margin: 0px 12px !important;
-	opacity: 0.2;
-	border-top: 1px solid black !important;
-}
-
-.megamenu {
-	position: static
-}
-
-.megamenu .dropdown-menu {
-	background: none;
-	border: none;
-	width: 100%
-}
-
-.megamenu .nav-item .nav-link {
-	color: black;
-	font-family: 'Lato', sans-serif;
-	font-size: 15px;
-	font-weight: bold;
-}
-
-.megamenu .nav-item .nav-link:hover {
-	color: blue;
-}
-
-.col-lg-6 h6 {
-	text-decoration: underline;
-	color: #145374;
-	font-family: 'Muli', sans-serif;
-}
-
-.side-borders {
-	border-bottom: 1px solid black;
-	border-left: 1px solid black;
-	border-right: 1px solid black;
-	border-bottom-right-radius: 5px !important;
-	border-bottom-left-radius: 5px !important;
-}
-
-.list-unstyled .fa-calendar {
-	font-size: 1.00 rem !important;
-}
-
-.list-unstyled li {
-	margin-left: 20px;
-}
-
-.generate:focus {
-	color: black !important;
-}
-
-.second-nav .nav-link {
-	color: black !important;
-}
-
-.second-nav {
-	background-color: #007bff;
-}
-
-.custom-button:hover {
-	color: white !important;
-}
-
-#content .navbar .container-fluid {
-	padding-right: 0px !important;
-	padding-left: 0px !important;
-}
-
-@media ( max-width :1390px) {
-	.second-nav #module button {
-		font-size: 0.85rem !important;
-	}
-}
-
-#uppermodule .dropdown-menu-right {
-	width: 185px !important;
-}
-
-.help-icon{
-    font-size: 21px;
-    margin-left: 5px;
-}
-</style>
 
 </head>
 
@@ -203,15 +69,14 @@ String labcode= (String)session.getAttribute("labcode");
 
 					<div class="container-fluid">
 
-						<a class="navbar-brand" id="brandname"
-							style="font-family: 'Montserrat', sans-serif; color: white; text-align: initial; width: 40%">
-							<span id="p1"
-							style="font-family: Lato, sans-serif; font-size: 19px; font-weight: 700; color: orange;"></span>
-							<span
-							style="font-family: Lato, sans-serif; font-size: 15px; padding: 0px 16px 0px 10px; text-transform: capitalize !important;"><%=LocalDate.now().getMonth() %>
-								&nbsp; <%=LocalDate.now().getYear() %> </span> <img style="width: 4%"
+						<a class="navbar-brand navHeader1" id="brandname"
+							>
+							<span id="p1" class="cspan"
+							></span>
+							<span class="dspan"><%=LocalDate.now().getMonth() %>
+								&nbsp; <%=LocalDate.now().getYear() %> </span> <img class="projectImageHeade"
 							src="view/images/project.png" alt=""><b> &nbsp;
-								<%=loginPage.equalsIgnoreCase("login")?"PMS":"WR" %>&nbsp;<span style="font-size: 13px;">(<%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %>) -
+								<%=loginPage.equalsIgnoreCase("login")?"PMS":"WR" %>&nbsp;<span class="font13">(<%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %>) -
 									<%=EmpName!=null?StringEscapeUtils.escapeHtml4(EmpName): " - " %> (<%=FormRoleName!=null?StringEscapeUtils.escapeHtml4(FormRoleName): " - " %>)
 							</span>
 						</b>
@@ -259,100 +124,18 @@ String labcode= (String)session.getAttribute("labcode");
 						<div class="collapse navbar-collapse" id="navbarResponsive">
 							<ul class="navbar-nav ml-auto ">
 								<%if(loginPage.equalsIgnoreCase("login")) {%>
-								<li class="nav-item active" style="display: flex;">
-								<button type="button" class="btn btn-sm btn-light"
-									onclick="opensmartsearch()" style="height:40px;" >
+								<li class="nav-item active navActive" >
+								<button type="button" class="btn btn-sm btn-light btnHeight"
+									onclick="opensmartsearch()"  >
 									 <b>Search </b>&#x1F50D;
 								</button>
-								<a class="btn custom-button "
+								<a class="btn custom-button bgtrans"
 									href="MainDashBoard.htm" type="button" aria-haspopup="true"
-									aria-expanded="false" style="background-color: transparent"><i
-										class="fa fa-home" aria-hidden="true"
-										style="font-size: 1.20rem"></i> Home</a></li>
+									aria-expanded="false" ><i
+										class="fa fa-home font12rem" aria-hidden="true"
+										s></i> Home</a></li>
 								<%} %>
 
-								<%-- <%if(!IsDG.equalsIgnoreCase("Yes") ){ %>
-
-								<li class="nav-item dropdown">
-
-
-									<button class="btn dropdown-toggle custom-button" type="button"
-										value="" id="" data-toggle="dropdown" aria-haspopup="true"
-										aria-expanded="false" style="background-color: transparent">Initiation</button>
-
-									<ul class="dropdown-menu">
-										<li><a class="dropdown-item"
-											href="ProjectIntiationList.htm"> List</a></li>
-
-
-
-										<%if( Logintype.equalsIgnoreCase("E") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Y")  || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I") ) {%>
-
-										<li>
-											<form action="ProjectIntiationListSubmit.htm" method="POST"
-												name="myfrm" style="display: inline">
-												<button class="dropdown-item">Initiate</button>
-												<input type="hidden" name="sub" value="add" /> <input
-													type="hidden" name="${_csrf.parameterName}"
-													value="${_csrf.token}" />
-											</form>
-										</li>
-
-										<%} %>
-
-										<li>
-											<form action="ProjectIntiationListSubmit.htm" method="POST"
-												name="myfrm1" style="display: inline">
-												<input type="hidden" name="sub" value="status" /> <input
-													type="hidden" name="${_csrf.parameterName}"
-													value="${_csrf.token}" />
-												<button class="dropdown-item">Status</button>
-											</form>
-										</li>
-										<li>
-											<!-- <form action="ProjectOverAllRequirement.htm" method="POST" -->
-											<form action="Requirements.htm" method="POST"
-												name="myfrm2" style="display: inline">
-												<input type="hidden" name="sub" value="requirements" /> <input
-													type="hidden" name="${_csrf.parameterName}"
-													value="${_csrf.token}" />
-												<button class="dropdown-item">Requirements</button>
-											</form>
-										</li>
-
-
-																			  			<li>
-										  		<form action="ProjectRequirement.htm" method="POST" name="myfrm2"  style="display: inline">
-										  			<input type="hidden" name="sub" value="requirements"/>
-										  			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-										 	 		<button class="dropdown-item" >Requirements</button>
-										  	 	</form>
-									  		</li>
-																						<li>
-										  		<form action="ProjectSanction.htm" method="POST" name="myfrm3"  style="display: inline">
-										  			<input type="hidden" name="sub" value="sanction"/>
-										  			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-										 	 		<button class="dropdown-item" >SOC of Project</button>
-										  	 	</form>
-									  		</li>
-
-										<li>
-											<form action="ProjectProcurement.htm" method="POST"
-												name="myfrm3" style="display: inline">
-												<input type="hidden" name="sub" value="Procurement" /> <input
-													type="hidden" name="${_csrf.parameterName}"
-													value="${_csrf.token}" />
-												<button class="dropdown-item">Procurement Plan</button>
-											</form>
-										</li>
-
-
-									</ul>
-								</li>
-
-
-								<%} %>
- --%>
 								<!-- New Content from table start --------------------------------->
 
 								<li class="nav-item dropdown"><input type="hidden"
@@ -373,17 +156,17 @@ String labcode= (String)session.getAttribute("labcode");
 
 									<div class="btn-group  ">
 
-										<a style="color: white" class="nav-link dropdown-toggle"
+										<a  class="nav-link dropdown-toggle colorWhite"
 											href="#" id="alertsDropdown" role="button"
 											data-toggle="dropdown" aria-haspopup="true"
-											aria-expanded="false"> <i class="fa fa-bell fa-fw "
-											aria-hidden="true" style="color: white"></i> <span
+											aria-expanded="false"> <i class="fa fa-bell fa-fw colorWhite"
+											aria-hidden="true" ></i> <span
 											class="badge badge-counter" id="NotificationCount"></span>
 										</a>
 
 										<div
-											class="dropdown-list dropdown-menu dropdown-menu-right custombell"
-											style="padding: 0px !important; font-size: 15px !important"
+											class="dropdown-list dropdown-menu dropdown-menu-right custombell font15"
+											
 											aria-labelledby="">
 											<h6 class="dropdown-header">
 												<img src="view/images/notification.png">
@@ -412,9 +195,9 @@ String labcode= (String)session.getAttribute("labcode");
 										<a class="nav-link dropdown-toggle" href="#" id="userDropdown"
 											role="button" data-toggle="dropdown" aria-haspopup="true"
 											aria-expanded="false"> <span
-											class="mr-2 d-none d-lg-inline text-gray-600 "
-											style="color: white"><b><%=Username!=null?StringEscapeUtils.escapeHtml4(Username): " - " %></b></span> <i
-											class="fa fa-user-o" aria-hidden="true" style="color: white"></i>
+											class="mr-2 d-none d-lg-inline text-gray-600 colorWhite"
+											><b><%=Username!=null?StringEscapeUtils.escapeHtml4(Username): " - " %></b></span> <i
+											class="fa fa-user-o colorWhite" aria-hidden="true" ></i>
 										</a>
 
 										<div
@@ -438,9 +221,9 @@ String labcode= (String)session.getAttribute("labcode");
 											</a> <!-- <a class="dropdown-item" href="AuditPatchesView.htm"> <img
 												src="view/images/updatepatch.jpg" style="width: 35px;height:30px"/> &nbsp;&nbsp;
 												Audit Patches
-											</a> --><a class="dropdown-item" href="RunBatchFile.htm"> <img
+											</a> --><a class="dropdown-item h13w16" href="RunBatchFile.htm"> <img
 												src="view/images/backup.png"
-												style="height: 13%; width: 16%;" /> &nbsp;&nbsp;DB Back-up
+												/> &nbsp;&nbsp;DB Back-up
 											</a> <a class="dropdown-item" href="DelegationFlow.htm"> <img
 												src="view/images/workflow.png" /> &nbsp;&nbsp; Delegation
 												Flow
@@ -500,8 +283,8 @@ String labcode= (String)session.getAttribute("labcode");
 					<input type="hidden" value="<%=Logintype %>" name="logintype"
 						id="logintype">
 
-					<div class="collapse navbar-collapse justify-content-end"
-						id="navbarSupportedContent" style="margin-right: 1%;">
+					<div class="collapse navbar-collapse justify-content-end mr1P"
+						id="navbarSupportedContent" >
 
 						<ul class="navbar-nav" id="module">
 
@@ -512,7 +295,7 @@ String labcode= (String)session.getAttribute("labcode");
 
 				<!------------------------------------------------ new navbar end ------------------------------------->
 
-<button type="button" style="display: none;" id="storeSessionData"></button>
+<!-- <button type="button" style="display: none;" id="storeSessionData"></button> -->
 			</div>
 
 
@@ -543,9 +326,9 @@ String labcode= (String)session.getAttribute("labcode");
 						
 						var name=values[i][1].replace(/ /g,'');
 						if(loginPage=='wr' && values[i][0]=='17') {
-							module+="<li class='nav-item dropdown uppernav ' style='padding:0rem 0.35rem'><button class='btn dropdown-toggle custom-button' type='button' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' style='width:13rem'> </div></li>";
+							module+="<li class='nav-item dropdown uppernav p035' ><button class='btn dropdown-toggle custom-button' type='button' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right width-13r' id='scheduledropdown"+name+"' > </div></li>";
 						}else if(loginPage=='login'){
-							module+="<li class='nav-item dropdown uppernav ' style='padding:0rem 0.35rem'><button class='btn dropdown-toggle custom-button' type='button' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' style='width:13rem'> </div></li>";
+							module+="<li class='nav-item dropdown uppernav p035' ><button class='btn dropdown-toggle custom-button' type='button' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right width-13r' id='scheduledropdown"+name+"' > </div></li>";
 						}
 						
 					}
@@ -554,7 +337,7 @@ String labcode= (String)session.getAttribute("labcode");
 						
 						var name=values[i][1].replace(/ /g,'');
 
-						uppermodule+="<li class='nav-item dropdown '><button class='btn dropdown-toggle custom-button' type='button'  style='background-color:transparent' value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' > </div></li>";
+						uppermodule+="<li class='nav-item dropdown '><button class='btn dropdown-toggle custom-button bgtrans' type='button'   value='"+values[i][0]+"_"+values[i][2]+"' id='"+name+"'  data-toggle='dropdown' aria-haspopup='true' aria-expanded='false' onmouseover='checkme(\"" +name+ "\")' >"+values[i][1]+"</button> <div class='dropdown-menu dropdown-menu-right' id='scheduledropdown"+name+"' > </div></li>";
 						
 					}
 					
@@ -703,7 +486,7 @@ $(document).ready(function(){
 			var module = "";
 			for (i = 0; i < values.length; i++) {
 			
-				module+="<a class='dropdown-item d-flex align-items-center' id='"+values[i][5]+"'   onclick='deleteNoti()' href='"+values[i][4]+"'  style=' font-family:'Quicksand', sans-serif; '> <div> <i class='fa fa-arrow-right' aria-hidden='true' style='color:green'></i></div> <div style='margin-left:20px'> " +values[i][3]+" </div> </a>";
+				module+="<a class='dropdown-item d-flex align-items-center fontfam' id='"+values[i][5]+"'   onclick='deleteNoti()' href='"+values[i][4]+"' > <div> <i class='fa fa-arrow-right colorGreen' aria-hidden='true' ></i></div> <div class='mar20'> " +values[i][3]+" </div> </a>";
 				if(i>4){
 					break;
 				}
@@ -714,7 +497,7 @@ $(document).ready(function(){
 				
 				var info="No Notifications to display !";
 				var empty="";
-				 empty+="<a class='dropdown-item d-flex align-items-center' href=# style=' font-family:'Quicksand', sans-serif; '> <div> <i class='fa fa-comment-o' aria-hidden='true' style='color:green;font-weight:800'></i></div> <div style='margin-left:20px'>" +info+" </div> </a>";
+				 empty+="<a class='dropdown-item d-flex align-items-center fontfam' href=# > <div> <i class='fa fa-comment-o colgreenFw' aria-hidden='true' ></i></div> <div class='mar20'>" +info+" </div> </a>";
 
 				$('#Notification').html(empty); 
 				$('.showall').hide();

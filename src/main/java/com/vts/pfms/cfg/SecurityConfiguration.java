@@ -20,6 +20,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
+import com.vts.pfms.login.CaptchaFilter;
+import com.vts.pfms.login.CustomAuthenticationFailureHandler;
 import com.vts.pfms.login.CustomLogoutHandler;
 import com.vts.pfms.login.LoginDetailsServiceImpl;
 import com.vts.pfms.login.LoginSuccessHandler;
@@ -34,13 +36,18 @@ public class SecurityConfiguration{
 	
 	@Autowired
 	private PasswordDecryptFilter passwordDecryptFilter;
+	@Autowired
+	private CaptchaFilter captchaFilter;
 
+	@Autowired
+	private CustomAuthenticationFailureHandler failureHandler;
+	
 	@Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
         http.authorizeHttpRequests(request -> 
         		request.requestMatchers("/").hasAnyRole("USER", "ADMIN")
-	        		   .requestMatchers("/webjars/**", "/resources/**", "/view/**", "/LoginPage/*", "/pfms-dg/*", "/api/sync/**", 
+	        		   .requestMatchers("/webjars/**", "/resources/**", "/view/**", "/LoginPage/*", "/pfms-dg/*", "/api/sync/**","/refresh-captcha", 
 	        					  "/login", "/wr", "/login?sessionInvalid", "/login?sessionExpired", "/wr?sessionInvalid", "/wr?sessionExpired", "/ProjectBriefingPaper.htm", 
 	        					  "/ProjectRequirementAttachmentDownload.htm", "/ProjectClosureChecklistFileDownload.htm", "/TimeSheetWorkFlowPdf.htm", "/CommitteeMinutesViewAllDownloadPdf.htm/**").permitAll()
 	        		   .requestMatchers(HttpMethod.OPTIONS, "/**").denyAll()
@@ -55,6 +62,7 @@ public class SecurityConfiguration{
         			   	 .usernameParameter("username")
         			   	 .passwordParameter("password")
         			   	 .successHandler(successHandler)
+        			   	 .failureHandler(failureHandler)
         			)
         	.logout(logout -> 
         			logout
@@ -65,7 +73,7 @@ public class SecurityConfiguration{
         				  .invalidateHttpSession(false) 
         			)
         	.exceptionHandling(exception -> 
-        			exception.accessDeniedPage("/accessdenied")
+        			exception.accessDeniedPage("/login")
         			)
         	.csrf(Customizer.withDefaults())
         	.sessionManagement(session ->
@@ -84,8 +92,24 @@ public class SecurityConfiguration{
         		        response.setHeader("Pragma", "no-cache");
         		        response.setDateHeader("Expires", 0);
         		    })
+         		   .contentSecurityPolicy(csp -> 
+                  csp.policyDirectives(
+       				    "default-src 'self'; " +
+       				    "script-src 'self' 'unsafe-inline' blob:; " +
+       				    "style-src 'self' ; " +
+       				    "img-src 'self' data: blob:; " +
+       				    "font-src 'self'; " +
+       				    "connect-src 'self'; " +
+       				    "object-src 'self' data: blob:; " +  
+       				    "frame-src 'self' data: blob:; " +   
+       				    "frame-ancestors 'self'; " +
+       				    "base-uri 'self'; " +
+       				    "form-action 'self';"
+       				))
         		)
+        	.addFilterBefore(captchaFilter, UsernamePasswordAuthenticationFilter.class)
         	.addFilterBefore(passwordDecryptFilter, UsernamePasswordAuthenticationFilter.class);
+        
 
         	;
           return http.build();

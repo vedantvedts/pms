@@ -21,74 +21,13 @@
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
 <spring:url value="/resources/css/slides-style.css" var="SlidesStyleCSS" />
 <link href="${SlidesStyleCSS}" rel="stylesheet" />
+<spring:url value="/resources/css/print/projectSlideFreezedViewAll.css" var="projectSlideFreezedViewAll" />     
+<link href="${projectSlideFreezedViewAll}" rel="stylesheet" />
 <title>Project Master Slides</title>
-<style type="text/css">
-td{
-height:15px;
-color: #00416A ;
-}
 
-span {
-	font-size: 1.2rem !important;
-	font-weight: bold !important;
-}
-tr.clickable:hover{
-cursor:pointer;
-background-color: rgba(247,236,208);
-}
-
-.content-header.row {
-background-color: #ffd8b1
-}
-.card-title.col-md-10{
-color: black;
-}
-.zoom {
-  transition: transform .4s; 
-}
-.zoom:hover {
-  transform: scale(1.5); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-  z-index: 99999928374 !important;
-}
-.modal-list{
-	font-size: 14px;
-	text-align: left;
-	padding: 0px !important;
-	margin-bottom: 5px;
-}
-
-.modal-list li{
-	display: inline-block;
-}
-
-.modal-list li .modal-span{
-	font-size: 1.5rem;
-	padding: 0px 7px;
-}
-
-.modal-list li .modal-text{
-	font-size: 1rem;
-	vertical-align: text-bottom;
-	font-family: Lato;
-}
-.zoom {
-  transition: transform .4s; 
-}
-.zoom:hover {
-  transform: scale(1.2); /* (130% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-  z-index: 99999928374 !important;
-}
-.zoom2 {
-  transition: transform .4s; 
-}
-.zoom2:hover {
-  transform: scale(1.7); /* (180% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-  z-index: 99999928374 !important;
-}
-</style>
 
 </head>
-<body class="slides-container" id="slides-container" style="background-color: #F9F2DF66">
+<body class="slides-container clx-64" id="slides-container">
 <%
 LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
 String lablogo = (String)request.getAttribute("lablogo");
@@ -119,78 +58,107 @@ String labcode = (String) session.getAttribute("labcode");
 <div id="presentation-slides" class="carousel slide " data-ride="carousel">
 	<div class="carousel-inner" align="center">
 		<!-- ---------------------------------------- P-0  Div ----------------------------------------------------- -->
-		<div class="carousel-item active">
-				
-			<div class="content" align="center" style=" border: 6px solid green;border-radius: 5px !important;height:93vh !important;padding-top: 15px;">
-					
-				<div class="firstpage"  > 
-	
-					<div class="mt-2" align="center"><h2 style="color: #145374 !important;">Presentation</h2></div>
-					<div align="center" ><h2 style="color: #145374 !important;">of</h2></div>
-							
-					<div align="center" >
-						<h2 style="color: #145374 !important;" >  <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabCode())%><%} %> Projects</h2>
-			   		</div>
-					
-					<div align="center" ><h2 style=" color: #145374 !important;"></h2></div>
-					
-					<table style="margin-top:35px;" class="executive home-table" style="align: center; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;"  >
-						<tr>			
-							<th colspan="8" style="text-align: center; font-weight: 700;">
-								<img class="logo" style="width:120px;height: 120px;x"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> > 
-								<br>
-							</th>
-						</tr>
-					</table>	
-					<br><br><br><br>
-					<% Boolean flag=false;
-						for(int i=0;i<freezedproject.size();i++)
-						{
-							for(int j=0;j<projects.size();j++)
-							{
-								if(freezedproject.get(i)[3].toString().equals(projects.get(j)[0].toString())){
-									reviewedby=freezedproject.get(i)[4].toString();
-									reviewDate=sdf.format(freezedproject.get(i)[5]).toString();
-									flag=true;
-									break;
-								}
-								if(flag)break;
-							}
-							
-						}
-					%>
-					<b><h2 style="color: #145374 !important;text-align: center;"><%if( reviewedby!="" ) {%> Review By Secretary DD(R&D) and Chairman DRDO  <%} %></b></h2>
-					<h3 style="color: #145374 !important;text-align: center;"><%if( reviewDate!="" ) {%> <b>Date : 16-07-2024</b> <%} %></h3>
-					<br><br><br><br><br>
-					<table class="executive home-table" style="align: center;margin-bottom:5px; margin-left: auto;margin-right:auto;border:0px;  font-size: 16px;font-weight: bold;"  >
-						<% if(labInfo!=null){ %>
-							<tr>
-								<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: bolder;font-size: 22px"> <h2 style="color: #145374 !important;font-weight: bolder;"> <%if(labInfo.getLabName()!=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabName())  %><%}else{ %>LAB NAME<%} %> ( <%if(labInfo!=null && labInfo.getLabCode() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabCode())%><%} %> ) </h2> </th>
-							</tr>
-						<%}%>
-						<tr>
-							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px">Government of India, Ministry of Defence</th>
-						</tr>
-						<tr>
-							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px">Defence Research & Development Organization</th>
-						</tr>
-						<tr>
-							<th colspan="8" style="color: #145374 !important;text-align: center; font-weight: 700;font-size:20px"><%if(labInfo.getLabAddress() !=null){ %><%=labInfo.getLabAddress()  %> , <%=StringEscapeUtils.escapeHtml4(labInfo.getLabCity()) %><%}else{ %>LAB ADDRESS<%} %> </th>
-						</tr>
-					</table>
-				</div>
-					
-			</div>
-				
-		</div>
+<div class="carousel-item active">
+    <div class="content-box">
+        <div class="firstpage">
+            <div class="mt-2 text-center">
+                <h2 class="heading">Presentation</h2>
+            </div>
+            <div class="text-center">
+                <h2 class="heading">of</h2>
+            </div>
+            <div class="text-center">
+                <h2 class="heading">
+                    <% if(labInfo!=null && labInfo.getLabCode() !=null){ %>
+                        <%=StringEscapeUtils.escapeHtml4(labInfo.getLabCode())%> Projects
+                    <%} %>
+                </h2>
+            </div>
+
+            <div class="text-center">
+                <h2 class="heading"></h2>
+            </div>
+
+            <table class="executive home-table logo-table">
+                <tr>
+                    <th colspan="8" class="text-center">
+                        <img class="logo" 
+                             <% if(lablogo!=null ){ %> 
+                             src="data:image/*;base64,<%=lablogo%>" alt="Logo"
+                             <%}else{ %> alt="File Not Found" <%} %> >
+                        <br>
+                    </th>
+                </tr>
+            </table>
+
+            <% Boolean flag=false;
+                for(int i=0;i<freezedproject.size();i++) {
+                    for(int j=0;j<projects.size();j++) {
+                        if(freezedproject.get(i)[3].toString().equals(projects.get(j)[0].toString())){
+                            reviewedby=freezedproject.get(i)[4].toString();
+                            reviewDate=sdf.format(freezedproject.get(i)[5]).toString();
+                            flag=true;
+                            break;
+                        }
+                        if(flag)break;
+                    }
+                }
+            %>
+
+            <h2 class="review-heading text-center">
+                <% if( reviewedby!="" ) { %> Review By Secretary DD(R&D) and Chairman DRDO <% } %>
+            </h2>
+            <h3 class="review-date text-center">
+                <% if( reviewDate!="" ) { %> <b>Date : 16-07-2024</b> <% } %>
+            </h3>
+
+            <table class="executive home-table details-table">
+                <% if(labInfo!=null){ %>
+                    <tr>
+                        <th colspan="8" class="lab-name">
+                            <h2>
+                                <% if(labInfo.getLabName()!=null){ %>
+                                    <%=StringEscapeUtils.escapeHtml4(labInfo.getLabName())%>
+                                <%}else{ %>
+                                    LAB NAME
+                                <%} %>
+                                (
+                                <% if(labInfo!=null && labInfo.getLabCode() !=null){ %>
+                                    <%=StringEscapeUtils.escapeHtml4(labInfo.getLabCode())%>
+                                <%} %>
+                                )
+                            </h2>
+                        </th>
+                    </tr>
+                <% } %>
+                <tr>
+                    <th colspan="8" class="org-line">Government of India, Ministry of Defence</th>
+                </tr>
+                <tr>
+                    <th colspan="8" class="org-line">Defence Research & Development Organization</th>
+                </tr>
+                <tr>
+                    <th colspan="8" class="org-line">
+                        <% if(labInfo.getLabAddress() !=null){ %>
+                            <%=labInfo.getLabAddress()%>, <%=StringEscapeUtils.escapeHtml4(labInfo.getLabCity())%>
+                        <%}else{ %>
+                            LAB ADDRESS
+                        <%} %>
+                    </th>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
 		
 			
 		<!-- ----------------------------------------  P-0  Div ----------------------------------------------------- -->
 
 
 		<div class="carousel-item ">
-			<div class="content" align="center" style=" border: 6px solid green;border-radius: 5px !important;height:93vh !important;padding-top: 15px;">
-				<div align="center"><h2 style="color: #145374 !important;font-family: 'Muli'!important">Project Outline</h2></div>
+			<div class="content content-box" align="center" >
+				<div align="center"><h2 class="clx-1">Project Outline</h2></div>
 				<div class="card-body shadow-nohover" >
 					<div class="">
 						<div class="">
@@ -200,34 +168,34 @@ String labcode = (String) session.getAttribute("labcode");
 			        	<!-- ----------------------------------Main projects List -------------------------- -->	
 			        	<% int val=0;
 			        	if(mainProjectList.size()>0){ %>
-			        	<h4 style="text-align: left;">Main Project<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
+			        	<h4 class="text-left">Main Project<a  data-toggle="modal"  class="fa faa-pulse animated clx-2" data-target="#exampleModal1" data-whatever="@mdo"  ><i class="fa fa-info-circle clx-3"  aria-hidden="true"></i> </a>
 			        	</h4>
-							<table style="width: 100%;font-size: 1.2rem;">
-								<thead style="background-color: #ffd8b1; color: black;">
+							<table class="clx-4">
+								<thead class="clx-5">
 									<tr >
-										<th style="width: 2%;">SN</th>
-										<th style="width: 7%;">Code</th>
-										<th style="width: 31%;">Project Name</th>
-										<th style="width: 4%;">Category</th> 
-										<th style="width: 9%;">DOS</th>
-										<th style="width: 9%;">PDC</th>
-										<th style="width: 6%;">Sanction Cost<br>(In Cr, &#8377)</th>
-										<th style="width: 6%;">Expenditure<br>(In Cr, &#8377)</th>
-										<th style="width: 6%;">Out Commitment<br>(In Cr, &#8377)</th>
-										<th style="width: 6%;">Dipl<br>(In Cr, &#8377)</th>
-										<th style="width: 6%;">Balance<br>(In Cr, &#8377)</th>
+										<th >SN</th>
+										<th >Code</th>
+										<th >Project Name</th>
+										<th >Category</th> 
+										<th >DOS</th>
+										<th >PDC</th>
+										<th >Sanction Cost<br>(In Cr, &#8377)</th>
+										<th >Expenditure<br>(In Cr, &#8377)</th>
+										<th >Out Commitment<br>(In Cr, &#8377)</th>
+										<th >Dipl<br>(In Cr, &#8377)</th>
+										<th >Balance<br>(In Cr, &#8377)</th>
 									</tr>
 								</thead>
 								<tbody>
 									<% if(mainProjectList!=null && mainProjectList.size()>0) {
 										
 										for(int i=0;i<mainProjectList.size();i++ ){val=i; %>
-										<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=(++pageCOunt)%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
-											<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
-											<td style="text-align: center;font-weight: bold;">
+										<tr class="clickable clx-6" data-target="#presentation-slides" data-slide-to="<%=(++pageCOunt)%>" data-toggle="tooltip" data-placement="top" title="" >
+											<td class="clx-7"><%=1+i %> </td>
+											<td class="clx-7">
 												<%=mainProjectList.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[12].toString()):"-" %>
 											</td>
-											<td style="font-weight: bold;"  >
+											<td   >
 											<div class="container-fluid">
 													<div class="row">
 														<div class="col-1">
@@ -238,37 +206,37 @@ String labcode = (String) session.getAttribute("labcode");
 																	if (mainProjectList != null && mainProjectList.get(i)[6] != null && mainProjectList.get(i)[6].toString().equalsIgnoreCase("IA")) {
 																%>
 																	
-																<li><span class="modal-span" style="color:green">&#11044;</span></li>
+																<li><span class="modal-span cl-g" >&#11044;</span></li>
 																
 																<%
 																} else if (mainProjectList != null && mainProjectList.get(i)[6] != null && mainProjectList.get(i)[6].toString().equalsIgnoreCase("IN")) {
 																		%>
 																		
-																<li><span class="modal-span" style="color:#007bff">&#11044;</span></li>
+																<li><span class="modal-span cl-1" >&#11044;</span></li>
 																		
 																		<%
 																} else if (mainProjectList != null && mainProjectList.get(i)[6] != null && mainProjectList.get(i)[6].toString().equalsIgnoreCase("IAF")) {
 																		%>
 																		
-																<li><span class="modal-span" style="color:#1F4690">&#11044;</span></li>
+																<li><span class="modal-span cl-2" >&#11044;</span></li>
 																		
 																		<%
 																} else if (mainProjectList != null && mainProjectList.get(i)[6] != null && mainProjectList.get(i)[6].toString().equalsIgnoreCase("IH")) {
 																	%>
 																	
-																<li><span class="modal-span" style="color:#8E3200">&#11044;</span></li>
+																<li><span class="modal-span cl-3" >&#11044;</span></li>
 																	
 																	<%
 																} else if (mainProjectList != null && mainProjectList.get(i)[6] != null && mainProjectList.get(i)[6].toString().equalsIgnoreCase("DRDO")) {
 																	%>
 																	
-																<li><span class="modal-span" style="color:orange;">&#11044;</span></li>
+																<li><span class="modal-span cl-4" >&#11044;</span></li>
 																	
 																	<%
 																} else if (mainProjectList != null && mainProjectList.get(i)[6] != null && mainProjectList.get(i)[6].toString().equalsIgnoreCase("OH")) {
 																	%>
 																	
-																<li><span class="modal-span" style="color:#EE5007">&#11044;</span></li>
+																<li><span class="modal-span cl-5" >&#11044;</span></li>
 																	
 																	<%
 																}
@@ -281,38 +249,30 @@ String labcode = (String) session.getAttribute("labcode");
 														</div>
 														<div class="col">
 															<%if (mainProjectList.get(i) != null )
-																if(mainProjectList.get(i)[1] != null) { %><%=StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[1].toString())%> - <%=mainProjectList.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[13].toString()):"-"%> 
+																if(mainProjectList.get(i)[1] != null) { %><b><%=StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[1].toString())%> - <%=mainProjectList.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[13].toString()):"-"%></b> 
 															<%}%>
 														</div>
 													</div>
 												</div>										
 											</td>
 											
-											<td style="font-weight: bold;text-align: center;">
+											<td class="clx-8">
 												<%if(mainProjectList.get(i)[32]!=null){%><%=StringEscapeUtils.escapeHtml4(mainProjectList.get(i)[32].toString()) %><%}else {%>-<%} %>
 											</td>
-											<%-- <td>
-											<%=mainProjectList.get(i)[32]%>
-											</td> --%>
-											<%-- <td style="font-weight: bold;text-align: right;">
-												<%if (mainProjectList.get(i) != null )
-													if(mainProjectList.get(i)[3]!= null) { %>
-													<%=String.format("%.2f", Double.parseDouble(mainProjectList.get(i)[3].toString())/10000000) %>
-												<%}%>
-											</td> --%>
-											<td style="font-weight: bold;text-align: center;">
+										
+											<td class="clx-8">
 												<%if (mainProjectList.get(i) != null )
 													
 													if(mainProjectList.get(i)[5]!= null) {	%>
 													<%=fc.SqlToRegularDate(mainProjectList.get(i)[5].toString())%>
 												<%}%>
 											</td>
-											<td style="font-weight: bold;text-align: center;<%
+											<td  class="clx-8 <%
 													DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 											LocalDate regularDate = LocalDate.parse(fc.SqlToRegularDate(mainProjectList.get(i)[4].toString()), formatter);
 													if (mainProjectList.get(i) != null )
 														if(mainProjectList.get(i)[4]!= null)
-											if(regularDate.isBefore(LocalDate.now())){%>  color: red;  <%}%> ">
+											if(regularDate.isBefore(LocalDate.now())){%>  cl-6  <%}%> ">
 												<%if (mainProjectList.get(i) != null )
 													if(mainProjectList.get(i)[4]!= null) {
 													 formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -321,31 +281,31 @@ String labcode = (String) session.getAttribute("labcode");
 													<%=fc.SqlToRegularDate(mainProjectList.get(i)[4].toString())%>
 												<%}%>
 											</td>
-											<td style="font-weight: bold;text-align: right;">
+											<td class="clx-9">
 												<%if (mainProjectList.get(i) != null )
 													if(mainProjectList.get(i)[3]!= null) { %>
 													<%=String.format("%.2f", Double.parseDouble(mainProjectList.get(i)[3].toString())/10000000)%>
 												<%}%>
 											</td>
-											<td style="font-weight: bold;text-align: right;">
+											<td class="clx-9">
 												<%if (mainProjectList.get(i) != null )
 													if(mainProjectList.get(i)[16]!= null) { %>
 													<%=String.format("%.2f", Double.parseDouble(mainProjectList.get(i)[16].toString())/10000000)%>
 												<%}%>
 											</td>
-											<td style="font-weight: bold;text-align: right;">
+											<td class="clx-9">
 												<%if (mainProjectList.get(i) != null )
 													if(mainProjectList.get(i)[17]!= null) { %>
 													<%=String.format("%.2f", Double.parseDouble(mainProjectList.get(i)[17].toString())/10000000)%>
 												<%}%>
 											</td>
-											<td style="font-weight: bold;text-align: right;">
+											<td class="clx-9">
 												<%if (mainProjectList.get(i) != null )
 													if(mainProjectList.get(i)[18]!= null) { %>
 													<%=String.format("%.2f", Double.parseDouble(mainProjectList.get(i)[18].toString())/10000000)%>
 												<%}%>
 											</td>
-											<td style="font-weight: bold;text-align: right;">
+											<td class="clx-9">
 												<%if (mainProjectList.get(i) != null )
 													if(mainProjectList.get(i)[19]!= null) { %>
 													<%=String.format("%.2f", Double.parseDouble(mainProjectList.get(i)[19].toString())/10000000)%>
@@ -360,21 +320,21 @@ String labcode = (String) session.getAttribute("labcode");
 									<!-- ----------------------------------sub projects List -------------------------- -->		
 									<br><br><br>
 									<%if(subProjectList.size()>0){ %>
-							<h4 style="text-align: left;">Sub Project<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a></h4>
-									<table style="width: 100%;font-size: 1.25rem">
-									<thead style="background-color: #ffd8b1; color: black;">
+							<h4 class="text-left">Sub Project<a  data-toggle="modal"  class="fa faa-pulse animated clx-2" data-target="#exampleModal1" data-whatever="@mdo"  ><i class="fa fa-info-circle clx-3"aria-hidden="true"></i> </a></h4>
+									<table class="clx-10">
+									<thead class="clx-5">
 										<tr >
-											<th style="width: 2%;">SN</th>
-											<th style="width: 7%;">Code</th>
-											<th style="width: 29%;">Project Name</th>
-											<th style="width: 4%;">Category</th>
-											<th style="width: 10%;">DOS</th>
-											<th style="width: 10%;">PDC</th>
-											<th style="width: 6%;">Sanction Cost<br>(In Cr, &#8377)</th>
-											<th style="width: 6%;">Expenditure<br>(In Cr, &#8377)</th>
-											<th style="width: 6%;">Out Commitment<br>(In Cr, &#8377)</th>
-											<th style="width: 6%;">Dipl<br>(In Cr, &#8377)</th>
-											<th style="width: 6%;">Balance<br>(In Cr, &#8377)</th>
+											<th >SN</th>
+											<th >Code</th>
+											<th >Project Name</th>
+											<th >Category</th>
+											<th >DOS</th>
+											<th >PDC</th>
+											<th >Sanction Cost<br>(In Cr, &#8377)</th>
+											<th >Expenditure<br>(In Cr, &#8377)</th>
+											<th >Out Commitment<br>(In Cr, &#8377)</th>
+											<th >Dipl<br>(In Cr, &#8377)</th>
+											<th >Balance<br>(In Cr, &#8377)</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -382,12 +342,12 @@ String labcode = (String) session.getAttribute("labcode");
 										<% if(subProjectList!=null && subProjectList.size()>0) {
 											if(val>0)val++;
 											for(int i=0;i<subProjectList.size();i++ ){ %>	
-											<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=(++pageCOunt)%>" data-toggle="tooltip" data-placement="top" title="" style="cursor: pointer;">
-												<td style="text-align: center;font-weight: bold;"><%=1+i %> </td>
-												<td style="text-align: center;font-weight: bold;">
+											<tr class="clickable " data-target="#presentation-slides" data-slide-to="<%=(++pageCOunt)%>" data-toggle="tooltip" data-placement="top" title="" >
+												<td class="clx-7"><%=1+i %> </td>
+												<td class="clx-7">
 													<%=subProjectList.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(subProjectList.get(i)[12].toString()):"-" %>
 												</td>
-												<td  style="font-weight: bold;"  >
+												<td  class="font-weight-bold"  >
 													<div class="container-fluid">
 														<div class="row">
 															<div class="col-1">
@@ -398,37 +358,37 @@ String labcode = (String) session.getAttribute("labcode");
 																		if (subProjectList != null && subProjectList.get(i)[6] != null && subProjectList.get(i)[6].toString().equalsIgnoreCase("IA")) {
 																	%>
 																		
-																	<li><span class="modal-span" style="color:green">&#11044;</span></li>
+																	<li><span class="modal-span cl-g" >&#11044;</span></li>
 																	
 																	<%
 																	} else if (subProjectList != null && subProjectList.get(i)[6] != null && subProjectList.get(i)[6].toString().equalsIgnoreCase("IN")) {
 																			%>
 																			
-																	<li><span class="modal-span" style="color:#007bff">&#11044;</span></li>
+																	<li><span class="modal-span cl-1">&#11044;</span></li>
 																			
 																			<%
 																	} else if (subProjectList != null && subProjectList.get(i)[6] != null && subProjectList.get(i)[6].toString().equalsIgnoreCase("IAF")) {
 																			%>
 																			
-																	<li><span class="modal-span" style="color:#1F4690">&#11044;</span></li>
+																	<li><span class="modal-span cl-2">&#11044;</span></li>
 																			
 																			<%
 																	} else if (subProjectList != null && subProjectList.get(i)[6] != null && subProjectList.get(i)[6].toString().equalsIgnoreCase("IH")) {
 																		%>
 																		
-																	<li><span class="modal-span" style="color:#8E3200">&#11044;</span></li>
+																	<li><span class="modal-span cl-3">&#11044;</span></li>
 																		
 																		<%
 																	} else if (subProjectList != null && subProjectList.get(i)[6] != null && subProjectList.get(i)[6].toString().equalsIgnoreCase("DRDO")) {
 																		%>
 																		
-																	<li><span class="modal-span" style="color:orange;">&#11044;</span></li>
+																	<li><span class="modal-span cl-4">&#11044;</span></li>
 																		
 																		<%
 																	} else if (subProjectList != null && subProjectList.get(i)[6] != null && subProjectList.get(i)[6].toString().equalsIgnoreCase("OH")) {
 																		%>
 																		
-																	<li><span class="modal-span" style="color:#EE5007">&#11044;</span></li>
+																	<li><span class="modal-span cl-5">&#11044;</span></li>
 																		
 																		<%
 																	}
@@ -448,52 +408,47 @@ String labcode = (String) session.getAttribute("labcode");
 												
 														
 												</td>
-												<td style="font-weight: bold;text-align: center;">
+												<td class="clx-8">
 													<%if(subProjectList.get(i)[32]!=null){%><%=StringEscapeUtils.escapeHtml4(subProjectList.get(i)[32].toString()) %><%}else {%>-<%} %>
 												</td>
-												<%-- <td style="font-weight: bold;text-align: right;">
-													<%if (subProjectList.get(i) != null )
-														if(subProjectList.get(i)[3]!= null) { %>
-														<%=String.format("%.2f", Double.parseDouble(subProjectList.get(i)[3].toString())/10000000) %>
-													<%}%>
-												</td> --%>
-												<td style="font-weight: bold;text-align: center;">
+												
+												<td class="clx-8">
 													<%if (subProjectList.get(i) != null )
 														if(subProjectList.get(i)[5]!= null) { %>
 														<%=fc.SqlToRegularDate(subProjectList.get(i)[5].toString())%>
 													<%}%>
 												</td>
-												<td style="font-weight: bold;text-align: center;">
+												<td class="clx-8">
 													<%if (subProjectList.get(i) != null )
 														if(subProjectList.get(i)[4]!= null) { %>
 														<%=fc.SqlToRegularDate(subProjectList.get(i)[4].toString())%>
 													<%}%>
 												</td>
-												<td style="font-weight: bold;text-align: right;">
+												<td class="clx-9">
 													<%if (subProjectList.get(i) != null )
 														if(subProjectList.get(i)[3]!= null) { %>
 														<%=String.format("%.2f", Double.parseDouble(subProjectList.get(i)[3].toString())/10000000)%>
 													<%}%>
 												</td>
-												<td style="font-weight: bold;text-align: right;">
+												<td class="clx-9">
 													<%if (subProjectList.get(i) != null )
 														if(subProjectList.get(i)[16]!= null) { %>
 														<%=String.format("%.2f", Double.parseDouble(subProjectList.get(i)[16].toString())/10000000)%>
 													<%}%>
 												</td>
-												<td style="font-weight: bold;text-align: right;">
+												<td class="clx-9">
 													<%if (subProjectList.get(i) != null )
 														if(subProjectList.get(i)[17]!= null) { %>
 														<%=String.format("%.2f", Double.parseDouble(subProjectList.get(i)[17].toString())/10000000)%>
 													<%}%>
 												</td>
-												<td style="font-weight: bold;text-align: right;">
+												<td class="clx-9">
 													<%if (subProjectList.get(i) != null )
 														if(subProjectList.get(i)[18]!= null) { %>
 														<%=String.format("%.2f", Double.parseDouble(subProjectList.get(i)[18].toString())/10000000)%>
 													<%}%>
 												</td>
-												<td style="font-weight: bold;text-align: right;">
+												<td class="clx-9">
 													<%if (subProjectList.get(i) != null )
 														if(subProjectList.get(i)[19]!= null) { %>
 														<%=String.format("%.2f", Double.parseDouble(subProjectList.get(i)[19].toString())/10000000)%>
@@ -517,10 +472,10 @@ String labcode = (String) session.getAttribute("labcode");
 		<!-- ----------------------------------------- Slide Two ------------------------------------------------------------ -->
 		<%if(projects!=null && projects.size()>0){
 				for(int i=0;i<projects.size();i++ ){
-					if(projects.get(i)[22]!=null || projects.get(i)[23]!=null || projects.get(i)[24]!=null ||
+					if(projects.get(i)[22]!=null  || projects.get(i)[24]!=null ||
 							projects.get(i)[25]!=null || projects.get(i)[27]!=null || projects.get(i)[29]!=null ||
 							projects.get(i)[26]!=null || projects.get(i)[30]!=null || projects.get(i)[31]!=null){
-							if(projects.get(i)[23].toString().equals("2")){ %>
+							if(projects.get(i)[23]!=null && projects.get(i)[23].toString().equals("2")){ %>
 								<div class="carousel-item " >
 									<div class="container-fluid" >
 										<div class="container-fluid"  >
@@ -545,11 +500,11 @@ String labcode = (String) session.getAttribute("labcode");
 												}
 												%>
 								
-												<div class="content-header row " style="margin-top: 10px; padding: 10px" > 
-							 						<div class="col-md-1" align="left" style="padding-top:5px;" >
-														<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+												<div class="content-header row clx-11" > 
+							 						<div class="col-md-1 clx-12" align="left"  >
+														<img class="clx-13"   <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 													</div>
-													<h2 style="color: black;<%if(projects.get(i) != null && projects.get(i)[1] != null && projects.get(i)[1].toString().length()>60){ %>   font-size: 1.5rem!important; <%}%>" class="col-md-9" align="center">
+													<h2 class="text-dark<%if(projects.get(i) != null && projects.get(i)[1] != null && projects.get(i)[1].toString().length()>60){ %> clx-14   <%}%> col-md-9"  align="center">
 															<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
 															%><%=StringEscapeUtils.escapeHtml4(projects.get(i)[1].toString())%> - <%=projects.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[13].toString()):"-"%> (<%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"-" %>)
 															<%}%>
@@ -563,54 +518,54 @@ String labcode = (String) session.getAttribute("labcode");
 															<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
 														<%} %> --%>
 							 						</h6>
-							 						<div class="col-md-1" align="right" style="padding-top:5px;" >
-							 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+							 						<div class="col-md-1 clx-15" align="right"  >
+							 							<img class="clx-16"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 							 						</div>
 												</div>
-												<div class="content shadow-nohover" style="padding: 0.25rem;border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 15px;overflow-x: hidden;" align="center">
+												<div class="content shadow-nohover clx-17"  align="center">
 													<div class="row" >
 														<div class="col-md-12">
 												
-															<table style="width: 99%;font-weight: bold;margin-left: 0.5%;margin-right: 1%;font-size: 1.35rem;">
+															<table class="clx-18">
 																<tr>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;width: 12%;">Project Code </td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;width: 12%;">DoS </td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">PDC <%if(projects.get(i)[35]!=null) {%> / Org<%} %></td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">User </td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">Category </td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">Cost / Exp (Cr) </td>
-																	<!-- <td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">Application </td> -->
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">Project Director </td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;width: 17%">Current Stage </td>
+																	<td colspan="1" class="clx-20 width-12">Project Code </td>
+																	<td colspan="1" class="clx-20 width-12">DoS </td>
+																	<td colspan="1" class="clx-20">PDC <%if(projects.get(i)[35]!=null) {%> / Org<%} %></td>
+																	<td colspan="1" class="clx-20">User </td>
+																	<td colspan="1" class="clx-20">Category </td>
+																	<td colspan="1" class="clx-20">Cost / Exp (Cr) </td>
+																	<!-- <td colspan="1" class="clx-20">Application </td> -->
+																	<td colspan="1" class="clx-20">Project Director </td>
+																	<td colspan="1" class="clx-21">Current Stage </td>
 																	
 																	
 																	
 																</tr>
 																<tr>
-																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"--"%></td>
-																	<td colspan="1" style="width: 12%;color:#002CCD;text-align:center"><%=sdf.format(projects.get(i)[5])%> </td>
-																	<td colspan="1" style="width: 12%;color:#002CCD;text-align:center;">
+																	<td colspan="1" class="clx-22"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"--"%></td>
+																	<td colspan="1" class="clx-23"><%=sdf.format(projects.get(i)[5])%> </td>
+																	<td colspan="1" class="clx-24">
 																	
-																	<span style="font-size: 1.25rem !important;
+																	<span class="clx-25 
 																	<%DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 																	LocalDate regularDate = LocalDate.parse(fc.SqlToRegularDate(projects.get(i)[4].toString()), formatter);
 																	if(regularDate.isBefore(LocalDate.now())){
 																	%>
-																color:red;
+																	text-danger
 																<%}%>
 																	"><%=sdf.format(projects.get(i)[4])%></span>
-																	 <%if(projects.get(i)[35]!=null) {%><br><span style="color: black;font-size: 1.25rem !important;"><%=sdf.format(projects.get(i)[35]) %></span> <%} %></td>
-																	<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
-																	<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
-																	<td colspan="1" style="color:#002CCD;text-align:right;width:15%;text-align:center;"><%=nfc.convert(cost / 10000000)%> / <span style="font-size: 1.25! important;color: green;"><%=nfc.convert(exp / 10000000)%></span></td>
-																	<td colspan="1" style="color:#002CCD; font-size: 16px!important;width:18%;text-align:center;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>, <%if(projects.get(i)[34] != null){ %> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString()) %><%} %>
+																	 <%if(projects.get(i)[35]!=null) {%><br><span class="clx-26"><%=sdf.format(projects.get(i)[35]) %></span> <%} %></td>
+																	<td colspan="1" class="clx-27"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
+																	<td colspan="1" class="clx-27"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
+																	<td colspan="1" class="clx-28"><%=nfc.convert(cost / 10000000)%> / <span class="clx-30"><%=nfc.convert(exp / 10000000)%></span></td>
+																	<td colspan="1" class="clx-29"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>, <%if(projects.get(i)[34] != null){ %> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString()) %><%} %>
 																		<%} else {%> -- <%}%></td>
-																	<td colspan="1" style="color:#002CCD;width:15%;text-align:center; font-size: 16px!important;"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
+																	<td colspan="1" class="clx-28"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
 																		<%} else {%> -- <%}%></td>
 																</tr>
 																<tr>
-																	<td colspan="1" style=" font-weight: bold; color: #021B79;vertical-align: top;font-size:1.25rem">Brief :</td>
-																	<td colspan="7" style="color: black;font-size:1.05rem!important;">
+																	<td colspan="1" class="clx-32">Brief :</td>
+																	<td colspan="7" class="clx-33">
 																		<%if(projects.get(i)[28]!=null){%>
 																			<%=StringEscapeUtils.escapeHtml4(projects.get(i)[28].toString())%>
 																		<%}else{%>
@@ -619,8 +574,8 @@ String labcode = (String) session.getAttribute("labcode");
 																	</td>
 																</tr>
 																<tr>
-																	<td colspan="1"><b style=" font-weight: bold; color: #021B79;font-size:1.25rem">Objectives : </b></td>
-																	<td colspan="7"style="color: black;font-size:1.05rem!important;">
+																	<td colspan="1"><b class="clx-44">Objectives : </b></td>
+																	<td colspan="7" class="clx-33">
 																			<%if(projects.get(i)[7]!=null) {%>
 																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[7].toString())%> 
 																			<%} else{%>
@@ -628,20 +583,11 @@ String labcode = (String) session.getAttribute("labcode");
 																			<%} %>
 																	</td>
 																</tr>
-																<%-- <tr>
-																	<td colspan="1"><b style="font-size: 1.5rem; font-weight: bold; color: #021B79;">Scope : </b></td>
-																	<td colspan="7"style="color: black;">
-																			<%if(projects.get(i)[9]!=null) {%> 
-																				<%=projects.get(i)[9]%> 
-																			<%} else{%>
-																				--
-																			<%} %>
-																	</td>
-																</tr> --%>
+																
 																
 																<tr>
-																	<td colspan="1"><b style=" font-weight: bold; color: #021B79;font-size:1.25rem">Deliverables : </b> </td>
-																	<td colspan="7"style="color: black;font-size:1.05rem!important;">
+																	<td colspan="1"><b class="clx-44">Deliverables : </b> </td>
+																	<td colspan="7"class="clx-33">
 																			<%if(projects.get(i)[8]!=null) {%>
 																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[8].toString())%> 
 																			<%} else{%>
@@ -655,10 +601,10 @@ String labcode = (String) session.getAttribute("labcode");
 															<br>
 															<div class="container-fluid">
 																<div class="row">
-																<div class="col-md-5" style="width:50%">
-																	<div class="col" style="padding-left:0px;">
+																<div class="col-md-5 clx-45">
+																	<div class="col p-0" >
 																	
-																	<p style="margin-bottom: 0px;"><span style="text-align: left;font-size: 1.25rem !important; font-weight: bold; color: maroon;">
+																	<p class="mb-0"><span class="clx-34">
 																				<u>Current Status</u> :</span> &nbsp; &nbsp; &nbsp; &nbsp; <span><a href="BriefingPresentation.htm?projectid=<%=projects.get(i)[0]%>&committeeid=<%="1"%>" target="_blank">PMRC </a></span>  &nbsp; &nbsp; <span><a href="BriefingPresentation.htm?projectid=<%=projects.get(i)[0]%>&committeeid=<%="2"%>" target="_blank">EB </a></span>
 														<%
 														Path attachmentPath1 = Paths.get(filePath,labcode,"ProjectSlide",projects.get(i)[27]+"");
@@ -672,16 +618,16 @@ String labcode = (String) session.getAttribute("labcode");
 														%>
 														
 														<%if(specificfile1.exists()){%>
-														&nbsp; &nbsp;	<span><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b><i class="fa fa-sm fa-angle-double-right text-primary" aria-hidden="true" style=""></i><i class="fa fa-angle-right text-primary" aria-hidden="true" style="margin-left:-2px;"></i>	</b></a></span>
+														&nbsp; &nbsp;	<span><a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b><i class="fa fa-sm fa-angle-double-right text-primary" aria-hidden="true" ></i><i class="fa fa-angle-right text-primary" aria-hidden="true" ></i>	</b></a></span>
 														<%} %>
 														<%if(videoPathFile.exists()){%>
-														&nbsp; &nbsp;	<span>		<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><img alt="" src="view/images/presentation.png" style="width:19px !important"></a></span>
+														&nbsp; &nbsp;	<span>		<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><img alt="" src="view/images/presentation.png" class="clx-35"></a></span>
 												
 														<%} %>
 																				 </p>
 																				<%if(projects.get(i)!=null && projects.get(i)[20]!=null && projects.get(i)[20].toString().length()>0) {%>
 																				<%-- 	<%=projects.get(i)[20].toString().substring(3,projects.get(i)[20].toString().length()-1 )%> --%>
-																				<div class="ml-3" style="text-align: left;"><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
+																				<div class="ml-3 text-left" ><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
 																				<%} else{%>-<%} %>
 																	</div>
 																
@@ -689,9 +635,9 @@ String labcode = (String) session.getAttribute("labcode");
 																		
 																			
 																
-																	<div class="col" style="padding-left:0px;">
+																	<div class="col pl-0" >
 																	
-																		<p style="margin-bottom: 0px;"><span style="text-align: left;font-size: 1.25rem !important; font-weight: bold; color: maroon;">
+																		<p class="mb-0"><span class="clx-34">
 																			<u>Way Forward </u>: 
 																			</span></p>
 																	<%-- 	<%=projects.get(i)[31].toString().substring(3,projects.get(i)[31].toString().length()-1 )%> --%>
@@ -703,17 +649,17 @@ String labcode = (String) session.getAttribute("labcode");
 															
 																<%}%>
 																</div>
-																	<div class="col-md-7" style="float:right">
+																	<div class="col-md-7 clx-36" >
 													
 																		<%if(imagepathFile.exists()){%>
-																		<div style="height:50vh; width:100%;border:4px solid maroon;padding: 4px">
+																		<div class="clx-37">
 																		<%if(specificfile1.exists()){%>
 																			<a  href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>" target="_blank" >
-																				<img class=" d-flex justify-content-center zoom2" data-enlargable style="height: 100%; width: 100%; margin-bottom: 5px;margin: auto;" 
+																				<img class=" d-flex justify-content-center zoom2 clx-38" data-enlargable  
 																				src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
 																			</a>
 																		<%}else{ %>
-																				<img class=" d-flex justify-content-center zoom2" data-enlargable style="height: 100%; width: 100%; margin-bottom: 5px;margin: auto;" 
+																				<img class=" d-flex justify-content-center zoom2 clx-38" data-enlargable  
 																				src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
 																			
 																			<%} %>
@@ -730,21 +676,12 @@ String labcode = (String) session.getAttribute("labcode");
 												
 													
 														</div>
-														<!-- <div class="col-md-7">
-															<table style="width: 100%;font-weight: bold;vertical-align: top;">
-																
-																
-															</table>
-														</div> -->
+													
 													</div>
 										
 										
 									
-													<%-- <div class="row" style="margin-top: 10%;">
-														<div class="col-md-2" align="left">
-															<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[4]%>" target="_blank" title="PDF File"><b>Show more</b></a>
-														</div>
-													</div> --%>
+												
 												</div>
 								
 											</div>
@@ -752,7 +689,7 @@ String labcode = (String) session.getAttribute("labcode");
 									</div>
 								</div>
 								<!-- ----------------------------------------- Slide One ------------------------------------------------------------ -->
-							<%}%><% if(projects.get(i)[23].toString().equals("1")){ %> 
+							<%}%><% if(projects.get(i)[23]!=null && projects.get(i)[23].toString().equals("1")){ %> 
 								<div class="carousel-item " >
 									<div class="container-fluid" >
 											<div class="container-fluid"  >
@@ -774,71 +711,74 @@ String labcode = (String) session.getAttribute("labcode");
 													enduser="Others";
 												}
 												%>
-												<div class="content-header row " style="margin-top: 10px; padding: 10px" > 
- 					
-							 						<div class="col-md-1" align="left" style="padding-top:5px;" >
-														<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+											<div class="content-header row clx-11" > 
+							 						<div class="col-md-1 clx-12" align="left"  >
+														<img class="clx-13"   <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 													</div>
-													<h2 style="color: black;<%if(projects.get(i) != null && projects.get(i)[1] != null && projects.get(i)[1].toString().length()>60){ %>   font-size: 1.5rem!important; <%}%>" class="col-md-9" align="center"> <%if(projects.get(i)!=null )if( projects.get(i)[1]!=null){%><%=StringEscapeUtils.escapeHtml4(projects.get(i)[1].toString())%> - <%=projects.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[13].toString()):"-"%> (<%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"-" %>)  <%}%></h2>
-							 					<%-- 	<h6 class="col">
-							 							<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
+													<h2 class="text-dark<%if(projects.get(i) != null && projects.get(i)[1] != null && projects.get(i)[1].toString().length()>60){ %> clx-14   <%}%> col-md-9"  align="center">
+															<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
+															%><%=StringEscapeUtils.escapeHtml4(projects.get(i)[1].toString())%> - <%=projects.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[13].toString()):"-"%> (<%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"-" %>)
+															<%}%>
+													</h2>
+													<h6 class="col">
+							 							<%-- <%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
 															<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b>Show more</b></a>
-														<%} %>
+														<%} %> --%>
 														<br>
-								 						<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
+								 					<%-- 	<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
 															<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
-														<%} %>
-							 						</h6> --%>
-							 						<div class="col-md-1" align="right" style="padding-top:5px;" >
-							 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+														<%} %> --%>
+							 						</h6>
+							 						<div class="col-md-1 clx-15" align="right"  >
+							 							<img class="clx-16"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 							 						</div>
 												</div>
 												
-												<div class="content" style="padding: 0.25rem;border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 15px;overflow-x: hidden;" align="center">
-													<table style="width: 99%;font-weight: bold;margin-left: 0.5%;margin-right: 1%;font-size: 1.35rem;">
+												<div class="content clx-17"  align="center">
+													<table class="clx-18">
 														<tr>
-															<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;width: 12%;">Project Code </td>
-															<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;width: 12%;">DoS </td>
-															<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">PDC <%if(projects.get(i)[35]!=null) {%> / Org<%} %></td>
-															<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">User </td>
-															<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">Category </td>
-															<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">Cost / Exp (Cr) </td>
-															<!-- <td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">Application </td> -->
-																																<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">Project Director </td>
-															<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;width: 17%">Current Stage </td>
+															<td colspan="1" class="clx-20 width-12">Project Code </td>
+															<td colspan="1" class="clx-20 width-12">DoS </td>
+															<td colspan="1" class="clx-20">PDC <%if(projects.get(i)[35]!=null) {%> / Org<%} %></td>
+															<td colspan="1" class="clx-20">User </td>
+															<td colspan="1" class="clx-20">Category </td>
+															<td colspan="1" class="clx-20">Cost / Exp (Cr) </td>
+															<!-- <td colspan="1" class="clx-20">Application </td> -->
+																																<td colspan="1" class="clx-20">Project Director </td>
+															<td colspan="1" class="clx-21">Current Stage </td>
 														</tr>
 														<tr>
-															<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4( projects.get(i)[12].toString()):"--"%></td>
-															<td colspan="1" style="width: 12%;color:#002CCD;text-align:center"><%=sdf.format(projects.get(i)[5])%></td>
-															<td colspan="1" style="width: 12%;color:#002CCD;text-align:center;">
-																<span style="font-size: 1.25rem !important;
+															<td colspan="1" class="clx-24"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4( projects.get(i)[12].toString()):"--"%></td>
+															<td colspan="1" class="clx-24"><%=sdf.format(projects.get(i)[5])%></td>
+															<td colspan="1" class="clx-24">
+																<span class=" clx-26
 																	<%DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 																	LocalDate regularDate = LocalDate.parse(fc.SqlToRegularDate(projects.get(i)[4].toString()), formatter);
 																	if(regularDate.isBefore(LocalDate.now())){
 																	%>
-																color:red;
+																text-danger;
 																<%}%>
 																	"><%=sdf.format(projects.get(i)[4])%></span>
-															<%if(projects.get(i)[35]!=null) {%><br><span style="color: black;font-size: 1.25rem !important;"><%=sdf.format(projects.get(i)[35]) %></span> <%} %></td>
-															<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
-															<td colspan="1" style="text-align:center;color:#002CCD;"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
-															<td colspan="1" style="color:#002CCD;text-align:right;width:15%;text-align:center;"><%=nfc.convert(cost / 10000000)%> / <span style="font-size: 1.25! important;color: green;"><%=nfc.convert(exp / 10000000)%></span> </td>
-															<td colspan="1" style="color:#002CCD;width:18%;font-size:16px!important;text-align:center;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>, <%if(projects.get(i)[34] != null){ %> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString()) %><%} %>
+															<%if(projects.get(i)[35]!=null) {%><br><span class="clx-26"><%=sdf.format(projects.get(i)[35]) %></span> <%} %></td>
+															<td colspan="1" class="clx-27"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
+															<td colspan="1" class="clx-27"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
+															<td colspan="1" class="clx-28"><%=nfc.convert(cost / 10000000)%> / <span class="clx-30"><%=nfc.convert(exp / 10000000)%></span> </td>
+															<td colspan="1" class="clx-29"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>, <%if(projects.get(i)[34] != null){ %> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString()) %><%} %>
 																<%} else {%> -- <%}%></td>
-															<td colspan="1" style="color:#002CCD;width:15%;text-align:center; font-size: 16px!important;"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
+															<td colspan="1" class="clx-29"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
 																<%} else {%> -- <%}%></td>
 														</tr>
 													</table>
-													<div class="row" style="">
+													<div class="row">
 														<div class="col-md-6">
 															<div class="row">
 																<div class="col left">
-																	<table style="width: 98.1%;font-weight: bold;font-size: 1.5rem;margin-left: 1%">
+																	<table class="clx-39">
 																		<tr>
-																			<td style="border-top: none;width: 24.8%;vertical-align: top;">
-																				<b style=";font-weight: bold;color: #021B79;font-size:1.25rem"> Brief:</b>
+																			<td class="clx-40">
+																				<b class="clx-41"> Brief:</b>
 																			</td>
-																			<td colspan="3" style="border-top: none;vertical-align: top;color: black;font-size:1.05rem!important;">
+																			<td colspan="3" class="clx-42">
 																				<%if(projects.get(i)[28]!=null){%>
 																					<%=StringEscapeUtils.escapeHtml4(projects.get(i)[28].toString())%>
 																				<%}else{%>
@@ -848,26 +788,19 @@ String labcode = (String) session.getAttribute("labcode");
 																		</tr>
 																		<tr>
 																			<td>
-																				<b style="font-weight: bold;color: #021B79;vertical-align: top;font-size:1.05rem!important;">Objectives : </b>
+																				<b class="clx-43">Objectives : </b>
 																			</td>
-																			<td colspan="3" style="color: black;font-size:1.05rem!important;"> 
+																			<td colspan="3" class="clx-33"> 
 																					<%=projects.get(i)[7]==null?"--":StringEscapeUtils.escapeHtml4(projects.get(i)[7].toString())%> 
 																			</td>
 																		</tr>
-																		<%-- <tr>
-																			<td>
-																				<b style="font-size: 1.5rem;font-weight: bold;color: #021B79;vertical-align: top;">Scope : </b>
-																			</td>
-																			<td colspan="3" style="color: black;"> 
-																					<%=projects.get(i)[9]==null?"--":projects.get(i)[9]%> 
-																			</td>
-																		</tr> --%>
+																		
 																				
 																		<tr>
 																			<td>
-																				<b style="font-weight: bold;color: #021B79;vertical-align: top;font-size:1.25rem">Deliverables : </b>
+																				<b class="clx-46">Deliverables : </b>
 																			</td>
-																			<td colspan="3" style="color: black;font-size:1.05rem!important;"> 
+																			<td colspan="3" class="clx-33"> 
 																					<%=projects.get(i)[8]==null?"--":StringEscapeUtils.escapeHtml4(projects.get(i)[8].toString())%> 
 																			</td>
 																		</tr>
@@ -876,8 +809,8 @@ String labcode = (String) session.getAttribute("labcode");
 																	<br>
 																	<div class="container-fluid">
 																	<div class="row">
-																		<div class="col" style="padding-left:0px;">
-																			<span style="text-align: left;font-size: 1.25rem !important; font-weight: bold; color: maroon;">
+																		<div class="col pl-0" >
+																			<span class="clx-34">
 																				<u>Current Status</u> :  
 																			</span>&nbsp; &nbsp; &nbsp;&nbsp; <span><a href="BriefingPresentation.htm?projectid=<%=projects.get(i)[0]%>&committeeid=<%="1"%>" target="_blank">PMRC </a></span>  &nbsp; &nbsp; <span><a href="BriefingPresentation.htm?projectid=<%=projects.get(i)[0]%>&committeeid=<%="2"%>" target="_blank">EB </a></span>
 														
@@ -893,25 +826,25 @@ String labcode = (String) session.getAttribute("labcode");
 														%>
 														<%if(specificfile1.exists()){%>
 												
-												&nbsp; &nbsp;	<span >	<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b><i class="fa fa-angle-double-right text-primary" aria-hidden="true" style=></i><i class="fa fa-angle-right text-primary" aria-hidden="true" style="margin-left:-2px;"></i> </b></a> </span>	
+												&nbsp; &nbsp;	<span >	<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b><i class="fa fa-angle-double-right text-primary" aria-hidden="true" ></i><i class="fa fa-angle-right text-primary" aria-hidden="true" ></i> </b></a> </span>	
 														
 														<%} %>
 														
 															<%if(videoPathFile.exists()){%>
 																						
-												&nbsp; &nbsp;	<span><a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><img alt="" src="view/images/presentation.png" style="width:19px !important"></a>
+												&nbsp; &nbsp;	<span><a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><img alt="" src="view/images/presentation.png" class="clx-35"></a>
 														</span>
 														<%} %>
 																			<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
 																				<%-- <%=projects.get(i)[20].toString().substring(3, projects.get(i)[20].toString().length())%> --%>
-																					<div class="ml-3" style="text-align: left;"><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
+																					<div class="ml-3 text-left"><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
 																			<%} else{%>-<%} %> 
 																		</div>
 																	</div>
 																	<%if(projects.get(i)[31]!=null && projects.get(i)[31]!=""){%>	
 																		<div class="row">
-																			<div class="col" style="padding-left:0px;">
-																				<span style="text-align: left;font-size: 1.25rem !important; font-weight: bold; color: maroon;">
+																			<div class="col pl-0" >
+																				<span class="clx-34">
 																					<u>Way Forward : </u></span> 
 																				<div class="ml-3">
 																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[31].toString()) %>
@@ -920,17 +853,7 @@ String labcode = (String) session.getAttribute("labcode");
 																		</div>
 																	<%}%>
 																	
-													<%-- 				<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
-															<div class="row ml-3">
-													<span><i class="fa fa-lg fa-angle-double-right text-success" aria-hidden="true" style="font-size: 2rem"></i>	<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b>Show more </b></a> </span>	
-														</div>
-														<%} %>
-														
-															<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
-																						<div class="row ml-3">
-													<span><i class="fa fa-lg fa-angle-double-right text-success" aria-hidden="true" style="font-size: 2rem"></i><a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
-														</span></div>
-														<%} %> --%>
+												
 																	
 																</div>
 																</div>
@@ -938,7 +861,7 @@ String labcode = (String) session.getAttribute("labcode");
 															</div>
 														</div>
 														<br>
-														<div class="col-md-5 mt-3" style="border:4px solid maroon;margin-left: 2%;padding: 4px;">
+														<div class="col-md-5 mt-3 clx-47" >
 										<%
 										if(imagepathFile.exists()) {
 										%>
@@ -947,16 +870,16 @@ String labcode = (String) session.getAttribute("labcode");
 										%>
 										<a
 											href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"
-											target="_blank"> <img class="zoom" data-enlargable
-											style="width: 100%; height: 100%; margin-bottom: 5px; position: relative; display: flex;"
+											target="_blank"> <img class="zoom clx-48" data-enlargable
+											
 											align="middle"
 											src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
 										</a>
 										<%
 										} else {
 										%>
-										<img class="zoom" data-enlargable
-											style="width: 100%; height: 100%; margin-bottom: 5px; position: relative; display: flex;"
+										<img class="zoom clx-48" data-enlargable
+											
 											align="middle"
 											src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(imagepathFile))%>">
 										<%
@@ -1014,68 +937,75 @@ String labcode = (String) session.getAttribute("labcode");
 												}
 												%>
 								
-												<div class="content-header row " style="margin-top: 10px; padding: 10px" > 
-	 					
-							 						<div class="col-md-1" align="left" style="padding-top:5px;" >
-														<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+												<div class="content-header row clx-11" > 
+							 						<div class="col-md-1 clx-12" align="left"  >
+														<img class="clx-13"   <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 													</div>
-													
-													<h2 style="color: black;<%if(projects.get(i) != null && projects.get(i)[1] != null && projects.get(i)[1].toString().length()>60){ %>   font-size: 1.5rem!important; <%}%>" class="col-md-10" align="center">
-														<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
-														%><%=StringEscapeUtils.escapeHtml4(projects.get(i)[1].toString())%> (<%=StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString())%>)
-														<%}%>
+													<h2 class="text-dark<%if(projects.get(i) != null && projects.get(i)[1] != null && projects.get(i)[1].toString().length()>60){ %> clx-14   <%}%> col-md-9"  align="center">
+															<%if (projects.get(i) != null )if(projects.get(i)[1] != null) {
+															%><%=StringEscapeUtils.escapeHtml4(projects.get(i)[1].toString())%> - <%=projects.get(i)[13]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[13].toString()):"-"%> (<%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"-" %>)
+															<%}%>
 													</h2>
-							 						<div class="col-md-1" align="right" style="padding-top:5px;" >
-							 							<img class="logo" style="width: 45px;margin-left: 5px;margin-top: -2px;"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
+													<h6 class="col">
+							 							<%-- <%if(new File(filePath + projects.get(i)[25] + projects.get(i)[27]).exists()){%>
+															<a href="SlidePdfOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" ><b>Show more</b></a>
+														<%} %> --%>
+														<br>
+								 					<%-- 	<%if(new File(filePath + projects.get(i)[25] + projects.get(i)[30]).exists()){%>
+															<a href="SlideVideoOpenAttachDownload.htm?slideId=<%=projects.get(i)[26]%>"  target="_blank" title="Video File"><b>Show Video</b></a>
+														<%} %> --%>
+							 						</h6>
+							 						<div class="col-md-1 clx-15" align="right"  >
+							 							<img class="clx-16"  <%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> >
 							 						</div>
 												</div>
-												<div class="content shadow-nohover" style="padding: 0.25rem;;border: 6px solid green;border-radius: 5px !important;height:85vh !important;padding-top: 15px;overflow-x: hidden;" align="center">
+												<div class="content shadow-nohover clx-49" align="center">
 													<div class="row" >
 														<div class="col-md-12">
 												
-															<table style="width: 99%;font-weight: bold;margin-left: 0.5%;margin-right: 1%;font-size: 1.35rem;">
+															<table class="clx-18">
 																<tr>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold;color: maroon;width: 12%;">Project Code </td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold;color: maroon;width: 12%;">DoS </td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold;color: maroon;">PDC<%if(projects.get(i)[35]!=null) {%> / Org<%} %> </td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold;color: maroon;width: 12%">User </td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold;color: maroon;width: 12%;">Category </td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold;color: maroon;">Cost / Exp (Cr) </td>
-																	<!-- <td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold;color: maroon;">Application </td> -->
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold; color: maroon;">Project Director </td>
-																	<td colspan="1" style="text-align:center;font-size: 1.5rem; font-weight: bold;color: maroon;">Current Stage </td>
+																	<td colspan="1" class="clx-19 width-12">Project Code </td>
+																	<td colspan="1" class="clx-19 width-12">DoS </td>
+																	<td colspan="1" class="clx-19">PDC<%if(projects.get(i)[35]!=null) {%> / Org<%} %> </td>
+																	<td colspan="1" class="clx-19 width-12">User </td>
+																	<td colspan="1" class="clx-19 width-12">Category </td>
+																	<td colspan="1" class="clx-19">Cost / Exp (Cr) </td>
+																	<!-- <td colspan="1" class="clx-19">Application </td> -->
+																	<td colspan="1" class="clx-20">Project Director </td>
+																	<td colspan="1" class="clx-19">Current Stage </td>
 																</tr>
 																<tr>
-																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"--"%></td>
-																	<td colspan="1" style="width: 12%;color:#002CCD;text-align:center"><%=sdf.format(projects.get(i)[5])%></td>
-																	<td colspan="1" style="width: 12%;color:#002CCD;text-align:center;">
-																				<span style="font-size: 1.25rem !important;
+																	<td colspan="1" class="clx-24"><%=projects.get(i)[12]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[12].toString()):"--"%></td>
+																	<td colspan="1" class="clx-23"><%=sdf.format(projects.get(i)[5])%></td>
+																	<td colspan="1" class="clx-24">
+																				<span class="clx-25
 																	<%DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 																	LocalDate regularDate = LocalDate.parse(fc.SqlToRegularDate(projects.get(i)[4].toString()), formatter);
 																	if(regularDate.isBefore(LocalDate.now())){
 																	%>
-																color:red;
+																text-danger
 																<%}%>
 																	"><%=sdf.format(projects.get(i)[4])%></span>
 																	
-																	<%if(projects.get(i)[35]!=null) {%><br><span style="color: black;font-size: 1.25rem !important;"><%=sdf.format(projects.get(i)[35]) %></span><%} %></td>
-																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
-																	<td colspan="1" style="text-align:center;width: 12%;color:#002CCD;"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
-																	<td colspan="1" style="color:#002CCD;text-align:right;width:15%;text-align:center;"><%=nfc.convert(cost / 10000000)%> / <span style="font-size: 1.25! important;color: green;"><%=nfc.convert(exp / 10000000)%></span> </td>
-																	<td colspan="1" style="color:#002CCD;font-size: 16px!important;width:15%;text-align:center;"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>, <%if(projects.get(i)[34] != null){ %> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString()) %><%} %>
+																	<%if(projects.get(i)[35]!=null) {%><br><span class="clx-26"><%=sdf.format(projects.get(i)[35]) %></span><%} %></td>
+																	<td colspan="1" class="clx-22"><%=projects.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[6].toString()):"--"%></td>
+																	<td colspan="1" class="clx-22"><%=projects.get(i)[32]!=null?StringEscapeUtils.escapeHtml4(projects.get(i)[32].toString()):"--"%></td>
+																	<td colspan="1" class="clx-28"><%=nfc.convert(cost / 10000000)%> / <span class="clx-30"><%=nfc.convert(exp / 10000000)%></span> </td>
+																	<td colspan="1" class="clx-31"> <%if (projects.get(i) != null && projects.get(i)[33] != null) {%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[33].toString())%>, <%if(projects.get(i)[34] != null){ %> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[34].toString()) %><%} %>
 																		<%} else {%> -- <%}%></td>
-																	<td colspan="1" style="color:#002CCD;width:15%;text-align:center; font-size: 16px!important;"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
+																	<td colspan="1" class="clx-31"> <%if(projects.get(i)[14]!=null){%> <%=StringEscapeUtils.escapeHtml4(projects.get(i)[14].toString())%>
 																		<%} else {%> -- <%}%></td>
 																</tr>
 																<tr>
-																	<td colspan="1" style=" font-weight: bold; color: #021B79;font-size:1.25rem">Brief :</td>
-																	<td colspan="7" style="color: black;font-size:1.25rem">
+																	<td colspan="1" class="clx-44">Brief :</td>
+																	<td colspan="7" class="clx-50">
 																		--
 																	</td>
 																</tr>
 																<tr>
-																	<td colspan="1"><b style="; font-weight: bold; color: #021B79;font-size:1.25rem">Objectives : </b></td>
-																	<td colspan="7" style="color: black;font-size:1.25rem">
+																	<td colspan="1"><b class="clx-44">Objectives : </b></td>
+																	<td colspan="7" class="clx-50">
 																	 <%if(projects.get(i)[7] != null && projects.get(i)[7].toString().length() > 320) {%>
 																		<%=StringEscapeUtils.escapeHtml4(projects.get(i)[7].toString()).substring(0, 280)%>
 																	<%} else {%> 
@@ -1086,8 +1016,8 @@ String labcode = (String) session.getAttribute("labcode");
 									
 																
 																<tr>
-																	<td colspan="1"><b style=" font-weight: bold; color: #021B79;">Deliverables : </b> </td>
-																	<td colspan="7" style="color: black;font-size: 1.05rem!important;">
+																	<td colspan="1"><b class="clx-44">Deliverables : </b> </td>
+																	<td colspan="7" class="clx-51">
 																		<% if (projects.get(i)[8] != null && projects.get(i)[8].toString().length() > 320) {%>
 																			<%=StringEscapeUtils.escapeHtml4(projects.get(i)[8].toString()).substring(0, 280)%>
 																		<%} else {%> 
@@ -1100,15 +1030,15 @@ String labcode = (String) session.getAttribute("labcode");
 															<br>
 															<div class="container-fluid">
 															<div class="row">
-															<div class="col" style="padding-left:0px;">
-															<h4 style="text-align: left;font-size: 1.25rem !important; font-weight: bold; color: maroon;">
+															<div class="col pl-0" >
+															<h4 class="clx-34">
 																		<u>Current Status </u>: &nbsp; &nbsp;&nbsp; &nbsp; <span><a href="BriefingPresentation.htm?projectid=<%=projects.get(i)[0]%>&committeeid=<%="1"%>" target="_blank">PMRC </a></span>  &nbsp; &nbsp; <span><a href="BriefingPresentation.htm?projectid=<%=projects.get(i)[0]%>&committeeid=<%="2"%>" target="_blank">EB </a></span>
 																	</h4>
 															</div>
 															<div class="col">
 															
 																	<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
-																				<div class="ml-3" style="text-align: left;"><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
+																				<div class="ml-3 text-left" ><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
 																		<%} else{%>-<%} %> 
 						
 															</div>
@@ -1119,18 +1049,18 @@ String labcode = (String) session.getAttribute("labcode");
 														</div>
 													</div>
 										
-													<div class="col-md-12" style="padding-top: 40px">
-														<table style="width: 100%;border-style: hidden;border: none;border-style: hidden;padding: 10px;">
-															<tbody style="border: none;" >
-																<tr style="border-style: hidden;"><td></td></tr>
-																<tr style="border-style: hidden;"><td></td></tr>
-																<tr style="border-style: hidden;"><td></td></tr>
-																<tr style="border-style: hidden;"><td></td></tr>
-																<tr style="border-style: hidden;"><td></td></tr>
-																<tr style="border-style: hidden;"><td></td></tr>
-																<tr style="border-style: hidden;"><td></td></tr>
-																<tr style="border-style: hidden;"><td></td></tr>
-																<tr style="border-style: hidden;"><td></td></tr>
+													<div class="col-md-12 pt-3" >
+														<table class="clx-52">
+															<tbody class="border-0" >
+																<tr class="clx-53"><td></td></tr>
+																<tr class="clx-53"><td></td></tr>
+																<tr class="clx-53"><td></td></tr>
+																<tr class="clx-53"><td></td></tr>
+																<tr class="clx-53"><td></td></tr>
+																<tr class="clx-53"><td></td></tr>
+																<tr class="clx-53"><td></td></tr>
+																<tr class="clx-53"><td></td></tr>
+																<tr class="clx-53"><td></td></tr>
 															</tbody>
 														</table>
 													</div>
@@ -1150,11 +1080,11 @@ String labcode = (String) session.getAttribute("labcode");
 
 							<div class="carousel-item " >
 				
-								<div class="content" style=" border: 6px solid green;border-radius: 5px !important;height:93vh !important;padding-top: 15px;">
+								<div class="content clx-54">
 									
 									
-									<div style=" position: absolute ;top: 40%;left: 34%;">
-										<h1 style="font-size: 5rem;">Thank You !</h1>
+									<div class="clx-55">
+										<h1 class="clx-56">Thank You !</h1>
 									</div>
 									
 								</div>
@@ -1163,11 +1093,11 @@ String labcode = (String) session.getAttribute("labcode");
 						</div>
 						<!-- ----------------------------------------   Thank you Div Ends ----------------------------------------------------- -->
 		
-			 			<a class="carousel-control-prev" href="#presentation-slides" role="button" data-slide="prev" style="width: 0%; padding-left: 20px;"> <span aria-hidden="true">
-							<i class="fa fa-chevron-left fa-2x" style="color: #000000" aria-hidden="true"></i></span> <span class="sr-only">Previous</span>
+			 			<a class="carousel-control-prev clx-57" href="#presentation-slides" role="button" data-slide="prev" > <span aria-hidden="true">
+							<i class="fa fa-chevron-left fa-2x clx-58"  aria-hidden="true"></i></span> <span class="sr-only">Previous</span>
 						</a> 
-						<a class="carousel-control-next" href="#presentation-slides" role="button" data-slide="next" style="width: 0%; padding-right: 20px;"> <span aria-hidden="true">
-							<i class="fa fa-chevron-right fa-2x" style="color: #000000" aria-hidden="true"></i></span> <span class="sr-only">Next</span>
+						<a class="carousel-control-next clx-59" href="#presentation-slides" role="button" data-slide="next" > <span aria-hidden="true">
+							<i class="fa fa-chevron-right fa-2x clx-58"  aria-hidden="true"></i></span> <span class="sr-only">Next</span>
 						</a> 
 	
 						<ol class="mt-6 carousel-indicators">
@@ -1178,18 +1108,18 @@ String labcode = (String) session.getAttribute("labcode");
 							<li data-target="#presentation-slides" data-slide-to="<%=++i%>"  class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="<%=i%>. <%=obj[6]%>"><b><%=i-1%></b></li>
 							<%}}%>
 							<li data-target="#presentation-slides" data-slide-to="<%=i+1%>" class="carousel-indicator" data-toggle="tooltip" data-placement="top" title="Thank You"><b>End</b></li>
-							<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_full_screen" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
-							<li data-slide-to="21" style="background-color:  #000000;width: 35px;margin-left: 20px;" class="carousel-indicator content_reg_screen" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>	
-							<li style="background-color:  white;width: 55px;margin-left: 20px;"><a onclick="DownloadSelected()" target="_blank" id='downloadselect'><i class="fa fa-download fa-2x" style="color: green;" aria-hidden="true"></i></a>	
+							<li data-slide-to="21"  class="carousel-indicator content_full_screen clx-60" data-toggle="tooltip" data-placement="top" title="Full Screen Mode"><b><i class="fa fa-expand fa-lg" aria-hidden="true"></i></b></li>
+							<li data-slide-to="21"  class="carousel-indicator content_reg_screen clx-60" data-toggle="tooltip" data-placement="top" title="Exit Full Screen Mode"><b><i class="fa fa-compress fa-lg" aria-hidden="true"></i></b></li>	
+							<li class="clx-61"><a onclick="DownloadSelected()" target="_blank" id='downloadselect'><i class="fa fa-download fa-2x cl-g"  aria-hidden="true"></i></a>	
 						</ol>
 	
 </div>	
 <div class="modal fade " id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
-			<div class="modal-content" style="width: 900px;">
+			<div class="modal-content clx-62" >
 				      
 				<div class="modal-header ">
-					<h5 class="modal-title" id="exampleModalLabel" style="color:#145374">Colour Coding Summary</h5>
+					<h5 class="modal-title clx-63" id="exampleModalLabel" >Colour Coding Summary</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 			        </button>
@@ -1201,14 +1131,14 @@ String labcode = (String) session.getAttribute("labcode");
 					 if(true ) { %>	
 						
 					<div class="row">
-						<div style="text-align: left">
+						<div class="text-left">
 								<ul class="modal-list">
-						          	<li><span class="modal-span" style="color:green">&#11044;</span><span class="modal-text">Indian Army</span></li>
-						           	<li><span class="modal-span" style="color:#007bff">&#11044;</span><span class="modal-text">Indian Navy</span></li>
-						           	<li><span class="modal-span" style="color:#1F4690">&#11044;</span><span class="modal-text">Indian Air Forces</span></li>
-						           	<li><span class="modal-span" style="color:#8E3200">&#11044;</span><span class="modal-text">Home Land Security</span></li>
-						           	<li><span class="modal-span" style="color:orange;">&#11044;</span><span class="modal-text">DRDO</span></li>
-						           	<li><span class="modal-span" style="color:#EE5007">&#11044;</span><span class="modal-text">Others</span></li>
+						          	<li><span class="modal-span cl-g" >&#11044;</span><span class="modal-text">Indian Army</span></li>
+						           	<li><span class="modal-span cl-1" >&#11044;</span><span class="modal-text">Indian Navy</span></li>
+						           	<li><span class="modal-span cl-2" >&#11044;</span><span class="modal-text">Indian Air Forces</span></li>
+						           	<li><span class="modal-span cl-3">&#11044;</span><span class="modal-text">Home Land Security</span></li>
+						           	<li><span class="modal-span cl-4" >&#11044;</span><span class="modal-text">DRDO</span></li>
+						           	<li><span class="modal-span cl-5" >&#11044;</span><span class="modal-text">Others</span></li>
 					            </ul>
 							</div>
 					</div>

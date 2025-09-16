@@ -731,10 +731,10 @@ public class PFTSController {
 						redir.addAttribute("resultfail","Something went worng");
 					}
 					
-					redir.addFlashAttribute("projectslist",projectlist);
-					redir.addFlashAttribute("projectid",ProjectId);
-					redir.addFlashAttribute("fileStatusList",service.getFileStatusList(ProjectId));
-					redir.addFlashAttribute("pftsStageList", service.getpftsStageList());
+					redir.addAttribute("projectslist",projectlist);
+					redir.addAttribute("projectid",ProjectId);
+					redir.addAttribute("fileStatusList",service.getFileStatusList(ProjectId));
+					redir.addAttribute("pftsStageList", service.getpftsStageList());
 					return  "redirect:/ProcurementStatus.htm";
 				
 			} catch (Exception e) {
@@ -829,8 +829,8 @@ public class PFTSController {
 	             
 	             redir.addFlashAttribute("projectslist",projectlist);
 				 redir.addAttribute("projectid",projectId);
-				 redir.addFlashAttribute("fileStatusList",service.getFileStatusList(projectId));
-				 redir.addFlashAttribute("pftsStageList", service.getpftsStageList());
+				 redir.addAttribute("fileStatusList",service.getFileStatusList(projectId));
+				 redir.addAttribute("pftsStageList", service.getpftsStageList());
 				 return  "redirect:/ProcurementStatus.htm";
 			}
 			catch (Exception e) {
@@ -904,8 +904,8 @@ public class PFTSController {
 	             
 	             redir.addFlashAttribute("projectslist",projectlist);
 				 redir.addAttribute("projectid",projectId);
-				 redir.addFlashAttribute("fileStatusList",service.getFileStatusList(projectId));
-				 redir.addFlashAttribute("pftsStageList", service.getpftsStageList());
+				 redir.addAttribute("fileStatusList",service.getFileStatusList(projectId));
+				 redir.addAttribute("pftsStageList", service.getpftsStageList());
 				 return  "redirect:/ProcurementStatus.htm";
 			}
 			catch (Exception e) {
