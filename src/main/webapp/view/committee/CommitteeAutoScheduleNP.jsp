@@ -4,179 +4,19 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
     <%@page import="java.time.LocalTime"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 
 <head>
-	<meta charset="ISO-8859-1">
-	<jsp:include page="../static/header.jsp"></jsp:include>
-
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/committeeModule/CommitteeAutoScheduleNP.css" var="CommitteeAutoScheduleNP" />
+<link href="${CommitteeAutoScheduleNP}" rel="stylesheet" />
 <title> AUTO SCHEDULE</title>
-
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-body {
-	background-color: #f2edfa;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
-
-.table button {
-	background-color: Transparent !important;
-	background-repeat: no-repeat;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-	outline: none;
-	text-align: left !important;
-}
-
-.table td {
-	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa {
-	font-size: 1.20rem;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.fa-exclamation-triangle {
-	font-size: 2.5rem !important;
-}
-
-.table-project-n {
-	color: #005086;
-}
-
-.right {
-	text-align: right;
-}
-
-.center {
-	text-align: center;
-}
-
-#table thead tr th {
-	padding: 0px 0px !important;
-	text-align:center;
-}
-
-#table tbody tr td {
-	padding: 2px 3px !important;
-	text-align:center;
-}
-
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 157px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-a:hover {
-	color: white;
-}
-
-
-
-</style>
-<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-		
-		#content {
-    	 margin-bottom: 0%; 
-		}
-		
-	</style>
 </head>
-
 <body>
-
 <% 
-
 SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
 Object[] committeedata=(Object[])request.getAttribute("committeedata");
@@ -225,12 +65,8 @@ String committeeid=(String)request.getAttribute("committeeid");
 						
 						<div class="col-md-5">	</div>
 						
-					
 							<div class="col-md-3">	
-							
-							<!-- <form method="get" action="CommitteeAutoScheduleList.htm" id="form" >
-								<button type="submit" name="" value="" class="btn btn-sm viewall" style="float:right" >AUTO-SCHEDULED LIST</button>
-							</form>	 -->						
+													
 						</div>		
 						
 					</div>
@@ -299,7 +135,7 @@ String committeeid=(String)request.getAttribute("committeeid");
 	
 	<div class="row">
 			<div class="col-md-12">
-				<div class="card shadow-nohover" <%if(!Dashboard.equalsIgnoreCase("nondashboard")){ %>	style="margin-top:-2%;" <%} %> >
+				<div  <%if(!Dashboard.equalsIgnoreCase("nondashboard")){ %>	class="card shadow-nohover mt-n2"<%}else{ %>class="card shadow-nohover" <%} %> >
 				
 					<div class="card-header ">
 					<div class="row">
@@ -318,7 +154,7 @@ String committeeid=(String)request.getAttribute("committeeid");
 					
 						<%if(!Dashboard.equalsIgnoreCase("nondashboard")){ %>	
 					
-						<div class="col-md-5"  style="float: right;">							
+						<div class="col-md-5 float-right">							
 							<form class="form-inline" method="post" action="NonProjectCommitteeAutoSchedule.htm" id="myform">
 								
 									<h4 class="control-label" > Committee : </h4> &nbsp;&nbsp;&nbsp;
@@ -383,26 +219,25 @@ String committeeid=(String)request.getAttribute("committeeid");
 															
 																<%String day=LocalDate.parse(obj[0].toString()).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);%>														
 															<td   >	
-																	<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> style="color: red" <%} %> > <%=StringEscapeUtils.escapeHtml4(day)%> </span>&nbsp; 
+																	<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> class="text-danger" <%} %> > <%=StringEscapeUtils.escapeHtml4(day)%> </span>&nbsp; 
 																	- &nbsp;<%=LocalDate.parse(obj[0].toString()).getMonth().getDisplayName(TextStyle.FULL, Locale.US)%> &nbsp; 
 																	- &nbsp; <%= sdf1.format(sdf.parse( obj[0].toString()))%>  
 															</td>
 															<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
 															<td class="editable-click"><%if(obj[6]!=null){%>
-																<a class="font" href="CommitteeScheduleView.htm?scheduleid=<%=obj[4]%>" target="_blank" 
+																<a  href="CommitteeScheduleView.htm?scheduleid=<%=obj[4]%>" target="_blank" 
 																
-																<%if(obj[5].toString().equalsIgnoreCase("MSC") || obj[5].toString().equalsIgnoreCase("MAF") || obj[5].toString().equalsIgnoreCase("MMF") || obj[5].toString().equalsIgnoreCase("MKO")  ){ %> style="color:#007bff"<%} %>
-																<%if(obj[5].toString().equalsIgnoreCase("MAA") || obj[5].toString().equalsIgnoreCase("MKV") || obj[5].toString().equalsIgnoreCase("MMA") ){ %> style="color:green"<%} %>
-																<%if(obj[5].toString().equalsIgnoreCase("MAR") || obj[5].toString().equalsIgnoreCase("MMR") ){ %> style="color:red"<%} %>
-																<%if(obj[5].toString().equalsIgnoreCase("MAS") || obj[5].toString().equalsIgnoreCase("MMS") ){ %> style="color:orange"<%} %>
+																<%if(obj[5].toString().equalsIgnoreCase("MSC") || obj[5].toString().equalsIgnoreCase("MAF") || obj[5].toString().equalsIgnoreCase("MMF") || obj[5].toString().equalsIgnoreCase("MKO")  ){ %> class="font definedColor"<%} %>
+																<%if(obj[5].toString().equalsIgnoreCase("MAA") || obj[5].toString().equalsIgnoreCase("MKV") || obj[5].toString().equalsIgnoreCase("MMA") ){ %> class="font text-success" <%} %>
+																<%if(obj[5].toString().equalsIgnoreCase("MAR") || obj[5].toString().equalsIgnoreCase("MMR") ){ %> class="font text-danger"<%} %>
+																<%if(obj[5].toString().equalsIgnoreCase("MAS") || obj[5].toString().equalsIgnoreCase("MMS") ){ %> class="font text-warning" <%} %>
 																
 																 ><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %><%}else{ %>-<%} %></a>
 															</td>
 															
-															<td class="left width" style="text-align: left">
+															<td class="left width text-left">
 
-																<form action="CommitteeAutoScheduleEdit.htm" method="post" name="myfrm"
-																	style="display: inline">
+																<form action="CommitteeAutoScheduleEdit.htm" method="post" name="myfrm" class="displayline">
 
 																	<button class="editable-click" name="sub"
 																		value="Modify">
@@ -420,27 +255,6 @@ String committeeid=(String)request.getAttribute("committeeid");
 																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 																</form> 		
-																
-																
-																<%-- <form action="CommitteeMainEdit.htm" method="post" name="myfrm"
-																	style="display: inline">
-
-																	<button class="editable-click" name="sub" value="Details" 	>
-																		<div class="cc-rockmenu">
-																			<div class="rolling">
-																				<figure class="rolling_icon">
-																					<img src="view/images/preview3.png">
-																				</figure>
-																				<span>View Committees</span>
-																			</div>
-																		</div>
-																	</button>
-
-																	<input type="hidden" name="committeeid"	value="<%=obj[0] %>" />
-																	
- 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
-																</form>  --%>
 																	
 															</td>
 														</tr>

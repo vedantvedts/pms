@@ -2,39 +2,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
     <%@page import="java.time.LocalTime"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 
 <head>
-	<meta charset="ISO-8859-1">
-	<jsp:include page="../static/header.jsp"></jsp:include>
-
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/committeeModule/DivCommitteeAutoSchedule.css" var="DivCommitteeAutoSchedule" />
+<link href="${DivCommitteeAutoSchedule}" rel="stylesheet" />
 <title> AUTO SCHEDULE</title>
-<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-		
-		#content {
-    	 margin-bottom: 0%; 
-		}
-		
-	</style>
 </head>
 
 <body>
@@ -82,9 +59,9 @@ String initiationid=(String)request.getAttribute("initiationid");
 						<div class="col-md-6">
 							<div>
 								<%if(Long.parseLong(divisionid)>0){ %>
-								<h3 class="control-label" style="float: right;">Division : <%=divisiondata[2]!=null?StringEscapeUtils.escapeHtml4(divisiondata[2].toString()): " - " %> </h3>
+								<h3 class="control-label float-right">Division : <%=divisiondata[2]!=null?StringEscapeUtils.escapeHtml4(divisiondata[2].toString()): " - " %> </h3>
 								<%}else if(Long.parseLong(initiationid)>0){%>
-								<h3 class="control-label" style="float: right;"> Initiated Project :<%=initiationdata[2]!=null?StringEscapeUtils.escapeHtml4(initiationdata[2].toString()): " - " %>  </h3>						 
+								<h3 class="control-label float-right"> Initiated Project :<%=initiationdata[2]!=null?StringEscapeUtils.escapeHtml4(initiationdata[2].toString()): " - " %>  </h3>						 
 								<%} %>
 							</div> 
 						</div>
@@ -175,7 +152,7 @@ String initiationid=(String)request.getAttribute("initiationid");
 						<div class="col-md-5">	</div>
 						<div class="col-md-3">	
 							<form method="get" action="CommitteeAutoScheduleList.htm" id="form" >
-								<button type="submit" name="" value="" class="btn btn-sm viewall" style="float:right" >AUTO-SCHEDULED LIST</button>
+								<button type="submit" name="" value="" class="btn btn-sm viewall float-right">AUTO-SCHEDULED LIST</button>
 								<input type="hidden" name="projectid" value="<%=projectid%>"/>	
 								<input type="hidden" name="divisionid" value="<%=divisionid%>"/>	
 								<input type="hidden" name="initiationid" value="<%=initiationid%>"/>	
@@ -193,9 +170,9 @@ String initiationid=(String)request.getAttribute("initiationid");
 						
 							<table class="scrolltable datatablex table table-bordered table-hover table-striped table-condensed table-sm">
 								<thead>
-									<tr style="background-color: #346691; color: #fff;">
-										<th style="text-align: left;">Committee Name</th>
-										<th style="text-align: left;">Periodic Duration</th>
+									<tr class="tblTrStyle">
+										<th class="text-left">Committee Name</th>
+										<th class="text-left">Periodic Duration</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -206,8 +183,8 @@ String initiationid=(String)request.getAttribute("initiationid");
 								%>		
 												
 									<tr>
-										<td style="text-align: left;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>(<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
-										<td style="text-align: left;"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> days<%} else{%>Non-Periodic<%} %> </td>
+										<td class="text-left"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%>(<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
+										<td class="text-left"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> days<%} else{%>Non-Periodic<%} %> </td>
 									</tr>
 								<%
 									}

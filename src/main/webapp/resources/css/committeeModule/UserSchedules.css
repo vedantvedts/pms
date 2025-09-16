@@ -1,0 +1,10 @@
+.card-body{
+	padding: 0px !important;
+}
+.control-label{
+	font-weight: bold !important;
+}
+
+.cardHeaderStyle{
+	background-color: rgba(0,0,0,.03);
+}

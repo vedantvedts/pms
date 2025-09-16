@@ -1,0 +1,49 @@
+label{
+font-weight: bold;
+  font-size: 13px;
+}
+body{
+background-color: #f2edfa;
+}
+h6{
+	text-decoration: none;
+}
+
+h6 span{
+	font-size: 16px;
+	color:white;
+}
+
+.cardHeaderBgColor{
+	background-color: #055C9D;
+}
+
+.header6Style{
+	color: orange;
+	font-weight: bold;
+	font-size: 1.2rem !important;
+}
+
+.mb-20px{
+	margin-bottom:20px;
+}
+
+.meetingIdMargin{
+	margin: 5px 12px;
+}
+
+.searchBtnMl{
+	margin-left: 1rem;
+}
+
+.mt-25px{
+	margin-top: 25px;
+}
+
+.fs-15px{
+	font-size: 15px;
+}
+
+.mt-30px{
+	margin-top: 30px;
+}

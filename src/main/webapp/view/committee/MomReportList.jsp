@@ -5,15 +5,15 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 <title>Mom Report List</title>
-<style type="text/css">
-
-</style>
+<spring:url value="/resources/css/committeeModule/MomReportList.css" var="MomReportList" />
+<link href="${MomReportList}" rel="stylesheet" />
 </head>
 <body>
 <%
@@ -40,14 +40,14 @@ SimpleDateFormat sdfInput = new SimpleDateFormat("HH:mm:ss");
            <div class="card-header ">  
 					<div class="row">
 						<h4 class="col-md-4">MOM Report List</h4>  
-							<div class="col-md-8" style="float: right; margin-top: -8px;" >
+							<div class="col-md-8 float-right mt-n8px">
 					   			<form method="post" action="MomReportList.htm" name="dateform" id="myform">
-					   				<table style="margin-left: 10rem;">
+					   				<table class="ml-10rem">
 					   					<tr>
 					   						<td>
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Project: </label>
+					   							<label class="control-label fs-17px mb-0rem">Project: </label>
 					   						</td>
-					   						<td style="max-width: 300px; padding-right: 50px">
+					   						<td class="tdWidthStyle">
                                                <select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange='submitForm1();' >
 										<% if(projectList!=null && projectList.size()>0){
 										 for (Object[] obj : projectList) {
@@ -58,9 +58,9 @@ SimpleDateFormat sdfInput = new SimpleDateFormat("HH:mm:ss");
 								             </select>       
 											</td>
 											<td>
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Committee: </label>
+					   							<label class="control-label fs-17px mb-0rem">Committee: </label>
 					   						</td>
-					   						<td style="max-width: 300px; padding-right: 50px">
+					   						<td class="tdWidthStyle">
                                               <select class="form-control selectdee" id="committeeid" required="required" name="committeeid" onchange='submitForm();' >
 							   			        	<%if(projectCommitteList!=null && projectCommitteList.size()>0){
 							   			        	  for (Object[] obj : projectCommitteList) {%>
@@ -91,12 +91,12 @@ SimpleDateFormat sdfInput = new SimpleDateFormat("HH:mm:ss");
 			                      <thead>
 
 														<tr>
-															<th style="text-align: center;">SN</th>
-			                                                <th style="text-align: center;">Meeting Id</th>
-			                                                <th style="text-align: center;">Schedule Date</th>
-			                                                <th style="text-align: center;">ScheduleStart Time</th>
-			                                                <th style="text-align: center;">MeetingVenue </th>
-			                                                <th style="text-align: center;">Action</th>
+															<th class="text-center">SN</th>
+			                                                <th class="text-center">Meeting Id</th>
+			                                                <th class="text-center">Schedule Date</th>
+			                                                <th class="text-center">ScheduleStart Time</th>
+			                                                <th class="text-center">MeetingVenue </th>
+			                                                <th class="text-center">Action</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -115,8 +115,8 @@ SimpleDateFormat sdfInput = new SimpleDateFormat("HH:mm:ss");
 													    <td align="center"><%=ScheduleTime %></td>
 													    <td ><%if(obj[5]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %><%}else{ %>-<%} %></td>
 													    <td align="center">
-													    <button type="submit" class="btn  btn-sm view"  formaction="CommitteeMinutesNewDownload.htm" id=<%="committeescheduleid"+obj[0]%> value="<%=obj[0] %>" name="committeescheduleid" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;">MINUTES
-	                                                        <i class="fa fa-download blink" aria-hidden="true" style="color:white;"></i>
+													    <button type="submit" class="btn  btn-sm view minutesViewBtnStyle"  formaction="CommitteeMinutesNewDownload.htm" id=<%="committeescheduleid"+obj[0]%> value="<%=obj[0] %>" name="committeescheduleid" formmethod="get" formtarget="_blank">MINUTES
+	                                                        <i class="fa fa-download blink colorWhite" aria-hidden="true"></i>
 	                                                    </button>&nbsp;&nbsp;
 													   <%--  <button type="submit" class="btn btn-sm " formaction="CommitteeMinutesNewDownload.htm" id=<%="committeescheduleid"+obj[0]%> value="<%=obj[0] %>"  name="committeescheduleid" formmethod="post" formtarget="_blank">
 												           <i class="fa fa-download fa-lg"></i>

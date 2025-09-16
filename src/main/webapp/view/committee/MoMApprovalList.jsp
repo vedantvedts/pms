@@ -5,37 +5,15 @@
     pageEncoding="ISO-8859-1"%>
     <%@page import="java.time.format.DateTimeFormatter"%>
 	<%@page import="com.vts.pfms.FormatConverter"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/committeeModule/MoMApprovalList.css" var="MoMApprovalList" />
+<link href="${MoMApprovalList}" rel="stylesheet" />
 <title></title>
-<style type="text/css">
-#sidebarCollapse{
-display:none;
-}
-
-#sidebar{
-display:none;
-}
-
-.btn-status {
-  position: relative;
-  z-index: 1; 
-}
-
-.btn-status:hover {
-  transform: scale(1.05);
-  z-index: 5;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-	label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-</style>
 </head>
 <body>
 
@@ -76,7 +54,7 @@ display:none;
 						
 					<div class="card-header">						
 						<div class="row">										
-							<div class="col-md-12"><h3 style="color:#055C9D;margin-top:-5px;" >MOM Approval List 
+							<div class="col-md-12"><h3 class="cardHeaderH3Style">MOM Approval List 
 						</h3>
 						
 							</div>	
@@ -87,9 +65,9 @@ display:none;
 					
 		<div class="card-body">
 		<!-- tabList  -->
-		<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="background-color: #E1E5E8;padding:0px;">
-		  <li class="nav-item" style="width: 50%;"  >
-		    <div class="nav-link active" style="text-align: center;" id="eNotePendingtab" data-toggle="pill" data-target="#pills-OPD" role="tab" aria-controls="pills-OPD" aria-selected="true">
+		<ul class="nav nav-pills mb-3 cardBodyNavPillBgStyle" id="pills-tab" role="tablist">
+		  <li class="nav-item w-50">
+		    <div class="nav-link active text-center" id="eNotePendingtab" data-toggle="pill" data-target="#pills-OPD" role="tab" aria-controls="pills-OPD" aria-selected="true">
 			   <span> Pending  
 				   <span class="badge badge-danger badge-counter count-badge ml-2">
 				 		<%if( EnoteApprovalPendingList!=null && EnoteApprovalPendingList.size()>99){ %>
@@ -101,8 +79,8 @@ display:none;
 				</span> 
 		    </div>
 		  </li>
-		  <li class="nav-item"  style="width: 50%;">
-		    <div class="nav-link" style="text-align: center;" id="eNoteApprovedtab" data-toggle="pill" data-target="#pills-IPD" role="tab" aria-controls="pills-IPD" aria-selected="false">
+		  <li class="nav-item w-50">
+		    <div class="nav-link text-center" id="eNoteApprovedtab" data-toggle="pill" data-target="#pills-IPD" role="tab" aria-controls="pills-IPD" aria-selected="false">
 		    	 <span> Approved     
 				   <span class="badge badge-danger badge-counter count-badge ml-2">
 				   	<%if(EnoteApprovedList!=null && EnoteApprovedList.size()>99){ %>
@@ -125,13 +103,13 @@ display:none;
 					<table class="table table-bordered table-hover table-striped table-condensed " id="myTable1">
 							<thead>
 								<tr >
-									<th style="text-align: center;">SN</th>
-									<th style="text-align: center;">Committee ShortName</th>
-									<th style="text-align: center;">Project</th>
-									<th style="text-align: center;">Ref No & Date</th>
-									<th style="text-align: center;">Subject</th>
-									<th style="text-align: center;">Status</th>	
-									<th style="text-align: center;">Action</th>
+									<th class="text-center">SN</th>
+									<th class="text-center">Committee ShortName</th>
+									<th class="text-center">Project</th>
+									<th class="text-center">Ref No & Date</th>
+									<th class="text-center">Subject</th>
+									<th class="text-center">Status</th>	
+									<th class="text-center">Action</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -140,10 +118,10 @@ display:none;
 							if(EnoteApprovalPendingList!=null&& EnoteApprovalPendingList.size()>0){
 							for(Object[] obj: EnoteApprovalPendingList) {%>
 							<tr>
-							<td style="text-align: center;"> <%=++firstCount %></td>
-							<td style="text-align: center;"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %></td>
-							<td style="text-align: center;"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
-							<td style="text-align: center;"> 
+							<td class="text-center"> <%=++firstCount %></td>
+							<td class="text-center"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - " %></td>
+							<td class="text-center"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
+							<td class="text-center"> 
 							<%if (obj[1]!=null){%>
 							<%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %>
 							<%}else{ %>
@@ -157,17 +135,21 @@ display:none;
 							<%} %>
 							
 				</td>
-				<td style="text-align: justify;"><%if(obj[3]!=null) {%> <%= StringEscapeUtils.escapeHtml4(obj[3].toString())%><%}else{%> -<%} %> </td>
+				<td class="text-justify"><%if(obj[3]!=null) {%> <%= StringEscapeUtils.escapeHtml4(obj[3].toString())%><%}else{%> -<%} %> </td>
 				<td>
-				<div align="center" style="margin-top:1%;">
+				<div align="center" class="mt-1per">
 				<form action="#">
-				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=obj[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=obj[7].toString()%>; font-weight: 600;display: contents" > <%=obj[6].toString() %> 
+				<%
+				   String colorCode = (String) obj[7];
+				   String className = "C" + colorCode.replace("#", "").toUpperCase();
+				%>
+				<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status fw-600 <%=className %>" formaction="EnoteStatusTrack.htm" value="<%=obj[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId"  > <%=obj[6].toString() %> 
 				<i class="fa fa-external-link" aria-hidden="true"></i></button>
 				</form>
 				</div> 
 				</td>
 					<td>
-					<div style="display: flex;justify-content: space-evenly;align-items: center;">
+					<div class="committeeRecommendationDivStyle">
 										<!-- Committee Recommendation  -->
 					<form action="CommitteeRecommendation.htm" method="post">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
@@ -182,7 +164,7 @@ display:none;
 					<!-- Committee Letter -->
 					<form <%if(obj[10]!=null && obj[10].toString().equalsIgnoreCase("Non-project")) {%> action="CommitteeMinutesViewAllDownload.htm" <%} else{%> action="CommitteeMinutesNewDownload.htm" <%} %> target="_blank">
 					<input type="hidden" name="committeescheduleid" value="<%=obj[12].toString()%>">
-					<button type="submit" class="btn btn-sm edit" data-toggle="tooltip" data-placement="top" title="MOM"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
+					<button type="submit" class="btn btn-sm edit" data-toggle="tooltip" data-placement="top" title="MOM"><i class="fa fa-download fs-90"></i></button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="committeemainid" value="<%=obj[11].toString()%>">
 					</form>
@@ -194,7 +176,7 @@ display:none;
 
 					
 					<form action="CommitteeEnotePrint.htm" target="_blank">
-					<button type="submit" class="btn btn-sm edit" style="background: #E76F51;border-color: #E76F51" data-toggle="tooltip" data-placement="top" title="MOM ENote Letter"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
+					<button type="submit" class="btn btn-sm edit editStyleBgColor" data-toggle="tooltip" data-placement="top" title="MOM ENote Letter"><i class="fa fa-download fs-90"></i></button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="EnoteId" value="<%=obj[0].toString()%>">
 						<input type="hidden" name="committeemainid" value="<%=obj[11].toString()%>">
@@ -218,13 +200,13 @@ display:none;
  <form action="#" method="post" id="myform"> 
 
     
-        <div class="col-12" style="width: 100%;" >
-          <div class="row" style="align-items: center;justify-content: end;">
-              <label  class="control-label" for="fromdate" style="text-align:  center;font-size: 16px;width:80px; ">From	</label>&nbsp;&nbsp;
-              <input type="text" style="width:113px; margin-top: -10px; " class="form-control input-sm mydate" readonly="readonly" value="" id="fromdate" name="FromDate" required="required"> 
+        <div class="col-12 w-100">
+          <div class="row fromToDateDivStyle">
+              <label  class="control-label text-center fs-16px width-80px" for="fromdate">From	</label>&nbsp;&nbsp;
+              <input type="text" class="form-control input-sm mydate width-113px mt-n10px" readonly="readonly" value="" id="fromdate" name="FromDate" required="required"> 
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <label class="control-label" for="todate" style="text-align: center;font-size: 16px;width:20px; ">To</label>&nbsp;&nbsp;
-              <input type="text" style="width:113px;  margin-top: -10px;" class="form-control input-sm mydate" readonly="readonly" value="" id="todate" name="ToDate" required="required"> 
+              <label class="control-label text-center fs-16px width-20px" for="todate">To</label>&nbsp;&nbsp;
+              <input type="text" class="form-control input-sm mydate width-113px mt-n10px" readonly="readonly" value="" id="todate" name="ToDate" required="required"> 
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 <input type="hidden" id="redirectedvalue" name="redirectedvalue" value="<%if(redirectedvalue!=null){%><%=redirectedvalue %><%}%>">
           </div>
@@ -235,12 +217,12 @@ display:none;
      <table class="table table-bordered table-hover table-striped table-condensed mt-2" id="myTable2">
 							<thead>
 								<tr >
-									<th style="text-align: center;width:20px;;">SN</th>
-									<th style="text-align: center;width:5%;">Project</th>
-									<th style="text-align: center;width:10%;">Ref No & Date</th>
-									<th style="text-align: center;width:196px">Subject</th>
-									<th style="text-align: center;width:10%">Status</th>	
-									<th style="text-align: center;">Action</th>
+									<th class="text-center width-20px">SN</th>
+									<th class="text-center width-5per">Project</th>
+									<th class="text-center width-10per">Ref No & Date</th>
+									<th class="text-center width-196px">Subject</th>
+									<th class="text-center width-10per">Status</th>	
+									<th class="text-center">Action</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -250,9 +232,9 @@ display:none;
 						for(Object[]obj:EnoteApprovedList){
 						%>
 						<tr>
-						<td style="text-align: center;width:20px;"><%=++count %></td>
-						<td style="text-align: center;"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
-						<td style="text-align: center;"> 
+						<td class="text-center width-20px"><%=++count %></td>
+						<td class="text-center"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></td>
+						<td class="text-center"> 
 							<%if (obj[1]!=null){%>
 							<%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %>
 							<%}else{ %>
@@ -266,27 +248,22 @@ display:none;
 							<%} %>
 							
 							</td>
-							<td style="text-align: center;"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
-							<td style="text-align: justify;">
+							<td class="text-center"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
+							<td class="text-justify">
 							
-							<div align="center" style="margin-top:1%;">
+							<div align="center" class="mt-1per">
 							<form action="#">
 							<button type ="submit"  class="btn btn-sm btn-link w-100 btn-status" formaction="EnoteStatusTrack.htm" value="<%=obj[0]%>" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Transaction History" name="EnoteTrackId" style=" color: <%=obj[8].toString()%>; font-weight: 600;display: contents" > <%=obj[7].toString() %> 
 							<i class="fa fa-external-link" aria-hidden="true"></i></button>
 							</form>
 							</div>
 							</td>
-							<td style="text-align: center;">
-							<div style="display: flex;justify-content: space-evenly;align-items: center;">
-							<%-- <!-- Committee Letter -->
-					<form action="CommitteeConstitutionLetterDownload.htm" target="_blank">
-					<button type="submit" class="btn btn-sm edit" data-toggle="tooltip" data-placement="top" title="Committee Constitution Letter"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
-					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
-					<input type="hidden" name="committeemainid" value="<%=obj[12].toString()%>">
-					</form>--%>
+							<td class="text-center">
+							<div class="enotePrintDivStyle">
+							
 							<!-- Enote Print -->
 				<form action="CommitteeEnotePrint.htm" target="_blank">
-					<button type="submit" class="btn btn-sm edit" style="background: #E76F51;border-color: #E76F51" data-toggle="tooltip" data-placement="top" title="MOM ENote Letter"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
+					<button type="submit" class="btn btn-sm edit editStyleBgColor" data-toggle="tooltip" data-placement="top" title="MOM ENote Letter"><i class="fa fa-download fs-90"></i></button>
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<input type="hidden" name="EnoteId" value="<%=obj[0].toString()%>">
 						<input type="hidden" name="committeemainid" value="<%=obj[12].toString()%>">

@@ -15,60 +15,10 @@
 <META HTTP-EQUIV="Refresh" CONTENT="60">
 
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-
-<style>
-.card-body{
-	padding: 0px !important;
-}
-.control-label{
-	font-weight: bold !important;
-}
-
-	.meetingsp{
-  width:75%;
-  transition: background-color 3s ease;
-  background-image: linear-gradient(to right, green 50%, #f8f9fa 50%);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  transition: background-position 0.5s ease;
-  color:black;
-  padding:10px;
-  border-radius: 8px;
-  display: block;
-  font-weight: 600;
-  margin:1%;
-  margin-left:12%;
-}
-.meetingsp:hover{
- 	/*  background-color: green;
-	 background-image: linear-gradient(to right, green, blue); */
-	 color:white;
- background-position: 0 0;
- box-shadow: 3px 3px 3px gray;
-	/* background-color:red; */
-color:white;
-font-weight: 600;	
-}
-#span{
-background: blue;
-}
-#span1{
-font-size: 10px;
-margin-left:10px
-}
-
-#span2{
-float:right;
-font-size: 10px;
-margin-right:10px
-}
-</style>
-
+<spring:url value="/resources/css/committeeModule/CommitteeInitiationSchedule.css" var="CommitteeInitiationSchedule" />
+<link href="${CommitteeInitiationSchedule}" rel="stylesheet" />
 </head>
 <body>
-
-
 <%
 SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -129,7 +79,7 @@ if(!divisionchedulelist.isEmpty()){
 					
 					<div class="row">
 					
-					<div class="col" style="margin-top: -8px;">	
+					<div class="col mt-n8">	
 					<%if(Long.parseLong(divisionid)>0){ %>
 						<form class="form-inline" method="post" action="DivisionBasedSchedule.htm" id="myform">
 		
@@ -198,7 +148,7 @@ if(!divisionchedulelist.isEmpty()){
 						<%} %>
 					</div>
 					
-					<div class="col" style="margin-top: -8px;">		
+					<div class="col mt-n8">		
 					
 					<%if(!committeeid.equals("all") && Long.parseLong(committeeid)>0 ){ %>
 					 <form class="form-check-inline" action="CommitteeScheduleAddSubmit.htm" method="POST" name="myfrm1" id="myfrm1" > 
@@ -208,7 +158,7 @@ if(!divisionchedulelist.isEmpty()){
 							</div>
 								
 							<div class="col">
-		                          <input  class="form-control "  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required"  style="width:115%" readonly>	
+		                          <input  class="form-control width-115"  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required" readonly>	
 		                    </div>
 		                    
 		                    <div class="col ">
@@ -225,7 +175,7 @@ if(!divisionchedulelist.isEmpty()){
 		                    	<input type="hidden" name="divisionid" value="<%=divisionid %>" /> 
 		                    	<input type="hidden" name="committeeid" value="<%=committeeid%>" /> 
 		                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-		                    	<input type="button" class="btn  btn-sm add " style="float: right" onclick="Add1('myfrm1')" value="ADD SCHEDULE" > 	
+		                    	<input type="button" class="btn  btn-sm add float-right" onclick="Add1('myfrm1')" value="ADD SCHEDULE" > 	
 	                    	</div>                   	
                   		</form> <%} %>
 						
@@ -233,20 +183,18 @@ if(!divisionchedulelist.isEmpty()){
 					
 					</div>
 					</div>
-					<div class="card-body" style="display: flex;justify-content: space-around;">
-						<div id="calendar"  style="width:79%;float:left"></div>
-												<div id="meetings" style="background-color: #216583;;width:20%;margin:5px;">
-						<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;">
-						<!-- <span class="badge badge-info p-2 " id="span1" onclick="showPreviousMeetings();">Previous Meetings</span>
-						<span class="badge badge-info p-2 " id="span2" >Future Meetings</span> -->
+					<div class="card-body cardBodyStyle">
+						<div id="calendar" class="calenderStyle"></div>
+												<div id="meetings" class="meetingStyle">
+						<div class="earlierMeetingsStyle">
 						Earlier Meetings
 						</div>
-						<div class="mt-2" id="scrollclass" style="height:520px;overflow: auto">
+						<div class="mt-2 scrollDivStyle" id="scrollclass">
 							<%if(!PreviousmeetingList.isEmpty()){
 							int i=0;
 							for(Object[]obj:PreviousmeetingList){
 							%>
-						 <a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>
+						 <a class="tag meetingsp text-decoration-none" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>
 						&nbsp;&nbsp;Date: <%= obj[3]!=null?sdf2.format(sdf3.parse(obj[3].toString())):" - " %>
 							</a>
 						<%}}else{ %>
@@ -261,81 +209,80 @@ if(!divisionchedulelist.isEmpty()){
 		</div>
 </div>
 <br>
-	<div class="row m-1"
-		style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
+	<div class="row m-1 text-center pt-10px pb-15px">
 
-		<table align="center" style="border-spacing: 0 20px;">
+		<table align="center" class="tblBorderStyle">
 			<tr>
 				
 				
-				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Add Schedule  </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true" ></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Add Agenda </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Update Venue </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Invite Participants </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Agenda Approval </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Kick off Meeting </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Update Attendance </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Prepare Minutes  </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Update Outcomes (A,I,R)  </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary"> Minutes Approval</b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				
 			
 

@@ -6,7 +6,7 @@
 	pageEncoding="ISO-8859-1" import="java.util.*"%>
 	<%@page import="java.text.SimpleDateFormat"%>
 	<%@page import="com.vts.pfms.FormatConverter"%>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%
 String email=(String)request.getAttribute("email");  
 List<Object[]> committeeallmemberslist = (List<Object[]>) request.getAttribute("committeeallmemberslist");
@@ -61,21 +61,9 @@ if(!email.equals("Y")){ %>
 <html>
 <head>
 <title>Committee Formation Letter</title>
-
-
-
-
+<spring:url value="/resources/css/committeeModule/CommitteeConstitutionLetter.css" var="CommitteeConstitutionLetter" />
+<link href="${CommitteeConstitutionLetter}" rel="stylesheet" />
 <style type="text/css">
-
-.break
-{
-	page-break-after: always;
-}
-p{
-  text-align: justify;
-  text-justify: inter-word;
-}
- 
 @page {    
           
           	size: 790px 1120px;
@@ -102,48 +90,29 @@ p{
           <%}%>
          
  }
- .text-black{
- font-weight: bold;
- }
- 
- li{
- text-align: left;
- }
- </style>
- <body>
-
+</style>
+<body>
 <%}%>
-
-
-
-
-
-<%
-
-%>
-
-
- <div style="text-align: center;" align="center">
+ <div class="text-center" align="center">
  <div  >
- <span style="float: left; font-size:13px;">Ref No. - <%if(committeemaindata[11]!=null) {%><%= projectCode.length()>1?projectCode+"/ ":"" %><%=committeemaindata[11].toString()%><%}else{ %> -<%} %> </span>
- <span style="float: right; font-size:13px;">Date :  <%if(committeemaindata[12]!=null){ %>  <%=sdf.format(sdf1.parse(committeemaindata[12].toString()))%><%} %></span>
+ <span class="refNoStyle">Ref No. - <%if(committeemaindata[11]!=null) {%><%= projectCode.length()>1?projectCode+"/ ":"" %><%=committeemaindata[11].toString()%><%}else{ %> -<%} %> </span>
+ <span class="dateStyle">Date :  <%if(committeemaindata[12]!=null){ %>  <%=sdf.format(sdf1.parse(committeemaindata[12].toString()))%><%} %></span>
  </div>  
 <br>
- 	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;" align="center"><%=labdetails[2]!=null?labdetails[2].toString(): " - "%> (<%=labdetails[1]!=null?labdetails[1].toString(): " - " %>) </h3></div>  
+ 	<div class="text-center"><h3 class="mb-2px" align="center"><%=labdetails[2]!=null?labdetails[2].toString(): " - "%> (<%=labdetails[1]!=null?labdetails[1].toString(): " - " %>) </h3></div>  
  	
-	<div style="text-align: center;" ><h3 style="margin-bottom: 2px;" align="center">Formation of Committee  <%=committeeedata[2]!=null?committeeedata[2].toString(): " - "%> (<%=committeeedata[1]!=null?committeeedata[1].toString(): " - "%>) </h3></div>
+	<div class="text-center"><h3 class="mb-2px" align="center">Formation of Committee  <%=committeeedata[2]!=null?committeeedata[2].toString(): " - "%> (<%=committeeedata[1]!=null?committeeedata[1].toString(): " - "%>) </h3></div>
 	<br>
 	<div  align="center">
-	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >
+	<table class="tblStyle">
 		<tr>
-			<td>
-<!-- 				<div style="text-align: center;" ><h3 style="margin-bottom: 2px; max-width: 650px;" align="center">Committee constitution </h3></div>
- -->			</td>
+			<td>			
+			</td>
 		</tr>
 		<tr>
 			<td>
-				<div style="text-align: center;" >
-					<div style="margin-bottom: 2px; max-width: 650px;text-align: justify;text-justify: inter-word;text-align: justify;text-justify: inter-word;" align="center">
+				<div class="text-center">
+					<div class="divDataStyle" align="center">
 						<%if(Long.parseLong(projectid)>0 || Long.parseLong(divisionid)>0 || Long.parseLong(initiationid)>0){ %>
 								<%if(committeedescription[1]!=null){ %><%=committeeedata[1].toString() %> <%}else{ %>No Data <%} %>
 						<%}else { %>
@@ -156,32 +125,25 @@ p{
 	</table>
 	
 	<!-- -------------------------------------------members-------------------------------- -->
-<!-- 	<table style=" margin-top: 10px; margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 16px; border-collapse:collapse; " >
-	<thead>
-	<tr >
 
-	</tr>
-	</thead>
-	</table> -->
-	<table style=" margin-bottom: 10px; margin-left: 15px; width: 650px; font-size: 13px; border-collapse:collapse;border:1px solid black; " >
+	<table class="membersTblStyle">
 		<tr >
-			<%-- <td colspan="5" style="text-align: center;padding-bottom:15px; ">Director,<%=labdetails[1].toString() %> has constituted the  following committee </td> --%>
 		</tr>
 					<tr>				
-				<td class="text-black"  style="max-width:40px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;">SN .&nbsp;</td>
-				<td class="text-black"  style="max-width: 300px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp;Name, Designation</td>
-				<td class="text-black"  style="max-width: 150px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;">Estt. / Agency </td>
-				<td class="text-black"  style="max-width: 200px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp; Role
+				<td class="text-black tdHeaderSnStyle">SN .&nbsp;</td>
+				<td class="text-black tdHeaderNameStyle">&nbsp;Name, Designation</td>
+				<td class="text-black tdHeaderAgencyStyle">Estt. / Agency </td>
+				<td class="text-black tdHeaderRoleStyle">&nbsp; Role
 				</td>
 				</tr>
 		<% int i=0;
 			for(Object[] member : tempList){
 				i++; %>
 			<tr>				
-				<td style="max-width:40px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=i %> .&nbsp;</td>
-				<td style="max-width:300px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp;<%=member[2]!=null?member[2].toString(): " - " %><%=member[4]!=null &&  member[4].toString().length()>1?", "+member[2].toString():"" %> <%-- <%if(member[8].toString().equals("CW")){ %><%=member[9]%><%}  %> --%>&nbsp;</td>
-				<td  style="max-width:150px;text-align: center; padding: 5px 0px 5px 0px; border:1px solid black;"><%=member[12].toString()%> </td>
-				<td style="max-width: 200px;text-align: left; padding: 5px 0px 5px 0px;border:1px solid black;">&nbsp; 
+				<td class="tdHeaderSnStyle"><%=i %> .&nbsp;</td>
+				<td class="tdHeaderNameStyle">&nbsp;<%=member[2]!=null?member[2].toString(): " - " %><%=member[4]!=null &&  member[4].toString().length()>1?", "+member[2].toString():"" %> <%-- <%if(member[8].toString().equals("CW")){ %><%=member[9]%><%}  %> --%>&nbsp;</td>
+				<td class="tdHeaderAgencyStyle"><%=member[12].toString()%> </td>
+				<td class="tdHeaderRoleStyle">&nbsp; 
 				<%if(member[8].toString().equals("CC")){ %>Chairperson<%}
 				else if(member[8].toString().equals("CH")){ %>Co-Chairperson<%} 
 		 		else if(member[8].toString().equals("CS")){ %>Member Secretary<%} 
@@ -197,16 +159,16 @@ p{
 		<%} %>	
 	</table>
 	<!-- -------------------------------------------members-------------------------------- -->
-		<table style=" margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >
+		<table class="teamReferenceTblStyle">
 		<tr>
 			<td >				
-				<h3 style="margin-bottom: 2px; width: 650px; text-align:left;" >Terms of Reference </h3>
+				<h3 class="h3TeamReferenceStyle">Terms of Reference </h3>
 			</td>
 		</tr>
 		<tr>
 			<td>
-				<div style="text-align: center;" >
-					<p style="margin-bottom: 2px; max-width: 650px;text-align: justify;text-justify: inter-word;text-align: justify;text-justify: inter-word;" align="center">
+				<div class="text-center">
+					<p class="pTagStyle" align="center">
 						
 					<%if(Long.parseLong(projectid)>0 || Long.parseLong(divisionid)>0 || Long.parseLong(initiationid)>0){ %>
 						<%if(committeedescription[2]!=null){ %><%=committeedescription[2].toString()%> <%}else{ %>No Data <%} %>
@@ -223,9 +185,9 @@ p{
 	</div>
 </div>
 
-	<div class="row " style="text-align: left;">
+	<div class="row text-left">
 	<br>
-	<div align="center" style="text-align: center">
+	<div align="center" class="text-center">
 	<%if(committeemaindata[9].toString().equalsIgnoreCase("A")){ %>
 	 <%if(CommitteMainEnoteList!=null && !CommitteMainEnoteList[22].toString().equalsIgnoreCase((String)session.getAttribute("labcode"))){ %>
 	 Committee Recommended by Director, <%=(String)session.getAttribute("labcode") %> for competent Approval Authority.
@@ -233,7 +195,7 @@ p{
 	 Approved
 	 <br>
 	<br>
-	<div align="center" style="text-align: center">
+	<div align="center" class="text-center">
 		<%if(committeemaindata[9].toString().equalsIgnoreCase("A")){ %>Director<%} %>
 	</div>
 	 <%} %>
@@ -245,11 +207,9 @@ p{
 	<%} %>
 	</div>
 	<br><br>
-	<div style="text-align: left;font-size: 13px;">
+	<div class="text-left fs-13px">
 	Initiated By : <%if(CommitteMainEnoteList!=null && CommitteMainEnoteList[18]!=null ){ %> <%=CommitteMainEnoteList[18].toString() %>, <%=CommitteMainEnoteList[19]!=null?CommitteMainEnoteList[19].toString(): " - " %>  <%}else{ %>  <%= constitutionapprovalflow.get(0)[0]!=null?constitutionapprovalflow.get(0)[0].toString(): " - "%>,  <%= constitutionapprovalflow.get(0)[1]!=null?constitutionapprovalflow.get(0)[1].toString(): " - "%> <%} %>
 	</div>
-<!-- 	<div style="margin-top:30px;margin-left:10px;">Recommended Officer :- </div>
-	<div style="margin-top:10px;margin-left:10px;">Approving Officer :-</div> -->
 	</div>
 	<%
 	if (!email.equals("Y")) {

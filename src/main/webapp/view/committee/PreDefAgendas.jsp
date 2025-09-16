@@ -2,11 +2,14 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/committeeModule/PreDefAgendas.css" var="PreDefAgendas" />
+<link href="${PreDefAgendas}" rel="stylesheet" />
 <title></title>
 </head>
 <body>
@@ -42,7 +45,7 @@
 				<div class="row">
 					<div class="col-6"><h5>Add New Agenda</h5> </div>
 					<div class="col-6">
-						<form action="PreDefinedAgendas.htm" method="post" style="float:right ; ">
+						<form class="float-right" action="PreDefinedAgendas.htm" method="post">
 							<table>
 								<tr>
 									<td>
@@ -64,28 +67,28 @@
 			<div class="card-body">				
 				
 				<form class="form-inline" method="post" action="PreDefinedAgendaAdd.htm" >
-					<div class="row" align="center" style="width: 100%;">
+					<div class="row w-100" align="center">
 						<div class=" col-5">
 							<div class="form-group ">
 								<label for="modal-agendaitem"><b>Action Item :</b></label>
-								<input type="text" class="form-control" name="agendaitem" style="width: 100%" value=""  maxlength="500" required="required">
+								<input type="text" class="form-control w-100" name="agendaitem" value=""  maxlength="500" required="required">
 							</div>
 						</div>
 						<div class=" col-5">
 							<div class="form-group ">
 								<label for="modal-remarks"><b>Remarks : </b></label>
-								<input type="text" class="form-control" name="remarks" style="width: 100%"  value=""  maxlength="255" required="required" >
+								<input type="text" class="form-control w-100" name="remarks"  value=""  maxlength="255" required="required" >
 							</div>
 						</div>
 						<div class="col-2">
 							<div class="form-group ">
 								<label for="modal-duration"><b>Duration :</b></label>
-								<input type="number" class="form-control" name="duration" style="width: 100%"  value="" min="1" required="required" >
+								<input type="number" class="form-control w-100" name="duration"  value="" min="1" required="required" >
 							</div>
 						</div>
 						<input type="hidden" name="committeeid"  value="<%=committeeid %>" >	
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-						<div class="col-md-12" align="center" style="margin-top: 25px;">
+						<div class="col-md-12 mt-25px" align="center">
 							<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you Sure To Submit ?');">SUBMIT</button>
 						</div>
 					</div>	
@@ -146,40 +149,40 @@
 	
 	
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered "  style="max-width: 60% !important;">	
+		<div class="modal-dialog modal-dialog-centered modalDailogCenteredStyle">	
 			<div class="modal-content" >				   
-			    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
-			    	<h4 class="modal-title" id="model-card-header" style="color: #145374">Edit Agenda</h4>
+			    <div class="modal-header modalHeaderStyle">
+			    	<h4 class="modal-title ModalHeaderTitleStyle" id="model-card-header">Edit Agenda</h4>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
 			          <span aria-hidden="true">&times;</span>
 			        </button>
 			    </div>
-				<div class="modal-body"  style="padding: 0.5rem !important;">						
-					<div class="card-body" style="min-height:30% ;max-height: 93% !important;overflow-y: auto;width: 100%">
+				<div class="modal-body modalBodyStyle">						
+					<div class="card-body modalCardBodyStyle">
 						
-						<div class="row" style="width: 100%">
+						<div class="row w-100">
 							<form class="form-inline" method="post" action="PreDefinedAgendaEdit.htm" >
 									<div class=" col-5">
 										<div class="form-group ">
 											<label for="modal-agendaitem"><b>Action Item :</b></label>
-											<input type="text" class="form-control" name="agendaitem" style="width: 100%" value="" id="modal-agendaitem" maxlength="500" required="required" >
+											<input type="text" class="form-control w-100" name="agendaitem" value="" id="modal-agendaitem" maxlength="500" required="required" >
 										</div>
 									</div>
 									<div class=" col-5">
 										<div class="form-group ">
 											<label for="modal-remarks"><b>Remarks : </b></label>
-											<input type="text" class="form-control" name="remarks" style="width: 100%"  value="" id="modal-remarks" maxlength="255" required="required" >
+											<input type="text" class="form-control w-100" name="remarks" value="" id="modal-remarks" maxlength="255" required="required" >
 										</div>
 									</div>
 									<div class="col-2">
 										<div class="form-group ">
 											<label for="modal-duration"><b>Duration :</b></label>
-											<input type="number" class="form-control" name="duration" style="width: 100%"  value="" id="modal-duration" required="required" >
+											<input type="number" class="form-control w-100" name="duration" value="" id="modal-duration" required="required" >
 										</div>
 									</div>
 									<input type="hidden" name="agendaid"  value="" id="modal-agendaid">	
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-								<div class="col-md-12" align="center" style="margin-top: 25px;">
+								<div class="col-md-12 mt-25px" align="center">
 									<button type="submit" class="btn btn-sm edit" onclick="return confirm('Are you Sure To Update ?');">UPDATE</button>
 								</div>
 							</form>
