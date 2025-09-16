@@ -1,0 +1,219 @@
+label {
+	font-weight: bold;
+	font-size: 13px;
+}
+
+body {
+	background-color: #f2edfa;
+	overflow-x: hidden !important;
+}
+
+h6 {
+	text-decoration: none !important;
+}
+
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
+
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 34px;
+	height: 30px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 29px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+
+.width {
+	width: 270px !important;
+}
+
+.width1 {
+	width: 220px !important;
+}
+
+.select2-container--below {
+	width: 100% !important;
+}
+
+.select2-container--default {
+	width: 100% !important;
+}
+
+a:hover {
+	color: white;
+}
+
+.modal-xl {
+	max-width: 1400px;
+}
+
+.margin-bottom {
+	margin-bottom: 20px;
+}
+
+.card-background {
+	background-color: #055C9D;
+	height: 100px;
+}
+
+.custom-h3 {
+	color: white;
+	font-weight: bold;
+	font-size: 1.0rem !important;
+}
+
+.div-search {
+	margin-top: -8px;
+}
+
+.font-icon {
+	font-size: 10px;
+}
+
+.width-full {
+	width: 100% !important;
+}
+
+.custom-b {
+	font-size: 14px;
+	color: maroon;
+}
+
+.margin-top10 {
+	margin-top: 10px;
+}
+
+.modal-maxheight {
+	max-height: 25rem;
+}
+
+.th-align-left {
+	text-align: left;
+}
+
+.th-width {
+	width: 100.5312px;
+}
+
+.td-width1 {
+	width: 5%;
+}
+
+.td-modified {
+	overflow-wrap: break-word !important;
+	word-break: break-all !important;
+	white-space: normal !important;
+	max-width: 20% !important;
+	min-width: 20% !important;
+}
+
+.td-width8 {
+	width: 7% !important;
+}
+
+.td-width20 {
+	width: 10%;
+}
+
+.div1 {
+	background-color: #cdd0cb !important;
+	height: 1.4rem !important;
+}
+
+.div-progress {
+	background-color: #cdd0cb !important;
+	height: 1.4rem !important;
+}
+
+.div-progressbar {
+	width: 100%;
+	background-color: #cdd0cb !important;
+	color: black;
+	font-weight: bold;
+}
+
+.table {
+	width: 100%;
+	padding: 15px;
+}
+
+.th-padding {
+	padding: 10px 0px;
+	width: 20%;
+}
+
+.td-padding {
+	padding: 10px 0px;
+}
+
+.custom-width {
+	width: 100% !important;
+}
+
+.td-padding-width {
+	padding: 10px 0px;
+	width: 50% !important;
+}
+
+.th-padding-width30 {
+	padding: 10px 0px;
+	width: 30%;
+}
+
+.th-padding-width20 {
+	padding: 10px 0px;
+	width: 20%;
+}
+
+.negative-marging5 {
+	margin-top: -5px;
+}
+
+.table-output {
+	overflow-wrap: break-word !important;
+	word-break: break-all !important;
+	white-space: normal !important;
+	max-width: 20% !important;
+	min-width: 20% !important;
+}

@@ -5,12 +5,18 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Meeting DateWise Report</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/action/meetingDateWiseReport.css" var="meetingDateWiseReport" />
+<link href="${meetingDateWiseReport}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
 
 </head>
 <body>
@@ -44,17 +50,17 @@ String toDate = today.toString();
     <div class="row">
         <div class="col-md-12">
             <div class="card shadow-nohover">
-                <div class="card-header ">  
+                <div class="card-header mb-2">  
                     <div class="row">
                         <h4 class="col-md-4">Meeting DateWise List</h4>  
-                        <div class="col-md-8" style="float: right; margin-top: -8px;" >
+                        <div class="col-md-8 div-margin"  >
                             <form method="get" action="MeetingDateWiseReport.htm" name="dateform" id="myform">
                                 <table>
                                     <tr>
                                         <td>
-                                            <label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Project: </label>
+                                            <label class="control-label td-label" >Project: </label>
                                         </td>
-                                        <td style="max-width: 300px; padding-right: 50px">
+                                        <td class="td-width">
                                             <select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange="document.getElementById('myform').submit();" >
                                               
                                                 <% if(ProjectsList!=null && ProjectsList.size()>0){
@@ -68,13 +74,13 @@ String toDate = today.toString();
                                                    
                                         </td>
 
-                                        <td style="width: 24%;"></td>
-                                        <th class="right" style="width: 5%;">From :</th>
-                                        <td style="width:11%;">
+                                        <td class="width-24"></td>
+                                        <th class="right width-5">From :</th>
+                                        <td class="width-11">
                                             <input type="text" class="form-control" name="fromDate" id="FromDate" <%if(fromDate1!=null){%>value="<%=fc.SqlToRegularDate(fromDate1)%>" <%}%> onchange="document.getElementById('myform').submit();">
                                         </td>
-                                        <th class="right" style="width: 5%;">To :</th>
-                                        <td style="width: 11%;">
+                                        <th class="right width-5">To :</th>
+                                        <td class="width-11">
                                             <input type="text" class="form-control" name="toDate" id="ToDate" <%if(toDate1!=null){%>value="<%=fc.SqlToRegularDate(toDate1)%>" <%}%> onchange="document.getElementById('myform').submit();">
                                         </td>
                                     </tr>
@@ -97,13 +103,8 @@ String toDate = today.toString();
 												<div id="toolbar">
 													
 												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+													<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+
 													<thead>
 											         <tr>
 															<th>SN </th>
@@ -155,7 +156,7 @@ String toDate = today.toString();
 													
 														<% 	}}else{%>
 														<tr>
-															<td colspan="6" style="text-align: center;"> no data found</td></tr>
+															<td colspan="6" class="text-center"> no data found</td></tr>
 																<%}%>										   					
 														
 													</tbody>
@@ -171,11 +172,7 @@ String toDate = today.toString();
 						</div>
 						</div>
 						<br>
-						<!-- <div class="card-footer" align="right">&nbsp;</div>
-					</div>
-				</div>
-			</div>
-		</div> -->
+>
 
 
 
@@ -208,6 +205,15 @@ $('#ToDate').daterangepicker({
         format : 'DD-MM-YYYY'
     }
 })
+
+	$(document).ready(function() {
+		$("#myTable12").DataTable({
+			"lengthMenu" : [ 5, 10, 25, 50, 75, 100 ],
+			"pagingType" : "simple",
+			"pageLength" : 10
+
+		});
+	})
 </script>
 
 </body>

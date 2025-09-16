@@ -14,250 +14,17 @@
 <meta charset="ISO-8859-1">
 <title>Action Tree</title>
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
+<spring:url value="/resources/css/action/actionTree.css" var="actionTree" />
+<link href="${actionTree}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
  
 
-<!-- ------------------------------- tree css ------------------------------- -->
-<style type="text/css">
-
-
-/*----------------genealogy-scroll----------*/
-
-/* .genealogy-scroll::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
-.genealogy-scroll::-webkit-scrollbar-track {
-    border-radius: 5px;
-    background-color: #e4e4e4;
-}
-.genealogy-scroll::-webkit-scrollbar-thumb {
-    background: #212121;
-    border-radius: 5px;
-    transition: 0.5s;
-}
-.genealogy-scroll::-webkit-scrollbar-thumb:hover {
-    background: #d5b14c;
-    transition: 0.5s;
-}
- */
-
-/*----------------genealogy-tree----------*/
- .genealogy-body{
-    white-space: nowrap;
-    overflow-y: hidden;
-    padding: 50px;
-    min-height: 500px;
-    padding-top: 10px;
-    text-align: center;
-}
-.genealogy-tree{
-  display: inline-block;
-} 
-.genealogy-tree ul {
-    padding-top: 20px; 
-    position: relative;
-    padding-left: 0px;
-    display: flex;
-    justify-content: center;
-}
-.genealogy-tree li {
-    float: left; text-align: center;
-    list-style-type: none;
-    position: relative;
-    padding: 20px 5px 0 5px;
-}
-.genealogy-tree li::before, .genealogy-tree li::after{
-    content: '';
-    position: absolute; 
-  top: 0; 
-  right: 50%;
-    border-top: 2px solid #ccc;
-    width: 50%; 
-  height: 18px;
-}
-.genealogy-tree li::after{
-    right: auto; left: 50%;
-    border-left: 2px solid #ccc;
-}
-.genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
-    display: none;
-}
-.genealogy-tree li:only-child{ 
-    padding-top: 0;
-}
-.genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
-    border: 0 none;
-}
-.genealogy-tree li:last-child::before{
-    border-right: 2px solid #ccc;
-    border-radius: 0 5px 0 0;
-    -webkit-border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-}
-.genealogy-tree li:first-child::after{
-    border-radius: 5px 0 0 0;
-    -webkit-border-radius: 5px 0 0 0;
-    -moz-border-radius: 5px 0 0 0;
-}
-.genealogy-tree ul ul::before{
-    content: '';
-    position: absolute; top: 0; left: 50%;
-    border-left: 2px solid #ccc;
-    width: 0; height: 20px;
-}
-.genealogy-tree li .action-view-box{
-    text-decoration: none;
-    font-family: arial, verdana, tahoma;
-    font-size: 11px;
-    display: inline-block;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-}
-
-.genealogy-tree li a:hover+ul li::after, 
-.genealogy-tree li a:hover+ul li::before, 
-.genealogy-tree li a:hover+ul::before, 
-.genealogy-tree li a:hover+ul ul::before{
-    border-color:  #fbba00;
-}
-
-/*--------------memeber-card-design----------*/
-.member-view-box{
-    padding:0px 15px;
-    text-align: center;
-    border-radius: 4px;
-    position: relative;
-}
-.member-image{
-    width: 60px;
-    position: relative;
-}
-.member-image img{
-    width: 60px;
-    height: 60px;
-    border-radius: 6px;
-  background-color :#000;
-  z-index: 1;
-}
-
-
-</style>
- <!-- ------------------------------- tree css ------------------------------- -->
-
-
-<style type="text/css">
-.action-box
-{
-    width: fit-content ;
-    height: fit-content;
-    min-width:220px;
-    
-    border: 1px solid black;
-    border-radius: 10px;
-}
-
-.action-box-header
-{
-	border-top-right-radius : 10px;
-	border-top-left-radius: 10px;
- 	padding:5px;
- 	
-  	text-align: center;
-}
-
-.action-box-body
-{
-	padding:5px;
-	text-align: center;
-	background-color: #ffffff;
-	display: block;
-    flex-wrap: wrap;
-    border-bottom-right-radius : 10px;
-	border-bottom-left-radius: 10px;
-}
-
-.action-box-body1
-{
-	padding:5px;
-	text-align: center;
-	background-color: #ffffff;
-	display: block;
-    flex-wrap: wrap;
-    border-bottom-right-radius : 10px;
-	border-bottom-left-radius: 10px;
-}
-.card-body-table
-{
-	width:100%;
-}
-
-.card-body-table  td
-{
-	border:0px;
-	text-align: left;
-}	
-	
-.card-body-table th
-{
-	border:0px;
-}
-
-.Q1
-{
-	background-color: #DC3535;
-	color: #FFFFFF;
-}
-
-.Q2
-{
-	background-color: #FF7000;
-	color: #FFFFFF;
-}
-
-.Q3
-{
-	background-color: #FED049;
-	color: #000000;
-}
-
-.Q4
-{
-	background-color: #5F8D4E;
-	color: #FFFFFF;
-}
-
-.Q5
-{
-	background-color: #3d3a32;
-	color: #FFFFFF;
-}
-
-th
-{
- 	text-align: left;
- 	overflow-wrap: break-word;
-}
-
-td
-{
- 	text-align: justify;
-  	text-justify: inter-word;
-    
-}
 
 
 
-.tabledata
-{
- 	white-space: -o-pre-wrap; 
-    word-wrap: break-word;
-    white-space: pre-wrap; 
-    white-space: -moz-pre-wrap; 
-    white-space: -pre-wrap; 
-}
 
-</style>
+
 
 </head>
 
@@ -274,19 +41,19 @@ td
 
 %>
 
-<body style="background-color: #FDFFCF69;overflow-y:auto " class="body genealogy-body genealogy-scroll">
+<body class="body genealogy-body genealogy-scroll gbody">
 
 	<div>
 		<h3>Action Tree</h3>
 	</div>
 	<div align="right">
 		<div class="">
-			<div style="font-weight: bold; ">
-				<span style="margin:0px 0px 10px  10px;">0 - 25 % :&ensp; 	<span class="Q1" style="padding: 0px 15px;border-radius: 3px;"></span></span>
-				<span style="margin:0px 0px 10px  15px;">26 - 50 % :&ensp; 	<span class="Q2" style="padding: 0px 15px;border-radius: 3px;"></span></span>
-				<span style="margin:0px 0px 10px  15px;">51 - 75 % :&ensp; 	<span class="Q3" style="padding: 0px 15px;border-radius: 3px;"></span></span>
-				<span style="margin:0px 0px 10px  15px;">76 - 100 % :&ensp; <span class="Q4" style="padding: 0px 15px;border-radius: 3px;"></span></span>
-				<span style="margin:0px 0px 10px  15px;">Closed:&ensp; <span class="Q5" style="padding: 0px 15px;border-radius: 3px;"></span></span>
+			<div class="font-weight-bold ">
+				<span class="span1">0 - 25 % :&ensp; 	<span class="Q1 span1-in" ></span></span>
+				<span class="span2">26 - 50 % :&ensp; 	<span class="Q2 span1-in" ></span></span>
+				<span class="span2">51 - 75 % :&ensp; 	<span class="Q3 span1-in" ></span></span>
+				<span class="span2">76 - 100 % :&ensp; <span class="Q4 span1-in"></span></span>
+				<span class="span2">Closed:&ensp; <span class="Q5 span1-in" ></span></span>
 			</div>
 		</div>
 	</div>
@@ -317,36 +84,36 @@ td
 			                          		
 			                          	  >
 			                          		
-			                          		<span style="cursor:pointer;font-weight: 600;" 
+			                          		<span class="cursor-pointer" 
 			                          			onclick="ActionDetails(	'<%=action[10] %>' );" >
 			                          				&nbsp;&nbsp;&nbsp;&nbsp; <%=action[11]!=null?StringEscapeUtils.escapeHtml4(action[11].toString()):" - "%> &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action[11]%>" aria-hidden="true"></i></span>
 			                          	</div>
 			                          	<%List<Object[]> level0 =actionslist.stream().filter(e->  Long.parseLong(action[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());
 			                          	System.out.println("level0  "+ level0.size());
 			                          	%>
-										<div <%if(level0!=null && level0.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%>  align="center" style="cursor: pointer ;">
+										<div <%if(level0!=null && level0.size()>0){%>class="action-box-body cursor-pointer-copy" <%}else{%> class="action-box-body1 cursor-pointer-copy"<%}%>  align="center" >
 											<table class="card-body-table">
 			                          			<tr>
-			                          				<th style="width: 40%;">Assignee :</th>
+			                          				<th class="width-40">Assignee :</th>
 			                          				<td  >&emsp;<%=action[23]!=null?StringEscapeUtils.escapeHtml4(action[23].toString()):" - " %></td>
 			                          			</tr>
 			                          			<tr>
-			                          				<th style="">PDC :</th>
+			                          				<th >PDC :</th>
 			                          				<td >&emsp;<%=action[24]!=null?sdf.format(action[24]):" - " %></td>
 			                          			</tr>
 			                          			<tr>
-			                          				<th style="">Progress (%) :</th>
-			                          				<td style="padding-left: 10px;">
+			                          				<th >Progress (%) :</th>
+			                          				<td class="padding-left10px">
 			                          					
 			                          					<%if(action[25]!=null && Integer.parseInt(action[25].toString())>0){ %>
-					                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+					                          				<div class="progress div-progress" >
+																<div class="progress-bar progress-bar-striped width-<%=action[25]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																	<%=StringEscapeUtils.escapeHtml4(action[25].toString())%>
 																</div> 
 															</div> 
 														<%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress div-progress" >
+																<div class="progress-bar progressbar" role="progressbar" >
 																	Not Yet Started
 																</div>
 															</div> 
@@ -356,8 +123,8 @@ td
 			                          			</tr>
 			                          		</table>  
 			                          		<%if(level0!=null && level0.size()>0){ %>
-											<div style="margin-bottom:-10px;" style="cursor: pointer ;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size:1.2rem;color:black;"></i></div>
-											<%}else{%><div style="margin-top:12px;" ></div><%}%>
+											<div class="marging-btnN" ><i class="fa fa-caret-down icon-styl" aria-hidden="true" ></i></div>
+											<%}else{%><div class="margin-top12px" ></div><%}%>
 			                          	</div>
 			                        </div>
 			                    </div>
@@ -386,36 +153,36 @@ td
 						                          			class="action-box-header Q4"
 						                          		<%} %>
 						                          	  >
-													    <span style="cursor:pointer;font-weight: 600;" 
+													    <span class="cursor-pointer" 
 							                          			onclick="ActionDetails('<%=action_L1[10] %>' );" >                      		
 														
 														 &nbsp;&nbsp;&nbsp;&nbsp;<%=action_L1[11]!=null?StringEscapeUtils.escapeHtml4(action_L1[11].toString()):" - " %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L1[11]%>" aria-hidden="true"></i></span >    
 														       
 													</div>
 													<%List<Object[]> level1 =actionslist.stream().filter(e->  Long.parseLong(action_L1[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
-													<div <%if(level1!=null && level1.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%>  align="center" style="cursor: pointer ;">
+													<div <%if(level1!=null && level1.size()>0){%>class="action-box-body cursor-pointer-copy" <%}else{%> class="action-box-body1 cursor-pointer-copy"<%}%>  align="center">
 														<table class="card-body-table">
 															<tr>
-						                          				<th style="width: 40%;">Assignee :</th>
+						                          				<th class="width-40">Assignee :</th>
 						                          				<td  >&emsp;<%=action_L1[23]!=null?StringEscapeUtils.escapeHtml4(action_L1[23].toString()):" - " %></td>
 						                          			</tr>
 						                          			<tr>
-						                          				<th style="">PDC :</th>
+						                          				<th >PDC :</th>
 						                          				<td >&emsp;<%=action_L1[24]!=null?sdf.format(action_L1[24]):" - " %></td>
 						                          			</tr>
 						                          			<tr>
-						                          				<th style="">Progress (%) :</th>
-						                          				<td style="padding-left: 10px;">
+						                          				<th >Progress (%) :</th>
+						                          				<td class="padding-left10px">
 						                          					
 						                          					<%if(action_L1[25]!=null && Integer.parseInt(action_L1[25].toString())>0){ %>
-								                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																			<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L1[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+								                          				<div class="progress div-progress ">
+																			<div class="progress-bar progress-bar-striped width-<%=action_L1[25]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																				<%=StringEscapeUtils.escapeHtml4(action_L1[25].toString())%>
 																			</div> 
 																		</div> 
 																	<%}else{ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																			<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		<div class="progress div-progress">
+																			<div class="progress-bar progressbar" role="progressbar" >
 																				Not Yet Started
 																			</div>
 																		</div> 
@@ -425,8 +192,8 @@ td
 						                          			</tr>
 														</table>
 														<%if(level1!=null && level1.size()>0){ %>
-														 <div style="margin-bottom:-10px;" style="cursor: pointer ;"><i class="fa fa-caret-up" aria-hidden="true" style="font-size:1.2rem;color:black;"></i></div>
-														<%}else{%><div style="margin-top:12px;" ></div><%}%>
+														 <div class="marging-btnN"><i class="fa fa-caret-up icon-styl" aria-hidden="true" ></i></div>
+														<%}else{%><div class="margin-top12px" ></div><%}%>
 													</div>
 												</div>
 											</div>
@@ -460,34 +227,34 @@ td
 									                          		
 									                          	  >
 																	
-																	<span style="cursor:pointer;font-weight: 600;" 
+																	<span class="cursor-pointer" 
 									                          			onclick="ActionDetails('<%=action_L2[10] %>');" > 
 																	 &nbsp;&nbsp;&nbsp;&nbsp;<%=action_L2[11]!=null?StringEscapeUtils.escapeHtml4(action_L2[11].toString()):" - " %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L2[11]%>" aria-hidden="true"></i></span >           
 																</div>
 																<%List<Object[]> level2 =actionslist.stream().filter(e->  Long.parseLong(action_L2[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
-																	<div <%if(level2!=null && level2.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%> align="center" style="cursor: pointer ;">
+																	<div <%if(level2!=null && level2.size()>0){%>class="action-box-body cursor-pointer-copy" <%}else{%> class="action-box-body1 cursor-pointer-copy"<%}%> align="center" >
 																	<table class="card-body-table">
 																		<tr>
-									                          				<th style="width: 40%;">Assignee :</th>
+									                          				<th class="width-40">Assignee :</th>
 									                          				<td  >&emsp;<%=action_L2[23]!=null?StringEscapeUtils.escapeHtml4(action_L2[23].toString()):" - " %></td>
 									                          			</tr>
 									                          			<tr>
-									                          				<th style="">PDC :</th>
+									                          				<th>PDC :</th>
 									                          				<td >&emsp;<%=action_L2[24]!=null?sdf.format(action_L2[24]):"" %></td>
 									                          			</tr>
 									                          			<tr>
-									                          				<th style="">Progress (%) :</th>
-									                          				<td style="padding-left: 10px;">
+									                          				<th >Progress (%) :</th>
+									                          				<td class="padding-left10px">
 									                          					
 									                          					<%if(action_L2[25]!=null && Integer.parseInt(action_L2[25].toString())>0){ %>
-											                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																						<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L2[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+											                          				<div class="progress div-progress" >
+																						<div class="progress-bar progress-bar-striped width-<%=action_L2[25]%>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																							<%=StringEscapeUtils.escapeHtml4(action_L2[25].toString())%>
 																						</div> 
 																					</div> 
 																				<%}else{ %>
-																					<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																						<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																					<div class="progress div-progress" >
+																						<div class="progress-bar progressbar" role="progressbar" >
 																							Not Yet Started
 																						</div>
 																					</div> 
@@ -497,8 +264,8 @@ td
 									                          			</tr>
 																	</table>
 																 <%if(level2!=null && level2.size()>0){ %>
-																 <div style="margin-bottom:-10px;" style="cursor: pointer ;"><i class="fa fa-caret-up" aria-hidden="true" style="font-size:1.2rem;color:black;"></i></div>
-																 <%}else{%><div style="margin-top:12px;" ></div><%}%>
+																 <div class="marging-btnN"><i class="fa fa-caret-up icon-styl" aria-hidden="true" ></i></div>
+																 <%}else{%><div class="margin-top12px" ></div><%}%>
 																</div>
 															</div>
 														</div>
@@ -529,34 +296,34 @@ td
 													                          		
 													                          	  >
 																				                          		
-																					<span style="cursor:pointer;font-weight: 600;" 
+																					<span class="cursor-pointer" 
 													                          			onclick="ActionDetails('<%=action_L3[10] %>');" >      
 																									&nbsp;&nbsp;&nbsp;&nbsp;<%=action_L3[11]!=null?StringEscapeUtils.escapeHtml4(action_L3[11].toString()):" - " %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L3[11]%>" aria-hidden="true"></i></span >     
 																				</div>
 																					<%List<Object[]> level3 =actionslist.stream().filter(e->  Long.parseLong(action_L3[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
-																				<div <%if(level3!=null && level3.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%> align="center" style="cursor: pointer ;">
+																				<div <%if(level3!=null && level3.size()>0){%>class="action-box-body cursor-pointer-copy" <%}else{%> class="action-box-body1 cursor-pointer-copy"<%}%> align="center" >
 																					<table class="card-body-table">
 																						<tr>
-													                          				<th style="width: 40%;">Assignee :</th>
+													                          				<th class="width-40">Assignee :</th>
 													                          				<td  >&emsp;<%=action_L3[23]!=null?StringEscapeUtils.escapeHtml4(action_L3[23].toString()):" - " %></td>
 													                          			</tr>
 													                          			<tr>
-													                          				<th style="">PDC :</th>
+													                          				<th >PDC :</th>
 													                          				<td >&emsp;<%=action_L3[24]!=null?sdf.format(action_L3[24]):"" %></td>
 													                          			</tr>
 													                          			<tr>
-													                          				<th style="">Progress (%) :</th>
-													                          				<td style="padding-left: 10px;">
+													                          				<th >Progress (%) :</th>
+													                          				<td class="padding-left10px">
 													                          					
 													                          					<%if(action_L3[25]!=null && Integer.parseInt(action_L3[25].toString())>0){ %>
-															                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L3[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															                          				<div class="progress div-progress" >
+																										<div class="progress-bar progress-bar-striped width-<%=action_L3[25]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																											<%=StringEscapeUtils.escapeHtml4(action_L3[25].toString()) %>
 																										</div> 
 																									</div> 
 																								<%}else{ %>
-																									<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																										<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																									<div class="progress div-progress" >
+																										<div class="progress-bar progressbar" role="progressbar" >
 																											Not Yet Started
 																										</div>
 																									</div> 
@@ -566,8 +333,8 @@ td
 													                          			</tr>
 																					</table>
 																				<%if(level3!=null && level3.size()>0){ %>
-																				 <div style="margin-bottom:-10px;" style="cursor: pointer ;"><i class="fa fa-caret-up" aria-hidden="true" style="font-size:1.2rem;color:black;"></i></div>
-																				 <%}else{%><div style="margin-top:12px;" ></div><%}%>
+																				 <div class="marging-btnN"><i class="fa fa-caret-up icon-styl" aria-hidden="true"></i></div>
+																				 <%}else{%><div class="margin-top12px" ></div><%}%>
 																				</div>
 																			</div>
 																		</div>
@@ -598,34 +365,34 @@ td
 																		                          		<%} %>
 													                          						>
 																									                          		
-																										<span style="cursor:pointer;font-weight: 600;" 
+																										<span class="cursor-pointer" 
 																		                          			onclick="ActionDetails('<%=action_L4[10] %>');" >
 																										&nbsp;&nbsp;&nbsp;&nbsp;<%=action_L4[11] %>  &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-plus-circle fa-lg" id="<%=action_L4[11]%>" aria-hidden="true"></i></span > 
 																									</div>
 																								<%List<Object[]> level4 =actionslist.stream().filter(e->  Long.parseLong(action_L4[19].toString()) == Long.parseLong(e[17].toString())).collect(Collectors.toList());%>
-																									<div <%if(level4!=null && level4.size()>0){%>class="action-box-body" <%}else{%> class="action-box-body1"<%}%> align="center" style="cursor: pointer ;">																			
+																									<div <%if(level4!=null && level4.size()>0){%>class="action-box-body cursor-pointer-copy" <%}else{%> class="action-box-body1 cursor-pointer-copy"<%}%> align="center" >																			
 																										<table class="card-body-table">
 																											<tr>
-																		                          				<th style="width: 40%;">Assignee :</th>
+																		                          				<th class="width-40">Assignee :</th>
 																		                          				<td  >&emsp;<%=action_L4[23]!=null?StringEscapeUtils.escapeHtml4(action_L4[23].toString()):" - " %></td>
 																		                          			</tr>
 																		                          			<tr>
-																		                          				<th style="">PDC :</th>
+																		                          				<th >PDC :</th>
 																		                          				<td >&emsp;<%=action_L4[24]!=null?sdf.format(action_L4[24]):" - " %></td>
 																		                          			</tr>
 																		                          			<tr>
-																		                          				<th style="">Progress (%) :</th>
-																		                          				<td style="padding-left: 10px;">
+																		                          				<th >Progress (%) :</th>
+																		                          				<td class="padding-left10px">
 																		                          					
 																		                          					<%if(action_L4[25]!=null && Integer.parseInt(action_L4[25].toString())>0) { %>
-																				                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L4[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																				                          				<div class="progress div-progress" >
+																															<div class="progress-bar progress-bar-striped width-<%=action_L4[25]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																																<%=StringEscapeUtils.escapeHtml4(action_L4[25].toString())%>
 																															</div> 
 																														</div> 
 																													<%}else{ %>
-																														<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																														<div class="progress div-progress" >
+																															<div class="progress-bar progressbar" role="progressbar">
 																																Not Yet Started
 																															</div>
 																														</div> 
@@ -635,8 +402,8 @@ td
 																		                          			</tr>
 																										</table>
 																									<%if(level4!=null && level4.size()>0){ %>
-																									 <div style="margin-bottom:-10px;" style="cursor: pointer ;"><i class="fa fa-caret-up" aria-hidden="true" style="font-size:1.2rem;color:black;"></i></div>
-																									 <%}else{%><div style="margin-top:12px;" ></div><%}%>
+																									 <div class="marging-btnN"><i class="fa fa-caret-up icon-styl" aria-hidden="true"></i></div>
+																									 <%}else{%><div class="margin-top12px" ></div><%}%>
 																									</div>
 																								</div>
 																							</div>
@@ -691,10 +458,10 @@ td
 	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="action_modal">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
-				<div class="modal-header" style="background-color: #FFE0AD; ">
+				<div class="modal-header modal-bg" >
 					<div class="row w-100"  >
 						<div class="col-md-12" >
-							<h5 class="modal-title" id="modal_action_no" style="font-weight:700; color: #A30808;"></h5>
+							<h5 class="modal-title h5-title" id="modal_action_no" ></h5>
 						</div>
 					</div>
 					
@@ -704,28 +471,28 @@ td
 				</div>
 				<div class="modal-body" align="center">
 					<form action="#" method="post" autocomplete="off"  >
-						<table style="width: 100%;">
+						<table class="width-100">
 							<tr>
-								<th style="width:10%;padding: 5px;"> Action Item :</th>
-								<td class="tabledata" style="width:90%;padding: 5px;word-wrap:break-word;" colspan="3" id="modal_action_item"></td>
+								<th class="width-10 padding5px"> Action Item :</th>
+								<td class="tabledata modal-action-item"  colspan="3" id="modal_action_item"></td>
 							</tr>
 							<tr>
-								<th style="padding: 5px;" >Assign Date :</th>
-								<td style="padding: 5px;" id="modal_action_date"></td>
-								<th style="padding: 5px;" >PDC :</th>
-								<td style="padding: 5px;" id="modal_action_PDC"></td>
+								<th class="padding5px" >Assign Date :</th>
+								<td class="padding5px" id="modal_action_date"></td>
+								<th class="padding5px" >PDC :</th>
+								<td class="padding5px" id="modal_action_PDC"></td>
 							</tr>
 							<tr>
-								<th style="padding: 5px;" >Assignor :</th>
-								<td style="padding: 5px;" class="tabledata" id="modal_action_assignor"></td>
-								<th style="padding: 5px;" >Assignee :</th>
-								<td style="padding: 5px;" class="tabledata" id="modal_action_assignee"></td>
+								<th class="padding5px" >Assignor :</th>
+								<td class="tabledata padding5px" id="modal_action_assignor"></td>
+								<th class="padding5px" >Assignee :</th>
+								<td class="tabledata padding5px" id="modal_action_assignee"></td>
 							</tr>
 							<tr>
-								<th style="padding: 5px;" >Final Progress :</th>
-								<td style="padding: 5px;" id="modal_action_progress"></td>
-								<th style="padding: 5px;" > Type :</th>
-								<td style="padding: 5px;font-weight: bold;color:#A30808 " id="modal_action_type"></td>
+								<th class="padding5px" >Final Progress :</th>
+								<td class="padding5px" id="modal_action_progress"></td>
+								<th class="padding5px" > Type :</th>
+								<td class="modal-action-type" id="modal_action_type"></td>
 							</tr>
 							
 						</table>
@@ -733,14 +500,14 @@ td
 						<hr>
 						<form action="#" method="get">
 						
-						<table class="table table-bordered table-hover table-striped table-condensed " id="" style="width: 100%">
+						<table class="table table-bordered table-hover table-striped table-condensed  width-100" id="">
 							<thead> 
-								<tr style="background-color: #055C9D; color: white;">
-									<th style="text-align: center;width:5% !important;">SN</th>
-									<th style="text-align: center;width:10% !important;">Progress Date</th>
-									<th style="text-align: center;width:15% !important;"> Progress</th>
-									<th style="width:65% !important;">Remarks</th>
-									<th style="text-align: center;width:5% !important;">Download</th>
+								<tr class="tr-styl">
+									<th class="th-sn">SN</th>
+									<th class="th-progress-date">Progress Date</th>
+									<th class="th-progress"> Progress</th>
+									<th class="th-remarks">Remarks</th>
+									<th class="th-download">Download</th>
 								</tr>
 							</thead>
 							<tbody id="modal_progress_table_body">
@@ -847,16 +614,16 @@ function ActionDetails(InAssignId)
 				
 				if(InProgress.trim() === '0')
 				{
-					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height: 1.5rem !important;">'; 
-					progressBar += 		'<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >';
+					var progressBar ='<div class="progress script-progress">'; 
+					progressBar += 		'<div class="progress-bar script-progressbar" role="progressbar"  >';
 					progressBar +=		'Not Started'
 					progressBar +=		'</div>'; 
 					progressBar += '</div>'; 
 				}
 				else
 				{
-					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height:1.5rem !important; ">'; 
-					progressBar += 		'<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: '+InProgress+'%;  " aria-valuemin="0" aria-valuemax="100" >';
+					var progressBar ='<div class="progress script-progress" >'; 
+					progressBar += 		'<div class="progress-bar progress-bar-striped width-'+InProgress+'" role="progressbar" aria-valuemin="0" aria-valuemax="100" >';
 					progressBar +=		InProgress
 					progressBar +=		'</div>'; 
 					progressBar += '</div>'; 
@@ -886,18 +653,18 @@ function ActionDetails(InAssignId)
 					{	
 						htmlStr += '<tr>';
 						
-						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ (v+1) + '</td>';
-						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ moment(new Date(result[v][3]) ).format('DD-MM-YYYY') + '</td>';
-						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ result[v][2] + ' %</td>';
+						htmlStr += '<td class="tabledata text-center"  >'+ (v+1) + '</td>';
+						htmlStr += '<td class="tabledata text-center" >'+ moment(new Date(result[v][3]) ).format('DD-MM-YYYY') + '</td>';
+						htmlStr += '<td class="tabledata text-center" >'+ result[v][2] + ' %</td>';
 						htmlStr += '<td class="tabledata" >'+ result[v][4] + '</td>';
 						
 						if(result[v][5]=== null)
 						{
-							htmlStr += '<td class="tabledata" style="text-align: center;">-</td>';
+							htmlStr += '<td class="tabledata text-center" >-</td>';
 						}
 						else
 						{
-							htmlStr += '<td class="tabledata" style="text-align: center;"><button type="submit" class="btn btn-sm" name="ActionSubId" value="'+ result[v][5] + '" target="blank" formaction="ActionDataAttachDownload.htm" ><i class="fa fa-download"></i></button></td>';
+							htmlStr += '<td class="tabledata text-center"><button type="submit" class="btn btn-sm" name="ActionSubId" value="'+ result[v][5] + '" target="blank" formaction="ActionDataAttachDownload.htm" ><i class="fa fa-download"></i></button></td>';
 						}
 						htmlStr += '</tr>';
 					}
@@ -906,7 +673,7 @@ function ActionDetails(InAssignId)
 				{
 					htmlStr += '<tr>';
 					
-					htmlStr += '<td colspan="5" style="text-align: center;"> Progress Not Updated </td>';
+					htmlStr += '<td colspan="5" class="text-center"> Progress Not Updated </td>';
 					
 					htmlStr += '</tr>';
 				}

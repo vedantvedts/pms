@@ -8,23 +8,12 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/action/actionDetails.css" var="actionDetails" />
+<link href="${actionDetails}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
 <title>Action Assignee</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x: hidden; 
-}
-h6{
-	text-decoration: none !important;
-}
 
-
-</style>
 </head>
  
 <body>
@@ -71,17 +60,17 @@ h6{
 
 <div class="container-fluid">
 
-	<div class="container" style="margin-bottom:20px;">
+	<div class="container div-margin">
 
 		
-    		<div class="card" style=" ">
+    		<div class="card">
     	
     	
     	
-	    		<div class="card-header" style="background-color: #055C9D;height: 100%;">
-      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action :<%if(Assignee!=null && Assignee[5]!=null){%> <%=StringEscapeUtils.escapeHtml4(Assignee[5].toString()) %> (<%=Assignee[10]!=null?StringEscapeUtils.escapeHtml4(Assignee[10].toString()):" - " %>) <%}%> 
+	    		<div class="card-header card-bg">
+      				<h6 class="h6-st" align="left"> Action :<%if(Assignee!=null && Assignee[5]!=null){%> <%=StringEscapeUtils.escapeHtml4(Assignee[5].toString()) %> (<%=Assignee[10]!=null?StringEscapeUtils.escapeHtml4(Assignee[10].toString()):" - " %>) <%}%> 
       				
-					<span style="float: right;font-size: 17px;margin-top: 5px">Assignor : <%if(Assignee!=null && Assignee[1]!=null){%> <%=StringEscapeUtils.escapeHtml4(Assignee[1].toString()) %>, <%=Assignee[2]!=null?StringEscapeUtils.escapeHtml4(Assignee[2].toString()):" - "%><%}%></span>
+					<span class="span-st">Assignor : <%if(Assignee!=null && Assignee[1]!=null){%> <%=StringEscapeUtils.escapeHtml4(Assignee[1].toString()) %>, <%=Assignee[2]!=null?StringEscapeUtils.escapeHtml4(Assignee[2].toString()):" - "%><%}%></span>
       				 </h6>
       			</div>
       		<div class="card-body" >
@@ -89,87 +78,19 @@ h6{
       		
 
    
-   <div class="col-md-12" style="padding-left: 0px">
-<%--     <% if(LinkList.size()>0){ %>  
-   				<div class="table-responsive">
-    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
-						<thead>
-							<tr>
-								<th colspan="7" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Old Action  Details </th>									
-							</tr>	
-							<tr>					
-								<th style="text-align: left;">As On Date</th>
-								<th style="">Progress %</th>
-								<th style="">Remarks</th>								
-							 	<th style="">Attachment</th>
-							 	<!-- <th style="">Upload</th> -->
-								<th style="">Action</th>
-							</tr>
-						</thead>
-						<tbody>					
-						<%
-						for(Object[] obj: LinkList){ %>
-														
-						<tr >
-								<td width="12%">
-									<%=sdf.format(obj[3])%>
-								</td>
-								
-								<td width="6%">
-									
-									<div class="progress" style="background-color:#cdd0cb !important">
-  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]%></div>
-									</div>
-				
-										</td>
-								
-								<td style="text-align: left; width: 10%;"> 
-									<%=obj[4]%>
-								</td>
-								
-								<td style="text-align: left; width: 3%;">
-								
-							 <% 
-						        if(obj[5]!=null && obj[5].toString().length()!=0  ){
-						        %>
-						        <div  align="center">
-										<a  
-										 href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[6]%>" 
-										 target="_blank"><i class="fa fa-download"></i></a>
-									</div>
-								
-									
-								<%}else{ %>
-								
-								<div  align="center">-</div>
-								 <%} %>
-									
-						
-								</td>
-								
-														
-								<td style="text-align: left; width: 6%;">
-							     Old Action
-								</td>
-						
-						</tr>
-														
-							<%  } %>	
-									</tbody>
-					</table>
-				</div> 
-				<%} %> --%>
+   <div class="col-md-12 pl-0">
+
    						<div class="table-responsive">
-    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
+    				<table class="table table-bordered table-hover table-striped table-condensed table-margin" id="myTable3" >
 						<thead>
 						<tr>
-								<th colspan="4" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Action Updated Details </th>									
+								<th colspan="4" class="th-st" >Action Updated Details </th>									
 							</tr>	
 							<tr>					
-								<th style="text-align: left;">As On Date</th>
-								<th style="">Progress %</th>
-								<th style="">Remarks</th>								
-							 	<th style="">Attachment</th>
+								<th class="text-left">As On Date</th>
+								<th >Progress %</th>
+								<th >Remarks</th>								
+							 	<th >Attachment</th>
 							
 							</tr>
 						</thead>
@@ -189,17 +110,17 @@ h6{
 								
 								<td width="6%">
 								
-									<div class="progress" style="background-color:#cdd0cb !important">
-  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></div>
+									<div class="progress div-progress">
+  										<div class="progress-bar progress-bar-striped width-<%=obj[2]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></div>
 									</div>
 				
 										</td>
 								
-								<td style="text-align: left; width: 10%;"> 
+								<td class="text-left width-10"> 
 									<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%>
 								</td>
 								
-								<td style="text-align: left; width: 3%;">
+								<td class="text-left width-3">
 								
 							 <% if(obj[5]!=null && obj[5].toString().length()!=0  ){%>
 						        <div  align="center">
@@ -240,7 +161,7 @@ h6{
    	</div>   
    </div>  
 </div> 
- <div class="row" style="margin-top: 20px;">
+ <div class="row div-row" >
  
  
  
@@ -248,7 +169,7 @@ h6{
  
 	<div class="col-md-12">
     	
-    	<div class="card" style="">
+    	<div class="card" >
       		
       		<div class="card-body" >
       		

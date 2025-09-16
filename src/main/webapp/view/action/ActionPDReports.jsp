@@ -9,27 +9,14 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/action/actionPDReports.css" var="actionPDReports" />
+<link href="${actionPDReports}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
  
 
 <title>PD Action Reports</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
 
-.anychart-credits {
-   display: none;
-}
-</style>
 </head>
  
 <body>
@@ -54,13 +41,13 @@ h6{
 
 					<div class="row">
 						<h3 class="col-md-8">PD Action Reports</h3>  
-							<div class="col-md-4" style="float: right;">
+							<div class="col-md-4 float-right">
 							<table >
 					   					<tr>
 					   					<td >
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Project : </label>
+					   							<label class="control-label td-label">Project : </label>
 					   						</td>
-					   						<td style="max-width: 500px; padding-right: 50px">
+					   						<td class="td-width">
 					   						<form method="post" action="ActionWiseReport.htm" name="dateform" id="dateform">
                                                         <select class="form-control selectdee " name="Project" id="Project" required="required"  data-live-search="true"  >
                                                            	
@@ -85,28 +72,28 @@ h6{
 
 					</div>
 						<div class="card-body "> 
-						<div class="row" style="margin-top: -18px;">
-						<div class="col-md-6" style="float: right;" align="center">
+						<div class="row div-margin" >
+						<div class="col-md-6 float-right"  align="center">
 							
-					   	<div id="container" style="min-width: 440px; max-width: 440px; height: 400px;"></div>
+					   	<div id="container" class="custom-container"></div>
 					   <div >	
-					   <button onclick="submitForm('P');" class="btn btn-sm " style="margin-right:20px;background-color: #A4DD74;color:white; padding: 4px 13px; "> <b id="pending"></b> </button>
-                        <button onclick="submitForm('F');" class="btn btn-sm " style="margin-left:40px;margin-right:20px;background-color: #ff8400;color:white; padding: 4px 13px; "> <b id="forwarded"></b> </button>
-                       <button onclick="submitForm('Y');" class="btn btn-sm " style="margin-left:40px;margin-right:20px;background-color: #448fea;color:white; padding: 4px 13px; "> <b id="completed"></b> </button>
-                       <button onclick="submitForm('E');" class="btn btn-sm " style="margin-left:40px;background-color: #e85342;color:white; padding: 4px 13px; "> <b id="expired"></b> </button>
+					   <button onclick="submitForm('P');" class="btn btn-sm btn-p" > <b id="pending"></b> </button>
+                        <button onclick="submitForm('F');" class="btn btn-sm btn-f"> <b id="forwarded"></b> </button>
+                       <button onclick="submitForm('Y');" class="btn btn-sm btn-y" > <b id="completed"></b> </button>
+                       <button onclick="submitForm('E');" class="btn btn-sm btn-e" > <b id="expired"></b> </button>
 					</div>
                         </div>
-					   	<div class="col-md-6" style="float: right;">
-		                <div id="container2" style="width: 500px; height: 430px;"></div>
+					   	<div class="col-md-6 float-right" >
+		                <div id="container2" class="container2"></div>
                       
                          </div>
         
 					   	</div>
 						 <div class="row">
-						<div class="col-md-6" style="float: right;">
+						<div class="col-md-6 float-right" >
 					   	<div id="chart_div"></div>
                         </div>
-					   	<div class="col-md-6" style="float: right;">
+					   	<div class="col-md-6 float-right" >
 		               
                       
                          </div>

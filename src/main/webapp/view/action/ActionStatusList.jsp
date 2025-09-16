@@ -9,89 +9,13 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
- 
+<spring:url value="/resources/css/action/actionStatusList.css" var="actionStatusList" />
+<link href="${actionStatusList}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
 
 <title>Assignee List</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.table button{
-	
-	background-color: white !important;
-	border: 3px solid #17a2b8;
-	padding: .275rem .5rem !important;
-}
 
-.table button:hover {
-	color: black !important;
-	
-}
-#table tbody tr td {
-
-	    padding: 4px 3px !important;
-
-}
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-</style>
 </head>
  
 <body>
@@ -132,24 +56,24 @@ h6{
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-					<div class="card-header ">  
+					<div class="card-header mb-2 ">  
 
 					<div class="row">
 						<h4 class="col-md-4">Assigned List</h4>  
-							<div class="col-md-8" style="float: right; margin-top: -10px;">
+							<div class="col-md-8 float-right" >
 					   			<form method="post" action="ActionStatusList.htm" name="dateform" id="dateform">
 					   				<table border="0">
 					   					<tr>
 					   						<td >
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">PDC From:</label>
+					   							<label class="control-label label">PDC From:</label>
 					   						</td>
-					   						<td style="max-width: 200px; padding-right: 50px">
+					   						<td class="tdwidth">
 					   							<input  class="form-control"  data-date-format="dd/mm/yyyy" id="fdate" name="fdate"  required="required"  value="<%=sdf.format(sdf1.parse(fdate))%>">
 					   						</td>
 					   						<td>
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">PDC To:</label>
+					   							<label class="control-label label-font17">PDC To:</label>
 					   						</td>
-					   						<td style="width: 200px; padding-right: 50px">
+					   						<td class="width200">
 					   							<input  class="form-control "  data-date-format="dd/mm/yyyy" id="tdate" name="tdate"  required="required"  value="<%=sdf.format(sdf1.parse(tdate))%>">
 					   						</td>
 					   						<td>
@@ -174,13 +98,8 @@ h6{
 												<div id="toolbar">
 													
 												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+											<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+
 													<thead>
 
 														<tr>
@@ -239,14 +158,14 @@ h6{
 																				Completed
 																			<%}	%>												
 																		</td>
-																		<td style="width:8% !important; "><%if(obj[11]!=null){ %>
-															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<td class="td-width8"><%if(obj[11]!=null){ %>
+															            <div class="progress div-progress" >
+															            <div class="progress-bar progress-bar-striped width-<%=obj[11]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															            <%=StringEscapeUtils.escapeHtml4(obj[11].toString())%>
 															            </div> 
 															            </div> <%}else{ %>
-															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															            <div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															            <div class="progress div-progress">
+															            <div class="progress-bar progressbar" role="progressbar"  >
 															             Not Yet Started .
 															            </div>
 															            </div> <%} %></td>		
@@ -325,6 +244,15 @@ $('#tdate').daterangepicker({
 	locale : {
 		format : 'DD-MM-YYYY'
 	}
+});
+
+$(document).ready(function(){
+	  $("#myTable12").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 10
+
+	});
 });
 
 

@@ -8,25 +8,14 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/action/assigneeUpdate.css" var="assigneeUpdate" />
+<link href="${assigneeUpdate}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
  
 
 <title>Action Assignee</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden; 
-}
-h6{
-	text-decoration: none !important;
-}
 
-
-</style>
 </head>
  
 <body>
@@ -89,30 +78,29 @@ h6{
 
 <div class="container-fluid">
 
-	<div class="container" style="margin-bottom:20px;max-width: 100%;">
+	<div class="container container-margin">
 
 		
-    		<div class="card" style=" ">
+    		<div class="card" >
     	
     	
     	
-	    		<div class="card-header" style="background-color: #055C9D; padding: 10px; box-sizing: border-box;display: table;"
-	    		>
-      				  <h6 style="color: white;font-weight: bold;font-size: 1.1rem !important " align="left"> Action : <%if(Assignee!=null && Assignee[5]!=null){%> 
+	    		<div class="card-header custom-card-header" >
+      				  <h6 class="custom-h6 " align="left"> Action : <%if(Assignee!=null && Assignee[5]!=null){%> 
       				  <%if(Assignee[5]!=null && Assignee[5].toString().length()>100){ %>
 	      				  <%=StringEscapeUtils.escapeHtml4(Assignee[5].toString()).substring(0,100) %> 
 	      				  <input type="hidden" id="actionValue" value='"<%=Assignee[5].toString()%>"'>
-	      				  <span style="text-decoration: underline;font-size:13px;color: greenyellow;cursor: pointer;" onclick="showAction('<%=actiono.toString()%>')">show more..</span>
+	      				  <span class="custom-span" onclick="showAction('<%=actiono.toString()%>')">show more..</span>
       				  (<%=actiono!=null?StringEscapeUtils.escapeHtml4(actiono):" - " %>)
       				  <%}else{ %>
       				  <%=Assignee[5]!=null?StringEscapeUtils.escapeHtml4(Assignee[5].toString()):" - " %> (<%=actiono!=null?StringEscapeUtils.escapeHtml4(actiono):" - " %>)<%}}%>
       				  
-                     	<span style="float: right;font-size: 17px;margin-top: 5px">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1] %><%}%> </span>
+                     	<span class="span-stl">Assigner :<%if(Assignee!=null && Assignee[1]!=null){%> <%=Assignee[1] %><%}%> </span>
                       </h6>
       				<%if(AttachmentList!=null){ %>
       				<div class="row ml-2">
       				<form>
-      				 <h6 style="color: white;font-weight: bold;font-size: 1.1rem !important " align="left"> Attachment: 
+      				 <h6 class="custom-h6" align="left"> Attachment: 
       				&nbsp;&nbsp;<button formaction="ActionMainAttachDownload.htm" formmethod="get" class="btn" name="MainId" value="<%=Assignee[0] %>"><i class="fa fa-download"></i></button>
       				</h6>
       				</form>
@@ -127,7 +115,7 @@ h6{
 	        
 	        			<div>
 	          			 	
-	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
+	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover margin-top30" id="myTable20">
 								<thead>  
 									<tr id="">
 										<th>As On Date</th>
@@ -169,7 +157,7 @@ h6{
 				            	<%}else{ %>
 	          					<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&Empid=<%=EmpId %>" >BACK</a>
 	          					<%} %>
-				            	<button type="reset" class="btn btn-sm reset" style="color: white" onclick="formreset()"> RESET</button>
+				            	<button type="reset" class="btn btn-sm reset tex-white"  onclick="formreset()"> RESET</button>
 	                           	<% if(SubList.size()>0 && (!EmpId.equalsIgnoreCase(Assignee[22].toString())||Assignee[22].toString().equalsIgnoreCase(Assignee[23].toString()))){ %>  
 	                      		<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
 	                           	<%} %>
@@ -200,24 +188,24 @@ h6{
     
  <div class="row">
 	<div class="col-md-12">
-    	<div class="card" style="">
+    	<div class="card" >
       		<div class="card-body" >
       		 <div class="row">
 				<div class="col-md-1"></div>
-				   <div class="col-md-10" style="padding-left: 0px">
+				   <div class="col-md-10 pl-0">
 				   <% if(LinkList!=null && LinkList.size()>0){ %>  
 				   				<div class="table-responsive">
-				    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
+				    				<table class="table table-bordered table-hover table-striped table-condensed margin-top20" id="myTable3">
 										<thead>
 											<tr>
-												<th colspan="7" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Old Action  Details  <%=AssigneeDetails[0]!=null?StringEscapeUtils.escapeHtml4(AssigneeDetails[0].toString()):" - " %><%=AssigneeDetails[1]!=null?StringEscapeUtils.escapeHtml4(AssigneeDetails[1].toString()):" - " %> </th>									
+												<th colspan="7" class="th-styl" >Old Action  Details  <%=AssigneeDetails[0]!=null?StringEscapeUtils.escapeHtml4(AssigneeDetails[0].toString()):" - " %><%=AssigneeDetails[1]!=null?StringEscapeUtils.escapeHtml4(AssigneeDetails[1].toString()):" - " %> </th>									
 											</tr>	
 											<tr>					
-												<th style="text-align: left;">As On Date</th>
-												<th style="">Progress %</th>
-												<th style="">Remarks</th>								
-											 	<th style="">Attachment</th>
-												<th style="">Action</th>
+												<th class="text-left">As On Date</th>
+												<th >Progress %</th>
+												<th >Remarks</th>								
+											 	<th >Attachment</th>
+												<th >Action</th>
 											</tr>
 										</thead>
 										<tbody>					
@@ -231,17 +219,17 @@ h6{
 												
 												<td width="6%">
 													
-													<div class="progress" style="background-color:#cdd0cb !important">
-				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></div>
+													<div class="progress progress-cp" >
+				  										<div class="progress-bar progress-bar-striped width-<%=obj[2]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></div>
 													</div>
 								
 														</td>
 												
-												<td style="text-align: left; width: 10%;"> 
+												<td class="text-left widt-10"> 
 													<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%>
 												</td>
 												
-												<td style="text-align: left; width: 3%;">
+												<td class="text-left width-3">
 												
 												 <% 
 											        if( obj[5]!=null){
@@ -262,7 +250,7 @@ h6{
 												</td>
 											
 																		
-												<td style="text-align: left; width: 6%;">
+												<td class="text-left width-6">
 											     Old Action
 												</td>
 										
@@ -277,17 +265,17 @@ h6{
 								<% if(SubList.size()>0){ %>  
 											
 											<div class="table-responsive">
-				    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
+				    				<table class="table table-bordered table-hover table-striped table-condensed margin-top20" id="myTable3" >
 										<thead>
 											<tr>
-												<th colspan="7" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Action Updated Details </th>									
+												<th colspan="7" class="th-styl" >Action Updated Details </th>									
 											</tr>	
 											<tr>					
-												<th style="text-align: left;">As On Date</th>
-												<th style="">Progress %</th>
-												<th style="">Remarks</th>								
-											 	<th style="">Attachment</th>
-												<th style="">Action</th> 
+												<th class="text-left">As On Date</th>
+												<th >Progress %</th>
+												<th >Remarks</th>								
+											 	<th >Attachment</th>
+												<th >Action</th> 
 											</tr>
 										</thead>
 										<tbody>					
@@ -295,14 +283,14 @@ h6{
 										for(Object[] obj: SubList){ %>
 																		
 										<tr>
-											<td width="12%"><%=obj[3]!=null?sdf.format(obj[3]):""%></td>
-											<td width="6%">
-													<div class="progress" style="background-color:#cdd0cb !important">
-				  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></div>
+											<td class="width-30"><%=obj[3]!=null?sdf.format(obj[3]):""%></td>
+											<td class="width-16">
+													<div class="progress progress-cp" >
+				  										<div class="progress-bar progress-bar-striped width-<%=obj[2]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></div>
 													</div>
 											</td>
-											<td style="text-align: left; width: 10%;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
-											<td style="text-align: left; width: 3%;">
+											<td class="text-left width-26"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
+											<td class="text-left width-12">
 												<%if( obj[5]!=null){%>
 											        <div  align="center">
 															<a  href="ActionDataAttachDownload.htm?ActionSubId=<%=obj[5]%>"  target="_blank"><i class="fa fa-download"></i></a>
@@ -311,15 +299,15 @@ h6{
 												<div  align="center">-</div>
 												 <%}%>
 												</td>
-											   <td style="text-align: left; width: 6%;">
+											   <td classf="text-left width-6">
 											        <div class="form-inline">
 												    <form method="post" action="SubSubmit.htm" enctype="multipart/form-data">
 					                                <input type="hidden" name="${_csrf.parameterName}"value="${_csrf.token}" />
 				 									 <%if(count==SubList.size()) {%>
-				 									 <button class="btn btn-sm" type="button" data-toggle="modal" data-target="#exampleModal" onclick="actionEditform('<%=sdf.format(obj[3])%>',<%=obj[2]%>,'<%=obj[4]%>',<%=Assignee[18] %>,<%=obj[0]%>,<%=Assignee[0] %>,<%=Assignee[20] %>,1)" style="background-color:  #D3D3D3;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-				 									<button type="submit" class="btn  btn-sm" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm" style="background-color:  #D3D3D3;"> <i class="fa fa-trash" aria-hidden="true" ></i></button>
+				 									 <button class="btn btn-sm btn-bg" type="button" data-toggle="modal" data-target="#exampleModal" onclick="actionEditform('<%=sdf.format(obj[3])%>',<%=obj[2]%>,'<%=obj[4]%>',<%=Assignee[18] %>,<%=obj[0]%>,<%=Assignee[0] %>,<%=Assignee[20] %>,1)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+				 									<button type="submit" class="btn  btn-sm btn-bg" name="action" value="delete" onclick="return confirm('Are you sure To Delete?')" formaction="ActionSubDelete.htm" > <i class="fa fa-trash" aria-hidden="true" ></i></button>
 													  <%}else {%>
-												 <button class="btn btn-sm" type="button" data-toggle="modal" data-target="#exampleModal" onclick="actionEditform('<%=sdf.format(obj[3])%>',<%=obj[2]%>,'<%=obj[4]%>',<%=Assignee[18] %>,<%=obj[0]%>,<%=Assignee[0] %>,<%=Assignee[20] %>,0)" style="background-color:  #D3D3D3;"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+												 <button class="btn btn-sm btn-bg" type="button" data-toggle="modal" data-target="#exampleModal" onclick="actionEditform('<%=sdf.format(obj[3])%>',<%=obj[2]%>,'<%=obj[4]%>',<%=Assignee[18] %>,<%=obj[0]%>,<%=Assignee[0] %>,<%=Assignee[20] %>,0)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
 													  <%} %>
 													<input type="hidden" name="ActionSubId" value="<%=obj[0]%>"/>
 									                <input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />
@@ -346,9 +334,9 @@ h6{
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header" style="height:50px;">
+      <div class="modal-header height50" >
         <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:red;">
+        <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close" >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -363,7 +351,7 @@ h6{
 
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content" style="margin-left: -13%; width: 37rem;">
+    <div class="modal-content md-content" >
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -374,22 +362,21 @@ h6{
                  <form action="ActionRemarksEdit.htm" method="post">
 						<div class="row" >
 							<div class="col-md-3">
-								<label style="font-family: 'Lato', sans-serif;font-weight: 700;font-size: 16px">Progress % :</label>
+								<label class="custom-label">Progress % :</label>
 								</div>
-								<div class="col-md-4" style="margin-left: -6%;">
-								<input type="number" class="form-control item_name" max="100" min="0"
-									name="progressVal" id="progressVal"
-									style="width: 26rem">
+								<div class="col-md-4 margin-leftN6" >
+								<input type="number" class="form-control item_name progressVal" max="100" min="0"
+									name="progressVal" id="progressVal" >
 								</div>
 						 </div>
 						<div class="row mt-4">
 						<div class="col-md-3" >
-								<label style="font-family: 'Lato', sans-serif;font-weight: 700;font-size: 16px"> Remarks : </label> 
+								<label class="custom-label"> Remarks : </label> 
 								</div>
-								<div class="col-md-8" style=" margin-left: -6%;" >
-								<textarea class="form-control" rows="5"  oninput="sanitizeInput(this)"
-									name="progressRemarks" id="progressRemarks"
-									style="width: 26rem"></textarea>
+								<div class="col-md-8 margin-leftN6" >
+								<textarea class="form-control progressVal" rows="5"  oninput="sanitizeInput(this)"
+									name="progressRemarks" id="progressRemarks">
+								</textarea>
 							</div>
 							</div>
 						<br>
@@ -476,7 +463,7 @@ h6{
    		
    		
    		function actionEditform(pdate,progress,premarks,assignid,subid,mainid,project,subaction){
-   		    $('#exampleModal .modal-title').html('<span style="color: #FF3D00;">Progress Date : ' + pdate);
+   		    $('#exampleModal .modal-title').html('<span class="sapn-color">Progress Date : ' + pdate);
    			$('#exampleModal').modal('show');
    			$('#progressVal').val(progress);
    			$('#progressRemarks').val(premarks);

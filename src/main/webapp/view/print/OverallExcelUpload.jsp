@@ -23,7 +23,7 @@ String committeeid=(String)request.getAttribute("committeeid");
       <input type="hidden" id="mainprojectidDownload" name="mainprojectid" value="<%=projectid%>">
       <input type="hidden" name="committeeid" value="1">
       <input type="hidden" name="_csrf" value="ec4f5ad7-8aa0-4cfc-abf5-a08beb4c43a7">
-       <button class="btn" id="downloadExcelBtn" style="display: none;" type="submit" formaction="excelSheetWithFinanceData.htm"    data-toggle="tooltip"  data-toggle="tooltip" data-placement="top"  title="Download Excel Sheet with Data" ><i class="fa fa-download" aria-hidden="true"></i></button>
+       <button class="btn display-none" id="downloadExcelBtn"  type="submit" formaction="excelSheetWithFinanceData.htm"    data-toggle="tooltip"  data-toggle="tooltip" data-placement="top"  title="Download Excel Sheet with Data" ><i class="fa fa-download" aria-hidden="true"></i></button>
       </form>
       </div>
 		<form action="OverallFinanceExcel.htm" method="post">
@@ -41,13 +41,13 @@ String committeeid=(String)request.getAttribute("committeeid");
       <table class="table table-bordered table-hover">
       <thead>
       <tr>
-      <th colspan="2" style="width:150px;">Head</th>
-      <th colspan="2" style="width:120px;">Sanction</th>
-      <th colspan="2" style="width:120px;">Expenditure</th>
-      <th colspan="2" style="width:120px;">Out Commitment</th>
-      <th colspan="2" style="width:120px;">Balance</th>
-      <th colspan="2" style="width:120px;">Dipl</th>
-      <th colspan="2" style="width:120px;">Notional Balance</th>
+      <th colspan="2" class="width150">Head</th>
+      <th colspan="2" class="width120">Sanction</th>
+      <th colspan="2" class="width120">Expenditure</th>
+      <th colspan="2" class="width120">Out Commitment</th>
+      <th colspan="2" class="width120">Balance</th>
+      <th colspan="2" class="width120">Dipl</th>
+      <th colspan="2" class="width120">Notional Balance</th>
       </tr>
       <tr>
       <th>SN</th>
@@ -69,7 +69,7 @@ String committeeid=(String)request.getAttribute("committeeid");
       </thead>
       <tbody id="overalltbody">
       <tr>
-      <td colspan="14" style="text-align: center;">No Data Available!</td>
+      <td colspan="14" class="text-center">No Data Available!</td>
       </tr>
       </tbody>
       </table>
@@ -81,18 +81,11 @@ String committeeid=(String)request.getAttribute("committeeid");
       <input type="hidden" name="committeeid" value="<%=committeeid%>">
       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
       <button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you sure to submit?')">Submit</button>
-      <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" style="font-weight: 600;text-transform: uppercase;">Close</button>
+      <button type="button" class="btn btn-sm btn-secondary text-transform" data-dismiss="modal" >Close</button>
     
       </div>
       </form>
-    <%--   <div>
-      <form action="#">
-      <input type="hidden" id="mainprojectidDownload" name="mainprojectid" value="<%=projectid%>">
-      <input type="hidden" name="committeeid" value="<%=committeeid%>">
-      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-       <button class="btn" id="downloadExcelBtn" style="display: none;" type="submit" formaction="excelSheetWithFinanceData.htm"><i class="fa fa-download" aria-hidden="true"></i></button>
-      </form>
-      </div> --%>
+
     </div>
   </div>
 </div>
@@ -169,7 +162,7 @@ excel_file.addEventListener('change', (event) => {
     		    			
     		    			alert("Please Download the Financial format and upload it.");
     		    		
-    		    			$('#overalltbody').html('<tr><td colspan="14" style="text-align:center">No Data Available!</td></tr>');
+    		    			$('#overalltbody').html('<tr><td colspan="14" class="text-center">No Data Available!</td></tr>');
     		     			excel_file.value = '';
     		  				return;
     		    		}
@@ -184,12 +177,12 @@ excel_file.addEventListener('change', (event) => {
     						}
     						
     						if(sheet_data[row][cell]==undefined||sheet_data[row][cell].length==0 ){
-    						html=html+'<td style="text-align:right;">'+'0.00'+'</td>';
+    						html=html+'<td class="text-right">'+'0.00'+'</td>';
     					}else{
     						if(cell>1){
-    						html=html+'<td style="text-align:right;">'+parseFloat(sheet_data[row][cell]).toFixed(2)+'</td>'
+    						html=html+'<td class="text-right">'+parseFloat(sheet_data[row][cell]).toFixed(2)+'</td>'
     						}else{
-    							html=html+'<td style="text-align:justify;">'+sheet_data[row][cell]+'</td>'
+    							html=html+'<td class="text-justify">'+sheet_data[row][cell]+'</td>'
     						}
     					}
     					}
@@ -224,7 +217,7 @@ excel_file.addEventListener('change', (event) => {
     	 	if(table_output.length>0){
     			$('#overalltbody').html(table_output)
     		} else{
-    			$('#overalltbody').html('<tr><td colspan="14" style="text-align:center">No Data is their in Excel Sheet</td></tr>');
+    			$('#overalltbody').html('<tr><td colspan="14" class="text-center">No Data is their in Excel Sheet</td></tr>');
     			excel_file.value = '';
     		}
     		

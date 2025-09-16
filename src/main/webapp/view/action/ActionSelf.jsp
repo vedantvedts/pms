@@ -10,77 +10,14 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <script src="./resources/js/multiselect.js"></script>
 <link href="./resources/css/multiselect.css" rel="stylesheet"/>
+
+<spring:url value="/resources/css/action/actionSelf.css" var="actionSelf" />
+<link href="${actionSelf}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
  
-
 <title>New Action</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.multiselect-container>li>a>label {
-  padding: 4px 20px 3px 20px;
-}
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
 
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:150px !important;
-}
-</style>
 </head>
  
 <body>
@@ -141,28 +78,17 @@ h6{
 
 										<div class="sparkline13-graph">
 											<div class="datatable-dashv1-list custom-datatable-overright">
-												<div id="toolbar">
-													<select class="form-control dt-tb">
-														<option value="">Export Basic</option>
-														<option value="all">Export All</option>
-														<option value="selected">Export Selected</option>
-													</select>
-												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+
+											<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+													
 													<thead>
 
 														<tr>
 															<th>SN</th>
-															<th style="text-align: left; width:100px;">Action Item</th>
+															<th class="text-left w-100;">Action Item</th>
 															<th class="width-110px">PDC</th>
 															<th class="width-110px">Assigned Date</th>									
-														 	<th style="">Assignee</th>	
+														 	<th >Assignee</th>	
 														 	<th class="width-115px">Progress</th>
 														
 														 		
@@ -175,27 +101,27 @@ h6{
 														 	if(AssignedList!=null&&AssignedList.size()>0){
 															for(Object[] obj: AssignedList){ %>
 														<tr>
-															<td style="width:1% !important; " class="center"><%=count %></td>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:10% !important;min-width:10% !important;">
+															<td  class="center td-width1"><%=count %></td>
+															<td class="td-modified">
 															<%if(obj[5]!=null && obj[5].toString().length()>75) {%>
 															<%=obj[5].toString().substring(0,75) %>
-															 <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[5].toString()%>')">show more..</span>
+															 <span class="custom-span" onclick="showAction('<%=obj[5].toString()%>')">show more..</span>
 															<%}else if(obj[5].toString().length()<=75){ %>
 															<%= StringEscapeUtils.escapeHtml4(obj[5].toString()) %>
 															<%}else{ %> -- <%} %>
 															</td>
 															
 															<td class="width-30px"><%=obj[4]!=null?sdf.format(obj[4]):""%></td>
-															<td style="width:12% !important; "><%=obj[4]!=null?sdf.format(obj[3]):""%></td>
-															<td style="width:20% !important; "><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
-															<td style="width:8% !important; "><%if(obj[10]!=null){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[10]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<td class="td-width12 "><%=obj[4]!=null?sdf.format(obj[3]):""%></td>
+															<td class="td-width20"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
+															<td class="td-width8"><%if(obj[10]!=null){ %>
+															<div class="progress div-progress">
+															<div class="progress-bar progress-bar-striped width-<%=obj[10]%>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=StringEscapeUtils.escapeHtml4(obj[10].toString())%>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress div-progress">
+															<div class="progress-bar progressbar" role="progressbar"  >
 															Not Yet Started .
 															</div>
 															</div> <%} %></td>
@@ -204,7 +130,7 @@ h6{
 														</tr>
 												<% count++; } }else{%>
 												<tr>
-													<td colspan="6" style="text-align: center">No List Found</td>
+													<td colspan="6" class="textcenter">No List Found</td>
 												</tr>
 												<%} %>
 												</tbody>
@@ -234,9 +160,9 @@ h6{
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header" style="height:50px;">
+      <div class="modal-header modal-height" >
         <h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:red;">
+        <button type="button" class="close text-center" data-dismiss="modal" aria-label="Close" >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -280,6 +206,14 @@ h6{
 		  });
 	});
 		
+	 $(document).ready(function(){
+		  $("#myTable12").DataTable({
+		 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+		 "pagingType": "simple",
+		 "pageLength": 10
+
+		});
+	});
 	
 	
 	$("#OldList").hide();

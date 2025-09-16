@@ -39,368 +39,14 @@
 <spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
 <link href="${sweetalertCss}" rel="stylesheet" />
 <script src="${sweetalertJs}"></script>
+<spring:url value="/resources/css/print/projectBriefingPaperNew.css" var="projectBriefingPaperNew" />
+<link href="${projectBriefingPaperNew}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
 <title>Briefing </title>
-<style type="text/css">
- 
- p{
-  text-align: justify;
-  text-justify: inter-word;
-}
-.form-check-input:checked ~ .form-check-label::before {
-    color: #fff;
-    border-color: #7B1FA2;
-    background-color: red;
-}
-.form-check-input:checked ~ .form-check-label::before {
-    color: #fff;
-    border-color: #7B1FA2;
-    background-color: red;
-}
- th
- {
- 	border: 1px solid black;
- 	text-align: center;
- 	padding: 5px;
-	overflow-wrap: break-word;
- }
- td
- {
- 	border: 1px solid black;
- 	text-align: left;
- 	padding: 5px;
- 	overflow-wrap: break-word;
- }
- 
-  }
- .textcenter{
- 	
- 	text-align: center;
- }
- .border
- {
- 	border: 1px solid black;
- }
- .textleft{
- 	text-align: left;
- }
- .containers {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-.anychart-credits {
-   display: none;
-}
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-summary[role=button] {
-  background-color: white;
-  color: black;
-  border: 1px solid black ;
-  border-radius:5px;
-  padding: 0.5rem;
-  cursor: pointer;
-  
-}
-summary[role=button]:hover
- {
-color: white;
-border-radius:15px;
-background-color: #4a47a3;
-
-}
- summary[role=button]:focus
-{
-color: white;
-border-radius:5px;
-background-color: #4a47a3;
-border: 0px ;
-
-}
-summary::marker{
-}
-details { 
-  margin-bottom: 5px;  
-}
-details  .content {
-background-color:white;
-padding: 0 1rem ;
-align: center;
-border: 1px solid black;
-}
-}
-.anchorlink{
-	cursor: pointer;
-	color: #C84B31;
-}
-.anchorlink:hover {
-    text-decoration: underline;
-}
-</style>
-<!-- --------------  tree   ------------------- -->
-<style>
-ul, #myUL {
-  list-style-type: none;
-}
-#myUL {
-  margin: 0;
-  padding: 0;
-}
-.caret {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-.caret::before {
-  content: "  \25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-.caret-down::before {
-  content: "\25B6  ";
-  -ms-transform: rotate(90deg); /* IE 9 */
-  -webkit-transform: rotate(90deg); /* Safari */'
-  transform: rotate(90deg);  
-}
-.caret-last {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-.caret-last::before {
-  content: "\25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-.nested {
-  display: none;
-}
-.active {
-  display: block;
-}
-
-</style>
-
-<!------------------- tree -------------------->
-<!----------------- model  tree   ---------------------->
-<style>
-.caret-1 {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-.caret-last-1 {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-.caret-last-1::before {
-  content: "\25B7" ;
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-.caret-1::before {
-  content: "\25B7" ;
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-.caret-down-1::before {
-  content: "\25B6";
-  -ms-transform: rotate(90deg); /* IE 9 */
-  -webkit-transform: rotate(90deg); /* Safari */'
-  transform: rotate(90deg);  
-}
-.nested-1 {
-  display: none;
-}
-.active-1 {
-  display: block;
-}
- .completed{
-	color: green;
-	font-weight: 700;
-}
-.briefactive{
-	color: blue;
-	font-weight: 700;
-}
-.inprogress{
-	color: #F66B0E;
-	font-weight: 700;
-}
-.assigned{
-	color: brown;
-	font-weight: 700;
-}
-.notyet{
-	color: purple;
-	font-weight: 700;
-}
-.notassign{
-	color:#AB0072;
-	font-weight: 700;
-}
-.ongoing{
-	color: #F66B0E;
-	font-weight: 700;
-}
-.completed{
-	color: green;
-	font-weight: 700;
-}
-.delay{
-	color: maroon;
-	font-weight: 700;
-}
-.completeddelay{
-	color:#BABD42;
-	font-weight: 700;
-}
-.inactive{
-	color: red;
-	font-weight: 700;
-}
-.delaydays
-{
-	color:#000000;
-	font-weight: 700;
-}
-.select2-container{
-	float:right !important;
-	margin-top: 5px;
-	
-}
-.modal-xl{
-	max-width: 1400px;
-}
-.sub-title{
-	font-size : 20px !important;
-	color: #145374 !important
-}
-.subtables{
-	width: 1100px !important;
-}
-.date-column{
-	max-width:60px !important;
-}
-.status-column{
-	max-width:10px !important;
-} 
-
-.resp-column{
-	max-width:80px !important;
-} 
-.currency{
-	color:#367E18 !important;
-	font-style: italic;
-} 
 
 
-.subtables th{
-	/* background-color: #001253 !important; 
-	color: white !important;
-	border-color: white; */
-	color: #001253 !important;
-	
-}
- 
-.mainsubtitle{
-	font-size : 18px !important;
-	color:#882042 !important;
-}
- 
- 
-.projectattributetable th{
-	text-align: left !important;
-} 
- 
- .spinner {
-    position: fixed;
-    top: 40%;
-    left: 20%;
-    margin-left: -50px; /* half width of the spinner gif */
-    margin-top: -50px; /* half height of the spinner gif */
-    text-align:center;
-    z-index:1234;
-    overflow: auto;
-    width: 1000px; /* width of the spinner gif */
-    height: 1020px; /*hight of the spinner gif +2px to fix IE8 issue */
-}
 
-.folder-tree {
-  list-style: none;
-  padding-left: 0;
-}
-
-.folder-tree .list-group-item {
-  border: none;
-  padding: 8px 15px;
-  transition: all 0.3s ease;
-  border-radius: 6px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-
-.folder-tree .folder-item:hover {
-  background: #f0f8ff;
-  transform: translateX(5px);
-}
-
-.folder-tree .file-item:hover {
-  background: #f9f9f9;
-  transform: scale(1.02);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.folder-tree .subfolder {
-  display: none;
-  margin-left: 20px;
-  padding-left: 10px;
-  border-left: 2px dashed #ddd;
-}
-
-.folder-tree .folder-item.open > .subfolder {
-  display: block;
-}
-
-.folder-icon {
-  margin-right: 8px;
-  transition: transform 0.3s;
-  font-size: 18px;
-}
-
-.pdf-check {
-  cursor: pointer;
-}
-
-.folder-item.open > .folder-icon {
-  color: #f39c12 !important;
-  transform: scale(1.3);
-  transition: all 0.3s ease;
-}
-
-.folder-tree .folder-item:hover {
-  background: #f0f8ff;
-  transform: translateX(5px);
-}
-
-</style>
 <meta charset="ISO-8859-1">
 </head>
 <body >
@@ -500,24 +146,24 @@ String isCCS = (String)request.getAttribute("isCCS");
             </div>
         </div>
  	<% } %>
-	<div id="spinner" class="spinner" style="display:none;"><img id="img-spinner" style="width: 200px;height: 200px;" src="view/images/spinner1.gif" alt="Loading"/></div>
+	<div id="spinner" class="spinner display-none"><img id="img-spinner" class="img-height" src="view/images/spinner1.gif" alt="Loading"/></div>
  
 	<div class="container-fluid">
 		<div class="row" id="main">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-					<div class="row card-header" style="">
-			   			<div class="col-md-4"  style="margin-top: -8px;">
+					<div class="row card-header" >
+			   			<div class="col-md-4 marging-top8"  >
 							<h3>Project Briefing Paper</h3>
 						</div>							
-						<div class="col-md-8 justify-content-end" style="float: right;margin-top: -17px;">
+						<div class="col-md-8 justify-content-end margin-top-17 float-right" >
 						<form method="post" action="ProjectBriefingPaper.htm" id="projectchange">
 							<table >
 								<tr>
-									<td  style="border: 0 ;padding-top: 13px;"><h6>Project </h6></td>
-									<td  style="border: 0 ;">
+									<td  class="border-0 padding-top13px"><h6>Project </h6></td>
+									<td  class="border-0">
 										
-										<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+										<select class="form-control items width200" name="projectid"  required="required"  data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 											<%for(Object[] obj : projectslist){ 
 												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 											%>
@@ -525,46 +171,42 @@ String isCCS = (String)request.getAttribute("isCCS");
 											<%} %>
 										</select>
 									</td>
-									<td  style="border: 0;padding-top: 13px; "><h6>Committee</h6></td>
-									<td  style="border: 0 ">
-										<select class="form-control items" name="committeeid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+									<td  class="border-0 padding-top13px"><h6>Committee</h6></td>
+									<td  class="border-0 ">
+										<select class="form-control items width200" name="committeeid"  required="required"  data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 											<%
 											for(Object[] comm : SpecialCommitteesList){ %>
-												<%-- <%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>500 && !comm[1].toString().equalsIgnoreCase("PMRC")){ %>
-													<option <%if(Long.parseLong(committeeid)==Long.parseLong(comm[0].toString())){ %>selected<%} %> value="<%=comm[0] %>" ><%=comm[1] %></option>
-												<%}else if(comm[1].toString().equalsIgnoreCase("PMRC")){ %>
-													<option <%if(Long.parseLong(committeeid)==Long.parseLong(comm[0].toString())){ %>selected<%} %> value="<%=comm[0] %>" ><%=comm[1] %></option>
-												<%} %> --%>
+
 												<option <%if(committeeid.equalsIgnoreCase(comm[0].toString())){ %>selected<%} %> value="<%=comm[0] %>" ><%=comm[1] %></option>
 											<%} %>
 										</select>
 									</td>
 									
-									<td style="border: 0 "> 
-										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" formmethod="GET" formaction="ProjectBriefingDownload.htm" formtarget="_blank"
+									<td class="border-0"> 
+										<button  type="submit" class="btn btn-sm border-radius3 border-0"  formmethod="GET" formaction="ProjectBriefingDownload.htm" formtarget="_blank"
 										 data-toggle="tooltip" data-placement="top" title="Briefing Paper pdf" >
 											<i class="fa fa-download fa-lg" aria-hidden="true"></i>
 										</button>
 									</td>
-									<td style="border: 0 "> 
-										<button  type="submit" class="btn btn-sm " formmethod="POST" formaction="ProjectBriefingFreeze.htm" onclick="return confirm('Are You Sure To Freeze Briefing Paper for Next Scheduled Meeting ?')" title="Freeze" style="border: 0 ;border-radius: 3px;"
+									<td class="border-0 "> 
+										<button  type="submit" class="btn btn-sm border-radius3 border-0" formmethod="POST" formaction="ProjectBriefingFreeze.htm" onclick="return confirm('Are You Sure To Freeze Briefing Paper for Next Scheduled Meeting ?')" title="Freeze" 
 										data-toggle="tooltip" data-placement="top">
-											<i class="fa fa-certificate fa-lg" style="color:red; " aria-hidden="true"></i>
+											<i class="fa fa-certificate fa-lg text-danger"  aria-hidden="true"></i>
 										</button>
 									</td>
-									<td style="border: 0 "> 
-										<button  type="submit" class="btn btn-sm " formmethod="POST" formaction="BriefingPresentation.htm" formtarget="_blank" title="Presentation" style="border: 0 ;border-radius: 3px;"
+									<td class="border-0 "> 
+										<button  type="submit" class="btn btn-sm border-radius3 border-0 " formmethod="POST" formaction="BriefingPresentation.htm" formtarget="_blank" title="Presentation" 
 										data-toggle="tooltip" data-placement="top" >
-											<img alt="" src="view/images/presentation.png" style="width:19px !important">
+											<img alt="" src="view/images/presentation.png" class="width19">
 										</button>
 									</td>
-										<td style="border: 0 "> 
-										<button  type="submit" class="btn btn-sm" style="border: 0 ;border-radius: 3px;" name="text" value="p" formmethod="GET" formaction="ProjectBriefingDownload.htm" formtarget="_blank"
+										<td class="border-0 "> 
+										<button  type="submit" class="btn btn-sm border-radius3 border-0"  name="text" value="p" formmethod="GET" formaction="ProjectBriefingDownload.htm" formtarget="_blank"
 										data-toggle="tooltip" data-placement="top" title="Presentation pdf">
-											<img alt="" src="view/images/presentation.png" style="width:19px !important"><i class="fa fa-download" aria-hidden="true" style="margin-left:6px;"></i>
+											<img alt="" src="view/images/presentation.png" class="width19"><i class="fa fa-download marging-left6" aria-hidden="true" ></i>
 										</button>
 									</td>
-									<td style="border: 0 "><button  type="button" class="btn btn-sm back"  data-toggle="modal" data-target="#LevelModal"  style="float: right;margin-top: 5px;text-transform: capitalize !important;"  >Mil Level (<%=levelid %>)</button></td>
+									<td class="border-0 "><button  type="button" class="btn btn-sm back btn-black"  data-toggle="modal" data-target="#LevelModal"  >Mil Level (<%=levelid %>)</button></td>
 								</tr>
 							</table>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -589,67 +231,66 @@ String isCCS = (String)request.getAttribute("isCCS");
 										<%if(projectattributes!=null){ %>
 										
 										<div>
-											<%-- <b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b> --%>
 											<form action="ProjectSubmit.htm" method="post" target="_blank">
 												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
-												<button type="submit" name="action" value="edit"  class="btn btn-sm edit" style="padding : 3px;" > <i class="fa fa-pencil-square-o fa-lg" style="color: black" aria-hidden="true"></i> </button>
+												<button type="submit" name="action" value="edit"  class="btn btn-sm edit padding-3px" > <i class="fa fa-pencil-square-o fa-lg pencil-icon"  aria-hidden="true"></i> </button>
 												<input type="hidden" name="ProjectId" value="<%=ProjectDetail.get(z)[0] %>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</form>
 										</div>	
 										
 										
-									<table class="subtables projectattributetable" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+									<table class="subtables projectattributetable"  >
 										<tr>
-											 <td style="width: 5px !important; padding: 5px; padding-left: 10px">(a)</td>
-											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Project Title</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"> <%=projectattributes[1] %></td>
+											 <td class="cst-td">(a)</td>
+											 <td class="cst-td1"><b>Project Title</b></td>
+											 <td colspan="4" class="cst-td2"> <%=projectattributes[1] %></td>
 										</tr>
 										<tr>
-											 <td  style="padding: 5px; padding-left: 10px">(b)</td>
-											 <td style="width: 150px;padding: 5px; padding-left: 10px"><b>Project Code</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"> <%=projectattributes[0]%> </td>
+											 <td  class="td-cp">(b)</td>
+											 <td class="cst-td1"><b>Project Code</b></td>
+											 <td colspan="4" class="cst-td2"> <%=projectattributes[0]%> </td>
 										</tr>
 										<tr>
-											 <td  style=" padding: 5px; padding-left: 10px">(c)</td>
-											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Category</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"><%=projectattributes[14]%></td>
+											 <td  class=" td-cp">(c)</td>
+											 <td  class="cst-td1"><b>Category</b></td>
+											 <td colspan="4" class="cst-td2"><%=projectattributes[14]%></td>
 										</tr>
 										<tr>
-											 <td  style="padding: 5px; padding-left: 10px">(d)</td>
-											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Date of Sanction</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"><%=sdf.format(sdf1.parse(projectattributes[3].toString()))%></td>
+											 <td  class="td-cp">(d)</td>
+											 <td  class="cst-td1"><b>Date of Sanction</b></td>
+											 <td colspan="4" class="cst-td2"><%=sdf.format(sdf1.parse(projectattributes[3].toString()))%></td>
 										</tr>
 										<tr>
-											 <td  style="width: 20px; padding: 5px; padding-left: 10px">(e)</td>
-											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Nodal and Participating Labs</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"><%if(projectattributes[15]!=null){ %><%=projectattributes[15]%><%} %></td>
+											 <td  class="width20-padding5">(e)</td>
+											 <td  class="width150-padding5"><b>Nodal and Participating Labs</b></td>
+											 <td colspan="4" class="cst-td2"><%if(projectattributes[15]!=null){ %><%=projectattributes[15]%><%} %></td>
 										</tr>
 										<tr>
-											 <td  style=" padding: 5px; padding-left: 10px">(f)</td>
-											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Objective</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;text-align: justify"> <%=projectattributes[4]%></td>
+											 <td  class="td-cp">(f)</td>
+											 <td  class="width150-padding5"><b>Objective</b></td>
+											 <td colspan="4" class="cst-td2 text-justify"> <%=projectattributes[4]%></td>
 										</tr>
 										<tr>
-											 <td  style="padding: 5px; padding-left: 10px">(g)</td>
-											 <td  style="width: 150px;padding: 5px; padding-left: 10px"><b>Deliverables</b></td>
-											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px"> <%=projectattributes[5]%></td>
+											 <td  class="td-cp">(g)</td>
+											 <td  class="width150-padding5"><b>Deliverables</b></td>
+											 <td colspan="4" class=" cst-td2"> <%=projectattributes[5]%></td>
 										</tr>
 										<tr>
-											 <td rowspan="2" style="padding: 5px; padding-left: 10px">(h)</td>
-											 <td rowspan="2" style="width: 150px;padding: 5px; padding-left: 10px"><b>PDC</b></td>
+											 <td rowspan="2" class="td-cp">(h)</td>
+											 <td rowspan="2" class="width150-padding5"><b>PDC</b></td>
 											 
-											<td colspan="2" style="text-align: center !important">&nbsp;</td>					
+											<td colspan="2" class="textaligncenter">&nbsp;</td>					
 											<%if( ProjectRevList.get(z).size()>0){ %>	
-												<td colspan="2" style="text-align: center !important">Revised</td>																			
+												<td colspan="2" class="textaligncenter">Revised</td>																			
 											<%}else{ %>													 
 										 		<td colspan="2" ></td>	
 										 	<%} %>
 										</tr>
 								 		<tr>
 								 			<%if( ProjectRevList.get(z).size()>0 ){ %>								
-										 		<td colspan="2" style="text-align: center;"><%= sdf.format(sdf1.parse(ProjectRevList.get(z).get(0)[12].toString()))%> </td>
-										 		<td colspan="2" style="text-align: center;">
+										 		<td colspan="2" class="text-center"><%= sdf.format(sdf1.parse(ProjectRevList.get(z).get(0)[12].toString()))%> </td>
+										 		<td colspan="2" class="text-center">
 											 		<%if(LocalDate.parse(projectattributes[6].toString()).isEqual(LocalDate.parse(ProjectRevList.get(z).get(0)[12].toString())) ){ %>
 											 			-
 											 		<%}else{ %>
@@ -658,50 +299,50 @@ String isCCS = (String)request.getAttribute("isCCS");
 										 		
 										 		</td>
 											<%}else{ %>													 
-										 		<td colspan="2" style="text-align: center;"><%= sdf.format(sdf1.parse(projectattributes[6].toString()))%></td>
+										 		<td colspan="2" class="textaligncenter"><%= sdf.format(sdf1.parse(projectattributes[6].toString()))%></td>
 												<td colspan="2" ></td>
 										 	<%} %>
 										 		    
 								 		</tr>
 											 	
 										<tr>
-											<td rowspan="3" style="width: 30px; padding: 5px; padding-left: 10px">(i)</td>
-											<td rowspan="3" style="padding-left: 10px"><b>Cost Breakup( &#8377; <span class="currency">Lakhs</span>)</b></td>
+											<td rowspan="3" class="td-i">(i)</td>
+											<td rowspan="3" class="padding-left10"><b>Cost Breakup( &#8377; <span class="currency">Lakhs</span>)</b></td>
 											
 											<%if( ProjectRevList.get(z).size()>0 ){ %>
-													<td style="width: 10% !important" >RE Cost</td>
-													<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[17] %></td> 
-													<td colspan="2" style="text-align: center;"><%=projectattributes[8] %></td>
+													<td class="width10" >RE Cost</td>
+													<td class="text-center"><%=ProjectRevList.get(z).get(0)[17] %></td> 
+													<td colspan="2" class="text-center"><%=projectattributes[8] %></td>
 												</tr>
 												
 												
 												<tr>
-													<td style="width: 10% !important">FE Cost</td>		
-													<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[16] %></td>					
-													<td colspan="2" style="text-align: center;"><%=projectattributes[9] %></td>
+													<td class="width10">FE Cost</td>		
+													<td class="text-center"><%=ProjectRevList.get(z).get(0)[16] %></td>					
+													<td colspan="2" class="text-center"><%=projectattributes[9] %></td>
 												</tr>
 													
 												<tr>	
-													<td style="width: 10% !important">Total Cost</td>	
-													<td style="text-align: center;"><%=ProjectRevList.get(z).get(0)[11] %></td>
-											 		<td colspan="2" style="text-align: center;"><%=projectattributes[7] %></td>
+													<td class="width10">Total Cost</td>	
+													<td class="text-center"><%=ProjectRevList.get(z).get(0)[11] %></td>
+											 		<td colspan="2" class="text-center"><%=projectattributes[7] %></td>
 												</tr> 
 														
 											<%}else{ %>
 													
-													<td style="width: 10% !important">RE Cost</td>
+													<td class="width10">RE Cost</td>
 													<td ><%=projectattributes[8] %></td>
 													<td colspan="2" ></td>
 												</tr>
 											
 												<tr>
-													<td style="width: 10% !important">FE Cost</td>		
+													<td class="width10">FE Cost</td>		
 													<td ><%=projectattributes[9] %></td>					
 													<td colspan="2"></td>
 												</tr>
 												
 												<tr>	
-													<td style="width: 10% !important" >Total Cost</td>	
+													<td class="width10" >Total Cost</td>	
 													<td ><%=projectattributes[7] %></td>
 													<td colspan="2"></td>			
 												</tr> 
@@ -709,8 +350,8 @@ String isCCS = (String)request.getAttribute("isCCS");
 												
 																			 	
 										<tr>
-											<td  style="width: 20px; padding: 5px; padding-left: 10px">(j)</td>
-											<td style="width: 150px;padding: 5px; padding-left: 10px"><b>No. of Meetings held</b> </td>
+											<td  class="td-j">(j)</td>
+											<td class="width150-padding5"><b>No. of Meetings held</b> </td>
 											<td colspan="4">
 												<% if(ebandpmrccount!=null && ebandpmrccount.size()>0){
 													List<Object[]> ebandpmrcsub = ebandpmrccount.get(z); 
@@ -721,16 +362,21 @@ String isCCS = (String)request.getAttribute("isCCS");
 											</td>
 										</tr>
 										<tr>
-											<td  style="width: 20px; padding: 5px; padding-left: 10px">(k)</td>
-											<td  style="width: 210px;padding: 5px; padding-left: 10px"><b>Current Stage of Project</b></td>
-											<td colspan="4" style=" width: 200px;color:white; padding: 5px; padding-left: 10px ; <%if(projectdatadetails.get(z)!=null){ %> background-color: <%=projectdatadetails.get(z)[11] %> ;   <%} %>" >
-												<span> <%if(projectdatadetails.get(z)!=null){ %><b><%=projectdatadetails.get(z)[10] %> </b>  <%}else{ %>Data Not Found<%} %></span>
-											</td> 
+											<td  class="td-j">(k)</td>
+											<td  class="td-k"><b>Current Stage of Project</b></td>
+										  	<%
+											   String colorCode = projectdatadetails.get(z)!=null ? (String) projectdatadetails.get(z)[11] : "#77D970";
+											   String className = "C" + colorCode.replace("#", "").toUpperCase();
+											%>
+											<td colspan="4" 
+		  									 class="ctm-td <%=className%>"> <%= projectdatadetails.get(z) != null ? "<b class="+4+">" + projectdatadetails.get(z)[10] + "</b>" : "Data Not Found" %>
+										</td>
+
 										</tr>	
 									</table>
 		
 										<%}else{ %>
-											<div align="center" style="margin: 25px;"> Complete Project Data Not Found </div>
+											<div align="center" class="margin25"> Complete Project Data Not Found </div>
 										<%} %>
 									<% } %>
 							</div>
@@ -742,13 +388,13 @@ String isCCS = (String)request.getAttribute("isCCS");
 	   						<summary role="button" tabindex="0"><b>2. Schematic Configuration</b>   </summary>
 	   						<div class="content">
 	   						<%for(int z=0;z<1;z++){ %>
-	   						<div align="left" style="margin-left: 15px;">
+	   						<div align="left" class="margin-left15">
 	   							
 								<%if(ProjectDetail.size()>1){ %>
 										<div>
 											<form action="ProjectData.htm" method="post" target="_blank">
 												<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
-												<button type="submit" name="action" value="edit"  class="btn btn-sm edit" style="padding : 3px;" > <i class="fa fa-pencil-square-o fa-lg" style="color: black" aria-hidden="true"></i> </button>
+												<button type="submit" name="action" value="edit"  class="btn btn-sm edit padding-3px" > <i class="fa fa-pencil-square-o fa-lg pencil-icon"  aria-hidden="true"></i> </button>
 												<input type="hidden" name="projectid" value="<%=ProjectDetail.get(z)[0] %>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</form>
@@ -756,12 +402,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 								<%} %>
 	   							<table >
 									<tr>
-										<td style="border:0;"> 
+										<td class="border-0"> 
 										
 										
 											<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[3]!=null){ %>
 												<form action="ProjectDataSystemSpecsFileDownload.htm"  method="post" target="_blank" >	
-													2 (a) System Configuration. &nbsp; <span class="anchorlink" onclick="$('#config<%=ProjectDetail.get(z)[0] %>').toggle();" style="color: #C84B31;cursor: pointer;" ><b>As on File Attached</b></span>
+													2 (a) System Configuration. &nbsp; <span class="anchorlink" onclick="$('#config<%=ProjectDetail.get(z)[0] %>').toggle();"  ><b>As on File Attached</b></span>
 													<button  type="submit" class="btn btn-sm "  ><i class="fa fa-download fa-lg" ></i></button>
 													<input type="hidden" name="projectdataid" value="<%=projectdatadetails.get(z)[0]%>"/>
 													<input type="hidden" name="filename" value="sysconfig"/>
@@ -774,9 +420,9 @@ String isCCS = (String)request.getAttribute("isCCS");
 												File systemfile = systemPath.toFile();
 												if(systemfile.exists()){
 												if(FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()).equalsIgnoreCase("pdf")){ %>
-													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(systemfile))%>"  id="config<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
+													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(systemfile))%>"  id="config<%=ProjectDetail.get(z)[0] %>" class="display-none" > </iframe>
 												<%}else{ %>
-													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(systemfile))%>"  id="config<%=ProjectDetail.get(z)[0] %>"  > 											
+													<img class="img-maxwidth" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[3].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(systemfile))%>"  id="config<%=ProjectDetail.get(z)[0] %>"  > 											
 												<%} %>
                                               <%} %>
 											<%}else{ %>
@@ -790,14 +436,14 @@ String isCCS = (String)request.getAttribute("isCCS");
 								</table>
 							
 							</div>
-							<div align="left" style="margin-left: 15px;">
+							<div align="left" class="margin-left15">
 							<table >
 								<tr>
-									<td style="border:0;"> 
+									<td class="border-0"> 
 										<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[4]!=null){ %>
 											<form action="ProjectDataSystemSpecsFileDownload.htm"  method="post" target="_blank" >	
 															
-												2 (b) System Specifications. &nbsp; <span class="anchorlink" onclick="$('#sysspecs<%=ProjectDetail.get(z)[0] %>').toggle();" style="color: #C84B31;cursor: pointer;" ><b>As on File Attached</b></span>
+												2 (b) System Specifications. &nbsp; <span class="anchorlink" onclick="$('#sysspecs<%=ProjectDetail.get(z)[0] %>').toggle();" ><b>As on File Attached</b></span>
 												<button  type="submit" class="btn btn-sm "  ><i class="fa fa-download fa-lg" ></i></button>
 												<input type="hidden" name="projectdataid" value="<%=projectdatadetails.get(z)[0]%>"/>
 												<input type="hidden" name="filename" value="sysspecs"/>
@@ -808,9 +454,9 @@ String isCCS = (String)request.getAttribute("isCCS");
 											File specificfile = specificPath.toFile();
 											if(specificfile.exists()){
 											if(FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()).equalsIgnoreCase("pdf")){ %>
-												<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(specificfile))%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
+												<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(specificfile))%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>" class="display-none" > </iframe>
 											<%}else{ %>
-												<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(specificfile))%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>"  > 											
+												<img class="img-maxwidth" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[4].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(specificfile))%>"  id="sysspecs<%=ProjectDetail.get(z)[0] %>"  > 											
 											<%} %>
 										   <%} %>
 										<%}else{ %>
@@ -820,7 +466,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 									
 									
 									</td>
-									<td style="border:0;">  
+									<td class="border-0">  
 									
 									</td>
 								</tr>
@@ -838,17 +484,17 @@ String isCCS = (String)request.getAttribute("isCCS");
 							<%for(int z=0;z<1;z++){ %>
 							<div>
 								<%if(ProjectDetail.size()>1){ %>
-									<div style="margin-left:1rem; ">
+									<div class="margin-left">
 										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 									</div>	
 								<%} %>
 								<table>
 									<tr>
-										<td style="border:0; padding-left: 1.5rem;"> 
+										<td class="border-0 padding-left-rem "> 
 											<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[5]!=null){ %>
 											
 												<form action="ProjectDataSystemSpecsFileDownload.htm"  method="post" target="_blank" >	
-													Overall Product tree/WBS &nbsp; :  &nbsp;<span class="anchorlink" onclick="$('#protree<%=ProjectDetail.get(z)[0] %>').toggle();" style="color: #C84B31;cursor: pointer;" ><b>As on File Attached</b></span>	
+													Overall Product tree/WBS &nbsp; :  &nbsp;<span class="anchorlink" onclick="$('#protree<%=ProjectDetail.get(z)[0] %>').toggle();" ><b>As on File Attached</b></span>	
 													<button  type="submit" class="btn btn-sm "  ><i class="fa fa-download fa-lg" ></i></button>
 													<input type="hidden" name="projectdataid" value="<%=projectdatadetails.get(z)[0]%>"/>
 													<input type="hidden" name="filename" value="protree"/>
@@ -861,9 +507,9 @@ String isCCS = (String)request.getAttribute("isCCS");
 												File productTreeFile = productTreePath.toFile();
 												if(productTreeFile.exists()){
 												if(FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()).equalsIgnoreCase("pdf")){ %>
-													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(productTreeFile))%>"  id="protree<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
+													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(productTreeFile))%>"  id="protree<%=ProjectDetail.get(z)[0] %>" class="display-none" > </iframe>
 												<%}else{ %>
-													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(productTreeFile))%>"  id="protree<%=ProjectDetail.get(z)[0] %>"  > 											
+													<img class="img-maxwidth" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[5].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(productTreeFile))%>"  id="protree<%=ProjectDetail.get(z)[0] %>"  > 											
 												<%} %>
 											  <%} %>
 											<%}else{ %>
@@ -871,7 +517,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 											<%} %>
 										
 										</td>
-										<td style="border:0;">  
+										<td class="border-0">  
 											
 										</td>
 									</tr>
@@ -894,18 +540,18 @@ String isCCS = (String)request.getAttribute("isCCS");
 											<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 										</div>	
 									<%} %>	
-								   <div align="left" style="margin-left: 15px;">(a) <%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
+								   <div align="left" class="margin-left15">(a) <%if(committee.getCommitteeShortName().trim().equalsIgnoreCase("PMRC")){ %>
 															   						Approval 
 															   						<%}else { %>
 															   						Ratification
 															   						<%} %>  of <b>recommendations</b> of last PMRC / <%=committee.getCommitteeShortName().trim().toUpperCase() %> Meeting (if any)</div>
 															   						
 							
-			<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; border-collapse:collapse;" >
+			<table class="subtables table-subtables" >
 				<thead>
 					<tr>
-						<td colspan="6" style="border: 0">
-							<p style="font-size: 10px;text-align: center"> 
+						<td colspan="6" class="border-0">
+							<p class="font-size10 text-center"> 
 								<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 								<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
 								<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
@@ -921,18 +567,18 @@ String isCCS = (String)request.getAttribute("isCCS");
 					</tr>
 										
 					<tr>
-						<th  style="width: 15px !important;text-align: center;">SN</th>
-						<th  style="width: 100px !important;"> ID</th>
-						<th  style="width: 315px !important;">Recommendation Point</th>
-						<th  style="width: 100px !important;"> PDC</th>
-						<th  style="width: 210px !important;"> Responsibility</th>
-						<th  style="width: 80px !important;">Status(DD)</th>
-						<th  style="width: 250px !important; ">Remarks</th>
+						<th  class="width15 text-center">SN</th>
+						<th  class="width100"> ID</th>
+						<th  class="width315">Recommendation Point</th>
+						<th  class="width100"> PDC</th>
+						<th  class="width210"> Responsibility</th>
+						<th  class="width80">Status(DD)</th>
+						<th  class="width250">Remarks</th>
 					</tr>
 				</thead>
 				<tbody>
 					<%if(lastpmrcminsactlist.get(z).size()==0){ %>
-						<tr><td colspan="6" style="text-align: center;" > Nil</td></tr>
+						<tr><td colspan="6" class="text-center" > Nil</td></tr>
 					<%}
 						else if(lastpmrcminsactlist.get(z).size()>0)
 							{int i=1;String key2="";
@@ -940,7 +586,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 									// only recommendations and the if recommendation is completed or closed then only those actions which are completed after last meeting
 									if( obj[3].toString().equalsIgnoreCase("R") && (obj[10]==null || !obj[10].toString().equals("C") || (obj[10].toString().equals("C") && obj[14]!=null && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) )) ){ %>
 						<tr>
-							<td style="text-align: center;"><%=i %></td>
+							<td class="text-center"><%=i %></td>
 							
 							<td>
 							
@@ -948,7 +594,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 									<%if(obj[21]!=null && Long.parseLong(obj[21].toString())>0){ %>
 								
 									
-			 						<span style="font-weight: bold;">	
+			 						<span class="font-weight-bold">	
 								<%for (Map.Entry<Integer, String> entry : committeeWiseMap.entrySet()) {
 									Date date = inputFormat.parse(obj[5].toString().split("/")[3]);
 									 String formattedDate = outputFormat.format(date);
@@ -966,15 +612,11 @@ String isCCS = (String)request.getAttribute("isCCS");
 							</td>
 							
 							
-							<td style="text-align: justify; "><%=obj[2] %></td>
-							<%-- <td style=" text-align: center;">
-								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[8].toString()))%><%} %>		
-								<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><br><%=sdf.format(sdf1.parse(obj[7].toString()))%><%} %>
-								<%if(obj[6]!= null){ %><%=sdf.format(sdf1.parse(obj[6].toString()))%><%} %>
-							</td> --%>
-							<td style="text-align: center;">
-								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><span style="color:black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[8].toString()))%></span><br><%} %>	
-								<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><span style="color:black;font-weight: bold;"><%=sdf.format(sdf1.parse(obj[7].toString()))%></span><br><%} %>
+							<td class="text-justify "><%=obj[2] %></td>
+
+							<td class="text-center">
+								<%if(obj[8]!= null && !LocalDate.parse(obj[8].toString()).equals(LocalDate.parse(obj[7].toString())) ){ %><span class="pencil-icon font-weight-bold"><%=sdf.format(sdf1.parse(obj[8].toString()))%></span><br><%} %>	
+								<%if(obj[7]!= null && !LocalDate.parse(obj[7].toString()).equals(LocalDate.parse(obj[6].toString())) ){ %><span class="pencil-icon font-weight-bold"><%=sdf.format(sdf1.parse(obj[7].toString()))%></span><br><%} %>
 								<%if(obj[6]!= null){ %><span><%=sdf.format(sdf1.parse(obj[6].toString()))%></span><br><%} %>
 								</td>
 							<td>
@@ -982,7 +624,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 									<%=obj[12] %>, <%=obj[13] %>
 								<%}else { %><span class="">Not Assigned</span> <%} %> 
 							</td>
-							<td  style="text-align: center; ">
+							<td  class="text-center">
 								<%if(obj[4]!= null){ %> 
 									<%	String actionstatus = obj[10].toString();
 										int progress = obj[18]!=null ? Integer.parseInt(obj[18].toString()) : 0;
@@ -1019,7 +661,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 						</tr>		
 					<%i++;}
 						}%>
-					<%if(i==1){ %> <tr><td colspan="6" style="text-align: center;" > Nil</td></tr>	<%} %>
+					<%if(i==1){ %> <tr><td colspan="6" class="text-center" > Nil</td></tr>	<%} %>
 											
 					<%} %>
 				</tbody>
@@ -1030,14 +672,14 @@ String isCCS = (String)request.getAttribute("isCCS");
 							
 		 <%if((Double.parseDouble(projectattributeslist.get(0)[7].toString())*100000)>1){ %>
 								  
-		  	<div align="left" style="margin-left: 15px;">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
+		  	<div align="left" class="margin-left15">(b) Last <%=committee.getCommitteeShortName().trim().toUpperCase() %>
 															   						Meeting action points with Probable Date of completion (PDC), Actual Date of Completion (ADC) and current status.</div>
 					
-					<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+					<table class="subtables table-subtables" >
 						<thead>
 							<tr>
-								<td colspan="7" style="border: 0">
-									<p style="font-size: 10px;text-align: center"> 
+								<td colspan="7" class="border-0">
+									<p class="font-size10 text-center"> 
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
 										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
@@ -1053,29 +695,28 @@ String isCCS = (String)request.getAttribute("isCCS");
 							</tr>
 										
 							<tr>
-								<th  style="width: 15px !important;text-align: center;  ">SN</th>
-								<th  style="width: 120px !important;text-align: center;  ">ID</th>
-								<th  style="width: 320px; ">Action Point</th>
-								<th  style="width: 150px; ">ADC<br>PDC</th>
-								<!-- <th  style="width: 100px; "> ADC</th> -->
-								<th  style="width: 210px; "> Responsibility</th>
-								<th  style="width: 80px; ">Status(DD)</th>
-								<th  style="width: 205px; ">Remarks</th>			
+								<th  class="width15 text-center">SN</th>
+								<th  class="width120 text-center">ID</th>
+								<th  class="width320">Action Point</th>
+								<th  class="width150">ADC<br>PDC</th>
+								<th  class="width210"> Responsibility</th>
+								<th  class="width80">Status(DD)</th>
+								<th  class="width205">Remarks</th>			
 							</tr>
 						</thead>
 							
 						<tbody>		
 							<%if(lastpmrcactions.get(z).size()==0){ %>
-								<tr><td colspan="7"  style="text-align: center;" > Nil</td></tr>
+								<tr><td colspan="7"  class="text-center" > Nil</td></tr>
 								<%}
 								else if(lastpmrcactions.size()>0)
 								{int i=1;String key="";
 								for(Object[] obj:lastpmrcactions.get(z)){ %>
 								<tr>
-									<td  style="text-align: center;"><%=i %></td>
+									<td  class="text-center"><%=i %></td>
 									<td>
 										<%if(obj[17]!=null && Long.parseLong(obj[17].toString())>0){ %>
-								<span style="font-weight: bold">
+								<span class="font-weight-bold">
 								<%for (Map.Entry<Integer, String> entry : committeeWiseMap.entrySet()) {
 									String actionNo = obj[1].toString();
 									Date date = inputFormat.parse(obj[1].toString().split("/")[3]);
@@ -1088,8 +729,8 @@ String isCCS = (String)request.getAttribute("isCCS");
 								</span> 
 								<%}%>
 									</td>
-									<td  style="text-align: justify ;"><%=obj[2] %></td>
-									<td style="text-align: center;">
+									<td  class="text-justify"><%=obj[2] %></td>
+									<td class="text-center">
 									<%	String actionstatus = obj[9].toString();
 										int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
 										LocalDate pdcorg = LocalDate.parse(obj[3].toString());
@@ -1107,19 +748,19 @@ String isCCS = (String)request.getAttribute("isCCS");
 												-									
 										<%} %>
 									<br>
-									<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
+									<span <%if(endPdc.isAfter(today) || endPdc.isEqual(today)) {%>class="pencil-icon font-weight-bold" <%} else{%> class="color-maroon font-weight-bold" <%} %>>
 									<%=sdf.format(sdf1.parse(endPdc.toString())) %>
 									</span>	
 									<%if(!pdcorg.equals(endPdc)) {%>
 									<br>
-									<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>style="color:black;font-weight: bold;" <%} else{%> style="color:maroon ;font-weight:bold;" <%} %>>
+									<span <%if(pdcorg.isAfter(today) || pdcorg.isEqual(today)) {%>class="pencil-icon font-weight-bold" <%} else{%> class="color-maroon font-weight-bold" <%} %>>
 									<%=sdf.format(sdf1.parse(pdcorg.toString())) %>
 									</span>	
 									<%} %>
 								</td>	
 									<td> 
 										<%=obj[11] %>, <%=obj[12] %> </td>
-										<td  style="text-align: center;" > 
+										<td  class="text-center" > 
 										<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
 										<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 										<span class="completed">CO</span>
@@ -1142,7 +783,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 										
 						
 									</td>	
-									<td style="text-align: justify ;"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
+									<td class="text-justify"><%if(obj[16]!=null){%><%=obj[16] %><%} %></td>			
 								</tr>			
 							<%i++;
 							}} %>
@@ -1152,21 +793,21 @@ String isCCS = (String)request.getAttribute("isCCS");
 								
 					<%} %>
 								
-			<div align="left" style="margin-left: 15px;">(c) Details of Technical/ User Reviews (if any).</div>
+			<div align="left" class="margin-left15">(c) Details of Technical/ User Reviews (if any).</div>
 						
 							
-						<div align="center" style="width:1100px">
+						<div align="center" class="width1100">
 
 							<form action="CommitteeMinutesNewDownload.htm" method="get" target="_blank">
 							<div class="row">
 							<%for(Map.Entry<String, List<Object[]>> entry : reviewMeetingListMap.entrySet()) { 
 								if(entry.getValue().size()>0) { %>
 									<div class="col-md-4 mt-2">
-										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse; float: left;">
+										<table class="subtables table-subtables-copy">
 											<thead>
 												<tr>
-													<th  style="width: 140px; ">Committee</th>
-													<th  style="width: 140px; "> Date Held</th>
+													<th  class="width140">Committee</th>
+													<th  class="width140"> Date Held</th>
 												</tr>
 											</thead>
 											<tbody>
@@ -1174,9 +815,9 @@ String isCCS = (String)request.getAttribute("isCCS");
 												for(Object[] obj : entry.getValue()){ %>
 													<tr>
 														<td >
-															<button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>"> <%=entry.getKey()%> #<%=++i %></button>
+															<button class="btn btn-link p-0 m-0"  name="committeescheduleid" value="<%=obj[0]%>"> <%=entry.getKey()%> #<%=++i %></button>
 														</td>												
-														<td style="text-align: center; " ><%= fc.sdfTordf(obj[3].toString())%></td>
+														<td class="text-center" ><%= fc.sdfTordf(obj[3].toString())%></td>
 													</tr>				
 												<%} %>
 											</tbody>
@@ -1191,14 +832,14 @@ String isCCS = (String)request.getAttribute("isCCS");
 					int count=0;
 				%>
 				<div align="left" class="mb-2 ml-4"><b><%="Other Meetings" %></b></div>
-						<div align="left" class="mb-2"><table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 350px; border-collapse: collapse;">
-						<thead><tr> <th style="width: 140px; ">Committee</th> <th  style="width: 140px; "> Date Held</th></tr></thead>
+						<div align="left" class="mb-2"><table class="subtables tbl-sub" >
+						<thead><tr> <th class="width140">Committee</th> <th  class="width140"> Date Held</th></tr></thead>
 				<%for(Object[]obj:otherMeetingList) {%>
 				
 											<tbody>
-									<tr><td><button class="btn btn-link" style="padding:0px;margin:0px;" name="committeescheduleid" value="<%=obj[0]%>"><%=obj[3]%> </button>
+									<tr><td><button class="btn btn-link p-0 m-0"  name="committeescheduleid" value="<%=obj[0]%>"><%=obj[3]%> </button>
 														</td>												
-														<td  style="text-align: center; " ><%= sdf.format(sdf1.parse(obj[1].toString()))%></td>
+														<td  class="text-center" ><%= sdf.format(sdf1.parse(obj[1].toString()))%></td>
 													</tr>
 									</tbody>
 				
@@ -1222,11 +863,11 @@ String isCCS = (String)request.getAttribute("isCCS");
 										</div>	
 									<%} %>	
 				
-							<table  class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+							<table  class="subtables table-subtables" >
 								<thead>
 								<tr>
-									<td colspan="10" style="border: 0">
-										<p style="font-size: 10px;text-align: center"> 
+									<td colspan="10" class="border-0">
+										<p class="font-size10 text-center"> 
 											 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 											 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
 											 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
@@ -1242,16 +883,15 @@ String isCCS = (String)request.getAttribute("isCCS");
 								</tr>
 								
 									<tr>
-										<th  style="width: 20px; ">SN</th>
-										<th  style="width: 30px; ">MS</th>
-										<th  style="width: 60px; ">L</th>
-										<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
-										<th  style="width: 120px; ">ADC<br> PDC</th>
-									<!-- 	<th  style="width: 150px; "> ADC</th> -->
-										<th  style="width: 60px; "> Progress</th>
-										<th  style="width: 50px; "> Status(DD)</th>
-									 	<th  style="width: 260px; "> Remarks</th>
-									 	<th  style="max-width: 30px; "> Info </th>
+										<th  class="width20">SN</th>
+										<th  class="width30">MS</th>
+										<th  class="width60">L</th>
+										<th  class="width350">System/ Subsystem/ Activities</th>
+										<th  class="width120">ADC<br> PDC</th>
+										<th  class="width60"> Progress</th>
+										<th  class="width50"> Status(DD)</th>
+									 	<th  class="width26"> Remarks</th>
+									 	<th  class="max-width30"> Info </th>
 									</tr>
 								</thead>
 									<% if( milestones.get(z).size()>0){
@@ -1268,10 +908,10 @@ String isCCS = (String)request.getAttribute("isCCS");
 											if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)){
 											%>
 											<tr>
-												<td style="text-align: center"><%=serial%></td>
+												<td class="text-center"><%=serial%></td>
 												<td>M<%=obj[0] %></td>
 												
-												<td style="text-align: center">
+												<td class="text-center">
 													<%
 													
 													if(obj[21].toString().equals("0")) {%>
@@ -1287,23 +927,14 @@ String isCCS = (String)request.getAttribute("isCCS");
 																<%=entry.getValue() %>
 														<%}} 
 														%>
-														<%-- A-<%=milcountA %> --%>
-													<%/*  milcountA++;
-														milcountB=1;
-														milcountC=1;
-														milcountD=1;
-														milcountE=1; */
+													<%
 													}else if(obj[21].toString().equals("2")) {
 														for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
 															if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
 																<%=entry.getValue() %>
 														<%}}	
 														%>
-														<%-- B-<%=milcountB %> --%>
-													<%/* milcountB+=1;
-													milcountC=1;
-													milcountD=1;
-													milcountE=1; */
+													<%
 													}else if(obj[21].toString().equals("3")) { %>
 														C-<%=milcountC %>
 													<%milcountC+=1;
@@ -1320,7 +951,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 													} %>
 												</td>
 	
-												<td style="<%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
+												<td class="<%if(obj[21].toString().equals("0")) {%>font-weight-bold<%}%>">
 													<%if(obj[21].toString().equals("0")) {%>
 														<%=obj[10] %>
 													<%}else if(obj[21].toString().equals("1")) { %>
@@ -1335,7 +966,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 														&nbsp;&nbsp;<%=obj[15] %>
 													<%} %>
 												</td>
-												<td style="text-align: center">
+												<td class="text-center">
 												<!-- ADC  -->
 												<% 
 													LocalDate StartDate = LocalDate.parse(obj[7].toString());
@@ -1376,41 +1007,10 @@ String isCCS = (String)request.getAttribute("isCCS");
 												</td>
 												
 
-												<!-- <td style="text-align: center"> -->
-														<%-- <% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>
-														<span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
-																					<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-																					<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-																					<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
-																					<%} else if (obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-																					<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-																					<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
-						
-															<%=sdf.format(sdf1.parse(obj[24].toString()))%> 
-															<% } else {  %> - <% } %> --%>
-														
-												<!-- </td> -->
-												<td style="text-align: center"><%=obj[17] %>%</td>											
-												<%-- <td style="text-align: center">
-													<span class="<%if(obj[19].toString().equalsIgnoreCase("0")){%>assigned
-															<%}else if(obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-															<%}else if(obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-															<%}else if(obj[19].toString().equalsIgnoreCase("3")) {%> completed
-															<%}else if(obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-															<%}else if(obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-															<%}else if(obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 " >
-														<%=obj[22] %>	
-														
-														<%if(obj[19].toString().equalsIgnoreCase("5") && obj[24]!=null){ %>
-															(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString())) %>) 
-														<%}else if(obj[19].toString().equalsIgnoreCase("4")){ %>
-															(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now()) %>)
-														<%} %>	
-													</span>
+												<td class="text-center"><%=obj[17] %>%</td>											
+
 												
-												</td> --%>
-												
-												<td style="text-align: center">	
+												<td class="text-center">	
 								
 														<%if(Progess==0){ %>
 															<span class="assigned"> AA </span>
@@ -1429,16 +1029,16 @@ String isCCS = (String)request.getAttribute("isCCS");
 														<%} %>
 													
 												</td>
-												<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
+												<td class="overflowWrap"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
 	                                            <td >
-													<a  data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0] %>" class="milestonemodal" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" >
-														<i class="fa fa-info-circle " style="font-size: 1.3rem;color:#145374 " aria-hidden="true"></i> 
+													<a  data-toggle="modal" data-target="#exampleModal1" data-id="milestonemodal<%=obj[0] %>" class="milestonemodal m-modal" data-whatever="@mdo" >
+														<i class="fa fa-info-circle circle-font"  aria-hidden="true"></i> 
 													</a>
 												</td>
 											</tr>
 										<%count1++;serial++;}} %>
 									<%} else{ %>
-									<tr><td colspan="10" style="text-align:center; "> Nil</td></tr>
+									<tr><td colspan="10" class="text-center" "> Nil</td></tr>
 									
 									
 									<%} %>
@@ -1463,17 +1063,17 @@ String isCCS = (String)request.getAttribute("isCCS");
 										<b>Project : <%=ProjectDetail.get(z)[1] %> 	<%if(z!=0){ %>(SUB)<%} %>	</b>
 									</div>	
 								<%} %>	
-								<div align="left" style="margin-left: 15px;">(a) Work carried out, Achievements, test result etc.
+								<div align="left" class="margin-left15">(a) Work carried out, Achievements, test result etc.
 									   <%if(z==0){ %>
 										<form action="FilterMilestone.htm" method="POST">  
-											<button class="btn btn-sm back"    style="float: right;margin-top: 5px;text-transform: capitalize !important; " formtarget="blank"> Filter</button> 
+											<button class="btn btn-sm back filter-st"  formtarget="blank"> Filter</button> 
 											<input type="hidden" name="projectidvalue" <%if( projectid!=null ){%> value="<%=projectid%>" <%}%>>
 											<input type="hidden" name="committeidvalue" <%if(committeeid!=null){%> value="<%=committeeid %>" <%}%>>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 										</form>
 										<%}%> 
 								</div>
-								<div align="left" style="margin-left: 20px;"><b>Present Status:</b>
+								<div align="left" class="margin-left20"><b>Present Status:</b>
 								
 								</div>
 								
@@ -1482,11 +1082,11 @@ String isCCS = (String)request.getAttribute("isCCS");
 			<!-- Tharun code Start (For Filtering Milestone based on levels) -->		
 			
 			
-						<table  class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+						<table  class="subtables table-subtables" >
 							<thead>
 							<tr>
-								<td colspan="10" style="border: 0">
-									<p style="font-size: 10px;text-align: center"> 
+								<td colspan="10" class="border-0">
+									<p class="font-size10 text-center"> 
 										 <span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										 <span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
 										 <span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
@@ -1502,14 +1102,14 @@ String isCCS = (String)request.getAttribute("isCCS");
 							</tr>
 							
 							<tr>
-								<th  style="width: 20px; ">SN</th>
-								<th  style="width: 30px; ">MS</th>
-								<th  style="width: 60px; ">L</th>
-								<th  style="width: 350px; ">System/ Subsystem/ Activities</th>
-								<th  style="width: 150px; "> PDC</th>
-								<th  style="width: 60px; "> Progress</th>
-								<th  style="width: 50px; "> Status(DD)</th>
-							 	<th  style="width: 260px; "> Remarks</th>
+								<th  class="width20">SN</th>
+								<th  class="width30">MS</th>
+								<th  class="width60">L</th>
+								<th  class="width350">System/ Subsystem/ Activities</th>
+								<th  class="width150"> PDC</th>
+								<th  class="width60"> Progress</th>
+								<th  class="width50"> Status(DD)</th>
+							 	<th  class="width260"> Remarks</th>
 							</tr>
 							</thead>
 								<% if( MilestoneDetails6.get(z).size()>0) { 
@@ -1526,10 +1126,10 @@ String isCCS = (String)request.getAttribute("isCCS");
 										if(Integer.parseInt(obj[21].toString())<= Integer.parseInt(levelid)){
 										%>
 										<tr>
-											<td style="text-align: center"><%=serial%></td>
+											<td class="text-center"><%=serial%></td>
 											<td>M<%=obj[0] %></td>
 											
-											<td style="text-align: center">
+											<td class="text-center">
 												<%
 												
 												if(obj[21].toString().equals("0")) {%>
@@ -1546,23 +1146,14 @@ String isCCS = (String)request.getAttribute("isCCS");
 													<%}}	
 													
 													%>
-													<%-- A-<%=milcountA %> --%>
-												<% /* milcountA++;
-													milcountB=1;
-													milcountC=1;
-													milcountD=1;
-													milcountE=1; */
+												<% 
 												}else if(obj[21].toString().equals("2")) { 
 													for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
 														if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
 															<%=entry.getValue() %>
 													<%}}	
 												%>
-													<%-- B-<%=milcountB %> --%>
-												<%/* milcountB+=1;
-												milcountC=1;
-												milcountD=1;
-												milcountE=1; */
+												<%
 												}else if(obj[21].toString().equals("3")) { %>
 													C-<%=milcountC %>
 												<%milcountC+=1;
@@ -1579,7 +1170,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 												} %>
 											</td>
 
-											<td style="<%if(obj[21].toString().equals("0")) {%>font-weight: bold;<%}%>">
+											<td class="<%if(obj[21].toString().equals("0")) {%>font-weight-bold<%}%>">
 												<%if(obj[21].toString().equals("0")) {%>
 													<%=obj[10] %>
 												<%}else if(obj[21].toString().equals("1")) { %>
@@ -1594,7 +1185,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 													&nbsp;&nbsp;<%=obj[15] %>
 												<%} %>
 											</td>
-											<td style="text-align: center">
+											<td class="text-align-center">
 												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
 													<%= sdf.format(sdf1.parse(obj[8].toString()))%><br> 
 												<%}%>
@@ -1608,23 +1199,9 @@ String isCCS = (String)request.getAttribute("isCCS");
 												LocalDate CompletionDate =obj[24]!=null ? LocalDate.parse(obj[24].toString()) : null;
 												LocalDate Today = LocalDate.now();
 											%>
-											<td style="text-align: center"><%=obj[17] %>%</td>											
-											<td style="text-align: center">
-												<%-- <span class="<%if (obj[19].toString().equalsIgnoreCase("0")) {%>assigned
-																		<%} else if (obj[19].toString().equalsIgnoreCase("1")) {%> assigned
-																		<%} else if (obj[19].toString().equalsIgnoreCase("2")) {%> ongoing
-																		<%} else if (obj[19].toString().equalsIgnoreCase("3")) {%> completed
-																		<%} else if (obj[19].toString().equalsIgnoreCase("4")) {%> delay 
-																		<%} else if (obj[19].toString().equalsIgnoreCase("5")) {%> completeddelay
-																		<%} else if (obj[19].toString().equalsIgnoreCase("6")) {%> inactive<%}%>	 ">
-													<%=obj[22]%> 
-													<% if ( obj[19].toString().equalsIgnoreCase("5") && obj[24] != null) {  %>
-														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.parse(obj[24].toString()))%>)
-													<% } else if (obj[19].toString().equalsIgnoreCase("4")) { %>
-														(<%=ChronoUnit.DAYS.between(LocalDate.parse(obj[9].toString()), LocalDate.now())%>)
-													<% } %>
-				
-												</span> --%>
+											<td class="text-center"><%=obj[17] %>%</td>											
+											<td class="text-center">
+
 												
 												
 												<%if(Progess==0){ %>
@@ -1644,11 +1221,11 @@ String isCCS = (String)request.getAttribute("isCCS");
 												<%} %>
 												
 											</td>
-											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
+											<td class="overflowWrap"><%if(obj[23]!=null){%><%=obj[23]%><%} %></td>
 										</tr>
 									<%count1++;serial++;}} %>
 								<%} else{ %>
-										<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
+										<tr><td colspan="9" class="text-center"> Nil</td></tr>
 								
 								
 								<%} %>
@@ -1656,15 +1233,15 @@ String isCCS = (String)request.getAttribute("isCCS");
 
 								<!--  Commenting Old Data End-->
 							
-								<div align="left" style="margin-left: 15px;">(b) TRL table with TRL at sanction stage and current stage indicating overall PRI.</div>
+								<div align="left" class="margin-left15">(b) TRL table with TRL at sanction stage and current stage indicating overall PRI.</div>
 									
 								<div>
 									<table  >
-										<tr><td style="border:0;"></td>
-											<td style="border:0;">  
+										<tr><td class="border-0"></td>
+											<td class="border-0">  
 											<%if(projectdatadetails.get(z)!=null && projectdatadetails.get(z)[6]!=null ){ %>
 												<form action="ProjectDataSystemSpecsFileDownload.htm"  method="post" target="_blank" >	
-													<span class="anchorlink" onclick="$('#pearl<%=ProjectDetail.get(z)[0] %>').toggle();"  style="color: #C84B31;cursor: pointer;" ><b>As on File Attached</b></span>
+													<span class="anchorlink" onclick="$('#pearl<%=ProjectDetail.get(z)[0] %>').toggle();" ><b>As on File Attached</b></span>
 													<button  type="submit" class="btn btn-sm "  ><i class="fa fa-download fa-lg" ></i></button>
 													<input type="hidden" name="projectdataid" value="<%=projectdatadetails.get(z)[0]%>"/>
 													<input type="hidden" name="filename" value="pearl"/>
@@ -1676,10 +1253,10 @@ String isCCS = (String)request.getAttribute("isCCS");
 												File trlfile = trlPath.toFile();
 												if(trlfile.exists()){
 												if(FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()).equalsIgnoreCase("pdf")){ %>
-													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(trlfile))%>"  id="pearl<%=ProjectDetail.get(z)[0] %>" style="display: none" > </iframe>
+													<iframe	width="1200" height="600" src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(trlfile))%>"  id="pearl<%=ProjectDetail.get(z)[0] %>" class="display-none" > </iframe>
 												<%}else{
 													%>
-													<img style="max-width:25cm;max-height:17cm;display: none" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(trlfile))%>"  id="pearl<%=ProjectDetail.get(z)[0] %>"  >											
+													<img class="img-maxwidth" src="data:image/<%=FilenameUtils.getExtension(projectdatadetails.get(z)[6].toString()) %>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(trlfile))%>"  id="pearl<%=ProjectDetail.get(z)[0] %>"  >											
 												  <%} %>
 												<%} %>
 											<% }else{ %>
@@ -1689,13 +1266,13 @@ String isCCS = (String)request.getAttribute("isCCS");
 										</tr>
 									</table>
 								</div>
-								<div align="left" style="margin-left: 15px;">(c) Risk Matrix/Management Plan/Status. </div>
+								<div align="left" class="margin-left15">(c) Risk Matrix/Management Plan/Status. </div>
 									
-									<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;  border-collapse:collapse;" >
+									<table class="subtables table-subtables">
 										<thead>	
 												<tr>
-													<td colspan="9" style="border: 0">
-														<p style="font-size: 10px;text-align: center"> 
+													<td colspan="9" class="border-0">
+														<p class="font-size10 text-center"> 
 															<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 															<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
 															<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
@@ -1710,26 +1287,25 @@ String isCCS = (String)request.getAttribute("isCCS");
 									   				</td>									
 												</tr>
 												<tr>
-													<td colspan="9" style="border:0;text-align: right;"><b>RPN :</b>Risk Priority Number</td>
+													<td colspan="9" class="border-0 text-right"><b>RPN :</b>Risk Priority Number</td>
 												</tr>
 												<tr>
-													<th style="width: 15px;text-align: center " rowspan="2">SN</th>
-													<th style="width: 330px; " colspan="3">
+													<th class="width15 text-center " rowspan="2">SN</th>
+													<th class="width330 " colspan="3">
 														Risk
-														<a data-toggle="modal" class="fa faa-pulse animated " data-target="#RiskTypesModal" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer"><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
+														<a data-toggle="modal" class="fa faa-pulse animated m-modal" data-target="#RiskTypesModal" data-whatever="@mdo" ><i class="fa fa-info-circle circle-font"  aria-hidden="true"></i> </a>
 													</th>
-													<th style="width: 100px; " rowspan="1" > ADC <br>PDC</th>
-												<!-- 	<th style="width: 100px; " rowspan="1"> ADC</th> -->
-													<th style="width: 160px; " rowspan="1"> Responsibility</th>
-													<th style="width: 50px; "  rowspan="1">Status(DD)</th>
-													<th style="width: 215px; " rowspan="1">Remarks</th>	
+													<th class="width100" rowspan="1" > ADC <br>PDC</th>
+													<th class="width160" rowspan="1"> Responsibility</th>
+													<th class="width50"  rowspan="1">Status(DD)</th>
+													<th class="width215" rowspan="1">Remarks</th>	
 												</tr>
 												<tr>
-													<th  style="text-align: center;width: 110px; " > Severity<br>(1-10)</th>
-													<th  style="text-align: center;width: 110px;"> Probability<br>(1-10)</th>
-													<th  style="text-align: center;width: 110px;"> RPN<br>(1-100)</th>
-													<th  style="width:210px" colspan="3" > Mitigation Plans</th>
-													<th  style="width:315px" colspan="2"> Impact</th>		
+													<th  class="text-center width110 " > Severity<br>(1-10)</th>
+													<th  class="text-center width110"> Probability<br>(1-10)</th>
+													<th  class="text-center width110"> RPN<br>(1-100)</th>
+													<th  class="width210" colspan="3" > Mitigation Plans</th>
+													<th  class="width315" colspan="2"> Impact</th>		
 												</tr>
 															
 										</thead>
@@ -1740,11 +1316,11 @@ String isCCS = (String)request.getAttribute("isCCS");
 													<%for(Object[] obj : riskmatirxdata.get(z)){
 													i++;%>
 														<tr>
-															<td style="text-align: center" rowspan="2"><%=i %></td>
-															<td style="text-align: justify;color: red; " colspan="3" >
-																<%=obj[0] %> <span style="color: #3D60FF;font-weight: bold;"> - <%=obj[23] %><%=obj[24]%></span>
+															<td class="text-center" rowspan="2"><%=i %></td>
+															<td class="text-justify text-danger" colspan="3" >
+																<%=obj[0] %> <span class="color-c font-weight-bold"> - <%=obj[23] %><%=obj[24]%></span>
 															</td>
-															<td style="text-align: center" rowspan="1">
+															<td class="text-center" rowspan="1">
 															<%	String actionstatus = obj[15].toString();
 																	LocalDate pdcorg = LocalDate.parse(obj[9].toString());
 																	LocalDate enddate = LocalDate.parse(obj[17].toString());
@@ -1764,8 +1340,6 @@ String isCCS = (String)request.getAttribute("isCCS");
 																	<br>
 															
 															
-																<%-- <% if (obj[11] != null && !LocalDate.parse(obj[11].toString()).equals(LocalDate.parse(obj[10].toString())) ) { %><%=sdf.format(sdf1.parse(obj[11].toString()))%><br> <% } %>
-																<% if (obj[10] != null && !LocalDate.parse(obj[10].toString()).equals(LocalDate.parse(obj[9].toString())) ) { %><%=sdf.format(sdf1.parse(obj[10].toString()))%><br><% } %> --%>
 																<%if(!pdcorg.equals(enddate)) {%>
 																<%=sdf.format(sdf1.parse(obj[17].toString()))%>
 																<%} %>
@@ -1773,12 +1347,10 @@ String isCCS = (String)request.getAttribute("isCCS");
 																<%=sdf.format(sdf1.parse(obj[9].toString()))%>
 															</td>
 															
-														<!-- 	<td style="text-align: center" rowspan="1">
-																
-															</td> -->
+
 																		
 															<td rowspan="1"  ><%=obj[7] %>, <%=obj[8] %></td>	
-															<td style="text-align: center" rowspan="1">
+															<td class="text-center" rowspan="1">
 																	
 																<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
 																	<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
@@ -1805,19 +1377,15 @@ String isCCS = (String)request.getAttribute("isCCS");
 																
 																			
 															</td>
-															<td style="text-align: justify" rowspan="1"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
+															<td class="text-justify" rowspan="1"><%if(obj[19]!=null){ %> <%=obj[19] %><%} %></td>
 																
 														</tr>	
 														
-														<%-- <tr>
-															<td style="text-align: center;" ><% if(obj[23].toString().equalsIgnoreCase("I")){ %> Internal<%}else{ %>External<%} %></td>
-															<td style="text-align: center;" colspan="2" ><%=obj[24] %></td>
-														</tr> --%>
 																		
 														<tr>
-															<td style="text-align: center;" ><%=obj[1] %></td>
-															<td style="text-align: center;" ><%=obj[2] %></td>
-															<td style="text-align: center;">
+															<td class="text-center" ><%=obj[1] %></td>
+															<td class="text-center" ><%=obj[2] %></td>
+															<td class="text-center">
 																<%=obj[22]%>
 																<% int RPN =Integer.parseInt(obj[22].toString());
 																		if(RPN>=1 && RPN<=25){ %>(Low)
@@ -1826,18 +1394,18 @@ String isCCS = (String)request.getAttribute("isCCS");
 																		<%}else if(RPN>=76){ %>(Very High)
 																		<%} %>
 															</td>
-															<td style="text-align: justify;" colspan="3" ><%=obj[3] %></td>
-															<td style="text-align: justify;" colspan="2" ><%=obj[21] %></td>
+															<td class="text-justify" colspan="3" ><%=obj[3] %></td>
+															<td class="text-justify" colspan="2" ><%=obj[21] %></td>
 														</tr>
 																	
 														<%if(riskmatirxdata.get(z).size() > i){ %>
 															<tr>
-																<td colspan="9" style="color:transparent ;">.</td>
+																<td colspan="9" class="color-transparent">.</td>
 															</tr>
 														<%} %>	
 														<%}%>
 													<%}else{%>
-														<tr><td colspan="9"  style="text-align: center;">Nil </td></tr>
+														<tr><td colspan="9"  class="text-center">Nil </td></tr>
 													<%} %>
 												</tbody>		
 											</table>
@@ -1862,14 +1430,14 @@ String isCCS = (String)request.getAttribute("isCCS");
 									</div>	
 								<%} %>
 								
-								<div align="left" style="margin-left: 15px;"><b>(a) Details of Procurement Plan (Major Items)</b></div>
-								<div align="right"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
+								<div align="left" class="margin-left15"><b>(a) Details of Procurement Plan (Major Items)</b></div>
+								<div align="right"> <span class="currency font-weight-bold"  >(In &#8377; Lakhs)</span></div>
 			
 								
-								<table class="subtables" style="width:1200px; margin-left: 8px;margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+								<table class="subtables tbl-sub-copy"  >
 										<thead>
 										<tr>
-											<th colspan="11" style="text-align: right;"> <span class="currency" >(In &#8377; Lakhs)</span></th>
+											<th colspan="11" class="text-right"> <span class="currency" >(In &#8377; Lakhs)</span></th>
 										</tr>
 										 <tr>
 										 	<th colspan="11" class="std">Demand Details ( > &#8377; <% if (projectdatadetails.get(0) != null && projectdatadetails.get(0)[13] != null) { %>
@@ -1880,13 +1448,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 										</thead>
 										
 										<tr>
-											<th class="std" style="border: 1px solid black;width: 30px !important;">SN</th>
-											<th class="std" style="border: 1px solid black;max-width:90px;">Demand No<br>Demand Date</th>
-<!-- 											<th class="std" style="border: 1px solid black;max-width:90px; ">Demand Date</th>
- -->											<th class="std" colspan="4" style="border: 1px solid black;max-width: 150px;"> Nomenclature</th>
-											<th class="std" style="border: 1px solid black;max-width:90px;"> Est. Cost</th>
-											<th class="std" style="border: 1px solid black;max-width:80px; "> Status</th>
-											<th class="std" colspan="3" style="border: 1px solid black;max-width:200px;">Remarks</th>
+											<th class="std th-std" >SN</th>
+											<th class="std th-std1" >Demand No<br>Demand Date</th>
+ 											<th class="std th-std2" colspan="4" > Nomenclature</th>
+											<th class="std th-std1"> Est. Cost</th>
+											<th class="std th-std3" > Status</th>
+											<th class="std th-std4" colspan="3">Remarks</th>
 										</tr>
 										    <% int k=0;
 										    if(procurementOnDemand.get(z)!=null &&  procurementOnDemand.get(z).size()>0){
@@ -1895,40 +1462,39 @@ String isCCS = (String)request.getAttribute("isCCS");
 										    for(Object[] obj : procurementOnDemand.get(z)){ 
 										    	k++; %>
 											<tr>
-												<td class="std"  style=" border: 1px solid black;"><%=k%></td>
-												<td class="std"  style=" border: 1px solid black;"><%=obj[1]%><br><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
-<%-- 												<td class="std"  style=" border: 1px solid black;"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
- --%>												<td class="std" colspan="4" ><%=obj[8]%></td>
-												<td class="std" style=" text-align:right;"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
-												<td class="std"  style=" border: 1px solid black;"> <%=obj[10]%> </td>
-												<td class="std" colspan="3" style=" border: 1px solid black;"><%=obj[11]%> </td>		
+												<td class="std border1px"  ><%=k%></td>
+												<td class="std border1px" ><%=obj[1]%><br><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
+												<td class="std" colspan="4" ><%=obj[8]%></td>
+												<td class="std text-right" > <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
+												<td class="std border1px" > <%=obj[10]%> </td>
+												<td class="std border1px" colspan="3" ><%=obj[11]%> </td>		
 											</tr>		
 											<%
 											estcost += Double.parseDouble(obj[5].toString());
 										    }%>
 										    
 										    <tr>
-										    	<td class="std" colspan="8" style="text-align: right;"><b>Total</b></td>
-										    	<td class="std" style="text-align: right;"><b><%=df.format(estcost)%></b></td>
+										    	<td class="std text-right" colspan="8" ><b>Total</b></td>
+										    	<td class="std text-right"><b><%=df.format(estcost)%></b></td>
 										    	
-										    	<td class="std" colspan="2" style="text-align: right;"></td>
+										    	<td class="std text-right" colspan="2"></td>
 
 										    </tr>
 										    
 										    
 										    <% }else{%>											
-												<tr><td colspan="11" style="border: 1px solid black;text-align: center;" class="std" >Nil </td></tr>
+												<tr><td colspan="11" class="std border1px text-center" >Nil </td></tr>
 											<%} %>
 											<!-- ********************************Future Demand Start *********************************** -->
 											<tr>
-											<th class="std" colspan="11" style="border: 1px solid black"><span class="mainsubtitle">Future Demand</span></th>
+											<th class="std border1px" colspan="11" ><span class="mainsubtitle">Future Demand</span></th>
 											</tr>
 											<tr>
-												 <th class="std" style="border: 1px solid black;width: 15px !important;text-align: center;">SN</th>
-													 <th class="std"  colspan="4" style="border: 1px solid black;;width: 295px;"> Nomenclature</th>
-													 <th class="std" style="border: 1px solid black;width: 80px;"> Est. Cost-Lakh &#8377;</th>
-													 <th class="std" style="border: 1px solid black;max-width:50px; "> Status</th>
-													 <th class="std" colspan="4" style="border: 1px solid black;max-width: 310px;">Remarks</th>
+												 <th class="std border1px width15 text-center">SN</th>
+													 <th class="std width295 border1px"  colspan="4"> Nomenclature</th>
+													 <th class="std border1px width80" > Est. Cost-Lakh &#8377;</th>
+													 <th class="std border1px max-width50"> Status</th>
+													 <th class="std border1px max-width310" colspan="4" >Remarks</th>
 											</tr>
 										
 										    			    <% int a=0;
@@ -1938,24 +1504,24 @@ String isCCS = (String)request.getAttribute("isCCS");
 										    for(Object[] obj : envisagedDemandlist){ 
 										    	a++; %>
 											<tr>
-												<td class="std"  style=" border: 1px solid black;"><%=a%></td>
-												<td class="std" colspan="4" style="border: 1px solid black;" ><%=obj[3]%></td>
-												<td class="std" style="border: 1px solid black; text-align:right;"> <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
-												<td class="std"  style=" border: 1px solid black;"> <%=obj[6]%> </td>
-												<td class="std" colspan="4" style="border: 1px solid black;"><%=obj[4]%> </td>		
+												<td class="std border1px"  ><%=a%></td>
+												<td class="std border1px" colspan="4" ><%=obj[3]%></td>
+												<td class="std border1px text-right" > <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
+												<td class="std border1px"  > <%=obj[6]%> </td>
+												<td class="std border1px" colspan="4" ><%=obj[4]%> </td>		
 											</tr>		
 											<%
 												estcost += Double.parseDouble(obj[2].toString());
 										    }%>
 										    
 										    <tr>
-										    	<td  class="std"colspan="7" style="border: 1px solid black;text-align: right;"><b>Total</b></td>
-										    	<td class="std" style="border: 1px solid black;text-align: right;" colspan="4"><b><%=df.format(estcost)%></b></td>
+										    	<td  class="std border1px text-right"colspan="7" ><b>Total</b></td>
+										    	<td class="std border1px text-right" colspan="4"><b><%=df.format(estcost)%></b></td>
 										    </tr>
 										    
 										    
 										    <% }else{%>											
-												<tr><td colspan="11" style="border: 1px solid black;text-align: center;" class="std" >Nil </td></tr>
+												<tr><td colspan="11"  class="std border1px text-center" >Nil </td></tr>
 											<%} %>
 											
 									<!-- ********************************Future Demand End *********************************** -->
@@ -1968,17 +1534,15 @@ String isCCS = (String)request.getAttribute("isCCS");
 											 </tr>
 										
 										  	 <tr>	
-										  	 	 <th class="std" rowspan="1" style="border: 1px solid black;width: 30px !important;">SN</th>
-										  	 	 <th class="std" style="border: 1px solid black;width:150px;">Demand No <br>Demand  Date</th>
-										  	 	<!--  <th class="std" style="border: 1px solid black;" >Demand  Date</th> -->
-												 <th class="std" colspan="2" style="border: 1px solid black;"> Nomenclature</th>
-												 <th class="std"  style=" border: 1px solid black;width: 150px;">Supply Order No <br> SO Date </th>
-												 <th class="std"  colspan="1" style="border: 1px solid black;width:100px">SO Cost-Lakh &#8377;</th>
-												<!--  <th class="std" style="border: 1px solid black;max-width:90px;	">DP Date</th> -->
-													 <th class="std" style="border: 1px solid black;width:100px;">DP Date<br> Rev DP</th>
-												 <th class="std" colspan="2" style="border: 1px solid black;width: 200px;">Vendor Name</th>
-												 <th class="std" style="border: 1px solid black;max-width:80px; "> Status</th>
-												<th class="std" style="border: 1px solid black;width:200px; "> Remarks</th>
+										  	 	 <th class="std width30 border1px" rowspan="1" >SN</th>
+										  	 	 <th class="std border1px width150" >Demand No <br>Demand  Date</th>
+												 <th class="std border1px" colspan="2" > Nomenclature</th>
+												 <th class="std border1px width150"  >Supply Order No <br> SO Date </th>
+												 <th class="std border1px width100"  colspan="1" >SO Cost-Lakh &#8377;</th>
+													 <th class="std border1px width100" >DP Date<br> Rev DP</th>
+												 <th class="std border1px width200" colspan="2" >Vendor Name</th>
+												 <th class="std border1px max-width80 " > Status</th>
+												<th class="std border1px width200" > Remarks</th>
 												</tr>
 											
 											
@@ -1998,36 +1562,36 @@ String isCCS = (String)request.getAttribute("isCCS");
 													  
 											%>
 					<tr>
-					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>  style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
+					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>  class="border-bottom-none"<%} else{ %> class="border-bottomtop-none"<%} %>>
 					<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
 					<%=rowk %>
 					<%} %>
 					</td>
-					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
+					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> class="border-bottom-none"<%} else{ %> class="border-bottomtop-none"<%} %>>
 					<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %><%if(obj[1]!=null) {%> <%=obj[1].toString()%><% }else{ %>-<%} %><br>
 					<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 					<%} %>
 					</td>
-					<td colspan="2" <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
+					<td colspan="2" <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> class="border-bottom-none"<%} else{ %> class="border-bottomtop-none"<%} %>>
 					<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
 					<%=obj[8]%>
 					<%} %>
 					</td>
-				<td style="border: 1px solid black;text-align: center;"><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %><br>
+				<td class="border1px text-center"><% if(obj[2]!=null){%> <%=obj[2]%> <%}else{ %>-<%} %><br>
 					<%if(obj[16]!=null){%> <%=sdf.format(sdf1.parse(obj[16].toString()))%> <%}else{ %> - <%} %>
 				</td>
-				<td style="border: 1px solid black;text-align: right"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>
-				<td style="border: 1px solid black;">
+				<td class="border1px text-right"><%if(obj[6]!=null){%> <%=format.format(new BigDecimal(obj[6].toString())).substring(1)%> <%} else{ %> - <%} %></td>
+				<td class="border1px">
 				<%if(obj[4]!=null){%> <%=sdf.format(sdf1.parse(obj[4].toString()))%> <%}else{ %> - <%} %><br>
-				<span style="text-align: center"><%if(obj[7]!=null){if(!obj[7].toString().equals("null")){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}}else{ %>-<%} %></span>	</td>
-					<td colspan="2" style="border: 1px solid black;"><%=obj[12] %> </td>
-					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
+				<span class="text-center"><%if(obj[7]!=null){if(!obj[7].toString().equals("null")){%> <%=sdf.format(sdf1.parse(obj[7].toString()))%><%}}else{ %>-<%} %></span>	</td>
+					<td colspan="2" class="border1px"><%=obj[12] %> </td>
+					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> class="border-bottom-none"<%} else{ %> class="border-bottomtop-none"<%} %>>
 						<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
 					<%=obj[10]%>
 					<%} %>
 					
 					</td>					
-					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> style="border: 1px solid black;border-bottom:none;"<%} else{ %> style="border: 1px solid black;border-bottom:none;border-top:none;"<%} %>>
+					<td <%if(!obj[1].toString().equalsIgnoreCase(demand)){ %> class="border-bottom-none"<%} else{ %> class="border-bottomtop-none"<%} %>>
 						<%if(!obj[1].toString().equalsIgnoreCase(demand)){ %>
 					<%=obj[11].toString()%>
 					<%} %>
@@ -2049,17 +1613,17 @@ String isCCS = (String)request.getAttribute("isCCS");
 											%>
 											
 												<tr>
-										    	<td colspan="5" class="std" style="text-align: right;border: 1px solid black;"><b>Total</b></td>
-										    	<td colspan="1" class="std" style="text-align: right;border: 1px solid black;"><b><%=df.format(socost)%></b></td>
-										    	<td colspan="5" class="std" style="text-align: right;border: 1px solid black;"></td>
+										    	<td colspan="5" class="std" class="text-right border1px"><b>Total</b></td>
+										    	<td colspan="1" class="std" class="text-right border1px"><b><%=df.format(socost)%></b></td>
+										    	<td colspan="5" class="std" class="text-right border1px"></td>
 										   		 </tr>	
 										 <% }else{%>
 											
-												<tr><td colspan="8" style="border: 1px solid black;" class="std"  style="text-align: center;">Nil </td></tr>
+												<tr><td colspan="8" class="std border1px text-center" >Nil </td></tr>
 											<%} %>
 									</table> 
-								<div align="right" style="width:980px !important;"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
-								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;" >
+								<div align="right" class="width980"> <span class="currency font-weight-bold" >(In &#8377; Lakhs)</span></div>
+								<table class="subtables tb-sub"  >
 										 <thead>
 											 <tr >
 												 <th colspan="8" ><span class="mainsubtitle">Total Summary of Procurement</span></th>
@@ -2080,59 +1644,59 @@ String isCCS = (String)request.getAttribute("isCCS");
 											 if(obj.getProjectId().equalsIgnoreCase(projectid)){
 										 %>
 										   <tr>
-										      <td style="text-align: center;"><%=obj.getDemandCount() %></td>
-										      <td style="text-align: center;"><%=obj.getEstimatedCost() %></td>
-										      <td style="text-align: center;"><%=obj.getSupplyOrderCount()%></td>
-										      <td style="text-align: center;"><%=obj.getTotalOrderCost() %></td>
-										      <td style="text-align: center;"><%=obj.getTotalExpenditure() %></td>
+										      <td class="text-center"><%=obj.getDemandCount() %></td>
+										      <td class="text-center"><%=obj.getEstimatedCost() %></td>
+										      <td class="text-center"><%=obj.getSupplyOrderCount()%></td>
+										      <td class="text-center"><%=obj.getTotalOrderCost() %></td>
+										      <td class="text-center"><%=obj.getTotalExpenditure() %></td>
 										   </tr>
 										   <%}}}else{%>
 										   <tr>
-										      <td class="std" colspan="5" style="text-align: center;">IBAS Server Could Not Be Connected</td>
+										      <td class="std text-center" colspan="5" >IBAS Server Could Not Be Connected</td>
 										   </tr>
 										   <%} %>
 										   </tbody>
 									  </table>
 									  
 									  
-								<div align="left" style="margin-left: 15px;"><b>(b) Procurement Status</b></div>
-								<div align="right" style="width:980px !important;"> <span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></div>
+								<div align="left" class="margin-left"><b>(b) Procurement Status</b></div>
+								<div align="right" class="width980"> <span class="currency font-weight-bold">(In &#8377; Lakhs)</span></div>
 							 	
-							 	<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;font-size: 12px;" >
+							 	<table class="subtables tb-sub font-size12" >
 									<thead>
 										<tr>
 											<th colspan="29" ><span class="mainsubtitle">Procurement Status</span></th>
 									 	</tr>
 									 	<tr>
-											<th style="width: 30px;">SN</th>
-											<th style="width: 250px;">Item Name</th>
-											<th style="width: 130px;">Est/SO Cost<br><span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
-											<th style="width: 20px;">0</th>
-											<th style="width: 20px;">1</th>
-											<th style="width: 20px;">2</th>
-											<th style="width: 20px;">3</th>
-											<th style="width: 20px;">4</th>
-											<th style="width: 20px;">5</th>
-											<th style="width: 20px;">6</th>
-											<th style="width: 20px;">7</th>
-											<th style="width: 20px;">8</th>
-											<th style="width: 20px;">9</th>
-											<th style="width: 20px;">10</th>
-											<th style="width: 20px;">11</th>
-											<th style="width: 20px;">12</th>
-											<th style="width: 20px;">13</th>
-											<th style="width: 20px;">14</th>
-											<th style="width: 20px;">15</th>
-											<th style="width: 20px;">16</th>
-											<th style="width: 20px;">17</th>
-											<th style="width: 20px;">18</th>
-											<th style="width: 20px;">19</th>
-											<th style="width: 20px">20</th>
-											<th style="width: 20px">21</th>
-											<th style="width: 20px">22</th>
-											<th style="width: 20px">23</th>
-											<th style="width: 20px">24</th>
-											<th style="width: 20px">25</th>
+											<th class="width30">SN</th>
+											<th class="width250">Item Name</th>
+											<th class="width130">Est/SO Cost<br><span class="currency font-weight-bold" >(In &#8377; Lakhs)</span></th>
+											<th class="width20">0</th>
+											<th class="width20">1</th>
+											<th class="width20">2</th>
+											<th class="width20">3</th>
+											<th class="width20">4</th>
+											<th class="width20">5</th>
+											<th class="width20">6</th>
+											<th class="width20">7</th>
+											<th class="width20">8</th>
+											<th class="width20">9</th>
+											<th class="width20">10</th>
+											<th class="width20">11</th>
+											<th class="width20">12</th>
+											<th class="width20">13</th>
+											<th class="width20">14</th>
+											<th class="width20">15</th>
+											<th class="width20">16</th>
+											<th class="width20">17</th>
+											<th class="width20">18</th>
+											<th class="width20">19</th>
+											<th class="width20">20</th>
+											<th class="width20">21</th>
+											<th class="width20">22</th>
+											<th class="width20">23</th>
+											<th class="width20">24</th>
+											<th class="width20">25</th>
 									 	</tr>
 									</thead>
 									<tbody>
@@ -2143,16 +1707,16 @@ String isCCS = (String)request.getAttribute("isCCS");
 										%>
 										<%int psn=0; for(Object[] proc : procuremntsList){psn++; %>
 											<tr>
-												<td style="text-align:center; "><%=psn %></td>
+												<td class="text-center"><%=psn %></td>
 												<td><%=proc[8] %></td>
-												<td style="text-align: right;">
+												<td class="text-right">
 													<%if(proc[9].toString().equalsIgnoreCase("S")){ %>
 														<%=proc[6] %>
 													<%}else{ %>
 														<%=proc[5] %>
 													<%} %>
 												</td>
-												<td style="background-color: green;"></td>
+												<td class="bg-success"></td>
 												<% int filestatus = Integer.parseInt(proc[13].toString()); 
 													int tempstatus = filestatus;
 													%>
@@ -2163,11 +1727,11 @@ String isCCS = (String)request.getAttribute("isCCS");
 													
 													
 													<%if(tdc < (tempstatus)){ %>
-														<td style="background-color: green;"></td>
+														<td class="bg-success"></td>
 													<%}else if(tdc == (tempstatus)){ %>
-														<td style="background-color: green;text-align: center;color: white ">*</td>
+														<td class="bg-success text-center text-white ">*</td>
 													<%}else if(tdc >(tempstatus)){ %>
-														<td style=""></td>
+														<td ></td>
 													<%} %>
 													
 												<%} %>
@@ -2175,10 +1739,10 @@ String isCCS = (String)request.getAttribute("isCCS");
 										<%}if(envisagedDemandlist!=null && envisagedDemandlist.size()>0){
 										for(Object[] envi : envisagedDemandlist){psn++; %>
 										<tr>
-												<td style="text-align:center; "><%=psn %></td>
+												<td class="text-center"><%=psn %></td>
 												<td><%=envi[3] %></td>
-												<td style="text-align: right;"><%=envi[2] %></td>
-												<td style="background-color: #F96E16;text-align: center; ">*</td>
+												<td class="text-right"><%=envi[2] %></td>
+												<td class=" bgColor text-center">*</td>
 												<td></td>
 												<td></td>
 												<td></td>
@@ -2208,14 +1772,14 @@ String isCCS = (String)request.getAttribute("isCCS");
 										<%}} %>
 										<%if(psn ==0 && envisagedDemandlist.size()==0 ){ %>
 											<tr>
-										      <td colspan="29" style="text-align: center;">Nil</td>
+										      <td colspan="29" class="text-center">Nil</td>
 										   </tr>
 										<%} %>
 										
 										
 								 	</tbody>
 								</table>
-								<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;font-size: 12px;" >
+								<table class="subtables tb-sub font-size12" >
 									<tr>
 										<td>0</td>
 										<td>Demand to be Initiated</td>
@@ -2295,7 +1859,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 				 	
 						<details>
-   						<summary role="button" tabindex="0"><b>8. Overall Financial Status  <i style="text-decoration: underline;">(&#8377; Crore)</i> </b> </summary>
+   						<summary role="button" tabindex="0"><b>8. Overall Financial Status  <i class="text-underline">(&#8377; Crore)</i> </b> </summary>
    						
 											  	<div class="content">
 						  	<%for(int z=0;z<projectidlist.size();z++){ 
@@ -2311,25 +1875,25 @@ String isCCS = (String)request.getAttribute("isCCS");
 							<%} %>	
 						  	
 						  	<br>				 
-						  	<table  class="subtables" style="width: 980px;">
+						  	<table  class="subtables width1100" >
 						  	    <thead>
 		                           <tr>
-		                         	<th colspan="2" style="text-align: center ;width:200px !important;">Head</th>
-		                         	<th colspan="2" style="text-align: center;width:120px !important;">Sanction</th>
-			                        <th colspan="2" style="text-align: center;width:120px !important;">Expenditure</th>
-			                        <th colspan="2" style="text-align: center;width:120px !important;">Out Commitment </th>
-		                           	<th colspan="2" style="text-align: center;width:120px !important;">Balance</th>
-			                        <th colspan="2" style="text-align: center;width:120px !important;">DIPL</th>
-		                          	<th colspan="2" style="text-align: center;width:120px !important;">Notional Balance</th>
+		                         	<th colspan="2" class="text-center width200">Head</th>
+		                         	<th colspan="2" class="text-center width120">Sanction</th>
+			                        <th colspan="2" class="text-center width120">Expenditure</th>
+			                        <th colspan="2" class="text-center width120">Out Commitment </th>
+		                           	<th colspan="2" class="text-center width120">Balance</th>
+			                        <th colspan="2" class="text-center width120">DIPL</th>
+		                          	<th colspan="2" class="text-center width120">Notional Balance</th>
 		                          	<%if(IsIbasConnected!=null &&  IsIbasConnected.equalsIgnoreCase("N")) {%>
-		                          	<th colspan="1" style="text-align: center;border: none;">
-		                          	<button data-toggle="tooltip" onclick ="showModal(<%=projectid %>,'<%=ProjectDetail.get(z)[0] %>','<%=ProjectDetail.get(z)[1] %>')" class="btn btn-sm"  style="cursor: pointer;font-weight: 600"  type="button"  data-toggle="tooltip" data-placement="right"  title="Upload Overall Finance"  ><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i>&nbsp;Excel Upload</button>
+		                          	<th colspan="1" class="text-center border-0">
+		                          	<button data-toggle="tooltip" onclick ="showModal(<%=projectid %>,'<%=ProjectDetail.get(z)[0] %>','<%=ProjectDetail.get(z)[1] %>')" class="btn btn-sm cursor-pointer"   type="button"  data-toggle="tooltip" data-placement="right"  title="Upload Overall Finance"  ><i class="fa fa-file-excel-o bg-success" aria-hidden="true" ></i>&nbsp;Excel Upload</button>
 		                       	<jsp:include page="../print/OverallExcelUpload.jsp"></jsp:include> 
 		                          	</th> <%} %>
 			                      </tr>
 			                      <tr>
-				                    <th style="width:30px !important;text-align: center;" >SN</th>
-				                    <th   style="width:180px !important;" width="10">Head</th>
+				                    <th class="width30 text-center" >SN</th>
+				                    <th   class="width180">Head</th>
 				                    <th>RE</th>
 				                    <th>FE</th>
 				                    <th>RE</th>
@@ -2353,58 +1917,58 @@ String isCCS = (String)request.getAttribute("isCCS");
 			                      for(ProjectFinancialDetails projectFinancialDetail:projectFinancialDetails.get(z)){                       %>
 			 
 			                         <tr>
-										<td align="center" style="max-width:50px !important;text-align: center;"><%=count++ %></td>
+										<td align="center" class="max-width50 text-center"><%=count++ %></td>
 										<td ><b><%=projectFinancialDetail.getBudgetHeadDescription()%></b></td>
-										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
+										<td align="right" class="text-right"><%=df.format(projectFinancialDetail.getReSanction()) %></td>
 										<%totReSanctionCost+=(projectFinancialDetail.getReSanction());%>
-										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
+										<td align="right" class="text-right"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
 										<%totFESanctionCost+=(projectFinancialDetail.getFeSanction());%>
-										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
+										<td align="right" class="text-right"><%=df.format(projectFinancialDetail.getReExpenditure()) %></td>
 										<%totREExpenditure+=(projectFinancialDetail.getReExpenditure());%>
-									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
+									    <td align="right" class="text-right"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
 										<%totFEExpenditure+=(projectFinancialDetail.getFeExpenditure());%>
-									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
+									    <td align="right" class="text-right"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
 										<%totRECommitment+=(projectFinancialDetail.getReOutCommitment());%>
-									    <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
+									    <td align="right" class="text-right"><%=df.format(projectFinancialDetail.getFeOutCommitment())%></td>
 										<%totFECommitment+=(projectFinancialDetail.getFeOutCommitment());%>
-										<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
+										<td align="right" class="text-right"><%=df.format(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl())%></td>
 										<%btotalRe+=(projectFinancialDetail.getReBalance()+projectFinancialDetail.getReDipl());%>
-										<td align="right"style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
+										<td align="right" class="text-right"><%=df.format(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl())%></td>
 								       	<%btotalFe+=(projectFinancialDetail.getFeBalance()+projectFinancialDetail.getFeDipl());%>
-										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
+										<td align="right" class="text-right"><%=df.format(projectFinancialDetail.getReDipl())%></td>
 										<%totalREDIPL+=(projectFinancialDetail.getReDipl());%>
-										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
+										<td align="right" class="text-right"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
 										<%totalFEDIPL+=(projectFinancialDetail.getFeDipl());%>
-										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
+										<td align="right" class="text-right"><%=df.format(projectFinancialDetail.getReBalance())%></td>
 										<%totReBalance+=(projectFinancialDetail.getReBalance());%>
-										<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
+										<td align="right" class="text-right"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
 										<%totFeBalance+=(projectFinancialDetail.getFeBalance());%>
 									</tr>
 			<%} }%>
 
 					<tr>
 						<td colspan="2"><b>Total</b></td>
-						<td align="right" style="text-align: right;"><%=df.format(totReSanctionCost)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totFESanctionCost)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totREExpenditure)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totFEExpenditure)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totRECommitment)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totFECommitment)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(btotalRe)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(btotalFe)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totalREDIPL)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totalFEDIPL)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totReBalance)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totFeBalance)%></td>
+						<td align="right" class="text-right"><%=df.format(totReSanctionCost)%></td>
+						<td align="right" class="text-right"><%=df.format(totFESanctionCost)%></td>
+						<td align="right" class="text-right"><%=df.format(totREExpenditure)%></td>
+						<td align="right" class="text-right"><%=df.format(totFEExpenditure)%></td>
+						<td align="right" class="text-right"><%=df.format(totRECommitment)%></td>
+						<td align="right" class="text-right"><%=df.format(totFECommitment)%></td>
+						<td align="right" class="text-right"><%=df.format(btotalRe)%></td>
+						<td align="right" class="text-right"><%=df.format(btotalFe)%></td>
+						<td align="right" class="text-right"><%=df.format(totalREDIPL)%></td>
+						<td align="right" class="text-right"><%=df.format(totalFEDIPL)%></td>
+						<td align="right" class="text-right"><%=df.format(totReBalance)%></td>
+						<td align="right" class="text-right"><%=df.format(totFeBalance)%></td>
 					</tr>
 					<tr>
 						<td colspan="2"><b>GrandTotal</b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReSanctionCost+totFESanctionCost)%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totREExpenditure+totFEExpenditure)%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totRECommitment+totFECommitment)%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(btotalRe+btotalFe)%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totalREDIPL+totalFEDIPL)%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReBalance+totFeBalance)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(totReSanctionCost+totFESanctionCost)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(totREExpenditure+totFEExpenditure)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(totRECommitment+totFECommitment)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(btotalRe+btotalFe)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(totalREDIPL+totalFEDIPL)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(totReBalance+totFeBalance)%></b></td>
 					</tr>
 			                         
 			                         
@@ -2419,70 +1983,70 @@ String isCCS = (String)request.getAttribute("isCCS");
 			    	for(Object[]obj:overallfinance.get(z)){ 
 			    	 %>
 			    	 <tr>
-			   <td align="center" style="max-width:50px !important;text-align: center;"><%=++count %></td>
-				<td style="text-align: justify ;"><b><%=obj[4].toString()%></b></td>
-				<td style="text-align: right;"><%=obj[5].toString()%></td>
-				<td style="text-align: right;"><%=obj[6].toString()%></td>
-				<td style="text-align: right;"><%=obj[7].toString()%></td>
-				<td style="text-align: right;"><%=obj[8].toString()%></td>
-				<td style="text-align: right;"><%=obj[9].toString()%></td>
-				<td style="text-align: right;"><%=obj[10].toString()%></td>
-				<td style="text-align: right;"><%=obj[11].toString()%></td>
-				<td style="text-align: right;"><%=obj[12].toString()%></td>
-				<td style="text-align: right;"><%=obj[13].toString()%></td>
-				<td style="text-align: right;"><%=obj[14].toString()%></td>
-				<td style="text-align: right;"><%=obj[15].toString()%></td>
-				<td style="text-align: right;"><%=obj[16].toString()%></td>
+			   <td align="center" class="max-width50 text-center"><%=++count %></td>
+				<td class="text-justify"><b><%=obj[4].toString()%></b></td>
+				<td class="text-right"><%=obj[5].toString()%></td>
+				<td class="text-right"><%=obj[6].toString()%></td>
+				<td class="text-right"><%=obj[7].toString()%></td>
+				<td class="text-right"><%=obj[8].toString()%></td>
+				<td class="text-right"><%=obj[9].toString()%></td>
+				<td class="text-right"><%=obj[10].toString()%></td>
+				<td class="text-right"><%=obj[11].toString()%></td>
+				<td class="text-right"><%=obj[12].toString()%></td>
+				<td class="text-right"><%=obj[13].toString()%></td>
+				<td class="text-right"><%=obj[14].toString()%></td>
+				<td class="text-right"><%=obj[15].toString()%></td>
+				<td class="text-right"><%=obj[16].toString()%></td>
 				</tr>
 			     <%}%>
 			    	 	<tr>
 						<td colspan="2"><b>Total</b></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[17].toString()%></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[18].toString()%></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[19].toString()%></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[20].toString()%></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[21].toString()%></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[22].toString()%></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[23].toString()%></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[24].toString()%></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[25].toString()%></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[26].toString()%></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[27].toString()%></td>
-						<td align="right" style="text-align: right;"><%=overallfinance.get(z).get(0)[28].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[17].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[18].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[19].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[20].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[21].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[22].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[23].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[24].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[25].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[26].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[27].toString()%></td>
+						<td align="right" class="text-right"><%=overallfinance.get(z).get(0)[28].toString()%></td>
 					</tr>
 			     	<tr>
 						<td colspan="2"><b>GrandTotal</b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[17].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[18].toString())%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[19].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[20].toString())%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[21].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[22].toString())%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[23].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[24].toString())%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[25].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[26].toString())%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[27].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[28].toString())%></b></td>				     
+						<td colspan="2" align="right" class="text-right"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[17].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[18].toString())%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[19].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[20].toString())%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[21].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[22].toString())%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[23].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[24].toString())%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[25].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[26].toString())%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=Double.parseDouble(overallfinance.get(z).get(0)[27].toString())  +Double.parseDouble(overallfinance.get(z).get(0)[28].toString())%></b></td>				     
 			     	</tr>
 			     <%}else{%> 
 			     	<tr>
 						<td colspan="2"><b>Total</b></td>
-						<td align="right" style="text-align: right;"><%=df.format(totReSanctionCost)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totFESanctionCost)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totREExpenditure)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totFEExpenditure)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totRECommitment)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totFECommitment)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(btotalRe)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(btotalFe)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totalREDIPL)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totalFEDIPL)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totReBalance)%></td>
-						<td align="right" style="text-align: right;"><%=df.format(totFeBalance)%></td>
+						<td align="right" class="text-right"><%=df.format(totReSanctionCost)%></td>
+						<td align="right" class="text-right"><%=df.format(totFESanctionCost)%></td>
+						<td align="right" class="text-right"><%=df.format(totREExpenditure)%></td>
+						<td align="right" class="text-right"><%=df.format(totFEExpenditure)%></td>
+						<td align="right" class="text-right"><%=df.format(totRECommitment)%></td>
+						<td align="right" class="text-right"><%=df.format(totFECommitment)%></td>
+						<td align="right" class="text-right"><%=df.format(btotalRe)%></td>
+						<td align="right" class="text-right"><%=df.format(btotalFe)%></td>
+						<td align="right" class="text-right"><%=df.format(totalREDIPL)%></td>
+						<td align="right" class="text-right"><%=df.format(totalFEDIPL)%></td>
+						<td align="right" class="text-right"><%=df.format(totReBalance)%></td>
+						<td align="right" class="text-right"><%=df.format(totFeBalance)%></td>
 					</tr>
 					<tr>
 						<td colspan="2"><b>GrandTotal</b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReSanctionCost+totFESanctionCost)%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totREExpenditure+totFEExpenditure)%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totRECommitment+totFECommitment)%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(btotalRe+btotalFe)%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totalREDIPL+totalFEDIPL)%></b></td>
-						<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReBalance+totFeBalance)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(totReSanctionCost+totFESanctionCost)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(totREExpenditure+totFEExpenditure)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(totRECommitment+totFECommitment)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(btotalRe+btotalFe)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(totalREDIPL+totalFEDIPL)%></b></td>
+						<td colspan="2" align="right" class="text-right"><b><%=df.format(totReBalance+totFeBalance)%></b></td>
 					</tr>
 			     <% }%>
 			     </tbody>
@@ -2514,13 +2078,13 @@ String isCCS = (String)request.getAttribute("isCCS");
 							<%} %>
 					
 					
-				<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+				<table class="subtables table-subtables">
 				
 				
 						<thead>
 							<tr>
-								<td colspan="9" style="border: 0">
-									<p style="font-size: 10px;text-align: center"> 
+								<td colspan="9" class="border-0">
+									<p class="font-size10 text-center"> 
 									<span class="notassign">NA</span> : Not Assigned &nbsp;
 									<span class="assigned">AA</span> : Activity Assigned &nbsp;
 									<span class="ongoing">OG</span> : On Going &nbsp;
@@ -2536,19 +2100,18 @@ String isCCS = (String)request.getAttribute("isCCS");
 							</tr>
 							
 							<tr>
-									<th style="width: 15px !important;text-align: center;">SN</th>
-									<th style="width: 20px; ">MS</th>
-									<th style="width: 50px; ">L</th>
-									<th style="width: 275px;">Action Plan </th>	
-									<th style="width: 110px;" >PDC</th>	
+									<th class="width15 text-center">SN</th>
+									<th class="width20">MS</th>
+									<th class="width50">L</th>
+									<th class="width275">Action Plan </th>	
+									<th class="width110" >PDC</th>	
 									
 									<%if(!session.getAttribute("labcode").toString().equalsIgnoreCase("ADE")) {%>
-									<th style="width: 210px;">Responsibility </th>
+									<th class="width210">Responsibility </th>
 									<%} %>
-									<th style="width: 50px;">Progress </th>
-					                <th style="width: 50px;padding-right: 5px !important; ">Status(DD)</th>
-					             	<!-- <th style="width: 100px;" >FO ( &#x20B9; Cr)</th> -->
-					                <th style="width: 220px;">Remarks</th>
+									<th class="width50">Progress </th>
+					                <th class="width50 padding-right5">Status(DD)</th>
+					                <th class="width220">Remarks</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -2563,14 +2126,13 @@ String isCCS = (String)request.getAttribute("isCCS");
 									<%int serialno=1; for(Object[] obj:actionplanthreemonths.get(z)){
 										
 										if(Integer.parseInt(obj[26].toString())<= Integer.parseInt(levelid) ){
-										/*  if(obj[26].toString().equals("0")||obj[26].toString().equals("1")){ */
 										%>
 										
 										<tr>
-											<td style="text-align: center;"><%=serialno %></td>
-											<td style="text-align: center">M<%=obj[22] %></td>
+											<td class="text-center"><%=serialno %></td>
+											<td class="text-center">M<%=obj[22] %></td>
 							
-											<td style="text-align: center">
+											<td class="text-center">
 												<%
 												
 												if(obj[26].toString().equals("0")) {%>
@@ -2587,23 +2149,14 @@ String isCCS = (String)request.getAttribute("isCCS");
 												<%=entry.getValue() %>
 										<%}} 
 									 %>
-											<%-- 		A-<%=countA %> --%>
-												<% /* countA++;
-												    countB=1;
-												    countC=1;
-													countD=1;
-													countE=1; */
+												<% 
 													}else if(obj[26].toString().equals("2")) {
 													for(Map.Entry<Integer,String>entry:treeMapLevTwo.entrySet()){
 														if(entry.getKey().toString().equalsIgnoreCase(obj[3].toString())){%>
 															<%=entry.getValue() %>
 													<%}} 
 													%>
-													<%-- B-<%=countB %> --%>
-												<%/* countB+=1;
-												countC=1;
-												countD=1;
-												countE=1; */
+												<%
 												}else if(obj[26].toString().equals("3")) { %>
 													C-<%=countC %>
 												<%countC+=1;
@@ -2620,7 +2173,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 												} %>
 											</td>
 											
-											<td style="<%if(obj[26].toString().equals("0")) {%>font-weight: bold;<%}%>;text-align:justify ">
+											<td class="<%if(obj[26].toString().equals("0")) {%>font-weight-bold<%}%> text-justify ">
 												<%if(obj[26].toString().equals("0")) {%>
 													<%=obj[9] %>
 												<%}else if(obj[26].toString().equals("1")) { %>
@@ -2635,7 +2188,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 													&nbsp;&nbsp;<%=obj[14] %>
 												<%} %>
 											</td>
-											<td  style="text-align:center">
+											<td  class="text-center">
 												
 												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[29].toString())) ){ %> 
 													<%=sdf.format(sdf1.parse(obj[8].toString())) %> 
@@ -2648,7 +2201,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 											
 											<td ><%=obj[24] %>, <%=obj[25] %></td>
 											<%} %>
-											<td style="text-align: center"><%=obj[16] %>%</td>	
+											<td class="text-center"><%=obj[16] %>%</td>	
 											<% 
 												LocalDate StartDate = LocalDate.parse(obj[7].toString());
 												LocalDate EndDate = LocalDate.parse(obj[8].toString());
@@ -2658,24 +2211,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 												LocalDate Today = LocalDate.now();
 												
 											%>										
-											<td  style="text-align: center">
-											<%-- <span class="<%if(obj[20].toString().equalsIgnoreCase("0")){%>assigned
-												<%}else if(obj[20].toString().equalsIgnoreCase("1")) {%> assigned
-												<%}else if(obj[20].toString().equalsIgnoreCase("2")) {%> ongoing
-												<%}else if(obj[20].toString().equalsIgnoreCase("3")) {%> completed
-												<%}else if(obj[20].toString().equalsIgnoreCase("4")) {%> delay 
-												<%}else if(obj[20].toString().equalsIgnoreCase("5")) {%> completeddelay
-												<%}else if(obj[20].toString().equalsIgnoreCase("6")) {%> inactive<%} %>	 status-column " >
-												
-												<%=obj[27] %>	
-												
-												<%if((obj[20].toString().equalsIgnoreCase("3") || obj[20].toString().equalsIgnoreCase("5") )&& obj[18]!=null){ %>
-													(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.parse(obj[18].toString())) %>) 
-												<%}else if(obj[20].toString().equalsIgnoreCase("4")){ %>
-													(<%= ChronoUnit.DAYS.between(LocalDate.parse(obj[29].toString()), LocalDate.now()) %>)
-												<%} %>
-												
-											</span> --%>
+											<td  class="text-center">
 											
 											<%if(Progess==0){ %>
 												<span class="assigned"> AA </span>
@@ -2705,7 +2241,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 									<%count1++; serialno++;}} %>
 								<%} else{ %>
 								
-								<tr><td colspan="9" style="text-align:center; "> Nil</td></tr>
+								<tr><td colspan="9" class="text-center"> Nil</td></tr>
 								
 								<%} %>
 								
@@ -2722,7 +2258,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 <!--  ---------------------------------------------------------------------------------------------------------------------------------------------  -->						
 						
 					<details >
-   						<summary role="button" tabindex="0"><b> 10. GANTT chart of overall project schedule [<span style="text-decoration: underline;">Original </span>(as per Project sanction / Latest PDC extension) and <span style="text-decoration: underline;">Current</span>]</b>    </summary>
+   						<summary role="button" tabindex="0"><b> 10. GANTT chart of overall project schedule [<span class="text-underline">Original </span>(as per Project sanction / Latest PDC extension) and <span class="text-underline">Current</span>]</b>    </summary>
    						
 						    <div class="content">
 							    <%for(int z=0;z<1;z++){ %>
@@ -2734,20 +2270,20 @@ String isCCS = (String)request.getAttribute("isCCS");
 									<%} %>	
 								    <div class="row">
 								    	<div class="col-md-9 ">
-											<form method="post" style="float: right;margin-top:13px;" enctype="multipart/form-data" >
+											<form method="post" class="form-post" enctype="multipart/form-data" >
 												<label>Note : Upload PNG image only.</label>
 												<input type="file" name="FileAttach" id="FileAttach"  required="required"  accept="image/png"/>
 												<input type="hidden" name="ChartName"  value="grantt_<%=projectidlist.get(z)%>_<%=No2%>"> 
-												<button type="submit" class="btn btn-sm back" formaction="GanttChartUpload.htm"  style="margin-right: 50px;margin" >Upload</button>
-												<button type="submit" formtarget="_blank" class="btn btn-sm back" formaction="GanttChartSub.htm" formnovalidate="formnovalidate" style="float:right; background-color: #DE834D; font-weight: 600;border:0px;">Sub Level</button>
+												<button type="submit" class="btn btn-sm back margin-right" formaction="GanttChartUpload.htm"  >Upload</button>
+												<button type="submit" formtarget="_blank" class="btn btn-sm back ganttChartSub" formaction="GanttChartSub.htm" formnovalidate="formnovalidate" >Sub Level</button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 												<input type="hidden" name="ProjectId" id="ProjectId" value="<%=projectidlist.get(z)%>"> 
 												<input type="hidden" name="committeeid" value="<%=committeeid%>">
 											</form>
 										</div>
-										<div class="col-md-3" style="float:right;margin-top:10px;  ">
+										<div class="col-md-3 margin-top10 float-right">
 											<label>Interval : &nbsp;&nbsp;&nbsp; </label>
-											<select class="form-control selectdee " name="interval_<%=projectidlist.get(z)%>" id="interval_<%=projectidlist.get(z)%>" required="required"  data-live-search="true"  style="width:150px !important" >
+											<select class="form-control selectdee width150" name="interval_<%=projectidlist.get(z)%>" id="interval_<%=projectidlist.get(z)%>" required="required"  data-live-search="true" >
 				                                <option value="quarter"> Quarterly </option>
 				                                <option value="half" >Half-Yearly</option>
 				                                <option value="year" >Yearly</option>
@@ -2758,20 +2294,20 @@ String isCCS = (String)request.getAttribute("isCCS");
 	<!-- -----------------------------------------------gantt chart js ------------------------------------------------------------------------------------------------------------------------------- -->						    		
 									
 										
-											<div class="row" style="margin-top: 10px;font-weight: bold;"   >
+											<div class="row margin-top10 font-weight-bold"    >
 												<div class="col-md-4"></div>
 												<div class="col-md-4"></div>
 												<div class="col-md-4">
-													<div style="font-weight: bold; " >
-														<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #29465B;  padding: 0px 15px; border-radius: 3px;"></span></span>
-														<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #059212;  padding: 0px 15px;border-radius: 3px;"></span></span>
-														<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #f25287; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
+													<div class="font-weight-bold" >
+														<span class="span1">Original :&ensp; <span class="spa1"></span></span>
+														<span class="span2">Ongoing :&ensp; <span class="spa2"></span></span>
+														<span class="span2">Revised :&ensp; <span class="spa3"></span></span>
 													</div>
 												</div>
 											</div>
 										
 									<div class="row">
-										<div class="col-md-12" style="float: right;" align="center">
+										<div class="col-md-12 float-right" align="center">
 										   	<div class="flex-container containers" id="containers_<%=projectidlist.get(z)%>"  ></div>
 										</div>		
 									</div>		
@@ -2795,11 +2331,11 @@ String isCCS = (String)request.getAttribute("isCCS");
 									<%} %>	
 										   		 
 									
-			<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;   border-collapse:collapse;" >
+			<table class="subtables table-subtables" >
 						<thead>
 							<tr>
-								<td colspan="7" style="border: 0">
-									<p style="font-size: 10px;text-align: center"> 
+								<td colspan="7" class="border-0">
+									<p class="font-size10 text-center"> 
 										<span class="notassign">NA</span> : Not Assigned &nbsp;&nbsp;
 										<span class="assigned">AA</span> : Activity Assigned &nbsp;&nbsp; 
 										<span class="ongoing">OG</span> : On Going &nbsp;&nbsp; 
@@ -2814,19 +2350,18 @@ String isCCS = (String)request.getAttribute("isCCS");
 								</td>									
 							</tr>
 							<tr>
-								<th  style="width: 20px !important;text-align: center;">SN</th>
-								<th  style="width: 50px !important;text-align: center;">ID</th>
-								<th  style="width: 300px;">Issue Point</th>
-								<th  style="width: 120px; "> ADC <br> PDC</th>
-								<!-- <th  style="width: 100px; "> ADC</th> -->
-								<th  style="width: 210px; ">Responsibility</th>
-								<th  style="width: 50px; " >Status(DD)</th>	
-								<th  style="width: 230px; ">Remarks</th>		
+								<th  class="width20 text-center">SN</th>
+								<th  class="width50 text-center">ID</th>
+								<th  class="width300">Issue Point</th>
+								<th  class="width120 "> ADC <br> PDC</th>
+								<th  class="width210 ">Responsibility</th>
+								<th  class="width50 " >Status(DD)</th>	
+								<th  class="width230">Remarks</th>		
 							</tr>
 						</thead>
 						<tbody>				
 										<%if(oldpmrcissueslist.get(z).size()==0){ %>
-										<tr><td colspan="7" style="text-align: center;" > Nil</td></tr>
+										<tr><td colspan="7" class="text-center" > Nil</td></tr>
 										<%}
 										else if(oldpmrcissueslist.get(z).size()>0)
 										{
@@ -2835,20 +2370,20 @@ String isCCS = (String)request.getAttribute("isCCS");
 											if(!obj[9].toString().equals("C")  || (obj[9].toString().equals("C") && obj[13]!=null && before6months.isBefore(LocalDate.parse(obj[13].toString())) )){
 											%>
 											<tr>
-												<td  style="text-align: center;"><%=i %></td>
-																<td style="text-align: center;" >
+												<td  class="text-center"><%=i %></td>
+																<td class="text-center" >
 									<%if(obj[18]!=null && Long.parseLong(obj[18].toString())>0){
 										String []temp=obj[1].toString().split("/");
 										String tempString=temp[temp.length-1];
 										%>
-										<span style="font-weight: bold">
+										<span class="font-weight-bold">
 										<%=tempString %>
 										</span>
 									<%}%>
 								</td>
-												<td  style="text-align: justify;"><%=obj[2] %></td>
-												<td   style="text-align: center;" >
-													<span style="color:green;">		<%	String actionstatus = obj[9].toString();
+												<td  class="text-ustify"><%=obj[2] %></td>
+												<td  class="text-center" >
+													<span class="bg-success">		<%	String actionstatus = obj[9].toString();
 															int progress = obj[16]!=null ? Integer.parseInt(obj[16].toString()) : 0;
 															LocalDate pdcorg = LocalDate.parse(obj[3].toString());
 															LocalDate endDate = LocalDate.parse(obj[4].toString());
@@ -2866,22 +2401,18 @@ String isCCS = (String)request.getAttribute("isCCS");
 													<%} %>
 												
 												<br></span>
-													<%-- <% if (obj[6] != null && !LocalDate.parse(obj[6].toString()).equals(LocalDate.parse(obj[5].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[6].toString()))%><br> <% } %> 
-													<% if (obj[5] != null && !LocalDate.parse(obj[5].toString()).equals(LocalDate.parse(obj[3].toString())) ) { %> <%=sdf.format(sdf1.parse(obj[5].toString()))%><br> <% } %> --%>
+													
 													<%if(!pdcorg.equals(endDate)){ %>
 													<%=sdf.format(sdf1.parse(obj[4].toString()))%><br>
 													<%} %>
 													<%=sdf.format(sdf1.parse(obj[3].toString()))%>
 												</td>
 
-	<!-- 											<td  style="text-align: center;"> 
-
-												</td> -->
 											
 
 												<td > <%=obj[11] %>, <%=obj[12] %></td>
 
-												<td  style=";text-align: center;"> 
+												<td  class="text-center"> 
 													<%if(obj[4]!= null){ %> 
 														
 														<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){%>
@@ -2931,11 +2462,11 @@ String isCCS = (String)request.getAttribute("isCCS");
 						  <%if(nextMeetVenue!=null && nextMeetVenue[0]!=null){%>
 						  
 						  	<form action="RecDecDetailsAdd.htm" method="post" id="recdecdetails">
-								<div class="row" style="margin-top: 10px;">
+								<div class="row margin-top10" >
 									<div class="col-md-4"> 
 										<table class="table table-bordered table-hover table-striped table-condensed ">
 											<thead>
-												<tr><th style="width: 5%;">SN</th><th style="width: 80%;">Type</th><th style="width: 5%;">Action</th></tr>
+												<tr><th class="width-5">SN</th><th class="width-80">Type</th><th class="width-5">Action</th></tr>
 											</thead>
 											<tbody>
 											<%int i=0; if(RecDecDetails!=null && RecDecDetails.size()>0){ 
@@ -2948,19 +2479,19 @@ String isCCS = (String)request.getAttribute("isCCS");
 												}
 												%>
 												<tr>
-													<td style="width: 5%; text-align: center;"> <%=++i%></td>
-													<td style="width: 80%; word-wrap: break-word;">
-													<b style="color: #145374;"><%=obj[2]%> :-</b>
-													  <%if(pointdata.length()>30){%> <%=pointdata.substring(0,30)%>  <span onclick="RecDecmodal('<%=obj[0]%>')" style="color:#1176ab;font-size: 14px; cursor: pointer;"><b> ...View More </b></span> <%}else{%> <%=pointdata%><%}%>
+													<td class="width-5 text-center"> <%=++i%></td>
+													<td class="width-80 text-break">
+													<b class="color145374"><%=obj[2]%> :-</b>
+													  <%if(pointdata.length()>30){%> <%=pointdata.substring(0,30)%>  <span onclick="RecDecmodal('<%=obj[0]%>')" class="color1176ab"><b> ...View More </b></span> <%}else{%> <%=pointdata%><%}%>
 													  </td>
-													<td style="text-align: center;width: 5%;"> 
-													<button class="btn btn-warning btn-sm" type="button" onclick="RecDecEdit('<%=obj[0]%>' )" value="EDIT"  > <i class="fa fa-pencil-square-o" style="color:#100f0e;" aria-hidden="true"></i></button>
+													<td class="text-center width-5"> 
+													<button class="btn btn-warning btn-sm" type="button" onclick="RecDecEdit('<%=obj[0]%>' )" value="EDIT"  > <i class="fa fa-pencil-square-o color100f0e"  aria-hidden="true"></i></button>
 												
-													<button class="btn btn-sm btn-danger" type="button" onclick="RecDecremove('<%=obj[0].toString() %>')" ><i class="fa fa-trash" aria-hidden="true" style="color:white"></i></button>
+													<button class="btn btn-sm btn-danger" type="button" onclick="RecDecremove('<%=obj[0].toString() %>')" ><i class="fa fa-trash text-white" aria-hidden="true" ></i></button>
 																									
 													</td>
 												</tr>
-												<%}}else{%><td colspan="3" style="text-align: center;"> No Data Available!</td><%}%>
+												<%}}else{%><td colspan="3" class="text-center"> No Data Available!</td><%}%>
 											</tbody>
 										</table>
 										<div align="center">
@@ -2969,7 +2500,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 									</div>
 									<div class="col-md-8"> 
 									<div class="card" >
-										<div class="card-header" style="height: 40px;">
+										<div class="card-header height40" >
 											<div align="center" id="drcdiv"  >
 			  									<div class="form-check form-check-inline">
 												  <input class="form-check-input" type="radio" name="darc" id="decision" value="D" required="required">
@@ -2986,7 +2517,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 											<div align="center">
 												<input type="hidden" name="RedDecID" id="recdecid">
 												<input type="hidden" name="schedulid" value="<%=nextMeetVenue[0]%>">
-												<button type="button" style="margin-top: 10px;" class="btn btn-primary btn-sm add"  onclick="return checkData('recdecdetails')">Submit </button>
+												<button type="button"  class="btn btn-primary btn-sm add margin-top10"  onclick="return checkData('recdecdetails')">Submit </button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<input type="hidden" name="projectid" value="<%=projectid%>"/>
 												<input type="hidden" name="committeeid" value="<%=committeeid%>"/>	
@@ -3003,7 +2534,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 						  </div>	
 						   
 					</details>						
-			 					<form action="DecesionRemove.htm" id="remvfrm" style="display: none;">
+			 					<form action="DecesionRemove.htm" id="remvfrm" class="display-none">
 				<input type="hidden" name="recdecId" id="recdecId">
 				<input type="hidden" name="committeeid" value="<%=committeeid%>">
 						<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(0)%>"> 
@@ -3027,22 +2558,21 @@ String isCCS = (String)request.getAttribute("isCCS");
 									<b>Project : <%=ProjectDetail.get(z)[1] %> 		</b>
 								</div>	
 								
-								<div class="card-body" style="width:100%"  >
+								<div class="card-body width-100" >
 								
 									<form action="TechnicalWorkDataAdd.htm" method="post">
 										<div class="row"align="center" >
-											<div class="row" style="width:100%;margin-left: 0.5rem; margin-top: -0.5rem;">
+											<div class="row width-100 div-margin">
 												<div class="col-12">
 													<textarea class="form-control" name="RelevantPoints" id="ckeditor" rows="5" cols="50" maxlength="5"><%if(TechWorkDataList.get(z)!=null){ %> <%=TechWorkDataList.get(z)[2] %> <%}%></textarea>
 												</div>	
 											</div>
 										</div>
-										<div class="row" align="center" style="margin-top:15px;" >
-										<!-- <div class="col-2"></div> -->
-										<div class="col-3" style="text-align: left;margin-top: 8px;margin-bottom: 5px"><label style="font-weight: 600;font-size: 16px;color: black;">Technical Work Carried (Attachment)</label></div>
-											<div class="col-9" style="text-align: left;">
+										<div class="row marging-top15" align="center" >
+										<div class="col-3 div-col" ><label class="div-label">Technical Work Carried (Attachment)</label></div>
+											<div class="col-9 text-left">
 												<div class="row">
-												  <div class="col-2" style="margin-left: -5rem">
+												  <div class="col-2 margin-rem" >
 													<span id="attachname_<%=projectidlist.get(z)%>" ></span>
 													<%if(TechWorkDataList.get(z)==null){ %>
 														<input type="hidden" name="TechDataId" value="0">
@@ -3074,7 +2604,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 								
 								<b>Technical Images</b> 
 								<div class="row">
-									<form action="ProjectTechImages.htm" method="post" style="float: left;margin-top:5px;" enctype="multipart/form-data" >
+									<form action="ProjectTechImages.htm" method="post" class="float-left" enctype="multipart/form-data" >
 										<input type="file" name="FileAttach" id="FileAttach" required="required"  accept="image/jpeg"/> 
 										<button type="submit" class="btn btn-sm back"  onclick="return confirm('Are you sure to submit this?')">Upload</button>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -3091,22 +2621,22 @@ String isCCS = (String)request.getAttribute("isCCS");
 							<div class="row">
 							<table>
 							<tr>
-							<td style="border:0; padding-left: 1.5rem;"> 
+							<td class="border-0 padding-leftrem"> 
 							<% 
 							Path uploadPath = Paths.get(filePath,projectLabCode,"TechImages",imges.getTechImagesId()+"_"+imges.getImageName());
 							File file = uploadPath.toFile();
 							if(file.exists()){ %>
-								<img style="max-width:20cm;max-height:14cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(file))%>" > 											
+								<img class="img-styl" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(file))%>" > 											
 									<%} %>
-									<button class="btn btn-sm" id="TechImagesId1" value="" onclick="openEditDiv(<%=imges.getTechImagesId()%>)" style="background-color: transparent;font-size: 2.5rem"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-									<form action="#" style="display: inline">
-									<button class="btn btn-danger" name="TechImagesId" value="<%=imges.getTechImagesId()%>" formaction="ProjectImageDelete.htm" formmethod="POST" onclick="return confirm('Are you sure, you want to remove this?')"><i class="fa fa-trash" aria-hidden="true" style="color:white" ></i></button>
+									<button class="btn btn-sm bg-transparent" id="TechImagesId1" value="" onclick="openEditDiv(<%=imges.getTechImagesId()%>)" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+									<form action="#" class="d-inline">
+									<button class="btn btn-danger" name="TechImagesId" value="<%=imges.getTechImagesId()%>" formaction="ProjectImageDelete.htm" formmethod="POST" onclick="return confirm('Are you sure, you want to remove this?')"><i class="fa fa-trash text-white" aria-hidden="true"  ></i></button>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 									<input type="hidden" name="committeeid" value="<%=committeeid%>">
 									<input type="hidden" name="ProjectId"  value="<%=projectidlist.get(z)%>"> 
 									</form>
-									<form action="TechImagesEdit.htm" method="post" style="display: inline" enctype="multipart/form-data">
-									<label for="FileAttach" id="filelabel<%=imges.getTechImagesId()%>" style="margin-left: 20px; display: none;">
+									<form action="TechImagesEdit.htm" method="post" class="d-inline" enctype="multipart/form-data">
+									<label for="FileAttach" id="filelabel<%=imges.getTechImagesId()%>" class=" margin-left20 display-none">
 										<input type="file" name="FileAttach" id="FileAttach" required="required"  accept="image/jpeg"/> 
 										<button type="submit" class="btn btn-sm back"  onclick="return confirm('Are you sure, you want to edit this?')">Upload</button>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -3116,24 +2646,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 								    </label>
 								    </form>										
 									</td>
-								<%-- 	<td style="border:0;"> 
-									<%if(i==0){  %>
-									<button class="btn btn-sm">
-									<i class="fa fa-arrow-down"  style="color:green" aria-hidden="true"></i>
-									</button> 
-									<%}else if(i==TechImagesList.size()-1){ %>
-									<button class="btn btn-sm">
-									<i class="fa fa-arrow-up"  style="color:green" aria-hidden="true"></i>
-									</button> 
-									<%}else{ %>
-									<button class="btn btn-sm">
-									<i class="fa fa-arrow-up"  style="color:green" aria-hidden="true"></i>
-									</button> 
-									<button class="btn btn-sm">
-									<i class="fa fa-arrow-down"  style="color:green" aria-hidden="true"></i>
-									</button> 
-									<%} %>
-									</td> --%>
+
 									</tr>
 								</table>
 							</div>
@@ -3194,7 +2707,7 @@ String isCCS = (String)request.getAttribute("isCCS");
    <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card shadow-nohover" style="margin-top: -0px;">
+				<div class="card shadow-nohover" >
 				<div class="row card-header">
 			     <div class="col-md-10">
 					<h5 ><%if(ProjectId!=null){
@@ -3214,14 +2727,13 @@ String isCCS = (String)request.getAttribute("isCCS");
 
 														<tr>
 															<th>Expand</th>
-															<th style="text-align: left;max-width: 15px;">Mil-No</th>
-														<!-- 	<th style="text-align: left;">Project Name</th> -->
-															<th style="text-align: left;max-width: 200px;">Milestone Activity</th>
+															<th class="text-left max-width15">Mil-No</th>
+															<th class="text-left max-width200">Milestone Activity</th>
 															<th >Start Date</th>
 															<th >End Date</th>	
-															<th  style="text-align: left;max-width: 200px;">First OIC </th>
-															<th  style="text-align: center;max-width: 50px;">Weightage</th>	
-															<th  style="text-align: center;max-width: 80px;">Progress</th>												
+															<th  class="text-left max-width200">First OIC </th>
+															<th  class="text-center max-width50">Weightage</th>	
+															<th  class="text-center max-width80">Progress</th>												
 
 														</tr>
 													</thead>
@@ -3233,25 +2745,24 @@ String isCCS = (String)request.getAttribute("isCCS");
 											
 															for(Object[] obj: MilestoneList){ %>
 														<tr class="milestonemodalwhole" id="milestonemodal<%=obj[5] %>"  >
-															<td style="width:2% !important; " class="center">
+															<td class="center width2">
 																<span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>">
 																	<button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')">
 																		<i class="fa fa-plus"  id="fa<%=count%>"></i>
 																	 </button>
 																</span>
 															</td>
-															<td style="text-align: left;width: 7%;"> Mil-<%=obj[5]%></td>
-															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[4] %></td>
+															<td class="text-left width-7"> Mil-<%=obj[5]%></td>
+															<td class="td-wrap"><%=obj[4] %></td>
 															
-															<td  style="width:8% !important; "><%=sdf.format(obj[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
-															<td  style="width:15% !important; "><%=obj[6]%></td>
-															<td  style="width:9% !important; " align="center"><%=obj[13]%></td>	
+															<td  class="width8"><%=sdf.format(obj[2])%></td>
+															<td  class="width8"><%=sdf.format(obj[3])%></td>
+															<td  class="width15P"><%=obj[6]%></td>
+															<td  class="width9p" align="center"><%=obj[13]%></td>	
 															<td>
 															<%if(!obj[12].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped
+															<div class="progress div-progress" >
+															<div class="progress-bar progress-bar-striped width-<%=obj[12] %>
 															<%if(obj[14].toString().equalsIgnoreCase("2")){ %>
 															 bg-success
 															<%} else if(obj[14].toString().equalsIgnoreCase("3")){ %>
@@ -3261,12 +2772,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 															<%} else if(obj[14].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
 															<%}  %>
-															" role="progressbar" style=" width: <%=obj[12] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=obj[12] %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress div-progress" >
+															<div class="progress-bar progressbar" role="progressbar" >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -3274,7 +2785,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 																
 		
 														</tr>
-														 <tr class="collapse row<%=count %>" style="font-weight: bold;">
+														 <tr class="collapse font-weight-bold row<%=count %>">
                                                          <td></td>
                                                          <td>Sub</td>
                                                          <td>Activity</td>
@@ -3293,13 +2804,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 	
 																%>
 														<tr class="collapse row<%=count %>">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> A-<%=countA%></td>
-															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objA[4] %></td>
+															<td  class="center width2"> </td>
+															<td class="text-left width-5"> A-<%=countA%></td>
+															<td class="td-wrap"><%=objA[4] %></td>
 															
 															<td class="width-30px"><%=sdf.format(objA[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objA[3])%></td>
+															<td class="width8"><%=sdf.format(objA[3])%></td>
 															
 															
 															<td class="width-30px"><%if(objA[9].toString().equalsIgnoreCase("3")||objA[9].toString().equalsIgnoreCase("5")){ %>
@@ -3310,8 +2820,8 @@ String isCCS = (String)request.getAttribute("isCCS");
 															 <td align="center"><%=objA[6] %></td>
 															<td>
 															<%if(!objA[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped
+															<div class="progress div-progress">
+															<div class="progress-bar progress-bar-striped width-<%=objA[5] %>
 															<%if(objA[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-success
 															<%} else if(objA[9].toString().equalsIgnoreCase("3")){ %>
@@ -3321,12 +2831,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 															<%} else if(objA[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
 															<%}  %>
-															" role="progressbar" style=" width: <%=objA[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objA[5] %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress div-progress" >
+															<div class="progress-bar progressbar" role="progressbar" >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -3341,13 +2851,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 	
 																%>
 														<tr class="collapse row<%=count %>">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
-															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objB[4] %></td>
+															<td  class="center width2"> </td>
+															<td class="text-left width-5"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
+															<td class="td-wrap"><%=objB[4] %></td>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
+															<td class="width8 "><%=sdf.format(objB[3])%></td>
 															
 															<td class="width-30px"><%if(objB[9].toString().equalsIgnoreCase("3")||objB[9].toString().equalsIgnoreCase("5")){ %>
 														      <%if(objB[7]!=null){ %>   <%=sdf.format(objB[7]) %> <%}else{ %><%=objB[8] %> <%} %>
@@ -3357,8 +2866,8 @@ String isCCS = (String)request.getAttribute("isCCS");
 															  <td align="center"><%=objB[6] %></td>
 															<td>
 															<%if(!objB[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped
+															<div class="progress div-progress" >
+															<div class="progress-bar progress-bar-striped width-<%=objB[5] %>
 															<%if(objB[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-success
 															<%} else if(objB[9].toString().equalsIgnoreCase("3")){ %>
@@ -3368,12 +2877,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 															<%} else if(objB[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
 															<%}  %>
-															" role="progressbar" style=" width: <%=objB[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objB[5] %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress div-progress" >
+															<div class="progress-bar progressbar" role="progressbar" >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -3388,13 +2897,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 													         List<Object[]> MilestoneD=(List<Object[]>)request.getAttribute(count+"MilestoneActivityD"+countA+countB+countC);
 																%>
 														<tr class="collapse row<%=count %>">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
-															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objC[4] %></td>
+															<td  class="center width2"> </td>
+															<td class="text-left width-5"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
+															<td class="td-wrap"><%=objC[4] %></td>
 															
 															<td class="width-30px"><%=sdf.format(objC[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objC[3])%></td>
+															<td class="width8"><%=sdf.format(objC[3])%></td>
 															
 															<td class="width-30px"><%if(objC[9].toString().equalsIgnoreCase("3")||objC[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objC[7]!=null){ %>   <%=sdf.format(objC[7]) %> <%}else{ %><%=objC[8] %> <%} %>
@@ -3404,8 +2912,8 @@ String isCCS = (String)request.getAttribute("isCCS");
 															  <td align="center"><%=objC[6] %></td>
 															<td>
 															<%if(!objC[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped
+															<div class="progress div-progress" >
+															<div class="progress-bar progress-bar-striped width-<%=objC[5] %>
 															<%if(objC[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-success
 															<%} else if(objC[9].toString().equalsIgnoreCase("3")){ %>
@@ -3415,12 +2923,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 															<%} else if(objC[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
 															<%}  %>
-															" role="progressbar" style=" width: <%=objC[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objC[5] %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress div-progress" >
+															<div class="progress-bar progressbar" role="progressbar" >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -3436,13 +2944,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 	
 																%>
 														<tr class="collapse row<%=count %>">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
-															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objD[4] %></td>
+															<td  class="center width2"> </td>
+															<td class="text-left width-5"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
+															<td class="td-wrap"><%=objD[4] %></td>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
+															<td class="width8"><%=sdf.format(objB[3])%></td>
 															
 															<td class="width-30px"><%if(objD[9].toString().equalsIgnoreCase("3")||objD[9].toString().equalsIgnoreCase("5")){ %>
 														      <%if(objD[7]!=null){ %>   <%=sdf.format(objD[7]) %> <%}else{ %><%=objD[8] %> <%} %>
@@ -3452,8 +2959,8 @@ String isCCS = (String)request.getAttribute("isCCS");
 															  <td align="center"><%=objD[6] %></td>
 															<td>
 															<%if(!objD[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped
+															<div class="progress div-progress" >
+															<div class="progress-bar progress-bar-striped width-<%=objD[5] %>
 															<%if(objD[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-success
 															<%} else if(objD[9].toString().equalsIgnoreCase("3")){ %>
@@ -3463,12 +2970,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 															<%} else if(objD[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
 															<%}  %>
-															" role="progressbar" style=" width: <%=objD[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objD[5] %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress div-progress" >
+															<div class="progress-bar progressbar" role="progressbar" >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -3481,13 +2988,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 														 	if(MilestoneE!=null&&MilestoneE.size()>0){
 															for(Object[] objE: MilestoneE){ %>
 														<tr class="collapse row<%=count %>">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
-															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objE[4] %></td>
+															<td  class="center width2"> </td>
+															<td class="text-left width-5"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
+															<td class="td-wrap"><%=objE[4] %></td>
 															
 															<td class="width-30px"><%=sdf.format(objE[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objE[3])%></td>
+															<td class="width8"><%=sdf.format(objE[3])%></td>
 															
 															<td class="width-30px"><%if(objE[9].toString().equalsIgnoreCase("3")||objE[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objE[7]!=null){ %>   <%=sdf.format(objE[7]) %> <%}else{ %><%=objE[8] %> <%} %>
@@ -3497,8 +3003,8 @@ String isCCS = (String)request.getAttribute("isCCS");
 															  <td align="center"><%=objE[6] %></td>
 															<td>
 															<%if(!objE[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped
+															<div class="progress div-progress" >
+															<div class="progress-bar progress-bar-striped width-<%=objE[5] %>
 															<%if(objC[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-success
 															<%} else if(objE[9].toString().equalsIgnoreCase("3")){ %>
@@ -3508,12 +3014,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 															<%} else if(objE[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
 															<%}  %>
-															" role="progressbar" style=" width: <%=objE[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objE[5] %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress div-progress" >
+															<div class="progress-bar progressbar" role="progressbar"  >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -3528,12 +3034,12 @@ String isCCS = (String)request.getAttribute("isCCS");
 												<% countB++;} }%>
 												<% countA++;} }else{%>
 												<tr class="collapse row<%=count %>">
-													<td colspan="9" style="text-align: center" class="center">No Sub List Found</td>
+													<td colspan="9"  class="center text-center">No Sub List Found</td>
 												</tr>
 												<%} %>
 												<% count++; } }else{%>
 												<tr >
-													<td colspan="9" style="text-align: center" class="center">No List Found</td>
+													<td colspan="9"  class="center text-center">No List Found</td>
 												</tr>
 												<%} %>
 												</tbody>
@@ -3552,8 +3058,8 @@ String isCCS = (String)request.getAttribute("isCCS");
 	<div class="modal fade" id="LevelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content">
-	      <div class="modal-header" style="background-color: #C4DDFF">
-	        <h5 class="modal-title" id="exampleModalLabel" style="color:#145374;font-weight: bold;">Set Milestone Level</h5>
+	      <div class="modal-heade md-bg" >
+	        <h5 class="modal-title title-styl" id="exampleModalLabel" >Set Milestone Level</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -3586,7 +3092,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 	      		
 	      	</div>
 	      </div>
-	      <div class="modal-footer" style="color: red">
+	      <div class="modal-footer text-danger" >
 	        Note : Upto Selected Milestone Levels Are Showing in Breifing Paper 5, 6 and 9 points.
 	      </div>
 	    </div>
@@ -3595,10 +3101,10 @@ String isCCS = (String)request.getAttribute("isCCS");
 	
 
 	<div class="modal fade" id="recdecmodel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 53% !important;height: 45%;">
-				<div class="modal-content" style="min-height: 45%;" >
-				    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
-				    	<h4 class="modal-title" id="model-card-header" style="color: #145374"> <span id="val1"></span> </h4>
+			<div class="modal-dialog modal-dialog-centered md-fade1" role="document">
+				<div class="modal-content min-height1" >
+				    <div class="modal-header div-bg" >
+				    	<h4 class="modal-title h4-color" id="model-card-header" > <span id="val1"></span> </h4>
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
 				          <span aria-hidden="true">&times;</span>
 				        </button>
@@ -3635,46 +3141,46 @@ String isCCS = (String)request.getAttribute("isCCS");
 <!-- -------------------------------------------- Risk Types Modal  -------------------------------------------------------- -->
 
 		<div class="modal fade" id="RiskTypesModal" tabindex="-1" role="dialog" aria-labelledby="RiskTypesModalCenterTitle" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered "  style="max-width: 60% !important;">
+			<div class="modal-dialog modal-dialog-centered max-width60 " >
 		
 				<div class="modal-content" >
 					   
-				    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
+				    <div class="modal-header div-bg">
 				      
-				    	<h4 class="modal-title"  style="color: #145374">Risk Types</h4>
+				    	<h4 class="modal-title h4-color" >Risk Types</h4>
 	
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
 				          <span aria-hidden="true">&times;</span>
 				        </button>
 				        				        
 				    </div>
-					<div class="modal-body"  style="padding: 0.5rem !important;">
+					<div class="modal-body md-body"  >
 							
-							<div class="card-body" style="min-height:30% ;max-height: 93% !important;overflow-y: auto;">
+							<div class="card-body cd-body" >
 			
 								<div class="row" align="center">
 									<div class="table-responsive"> 
-										<table class="table table-bordered table-hover table-striped table-condensed " style="width:70%">
+										<table class="table table-bordered table-hover table-striped table-condensed width-70">
 											<thead>
 												<tr>
-													<th style="width:10%">SN</th>
-													<th style="width:20%">Risk Type</th>
-													<th style="width:70%">Description</th>
+													<th class="width-10">SN</th>
+													<th class="width-20">Risk Type</th>
+													<th class="width-70">Description</th>
 												</tr>
 											</thead>
 											<tbody>
 												<% int riskcount=0;
 												for(Object[] risktype : RiskTypes ){ %>
 												<tr>
-													<td style="text-align: center;"><%=++riskcount %></td>
-													<td style="text-align: center;"><b>I<%=risktype[2] %></b></td>
+													<td class="text-center"><%=++riskcount %></td>
+													<td class="text-center"><b>I<%=risktype[2] %></b></td>
 													<td>Internal <%=risktype[1] %></td>
 												</tr>
 												<%} %>
 												<%for(Object[] risktype : RiskTypes ){ %>
 												<tr>
-													<td style="text-align: center;"><%=++riskcount %></td>
-													<td style="text-align: center;"><b>E<%=risktype[2] %></b></td>
+													<td class="text-center"><%=++riskcount %></td>
+													<td class="text-center"><b>E<%=risktype[2] %></b></td>
 													<td>External <%=risktype[1] %></td>
 												</tr>
 												<%} %>
@@ -3705,7 +3211,7 @@ String isCCS = (String)request.getAttribute("isCCS");
          <ul class="list-group folder-tree" id="folderTree"></ul>
       </div>
 	  <div class="modal-footer">
-		 <div style="color: red;font-weight: 500;">Note - Please upload PDF files only and PDF size should be smaller than 10mb.</div>
+		 <div class="font-weight500 text-danger">Note - Please upload PDF files only and PDF size should be smaller than 10mb.</div>
 	  </div>
     </div>
   </div>
@@ -3773,24 +3279,24 @@ function openMainModal(projectid) {
                     if (folderMap.hasOwnProperty(mainId)) {
                         html += '<li class="list-group-item folder-item" data-id="' + mainId + '" onclick="toggleFolder(this, ' + mainId + ', '+ projectid +', \'mainLevel\')">';
                         html += '<i class="fa fa-folder folder-icon text-warning"></i> ' + folderMap[mainId].name;
-                        html += '<ul class="list-group subfolder" style="display:none;">';
+                        html += '<ul class="list-group subfolder display-none">';
 
                         var subfolders = folderMap[mainId].subfolders;
                         for (var k = 0; k < subfolders.length; k++) {
                             var sub = subfolders[k];
                             html += '<li class="list-group-item folder-item" data-id="' + sub.id + '" onclick="toggleFolder(this, ' + sub.id + ', '+ projectid +', \'subLevel\')">';
                             html += '<i class="fa fa-folder folder-icon text-warning"></i> ' + sub.name;
-                            html += '<ul class="list-group subfolder" id="subfolder-files-' + sub.id + '" style="display:none;"></ul>';
+                            html += '<ul class="list-group subfolder display-none" id="subfolder-files-' + sub.id + '" ></ul>';
                             html += '</li>';
                         }
 
-                        html += '<div class="" id="mainfolder-files-' + mainId + '" style="display:none;"></div>';
+                        html += '<div class="display-none" id="mainfolder-files-' + mainId + '" ></div>';
                         html += '</ul></li>';
                     }
                 }
             }else {
                 html += '<div>No Data Available.</div></br>';
-                html += '<div>Please go to <span style="font-weight: 500; color: blue;">Document Repository Module &rarr; Document Rep Master</span>, create a folder, and upload pdfs.</div></br>';
+                html += '<div>Please go to <span class="sapncolor">Document Repository Module &rarr; Document Rep Master</span>, create a folder, and upload pdfs.</div></br>';
             }
 
             $('.folder-tree').html(html);
@@ -3860,10 +3366,10 @@ function loadFolderFiles(folderId, projecId, type) {
                 }
                 html += '/>';
                 html += '<i class="fa fa-file-pdf-o text-danger"></i> ' + fileName;
-                html += '<span class="text-muted" style="font-size:13px"> Ver '+data[i][4]+'.'+data[i][5]+'</span>';
-                html += '<i class="fa fa-download" style="cursor: pointer; margin-left:8px;" onclick="fileDownload(' + data[i][7] + ', \'' + type + '\')"></i>';
-                html += '<i class="fa fa-upload" aria-hidden="true" style="color: #0a5dff; cursor: pointer; margin-left:12px;" onclick="fileUpload(\''+data[i][0]+'\')"></i></button><br/>';
-                html += '<label for="fileInput" id="uploadlabel'+data[i][0]+'" style="margin-left: 20px; margin-top: 10px; display: none;">'
+                html += '<span class="text-muted font-size13" > Ver '+data[i][4]+'.'+data[i][5]+'</span>';
+                html += '<i class="fa fa-download i-downlaod"  onclick="fileDownload(' + data[i][7] + ', \'' + type + '\')"></i>';
+                html += '<i class="fa fa-upload i-upload" aria-hidden="true"  onclick="fileUpload(\''+data[i][0]+'\')"></i></button><br/>';
+                html += '<label for="fileInput" class="lb-input" id="uploadlabel'+data[i][0]+'" >'
                 html += '<input type="file" name="docFileInput" id="fileInput'+data[i][0]+'" required="required"  accept="application/pdf"/> '
                 html += '<button type="button" class="btn btn-sm back" onclick="fileSubmit(\''+type+'\',\''+data[i][0]+'\',\''+data[i][2]+'\',\''+data[i][3]+'\',\''+data[i][4]+'\',\''+data[i][5]+'\',\''+data[i][6]+'\')">Upload</button>'
                 html += '</label>'
@@ -4001,16 +3507,16 @@ function milactivitychange(val){
 					return result[e];
 				})	
 							
-				var s = "<table id='milestonechangetableajax' style='align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;'><tr><th  style='width: 30px !important;'>SN</th><th  style='max-width: 40px; '>MS No.</th><th  style='max-width: 230px; '>Milestones </th><th  style='max-width: 80px;'> Original PDC </th><th  style='max-width: 80px;'> Revised PDC</th>"
-							+ "<th  style='max-width: 50px; '>Progress</th><th  style='max-width: 70px;'> Status</th><th  style='max-width: 70px;'> Remarks</th></tr>";
+				var s = "<table id='milestonechangetableajax' class='tb-sub'><tr><th  class='width30'>SN</th><th  class='max-width40'>MS No.</th><th  class='max-width230'>Milestones </th><th  class='max-width80'> Original PDC </th><th  class='max-width80'> Revised PDC</th>"
+							+ "<th  class='max-width50'>Progress</th><th  class='max-width70'> Status</th><th  class='max-width70'> Remarks</th></tr>";
 				
 							if(values[0].length==0){
-								s+= "<tr><td colspan=8' style='text-align: center;' > Nil</td></tr>";
+								s+= "<tr><td colspan=8' class='text-center' > Nil</td></tr>";
 							}else{
 								for(var i=0;i<values[0].length;i++){
 									 if(parseInt(values[0][i][12])>0){ 
-										s+= "<tr><td  style='max-width: 30px;'>" +parseInt(i+1)+ "</td><td  style='max-width: 40px;'>M"+values[0][i][2]+"</td><td  style='max-width: 230px;'>"+values[0][i][3]+"</td><td  style='max-width: 80px;' >"+formatDate(values[0][i][5])+" </td><td  style='max-width: 80px;'>"+formatDate(values[0][i][7])+"</td>"
-										+"<td  style='max-width: 50px;'>"+values[0][i][12]+"</td><td  style='max-width: 70px;'>"+values[0][i][11]+"	</td><td  style='max-width: 70px;'>"+values[0][i][13]+"</td></tr>";
+										s+= "<tr><td  class='max-width30'>" +parseInt(i+1)+ "</td><td  class='max-width40'>M"+values[0][i][2]+"</td><td  class='max-width230'>"+values[0][i][3]+"</td><td  class='max-width80' >"+formatDate(values[0][i][5])+" </td><td  class='max-width80'>"+formatDate(values[0][i][7])+"</td>"
+										+"<td  class='max-width50'>"+values[0][i][12]+"</td><td  class='max-width70'>"+values[0][i][11]+"	</td><td  class='max-width70'>"+values[0][i][13]+"</td></tr>";
 									 } 
 								}
 							}
@@ -4044,16 +3550,16 @@ function milactivitychange6(val){
 				var values= Object.keys(result).map(function(e){
 					return result[e];
 				})	
-				var s = "<table id='milestonechangetableajax6' style='align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px; width: 980px;  border-collapse:collapse;'><tr><th  style='width: 30px !important;'>SN</th><th  style='max-width: 40px; '>MS No.</th><th  style='max-width: 230px; '>Milestones </th><th  style='max-width: 80px;'> Original PDC </th><th  style='max-width: 80px;'> Revised PDC</th>"
-							+ "<th  style='max-width: 50px; '>Progress</th><th  style='max-width: 70px;'> Status</th><th  style='max-width: 70px;'> Remarks</th></tr>";
+				var s = "<table id='milestonechangetableajax6' class='tb-sub'><tr><th  class='width30'>SN</th><th  class='max-width40'>MS No.</th><th  class='max-width230'>Milestones </th><th  class='max-width80'> Original PDC </th><th  class='max-width80'> Revised PDC</th>"
+							+ "<th  class='max-width50 '>Progress</th><th  class='max-width70'> Status</th><th  class='max-width70'> Remarks</th></tr>";
 							if(values[0].length==0){
-								s+= "<tr><td colspan=8' style='text-align: center;' > Nil</td></tr>";
+								s+= "<tr><td colspan=8' class='text-center' > Nil</td></tr>";
 							}else{
 								for(var i=0;i<values[0].length;i++){
 									 if(parseInt(values[0][i][12])>0){ 
 										
-										s+= "<tr><td  style='max-width: 30px;'>" +parseInt(i+1)+ "</td><td  style='max-width: 40px;'>M"+values[0][i][2]+"</td><td  style='max-width: 230px;'>"+values[0][i][3]+"</td><td  style='max-width: 80px;' >"+formatDate(values[0][i][5])+" </td><td  style='max-width: 80px;'>"+formatDate(values[0][i][7])+"</td>"
-										+"<td  style='max-width: 50px;'>"+values[0][i][12]+"</td><td  style='max-width: 70px;'>"+values[0][i][11]+"	</td><td  style='max-width: 70px;'>"+values[0][i][13]+"</td></tr>";
+										s+= "<tr><td  class='max-width30'>" +parseInt(i+1)+ "</td><td  class='max-width40'>M"+values[0][i][2]+"</td><td  class='max-width230'>"+values[0][i][3]+"</td><td  class='max-width80' >"+formatDate(values[0][i][5])+" </td><td  class='max-width80'>"+formatDate(values[0][i][7])+"</td>"
+										+"<td  class='max-width50'>"+values[0][i][12]+"</td><td  class='max-width70'>"+values[0][i][11]+"	</td><td  class='max-width70'>"+values[0][i][13]+"</td></tr>";
 
 									 } 
 								}
@@ -4165,16 +3671,16 @@ function FileDownload1(fileid1)
 									        		        var html="";
 									        		        if(reDate===undefined){
 									        		        	html="";
-									        		        	html= "<span style='font-weight:600;font-size:10pt'> Actual : " +
+									        		        	html= "<span class='span-1'> Actual : " +
 									        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
 									        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
 									        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
 									        		        }else{
 									        		        	html="";
-									        		        html="<span style='font-weight:600;font-size:10pt'> Actual : " +
+									        		        html="<span class='span-1'> Actual : " +
 									        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
 									        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
-									        		               "<span style='font-weight:600;font-size:10pt'> Revised : " +
+									        		               "<span class='span-1'> Revised : " +
 									        		               anychart.format.dateTime(this.getData("baselineStart"), 'dd MMM yyyy') + " - " +
 									        		               anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +
 									        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
@@ -4296,9 +3802,9 @@ function FileDownload1(fileid1)
 								     	timeline.tasks().labels().useHtml(true);
 								     	timeline.tasks().labels().format(function() {
 								     	  if (this.progress == 1) {
-								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'></span>";
+								     	    return "<span class='ret-span'></span>";
 								     	  } else {
-								     	    return "<span style='color:black;font-weight:bold'></span>";
+								     	    return "<span class='ret-span2'></span>";
 								     	  }
 								     	});
 								     	
@@ -4667,17 +4173,24 @@ function fileSubmit(type,repid,mainId,subId,version,release,docName) {
 		            contentType: false,
 		            processData: false,
 		            success: function(response) {
-		            	attachid=response;
-		            	  Swal.fire({
-				    	       	title: "Success",
-				                text: "File Uploaded Successfully",
-				                icon: "success",
-				                allowOutsideClick :false
-				         		});
-		            	  $('#pdfModal').hide();
-		            	  $('.swal2-confirm').click(function (){
-		      	                location.reload();
-		      	        	})
+		                if (response === "200") {
+		                    Swal.fire({
+		                        title: "Success",
+		                        text: "File Uploaded Successfully",
+		                        icon: "success",
+		                        allowOutsideClick: false
+		                    });
+		                    $('#pdfModal').hide();
+		                    $('.swal2-confirm').click(function () {
+		                        location.reload();
+		                    });
+		                } else {
+		                    Swal.fire({
+		                        icon: 'error',
+		                        title: 'Error',
+		                        text: 'Unexpected response: ' + response
+		                    });
+		                }
 		            },
 		            error: function(xhr, status, error) {
 		            	  Swal.fire({
