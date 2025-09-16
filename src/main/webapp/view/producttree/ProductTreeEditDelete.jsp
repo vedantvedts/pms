@@ -8,85 +8,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/producttree/ProductTreeEditDelete.css" var="productTreeEditDelete" />
+<link href="${productTreeEditDelete}" rel="stylesheet" />
 <title>Product Tree Edit & Delete</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 14px;
-}
-.table thead tr,tbody tr{
-    font-size: 14px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.multiselect-container>li>a>label {
-  padding: 4px 20px 3px 20px;
-}
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 120px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:210px !important;
-}
-.bootstrap-select {
-  width: 400px !important;
-}
-input[type=checkbox] {
-	accent-color: green;
-}
-</style>
 </head>
  
 <body>
@@ -127,7 +51,7 @@ input[type=checkbox] {
 		<div class="row">
 			<div class="col-md-12">
 				
-				<div class="card shadow-nohover" style="margin-top: -0px;">
+				<div class="card shadow-nohover">
 			
 		
 				<div class="row card-header">
@@ -153,12 +77,12 @@ input[type=checkbox] {
 														<tr>
 															<th>Expand</th>
 															
-															<th style="text-align: left;">Level </th> 
-															 <th style="text-align: left;max-width: 200px;">Level Name</th> 
+															<th class="text-left">Level </th> 
+															 <th class="text-left mx-w-200">Level Name</th> 
 															
-															<th style="max-width: 200px;" >Stage</th>	
-															<th style="max-width: 200px;" >Module</th>											
-														 	<th style="max-width: 200px;" >Action</th>
+															<th class="mx-w-200" >Stage</th>	
+															<th class="mx-w-200" >Module</th>											
+														 	<th class="mx-w-200" >Action</th>
 														 		
 														 	
 														</tr>
@@ -171,16 +95,16 @@ input[type=checkbox] {
 																 if(level1[2].toString().equalsIgnoreCase("1")) { %>	
 																
 														<tr>
-															<td style="width:2% !important;" class="center"><span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span></td> 
+															<td class="w-2 text-center"><span class="clickable" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>"><button class="btn btn-sm btn-success" id="btn<%=count %>"  onclick="ChangeButton('<%=count %>')"><i class="fa fa-plus"  id="fa<%=count%>"></i> </button></span></td> 
 															
-															 <td style=""><%=count %></td>
+															 <td ><%=count %></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()):"-" %></td>
+															<td class="td-2"><%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()):"-" %></td>
 															
 															<td><% if(level1[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level1[6].toString())%><%}else { %> -- <%} %></td>
 															<td><% if(level1[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level1[7].toString()) %><%}else { %> -- <%} %></td>
 															
-															<td  style="width:20% !important; text-align: center;">		
+															<td  class="w-20 text-center">		
 																	
 																	
 															
@@ -195,7 +119,7 @@ input[type=checkbox] {
 													                  </button> 
 													                  
 													             
-													           <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													           <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 													               <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																    <input type="hidden" name="Action" value="D"/>
 																    <input type="hidden" name="buttonid" value="<%=count %>">
@@ -214,7 +138,7 @@ input[type=checkbox] {
 															</td>
 														</tr>
 														
-														  <tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>" style="font-weight: bold;">
+														  <tr class="collapse row<%=count %> fw-bold"  id="rowcollapse<%=count%>" >
                                                          <td></td>
                                                          <td>Sub -Level</td>
                                                          <td>Level Name</td>
@@ -232,13 +156,13 @@ input[type=checkbox] {
 	
 																
 														<tr class="collapse row<%=count %>" id="rowcollapse<%=count%>" >
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> <%=count %>.<%=countA%></td>
+															<td class="text-center w-2"> </td>
+															<td class="text-left w-5"> <%=count %>.<%=countA%></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level2[3]!=null?StringEscapeUtils.escapeHtml4(level2[3].toString()):"-" %></td>
+															<td class="td-2"><%=level2[3]!=null?StringEscapeUtils.escapeHtml4(level2[3].toString()):"-" %></td>
 															<td><% if(level2[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level2[6].toString()) %><%}else { %> -- <%} %></td>
 															<td><% if(level2[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level2[7].toString()) %><%}else { %> -- <%} %></td>
-														 	<td class="width-30px" style="text-align: center;">
+														 	<td class="text-center w-30">
 														 	
 														 	
 														 	 <button class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>','<%=count %>')">  
@@ -250,7 +174,7 @@ input[type=checkbox] {
 													                     </div>
 													             </button> 
 													                  
-													            <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													            <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																    <input type="hidden" name="Action" value="D"/>
 																      <input type="hidden" name="buttonid" value="<%=count %>">
@@ -277,14 +201,14 @@ input[type=checkbox] {
 	
 																%>
 														<tr class="collapse row<%=count %>" id="rowcollapse<%=count%>">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%></td>
+															<td class="text-center w-2"> </td>
+															<td class="text-left w-5"> &nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level3[3]!=null?StringEscapeUtils.escapeHtml4(level3[3].toString()):"-" %></td>
+															<td class="td-2"><%=level3[3]!=null?StringEscapeUtils.escapeHtml4(level3[3].toString()):"-" %></td>
 															<td><% if(level3[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level3[6].toString()) %><%} else { %> -- <%} %></td>
 															<td><% if(level3[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level3[7].toString()) %><%} else { %> -- <%} %></td>
 															
-															<td class="width-30px"  style="text-align: center;">
+															<td class="text-center w-30">
 															
 															
 															 <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>','<%=count %>')">  
@@ -298,7 +222,7 @@ input[type=checkbox] {
 													                  
 													                  
 													                  
-													             <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													             <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																    <input type="hidden" name="Action" value="D"/>
 																    <input type="hidden" name="buttonid" value="<%=count %>">
@@ -322,14 +246,14 @@ input[type=checkbox] {
 																  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) {
 																%>
 														<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>" >
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%></td>
+															<td class="text-center w-2"> </td>
+															<td class="text-left w-5"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level4[3]!=null?StringEscapeUtils.escapeHtml4(level4[3].toString()):"-" %></td>
+															<td class="td-2"><%=level4[3]!=null?StringEscapeUtils.escapeHtml4(level4[3].toString()):"-" %></td>
 															<td><% if(level4[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level4[6].toString()) %><%} else { %> -- <%} %></td>
 															<td><% if(level4[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level4[7].toString()) %><%} else { %> -- <%} %></td>
 															
-															<td class="width-30px"  style="text-align: center;">
+															<td class="text-center w-30">
 															
 															
 														 <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>','<%=count %>')">  
@@ -342,7 +266,7 @@ input[type=checkbox] {
 													                  </button> 
 													                  
 													                  
-													              <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													              <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																    <input type="hidden" name="Action" value="D"/>
 																    <input type="hidden" name="buttonid" value="<%=count %>">
@@ -368,16 +292,16 @@ input[type=checkbox] {
 	
 																
 														<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>" >
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%></td>
+															<td class="text-center w-2"> </td>
+															<td class="text-left w-5"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%></td>
 														
 														
 														  
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level5[3]!=null?StringEscapeUtils.escapeHtml4(level5[3].toString()):"-" %></td>
+															<td class="td-2"><%=level5[3]!=null?StringEscapeUtils.escapeHtml4(level5[3].toString()):"-" %></td>
 															 <td><% if(level5[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level5[6].toString()) %><%} else { %> -- <%} %></td>
 															<td><% if(level5[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level5[7].toString()) %><%} else { %> -- <%} %></td>
 															
-																<td class="width-30px" style="text-align: center;">
+																<td class="text-center w-30">
 															
 															
 																 <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>','<%=count %>')">  
@@ -391,7 +315,7 @@ input[type=checkbox] {
 														
 													                  
 													                  
-													               <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													               <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 													                  <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																      <input type="hidden" name="Action" value="D"/>
 																      <input type="hidden" name="buttonid" value="<%=count %>">
@@ -419,14 +343,14 @@ input[type=checkbox] {
 																%>
 															
 														<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%></td>
+															<td class="text-center w-2"> </td>
+															<td class="text-left w-5"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level6[3]!=null?StringEscapeUtils.escapeHtml4(level6[3].toString()):"-" %></td>
+															<td class="td-2"><%=level6[3]!=null?StringEscapeUtils.escapeHtml4(level6[3].toString()):"-" %></td>
 															<td><% if(level6[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level6[6].toString()) %><%} else { %> -- <%} %></td>
 															<td><% if(level6[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level6[7].toString()) %><%} else { %> -- <%} %></td>
 															 
-														    <td class="width-30px" style="text-align: center;">
+														    <td class="text-center w-30">
 															
 															
 																 <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[6]%>','<%=level6[7]%>','<%=count %>')">  
@@ -440,7 +364,7 @@ input[type=checkbox] {
 														
 													                  
 													                  
-													              <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													              <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																    <input type="hidden" name="Action" value="D"/>
 																    <input type="hidden" name="buttonid" value="<%=count %>">
@@ -469,14 +393,14 @@ input[type=checkbox] {
 																%>
 															
 														<tr class="collapse row<%=count %>"  id="rowcollapse<%=count%>">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%></td>
+															<td class="text-center w-2"> </td>
+															<td class="text-left w-5"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=count %>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%></td>
 															
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=level7[3]!=null?StringEscapeUtils.escapeHtml4(level7[3].toString()):"-" %></td>
+															<td class="td-2"><%=level7[3]!=null?StringEscapeUtils.escapeHtml4(level7[3].toString()):"-" %></td>
 															<td><% if(level7[6]!=null){%><%=StringEscapeUtils.escapeHtml4(level7[6].toString()) %><%} else { %> -- <%} %></td>
 															<td><% if(level7[7]!=null){%><%=StringEscapeUtils.escapeHtml4(level7[7].toString()) %><%} else { %> -- <%} %></td>
 															 
-														    <td class="width-30px" style="text-align: center;">
+														    <td class="text-center w-30">
 															
 															
 																 <button  class="editable-click" name="buttonid" value="<%=count %>" onclick="EditModal('<%=level7[0]%>','<%=level7[3]%>','<%=level7[6]%>','<%=level7[7]%>','<%=count %>')">  
@@ -490,7 +414,7 @@ input[type=checkbox] {
 														
 													                  
 													                  
-													              <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+													              <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 													                <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																    <input type="hidden" name="Action" value="D"/>
 																    <input type="hidden" name="buttonid" value="<%=count %>">
@@ -517,12 +441,12 @@ input[type=checkbox] {
 												<% countB++;} }}%>
 												<% countA++;} }}else{%>
 												<tr class="collapse row<%=count %>">
-													<td colspan="9" style="text-align: center" class="center">No Sub List Found</td>
+													<td colspan="9" class="text-center">No Sub List Found</td>
 												</tr>
 												<%} %> 
 												<% count++; }} }else{%>
 												<tr >
-													<td colspan="9" style="text-align: center" class="center">No List Found</td>
+													<td colspan="9" class="text-center">No List Found</td>
 												</tr>
 												<%} %>
 												
@@ -557,7 +481,7 @@ input[type=checkbox] {
       </div>
       <div class="modal-body" align="center">
         <form action="" method="get">
-        	<table style="width: 100%;">
+        	<table class="w-100">
         		<tr>
         			<th>Level Name : &nbsp; </th>
         			<td><input type="text" class="form-control" name="LevelName" id="levelname" required></td>
@@ -568,7 +492,7 @@ input[type=checkbox] {
         			<th >Stage : &nbsp; </th>
         			<td >
         			
-        			<select class="form select selectdee " name="Stage"  id="stage" style="width:100%;">
+        			<select class="form select selectdee w-100" name="Stage"  id="stage" >
         			
         			        <option value="Design">Design</option>
 		      				<option value="Realisation">Realisation</option>
@@ -585,7 +509,7 @@ input[type=checkbox] {
         			     <th >Module : &nbsp; </th>
         			<td >
         			
-        			<select class="form select selectdee" id="Module" name="Module"  style="width:100%;">
+        			<select class="form select selectdee w-100" id="Module" name="Module" >
         			
         			        <option value="In-House-Development">In-House-Development</option>
 		      				<option value="BTP">BTP</option>
@@ -599,7 +523,7 @@ input[type=checkbox] {
         		
         		
         		<tr>
-        			<td colspan="2" style="text-align: center;">
+        			<td colspan="2" class="text-center">
         				<br>
         				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>Close</b></button>
         				<button class="btn btn-sm submit" onclick="return confirm('Are You Sure to Edit?');">SUBMIT</button>

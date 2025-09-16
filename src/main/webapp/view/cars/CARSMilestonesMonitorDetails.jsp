@@ -14,84 +14,14 @@
 <link href="./resources/css/multiselect.css" rel="stylesheet"/>
 <spring:url value="/resources/js/excel.js" var="excel" />
 <script src="${excel}"></script>
+<spring:url value="/resources/css/cars/CARSMilestonesMonitorDetails.css" var="carsmilestonesMonitorDetails" />
+<link href="${carsmilestonesMonitorDetails}" rel="stylesheet" />
+<spring:url value="/resources/css/cars/carscommon.css" var="carscommon8" />
+<link href="${carscommon8}" rel="stylesheet" />
 
-<style type="text/css">
-label{
-	font-weight: bold;
-	font-size: 13px;
-}
-body{
-	background-color: #f2edfa;
-	overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
 
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
 
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
 
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 29px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-.width1 {
-	width: 220px !important;
-}
-a:hover {
-	color: white;
-}
-.modal-xl{
-	max-width: 1400px;
-}
-</style>
 </head>
 <body>
 <%
@@ -123,9 +53,9 @@ a:hover {
     </div>
 <% } %>
 	<div class="container-fluid">
-		<div class="container" style="margin-bottom:20px;">
-			<div class="card" style=" ">
-				<div class="card-header" style="background-color: #055C9D; height: 50px;">
+		<div class="container mb-20">
+			<div class="card">
+				<div class="card-header card-header-bg">
 					<div class="row"> 
 					</div>
 				</div>
@@ -134,14 +64,14 @@ a:hover {
 						<div class="row"> 
 							<div class="col-sm-6" align="left"  >
 								<div class="form-group">
-									<label  >Action Name: <span class="mandatory" style="color: red;" >*</span></label>
-									<input class="form-control " type="text"name="activityName" id="activityName"  style="width:100% " maxlength="1000" required="required" placeholder="Enter Action Name">
+									<label  >Action Name: <span class="mandatory"  >*</span></label>
+									<input class="form-control w-100" type="text"name="activityName" id="activityName" maxlength="1000" required="required" placeholder="Enter Action Name">
 								</div>
 							</div>
 
 							<div class="col-sm-2" align="left"  >
 								<div class="form-group">
-									<label  >PDC: <span class="mandatory" style="color: red;">*</span></label>
+									<label  >PDC: <span class="mandatory">*</span></label>
 									<input class="form-control " name="pdc" id="pdc" required="required">
 								</div>
 							</div>
@@ -188,14 +118,14 @@ a:hover {
 													data-resizable="true" data-cookie="true"
 													data-cookie-id-table="saveId" data-show-export="true"
 													data-click-to-select="true" data-toolbar="#toolbar">
-													<thead style="text-align: center;">
+													<thead class="text-center">
 														<tr>
 															<th>SN</th>
-															<th style="text-align: left;">Action Item</th>
-															<th class="width-110px" >PDC</th>
-															<th class="width-110px">Assigned Date</th>									
+															<th class="text-left">Action Item</th>
+															<th class="w-110" >PDC</th>
+															<th class="w-110">Assigned Date</th>								 	
 														 	<th>Assignee</th>	
-														 	<th style="width: 100.5312px"> Progress</th>
+														 	<th class="w-100px"> Progress</th>
 														 	<th> Is Seen</th>
 														 	<th> Action</th>
 														</tr>
@@ -205,21 +135,21 @@ a:hover {
 														 	if(assignedList!=null && assignedList.size()>0){
 															for(Object[] obj: assignedList){ %>
 															<tr>
-																<td style="width:1% !important; " class="center"><%=count %></td>
-																<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+																<td class="center w-1"><%=count %></td>
+																<td class="td-2"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
 																<td class="width-30px" ><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
-																<td style="width:8% !important; "><%=obj[3]!=null?sdf.format(obj[3]):" - "%></td>
+																<td class="w-8"><%=obj[3]!=null?sdf.format(obj[3]):" - "%></td>
 																<td ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
-																<td style="width:20% !important; ">
+																<td class="w-20" >
 																	<%if(obj[7]!=null  && !obj[7].toString().equalsIgnoreCase("0")){ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																			<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[7]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<div class="progress progress-bg">
+																			<div class="progress-bar progress-bar-striped width-<%=obj[7].toString() %>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																				<%=StringEscapeUtils.escapeHtml4(obj[7].toString())%>
 																			</div> 
 																		</div>
 																	<%}else{ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																			<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		<div class="progress progress-bg" >
+																			<div class="progress-bar pro-bg" role="progressbar" >
 																				0
 																			</div>
 																		</div>
@@ -227,14 +157,14 @@ a:hover {
 																</td>
 																<td class="talign" >
 																	<%if(obj[8].toString().equals("1")){ %>
-																		<p style="color: green;">Seen</p>																		
+																		<p class="text-success">Seen</p>																		
 																	<%}else if(obj[8].toString().equals("0")){ %>
-																		<p style="color: red; font-weight: bold;">UnSeen</p>
+																		<p class="mandatory fw-bold">UnSeen</p>
 																	<%} %>
 																</td>
 																
 																<td class="left width1">		
-															 		<form action="CloseAction.htm" method="POST" name="myfrm"  style="display: inline">
+															 		<form action="CloseAction.htm" method="POST" name="myfrm"  class="d-inline">
 																		<button  class="btn btn-sm editable-click" name="sub" value="C">  
 																			<div class="cc-rockmenu">
 														                      <div class="rolling">
@@ -265,7 +195,7 @@ a:hover {
 															</tr>
 														<% count++; } }else{%>
 															<tr>
-																<td colspan="6" style="text-align: center">No List Found</td>
+																<td colspan="6" class="text-center">No List Found</td>
 															</tr>
 														<%}%>
 													</tbody>
@@ -293,16 +223,16 @@ a:hover {
 				</div>
 				<div class="modal-body" align="center">
 					<form action="CARSMilestonesMonitorDetailsEditSubmit.htm" method="post" autocomplete="off" id="editform" >
-						<table style="width: 100% ; padding: 15px;">
+						<table class="w-100 p-3" >
 							<tr>
-								<th style="padding: 10px 0px; width: 20% ;"> Action Item :</th>
-								<td style="padding: 10px 0px; "> 
+								<th class="p-10 width-20" > Action Item :</th>
+								<td class="p-10 " > 
 									<textarea name="activityName" class="form-control" id="modalactionitem" maxlength="500" required="required" rows="4" cols="60"></textarea>
 								</td>
 							</tr>
 							<tr>
-								<th style="padding: 10px 0px; width: 20% ;"> PDC  :</th>
-								<td style="padding: 10px 0px;  width: 30% ; "  >
+								<th class="p-10 width-20"> PDC  :</th>
+								<td class="p-10 width-30"  >
 									<input type="text" name="newPDC" value="" class="form-control" id="modalipdc1"  readonly required >
 									<input type="text" name="newPDC1" value="" class="form-control" id="modalipdc2"  readonly required onclick="alert('PDC Revision Limit Exceded !!');">
 								</td>

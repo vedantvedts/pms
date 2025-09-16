@@ -97,7 +97,7 @@
 								<table
 									class="table table-bordered table-hover table-striped table-condensed"
 									id="myTable">
-									<thead>
+									<thead class="text-center">
 										<tr>
 											<th>Select</th>
 											<th>Employee</th>

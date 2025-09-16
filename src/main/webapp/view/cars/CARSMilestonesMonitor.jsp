@@ -10,292 +10,19 @@
 <%@page import="com.vts.pfms.cars.model.CARSInitiation"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
- <style type="text/css">
- 
- p{
-  text-align: justify;
-  text-justify: inter-word;
-}
-
-  
- th
- {
- 	border: 1px solid black;
- 	text-align: center;
- 	padding: 5px;
- }
- 
- td
- {
- 	border: 1px solid black;
- 	text-align: left;
- 	padding: 5px;
- }
- 
-  }
- .textcenter{
- 	
- 	text-align: center;
- }
- .border
- {
- 	border: 1px solid black;
- }
- .textleft{
- 	text-align: left;
- }
- 
- #containers {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.input-group-text {
-	font-weight: bold;
-}
-
-label {
-	font-weight: 800;
-	font-size: 16px;
-	color: #07689f;
-}
-
-hr {
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-.card b {
-	font-size: 20px;
-}
-		
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-}
-
-input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
-}
-		
-</style>
-
-<style type="text/css">
-
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-.btn-status {
-  position: relative;
-  z-index: 1; 
-}
-
-.btn-status:hover {
-  transform: scale(1.05);
-  z-index: 5;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.modal-dialog-jump {
-  animation: jumpIn 1.5s ease;
-}
-
-@keyframes jumpIn {
-  0% {
-    transform: scale(0.1);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
+<spring:url value="/resources/css/cars/CARSMilestonesMonitor.css" var="carsMilestonesMonitor" />
+<link href="${carsMilestonesMonitor}" rel="stylesheet" />
+<spring:url value="/resources/css/cars/carscommon.css" var="carscommon7" />
+<link href="${carscommon7}" rel="stylesheet" />
 
 
-label{
-  font-weight: bold;
-  font-size: 20px;
-}
 
-.panel-info {
-    border-color: #bce8f1;
-}
-.panel {
-    margin-bottom: 10px;
-    background-color: #fff;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
- .panel-heading {
-    background-color: #FFF !important;
-    border-color: #bce8f1 !important;
-    border-bottom: 2px solid #466BA2 !important;
-    color: #1d5987;
-}
-.panel-title {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 13px;
-    color: inherit;
-    font-weight: bold;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-div {
-    display: block;
-}
-
-element.style {
-}
-.olre-body .panel-info .panel-heading {
-    background-color: #FFF !important;
-    border-color: #bce8f1 !important;
-    border-bottom: 2px solid #466BA2 !important;
-
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-
-.p-5 {
-    padding: 5px;
-}
-.panel-heading {
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-user agent stylesheet
-div {
-    display: block;
-}
-
-.panel-info {
-    border-color: #bce8f1;
-}
-
-
-.cssideheading{
-	font-size: 17px;
-}
-
-.cssideheadingdata{
-	font-size: 15px;
-	color: black;
-}
-
-</style>
 </head>
 <body>
 <%
@@ -334,33 +61,33 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 	<div class="row">
 		<div class="col-md-12">
 			<div class="card shadow-nohover">
-				<div class="row card-header" style="background: none;">
+				<div class="row card-header bg-none">
 			   		<div class="col-md-6">
 						<h4>CARS Milestones Monitor
-							<button type="button" id="carsInfo" value="1" class="btn btn-info btn-sm" style="padding: 0px 5px 0px 5px;border: none;"><i class="fa fa-info-circle" aria-hidden="true"></i></button>
+							<button type="button" id="carsInfo" value="1" class="btn btn-info btn-sm p-0-5 bor-none"><i class="fa fa-info-circle" aria-hidden="true"></i></button>
 						</h4>
 						
 					</div>
 				
-					<div class="col-md-6 justify-content-end" style="float: right;margin-top: -0.25rem;">
-						<div class="form-inline" style="justify-content: end;">
-							<a class="btn btn-info btn-sm  shadow-nohover back" href="CARSInitiationList.htm" style="color: white!important;float: right;">Back</a>  
+					<div class="col-md-6 justify-content-end f-right mt-minus-25"  >
+						<div class="form-inline js-e"> 
+							<a class="btn btn-info btn-sm  shadow-nohover back text-white f-right" href="CARSInitiationList.htm">Back</a>  
 						</div>
 					</div>
 					
 				</div>
 				<br>
-				<div class="row" style="margin-left: 5rem;" id="carsInfoHeading">
+				<div class="row ml-5rem" id="carsInfoHeading">
 					<div class="col-md-11">
-						<div class="card shadow-nohover" style="margin-left: 1.3rem;max-width: 100%;min-width: 100%;">
-							<div class="card-header" style=" /* background: linear-gradient(to right, #334d50, #cbcaa5); */ /* background-color:rgba(6,103,200,1); */ background-color: #0ba4b7;text-align: left;">
-								<b class="text-white" style="">CARS Details: </b>
+						<div class="card shadow-nohover cars-det" >
+							<div class="card-header card-head-bg">
+								<b class="text-white" >CARS Details: </b>
 							</div> 
 						</div>
 					</div>
 				</div>
-				<div class="row" style="margin-left: 5rem;" id="carsInfoContent">
-					<div class="col-md-11" align="left" style="margin-left: 20px;">
+				<div class="row ml-5rem"id="carsInfoContent">
+					<div class="col-md-11 ml-20" align="left">
 					    <div class="panel panel-info">
 					      	<div class="panel-heading">
 					        	<h4 class="panel-title">
@@ -404,30 +131,29 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 				
 				<br>
 				
-				<div class="row" style="margin-left: 5rem;">
-					<div class="col-md-11" align="left" style="margin-left: 20px;">
+				<div class="row ml-5rem">
+					<div class="col-md-11 ml-20" align="left">
 						<div class="table-responsive">
 							<table class="table table-bordered table-hover table-striped table-condensed"  id="">
 								<thead>
 						        	<tr>
-						            	<th style="width: 30%;color: #055C9D;">Description</th>
-						            	<th style="width: 10%;color: #055C9D;">Months</th>
-						            	<th style="width: 10%;color: #055C9D;">EDP</th>
-						            	<th style="width: 10%;color: #055C9D;">Amount (&#8377;)</th>
-						            	<!-- <th style="color: #055C9D;">Progress</th> -->
-						            	<th style="width: 20%;color: #055C9D;">Action</th>
+						            	<th class="col-55 width-30" >Description</th>
+						            	<th class="col-55 width-10" >Months</th>
+						            	<th class="col-55 width-10" >EDP</th>
+						            	<th class="col-55 width-10" >Amount (&#8377;)</th>
+						            	<th class="col-55 width-20" >Action</th>
 						            </tr>
 					            </thead>
 					            <tbody>
 					            	
 					               	<%if(milestones!=null && milestones.size()>0) { char a='a'; Object[] progressData = null;%>
 							    		<tr>
-							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage()!=null?StringEscapeUtils.escapeHtml4(milestones.get(0).getPaymentPercentage()): " - " %>%) </td>
-							    			<td style="text-align : center;vertical-align: top;">T0*</td>
-							    			<td style="text-align : center;vertical-align: top;">
+							    			<td class="init">&nbsp;(a) Initial Advance &nbsp;&nbsp;(<%=milestones.get(0).getPaymentPercentage()!=null?StringEscapeUtils.escapeHtml4(milestones.get(0).getPaymentPercentage()): " - " %>%) </td>
+							    			<td class="v-top text-center" >T0*</td>
+							    			<td class="v-top text-center">
 							    				<%if(carsContract.getT0Date()!=null) {%><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsContract.getT0Date())) %><%} %> 
 							    			</td>
-							    			<td style="text-align : right;vertical-align: top;">
+							    			<td class="v-top text-right">
 							    				<%if(milestones.get(0).getActualAmount()!=null) {%>
 							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(0).getActualAmount()))) %>
 							    				<%} else{%>
@@ -447,19 +173,19 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 									                      		</div>
 									                     	</div>
 											        	</button> 
-											        	<button  class="editable-click" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm" style="width: 50%;">
+											        	<button  class="editable-click w-50" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm">
 													        <%
 													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(0).getMilestoneNo())).findFirst().orElse(null): null;
 													        %>
 													        <%if(progressData[2]!=null) {%>
-																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																<div class="progress progress-bg" >
+																	<div class="progress-bar progress-bar-striped width-<%=progressData[2].toString().trim() %>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																		<%=StringEscapeUtils.escapeHtml4(progressData[2].toString()) %>
 																	</div> 
 																</div>	
 															<%}else{ %>
-																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																<div class="progress progress-bg" >
+																	<div class="progress-bar progress-bg-2" role="progressbar"  >
 																		0
 																	</div>
 																</div>
@@ -478,16 +204,16 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 							    			String milestoneNo = milestones.get(i).getMilestoneNo();
 							    		%>
 							    		<tr>
-							    			<td style="text-align : left;vertical-align: top;">&nbsp;(<%=++a %>) Performance Milestone-<%=(i) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
-							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get((i)).getMonths() %> </td>
-							    			<td style="text-align : center;vertical-align: top;">
+							    			<td class="text-left v-top" >&nbsp;(<%=++a %>) Performance Milestone-<%=(i) %> of RSQR &nbsp;&nbsp;(<%=milestones.get(i).getPaymentPercentage() %>%) </td>
+							    			<td class="text-center v-top" >T0+<%=milestones.get((i)).getMonths() %> </td>
+							    			<td class="text-center v-top">
 							    				<%if(carsContract.getT0Date()!=null) {
 							    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((i)).getMonths()));
 							    				%>
 							    					<%=fc.SqlToRegularDate(sqldate.toString()) %> 
 							    				<%} %>	
 							    			</td>
-							    			<td style="text-align : right;vertical-align: top;">
+							    			<td class="text-right v-top">
 							    				<%if(milestones.get(i).getActualAmount()!=null) {%>
 							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(i).getActualAmount()))) %>
 							    				<%} else{%>
@@ -496,7 +222,7 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 							    				&nbsp;&nbsp;
 							    			</td>
 							    			<td>
-							    				<form action="#" method="POST" name="myfrm"  style="display: inline">
+							    				<form action="#" method="POST" name="myfrm"  class="d-inline">
 													<div class="d-flex justify-content-center">	
 														<button  class="editable-click" name="Action" value="Actions" formaction="CARSMilestonesMonitorDetails.htm">
 															<div class="cc-rockmenu">
@@ -507,19 +233,19 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 									                     	</div>
 												        </button>   
 													
-														<button  class="editable-click" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm" style="width: 50%;">
+														<button  class="editable-click w-50" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm" >
 													        <%
 													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestoneNo)).findFirst().orElse(null): null;
 													        %>
 													        <%if(progressData[2]!=null) {%>
-																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																<div class="progress progress-bg" >
+																	<div class="progress-bar progress-bar-striped  width-<%=progressData[2] %>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																		<%=StringEscapeUtils.escapeHtml4(progressData[2].toString()) %>
 																	</div> 
 																</div>	
 															<%}else{ %>
-																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																<div class="progress progress-bg" >
+																	<div class="progress-bar progress-bg-2" role="progressbar"  >
 																		0
 																	</div>
 																</div>
@@ -536,16 +262,16 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 							    		<%}%>
 							    		<%if(milestones.size()>1) {%>
 							    		<tr>
-							    			<td style="text-align : left;word-wrap: break-word;word-break: normal;vertical-align: top;">&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage() %>%) </td>
-							    			<td style="text-align : center;vertical-align: top;">T0+<%=milestones.get(milestones.size()-1).getMonths() %> </td>
-							    			<td style="text-align : center;vertical-align: top;">
+							    			<td class="init">&nbsp;(<%=++a %>) on submission of final report &nbsp;&nbsp;(<%=milestones.get(milestones.size()-1).getPaymentPercentage() %>%) </td>
+							    			<td class="text-center v-top">T0+<%=milestones.get(milestones.size()-1).getMonths() %> </td>
+							    			<td class="text-center v-top">
 							    				<%if(carsContract.getT0Date()!=null) {
 							    					LocalDate sqldate = LocalDate.parse(carsContract.getT0Date()).plusMonths(Long.parseLong(milestones.get((milestones.size()-1)).getMonths()));
 							    				%>
 							    					<%=fc.SqlToRegularDate(sqldate.toString()) %> 
 							    				<%} %>	
 							    			</td>
-							    			<td style="text-align : right;vertical-align: top;">
+							    			<td class="text-right v-top" >
 							    				<%if(milestones.get(milestones.size()-1).getActualAmount()!=null) {%>
 							    					<%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(StringEscapeUtils.escapeHtml4(milestones.get(milestones.size()-1).getActualAmount()))) %>
 							    				<%} else{%>
@@ -553,8 +279,8 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 							    				<%} %>
 							    				&nbsp;&nbsp;
 							    			</td>
-							    			<td style="text-align: center;">
-							    				<form action="#" method="POST" name="myfrm"  style="display: inline">
+							    			<td class="text-center">
+							    				<form action="#" method="POST" name="myfrm"  class="d-inline">
 													<div class="d-flex justify-content-center">		
 														<button  class="editable-click" name="Action" value="Actions" formaction="CARSMilestonesMonitorDetails.htm">
 															<div class="cc-rockmenu">
@@ -565,19 +291,19 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 									                     	</div>
 												        </button>   
 													
-														<button  class="editable-click" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm" style="width: 50%;">
+														<button  class="editable-click w-50" name="Action" value="MilestoneProgress" formaction="CARSMilestonesProgressDetails.htm">
 													        <%
 													        progressData = milestoneProgressList!=null && milestoneProgressList.size()>0?milestoneProgressList.stream().filter(e -> e[5].toString().equalsIgnoreCase(milestones.get(milestones.size()-1).getMilestoneNo())).findFirst().orElse(null): null;
 													        %>
 													        <%if(progressData[2]!=null) {%>
-																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																	<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progressData[2] %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																<div class="progress progress-bg" >
+																	<div class="progress-bar progress-bar-striped  width-<%=progressData[2] %>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																		<%=StringEscapeUtils.escapeHtml4(progressData[2].toString()) %>
 																	</div> 
 																</div>	
 															<%}else{ %>
-																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																	<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																<div class="progress progress-bg" >
+																	<div class="progress-bar progress-bg-2" role="progressbar"  >
 																		0
 																	</div>
 																</div>
@@ -598,9 +324,9 @@ long carsInitiationId = carsIni.getCARSInitiationId();
 						</div>
 					</div>
 				</div>  
-				<div class="row" style="margin-left: 5rem;">
-					<div class="col-md-11" align="left" style="margin-left: 20px;">
-						<label style="font-size: 17px;">*EDP</label> - <span>Expected Date of Payment</span>
+				<div class="row ml-5rem" >
+					<div class="col-md-11 ml-20" align="left" >
+						<label class="fs-17">*EDP</label> - <span>Expected Date of Payment</span>
 					</div>
 				</div>
 			</div>

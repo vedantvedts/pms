@@ -1,0 +1,199 @@
+@charset "UTF-8";
+
+
+
+.break{
+	page-break-after: always;
+} 
+
+.border_black {
+	border : 1px solid black;
+	padding : 10px 5px;
+}
+
+    
+.left{
+	text-align: left
+}
+
+.right{
+	text-align: right
+}
+
+.center{
+	text-align: center
+}
+
+
+#pageborder {
+      position:fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border: 2px solid black;
+    }     
+ 
+
+ @page  {             
+          size: 790px 1120px;
+          margin-top: -20px; 
+          margin-left: 10px;
+          margin-right: 10px;
+          margin-buttom: 10px; 	
+ }
+
+
+.fw-bold{
+	font-weight: bold;
+}
+
+.mr-2-rem{
+	margin-right: 2rem;
+}
+
+.table-ml{
+	margin-left : 10px;
+	border-collapse : collapse;
+	border : 1px solid black;
+	width : 98.5%;
+}
+.table-ml-2{
+	margin-left : 10px;
+	border-collapse : collapse;
+	width : 98.5%;
+}
+.table-ml-3{
+	margin-left : 10px;
+	border-collapse : collapse;
+	border : 1px solid black;
+	width : 98.5%;
+	border-bottom: 0 !important;
+	border-left: 0;
+}
+.td-1{
+	text-align : left;
+	border : 1px solid black;
+	padding : 3px;
+	word-wrap: break-word;
+	word-break: normal;
+	vertical-align: top!important;
+}
+
+.td-2{
+	text-align: center;
+	width: 50px;
+}
+
+.td-3{
+	width: 20%;
+	text-align : left;
+	border : 1px solid black;
+	padding : 3px;
+	word-wrap: break-word;
+	word-break: normal;
+	vertical-align: top!important;
+}
+.td-4{
+	text-align: left;
+	padding : 3px;
+	word-wrap: break-word;
+	word-break: normal;
+	border-left: 0 !important;
+	border-bottom: 0 !important;
+	vertical-align: top!important;
+}
+.td-5{
+	text-align: left;
+	padding : 3px;
+	word-wrap: break-word;
+	word-break: normal;
+	border-left: 0 !important;
+	border-bottom: 0 !important;
+	vertical-align: top!important;
+}
+.td-6{
+	border-top: 0 !important;
+	text-align : left;
+	border : 1px solid black;
+	padding : 3px;
+	word-wrap: break-word;
+	word-break: normal;
+	vertical-align: top!important;
+}
+.td-7{
+	text-align: right;
+	border : 1px solid black;
+	padding : 3px;
+	word-wrap: break-word;
+	word-break: normal;
+	vertical-align: top!important;
+}
+.td-8{
+	border-top: 0;
+	text-align : left;
+	border : 1px solid black;
+	padding : 3px;
+	word-wrap: break-word;
+	word-break: normal;
+	vertical-align: top!important;
+}
+.td-9{
+	text-align: center;
+	border : 1px solid black;
+	padding : 3px;
+	word-wrap: break-word;
+	word-break: normal;
+	vertical-align: top!important;
+}
+.td-10{
+	text-align: center;
+	border-right: 0;
+	border : 1px solid black;
+	padding : 3px;
+	word-wrap: break-word;
+	word-break: normal;
+	vertical-align: top!important;
+}
+
+.td-11{
+	text-align: right;
+	border-left: 0;
+	border : 1px solid black;
+	padding : 3px;
+	word-wrap: break-word;
+	word-break: normal;
+	vertical-align: top!important;
+}
+.p-sty{
+	text-align: center; 
+	page-break-before: always;
+}
+
+.td-11{
+	text-align : left;
+	border : 1px solid black;
+	padding : 3px;
+	word-wrap: break-word;
+	word-break: normal ;
+}
+.td-12{
+	width: 15%;
+	word-wrap: break-word;
+	word-break: normal;
+	vertical-align: top!important;
+}
+.td-13{
+	text-align: center;
+	width: 20%;
+	vertical-align: top!important;
+}
+.w-50-px{
+	width: 50px;
+}
+
+
+
+.text-ul{
+	text-decoration: underline;
+}

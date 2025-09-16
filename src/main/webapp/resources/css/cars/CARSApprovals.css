@@ -1,0 +1,115 @@
+@charset "UTF-8";
+
+
+
+#button {
+   float: left;
+   width: 80%;
+   padding: 5px;
+   background: #dcdfe3;
+   color: black;
+   font-size: 17px;
+   border:none;
+   border-left: none;
+   cursor: pointer;
+}
+
+th{
+ text-align : center;
+}
+
+/* icon styles */
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
+
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 34px;
+	height: 30px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+.btn-status {
+  position: relative;
+  z-index: 1; 
+}
+
+.btn-status:hover {
+  transform: scale(1.05);
+  z-index: 5;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+
+.nav-pills-2{
+	background-color: #E1E5E8;
+}
+
+.fw-600{
+	font-weight: 600;
+}
+
+.f-right{
+	float: right;
+}
+
+.btn-link-1{
+	background: transparent;
+}
+
+.btn-link-1:hover{
+	text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+
+
+

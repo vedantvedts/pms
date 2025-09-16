@@ -27,221 +27,12 @@
 <link href="${contentCss}" rel="stylesheet" /> --%>
 <spring:url value="/resources/css/projectdetails.css" var="projetdetailscss" />
 <link href="${projetdetailscss}" rel="stylesheet" />
+<spring:url value="/resources/css/cars/InitiationDetails.css" var="initiationDetails" />
+<link href="${initiationDetails}" rel="stylesheet" />
 <spring:url value="/resources/summernote-lite.js" var="SummernoteJs" />
 <spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
 <script src="${SummernoteJs}"></script>
 <link href="${SummernoteCss}" rel="stylesheet" />
-
-<style type="text/css">
-
-.tab-pane p{
-	text-align: justify;
-	
-}
-
-.card-body{
-	padding: 0rem !important;
-}
-.navigation_btn{
-	margin: 1%;
-}
-
- .b{
-	background-color: #ebecf1;	
-}
-.a{
-	background-color: #d6e0f0;
-}
-
-.nav-link{
-	text-align: left;
-}
-.nav-tabs>.nav-item>.nav-link{
-	padding: 11px 15px !important;
-}
-body { 
-   font-family : "Lato", Arial, sans-serif ;
-   overflow-x: hidden;
-}
-
-input,select,table,div,label,span {
-font-family : "Lato", Arial, sans-serif ;
-}
-.text-center{
-	text-align: left !imporatant;
-}
-
-.control-label,.mandatory{
-float: left;
-font-weight: bold;
-font-size: 1rem;
-}
-.control-label{
-color: purple;
-}
-</style>
-
-<style type="text/css">
-
-.panel-info {
-	border-color: #bce8f1;
-}
-.panel {
-	margin-bottom: 10px;
-	background-color: #fff;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
-.panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-	color: #1d5987;
-}
-.panel-title {
-	margin-top: 0;
-	margin-bottom: 0;
-	font-size: 13px;
-	color: inherit;
-	font-weight: bold;
-	display: contents;
-}
-.buttonEd {
-	float: right;
-	margin-top: -0.5rem;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-div {
-	display: block;
-}
-
-
-.olre-body .panel-info .panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-heading {
-	padding: 18px 15px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.p-5 {
-	padding: 5px;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-user agent stylesheet
-div {
-	display: block;
-}
-
-.panel-info {
-	border-color: #bce8f1;
-}
-
-.rsqr-column{
- float : left;
-}
-
-.scrollclass::-webkit-scrollbar {
-    width:7px;
-}
-.scrollclass::-webkit-scrollbar-track {
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3); 
-    border-radius:5px;
-}
-.scrollclass::-webkit-scrollbar-thumb {
-    border-radius:5px;
-  /*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
-}
-.scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
- 	transition: 0.5s;
-}
-
-#rsqrapprovaltable,#socforwardtable{
-	width : 98%;
-	/* border : 1px solid black; */
-	margin-top : 1.5rem;
-	font-size: 15px;
-}
-#rsqrapprovaltable td,#socforwardtable td,#alldocstable td{
-	border : 1px solid black;
-	text-align: left;
-	padding : 3px;
-	vertical-align: top;
-}
-#alldocstable {
-	width : 70%;
-	/* border : 1px solid black; */
-	margin-top : 1.5rem;
-	font-size: 15px;
-	margin-left: 10rem;
-}
-#alldocstable th{
-	border : 1px solid black;
-	text-align: center;
-	padding : 5px;
-}
-
-#alldocstable td:first-child,#alldocstable td:nth-child(3){ 
-	text-align: center; 
-}
-
-.trup{
-	padding:6px 10px 6px 10px ;			
-	border-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-.trdown{
-	padding:0px 10px 5px 10px ;			
-	border-bottom-left-radius : 5px; 
-	border-bottom-right-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-
-#select2-rspState-container, #select2-fundsFrom-container {
-	text-align: left;
-}
-
-/* Summer Note styles */
-.note-editor {
-	width: 95% !important;
-	margin: 1rem 2.5rem;
-}
-</style>
 
 </head>
 <body>
@@ -318,9 +109,9 @@ String labcode=(String)session.getAttribute("labcode");
      <div class="col-md-12">
        <div class="card slider">
        <!-- This is for Slider Headers -->
-         <div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 130px;">
+         <div class="card-header slider_header card-head-pad"  >
              <h3 class="category">Initiation Details <%if(carsIni!=null && carsIni.getCARSNo()!=null) {%>- <%=StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()) %> <%} %>
-               <a class="btn btn-info btn-sm  shadow-nohover back" 
+               <a class="btn btn-info btn-sm shadow-nohover back text-white f-right" 
                <%if(isApproval!=null && (isApproval.equalsIgnoreCase("Y") || isApproval.equalsIgnoreCase("S") )) {%>
                		href="CARSRSQRApprovals.htm"
                <%} else if(isApproval!=null && ( isApproval.equalsIgnoreCase("N") || isApproval.equalsIgnoreCase("T") )) {%>
@@ -330,10 +121,10 @@ String labcode=(String)session.getAttribute("labcode");
                	<%} else{%> 
                		href="CARSInitiationList.htm"
                	<%} %>
-               	 style="color: white!important; float: right;">BACK</a>
+               	>BACK</a>
              </h3>
-             <hr style=" margin: 0 !important;">
-             <ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
+             <hr class="m-0">
+             <ul class="nav nav-tabs justify-content-center pb-0" role="tablist"  >
             	<li class="nav-item" id="nav-ini">
              		<%if(TabId!=null&&TabId.equalsIgnoreCase("1")){ %> 
              		    <a class="nav-link active " data-toggle="tab" href="#home" id="nav" role="tab">
@@ -348,11 +139,6 @@ String labcode=(String)session.getAttribute("labcode");
             	
             	<li class="nav-item" id="nav-rsqrdownload">
             		<a class="nav-link" href="CARSRSQRDownload.htm?carsInitiationId=<%=carsInitiationId%>" target="_blank" >RSQR</a>
-            		<%-- <form class="nav-link" action="">
-               			<button type="submit" class="btn btn-sm submit" formaction="CARSRSQRDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="RSQR Download" style="background-color: purple;border: none;">RSQR</button>
-               			<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
-						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-               		</form> --%>
             	</li>
             	
             	<%} else {%>
@@ -396,15 +182,6 @@ String labcode=(String)session.getAttribute("labcode");
                   		Final RSQR
               			</a>
             	</li>
-            	<%-- <li class="nav-item" id="nav-socmilestones">
-            	     <%if(TabId!=null&&TabId.equalsIgnoreCase("6")){ %>
-              			<a class="nav-link active" data-toggle="tab" href="#socmilestones" id="nav"role="tab" >
-              		<%}else{ %>
-              			<a class="nav-link" data-toggle="tab" href="#socmilestones" role="tab" >
-               		<%} %>
-                  		Milestones
-              			</a>
-            	</li> --%>
             	<li class="nav-item" id="nav-socforward">
             	     <%if(TabId!=null&&TabId.equalsIgnoreCase("7")){ %>
               			<a class="nav-link active" data-toggle="tab" href="#socforward" id="nav"role="tab" >
@@ -436,7 +213,7 @@ String labcode=(String)session.getAttribute("labcode");
          </div>
          <!-- This is for Tab Panes -->
          <div class="card">
-         	<div class="tab-content text-center" style="margin-top : 0.2rem;">
+         	<div class="tab-content text-center mt-1" >
          		<!-- *********** INITIATION  ***********      -->  
          		<%if(TabId!=null&&TabId.equalsIgnoreCase("1")){ %> 
          			<div class="tab-pane active" id="home" role="tabpanel">
@@ -450,18 +227,18 @@ String labcode=(String)session.getAttribute("labcode");
                		<%} %>
                		   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                			<div class="row">
-               			    <div class="col-md-12" style="margin-left: 60px;margin-right: 60px;">
+               			    <div class="col-md-12 mrl-60">
                			    
                			    <!-- First row of Initiation  -->
                			     <div class="row details">
-                        		<div class="column b" style="width:50%;border-top-left-radius: 5px;">
+                        		<div class="column b w-50 bor-tlr-5">
                             		<label class="control-label">CARS Title</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="initiationTitle" id="initiationTitle" maxlength="1000" style="font-size: 15px;"
+                              		<input  class="form-control form-control input-font" type="text" name="initiationTitle" id="initiationTitle" maxlength="1000" 
                               		 placeholder="Enter CARS Title" value="<%if(carsIni!=null && carsIni.getInitiationTitle()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()) %><%} %>" required> 
                         		</div>
-                        		<div class="column b" style="width: 17%;">
+                        		<div class="column b w-17">
                             		<label class="control-label">Funds From</label><span class="mandatory">*</span>
-                              		<select class="form-control selectdee" name="fundsFrom" style="margin-left: 12px;"  id="fundsFrom" required>
+                              		<select class="form-control selectdee ml-3" name="fundsFrom"  id="fundsFrom" required>
 			                			<option value="" disabled="disabled" selected="selected">--Select--</option>
 			                			<option value="0" <%if(carsIni!=null && carsIni.getFundsFrom()!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>selected <%} %> >Buildup</option>
 			               				 <%
@@ -472,71 +249,66 @@ String labcode=(String)session.getAttribute("labcode");
 										<%} %>
 									</select>
                         		</div>
-                        		<div class="column b" style="width: 14%;">
+                        		<div class="column b w-14">
                             		<label class="control-label">Amount (&#8377;)</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="amount" id="amount" maxlength="15" style="font-size: 15px;" 
+                              		<input  class="form-control form-control input-font" type="text" name="amount" id="amount" maxlength="15" 
                               		 placeholder="Enter Amount" value="<%if(carsIni!=null && carsIni.getAmount()!=null){ %><%=String.format("%.2f", Double.parseDouble(carsIni.getAmount()))%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
                         		</div>
-                        		<div class="column b" style="width: 13.5%;border-top-right-radius: 5px;">
+                        		<div class="column b w-13-5">
                             		<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="duration" id="duration" maxlength="100" style="font-size: 15px;"
+                              		<input  class="form-control form-control input-font" type="text" name="duration" id="duration" maxlength="100"
                               		 placeholder="Enter Duration" value="<%if(carsIni!=null && carsIni.getDuration()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getDuration())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
                         		</div>
                     		 </div>
                     		 
                     		 <!-- Second row of Initiation  -->
                     		 <div class="row details" >
-                        		<div class="column b" style="width: 94.5%;">
+                        		<div class="column b w-94-5" >
                             		<label class="control-label">Aim</label><span class="mandatory">*</span>
-                              		<%-- <input  class="form-control form-control" type="text" name="initiationAim" id="initiationAim" maxlength="2000" style="font-size: 15px;"
-                              		 value="<%if(carsIni!=null && carsIni.getInitiationAim()!=null){ %><%=carsIni.getInitiationAim()%><%} %>" required>  --%>
-                              		<%--  <textarea class="form-control form-control" name="initiationAim" id="initiationAim" maxlength="2000" style="font-size: 15px;" rows="3" cols="50" required>
-                              		 	<%if(carsIni!=null && carsIni.getInitiationAim()!=null){ %><%=carsIni.getInitiationAim()%><%} %>
-                              		 </textarea> --%>
-                              		 <textarea class="form-control form-control" name="initiationAim" id="initiationAim" maxlength="2000" rows="2" cols="65" style="font-size: 15px;" 
+                              		 <textarea class="form-control form-control input-font" name="initiationAim" id="initiationAim" maxlength="2000" rows="2" cols="65"  
                               		  placeholder="Enter CARS Aim" required><%if(carsIni!=null && carsIni.getInitiationAim()!=null){ %><%=carsIni.getInitiationAim()%><%} %></textarea>
                         		</div>
                     		 </div>
                     		 
                     		 <!-- Third row of Initiation  -->
                     		 <div class="row details" >
-                    		 	<div class="column b" style="width: 94.5%;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+                    		 	<div class="column b w-94-5 bor-blrr" >
                             		<label class="control-label">Justification</label><span class="mandatory">*</span>
-                              		<textarea  class="form-control form-control" name="justification" id="justification" maxlength="3000" rows="3" cols="65" style="font-size: 15px;"
+                              		<textarea  class="form-control form-control input-font" name="justification" id="justification" maxlength="3000" rows="3" cols="65" 
                               		 placeholder="Enter CARS Justification" required><%if(carsIni!=null && carsIni.getJustification()!=null){ %><%=carsIni.getJustification()%><%} %></textarea>
                         		</div>
                     		 </div>
                     		 
                     		 <!-- Fourth row of Initiation  -->
                     		 <div class="row details">
-                    		    <div class="col-md-6" style="text-align: left;">
-                    		    	<label class="control-label" style="color: black;">RSP Details :</label>
+                    		    <div class="col-md-6 text-left">
+                    		    	<label class="control-label text-bl" >RSP Details :</label>
                     		    </div>
                     		 </div>
                     		 <div class="row details">
-                        		<div class="column b" style="width: 25%;border-top-left-radius: 5px;border-bottom-left-radius: 5px;">
+                        		<div class="column b w-25 bor-blrr" >
                             		<label class="control-label">Name of Institute</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="rspInstitute" id="rspInstitute" maxlength="1000" style="font-size: 15px;"
+                              		<input  class="form-control form-control input-font" type="text" name="rspInstitute" id="rspInstitute" maxlength="1000"  
                               		 placeholder="Enter Name of Institute" value="<%if(carsIni!=null && carsIni.getRSPInstitute()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute())%><%} %>" required> 
                         		</div>
-                        		<div class="column b" style="width: 25%;border-top-left-radius: 5px;">
+                        		<div class="column b bor-tlr-5 w-25" >
                             		<label class="control-label">Address</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="rspAddress" id="rspAddress" maxlength="1000" style="font-size: 15px;"
+                              		<input  class="form-control form-control input-font" type="text" name="rspAddress" id="rspAddress" maxlength="1000" 
                               		 placeholder="Enter Address" value="<%if(carsIni!=null && carsIni.getRSPAddress()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress())%><%} %>" required> 
                         		</div>
-                        		<div class="column b" style="width: 15%;">
+                        		<div class="column b w-15">
                             		<label class="control-label">City</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="rspCity" id="rspCity" maxlength="500" style="font-size: 15px;"
+                              		<input  class="form-control form-control input-font" type="text" name="rspCity" id="rspCity" maxlength="500"
                               		 placeholder="Enter City" value="<%if(carsIni!=null && carsIni.getRSPCity()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPCity())%><%} %>" required> 
                         		</div>
-                        		<div class="column b" style="width: 10%;">
+                        		<div class="column b w-10">
                             		<label class="control-label">Pin Code</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="rspPinCode" id="rspPinCode" maxlength="6" style="font-size: 15px;"
+                              		<input  class="form-control form-control input-font" type="text" name="rspPinCode" id="rspPinCode" maxlength="6" 
                               		 placeholder="Enter Pin Code" value="<%if(carsIni!=null && carsIni.getRSPPinCode()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" onchange="validatePinCodeInput(this);" required> 
                         		</div>
-                        		<div class="column b" style="width: 19.4%;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
+                        		<div class="column b bor-blrr w-19-4" >
                             		<label class="control-label">State</label><span class="mandatory">*</span>
-                            		<select class="form-control selectdee" name="rspState" style="margin-left: 12px;"  id="rspState" required>
+                            		<select class="form-control selectdee ml-3" name="rspState"  id="rspState" required>
 			                			<option value="" disabled="disabled" selected="selected">--Select--</option>
 			               				 <%
 			                				for(String state: statesList ){
@@ -549,12 +321,12 @@ String labcode=(String)session.getAttribute("labcode");
                     		 
                     		 <!-- Fifth row of Initiation  -->
                     		 <div class="row details">
-                    		    <div class="col-md-6" style="text-align: left;">
-                    		    	<label class="control-label" style="color: black;">Principal Investigator Details :</label>
+                    		    <div class="col-md-6 text-left">
+                    		    	<label class="control-label text-bl">Principal Investigator Details :</label>
                     		    </div>
                     		 </div>
                     		 <div class="row details">
-                        		<div class="column b" style="width: 5%;border-top-left-radius: 5px;border-bottom-left-radius: 5px;">
+                        		<div class="column b w-5 bor-blrr" >
                             		<label class="control-label">Title</label><span class="mandatory">*</span>
                             		<select class="form-control selectdee" name="piTitle" required="required">
 										<option value="Mr" <%if(carsIni!=null && carsIni.getPITitle()!=null && carsIni.getPITitle().equalsIgnoreCase("Mr")) {%>selected<%} %> >Mr</option>
@@ -562,37 +334,35 @@ String labcode=(String)session.getAttribute("labcode");
 										<option value="Dr" <%if(carsIni!=null && carsIni.getPITitle()!=null && carsIni.getPITitle().equalsIgnoreCase("Dr")) {%>selected<%} %> >Dr</option>
 										<option value="Prof" <%if(carsIni!=null && carsIni.getPITitle()!=null && carsIni.getPITitle().equalsIgnoreCase("Prof")) {%>selected<%} %> >Prof</option>
 									</select>
-                              		<%-- <input  class="form-control form-control" type="text" name="piTitle" id="piTitle" maxlength="100" style="font-size: 15px;"
-                              		 value="<%if(carsIni!=null && carsIni.getPITitle()!=null){ %><%=carsIni.getPITitle()%><%} %>" required>   --%>
                         		</div>
-                        		<div class="column b" style="width: 20%;">
+                        		<div class="column b w-20">
                             		<label class="control-label">Name</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piName" id="piName" maxlength="500" style="font-size: 15px;"
+                              		<input  class="form-control form-control input-font" type="text" name="piName" id="piName" maxlength="500" 
                               		 placeholder="Enter Name of PI" value="<%if(carsIni!=null && carsIni.getPIName()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIName())%><%} %>" required> 
                         		</div>
-                        		<div class="column b" style="width: 18%;">
+                        		<div class="column b w-18">
                             		<label class="control-label">Designation</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piDesig" id="piDesig" maxlength="500" style="font-size: 15px;"
+                              		<input  class="form-control form-control input-font" type="text" name="piDesig" id="piDesig" maxlength="500" 
                               		 placeholder="Enter Designation of PI" value="<%if(carsIni!=null && carsIni.getPIDesig()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIDesig())%><%} %>" required> 
                         		</div>
-                        		<div class="column b" style="width: 18%;">
+                        		<div class="column b w-18">
                             		<label class="control-label">Department</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piDept" id="piDept" maxlength="500" style="font-size: 15px;"
+                              		<input  class="form-control form-control input-font" type="text" name="piDept" id="piDept" maxlength="500"  
                               		 placeholder="Enter Department of PI" value="<%if(carsIni!=null && carsIni.getPIDept()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIDept())%><%} %>" required> 
                         		</div>
-                        		<div class="column b" style="width: 12%;">
+                        		<div class="column b w-12">
                             		<label class="control-label">Mobile Number</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piMobileNo" id="piMobileNo" maxlength="10" style="font-size: 15px;"
+                              		<input  class="form-control form-control input-font" type="text" name="piMobileNo" id="piMobileNo" maxlength="10" 
                               		 placeholder="Enter Mobile No of PI" value="<%if(carsIni!=null && carsIni.getPIMobileNo()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIMobileNo())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" onchange="validateMobileNoInput(this);" required> 
                         		</div>
-                        		<div class="column b" style="width: 12%;">
+                        		<div class="column b w-12">
                             		<label class="control-label">Email</label><span class="mandatory">*</span>
-                              		<input  class="form-control form-control" type="text" name="piEmail" id="piEmail" maxlength="50" style="font-size: 15px;"
+                              		<input  class="form-control form-control input-font" type="text" name="piEmail" id="piEmail" maxlength="50"  
                               		 placeholder="Enter Email of PI" value="<%if(carsIni!=null && carsIni.getPIEmail()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIEmail())%><%} %>" onchange="validateEmailInput(this);" required> 
                         		</div>
-                        		<div class="column b" style="width: 9.5%;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
+                        		<div class="column b w-9-5 bor-blrr">
                             		<label class="control-label">Fax No</label>
-                              		<input  class="form-control form-control" type="text" name="piFaxNo" id="piFaxNo" maxlength="10" style="font-size: 15px;" 
+                              		<input  class="form-control form-control input-font" type="text" name="piFaxNo" id="piFaxNo" maxlength="10" 
                               		 placeholder="Enter Fax No of PI" value="<%if(carsIni!=null && carsIni.getPIFaxNo()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsIni.getPIFaxNo())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"> 
                         		</div>
                     		 </div>
@@ -613,12 +383,12 @@ String labcode=(String)session.getAttribute("labcode");
                		 <%}else {%>
                		  </form>
                		 <%} %>
-               		<div style="display: flex;justify-content: space-between;">
+               		<div class="dis-flex">
                			<div></div>
-               			<div style="text-align: center;">
+               			<div class="text-center">
 						</div>
-               			<div class="navigation_btn"  style="text-align: right;">
-            				<a class="btn btn-info btn-sm  shadow-nohover back" href="CARSInitiationList.htm" style="color: white!important">Back</a>
+               			<div class="navigation_btn text-right" >
+            				<a class="btn btn-info btn-sm  shadow-nohover back text-white" href="CARSInitiationList.htm" >Back</a>
 						<button class="btn btn-info btn-sm next">Next</button>
 					</div>
                		</div> 
@@ -640,13 +410,13 @@ String labcode=(String)session.getAttribute("labcode");
                		<div class="container-fluid">
 						<div class="row">
 							<div class="col-md-2">
-								<div class="card" style="border-color: #00DADA; margin-top: 2%;">
-									<div class="card-body scrollclass" id="scrollclass" style="height: 30.5rem;">
+								<div class="card card-brg">
+									<div class="card-body scrollclass hei-35" id="scrollclass">
 
-										<div class="panel panel-info" style="margin-top: 10px;" >
+										<div class="panel panel-info mt-2"  >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Introduction</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++rsqrslno %>. Introduction</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor1" onclick="showEditor('Introduction')">
@@ -656,10 +426,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-2" >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Research Overview</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++rsqrslno %>. Research Overview</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor2" onclick="showEditor('Research Overview')">
@@ -669,10 +439,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-2" >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Objectives</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++rsqrslno %>. Objectives</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor3"onclick="showEditor('Objectives')">
@@ -682,10 +452,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-2" >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Major Requirements</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++rsqrslno %>. Major Requirements</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor4" onclick="showTableMajorReqr('Major Requirements')">
@@ -695,10 +465,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-2">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Deliverables</span>
+													<span class="ml-2 rsqr-column input-font"><%=++rsqrslno %>. Deliverables</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor5" onclick="showTableDeliverables('Deliverables')">
@@ -708,10 +478,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-2">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Milestones & Timelines</span>
+													<span class="ml-2 rsqr-column input-font"> <%=++rsqrslno %>. Milestones & Timelines</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor6" onclick="showTableMilestones('Proposed Milestones Timelines')">
@@ -721,10 +491,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-2">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Scope of RSP</span>
+													<span class="ml-2 rsqr-column input-font"> <%=++rsqrslno %>. Scope of RSP</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor7" onclick="showEditor('RSP Scope')">
@@ -734,10 +504,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-2">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Scope of <%=StringEscapeUtils.escapeHtml4(labcode) %></span>
+													<span class="ml-2 rsqr-column input-font"> <%=++rsqrslno %>. Scope of <%=StringEscapeUtils.escapeHtml4(labcode) %></span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor8" onclick="showEditor('<%=labcode %> Scope')">
@@ -747,10 +517,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-2">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Success Criterion</span>
+													<span class="ml-2 rsqr-column input-font"> <%=++rsqrslno %>. Success Criterion</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor9" onclick="showEditor('Success Criterion')">
@@ -760,10 +530,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-2">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++rsqrslno %>. Literature Reference if any</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++rsqrslno %>. Literature Reference if any</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor10" onclick="showEditor('Literature Reference')">
@@ -777,16 +547,16 @@ String labcode=(String)session.getAttribute("labcode");
 							</div>
 							
 							<!--div for Editor-->
-							<div class="col-md-10" style="display: block" id="col1">
+							<div class="col-md-10 dis-bl" id="col1">
 			  					<form action="RSQRDetailsSubmit.htm" method="POST" id="myfrm">
-									<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
-										<h5 class="heading ml-4 mt-3" id="editorHeading"style="font-weight: 500; color: #31708f;">Introduction</h5>
+									<div class="card card-bg-2" >
+										<h5 class="heading ml-4 mt-3 intro-h5" id="editorHeading">Introduction</h5>
 										<hr>
-										<div class="card-body" style="margin-top:-8px">
+										<div class="card-body mt-minus-8">
 											<div class="row">
 												<div class="col-md-12 " align="left">
 													<div id="Editor" class="center"></div>
-													<textarea name="Details" style="display: none;"></textarea>
+													<textarea name="Details" class="dis-none"></textarea>
 													<div class="mt-2" align="center" id="detailsSubmit">
 														<span id="EditorDetails"></span>
 														<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
@@ -794,8 +564,8 @@ String labcode=(String)session.getAttribute("labcode");
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 														<span id="Editorspan">
 														    <%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%> 
-															<span id="btn1" style="display: block;"><button type="submit"class="btn btn-sm btn-success submit mt-2 btn-cars" onclick="return confirm('Are you sure to submit?')">SUBMIT</button></span>
-															<span id="btn2" style="display: none;"><button type="submit"class="btn btn-sm btn-warning edit mt-2 btn-cars" onclick="return confirm('Are you sure update?')">UPDATE</button></span>
+															<span id="btn1" class="dis-bl" ><button type="submit"class="btn btn-sm btn-success submit mt-2 btn-cars" onclick="return confirm('Are you sure to submit?')">SUBMIT</button></span>
+															<span id="btn2" class="dis-none" ><button type="submit"class="btn btn-sm btn-warning edit mt-2 btn-cars" onclick="return confirm('Are you sure update?')">UPDATE</button></span>
 															<%} %>
 														</span>
 													</div>
@@ -808,22 +578,22 @@ String labcode=(String)session.getAttribute("labcode");
 							<!-- editor ends  -->
 							
 							<!-- Cloning table for Major Requirements -->
-							<div class="col-md-10" style="display: none" id="col2">
-								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
-									<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight: 500; color: #31708f;">Major Requirements</h5>
+							<div class="col-md-10 dis-none" id="col2">
+								<div class="card card-bg-2" >
+									<h5 class="heading ml-4 mt-3 intro-h5" id="editorHeading">Major Requirements</h5>
 									<hr>
 									<div class="card-body bg-light mt-1">
 										<form action="RSQRMajorReqrSubmit.htm" method="post">
-											<table style="width:100% ; " id="majorReqrTable">
-												<thead style = "background-color: #055C9D; color: white;text-align: center;">
+											<table class="w-100" id="majorReqrTable">
+												<thead class="text-center text-white thead-bg-col" >
 													<tr>
-														<th style="padding: 0px 5px 0px 5px;">Req Id</th>
-											    		<th style="padding: 0px 5px 0px 5px;">Req Description</th>
-											    		<th style="padding: 0px 5px 0px 5px;">Relevant Specification</th>
-											    		<th style="padding: 0px 5px 0px 5px;">Validation Method</th>
-											    		<th style="padding: 0px 5px 0px 5px;">Remarks</th>
-														<td style="width:10%;">
-															<button type="button" class=" btn btn_add_majorreqr "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+														<th class="th-p">Req Id</th>
+											    		<th class="th-p">Req Description</th>
+											    		<th class="th-p">Relevant Specification</th>
+											    		<th class="th-p">Validation Method</th>
+											    		<th class="th-p">Remarks</th>
+														<td class="w-10">
+															<button type="button" class=" btn btn_add_majorreqr "> <i class="btn btn-sm fa fa-plus text-success p-0"></i></button>
 														</td>
 													</tr>
 												</thead>
@@ -831,50 +601,50 @@ String labcode=(String)session.getAttribute("labcode");
 							 						<%if(majorReqr!=null && majorReqr.size()>0) {
 							 					   	for(CARSRSQRMajorRequirements mr :majorReqr) {%>
 							 						<tr class="tr_clone_majorreqr">
-														<td style="padding: 10px 5px 0px 5px;width: 10%;">
-															<input type="text" class="form-control item" name="reqId" id="reqId" value="<%if(mr.getReqId()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqId()) %><%} %>" maxlength="50" style="text-align: center;" readonly>
+														<td class="p-10-5-5 w-10" >
+															<input type="text" class="form-control item text-center" name="reqId" id="reqId" value="<%if(mr.getReqId()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqId()) %><%} %>" maxlength="50" readonly>
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 30%;">
+														<td class="p-10-5-5 w-30" >
 															<input type="text" class="form-control item" name="reqDescription" value="<%if(mr.getReqDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqDescription()) %><%} %>" maxlength="1000" required="required" >
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 20%;">
+														<td class="p-10-5-5 w-20" >
 															<input type="text" class="form-control item" name="relevantSpecs" value="<%if(mr.getRelevantSpecs()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getRelevantSpecs()) %><%} %>" maxlength="1000">
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 20%;">
+														<td class="p-10-5-5 w-20" >
 															<input type="text" class="form-control item" name="validationMethod" value="<%if(mr.getValidationMethod()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getValidationMethod()) %><%} %>" maxlength="1000">
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 15%;">
+														<td class="p-10-5-5 w-15" >
 															<input type="text" class="form-control item" name="remarks" value="<%if(mr.getRemarks()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getRemarks()) %><%} %>" maxlength="1000" >
 														</td>	
-														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_majorreqr " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5">
+															<button type="button" class=" btn btn_rem_majorreqr " > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 														</td>									
 													</tr>
 							 						<%} }else{%>
 													<tr class="tr_clone_majorreqr">
-														<td style="padding: 10px 5px 0px 5px;width: 10%;" >
-															<input type="text" class="form-control item" name="reqId" id="reqId" value="RTD-1" maxlength="50" readonly="readonly" style="text-align: center;">
+														<td class="p-10-5-5 w-10" >
+															<input type="text" class="form-control item text-center" name="reqId" id="reqId" value="RTD-1" maxlength="50" readonly="readonly" >
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 30%;">
+														<td class="p-10-5-5 w-30" >
 															<input type="text" class="form-control item" name="reqDescription" maxlength="1000" required="required" >
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 20%;">
+														<td class="p-10-5-5 w-20" >
 															<input type="text" class="form-control item" name="relevantSpecs" maxlength="1000">
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 20%;">
+														<td class="p-10-5-5 w-20" >
 															<input type="text" class="form-control item" name="validationMethod" maxlength="1000" >
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 15%;">
+														<td class="p-10-5-5 w-15" >
 															<input type="text" class="form-control item" name="remarks" maxlength="1000" >
 														</td>	
-														<td style="width:5% ; ">
-															<button type="button" class=" btn btn_rem_majorreqr " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5">
+															<button type="button" class=" btn btn_rem_majorreqr " > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 														</td>									
 													</tr>
 													<%} %>
 												</tbody> 
 											</table>
-											<div align="center" style="margin-top: 15px;">
+											<div align="center mt-3">
 												<%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%>
 													<%if(majorReqr!=null && majorReqr.size()>0) {%>
 														<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-cars" name="submit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
@@ -892,19 +662,19 @@ String labcode=(String)session.getAttribute("labcode");
 							</div>
 							
 							<!-- Cloning table for Deliverables -->
-							<div class="col-md-10" style="display: none" id="col3">
-								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
-									<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight: 500; color: #31708f;">Deliverables</h5>
+							<div class="col-md-10 dis-none" id="col3">
+								<div class="card card-bg-2" >
+									<h5 class="heading ml-4 mt-3 intro-h5s" id="editorHeading">Deliverables</h5>
 									<hr>
 									<div class="card-body bg-light mt-1">
 										<form action="RSQRDeliverablesSubmit.htm" method="post">
-											<table style="width:100% ; " id="deliverablesTable">
-												<thead style = "background-color: #055C9D; color: white;text-align: center;">
+											<table class="w-100" id="deliverablesTable">
+												<thead class="text-center text-white thead-bg-col" >
 													<tr>
-												    	<th style="width: 80%;padding: 0px 5px 0px 5px;">Description</th>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Type</th>
-														<td style="width: 5%;">
-															<button type="button" class=" btn btn_add_deliverables "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+												    	<th class="th-p w-80">Description</th>
+												    	<th class="th-p w-10">Type</th>
+														<td class="w-5">
+															<button type="button" class=" btn btn_add_deliverables "> <i class="btn btn-sm fa fa-plus text-success p-0"></i></button>
 														</td>
 													</tr>
 												</thead>
@@ -912,40 +682,40 @@ String labcode=(String)session.getAttribute("labcode");
 								 					<%if(deliverables!=null && deliverables.size()>0) {
 								 					   for(CARSRSQRDeliverables del :deliverables) {%>
 													<tr class="tr_clone_deliverables">
-														<td style="width: 80%;padding: 10px 5px 0px 5px;" >
+														<td class="p-10-5-5 w-80" >
 															<input type="text" class="form-control item" name="description" value="<%if(del.getDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(del.getDescription()) %><%} %>" maxlength="1000" required="required" >
 														</td>	
-														<td style="width: 10%;padding: 10px 5px 0px 5px;">
+														<td class="p-10-5-5 w-10">
 															<select class="form-control deliverabletype" name="deliverableType" required="required">
 																<option value="H" <%if(del.getDeliverableType()!=null && del.getDeliverableType().equalsIgnoreCase("H")) {%>selected<%} %> >Hardware</option>
 																<option value="S" <%if(del.getDeliverableType()!=null && del.getDeliverableType().equalsIgnoreCase("S")) {%>selected<%} %> >Software</option>
 																<option value="R" <%if(del.getDeliverableType()!=null && del.getDeliverableType().equalsIgnoreCase("R")) {%>selected<%} %> >Report</option>
 															</select>
 														</td>	
-														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_deliverables " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5">
+															<button type="button" class=" btn btn_rem_deliverables " > <i class="btn btn-sm fa fa-minus mandatory p-0"></i></button>
 														</td>									
 													</tr>
 													<%} }else{%>
 													<tr class="tr_clone_deliverables">
-														<td style="width: 80%;padding: 10px 5px 0px 5px;" >
+														<td class="p-10-5-5 w-80" >
 															<input type="text" class="form-control item" name="description" maxlength="1000" required="required" >
 														</td>	
-														<td style="width: 10%;padding: 10px 5px 0px 5px;">
+														<td class="p-10-5-5 w-10">
 															<select class="form-control deliverabletype" name="deliverableType" required="required">
 																<option value="H">Hardware</option>
 																<option value="S">Software</option>
 																<option value="R">Report</option>
 															</select>
 														</td>	
-														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_deliverables" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5">
+															<button type="button" class=" btn btn_rem_deliverables" > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 														</td>									
 													</tr>
 													<%} %>
 												</tbody> 
 											</table>
-											<div align="center" style="margin-top: 15px;">
+											<div align="center" class="mt-3">
 												<%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%>
 													<%if(deliverables!=null && deliverables.size()>0) {%>
 														<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-cars" name="submit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
@@ -963,23 +733,21 @@ String labcode=(String)session.getAttribute("labcode");
 							</div>
 							
 							<!-- Cloning table for Milestones -->
-							<div class="col-md-10" id="col7" style="" >
-								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
-									<h5 class="heading ml-4 mt-3" id="" style="font-weight: 500; color: #31708f;">Proposed Milestones & Timelines</h5>
+							<div class="col-md-10" id="col7" >
+								<div class="card " >
+									<h5 class="heading ml-4 mt-3 intro-h5">Proposed Milestones & Timelines</h5>
 									<hr>
 									<div class="card-body bg-light mt-1">
 										<form action="CARSSoCMilestoneSubmit.htm" method="post">
-											<table style="width:100% ; " id="milestones">
-												<thead style = "background-color: #055C9D; color: white;text-align: center;">
+											<table class="w-100" id="milestones">
+												<thead class="text-center text-white thead-bg-col" >
 													<tr>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Milestone <br> No.</th>
-												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
-												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
-												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
-												    	<!-- <th style="width: 5%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
-												    	<th style="width: 20%;padding: 0px 5px 0px 5px;">Payment Terms</th> -->
-														<td style="width: 5%;">
-															<button type="button" class=" btn btn_add_milestones "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+												    	<th class="w-10 th-p" >Milestone <br> No.</th>
+												    	<th class="w-30 th-p" >Task Description</th>
+												    	<th class="w-5 th-p" >T0 + Months</th>
+												    	<th class="w-25 th-p" >Deliverables</th>
+												    	<td class="w-5">
+															<button type="button" class=" btn btn_add_milestones "> <i class="btn btn-sm fa fa-plus text-success p-0" ></i></button>
 														</td>
 													</tr>
 												</thead>
@@ -987,56 +755,44 @@ String labcode=(String)session.getAttribute("labcode");
 								 					<%if(milestones!=null && milestones.size()>0) {
 								 					   for(CARSSoCMilestones mil :milestones) {%>
 													<tr class="tr_clone_milestones">
-														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="<%if(mil.getMilestoneNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMilestoneNo()) %><%} %>" style="text-align: center;" required="required"  readonly="readonly">
+														<td class="w-10 p-10-5-5"  >
+															<input type="text" class="form-control item text-center" name="milestoneno" id="milestoneno" value="<%if(mil.getMilestoneNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMilestoneNo()) %><%} %>"  required="required"  readonly="readonly">
 														</td>	
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc()%><%} %></textarea>
+														<td class="w-30 p-10-5-5" >
+															<textarea class="form-control w-100" name="taskDesc" rows="3" cols=""  maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc()%><%} %></textarea>
 														</td>	
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+														<td class="w-5 p-10-5-5" >
 															<input type="number" class="form-control " name="months" min="0" max="<%if(carsIni!=null){%><%=carsIni.getDuration()%><%} %>" value="<%if(mil.getMonths()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMonths()) %><%} %>" required="required">
 														</td>	
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
+														<td class="w-25 p-10-5-5">
+															<textarea class="form-control w-100" name="deliverables" rows="3" cols=""  maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
 														</td>
-														<%-- <td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
-														</td>
-														<td style="width: 20%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
-														</td> --%>
-														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_milestones " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5">
+															<button type="button" class=" btn btn_rem_milestones " > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 														</td>									
 													</tr>
 													<%} }else{%>
 													<tr class="tr_clone_milestones">
-														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="MIL-0" style="text-align: center;" required="required" readonly="readonly">
+														<td class="w-10 p-10-5-5"  >
+															<input type="text" class="form-control item text-center" name="milestoneno" id="milestoneno" value="MIL-0" required="required" readonly="readonly">
 														</td>	
-														<td style="width: 30%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
+														<td class="w-30 p-10-5-5" >
+															<textarea class="form-control w-100" name="taskDesc" rows="3" cols="" maxlength="2000" required="required"></textarea>
 														</td>	
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
+														<td class="w-5 p-10-5-5" >
 															<input type="number" class="form-control" name="months" min="0" max="<%if(carsIni!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getDuration()) %><%} %>" required="required">
 														</td>	
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
+														<td class="w-25 p-10-5-5">
+															<textarea class="form-control w-100" name="deliverables" rows="3" cols=""  maxlength="2000" required="required"></textarea>
 														</td>
-														<!-- <td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="paymentPercentage" id="paymentPercentage" min="0" max="100" required="required" oninput="return checkPaymentPercentage(this)">
-														</td>
-														<td style="width: 20%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
-														</td> -->
-														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_milestones" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5">
+															<button type="button" class=" btn btn_rem_milestones" > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 														</td>									
 													</tr>
 													<%} %>
 												</tbody> 
 											</table>
-											<div align="center" style="margin-top: 15px;">
+											<div align="center" class="mt-3" >
 												<%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%>
 													<%if(milestones!=null && milestones.size()>0) {%>
 														<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-soc" name="submit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
@@ -1058,16 +814,16 @@ String labcode=(String)session.getAttribute("labcode");
 		     			<hr class="mt-2">
 					</div>
                		
-               		<div style="display: flex;justify-content: space-between;">
+               		<div class="dis-flex" >
                			<div></div>
-               			<div class="navigation_btn"  style="text-align: center;">
+               			<div class="navigation_btn text-center" >
                				<form action="">
-               					<button type="submit" class="btn btn-sm submit" formaction="CARSRSQRDownloadBeforeFreeze.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="RSQR Download" style="background-color: purple;border: none;">RSQR</button>
+               					<button type="submit" class="btn btn-sm submit btn-rsqr" formaction="CARSRSQRDownloadBeforeFreeze.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="RSQR Download" >RSQR</button>
                					<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                				</form>
 						</div>
-               			<div class="navigation_btn" style="text-align: right;">
+               			<div class="navigation_btn text-right" >
             				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 							<button class="btn btn-info btn-sm next">Next</button>
 						</div>
@@ -1087,11 +843,11 @@ String labcode=(String)session.getAttribute("labcode");
                	<%} %>
                			<%if(carsIni!=null && rsqrDetails!=null && majorReqr!=null && majorReqr.size()>0 && deliverables!=null && deliverables.size()>0) {%>
                			<div class="col-md-8 mt-4">
-               				<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%;">
+               				<div class="card rsqr-card-bg">
                					<div class="card-body mt-2 ml-4">
                						<form action="#">
                							<div class="mt-2" align="center">
-               								<h5 style="font-weight: bold;margin-top: 1.5rem;">RSQR Approval
+               								<h5 class="rsqr-h5">RSQR Approval
                									&emsp;<button type="submit" class="btn btn-sm" formaction="CARSRSQRApprovalDownload.htm" name="carsInitiationId" value="<%=carsInitiationId%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download" formnovalidate="formnovalidate">
 								  	 				<i class="fa fa-download" aria-hidden="true"></i>
 												</button>
@@ -1099,24 +855,24 @@ String labcode=(String)session.getAttribute("labcode");
                							</div>
                							<table id="rsqrapprovaltable">
                								<tr>
-               									<td style="width: 5%;text-align: center;">1.</td>
-               									<td style="width: 40%;">RSQR Title</td>
-               									<td style="width: 53%;color: blue;">
+               									<td class="text-center w-5" >1.</td>
+               									<td class="w-40" >RSQR Title</td>
+               									<td class="w-53 col-blue" >
                										Research Service Qualitative Requirement (RSQR) for <%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %>
                									</td>
                								</tr>
                								<tr>
-               									<td style="width: 3%;text-align: center;">2.</td>
-               									<td style="width: 40%;">Name and address of the Academic Institution</td>
-               									<td style="width: 53%;color: blue;">
+               									<td class="text-center w-3">2.</td>
+               									<td class="w-40">Name and address of the Academic Institution</td>
+               									<td class="w-53 col-blue">
                										<%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - " %> <br>
                										<%=carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - "%>, <%=carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - "%>, <%=carsIni.getRSPState()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPState()): " - "%>, <%=carsIni.getRSPPinCode() !=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()): " - "%>.
                									</td>
                								</tr>
                								<tr>
-						    					<td style="width: 5%;text-align: center;" >3.</td>
-						    					<td style="width: 40%;" >Name of the Principal Investigator</td>
-						    					<td style="width: 53%;color: blue;" >
+						    					<td class="text-center w-5"  >3.</td>
+						    					<td class="w-40" >Name of the Principal Investigator</td>
+						    					<td class="w-53 col-blue" >
 						    						<%=carsIni.getPITitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPITitle()): " - "%>, <%=carsIni.getPIName()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIName()): " - " %>,
 						    						<%=carsIni.getPIDesig()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDesig()): " - " %> <br>
 						    						<%=carsIni.getPIDept()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDept()): " - " %> <br>
@@ -1128,12 +884,12 @@ String labcode=(String)session.getAttribute("labcode");
 						    					</td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" >4.</td>
-						    					<td style="width: 40%;">Duration of the Contract (Months)</td>
-						    					<td style="width: 53%;color: blue;"><%=carsIni.getDuration()!=null?StringEscapeUtils.escapeHtml4(carsIni.getDuration()): " - " %> </td>
+						    					<td class="text-center w-5"  >4.</td>
+						    					<td class="w-40">Duration of the Contract (Months)</td>
+						    					<td class="w-53 col-blue"><%=carsIni.getDuration()!=null?StringEscapeUtils.escapeHtml4(carsIni.getDuration()): " - " %> </td>
 						    				</tr>
 						    				<tr>
-						    					<td colspan="3" style="width: 100%;font-size: 14px;">
+						    					<td colspan="3" class="input-font w-100">
 						    						&emsp;<input type="checkbox" name="equipmentNeed" value="<%=carsIni.getCARSInitiationId() %>" class="TCBox" <%if(carsIni.getEquipmentNeed().equalsIgnoreCase("Y")) {%>checked<%} %> <%if(statuscode!=null && !rsqrforward.contains(statuscode)) {%>disabled<%} %> >
 						    						&nbsp;Necessary DRDO-owned equipment and Lab resources will be spared on need basis for execution of the CARS for the duration.
 						    					</td>
@@ -1142,27 +898,27 @@ String labcode=(String)session.getAttribute("labcode");
                							
                							<br><br>
                							
-               							<div style="display: flex;justify-content: space-between;width: 98%;">
-               							    <div style="width: 49%;text-align: left;margin-left: 10px;line-height: 10px;">
-               							    	<div style="font-size: 15px;">Signature of the initiating officer</div>
-												<label style="text-transform: capitalize;margin-top: 15px !important;">
+               							<div class="rsqr-div">
+               							    <div class="rsqr-div-2 text-left">
+               							    	<div class="input-font">Signature of the initiating officer</div>
+												<label class="text-uppercase mt-15" >
 													<%if(emp!=null && emp[1]!=null){%> <%=StringEscapeUtils.escapeHtml4(emp[1].toString())%><%} %>,
 												</label><!-- <br> -->
-												<label style="text-transform: capitalize;">
+												<label class="text-uppercase" >
 													<%if(emp!=null && emp[2]!=null){%> <%=StringEscapeUtils.escapeHtml4(emp[2].toString())%><%} %>
 												</label><br>
-												<label style="font-size: 12px;">
+												<label class="input-font">
 													Date&nbsp;:&nbsp;<%if(carsIni.getInitiationDate()!=null) {%> <%=fc.SqlToRegularDate(carsIni.getInitiationDate()) %><%} else{%><%=rdf.format(new Date()) %> <%} %>
 												</label>
                							    </div>
                								
-               								 <div style="width: 49%;text-align: right;margin-right: 10px;line-height: 10px;">
-               								 	<div style="font-size: 15px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
+               								 <div class="text-right rsqr-div-2">
+               								 	<div class="input-font"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
 				               					<%for(Object[] apprInfo : rsqrApprovalEmpData){ %>
 				   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("AGD") || apprInfo[8].toString().equalsIgnoreCase("APD")){ %>
-				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%= apprInfo[3]!=null? fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(0, 10)))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(11,19)) : " - " %>]</label>
+				   								<label class="text-uppercase mt-15"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+				   								<label class="text-uppercase"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+				   								<label class="input-font">[Approved On:&nbsp; <%= apprInfo[3]!=null? fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(0, 10)))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(11,19)) : " - " %>]</label>
 				   			    				<%break;}} %>  
 				            			 	</div>	
 										
@@ -1170,19 +926,19 @@ String labcode=(String)session.getAttribute("labcode");
                							
                							<div class="row mt-2">
 											<%if(rsqrRemarksHistory.size()>0){ %>
-												<div class="col-md-8" align="left" style="margin: 10px 0px 5px 25px; padding:0px;border: 1px solid black;border-radius: 5px;">
+												<div class="col-md-8 remarks-div" align="left">
 													<%if(rsqrRemarksHistory.size()>0){ %>
-														<table style="margin: 3px;padding: 0px">
+														<table class="p-0 m-1">
 															<tr>
-																<td style="border:none;padding: 0px">
-																<h6 style="text-decoration: underline;">Remarks :</h6> 
+																<td class="p-0 bor-none">
+																<h6 class="txt-ul">Remarks :</h6> 
 																</td>											
 															</tr>
 															<%for(Object[] obj : rsqrRemarksHistory){%>
 															<tr>
-																<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
+																<td class="td-bor-rsqr">
 																	<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>&nbsp; :
-																	<span style="border:none; color: blue;">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
+																	<span class="span-bor">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 																</td>
 															</tr>
 															<%} %>
@@ -1206,14 +962,10 @@ String labcode=(String)session.getAttribute("labcode");
 						   								<b >Remarks :</b><br>
 						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea" maxlength="1000"></textarea>
 					         						</div>
-													<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
+													<button type="submit" class="btn btn-sm btn-success fw-600" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" >
 							    						Approve	
 						      						</button>
-						      						
-						      						<!-- <button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="D" onclick="return disapprove();" style="font-weight: 600;">
-							   	 						Not Approve	
-						      						</button> -->
-						      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+						      						<button type="submit" class="btn btn-sm btn-danger fw-600 btn-bg-rsqr" id="finalSubmission" formaction="RSQRApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" >
 							 							Return
 													</button>
 												<%} %>
@@ -1226,22 +978,22 @@ String labcode=(String)session.getAttribute("labcode");
                				</div>
                			</div>
                			<%} else{%>
-               			<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-               				<h4 style="font-weight: bold;color: red;">Please fill the Initiation and RSQR Details..!</h4>
+               			<div class="mt-4 no-con">
+               				<h4 class="mandatory fw-bold">Please fill the Initiation and RSQR Details..!</h4>
                			</div>
                			<%} %>
                			
-               			<div style="display: flex;justify-content: space-between;">
+               			<div class="dis-flex">
                				<div></div>
                				<div>
                					<%if(carsIni!=null && isApproval==null) {%>
                					<div class="row"  >
-		 		  					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For RSQR Approval</b></div>
+		 		  					<div class="col-md-12 text-center"><b>Approval Flow For RSQR Approval</b></div>
 		 	    				</div>
-		 	    				<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+		 	    				<div class="row text-center pt-2 pb-3"  >
 	              					<table align="center"  >
 	               						<tr>
-	               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+	               							<td class="trup trup-bg">
 	                							Initiator -  <%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>
 	                						</td>
 	                		
@@ -1249,7 +1001,7 @@ String labcode=(String)session.getAttribute("labcode");
 	                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 	                						</td>
 	                						
-	                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+	                						<td class="trup trup-bg-2" >
 	                							<%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 	                								GD - <%if(GDs!=null) {%><%=StringEscapeUtils.escapeHtml4(GDs[2].toString()) %><%} else{%>GD<%} %>
 	                							<%} else{%>
@@ -1261,7 +1013,7 @@ String labcode=(String)session.getAttribute("labcode");
 			 					</div>
 			 					<%} %>
                				</div>
-               				<div class="navigation_btn"  style="text-align: right;">
+               				<div class="navigation_btn text-right" >
             					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 								<button class="btn btn-info btn-sm next">Next</button>
 							</div>
@@ -1280,7 +1032,7 @@ String labcode=(String)session.getAttribute("labcode");
               		<div class="tab-pane" id="soc" role="tabpanel">
               	<%} %>
               		<div class="col-md-12">
-               				<div class="card" style="border: 1px solid rgba(0,0,0,.125);max-height: 550px;overflow-y: auto;">
+               				<div class="card soc-card-div" >
                					<div class="card-body mt-2 ml-4">
               			<%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%>
               				<%if(carsSoC!=null) {%>
@@ -1291,65 +1043,58 @@ String labcode=(String)session.getAttribute("labcode");
                		   				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                		   				<input type="hidden" name="carsInitiationId" value="<%=carsIni.getCARSInitiationId()%>">
                						<div class="row">
-               			    			<div class="col-md-12" style="margin-left: 60px;margin-right: 60px;">
+               			    			<div class="col-md-12 mrl-60" >
                			    				<!-- First row of SoC  -->
                			     				<div class="row details">
-                        						<div class="column b" style="width: 25%;border-top-left-radius: 5px;">
+                        						<div class="column b w-25 bor-tlr-5" >
                             					 	<label class="control-label">Upload Summary of Offer</label><span class="mandatory">*</span> 
                             					 	<%if(carsSoC!=null && carsSoC.getSoOUpload()!=null) {%>
-                            					 		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-right: 15em;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 		<button type="submit" class="btn btn-sm btn-soc-m"  name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  value="soofile" formaction="CARSSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="SoO Download">
                             					 			<i class="fa fa-download fa-lg"></i>
                             					 		</button>
                             					 	<%} %>
                               		      			<input type="file" class="form-control modals" name="SoOUpload" <%if(carsSoC==null) {%>required<%} %> accept=".pdf">
                         						</div>
-                        						<div class="column b" style="width: 25%;">
+                        						<div class="column b w-25" >
                             						<label class="control-label">Upload Feasibility Report</label><span class="mandatory">*</span>
                             						<%if(carsSoC!=null && carsSoC.getFRUpload()!=null) {%>
-                            					 		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-left: -14rem;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 		<button type="submit" class="btn btn-sm btn-soc-m-2" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  value="frfile" formaction="CARSSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Feasibility Report Download">
                             					 			<i class="fa fa-download fa-lg"></i>
                             					 		</button>
                             					 	<%} %>
                               						<input type="file" class="form-control modals" name="FRUpload" <%if(carsSoC==null) {%>required<%} %> accept=".pdf">
                         						</div>
-                        						<div class="column b" style="width: 20%;">
+                        						<div class="column b w-20">
                             						<label class="control-label">Execution Plan</label><span class="mandatory">*</span>
                             						<%if(carsSoC!=null && carsSoC.getExecutionPlan()!=null) {%>
-                            					 		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-left: -12rem;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 		<button type="submit" class="btn btn-sm btn-soc-m-3"  name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  value="exeplanfile" formaction="CARSSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Execution Plan Download">
                             					 			<i class="fa fa-download fa-lg"></i>
                             					 		</button>
                             					 	<%} %>
                               						<input type="file" class="form-control modals" name="ExecutionPlan" <%if(carsSoC==null) {%>required<%} %> accept=".pdf">
                         						</div>
-                        						<div class="column b" style="width: 14%;">
+                        						<div class="column b w-14">
 				                            		<label class="control-label">Amount ( &#8377;)</label><span class="mandatory">*</span>
-				                              		<input  class="form-control form-control" type="text" name="socAmount" id="socAmount" maxlength="15" style="font-size: 15px;"
+				                              	 	<input  class="form-control form-control input-font" type="text" name="socAmount" id="socAmount" maxlength="15" 
 				                              		 placeholder="Enter Amount" value="<%if(carsSoC!=null && carsSoC.getSoCAmount()!=null){ %><%=String.format("%.2f", Double.parseDouble(carsSoC.getSoCAmount()))%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
 			                        			</div>
-                        						<div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
+                        						<div class="column b w-10-5 bor-tlr-5" >
                             						<label class="control-label">Duration (In months)</label><span class="mandatory">*</span>
-                              						<input  class="form-control form-control" type="text" name="socDuration" id="socDuration" maxlength="20" style="font-size: 15px;"
+                              						<input  class="form-control form-control input-font" type="text" name="socDuration" id="socDuration" maxlength="20" 
                               		 					placeholder="Enter Duration" value="<%if(carsSoC!=null && carsSoC.getSoCDuration()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsSoC.getSoCDuration())%><%} %>" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required> 
                         						</div>
-                        						<%-- <div class="column b" style="width: 10.5%;border-top-right-radius: 5px;">
-                            					 	<label class="control-label">Alignment with</label><span class="mandatory">*</span>
-                            					 	<select class="form-control" name="alignment" required>
-                            					 		<option value="L" <%if(carsSoC!=null && carsSoC.getAlignment()!=null && carsSoC.getAlignment().equalsIgnoreCase("L")) {%>selected<%} %>>Lab charter</option>
-                            					 		<option value="P" <%if(carsSoC!=null && carsSoC.getAlignment()!=null && carsSoC.getAlignment().equalsIgnoreCase("P")) {%>selected<%} %>>Project charter</option>
-                            					 	</select>
-                        						</div> --%>
                     		 				</div>
                     		 				
                     		 				<!-- Second row of SoC  -->
                     		 				<div class="row details">
-                    		 					<div class="column b" style="width: 47.25%;">
+                    		 					<div class="column b w-47-25" >
                             					 	<label class="control-label">Alignment with</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="alignment" placeholder="Enter Alignement with" cols="" rows="2" maxlength="" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getAlignment()!=null) {%><%=carsSoC.getAlignment() %><%} %></textarea>
                         						</div>
-                    		 					<div class="column b" style="width: 47.25%;">
+                    		 					<div class="column b w-47-25">
                             					 	<label class="control-label">Justification for time reasonability</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="timeReasonability" placeholder="Enter Justification for time reasonability" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getTimeReasonability()!=null) {%><%=carsSoC.getTimeReasonability() %><%} %></textarea>
                         						</div>
@@ -1357,11 +1102,11 @@ String labcode=(String)session.getAttribute("labcode");
                     		 				
                     		 				<!-- Third row of SoC  -->
                     		 				<div class="row details">
-                    		 					<div class="column b" style="width: 47.25%;">
+                    		 					<div class="column b w-47-25" >
                             					 	<label class="control-label">Justification for cost reasonability</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="costReasonability" placeholder="Enter Justification for cost reasonability" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getCostReasonability()!=null) {%><%=carsSoC.getCostReasonability() %><%} %></textarea>
                         						</div>
-                    		 					<div class="column b" style="width: 47.25%;">
+                    		 					<div class="column b w-47-25" >
                             					 	<label class="control-label">Justification for selection of RSP</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="rspSelection" placeholder="Enter Justification for selection of RSP" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getRSPSelection()!=null) {%><%=carsSoC.getRSPSelection() %><%} %></textarea>
                         						</div>
@@ -1369,15 +1114,15 @@ String labcode=(String)session.getAttribute("labcode");
                     		 				
                     		 				<!-- Fourth row of SoC  -->
                     		 				<div class="row details">
-                    		 					<div class="column b" style="width: 47.25%;">
+                    		 					<div class="column b w-47-25">
                             					 	<label class="control-label">Success / Acceptance Criterion</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="socCriterion" placeholder="Enter Success / Acceptance Criterion" cols="" rows="2" maxlength="2000" required><%if(carsSoC!=null && carsSoC.getSoCCriterion()!=null) {%><%=carsSoC.getSoCCriterion() %><%} %></textarea>
                         						</div>
-                    		 					<div class="column b" style="width: 37.25%;">
+                    		 					<div class="column b w-37-25" >
                             					 	<label class="control-label">RSP's Offer Ref:</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="rspOfferRef" placeholder="Enter RSP`s Offer Ref" cols="" rows="2" maxlength="1000" required><%if(carsContract!=null && carsContract.getRSPOfferRef()!=null) {%><%=carsContract.getRSPOfferRef() %><%} %></textarea>
                         						</div>
-                    		 					<div class="column b" style="width: 10%;">
+                    		 					<div class="column b w-10">
                             					 	<label class="control-label">RSP's Offer Date:</label><span class="mandatory">*</span>
                               		      			<input class="form-control form-control" type="text" name="rspOfferDate" id="rspOfferDate"
                               		 					value="<%if(carsContract!=null && carsContract.getRSPOfferDate()!=null){ %><%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(carsContract.getRSPOfferDate()))%><%} %>" required>
@@ -1387,11 +1132,11 @@ String labcode=(String)session.getAttribute("labcode");
                     		 				
                     		 				<!-- Fifth row of SoC  -->
                     		 				<div class="row details">
-                    		 					<div class="column b" style="width: 47.25%;">
+                    		 					<div class="column b w-47-25" >
                             					 	<label class="control-label">Key Professional-1 Details:</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="kp1Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="2000" required><%if(carsContract!=null && carsContract.getKP1Details()!=null) {%><%=carsContract.getKP1Details() %><%} %></textarea>
                         						</div>
-                    		 					<div class="column b" style="width: 47.25%;">
+                    		 					<div class="column b w-47-25">
                             					 	<label class="control-label">Key Professional-2 Details:</label><span class="mandatory">*</span>
                               		      			<textarea class="form-control" name="kp2Details" placeholder="Title, Name, Designation, Department, Institute" cols="" rows="1" maxlength="2000" required><%if(carsContract!=null && carsContract.getKP2Details()!=null) {%><%=carsContract.getKP2Details() %><%} %></textarea>
                         						</div>
@@ -1399,15 +1144,15 @@ String labcode=(String)session.getAttribute("labcode");
                     		 				
                     		 				<!-- Six row of SoC  -->
                     		 				<div class="row details">
-                    		 					<div class="column b" style="width: 47.25%;border-bottom-left-radius: 5px;">
+                    		 					<div class="column b w-47-25 bor-tlr-5" >
                             					 	<label class="control-label">Research Consultants:</label>
-                            					 	<table style="width: 90%; " id="consultants">
-														<thead style = "background-color: #055C9D; color: white;text-align: center;">
+                            					 	<table class="w-90" id="consultants">
+														<thead class="text-center text-white thead-bg-col" >
 															<tr>
-																<th style="padding: 0px 5px 0px 5px;">Name</th>
-													    		<th style="padding: 0px 5px 0px 5px;">Institute / Company</th>
-																<td style="width:10%;">
-																	<button type="button" class="btn btn-sm btn_add_consultants" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																<th class="th-p">Name</th>
+													    		<th class="th-p">Institute / Company</th>
+																<td class="w-10">
+																	<button type="button" class="btn btn-sm btn_add_consultants btn-soc-res" > <i class="btn btn-sm fa fa-plus text-success p-0" ></i></button>
 																</td>
 															</tr>
 														</thead>
@@ -1415,44 +1160,44 @@ String labcode=(String)session.getAttribute("labcode");
 									 						<%if(consultants!=null && consultants.size()>0) {
 									 					   	for(CARSContractConsultants con :consultants) {%>
 									 						<tr class="tr_clone_consultants">
-																<td style="padding: 10px 5px 0px 5px;width: 40%;">
+																<td class="w-40 p-10-5-5" >
 																	<input type="text" class="form-control item" name="consultantName" id="consultantName" placeholder="Enter Consultant Name" 
 																	value="<%if(con.getConsultantName()!=null) {%><%=StringEscapeUtils.escapeHtml4(con.getConsultantName()) %><%} %>" maxlength="500" >
 																</td>	
-																<td style="padding: 10px 5px 0px 5px;">
+																<td class="p-10-5-5">
 																	<input type="text" class="form-control item" name="consultantCompany" placeholder="Enter Consultant Company"
 																	value="<%if(con.getConsultantCompany()!=null) {%><%=StringEscapeUtils.escapeHtml4(con.getConsultantCompany()) %><%} %>" maxlength="500" >
 																</td>	
 															
-																<td style="width: 5% ; ">
-																	<button type="button" class=" btn btn-sm btn_rem_consultants" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																<td class="w-5">
+																	<button type="button" class=" btn btn-sm btn_rem_consultants btn-soc-res"> <i class="btn btn-sm fa fa-minus mandatory p-0"></i></button>
 																</td>									
 															</tr>
 									 						<%} }else{%>
 															<tr class="tr_clone_consultants">
-																<td style="padding: 10px 5px 0px 5px;width: 40%;" >
+																<td class="w-40 p-10-5-5" >
 																	<input type="text" class="form-control item" name="consultantName" id="consultantName" placeholder="Enter Consultant Name" maxlength="500" >
 																</td>	
-																<td style="padding: 10px 5px 0px 5px;">
+																<td class="p-10-5-5">
 																	<input type="text" class="form-control item" name="consultantCompany" placeholder="Enter Consultant Company" maxlength="500" >
 																</td>	
 																
-																<td style="width:5% ; ">
-																	<button type="button" class=" btn btn-sm btn_rem_consultants" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																<td class="w-5">
+																	<button type="button" class=" btn btn-sm btn_rem_consultants btn-soc-res" > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 																</td>									
 															</tr>
 															<%} %>
 														</tbody> 
 													</table>
                         						</div>
-                    		 					<div class="column b" style="width: 47.25%;border-bottom-right-radius: 5px;">
+                    		 					<div class="column b w-47-25 bor-tlr-5" >
                             					 	<label class="control-label">DRDO-owned Equipment:</label>
-                            					 	<table style="width: 90%; " id="equipment">
-														<thead style = "background-color: #055C9D; color: white;text-align: center;">
+                            					 	<table class="w-90" id="equipment">
+														<thead class="text-center text-white thead-bg-col" >
 															<tr>
-																<th style="padding: 0px 5px 0px 5px;">Description</th>
-																<td style="width:10%;">
-																	<button type="button" class="btn btn-sm btn_add_equipment" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																<th class="th-p">Description</th>
+																<td class="w-10">
+																	<button type="button" class="btn btn-sm btn_add_equipment btn-soc-res"> <i class="btn btn-sm fa fa-plus text-success p-0"></i></button>
 																</td>
 															</tr>
 														</thead>
@@ -1460,23 +1205,23 @@ String labcode=(String)session.getAttribute("labcode");
 									 						<%if(equipment!=null && equipment.size()>0) {
 									 					   	for(CARSContractEquipment eq :equipment) {%>
 									 						<tr class="tr_clone_equipment">
-																<td style="padding: 10px 5px 0px 5px;width: 40%;">
+																<td class="w-40 p-10-5-5">
 																	<input type="text" class="form-control item" name="equipmentDescription" placeholder="Enter Equipment Description" maxlength="1000"
 																	 value="<%if(eq.getDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(eq.getDescription()) %><%} %>">
 																</td>	
 															
-																<td style="width: 5% ; ">
-																	<button type="button" class=" btn btn-sm btn_rem_equipment" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																<td class="w-5">
+																	<button type="button" class=" btn btn-sm btn_rem_equipment btn-soc-res"> <i class="btn btn-sm fa fa-minus mandatory p-0"></i></button>
 																</td>									
 															</tr>
 									 						<%} }else{%>
 															<tr class="tr_clone_equipment">
-																<td style="padding: 10px 5px 0px 5px;width: 40%;" >
+																<td class="w-40 p-10-5-5" >
 																	<input type="text" class="form-control item" name="equipmentDescription" placeholder="Enter Equipment Description" maxlength="1000">
 																</td>	
 																
-																<td style="width:5% ; ">
-																	<button type="button" class=" btn btn-sm btn_rem_equipment" style="padding: 5px  10px  5px  10px;"> <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																<td class="w-5">
+																	<button type="button" class=" btn btn-sm btn_rem_equipment btn-soc-res" > <i class="btn btn-sm fa fa-minus mandatory p-0"></i></button>
 																</td>									
 															</tr>
 															<%} %>
@@ -1487,47 +1232,47 @@ String labcode=(String)session.getAttribute("labcode");
                     		 				
                     		 				<!-- Seventh row of SoC  -->
                     		 				<div class="row details">
-				                    		    <div class="col-md-6" style="text-align: left;">
-				                    		    	<label class="control-label" style="color: black;">Expenditure on items :</label>
+				                    		    <div class="col-md-6 text-left" >
+				                    		    	<label class="control-label col-bl">Expenditure on items :</label>
 				                    		    </div>
                     				 	    </div>
                     				 	    
                     				 	    <!-- Eighth row of SoC  -->
                     		 				<div class="row details">
-                    		 					<div class="column b" style="width: 10%;border-bottom-left-radius: 5px;border-top-left-radius: 5px;">
+                    		 					<div class="column b bor-blrr w-10" >
                             					 	<label class="control-label">(a) Personnel (&#8377;):</label><span class="mandatory">*</span>
                               		      			<input class="form-control form-control" type="number" name="expndPersonnelCost" id="expndPersonnelCost" placeholder="Personnel Cost" min="0" max="1000000000" step=".01"
                               		      			  <%if(carsContract!=null && carsContract.getExpndPersonnelCost()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(carsContract.getExpndPersonnelCost())%>"<%} %> required>
                         						</div>
-                    		 					<div class="column b" style="width: 10%;">
+                    		 					<div class="column b w-10" >
                             					 	<label class="control-label">(b) Equipment (&#8377;):</label><span class="mandatory">*</span>
                             					 	<input class="form-control form-control" type="number" name="expndEquipmentCost" id="expndEquipmentCost" placeholder="Equipment Cost" min="0" max="1000000000" step=".01"
                               		      			  <%if(carsContract!=null && carsContract.getExpndEquipmentCost()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(carsContract.getExpndEquipmentCost())%>"<%} %> required>
                         						</div>
-                    		 					<div class="column b" id="othersdiv" style="width: 12%;text-align: left;">
-                            					 	<label class="control-label">(c) Others (&#8377;): <button type="button" id="othersInfo" value="0" class="btn btn-info btn-sm" style="padding: 0px 5px 0px 5px;background: blueviolet;"><i class="fa fa-info-circle" aria-hidden="true"></i></button></label>
-                            					 	&nbsp;<span id="othersInfoContent" style="color: darkblue;"> (Travel, Contingency, Consultancy, Institution Head) </span>
+                    		 					<div class="column b w-12 text-left" id="othersdiv">
+                            					 	<label class="control-label">(c) Others (&#8377;): <button type="button" id="othersInfo" value="0" class="btn btn-info btn-sm th-p bg-blvoi"><i class="fa fa-info-circle" aria-hidden="true"></i></button></label>
+                            					 	&nbsp;<span id="othersInfoContent" class="span-bg-dkbl"> (Travel, Contingency, Consultancy, Institution Head) </span>
                             					 	<input class="form-control form-control" type="number" name="expndOthersCost" id="expndOthersCost" placeholder="Others Cost" min="0" max="1000000000" step=".01"
                               		      			  <%if(carsContract!=null && carsContract.getExpndOthersCost()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(carsContract.getExpndOthersCost())%>"<%} %> >
                         						</div>
-                    		 					<div class="column b" style="width: 10%;">
+                    		 					<div class="column b w-10" >
                             					 	<label class="control-label">Sub-Total (&#8377;):</label><span class="mandatory">*</span>
-                            					 	<input class="form-control form-control" type="number" name="expndSubTotalCost" id="expndSubTotalCost" min="0" max="1000000000" step=".01"
+                            					 	<input class="form-control form-control bg-fff" type="number" name="expndSubTotalCost" id="expndSubTotalCost" min="0" max="1000000000" step=".01"
                             					 		<%if(carsContract!=null && carsContract.getExpndTotalCost()!=null && carsContract.getExpndGST()!=null) {%> 
                             					 		value="<%= String.format("%.2f" ,( Double.parseDouble(carsContract.getExpndTotalCost())-Double.parseDouble(carsContract.getExpndGST()) ) )%>"
                             					 		<%} %> 
                             					 		
-                            					 		readonly required style="background: #fff;">
+                            					 		readonly required >
                         						</div>
-                    		 					<div class="column b" style="width: 10%;">
+                    		 					<div class="column b w-10" >
                             					 	<label class="control-label">GST (&#8377;):</label><span class="mandatory">*</span>
                             					 	<input class="form-control form-control" type="number" name="expndGST" id="expndGST" placeholder="Enter GST" min="0" max="1000000000" step=".01"
                               		      				<%if(carsContract!=null && carsContract.getExpndGST()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(carsContract.getExpndGST())%>"<%} %> required>
                         						</div> 
-                        						<div class="column b" style="width: 10%;border-bottom-right-radius: 5px;border-top-right-radius: 5px;">
+                        						<div class="column b w-10 bor-blrr" >
                             					 	<label class="control-label">Total (&#8377;):</label><span class="mandatory">*</span>
-                            					 	<input class="form-control form-control" type="number" name="expndTotalCost" id="expndTotalCost" min="0" max="1000000000" step=".01"
-                            					 		<%if(carsContract!=null && carsContract.getExpndTotalCost()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(carsContract.getExpndTotalCost())%>"<%} %> readonly required style="background: #fff;">
+                            					 	<input class="form-control form-control bg-fff" type="number" name="expndTotalCost" id="expndTotalCost" min="0" max="1000000000" step=".01"
+                            					 		<%if(carsContract!=null && carsContract.getExpndTotalCost()!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(carsContract.getExpndTotalCost())%>"<%} %> readonly required >
                         						</div>
                     		 				</div>
                     					</div>
@@ -1547,14 +1292,14 @@ String labcode=(String)session.getAttribute("labcode");
                		  			</form>
                		 		<%} %>	    	
               			<%} else{%>
-              			<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-               				<h4 style="font-weight: bold;color: red;">This window will open after RSQR Approval..!</h4>
+              			<div class="mt-4 no-con">
+               				<h4 class="mandatory fw-bold">This window will open after RSQR Approval..!</h4>
                			</div>
               			<%} %>
               			</div>
               			</div>
               			</div>
-              			<div class="navigation_btn"  style="text-align: right;">
+              			<div class="navigation_btn text-right" >
             				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 							<button class="btn btn-info btn-sm next">Next</button>
 						</div>
@@ -1576,13 +1321,13 @@ String labcode=(String)session.getAttribute("labcode");
                		<div class="container-fluid">
 						<div class="row">
 							<div class="col-md-2">
-								<div class="card" style="border-color: #00DADA; margin-top: 2%;">
-									<div class="card-body scrollclass" style="height: 30.5rem;">
+								<div class="card card-brg" >
+									<div class="card-body scrollclass hei-35" >
 
-										<div class="panel panel-info" style="margin-top: 10px;" >
+										<div class="panel panel-info mt-10" >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Introduction</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++finalrsqrslno %>. Introduction</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor11" onclick="showEditor2('Introduction')">
@@ -1592,10 +1337,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-10">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Research Overview</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++finalrsqrslno %>. Research Overview</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor12" onclick="showEditor2('Research Overview')">
@@ -1605,10 +1350,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-10" >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Objectives</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++finalrsqrslno %>. Objectives</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor13"onclick="showEditor2('Objectives')">
@@ -1618,10 +1363,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-10" >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Major Requirements</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++finalrsqrslno %>. Major Requirements</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor14" onclick="showTableMajorReqr2('Major Requirements')">
@@ -1631,10 +1376,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-10" >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Deliverables</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++finalrsqrslno %>. Deliverables</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor15" onclick="showTableDeliverables2('Deliverables')">
@@ -1644,10 +1389,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-10">
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Milestones & Timelines</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++finalrsqrslno %>. Milestones & Timelines</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor16" onclick="showTableMilestones2('Proposed Milestones Timelines')">
@@ -1657,10 +1402,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-10" >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Scope of RSP</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++finalrsqrslno %>. Scope of RSP</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor17" onclick="showEditor2('RSP Scope')">
@@ -1670,10 +1415,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-10" >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Scope of <%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %></span>
+													<span class="ml-2 rsqr-column input-font" > <%=++finalrsqrslno %>. Scope of <%=labcode!=null?StringEscapeUtils.escapeHtml4(labcode): " - " %></span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor18" onclick="showEditor2('<%=labcode %> Scope')">
@@ -1683,10 +1428,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-10" >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Success Criterion</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++finalrsqrslno %>. Success Criterion</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor19" onclick="showEditor2('Success Criterion')">
@@ -1696,10 +1441,10 @@ String labcode=(String)session.getAttribute("labcode");
 										</div>
 						
 										<!--  -->
-										<div class="panel panel-info" style="margin-top: 10px;">
+										<div class="panel panel-info mt-10" >
 											<div class="panel-heading ">
 												<h4 class="panel-title">
-													<span class="ml-2 rsqr-column" style="font-size: 15px"> <%=++finalrsqrslno %>. Literature Ref (if any)</span>
+													<span class="ml-2 rsqr-column input-font" > <%=++finalrsqrslno %>. Literature Ref (if any)</span>
 												</h4>
 												<button class="btn bg-transparent buttonEd" type="button"
 												id="btnEditor20" onclick="showEditor2('Literature Reference')">
@@ -1713,16 +1458,16 @@ String labcode=(String)session.getAttribute("labcode");
 							</div>
 							
 							<!--div for Editor2-->
-							<div class="col-md-10" style="display: block" id="col4">
+							<div class="col-md-10 dis-bl"  id="col4">
 			  					<form action="RSQRDetailsSubmit.htm" method="POST" id="myfrm2">
-									<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
-										<h5 class="heading ml-4 mt-3" id="editorHeading2"style="font-weight: 500; color: #31708f;">Introduction</h5>
+									<div class="card card-bg-2">
+										<h5 class="heading ml-4 mt-3 intro-h5" id="editorHeading2" >Introduction</h5>
 										<hr>
-										<div class="card-body" style="margin-top:-8px">
+										<div class="card-body mt-minus-8">
 											<div class="row">
-												<div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
+												<div class="col-md-12 ml-0 w-100" align="left" >
 													<div id="Editor2" class="center"></div>
-													<textarea name="Details2" style="display: none;"></textarea>
+													<textarea name="Details2" class="dis-none" ></textarea>
 													<div class="mt-2" align="center" id="detailsSubmit">
 														<span id="EditorDetails2"></span>
 														<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
@@ -1731,8 +1476,8 @@ String labcode=(String)session.getAttribute("labcode");
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 														<span id="Editorspan">
 														    <%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%> 
-															<span id="btn3" style="display: block;"><button type="submit"class="btn btn-sm btn-success submit mt-2 btn-soc" onclick="return confirm('Are you sure to submit?')">SUBMIT</button></span>
-															<span id="btn4" style="display: none;"><button type="submit"class="btn btn-sm btn-warning edit mt-2 btn-soc" onclick="return confirm('Are you sure update?')">UPDATE</button></span>
+															<span id="btn3" class="dis-bl" ><button type="submit"class="btn btn-sm btn-success submit mt-2 btn-soc" onclick="return confirm('Are you sure to submit?')">SUBMIT</button></span>
+															<span id="btn4" class="dis-none" ><button type="submit"class="btn btn-sm btn-warning edit mt-2 btn-soc" onclick="return confirm('Are you sure update?')">UPDATE</button></span>
 															<%} %>
 														</span>
 													</div>
@@ -1745,22 +1490,22 @@ String labcode=(String)session.getAttribute("labcode");
 							<!-- editor2 ends  -->
 							
 							<!-- Cloning table for Major Requirements2 (Final)-->
-							<div class="col-md-10" style="display: none" id="col5">
-								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
-									<h5 class="heading ml-4 mt-3" id="editorHeading2" style="font-weight: 500; color: #31708f;">Major Requirements</h5>
+							<div class="col-md-10 dis-none" id="col5">
+								<div class="card card-bg-2" >
+									<h5 class="heading ml-4 mt-3 intro-h5" id="editorHeading2"  >Major Requirements</h5>
 									<hr>
 									<div class="card-body bg-light mt-1">
 										<form action="RSQRMajorReqrSubmit.htm" method="post">
-											<table style="width:100% ; " id="majorReqrTable2">
-												<thead style = "background-color: #055C9D; color: white;text-align: center;">
+											<table class="w-100" id="majorReqrTable2">
+												<thead class="text-center text-white thead-bg-col" >
 													<tr>
-														<th style="padding: 0px 5px 0px 5px;">Req Id</th>
-											    		<th style="padding: 0px 5px 0px 5px;">Req Description</th>
-											    		<th style="padding: 0px 5px 0px 5px;">Relevant Specification</th>
-											    		<th style="padding: 0px 5px 0px 5px;">Validation Method</th>
-											    		<th style="padding: 0px 5px 0px 5px;">Remarks</th>
-														<td style="width:10%;">
-															<button type="button" class=" btn btn_add_majorreqr2 "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+														<th class="th-p">Req Id</th>
+											    		<th class="th-p">Req Description</th>
+											    		<th class="th-p">Relevant Specification</th>
+											    		<th class="th-p">Validation Method</th>
+											    		<th class="th-p">Remarks</th>
+														<td class="w-10">
+															<button type="button" class=" btn btn_add_majorreqr2 "> <i class="btn btn-sm fa fa-plus text-success p-0"></i></button>
 														</td>
 													</tr>
 												</thead>
@@ -1768,50 +1513,50 @@ String labcode=(String)session.getAttribute("labcode");
 							 						<%if(majorReqr!=null && majorReqr.size()>0) {
 							 					   	for(CARSRSQRMajorRequirements mr :majorReqr) {%>
 							 						<tr class="tr_clone_majorreqr2">
-														<td style="padding: 10px 5px 0px 5px;width: 10%;">
-															<input type="text" class="form-control item" name="reqId" id="reqId2" value="<%if(mr.getReqId()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqId()) %><%} %>" maxlength="50" style="text-align: center;" readonly>
+														<td class="p-10-5-5 w-10" >
+															<input type="text" class="form-control item text-center" name="reqId" id="reqId2" value="<%if(mr.getReqId()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqId()) %><%} %>" maxlength="50" readonly>
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 30%;">
+														<td class="p-10-5-5 w-30" >
 															<input type="text" class="form-control item" name="reqDescription" value="<%if(mr.getReqDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getReqDescription()) %><%} %>" maxlength="1000" required="required" >
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 20%;">
+														<td class="p-10-5-5 w-20" >
 															<input type="text" class="form-control item" name="relevantSpecs" value="<%if(mr.getRelevantSpecs()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getRelevantSpecs()) %><%} %>" maxlength="1000">
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 20%;">
+														<td class="p-10-5-5 w-20" >
 															<input type="text" class="form-control item" name="validationMethod" value="<%if(mr.getValidationMethod()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getValidationMethod()) %><%} %>" maxlength="1000">
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 15%;">
+														<td class="p-10-5-5 w-15">
 															<input type="text" class="form-control item" name="remarks" value="<%if(mr.getRemarks()!=null) {%><%=StringEscapeUtils.escapeHtml4(mr.getRemarks()) %><%} %>" maxlength="1000" >
 														</td>	
-														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_majorreqr2 " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5" >
+															<button type="button" class=" btn btn_rem_majorreqr2 " > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 														</td>									
 													</tr>
 							 						<%} }else{%>
 													<tr class="tr_clone_majorreqr2">
-														<td style="padding: 10px 5px 0px 5px;width: 10%;" >
-															<input type="text" class="form-control item" name="reqId" id="reqId2" value="RTD-1" maxlength="50" readonly="readonly" style="text-align: center;">
+														<td class="p-10-5-5 w-10" >
+															<input type="text" class="form-control item text-center" name="reqId" id="reqId2" value="RTD-1" maxlength="50" readonly="readonly">
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 30%;">
+														<td class="p-10-5-5 w-30" >
 															<input type="text" class="form-control item" name="reqDescription" maxlength="1000" required="required" >
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 20%;">
+														<td class="p-10-5-5 w-20">
 															<input type="text" class="form-control item" name="relevantSpecs" maxlength="1000">
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 20%;">
+														<td class="p-10-5-5 w-20" >
 															<input type="text" class="form-control item" name="validationMethod" maxlength="1000" >
 														</td>	
-														<td style="padding: 10px 5px 0px 5px;width: 15%;">
+														<td class="p-10-5-5 w-15" >
 															<input type="text" class="form-control item" name="remarks" maxlength="1000" >
 														</td>	
-														<td style="width:5% ; ">
-															<button type="button" class=" btn btn_rem_majorreqr2 " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5" >
+															<button type="button" class=" btn btn_rem_majorreqr2 " > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 														</td>									
 													</tr>
 													<%} %>
 												</tbody> 
 											</table>
-											<div align="center" style="margin-top: 15px;">
+											<div align="center" class="mt-3">
 												<%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%>
 													<%if(majorReqr!=null && majorReqr.size()>0) {%>
 														<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-soc" name="submit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
@@ -1830,19 +1575,19 @@ String labcode=(String)session.getAttribute("labcode");
 							</div>
 							
 							<!-- Cloning table for Deliverables2 (Final) -->
-							<div class="col-md-10" style="display: none" id="col6">
-								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
-									<h5 class="heading ml-4 mt-3" id="editorHeading2" style="font-weight: 500; color: #31708f;">Deliverables</h5>
+							<div class="col-md-10 dis-none" id="col6">
+								<div class="card card-bg-2" >
+									<h5 class="heading ml-4 mt-3 intro-h5" id="editorHeading2" >Deliverables</h5>
 									<hr>
 									<div class="card-body bg-light mt-1">
 										<form action="RSQRDeliverablesSubmit.htm" method="post">
-											<table style="width:100% ; " id="deliverablesTable2">
-												<thead style = "background-color: #055C9D; color: white;text-align: center;">
+											<table class="w-100" id="deliverablesTable2">
+												<thead class="text-center text-white thead-bg-col" >
 													<tr>
-												    	<th style="width: 80%;padding: 0px 5px 0px 5px;">Description</th>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Type</th>
-														<td style="width: 5%;">
-															<button type="button" class=" btn btn_add_deliverables2 "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+												    	<th class="w-80 th-p" >Description</th>
+												    	<th class="w-10 th-p" >Type</th>
+														<td class="w-5" >
+															<button type="button" class=" btn btn_add_deliverables2 "> <i class="btn btn-sm fa fa-plus text-success p-0"></i></button>
 														</td>
 													</tr>
 												</thead>
@@ -1850,40 +1595,40 @@ String labcode=(String)session.getAttribute("labcode");
 								 					<%if(deliverables!=null && deliverables.size()>0) {
 								 					   for(CARSRSQRDeliverables del :deliverables) {%>
 													<tr class="tr_clone_deliverables2">
-														<td style="width: 80%;padding: 10px 5px 0px 5px;" >
+														<td class="p-10-5-5 w-80"  >
 															<input type="text" class="form-control item" name="description" value="<%if(del.getDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(del.getDescription()) %><%} %>" maxlength="1000" required="required" >
 														</td>	
-														<td style="width: 10%;padding: 10px 5px 0px 5px;">
+														<td class="p-10-5-5 w-10" >
 															<select class="form-control deliverabletype" name="deliverableType" required="required">
 																<option value="H" <%if(del.getDeliverableType()!=null && del.getDeliverableType().equalsIgnoreCase("H")) {%>selected<%} %> >Hardware</option>
 																<option value="S" <%if(del.getDeliverableType()!=null && del.getDeliverableType().equalsIgnoreCase("S")) {%>selected<%} %> >Software</option>
 																<option value="R" <%if(del.getDeliverableType()!=null && del.getDeliverableType().equalsIgnoreCase("R")) {%>selected<%} %> >Report</option>
 															</select>
 														</td>	
-														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_deliverables2 " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5" >
+															<button type="button" class=" btn btn_rem_deliverables2 " > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 														</td>									
 													</tr>
 													<%} }else{%>
 													<tr class="tr_clone_deliverables2">
-														<td style="width: 80%;padding: 10px 5px 0px 5px;" >
+														<td class="p-10-5-5 w-80" >
 															<input type="text" class="form-control item" name="description" maxlength="1000" required="required" >
 														</td>	
-														<td style="width: 10%;padding: 10px 5px 0px 5px;">
+														<td class="p-10-5-5 w-10">
 															<select class="form-control deliverabletype" name="deliverableType" required="required">
 																<option value="H">Hardware</option>
 																<option value="S">Software</option>
 																<option value="R">Report</option>
 															</select>
 														</td>	
-														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_deliverables2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5">
+															<button type="button" class=" btn btn_rem_deliverables2" > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 														</td>									
 													</tr>
 													<%} %>
 												</tbody> 
 											</table>
-											<div align="center" style="margin-top: 15px;">
+											<div align="center" class="mt-3">
 												<%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%>
 													<%if(deliverables!=null && deliverables.size()>0) {%>
 														<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-soc" name="submit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
@@ -1902,24 +1647,24 @@ String labcode=(String)session.getAttribute("labcode");
 							</div>
 							
 							<!-- Cloning table for Milestones2 (Final) -->
-							<div class="col-md-10" id="col8" style="" >
-								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
-									<h5 class="heading ml-4 mt-3" id="" style="font-weight: 500; color: #31708f;">Proposed Milestones & Timelines</h5>
+							<div class="col-md-10" id="col8"  >
+								<div class="card card-bg-2">
+									<h5 class="heading ml-4 mt-3 intro-h5" id="" >Proposed Milestones & Timelines</h5>
 									<hr>
 									<div class="card-body bg-light mt-1">
 										<form action="CARSSoCMilestoneSubmit.htm" method="post">
-											<table style="width:100% ; " id="milestones2">
-												<thead style = "background-color: #055C9D; color: white;text-align: center;">
+											<table class="w-100" id="milestones2">
+												<thead class="text-center text-white thead-bg-col" >
 													<tr>
-												    	<th style="width: 8%;padding: 0px 5px 0px 5px;">Milestone <br> No.</th>
-												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
-												    	<th style="width: 7%;padding: 0px 5px 0px 5px;">T0 + Months</th>
-												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
-												    	<th style="width: 6%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Amount (&#8377;)</th>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Remarks</th>
-														<td style="width: 5%;">
-															<button style="padding: 3px 7px 3px 7px;" type="button" class=" btn btn_add_milestones2"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+												    	<th class="th-p w-8" >Milestone <br> No.</th>
+												    	<th class="th-p w-30" >Task Description</th>
+												    	<th class="th-p w-7" >T0 + Months</th>
+												    	<th class="th-p w-25" >Deliverables</th>
+												    	<th class="th-p w-6" >Payment <br> ( In % )</th>
+												    	<th class="th-p w-10" >Amount (&#8377;)</th>
+												    	<th class="th-p w-10" >Remarks</th>
+														<td class="w-5" >
+															<button type="button" class=" btn btn_add_milestones2 btn-mil-p"> <i class="btn btn-sm fa fa-plus text-success p-0"></i></button>
 														</td>
 													</tr>
 												</thead>
@@ -1927,60 +1672,60 @@ String labcode=(String)session.getAttribute("labcode");
 								 					<%if(milestones!=null && milestones.size()>0) {
 								 					   for(CARSSoCMilestones mil :milestones) {%>
 													<tr class="tr_clone_milestones2">
-														<td style="width: 8%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="milestoneno" id="milestoneno2" value="<%if(mil.getMilestoneNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMilestoneNo()) %><%} %>" style="text-align: center;" required="required"  readonly="readonly">
+														<td class="p-10-5-5 w-8" >
+															<input type="text" class="form-control item text-center" name="milestoneno" id="milestoneno2" value="<%if(mil.getMilestoneNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMilestoneNo()) %><%} %>" required="required"  readonly="readonly">
 														</td>	
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
+														<td class="p-10-5-5 w-30" >
+															<textarea class="form-control w-100" name="taskDesc" rows="3" cols=""  maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
 														</td>	
-														<td style="width: 7%;padding: 10px 5px 0px 5px;">
+														<td class="p-10-5-5 w-7" >
 															<input type="number" class="form-control " name="months" min="0" max="<%if(carsSoC!=null) {%><%=StringEscapeUtils.escapeHtml4(carsSoC.getSoCDuration()) %><%} %>" value="<%if(mil.getMonths()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getMonths()) %><%} %>" required="required">
 														</td>	
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
+														<td class="p-10-5-5 w-25" >
+															<textarea class="form-control w-100" name="deliverables" rows="3" cols="" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
 														</td>
-														<td style="width: 6%;padding: 10px 5px 0px 5px;">
+														<td class="p-10-5-5 w-6" >
 															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=StringEscapeUtils.escapeHtml4(mil.getPaymentPercentage()) %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
-														<td style="width: 10%;padding: 10px 5px 0px 5px;">
+														<td class="p-10-5-5 w-10" >
 															<input type="number" class="form-control" name="actualAmount" min="0" max="<%if(carsSoC!=null) {%> <%=StringEscapeUtils.escapeHtml4(carsSoC.getSoCAmount()) %><%} %>" value="<%if(mil.getActualAmount()!=null) {%><%=String.format("%.2f", Double.parseDouble(mil.getActualAmount())) %><%} %>" required="required" 
 															 min="0" max="1000000000" step=".01" oninput="return checkActualAmount(this)">
 														</td>
-														<td style="width: 10%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" ><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
+														<td class="p-10-5-5 w-10" >
+															<textarea class="form-control w-100" name="paymentTerms" rows="3" cols=""  maxlength="2000" ><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
 														</td>
-														<td style="width: 5% ; ">
-															<button style="padding: 3px 7px 3px 7px;" type="button" class=" btn btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class=" w-5" >
+															<button  type="button" class=" btn btn_rem_milestones2 btn-mil-p" > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 														</td>									
 													</tr>
 													<%} }else{%>
 													<tr class="tr_clone_milestones2">
-														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="milestoneno" id="milestoneno2" value="MIL-0" style="text-align: center;" required="required" readonly="readonly">
+														<td class="p-10-5-5 w-10"  >
+															<input type="text" class="form-control item text-center" name="milestoneno" id="milestoneno2" value="MIL-0" required="required" readonly="readonly">
 														</td>	
-														<td style="width: 30%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
+														<td class="p-10-5-5 w-30" >
+															<textarea class="form-control w-100" name="taskDesc" rows="3" cols="" maxlength="2000" required="required"></textarea>
 														</td>	
-														<td style="width: 7%;padding: 10px 5px 0px 5px;">
+														<td class="p-10-5-5 w-7" >
 															<input type="number" class="form-control" name="months" min="0" max="<%if(carsSoC!=null) {%> <%=StringEscapeUtils.escapeHtml4(carsSoC.getSoCDuration()) %><%} %>" required="required">
 														</td>	
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
+														<td class="p-10-5-5 w-25" >
+															<textarea class="form-control w-100" name="deliverables" rows="3" cols=""  maxlength="2000" required="required"></textarea>
 														</td>
-														<td style="width: 6%;padding: 10px 5px 0px 5px;">
+														<td class="p-10-5-5 w-6" >
 															<input type="number" class="form-control" name="paymentPercentage" id="paymentPercentage" min="0" max="100" required="required" oninput="return checkPaymentPercentage(this)">
 														</td>
-														<td style="width: 20%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" ></textarea>
+														<td class="p-10-5-5 w-20">
+															<textarea class="form-control w-100" name="paymentTerms" rows="3" cols="" maxlength="2000" ></textarea>
 														</td>
-														<td style="width: 5% ; ">
-															<button style="padding: 3px 7px 3px 7px;" type="button" class=" btn btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+														<td class="w-5" >
+															<button type="button" class=" btn btn-mil-p btn_rem_milestones2" > <i class="btn btn-sm fa fa-minus mandatory p-0" ></i></button>
 														</td>									
 													</tr>
 													<%} %>
 												</tbody> 
 											</table>
-											<div align="center" style="margin-top: 15px;">
+											<div align="center" class="mt-3">
 												<%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%>
 													<%if(milestones!=null && milestones.size()>0) {%>
 														<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-soc" name="submit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
@@ -2002,22 +1747,22 @@ String labcode=(String)session.getAttribute("labcode");
 		     			<hr class="mt-2">
 					</div>
                		<%} else{%>
-              			<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-               				<h4 style="font-weight: bold;color: red;">This window will open after RSQR Approval..!</h4>
+              			<div class="mt-4 no-con" >
+               				<h4 class="mandatory fw-bold">This window will open after RSQR Approval..!</h4>
                			</div>
               		<%} %>
-               		<div style="display: flex;justify-content: space-between;">
+               		<div class="dis-flex">
                			<div></div>
-               			<div class="navigation_btn"  style="text-align: center;">
+               			<div class="navigation_btn text-center" >
                				<%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%>
                				<form action="">
-               					<button type="submit" class="btn btn-sm submit" formaction="CARSFinalRSQRDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Final RSQR Download" style="background-color: purple;border: none;">Final RSQR</button>
+               					<button type="submit" class="btn btn-sm submit btn-rsqr" formaction="CARSFinalRSQRDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Final RSQR Download" >Final RSQR</button>
                					<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                				</form>
                				<%} %>
 						</div>
-               			<div class="navigation_btn" style="text-align: right;">
+               			<div class="navigation_btn text-right" >
             				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 							<button class="btn btn-info btn-sm next">Next</button>
 						</div>
@@ -2029,132 +1774,7 @@ String labcode=(String)session.getAttribute("labcode");
               		</div>
                	<%} %>
                	
-               	<%-- <!-- *********** Milestones &  Deliverables ***********      --> 
-               	<%if(TabId!=null&&TabId.equalsIgnoreCase("6")){ %> 
-         			<div class="tab-pane active" id="socmilestones" role="tabpanel">
-         		<%}else{ %>
-              		<div class="tab-pane " id="socmilestones" role="tabpanel">
-               	<%} %>
-               		<%if(carsIni!=null && carsIni.getInitiationApprDate()!=null) {%>
-               			<!-- Cloning table for Milestones -->
-							<div class="col-md-12" style="" >
-								<div class="card" style="border-color: #00DADA; margin-top: 2%;max-height: 700px;">
-									<h5 class="heading ml-4 mt-3" id="" style="font-weight: 500; color: #31708f;">Milestones & Deliverables</h5>
-									<hr>
-									<div class="card-body bg-light mt-1">
-										<form action="CARSSoCMilestoneSubmit.htm" method="post">
-											<table style="width:100% ; " id="milestones">
-												<thead style = "background-color: #055C9D; color: white;text-align: center;">
-													<tr>
-												    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Milestone No.</th>
-												    	<th style="width: 30%;padding: 0px 5px 0px 5px;">Task Description</th>
-												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">T0 + Months</th>
-												    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Deliverables</th>
-												    	<th style="width: 5%;padding: 0px 5px 0px 5px;">Payment <br> ( In % )</th>
-												    	<th style="width: 20%;padding: 0px 5px 0px 5px;">Payment Terms</th>
-														<td style="width: 5%;">
-															<button type="button" class=" btn btn_add_milestones "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
-														</td>
-													</tr>
-												</thead>
-								 				<tbody>
-								 					<%if(milestones!=null && milestones.size()>0) {
-								 					   for(CARSSoCMilestones mil :milestones) {%>
-													<tr class="tr_clone_milestones">
-														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="<%if(mil.getMilestoneNo()!=null) {%><%=mil.getMilestoneNo() %><%} %>" style="text-align: center;" required="required"  readonly="readonly">
-														</td>	
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="taskDesc" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required" ><%if(mil.getTaskDesc()!=null) {%><%=mil.getTaskDesc() %><%} %></textarea>
-														</td>	
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control " name="months" min="0" max="<%=carsSoC.getSoCDuration() %>" value="<%if(mil.getMonths()!=null) {%><%=mil.getMonths() %><%} %>" required="required">
-														</td>	
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getDeliverables()!=null) {%><%=mil.getDeliverables() %><%} %></textarea>
-														</td>
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="paymentPercentage" min="0" max="100" value="<%if(mil.getPaymentPercentage()!=null) {%><%=mil.getPaymentPercentage() %><%} %>" required="required" oninput="return checkPaymentPercentage(this)">
-														</td>
-														<td style="width: 20%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} %></textarea>
-														</td>
-														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_milestones " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
-														</td>									
-													</tr>
-													<%} }else{%>
-													<tr class="tr_clone_milestones">
-														<td style="width: 10%;padding: 10px 5px 0px 5px;" >
-															<input type="text" class="form-control item" name="milestoneno" id="milestoneno" value="MIL-0" style="text-align: center;" required="required" readonly="readonly">
-														</td>	
-														<td style="width: 30%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="taskDesc" rows="3" cols="" maxlength="2000" style="width: 100%;" required="required"></textarea>
-														</td>	
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="months" min="0" max="<%=carsSoC.getSoCDuration() %>" required="required">
-														</td>	
-														<td style="width: 25%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="deliverables" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
-														</td>
-														<td style="width: 5%;padding: 10px 5px 0px 5px;">
-															<input type="number" class="form-control" name="paymentPercentage" id="paymentPercentage" min="0" max="100" required="required" oninput="return checkPaymentPercentage(this)">
-														</td>
-														<td style="width: 20%;padding: 10px 5px 0px 5px;">
-															<textarea class="form-control" name="paymentTerms" rows="3" cols="" style="width: 100%;" maxlength="2000" required="required"></textarea>
-														</td>
-														<td style="width: 5% ; ">
-															<button type="button" class=" btn btn_rem_milestones" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
-														</td>									
-													</tr>
-													<%} %>
-												</tbody> 
-											</table>
-											<div align="center" style="margin-top: 15px;">
-												<%if(carsInitiationId!=null && !carsInitiationId.equals("0")) {%>
-													<%if(milestones!=null && milestones.size()>0) {%>
-														<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-soc" name="submit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
-													<%} else{%> 
-														<button type="submit" class="btn btn-sm submit btn-soc" name="submit" onclick="return confirm('Are you sure to submit?')">SUBMIT</button>
-													<%} %>
-													<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
-													<input type="hidden" name="tab" value="6">
-													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-												<%} %>
-											</div>
-										</form>	
-									</div>
-								</div>
-							</div>
-               		
-               		<%} else{%>
-               			<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-               				<h4 style="font-weight: bold;color: red;">This window will open after RSQR Approval..!</h4>
-               			</div>
-               		<%} %>
-               		<div style="display: flex;justify-content: space-between;">
-               			<div></div>
-               			<div class="navigation_btn"  style="text-align: center;">
-               				<%if(milestones!=null && milestones.size()>0) {%>
-               				<form action="">
-               					<button type="submit" class="btn btn-sm submit" formaction="CARSSoCMilestonesDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Milestones Download" style="background-color: purple;border: none;">Milestones</button>
-               					<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId%>">
-								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-               				</form>
-               				<%} %>
-						</div>
-               			<div class="navigation_btn" style="text-align: right;">
-            				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
-							<button class="btn btn-info btn-sm next">Next</button>
-						</div>
-               		</div>
-               	<%if(TabId!=null&&TabId.equalsIgnoreCase("6")){ %> 
-         			</div>
-         		<%}else{ %>
-              		</div>
-               	<%} %> --%>
-               	
-               	
+               
                	
                	<!-- *********** SoC  Forward***********      --> 
                	<%if(TabId!=null&&TabId.equalsIgnoreCase("7")){ %> 
@@ -2165,14 +1785,14 @@ String labcode=(String)session.getAttribute("labcode");
                		<%if(carsSoC!=null && rsqrDetails!=null && majorReqr!=null && majorReqr.size()>0 && deliverables!=null && deliverables.size()>0 && milestones!=null && milestones.size()>0 && carsContract!=null) {%>
                			<%int socforwardslno=0; %>
                			<div class="col-md-8 mt-4">
-               				<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%;max-height: 500px;overflow-y: auto;">
+               				<div class="card card-bg-3"  >
                					<div class="card-body mt-2 ml-4">
                						<form action="">
                							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                		   					<input type="hidden" name="carsInitiationId" value="<%=carsIni.getCARSInitiationId()%>">
                		   					<input type="hidden" name="carsSocId" value="<%=carsSoC.getCARSSoCId()%>">
                							<div class="mt-2" align="center">
-               								<h5 style="font-weight: bold;margin-top: 1.5rem;">Statement of Case for availing CARS
+               								<h5 class="fw-bold mt-4" >Statement of Case for availing CARS
                								&emsp;<button type="submit" class="btn btn-sm" formaction="CARSSoCDownload.htm" name="carsInitiationId" value="<%=carsInitiationId%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download">
 								  	 				<i class="fa fa-download" aria-hidden="true"></i>
 												</button>
@@ -2180,35 +1800,35 @@ String labcode=(String)session.getAttribute("labcode");
                							</div>
                							<table id="socforwardtable">
 	               							<tr>
-	               								<td colspan="2" style="text-align: left;border:none;">No. <span><%=carsIni.getCARSNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()): " - " %></span> </td>
-	               								<td style="text-align: right;border:none;">Date : 
+	               								<td colspan="2" class="text-left bor-none">No. <span><%=carsIni.getCARSNo()!=null?StringEscapeUtils.escapeHtml4(carsIni.getCARSNo()): " - " %></span> </td>
+	               								<td class="text-right bor-none" >Date : 
 	               									<span><%if(carsSoC.getSoCDate()!=null) {%> <%=fc.SqlToRegularDate(carsSoC.getSoCDate()) %><%} else{%><%=rdf.format(new Date()) %> <%} %></span> 
 	               								</td>
 	               							</tr>
                								<tr>
-               									<td style="width: 5%;text-align: center;"><%=++socforwardslno %>.</td>
-               									<td style="width: 20%;">Title</td>
-               									<td style="width: 73%;color: blue;"><%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %></td>
+               									<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+               									<td class="w-20" >Title</td>
+               									<td class="w-73 col-blue"><%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %></td>
                								</tr>
                								<tr>
-               									<td style="width: 5%;text-align: center;"><%=++socforwardslno %>.</td>
-               									<td style="width: 20%;">Aim</td>
-               									<td style="width: 73%;color: blue;"><%=carsIni.getInitiationAim()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationAim()): " - " %></td>
+               									<td class="text-center w-5"><%=++socforwardslno %>.</td>
+               									<td class="w-20" >Aim</td>
+               									<td class="w-73 col-blue"><%=carsIni.getInitiationAim()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationAim()): " - " %></td>
                								</tr>
                								<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;" >Scope</td>
-						    					<td style="width: 73%;color: blue;"><%if(rsqrDetails[6]!=null) {%> <%=StringEscapeUtils.escapeHtml4(rsqrDetails[6].toString()) %><%} else{%>-<%} %></td>
+						    					<td class="text-center w-5"  ><%=++socforwardslno %>.</td>
+						    					<td class="w-20"  >Scope</td>
+						    					<td class="w-73 col-blue" class="w-73 col-blue"><%if(rsqrDetails[6]!=null) {%> <%=StringEscapeUtils.escapeHtml4(rsqrDetails[6].toString()) %><%} else{%>-<%} %></td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Duration (Months)</td>
-						    					<td style="width: 73%;color: blue;"><%=carsSoC.getSoCDuration()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getSoCDuration()): " - " %> </td>
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Duration (Months)</td>
+						    					<td class="w-73 col-blue"><%=carsSoC.getSoCDuration()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getSoCDuration()): " - " %> </td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Project Name & No., for which the CARS will be used</td>
-						    					<td style="width: 73%;color: blue;">
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Project Name & No., for which the CARS will be used</td>
+						    					<td class="w-73 col-blue">
 						    						<%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 						    							Build-up
 						    						<%} else {%>
@@ -2217,9 +1837,9 @@ String labcode=(String)session.getAttribute("labcode");
 						    					</td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Alignment with </td>
-						    					<td style="width: 73%;color: blue;">
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Alignment with </td>
+						    					<td class="w-73 col-blue">
 						    						<%if(carsSoC.getAlignment()!=null) {%>
 						    							<%=StringEscapeUtils.escapeHtml4(carsSoC.getAlignment()) %>
 						    						<%} else {%>
@@ -2228,49 +1848,48 @@ String labcode=(String)session.getAttribute("labcode");
 						    					</td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">RSQR</td>
-						    					<td style="width: 73%;color: blue;">
-						    						Annexure - I &emsp;<button type="submit" class="btn btn-sm" formaction="CARSFinalRSQRDownload.htm" formtarget="_blank" 
-						    						 style="padding: 5px 8px;" data-toggle="tooltip" data-placement="top" title="Final RSQR Download">
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">RSQR</td>
+						    					<td class="w-73 col-blue">
+						    						Annexure - I &emsp;<button type="submit" class="btn btn-sm p-5-8" formaction="CARSFinalRSQRDownload.htm" formtarget="_blank"  data-toggle="tooltip" data-placement="top" title="Final RSQR Download">
 						    							<i class="fa fa-download fa-lg"></i>
 						    						</button>
 						    					</td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Milestones & Deliverables</td>
-						    					<td style="width: 73%;color: blue;">
-						    						Annexure - II &emsp;<button type="submit" class="btn btn-sm" formaction="CARSSoCMilestonesDownload.htm" formtarget="_blank" 
-						    						 style="padding: 5px 8px;" data-toggle="tooltip" data-placement="top" title="Milestones Download">
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Milestones & Deliverables</td>
+						    					<td class="w-73 col-blue">
+						    						Annexure - II &emsp;<button type="submit" class="btn btn-sm p-5-8" formaction="CARSSoCMilestonesDownload.htm" formtarget="_blank" 
+						    						  data-toggle="tooltip" data-placement="top" title="Milestones Download">
 						    							<i class="fa fa-download fa-lg"></i>
 						    						</button>
 						    					</td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Justification for raising CARS</td>
-						    					<td style="width: 73%;color: blue;"><%=carsIni.getJustification()!=null?StringEscapeUtils.escapeHtml4(carsIni.getJustification()): " - " %> </td>
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Justification for raising CARS</td>
+						    					<td class="w-73 col-blue"><%=carsIni.getJustification()!=null?StringEscapeUtils.escapeHtml4(carsIni.getJustification()): " - " %> </td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Justification for time reasonability</td>
-						    					<td style="width: 73%;color: blue;"><%=carsSoC.getTimeReasonability()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getTimeReasonability()): " - " %> </td>
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Justification for time reasonability</td>
+						    					<td class="w-73 col-blue"><%=carsSoC.getTimeReasonability()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getTimeReasonability()): " - " %> </td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Justification for cost reasonability</td>
-						    					<td style="width: 73%;color: blue;"><%=carsSoC.getCostReasonability()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getCostReasonability()): " - " %> </td>
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Justification for cost reasonability</td>
+						    					<td class="w-73 col-blue"><%=carsSoC.getCostReasonability()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getCostReasonability()): " - " %> </td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Justification for selection of RSP</td>
-						    					<td style="width: 73%;color: blue;"><%=carsSoC.getRSPSelection()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getRSPSelection()): " - " %> </td>
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Justification for selection of RSP</td>
+						    					<td class="w-73 col-blue"><%=carsSoC.getRSPSelection()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getRSPSelection()): " - " %> </td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Research Service Provider</td>
-						    					<td style="width: 73%;color: blue;">
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Research Service Provider</td>
+						    					<td class="w-73 col-blue">
 						    						<%=carsIni.getPITitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPITitle()): " - "%> . <%=carsIni.getPIName()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIName()): " - " %>,
 						    						<%=carsIni.getPIDesig()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDesig()): " - " %> <br>
 						    						<%=carsIni.getPIDept()!=null?StringEscapeUtils.escapeHtml4(carsIni.getPIDept()): " - " %> <br>
@@ -2280,41 +1899,41 @@ String labcode=(String)session.getAttribute("labcode");
 														<br> <%=StringEscapeUtils.escapeHtml4(carsIni.getPIFaxNo()) %>
 													<%} %>
 						    						
-						    						<span style="color: black;">From</span> <br>
+						    						<span class="col-black">From</span> <br>
 						    						<%=carsIni.getRSPInstitute()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPInstitute()): " - " %> <br>
                										<%=carsIni.getRSPAddress()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPAddress()): " - "%>, <%=carsIni.getRSPCity()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPCity()): " - "%>, <%=carsIni.getRSPState()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPState()): " - "%> - <%=carsIni.getRSPPinCode()!=null?StringEscapeUtils.escapeHtml4(carsIni.getRSPPinCode()): " - " %>.
 						    					</td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Execution Plan</td>
-						    					<td style="width: 73%;">
-						    						Annexure - IV &emsp;<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Execution Plan</td>
+						    					<td class="w-73">
+						    						Annexure - IV &emsp;<button type="submit" class="btn btn-sm p-5-8"  name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 	 value="exeplanfile" formaction="CARSSoCFileDownload.htm" data-toggle="tooltip" data-placement="top" title="Exection Plan Download">
                             					 		<i class="fa fa-download fa-lg"></i>
                             					 	</button>
 						    					</td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Success / Acceptance Criterion</td>
-						    					<td style="width: 73%;color: blue;"><%=carsSoC.getSoCCriterion()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getSoCCriterion()): " - " %> </td>
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Success / Acceptance Criterion</td>
+						    					<td class="w-73 col-blue"><%=carsSoC.getSoCCriterion()!=null?StringEscapeUtils.escapeHtml4(carsSoC.getSoCCriterion()): " - " %> </td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Summary of Offer (SoO)</td>
-						    					<td style="width: 73%;">
-						    						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Summary of Offer (SoO)</td>
+						    					<td class="w-73">
+						    						<button type="submit" class="btn btn-sm p-5-8"  name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 	 value="soofile" formaction="CARSSoCFileDownload.htm" data-toggle="tooltip" data-placement="top" title="SoO Download">
                             					 		<i class="fa fa-download fa-lg"></i>
                             					 	</button>
 						    					</td>
 						    				</tr>
 						    				<tr>
-						    					<td style="width: 5%;text-align: center;" ><%=++socforwardslno %>.</td>
-						    					<td style="width: 20%;">Feasibility Report</td>
-						    					<td style="width: 73%;">
-						    						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+						    					<td class="text-center w-5" ><%=++socforwardslno %>.</td>
+						    					<td class="w-20">Feasibility Report</td>
+						    					<td class="w-73">
+						    						<button type="submit" class="btn btn-sm p-5-8" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 	 value="frfile" formaction="CARSSoCFileDownload.htm" data-toggle="tooltip" data-placement="top" title="SoO Download">
                             					 		<i class="fa fa-download fa-lg"></i>
                             					 	</button>
@@ -2322,48 +1941,31 @@ String labcode=(String)session.getAttribute("labcode");
 						    				</tr>
                							</table>
                							
-               							<!-- <br>
                							
-               							<div class="row">
-               								<div class="col-md-2">Summary of Offer (SoO)</div>
-               								<div class="col-md-1" style="text-align: left;">
-               									<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 	 value="soofile" formaction="CARSSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="SoO Download">
-                            					 		<i class="fa fa-download fa-lg"></i>
-                            					 </button>
-               								</div>
-               								<div class="col-md-2">Feasibility Report</div>
-               								<div class="col-md-1" style="text-align: left;">
-               									<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-                            					 	 value="frfile" formaction="CARSSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="SoO Download">
-                            					 		<i class="fa fa-download fa-lg"></i>
-                            					 </button>
-               								</div>
-               							</div> -->
                							
                							<br><br>
                							
-               							<div style="display: flex;justify-content: space-between;width: 98%;">
-               							    <div style="width: 49%;text-align: left;margin-left: 10px;line-height: 10px;">
-               							    	<div style="font-size: 15px;">Signature of the initiating officer</div>
-												<label style="text-transform: capitalize;margin-top: 15px !important;">
+               							<div class="rsqr-div">
+               							    <div class="rsqr-div-2 text-left" >
+               							    	<div class="input-font">Signature of the initiating officer</div>
+												<label class="text-uppercase mt-3" >
 													<%if(emp!=null && emp[1]!=null){%> <%=StringEscapeUtils.escapeHtml4(emp[1].toString())%><%} %>,
 												</label><!-- <br> -->
-												<label style="text-transform: capitalize;">
+												<label class="text-uppercase " >
 													<%if(emp!=null && emp[2]!=null){%> <%=StringEscapeUtils.escapeHtml4(emp[2].toString())%><%} %>
 												</label><br>
-												<label style="font-size: 12px;">
+												<label class="input-font-2" >
 													Date&nbsp;:&nbsp;<%if(carsSoC.getSoCDate()!=null) {%> <%=fc.SqlToRegularDate(carsSoC.getSoCDate()) %><%} else{%><%=rdf.format(new Date()) %> <%} %>
 												</label>
                							    </div>
                								
-               								 <div style="width: 49%;text-align: right;margin-right: 10px;line-height: 10px;">
-               								 	<div style="font-size: 15px;"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
+               								 <div class="rsqr-div-2 text-right">
+               								 	<div class="input-font"> Signature of the <%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>GD<%} else{%>PD<%} %></div>
 				               					<%for(Object[] apprInfo : socApprovalEmpData){ %>
 				   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("SFG") || apprInfo[8].toString().equalsIgnoreCase("SFP")){ %>
-				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%= apprInfo[4]!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(0, 10)))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(11,19)) : " - " %>]</label>
+				   								<label class="text-uppercase mt-3"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+				   								<label class="text-uppercase"  ><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+				   								<label class="input-font-2" >[Forwarded On:&nbsp; <%= apprInfo[4]!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(0, 10)))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString().substring(11,19)) : " - " %>]</label>
 				   			    				<%break;}} %>  
 				            			 	</div>	
 										
@@ -2371,19 +1973,19 @@ String labcode=(String)session.getAttribute("labcode");
                							
                							<div class="row mt-2">
 											<%if(socRemarksHistory.size()>0){ %>
-												<div class="col-md-8" align="left" style="margin: 10px 0px 5px 25px; padding:0px;border: 1px solid black;border-radius: 5px;">
+												<div class="col-md-8 remarks-div" align="left">
 													<%if(socRemarksHistory.size()>0){ %>
-														<table style="margin: 3px;padding: 0px">
+														<table class="m-1 p-0">
 															<tr>
-																<td style="border:none;padding: 0px">
-																<h6 style="text-decoration: underline;">Remarks :</h6> 
+																<td class="bor-none p-0">
+																<h6 class="text-ul ">Remarks :</h6> 
 																</td>											
 															</tr>
 															<%for(Object[] obj : socRemarksHistory){%>
 															<tr>
-																<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
+																<td class="td-bor-rsqr">
 																	<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>&nbsp; :
-																	<span style="border:none; color: blue;">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
+																	<span class="span-bor" >	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 																</td>
 															</tr>
 															<%} %>
@@ -2424,14 +2026,10 @@ String labcode=(String)session.getAttribute("labcode");
 						   								<b >Remarks :</b><br>
 						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea" maxlength="1000"></textarea>
 					         						</div>
-													<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" style="font-weight: 600;">
+													<button type="submit" class="btn btn-sm btn-success fw-600" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" >
 							    						Recommend	
 						      						</button>
-						      						
-						      						<!-- <button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="D" onclick="return disapprove();" style="font-weight: 600;">
-							   	 						Not Forward	
-						      						</button> -->
-						      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+						      						<button type="submit" class="btn btn-sm btn-danger btn-bg-rsqr fw-600" id="finalSubmission" formaction="SoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();"  >
 							 							Return
 													</button>
 												<%} %>
@@ -2444,22 +2042,22 @@ String labcode=(String)session.getAttribute("labcode");
                				</div>
                			</div>
                			<%} else{%>
-               			<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-               				<h4 style="font-weight: bold;color: red;">Please fill the SoC, Final RSQR and Milestone Details..!</h4>
+               			<div class="mt-4 no-con" >
+               				<h4 class="fw-bold mandatory" >Please fill the SoC, Final RSQR and Milestone Details..!</h4>
                			</div>
                			<%} %>
                			
-               			<div style="display: flex;justify-content: space-between;">
+               			<div class="dis-flex">
                				<div></div>
                				<div>
                					<%if(carsIni!=null && isApproval==null) {%>
                					<div class="row"  >
-		 		  					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For RSQR Approval</b></div>
+		 		  					<div class="col-md-12 text-center"><b>Approval Flow For RSQR Approval</b></div>
 		 	    				</div>
-		 	    				<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+		 	    				<div class="row text-center pt-2 pb-3" >
 	              					<table align="center"  >
 	               						<tr>
-	               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+	               							<td class="trup trup-bg" >
 	                							Initiator -  <%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>
 	                						</td>
 	                		
@@ -2467,7 +2065,7 @@ String labcode=(String)session.getAttribute("labcode");
 	                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 	                						</td>
 	                						
-	                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+	                						<td class="trup trup-bg-2" >
 	                							<%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 	                								GD - <%if(GDs!=null) {%><%=StringEscapeUtils.escapeHtml4(GDs[2].toString()) %><%} else{%>GD<%} %>
 	                							<%} else{%>
@@ -2479,7 +2077,7 @@ String labcode=(String)session.getAttribute("labcode");
 			 					</div>
 			 					<%} %>
                				</div>
-               				<div class="navigation_btn"  style="text-align: right;">
+               				<div class="navigation_btn text-right">
             					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 								<button class="btn btn-info btn-sm next">Next</button>
 							</div>
@@ -2507,12 +2105,12 @@ String labcode=(String)session.getAttribute("labcode");
                		   			<br>
                					<div class="row">
                						<div class="col-md-3"></div>
-               			    		<div class="col-md-4" style="margin-left: 60px;">
+               			    		<div class="col-md-4 ml-60">
                			     			<div class="row details">
-                        					<div class="" style="width: 90%;border-top-left-radius: 5px;">
+                        					<div class="mom-up-w">
                             					 <label class="control-label">Upload MOM</label><span class="mandatory">*</span> 
                             					 <%if(carsSoC!=null && carsSoC.getMoMUpload()!=null) {%>
-                            					 	<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-left: -20rem;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 	<button type="submit" class="btn btn-sm btn-up-mom"  name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 	value="momfile" formaction="CARSSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="MoM Download">
                             					 		<i class="fa fa-download fa-lg"></i>
                             					 	</button>
@@ -2523,7 +2121,7 @@ String labcode=(String)session.getAttribute("labcode");
                         				</div>
                         			</div>
                         			<div class="col-md-4">
-                        				<div align="left" style="margin-top: 2.2rem;">
+                        				<div align="left" class="up-mom">
 											<%if(carsSoC!=null && carsIni.getDPCSoCForwardedBy()==0){ %>
 							    				<input type="hidden" name="carsSocId" value="<%=carsSoC.getCARSSoCId()%>">
 												<button type="submit" class="btn btn-sm btn-success submit btn-momupload" formmethod="post" formnovalidate="formnovalidate" onclick="return confirm('Are you sure to Upload?')" >UPLOAD</button>
@@ -2535,11 +2133,11 @@ String labcode=(String)session.getAttribute("labcode");
                				</form>
 
 						<%} else{%>
-               				<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-               					<h4 style="font-weight: bold;color: red;">Please get approval for SoC..!</h4>
+               				<div class="mt-4 no-con" >
+               					<h4 class="mandatory fw-bold">Please get approval for SoC..!</h4>
                				</div>
                			<%} %>
-               			<div class="navigation_btn"  style="text-align: right;">
+               			<div class="navigation_btn text-right">
             				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 							<button class="btn btn-info btn-sm next">Next</button>
 						</div>
@@ -2557,7 +2155,7 @@ String labcode=(String)session.getAttribute("labcode");
                	<%} %>
                			<%if(carsIni!=null) {%>
                				<div class="col-md-8 mt-4">
-               					<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%;">
+               					<div class="card all-doc-card" >
                						<div class="card-body mt-2 ml-4">
 	               						<form action="#">
 	               							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -2566,9 +2164,9 @@ String labcode=(String)session.getAttribute("labcode");
 	               							<table id="alldocstable">
 	               								<thead>
 	               									<tr>
-	               										<th style="width: 10%;">SN</th>
+	               										<th class="w-10">SN</th>
 	               										<th>Subject</th>
-	               										<th style="width: 10%;">Action</th>
+	               										<th class="w-10">Action</th>
 	               									</tr>
 	               								</thead>
 	               								<tbody>
@@ -2712,11 +2310,11 @@ String labcode=(String)session.getAttribute("labcode");
                					</div>
                				</div>
                			<%} else{%>
-               				<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-               					<h4 style="font-weight: bold;color: red;">Please complete atleast initiation and RSQR..!</h4>
+               				<div class="mt-4 no-con" >
+               					<h4 class="fw-bold mandatory">Please complete atleast initiation and RSQR..!</h4>
                				</div>
                			<%} %>
-               			<div class="navigation_btn"  style="text-align: right;">
+               			<div class="navigation_btn text-right">
             				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 							<button class="btn btn-info btn-sm next">Next</button>
 						</div>

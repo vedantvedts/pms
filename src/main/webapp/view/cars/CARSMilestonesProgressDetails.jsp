@@ -5,26 +5,18 @@
 <%@page import="com.vts.pfms.cars.model.CARSSoCMilestones"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
-label{
-	font-weight: bold;
-	font-size: 13px;
-}
 
-.milestoneProgressTable {
-	width: 100%;
-	border-collapse: collapse;
-	margin: 1rem;	
-}
-.milestoneProgressTable td{
-	padding: 10px;
-}
-</style>
+<spring:url value="/resources/css/cars/CARSMilestonesProgressDetails.css" var="carsMilestonesProgressDetails" />
+<link href="${carsMilestonesProgressDetails}" rel="stylesheet" />
+<spring:url value="/resources/css/cars/carscommon.css" var="carscommon4" />
+<link href="${carscommon4}" rel="stylesheet" />
+
 </head>
 <body>
 
@@ -56,9 +48,9 @@ label{
 <% } %>
 
 	<div class="container-fluid">
-		<div class="container" style="margin-bottom:20px;">
-			<div class="card" style=" ">
-				<div class="card-header" style="background-color: #055C9D; height: 50px;">
+		<div class="container mb-20" >
+			<div class="card" >
+				<div class="card-header card-head"  >
 					<div class="row"> 
 						<h6 class="text-white"><%=carsSoCMilestones.getMilestoneNo()!=null?StringEscapeUtils.escapeHtml4(carsSoCMilestones.getMilestoneNo()): " - " %></h6>
 					</div>
@@ -68,21 +60,21 @@ label{
 						<div class="row"> 
 							<div class="col-md-2" align="left"  >
 								<div class="form-group">
-									<label  >Progress: <span class="mandatory" style="color: red;" >*</span></label>
+									<label  >Progress: <span class="mandatory" >*</span></label>
 									<input type="number" class="form-control" name="progress" id="progress" required="required" max="100" min="1">
 								</div>
 							</div>
 
 							<div class="col-md-2" align="left"  >
 								<div class="form-group">
-									<label  >Progress Date: <span class="mandatory" style="color: red;">*</span></label>
+									<label  >Progress Date: <span class="mandatory">*</span></label>
 									<input class="form-control " name="progressDate" id="progressDate" required="required">
 								</div>
 							</div>
 							
 							<div class="col-md-6" align="left"  >
 								<div class="form-group">
-									<label  >Remarks: <span class="mandatory" style="color: red;">*</span></label>
+									<label  >Remarks: <span class="mandatory">*</span></label>
 									<input type="text" name="remarks" class="form-control" maxlength="1000" required="required" value="Nil">
 								</div>
 							</div>
@@ -107,9 +99,9 @@ label{
 	
 	
 	<div class="container-fluid">
-		<div class="container" style="margin-bottom:20px;">
-			<div class="card" style=" ">
-				<div class="card-header" style="background-color: #055C9D; height: 50px;">
+		<div class="container mb-20">
+			<div class="card" >
+				<div class="card-header card-head" >
 					<div class="row"> 
 						<h6 class="text-white">Milestone Progress List</h6>
 					</div>
@@ -118,10 +110,10 @@ label{
 					<table class="milestoneProgressTable">
 						<thead class="left">
 							<tr>
-								<th style="width: 10%;">SN</th>
-								<th style="width: 20%;">Progress Date</th>
-							 	<th style="width: 35%;">Progress</th>
-							 	<th style="width: 35%;">Remarks</th>
+								<th class="w-10">SN</th>
+								<th class="w-20">Progress Date</th>
+							 	<th class="w-35">Progress</th>
+							 	<th class="w-35">Remarks</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -134,14 +126,14 @@ label{
 									<td  ><%=progress.getProgressDate()!=null?fc.sdfTordf(StringEscapeUtils.escapeHtml4(progress.getProgressDate())):" - " %></td>
 									<td >
 										<%if(progress.getProgress()!=0){ %>
-											<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-												<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=progress.getProgress() %>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+											<div class="progress pro-bg" >
+												<div class="progress-bar progress-bar-striped width-<%=progress.getProgress() %>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 													<%=progress.getProgress() %>
 												</div> 
 											</div>
 										<%}else{ %>
-											<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-												<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+											<div class="progress pro-bg">
+												<div class="progress-bar w-100 pro-bground" role="progressbar"   >
 													0
 												</div>
 											</div>
@@ -151,7 +143,7 @@ label{
 								</tr>
 							<%  } }else{%>
 								<tr>
-									<td colspan="6" style="text-align: center">No List Found</td>
+									<td colspan="6" class="text-center">No List Found</td>
 								</tr>
 							<%}%>
 						</tbody>
