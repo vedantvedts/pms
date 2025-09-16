@@ -1,0 +1,173 @@
+@charset "UTF-8";
+
+label{
+font-weight: bold;
+  font-size: 15px !important;
+}
+
+.left {
+	text-align: left;
+}
+.center{
+	text-align: center;
+}
+.right{
+	text-align: right;
+}
+#activitytable{
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid #0000002b;  
+}
+#activitytable th, #activitytable td{
+	border: 1px solid #0000002b; 
+	padding: 20px;
+}
+#activitytable th{
+
+	vertical-align: middle;
+}
+#activitytable thead {
+	text-align: center;
+	background-color: #2883c0;
+	color: white;
+}
+
+
+#activityviewtable{
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid #0000002b; 
+	padding: 10px;
+}
+
+#activityviewtable th, #activityviewtable td{
+	border: 1px solid #0000002b; 
+	padding: 7px;
+}
+#activityviewtable thead {
+	text-align: center;
+	background-color: #60707a;
+	color: white;
+}
+
+.highlight-week {
+	background-color: #2883c0 !important;
+	color: white;
+}
+.style1{
+	
+	margin-top: -0.5rem;
+}
+ 
+.style2{
+	transform: scale(1.5);
+	margin-left: 100%;
+}
+
+.spanStyle1{
+	margin-left: 100%;
+	}
+
+.istyle1{
+	color: green;font-size: 20px;
+}
+	
+.spanStyle2{
+	margin-left: 100%;
+}
+
+.istyle2{
+	color: red;
+	font-size: 20px;
+}
+
+.buttonstyle1{
+	padding: 2px 30px;
+}
+
+.inputstyle1{
+	border-left: 0;
+	border-top: 0;
+	border-right: 0;
+	width: 70%;
+}
+
+.buttonstyle2{
+	border-radius: 2rem;
+}
+
+.buttonstyle3{
+	border-radius: 2rem;
+}
+
+.istyle3{
+	font-size: 16px;
+}
+
+.tablestyle1{
+	width:100%;
+}
+.spancolorRed{
+	color: red;
+}
+
+.spancolorGreen{
+	color: green;
+}
+
+.inputtag1{
+	transform: scale(1.5);
+}
+
+.istyle4{
+	color: green;
+	font-size: 20px;
+}
+
+.istyle5{
+	color: red;
+	font-size: 20px;
+}
+
+.spanStyle3{
+	font-weight: bold;
+	 font-size: 16px;
+	  color: green;
+}
+
+.spanStyle4{
+	font-weight: bold;
+	 font-size: 16px;
+	  color: red;
+}
+
+.tdstyle1{
+	font-weight: bold;
+}
+
+.tdstyle2{
+	border: 0;
+}
+
+.tdstyle3{
+	border: 0;
+}
+
+.inputtag2{
+	border-left: 0;
+	border-top: 0;
+	border-right: 0;
+}
+
+.tdstyle4{
+	border: 0;
+}
+
+.btnstyle1{
+	font-weight: 500;
+}
+
+.btnstyle2{
+	font-weight: 500;
+}

@@ -1,0 +1,63 @@
+@charset "ISO-8859-1";
+
+label{
+font-weight: bold;
+  font-size: 13px;
+}
+
+.table thead tr th {
+	background-color: aliceblue;
+	text-align: left;
+	width:30%;
+}
+
+.table thead tr td {
+
+	text-align: left;
+}
+
+label{
+	font-size: 15px;
+}
+
+#ajaxError{
+	display: none;
+}
+
+#ajaxErrorMessage{
+	width: 65%; padding: 10px; margin: 5px 0; 
+              border-radius: 4px;
+}
+
+.coldiv{
+	top: 10px;
+}
+
+.headDiv{
+	background-color: #055C9D;
+}
+
+#groupCode{
+	font-size: 15px;
+}
+
+#groupName{
+	font-size: 15px;text-transform: capitalize; width: 90%;
+}
+
+#ghempid{
+	font-size: 18px;
+}
+
+#tdId{
+	font-size: 18px;
+}
+
+.isActiveSel{
+	font-size: 18px;
+}
+
+.SubmitBtn{
+	align-self: center;
+}
+

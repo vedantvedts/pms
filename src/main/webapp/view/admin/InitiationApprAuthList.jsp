@@ -6,72 +6,15 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
+<spring:url value="/resources/css/admin/InitiationApprAuthList.css" var="initiationApprAuthList" />
+<link href="${initiationApprAuthList}" rel="stylesheet" />
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-.table button {
-    background-color: Transparent !important;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    text-align: left !important;
-}
-.table td{
-	padding:5px !important;
-}
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-	
-.datatable-dashv1-list table tbody tr td{
-	padding: 8px 10px !important;
-}
-
-.table-project-n{
-	color: #005086;
-}
-
-#table thead tr th{
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td{
-	padding:2px 3px !important;
-}
-
-
-.width{
-	width:270px !important;
-}
-
-
-
-
-
-</style>
 </head>
 <body>
 <%
@@ -120,7 +63,7 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 			                            <div class="sparkline13-graph">
 			                                <div class="datatable-dashv1-list custom-datatable-overright">
 			                					<table class="table table-bordered table-hover table-striped table-condensed " id="myTable" > 
-			                      					<thead style=" text-align: center;">
+			                      					<thead  class="text-center">
 			                                        	<tr> 
 						                              		<th>Select</th>
 						                              		<th>Authorized Officer </th>
@@ -134,11 +77,11 @@ SimpleDateFormat rdf = fc.getRegularDateFormat();
 						                                 if(InitiationApprAuthList!=null && InitiationApprAuthList.size()>0) {
 						                                 for(Object[] obj:InitiationApprAuthList){ %>
 						                                     <tr>
-							                                     <td style="text-align: center;"><input type="radio" name="RtmddoId" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>  ></td> 
-							                                     <td style="text-align: left;"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %> (<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>), <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %></td>
-							                                     <td style="text-align: center;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
-																 <td style="text-align: center;"><%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(rdf.format(obj[3])) %><%}else{ %>-<%} %></td>
-																 <td style="text-align: center;"><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(rdf.format(obj[4])) %><%}else{ %>-<%} %></td>
+							                                     <td class="text-center"><input type="radio" name="RtmddoId" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>  ></td> 
+							                                     <td class="text-left"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %> (<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>), <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %></td>
+							                                     <td class="text-center"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+																 <td class="text-center"><%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(rdf.format(obj[3])) %><%}else{ %>-<%} %></td>
+																 <td class="text-center"><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(rdf.format(obj[4])) %><%}else{ %>-<%} %></td>
 						                                     </tr>
 						                                  <%} }%>
 						                             </tbody>

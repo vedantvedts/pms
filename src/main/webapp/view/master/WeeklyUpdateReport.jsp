@@ -10,39 +10,12 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/master/weeklyUpdateReport.css" var="weeklyUpdateReport" />     
+<link href="${weeklyUpdateReport}" rel="stylesheet" />
 
 
 <title>Weekly Update Report</title>
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
 
-body {
-	background-color: #f2edfa;
-	overflow-x: hidden !important;
-}
-
-h6 {
-	text-decoration: none !important;
-}
-
-.table button {
-	background-color: white !important;
-	border: 3px solid #17a2b8;
-	padding: .275rem .5rem !important;
-}
-
-.table button:hover {
-	color: black !important;
-}
-
-#table tbody tr td {
-	padding: 4px 3px !important;
-}
-</style>
 </head>
 
 <body>
@@ -78,19 +51,18 @@ h6 {
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card shadow-nohover"
-					style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;">
+				<div class="card shadow-nohover cardh">
 					<div class="card-header ">
 
 						<div class="row">
 							<h4 class="col-md-5">Weekly Update Report</h4>
-							<div class="col-md-7" style="float: right; margin-top: -8px;">
+							<div class="col-md-7 updateRptForm" >
 								<form method="POST" id='myform'>
 									<table >
 										<tr>
-											<td style="max-width: 300px; padding-right: 50px"><select
+											<td  class="selectPrj"><select
 												onchange="getdata();submitform()" name="getprojects"
-												class="form-control" style="max-width: 250px" id="projectid">
+												class="form-control"  id="projectid">
 												<% if(data.size()==0) {%>
 													<option value="none" selected disabled hidden>
 														Select Project</option><%} else{ %>
@@ -127,8 +99,8 @@ h6 {
 										<div class="datatable-dashv1-list custom-datatable-overright">
 											<div id="toolbar"></div>
 											
-											<div style="width: 95%; margin: auto;">
-												<h4 style="text-align: center;padding: 35px;">
+											<div class="weekelyStatusDiv" >
+												<h4  class="weekelyStatusHeading" >
 													Weekly Status <%if(request.getAttribute("projectname")!=null){ %> of
 													<%=request.getAttribute("projectname")%>
 													<% if(request.getAttribute("shortname")!=null){ %>(
@@ -138,7 +110,7 @@ h6 {
 												<table class="table table-bordered table-hover table-striped table-condensed " id="table" data-toggle="table"
 													class="table table-bordered table-hover table-striped table-condensed "
 													>
-													<thead style="text-align: center;">
+													<thead  class="tableThead">
 
 														<tr>
 															<th scope="col">Date</th>
@@ -158,12 +130,12 @@ h6 {
 
 
 
-															<td ><div style="text-align: center;"><%= data.get(i)[3]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[3].toString()):"-" %></div></td>
-															<td ><div style="text-align: center;"><%= data.get(i)[2]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[2].toString()):"-" %></div></td>
-															<td ><div style="text-align: center;"><%= data.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[7].toString()):"-" %></div></td>
-															<td ><div style="text-align: center;"><%= data.get(i)[5]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[5].toString()):"-" %></div></td>
-															<td><div style="text-align: center;"><%= data.get(i)[4]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[4].toString()):"-" %></div></td>
-															<td><div style="text-align: center;"><%= data.get(i)[9]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[9].toString()):"-" %></div></td>
+															<td ><div class="data-div"><%= data.get(i)[3]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[3].toString()):"-" %></div></td>
+															<td ><div class="data-div"><%= data.get(i)[2]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[2].toString()):"-" %></div></td>
+															<td ><div class="data-div"><%= data.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[7].toString()):"-" %></div></td>
+															<td ><div class="data-div"><%= data.get(i)[5]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[5].toString()):"-" %></div></td>
+															<td><div class="data-div"><%= data.get(i)[4]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[4].toString()):"-" %></div></td>
+															<td><div class="data-div"><%= data.get(i)[9]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[9].toString()):"-" %></div></td>
 
 															<td id='trimname'><%= data.get(i)[1]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[1].toString()):"-" %></td>
 															<td><%= data.get(i)[10]!=null?StringEscapeUtils.escapeHtml4(data.get(i)[10].toString()):"-" %></td>

@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+
+.input-group-text{
+font-weight: bold;
+}
+
+label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
+
+hr{
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+.form-group {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.style1{
+	margin-top: 10px;
+}
+
+.style2{
+	max-width: 25%;
+}
+
+.style3{
+	color: #cd0a0a;
+}
+
+.style4{
+	max-width: 75%;
+}

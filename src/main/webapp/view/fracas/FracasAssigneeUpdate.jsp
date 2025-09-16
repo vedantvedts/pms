@@ -8,37 +8,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
- 
-
 <title>Action Assignee</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden; 
-}
-h6{
-	text-decoration: none !important;
-}
-label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-#table tbody tr td {
-	padding: 2px 3px !important;
-	text-align:center;
-}
-
-
-
-</style>
+<spring:url value="/resources/css/fracasModule/fracasAssigneeUpdate.css" var="fracasAssigneeUpdate" />     
+<link href="${fracasAssigneeUpdate}" rel="stylesheet" />
 </head>
- 
 <body>
   <%
 
@@ -78,17 +51,17 @@ label {
 
 <div class="container-fluid">
 
-	<div class="container" style="margin-bottom:20px;">
+	<div class="container containerMain" >
 
 		
-    		<div class="card" style=" ">
+    		<div class="card" >
     	
-	    		<div class="card-header" style="background-color: #055C9D;height: auto;">
+	    		<div class="card-header" >
   					<div class="row">
     					<div class="col-md-12">
-					    	<h6 class="mb-4" style="color: white;font-size: 1.2rem !important;">
+					    	<h6 class="mb-4 cardHead" >
 					        	<span>FRACAS Item: <%= fracasassigndata[12]!=null?StringEscapeUtils.escapeHtml4(fracasassigndata[12].toString()): " - " %></span>
-					        	<span style="font-size: 1rem;float: right;margin-top: 1.8rem;">Assigner: <%= fracasassigndata[8]!=null?StringEscapeUtils.escapeHtml4(fracasassigndata[8].toString()): " - " %></span>
+					        	<span  class="assignerDetails">Assigner: <%= fracasassigndata[8]!=null?StringEscapeUtils.escapeHtml4(fracasassigndata[8].toString()): " - " %></span>
 					      	</h6>
 						</div>
 					</div>
@@ -98,7 +71,7 @@ label {
 	      			<form method="post" action="FracasSubSubmit.htm" enctype="multipart/form-data">
 	        			<div class=""><label>Remarks: </label> <%=fracasassigndata[2] !=null?StringEscapeUtils.escapeHtml4(fracasassigndata[2].toString()): " - "%>   </div>
 	        			<div class="col-md-12">
-	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
+	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" >
 								<thead>  
 									<tr id="">
 										<th>As On Date</th>
@@ -155,7 +128,7 @@ label {
  
 	<div class="col-md-12">
     	
-    	<div class="card" style="">
+    	<div class="card" >
       		
       		<div class="card-body" >
       		
@@ -164,20 +137,20 @@ label {
       		
 <div class="col-md-1"></div>
    
-   <div class="col-md-10" style="padding-left: 0px">
+   <div class="col-md-10" >
    <% if(fracassublist.size()>0){ %>  
    				<div class="table-responsive">
-    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
+    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" >
 						<thead>
 							<tr>
-								<th colspan="7" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >FRACAS Details </th>									
+								<th colspan="7" class="tableHeader"  >FRACAS Details </th>									
 							</tr> 	
 							<tr>					
-								<th style="text-align: left;">As On Date</th>
-								<th style="">Remarks</th>			
-								<th style="">Progress %</th>								
-							 	<th style="">Attachment</th>							 	
-								<th style="">Action</th>
+								<th  class="asOnDateTh">As On Date</th>
+								<th>Remarks</th>			
+								<th >Progress %</th>								
+							 	<th >Attachment</th>							 	
+								<th >Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -187,16 +160,16 @@ label {
 								<tr>
 									<td><%=obj[3]!=null?sdf.format(sdf1.parse(obj[3].toString())):" - " %></td>
 									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
-									<td style="width:15%;">									
+									<td  class="progressTd">									
 											<%if(!obj[2].toString().equals("0")){ %>
-									           <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-										            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[2]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+									           <div class="progress" >
+										            <div class="progress-bar progress-bar-striped width<%=obj[2] %>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 											            <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>
 											        </div> 
 											   </div> 
 											<%}else{ %>
-											   <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-												   <div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+											   <div class="progress progress-Zero-Div" >
+												   <div class="progress-bar progress-Zero" role="progressbar" >
 											             Not Yet Started .
 											   		</div>
 											   </div> <%} %>
@@ -204,7 +177,7 @@ label {
 									<td>
 										<%if(obj[5]!=null){ %>
 											<form action="FracasAttachDownload.htm" method="post" target="_blank" >
-												<button class="btn" style="align: center;"><i class="fa fa-download"></i></button>
+												<button class="btn dwnldbtn" ><i class="fa fa-download"></i></button>
 												<input type="hidden" name="fracasattachid" value="<%=obj[5] %>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</form>
@@ -214,7 +187,7 @@ label {
 									</td>									
 									<td>
 										 <form action="FracasSubDelete.htm" method="post" >
-										 	<button class="fa fa-trash btn btn-danger " type="submit" style="background-color: white;border-color: white;"  onclick="return confirm('Are You Sure To Delete?');" ></button>	
+										 	<button class="fa fa-trash btn btn-danger deleteButton " type="submit"   onclick="return confirm('Are You Sure To Delete?');" ></button>	
 											<input type="hidden" name="fracassubid" value="<%=obj[0] %>" />
 											<%if(obj[5]!=null){ %>
 											<input type="hidden" name="fracasattachid" value="<%=obj[5] %>">

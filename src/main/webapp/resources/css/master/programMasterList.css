@@ -1,0 +1,32 @@
+@charset "ISO-8859-1";
+
+.masterTableDiv{
+	width: 70%;margin-left: 18rem;
+}
+
+#myTable{
+	width:100%
+	}
+	
+	.selectTd{
+		width:"10%";
+	}
+	
+	.programmeCodeTd{
+		width:"17%"
+	}
+	
+	.programmeName{
+		width:"28%"
+	}
+	
+	.programmeDirector{
+		width:"30%"
+	}
+	
+	.sanctionedOn{
+		width:"15%"
+	}
+	
+	
+	

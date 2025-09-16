@@ -1,0 +1,51 @@
+@charset "UTF-8";
+
+        .quarter-header {
+            text-align: center;
+            background-color: #a9c1f1;
+        }
+        .year-header, .align-middle {
+            text-align: center;
+            border-bottom: 2px solid #dee2e6;
+            background-color: #f1a9ce;
+        }
+        
+ .style1{
+ display: flex;justify-content: space-between;
+ }
+ 
+ .style2{
+ background-color: green;color: white;font-size: 15px;
+ }
+ 
+ .style3{
+ background-color: #ffae00; color: black;font-size: 15px;
+ }
+ 
+ .style4{
+ background-color: #462fb7; color: white;font-size: 15px;
+ }
+ 
+ .style5{
+ border-bottom: 3px solid #6252528a;
+ }
+ 
+ .style6{
+ text-align: center;font-size: 17px;font-weight: 600;
+ 
+ }
+ 
+ .style7{
+ 
+ font-size: 17px;font-weight: 600;
+ }
+ 
+ .style8{
+ 
+ background-color: green;
+ }
+ 
+ .style9{
+ 
+ color: red;font-size: large;font-weight: 500;
+ }

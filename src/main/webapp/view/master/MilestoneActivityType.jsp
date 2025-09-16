@@ -3,124 +3,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+	    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Milestone Activity Master</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
 
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
 
-.table button {
-	background-color: Transparent !important;
-	background-repeat: no-repeat;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-	outline: none;
-	text-align: left !important;
-}
-
-.table td {
-	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa {
-	font-size: 1.20rem;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.table-project-n {
-	color: #005086;
-}
-
-#table thead tr th {
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td {
-	padding: 2px 3px !important;
-}
-
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-th, td {
-	text-align: center;
-}
-</style>
+<spring:url value="/resources/css/master/MilestoneActivityType.css" var="MilestoneActivityType" />     
+<link href="${MilestoneActivityType}" rel="stylesheet" />
 
 </head>
 <body>
@@ -158,19 +51,19 @@ th, td {
 						</div>
 						<div class="col-md-2">
 							<a class="btn btn-info btn-sm  back"
-								style="margin-left: 4.2rem; margin-top: -5px;"
+								
 								href="MainDashBoard.htm">Back</a>
 						</div>
 					</div>
 				</div>
 
-				<div class="row" style="margin-top: 10px;">
+				<div class="row mainrow" >
 					<div class="col-md-7">
-						<div style="margin-top: 0px;">
+						<div >
 							<div class="card ">
 
 								<div class="card-body shadow-nohover">
-									<div class="row" style="margin-top: 20px;">
+									<div class="row rowTop" >
 										<div class="container-fluid">
 											<div class="col-lg-12 col-md-10 col-sm-6 col-xs-6">
 												<div class="sparkline13-list">
@@ -215,7 +108,7 @@ th, td {
 															</form>
 
 															<!-- Button trigger modal -->
-															<div class='container' style="max-width: 200px">
+															<div class='container modalbutton' >
 															<div class="row" >
 															<div class='col'>
 															<button type="button" class="btn btn-warning btn-sm edit" 
@@ -239,19 +132,19 @@ th, td {
 						</div>
 					</div>
 					<div class="col-md-5">
-						<div style="margin-top: 0px;">
+						<div >
 
 							<div class="card ">
 
 								<div class="card-body  shadow-nohover">
 									<form action="ActivityAddSubmit.htm" method="POST"
 										id="addcheck">
-										<div class="row" style="margin-top: 20px;">
+										<div class="row activityAdd" >
 											<div class="col-md-12">
 												<div class="table-responsive">
 													<table
 														class="table table-bordered table-hover table-striped table-condensed">
-														<thead style="background-color: #055C9D; color: white;">
+														<thead  class="activityTblThead">
 															<tr>
 																<th>Activity Type</th>
 																<th>Activity Code</th>
@@ -277,7 +170,7 @@ th, td {
 														</tbody>
 													</table>
 												</div>
-												<div style="text-align: center;">
+												<div class="btndiv" >
 													<button type="button" class="btn btn-success btn-sm add " name="sub" value="edit" onclick="return AddActivityCheck('addcheck');">ADD</button>
 												</div>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -376,7 +269,7 @@ th, td {
 						<div class="table-responsive">
 							<table
 								class="table table-bordered table-hover table-striped table-condensed">
-								<thead style="background-color: #055C9D; color: white;">
+								<thead  class="tableHead">
 									<tr>
 										<th>Activity Type</th>
 										<th>Activity Code</th>
@@ -406,7 +299,7 @@ th, td {
 						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					</div>
 					<div class="modal-footer">
-						<input type="button" onclick="return EditActivityCheck()" value="Edit" style="margin-left:50%" class="btn btn-warning btn-sm edit"
+						<input type="button" onclick="return EditActivityCheck()" value="Edit"  class="btn btn-warning btn-sm edit footerbtn"
 							 >
 					</div>
 				</form>
