@@ -6,6 +6,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
+     <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
     
    
 <!DOCTYPE html>
@@ -13,92 +14,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/projectModule/projectDataCollect.css" var="ExternalCSS" />     
+<link href="${ExternalCSS}" rel="stylesheet" />
 <title>Briefing </title>
-
-
- <style type="text/css">
- 
- p{
-  text-align: justify;
-  text-justify: inter-word;
-}
-
-  label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-  
- th
- {
- 	border: 0;
- 	text-align: center;
- 	padding: 5px;
- }
- 
- td
- {
- 	border: 0;
- 	padding: 5px;
- }
- 
-  
- .textcenter{
- 	
- 	text-align: center;
- }
- .border
- {
- 	border: 1px solid black;
- }
- .textleft{
- 	text-align: left;
- }
-
-summary[role=button] {
-  background-color: white;
-  color: black;
-  border: 1px solid black ;
-  border-radius:5px;
-  padding: 0.5rem;
-  cursor: pointer;
-  
-}
-summary[role=button]:hover
- {
-color: white;
-border-radius:15px;
-background-color: #4a47a3;
-
-}
- summary[role=button]:focus
-{
-color: white;
-border-radius:5px;
-background-color: #4a47a3;
-border: 0px ;
-
-}
-
-details { 
-  margin-bottom: 5px;  
-}
-details  .content {
-background-color:white;
-padding: 0 1rem ;
-align: center;
-border: 1px solid black;
-}
-
-  label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-</style>
-
 
 <meta charset="ISO-8859-1">
 
@@ -144,12 +62,12 @@ String filesize=(String) request.getAttribute("filesize");
 							<h4>Add Project Data </h4>
 						</div>
 						<div class="col-md-6 justify-content-end" >
-							<table style="float: right;" >
+							<table class="style1" >
 								<tr>
-									<td ><h5 style="margin-top: -12px;">Project :</h5></td>
+									<td ><h5 class="style2">Project :</h5></td>
 									<td >
-										<form method="post" action="ProjectData.htm" id="projectchange" style="margin-top: -14px;">
-											<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+										<form method="post" action="ProjectData.htm" id="projectchange" class="style3">
+											<select class="form-control items style4" name="projectid"  required="required" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 												<option disabled  selected value="">Choose...</option>
 												<%for(Object[] obj : projectslist){ 
 											     String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
@@ -171,7 +89,7 @@ String filesize=(String) request.getAttribute("filesize");
 						   <div class="col-md-12">
 						   		
 							    <form method="post" action="ProjectDataSubmit.htm" enctype="multipart/form-data"  >
-							    	<table  style="border-collapse: collapse; border: 0px; width:100%; ">
+							    	<table  class="style5">
 							    		<tr>
 									    	<td>
 									    		<label ><b>1. System Configuration </b>  </label> 
@@ -194,7 +112,7 @@ String filesize=(String) request.getAttribute("filesize");
 											
 											<td>
 												<label ><b>5. Project Stage</b>  </label><br>
-												<select class="form-control items" name="projectstageid"  required="required" style="width: 100%"  data-live-search="true" data-container="body" >
+												<select class="form-control items style6" name="projectstageid"  required="required" data-live-search="true" data-container="body" >
 													<option disabled  selected value="">Choose...</option>
 												<%for(Object[] obj : projectstagelist){ %>
 													<option <%-- <%if(projectid!=null && projectid.equals(obj[0].toString())) { %>selected <%} %> --%> value=<%=obj[0]%> ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></option>
@@ -219,7 +137,7 @@ String filesize=(String) request.getAttribute("filesize");
 										
 										<tr>
 											<td colspan="3">
-												<span><b style="color: red">Note :</b> &nbsp; Please Upload Files in PDF and Image Files Only</span>
+												<span><b class="style7">Note :</b> &nbsp; Please Upload Files in PDF and Image Files Only</span>
 											</td>
 										</tr>
 										<tr>

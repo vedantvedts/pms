@@ -1,0 +1,139 @@
+#sidebarCollapse {
+	display: none;
+}
+
+#sidebar {
+	display: none;
+}
+
+.btn-status {
+	position: relative;
+	z-index: 1;
+}
+
+.btn-status:hover {
+	transform: scale(1.05);
+	z-index: 5;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+.cs-h3{
+	color:#055C9D;
+	margin-top:-5px;
+}
+
+.cs-ul{
+	background-color: #E1E5E8;
+	padding:0px;
+}
+
+.w-20px{
+	width: 20px;
+}
+
+.w-5{
+	width: 5%;
+}
+
+.w-10{
+	width: 10%;
+}
+
+.w-20{
+	width: 20%;
+}
+
+.w-50{
+	width: 50%;
+}
+
+.mt-1p{
+	margin-top: 1%;
+}
+
+.C000000 {
+  color: #000000 !important;
+}
+
+.C2155CD {
+  color: #2155CD !important;
+}
+
+.CFF7F3F {
+  color: #FF7F3F !important;
+}
+
+.C1CD6CE {
+  color: #1CD6CE !important;
+}
+
+.CD61C4E {
+  color: #D61C4E !important;
+}
+
+.CE247E7 {
+  color: #E247E7 !important;
+}
+
+.C157ECD {
+  color: #157ECD !important;
+}
+
+.C9C27B0 {
+  color: #9C27B0 !important;
+}
+
+.C2B7A0B {
+  color: #2B7A0B !important;
+}
+
+
+.fw-800{
+	font-weight: 600;
+}
+
+.cs-recomend{
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+}         
+        
+.cs-row{
+	align-items: center;
+	justify-content: end;
+}        
+        
+.cs-from{
+	text-align: center;
+	font-size: 16px;
+	width:80px; 
+} 
+        
+.cs-input{
+     width:113px; 
+     margin-top: -10px; 
+ }
+        
+.cs-to{
+	text-align: center;
+	font-size: 16px;
+	width:20px; 
+}              
+        
+.text-justify{
+	text-align: justify;
+}     
+        
+.cs-summary-div{
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+}    
+        
+                                      

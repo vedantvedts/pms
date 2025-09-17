@@ -1,0 +1,43 @@
+.table-wrapper {
+	max-height: 800px; /* Set the max height for the table wrapper */
+	overflow-y: auto; /* Enable vertical scrolling */
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 1.2rem;
+	overflow-y: auto;
+	overflow-x: auto;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+thead {
+	position: sticky;
+	top: 0; /* Keeps the header at the top */
+	z-index: 1000; /* Ensure the header stays on top of the body */
+	background-color: white; /* For visibility */
+}
+
+th, td {
+	padding: 8px;
+	border: 1px solid black;
+	text-align: left;
+}
+
+th {
+	background-color: #f1f1f1; /* Light gray background for headers */
+	text-align: center;
+}
+
+.center {
+	text-align: center;
+}
+
+.cs-generate{
+	background-color: purple;
+	border: none;
+	color: white;
+	font-weight: 600;
+}

@@ -1,0 +1,55 @@
+label {
+	font-weight: bold;
+	font-size: 13px;
+}
+
+body {
+	background-color: #f2edfa;
+	overflow-x: hidden;
+}
+
+h6 {
+	text-decoration: none !important;
+}
+
+.div-margin {
+	margin-bottom: 20px;
+}
+
+.card-bg {
+	background-color: #055C9D;
+	height: 100%;
+}
+
+.h6-st {
+	color: white;
+	font-weight: bold;
+	font-size: 1.2rem !important
+}
+
+.span-st {
+	float: right;
+	font-size: 17px;
+	margin-top: 5px
+}
+
+.table-margin {
+	margin-top: 20px;
+}
+
+.th-st {
+	background-color: #346691;
+	color: white;
+	text-align: center;
+	font-size: 18px !important;
+	border-left: 0px solid;
+	text-transform: capitalize;
+}
+
+.div-progress {
+	background-color: #cdd0cb !important
+}
+
+.div-row {
+	margin-top: 20px;
+}

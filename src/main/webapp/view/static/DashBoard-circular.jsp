@@ -84,20 +84,20 @@
 			          	'<span class="progress-bar '+pmrcprogress+'"></span></span>'+        
 			         	'<span class="progress-right"> <span class="progress-bar  '+pmrcprogress+'"></span></span>'+
 			          	'<div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">'+
-			            '<div class="h4 font-weight-bold" id="pmrcprogress" >'+ajaxresult[29]+'%</div></div></div><hr style="margin: 5px !important">'+
-			        	'<table class="countstable" style="margin: 0px auto">'+
+			            '<div class="h4 font-weight-bold" id="pmrcprogress" >'+ajaxresult[29]+'%</div></div></div><hr class="clx-59">'+
+			        	'<table class="countstable clx-60">'+
 			        	'<tr>'+
-			        	'<th style="font-size: 14px">PMRC </th>	</tr>'+
-				        '<tr><td style="font-size: 14px;cursor: pointer;" id="meetingsvaluepmrc"  data-toggle="tooltip" title="Held / To be Held / Total to be Held" >'+
+			        	'<th class="clx-61">PMRC </th>	</tr>'+
+				        '<tr><td class="clx-62" id="meetingsvaluepmrc"  data-toggle="tooltip" title="Held / To be Held / Total to be Held" >'+
 			        	'<span>'+ajaxresult[0]+'/'+ajaxresult[2]+'/'+ajaxresult[46]+'</span></td></tr></table></div>'+
 		      			'<div class="col-md-6 circular-progress">'+
 		      			'<div class="progress "  data-value="'+ajaxresult[31]+'">'+
 			          	'<span class="progress-left"><span class="progress-bar '+ebprogress+'"></span></span>'+
 			          	'<span class="progress-right"><span class="progress-bar '+ebprogress+'"></span></span>'+
 			         	'<div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">'+
-			            '<div class="h4 font-weight-bold" >'+ajaxresult[31]+'%</div> </div></div><hr style="margin: 5px !important">'+
-			        	'<table class="countstable" style="margin: 0px auto"><tr><th style="font-size: 14px">EB </th></tr>'+
-				        '<tr><td style="font-size: 14px" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  ><span>'+ajaxresult[3]+'/'+ajaxresult[5]+'/'+ajaxresult[47]+'</span></td></tr></table></div></div> </div>';
+			            '<div class="h4 font-weight-bold" >'+ajaxresult[31]+'%</div> </div></div><hr class="clx-59">'+
+			        	'<table class="countstable" class="clx-60"><tr><th class="clx-61">EB </th></tr>'+
+				        '<tr><td class="clx-62" id="meetingsvalueeb"  data-toggle="tooltip" title="Held / To be Held / Total to be Held"  ><span>'+ajaxresult[3]+'/'+ajaxresult[5]+'/'+ajaxresult[47]+'</span></td></tr></table></div></div> </div>';
 						$('#meetingCard').html(html1);		
 				
 				/* html2 */	
@@ -109,17 +109,17 @@
 					  '<div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">'+
 					  '<div class="h4 font-weight-bold"><span id="milestonepercentage">'+ajaxresult[10]+'%</span></div></div></div></div>'+
 				      '<div class="col-md-6"><div class="bigcount"><h1>'+ajaxresult[8]+'</h1>'+
-				      '<p class="textfont" style="margin-bottom: 5px !important"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p></div>'+
+				      '<p class="textfont ul1" ><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p></div>'+
 				      '<div class="bigcount"><h4>'+ajaxresult[9]+'</h4>'+
 				      '<p class="textfont">Total</p></div></div></div></div>'+
-				      '<table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">'+
-					  ' <thead style="height: 2rem"><tr>'+
-					  '<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >'+
+				      '<table class="countstable card-deck-table clx-63">'+
+					  ' <thead class="clx-64"><tr>'+
+					  '<td class="clx-65" data-toggle="tooltip" title="Delayed" >'+
 					  '<span class="yellow">&#x220E;</span>'+
-					  '<span style="font-size: 11px !important;text-shadow: none !important; ">Delayed&nbsp;</span>'+ajaxresult[7]+'</td>'+
+					  '<span class="clx-66">Delayed&nbsp;</span>'+ajaxresult[7]+'</td>'+
 					  '<td data-toggle="tooltip" title="Pending"  >'+
 					  '<span class="red">&#x220E;</span>'+
-					  '<span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>'+ajaxresult[6]+'</td></tr></thead></table>';
+					  '<span class="clx-67">Pending&nbsp;</span>'+ajaxresult[6]+'</td></tr></thead></table>';
 					  $('#milestoneCard').html(html2);	
 				/*html3  */
 				html3='<div class="card-body"><h5 class="card-title"><img src="view/images/action1.png" /> Action</h5><hr>'+
@@ -128,17 +128,17 @@
 					  '<span class="progress-right"><span class="progress-bar '+actionprogress+'"></span></span>'+
 					  '<div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center">'+
 					  '<div class="h4 font-weight-bold">'+ajaxresult[37]+'%</div></div></div></div>'+
-				      '<div class="col-md-6"><div class="bigcount"><h1>'+ajaxresult[14]+'</h1><p class="textfont" style="margin-bottom: 5px !important"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p></div>'+
+				      '<div class="col-md-6"><div class="bigcount"><h1>'+ajaxresult[14]+'</h1><p class="textfont clx-68"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p></div>'+
 				      '<div class="bigcount"><h4>'+ajaxresult[15]+'</h4><p class="textfont">Total</p></div></div></div></div>'+
-				      '<table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">'+
-					  '<thead style="height:2rem"><tr>'+
-					  '<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" >'+
+				      '<table class="countstable card-deck-table clx-63" >'+
+					  '<thead class="clx-64"><tr>'+
+					  '<td class="clx-65" data-toggle="tooltip" title="Delayed" >'+
 					  '<span class="yellow">&#x220E;</span>'+
-					  '<span style="font-size: 11px !important;text-shadow: none !important; ">Delayed&nbsp;</span>'+ajaxresult[13]+'</td>'+
-					  '<td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Forwarded" >'+
+					  '<span class="clx-66">Delayed&nbsp;</span>'+ajaxresult[13]+'</td>'+
+					  '<td class="clx-65" data-toggle="tooltip" title="Forwarded" >'+
 					  '<span class="blue">&#x220E;</span>'+
-					  '<span style="font-size: 11px !important;text-shadow: none !important; ">Forward &nbsp;</span>'+ajaxresult[12]+'</td>'+
-					  '<td data-toggle="tooltip" title="Pending" ><span class="red">&#x220E;</span><span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>'+ajaxresult[11]+'</td></tr></thead></table>';
+					  '<span class="clx-67">Forward &nbsp;</span>'+ajaxresult[12]+'</td>'+
+					  '<td data-toggle="tooltip" title="Pending" ><span class="red">&#x220E;</span><span class="clx-67">Pending&nbsp;</span>'+ajaxresult[11]+'</td></tr></thead></table>';
 				 	$('#actionCard').html(html3);
 				 	/*  html4*/
 				 	html4 ='<div class="card-body"><h5 class="card-title"><img src="view/images/risk 1.png" /> Risk</h5><hr><div class="row"><div class="col-md-6 circular-progress">'+
@@ -146,11 +146,11 @@
 						    '<span class="progress-left"><span class="progress-bar '+riskprogress+'"></span></span>'+
 						    '<span class="progress-right"><span class="progress-bar '+riskprogress+'"></span></span>'+
 						    '<div class="progress-value w-100 h-100 rounded-circle d-flex align-items-center justify-content-center"><div class="h4 font-weight-bold">'+ajaxresult[39]+'%</div></div></div></div>'+
-					      	'<div class="col-md-6"><div class="bigcount"><h1>'+ajaxresult[16]+'</h1><p class="textfont" style="margin-bottom: 5px !important"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p></div>'+
+					      	'<div class="col-md-6"><div class="bigcount"><h1>'+ajaxresult[16]+'</h1><p class="textfont clx-68"><span class="green legend-shadow">&#x220E;</span> &nbsp;Completed</p></div>'+
 					      	'<div class="bigcount"><h4>'+ajaxresult[18]+'</h4><p class="textfont">Total</p></div></div></div></div>'+
-					    	'<table class="countstable card-deck-table" style="margin-bottom: 0px !important;border-top:1px solid darkgrey;">'+
-							'<thead style="height: 2rem"><tr><td style="border-right:1px solid darkgrey;" data-toggle="tooltip" title="Delayed" ><span class="yellow">&#x220E;</span><span style="font-size: 11px !important;text-shadow: none !important; ">Delayed&nbsp;</span>&nbsp;0</td>'+
-							'<td data-toggle="tooltip" title="Pending"><span class="red">&#x220E;</span><span style="font-size: 11px !important;text-shadow: none !important; ">Pending&nbsp;</span>'+ajaxresult[17]+'</td></tr></thead></table>'
+					    	'<table class="countstable card-deck-table clx-63">'+
+							'<thead class="clx-64"><tr><td class="clx-65" data-toggle="tooltip" title="Delayed" ><span class="yellow">&#x220E;</span><span class="clx-67">Delayed&nbsp;</span>&nbsp;0</td>'+
+							'<td data-toggle="tooltip" title="Pending"><span class="red">&#x220E;</span><span class="clx-68">Pending&nbsp;</span>'+ajaxresult[17]+'</td></tr></thead></table>'
 					$('#riskCard').html(html4);
 					
 					  $(".progress").each(function() {
@@ -190,33 +190,33 @@
 						 var totalBal   = revenueBal+capitalBal+otherBal
 						 var totalSanc  = Number(ajaxresult[0][3])+Number(ajaxresult[1][3])+Number(ajaxresult[2][3])
 						 var totalExp   = Number(ajaxresult[0][4])+Number(ajaxresult[1][4])+Number(ajaxresult[2][4])
-						 html5='<div class="card-body"><div style="display: inline-flex"><h5 class="card-title" style="margin-bottom: 8px !important"><img src="view/images/rupee.png" /> Finance </h5>'+
-						 		'<form action="ProjectHoaUpdate.htm" method="get"><button type="submit" class="btn btn4 btn-sm" style="padding: 0px 10px;" data-toggle="tooltip" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6> </form></div><hr style="margin:3px 10px !important">'+
+						 html5='<div class="card-body"><div class="clx-69"><h5 class="card-title" class="clx-70"><img src="view/images/rupee.png" /> Finance </h5>'+
+						 		'<form action="ProjectHoaUpdate.htm" method="get"><button type="submit" class="btn btn4 btn-sm clx-71"  data-toggle="tooltip" title="Finance Refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button></h6> </form></div><hr class="clx-72">'+
 								'<table class="table financetable " ><thead><tr><th scope="col">(In &#8377; k Cr)</th><th scope="col">Sanc</th><th scope="col">Exp</th><th scope="col">Bal</th></tr></thead>'+
 						  		'<tbody>'+
 						  		'<tr>'+
 						        '<th scope="row">Revenue</th>'+
-						      	'<td><span style="color:green">&#8377;</span>'+Number(ajaxresult[0][3]).toFixed(2)+'</td>'+
-						      	'<td><span style="color:green">&#8377;</span> '+Number(ajaxresult[0][4]).toFixed(2)+'</td>'+
-						      	'<td><span style="color:green">&#8377;</span> '+revenueBal.toFixed(2)+'</td>'+
+						      	'<td><span class="cl-g">&#8377;</span>'+Number(ajaxresult[0][3]).toFixed(2)+'</td>'+
+						      	'<td><span class="cl-g">&#8377;</span> '+Number(ajaxresult[0][4]).toFixed(2)+'</td>'+
+						      	'<td><span class="cl-g">&#8377;</span> '+revenueBal.toFixed(2)+'</td>'+
 						    	'</tr>'+
 						    	'<tr>'+
 						    	'<th scope="row">Capital</th>'+
-						    	'<td><span style="color:green">&#8377;</span> '+Number(ajaxresult[1][3]).toFixed(2)+'</td>'+
-						    	'<td><span style="color:green">&#8377;</span> '+Number(ajaxresult[1][4]).toFixed(2)+'</td>'+
-						    	'<td><span style="color:green">&#8377;</span> '+capitalBal.toFixed(2)+'</td>'+
+						    	'<td><span class="cl-g">&#8377;</span> '+Number(ajaxresult[1][3]).toFixed(2)+'</td>'+
+						    	'<td><span class="cl-g">&#8377;</span> '+Number(ajaxresult[1][4]).toFixed(2)+'</td>'+
+						    	'<td><span class="cl-g">&#8377;</span> '+capitalBal.toFixed(2)+'</td>'+
 						    	'</tr>'+
 						    	'<tr>'+
 						     	'<th scope="row">Others</th>'+
-						      	'<td><span style="color:green">&#8377;</span> '+Number(ajaxresult[2][3]).toFixed(2)+'</td>'+
-						      	'<td><span style="color:green">&#8377;</span> '+Number(ajaxresult[2][4]).toFixed(2)+'</td>'+
-						      	'<td><span style="color:green">&#8377;</span>'+otherBal.toFixed(2)+' </td>'+
+						      	'<td><span class="cl-g">&#8377;</span> '+Number(ajaxresult[2][3]).toFixed(2)+'</td>'+
+						      	'<td><span class="cl-g">&#8377;</span> '+Number(ajaxresult[2][4]).toFixed(2)+'</td>'+
+						      	'<td><span class="cl-g">&#8377;</span>'+otherBal.toFixed(2)+' </td>'+
 						    	'</tr> '+
 						    	'<tr>'+
 						      	'<th scope="row">Total</th>'+
-						      	'<td><span style="color:green">&#8377;</span> '+totalSanc.toFixed(2)+'</td>'+
-						      	'<td><span style="color:green">&#8377;</span> '+totalExp.toFixed(2)+'</td>'+
-						      	'<td><span style="color:green">&#8377;</span> '+totalBal.toFixed(2)+'</td>'+
+						      	'<td><span class="cl-g">&#8377;</span> '+totalSanc.toFixed(2)+'</td>'+
+						      	'<td><span class="cl-g">&#8377;</span> '+totalExp.toFixed(2)+'</td>'+
+						      	'<td><span class="cl-g">&#8377;</span> '+totalBal.toFixed(2)+'</td>'+
 						 		'</tr> </tbody></table></div>';
 						 		
 						 $('#FinanceCard').html(html5);

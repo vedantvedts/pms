@@ -1,0 +1,295 @@
+@charset "UTF-8";
+
+
+
+
+.tab-pane p{
+	text-align: justify;
+	
+}
+m
+.card-body{
+	padding: 0rem !important;
+}
+.navigation_btn{
+	margin: 1%;
+}
+
+ .b{
+	background-color: #ebecf1;	
+}
+.a{
+	background-color: #d6e0f0;
+}
+
+.nav-link{
+	text-align: left;
+}
+.nav-tabs>.nav-item>.nav-link{
+	padding: 11px 15px !important;
+}
+body { 
+   font-family : "Lato", Arial, sans-serif !important;
+   overflow-x: hidden;
+}
+
+input,select,table,div,label,span {
+font-family : "Lato", Arial, sans-serif !important;
+}
+
+.control-label,.mandatory{
+float: left;
+font-weight: bold;
+font-size: 1rem;
+}
+.control-label{
+color: purple;
+}
+
+
+.panel-info {
+	border-color: #bce8f1;
+}
+.panel {
+	margin-bottom: 10px;
+	background-color: #fff;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+.panel-heading {
+	background-color: #FFF !important;
+	border-color: #bce8f1 !important;
+	border-bottom: 2px solid #466BA2 !important;
+	color: #1d5987;
+}
+.panel-title {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 13px;
+	color: inherit;
+	font-weight: bold;
+	display: contents;
+}
+.buttonEd {
+	float: right;
+	margin-top: -0.5rem;
+}
+
+.panel-info>.panel-heading {
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+div {
+	display: block;
+}
+
+
+.olre-body .panel-info .panel-heading {
+	background-color: #FFF !important;
+	border-color: #bce8f1 !important;
+	border-bottom: 2px solid #466BA2 !important;
+}
+
+.panel-info>.panel-heading {
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+
+.panel-heading {
+	padding: 18px 15px;
+	border-bottom: 1px solid transparent;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+.p-5 {
+	padding: 5px;
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+user agent stylesheet
+div {
+	display: block;
+}
+
+.scrollclass::-webkit-scrollbar {
+    width:7px;
+}
+.scrollclass::-webkit-scrollbar-track {
+    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius:5px;
+}
+.scrollclass::-webkit-scrollbar-thumb {
+    border-radius:5px;
+  /*   -webkit-box-shadow: inset 0 0 6px black;  */
+	background-color: gray;
+}
+.scrollclass::-webkit-scrollbar-thumb:hover {
+	-webkit-box-shadow: inset 0 0 6px black;
+ 	transition: 0.5s;
+}
+
+.category{
+	background-color: #C4DDFF;
+}
+th{
+ text-align : center;
+}
+
+/* icon styles */
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
+
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 34px;
+	height: 30px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+.btn-status {
+  position: relative;
+  z-index: 1; 
+}
+
+.btn-status:hover {
+  transform: scale(1.05);
+  z-index: 5;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.modal-dialog-jump {
+  animation: jumpIn 1.5s ease;
+}
+
+@keyframes jumpIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.card-head-bg{
+	padding:0px; 
+	font-size:12px!important; 
+	height: 120px;
+}
+
+.hr-margin{
+	margin: -8px 0px !important;
+}
+
+.f-right{
+	float: right;
+}
+
+.fw-600{
+	font-weight: 600;
+}
+.m-10{
+	margin: 10px;
+}
+
+.tab-bg{
+	background: #055C9D;
+	color: white!important
+}
+
+.btn-link-1{
+    background-color: transparent;
+}
+
+
+.btn-link-1:hover{
+	text-decoration: underline;
+}
+
+.w-28-px{
+	width: 28px;
+}
+.w-30-px{
+	width: 30px;
+}
+.w-22-px{
+	width: 28px;
+}
+
+.mt-10-p{
+	margin-top: 10%;
+}
+
+.js-c{
+	justify-content: center;
+}
+
+
+
+
+
+
+
+

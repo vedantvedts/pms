@@ -2,19 +2,15 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Milestone Activity Compare</title>
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-</style>
+  <spring:url value="/resources/css/milestone/milestoneActivityCompare.css" var="milestoneActivityCompare" />     
+<link href="${milestoneActivityCompare}" rel="stylesheet" />
 </head>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 Object[] getMA=(Object[])request.getAttribute("MilestoneActivity");
@@ -22,19 +18,19 @@ String rev=(String)request.getAttribute("P");
 int revno=(Integer)request.getAttribute("Count");
 	%>
 <body>
-  <nav class="navbar navbar-light bg-light" style="margin-top: -1%;">
+  <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand"></a>
   <form class="form-inline"  method="POST" action="MilestoneActivityCompare.htm" >
-    <label style="margin-left: 10px;margin-right: 10px;" >First  No : <span class="mandatory" style="color: red;">*</span></label>
-  <select class="form-control selectdee"    name="FirstNo"  id="FirstNo"  required="required"   data-live-search="true" style="margin-left: 10px;margin-right: 10px;width: 150px;">
+    <label class="ml-2 mr-2" >First  No : <span class="mandatory" >*</span></label>
+  <select class="form-control selectdee class1"    name="FirstNo"  id="FirstNo"  required="required"   data-live-search="true" >
 	<option value="" disabled="disabled" selected="selected"
 					hidden="true">Select</option>
 				 <% for (int i=0;i<revno;i++) { %>
 				<option value="<%=i%>" ><%=i%></option>
 				<% } %>
 			</select>   
-   <label style="margin-left: 10px;margin-right: 10px;" >Second  No : <span class="mandatory" style="color: red;">*</span></label>
-  <select class="form-control selectdee"    name="SecondNo"  id="SecondNo" required="required"    data-live-search="true" style="margin-left: 10px;margin-right: 10px;width: 150px;">
+   <label class="ml-2 mr-2">Second  No : <span class="mandatory">*</span></label>
+  <select class="form-control selectdee class1"    name="SecondNo"  id="SecondNo" required="required"    data-live-search="true" >
 	<option value="" disabled="disabled" selected="selected"
 					hidden="true">Select</option>
 				 <% for (int i=0;i<revno;i++) { %>
@@ -47,7 +43,7 @@ int revno=(Integer)request.getAttribute("Count");
 <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 </form>
   <form class="form-inline"  method="POST" action="MilestoneActivityDetails.htm" >
-  		<input type="submit" class="btn btn-primary btn-sm back"   value="Back" style="margin-left: 10px;" > 
+  		<input type="submit" class="btn btn-primary btn-sm back ml-3"   value="Back"  > 
 			
 		
       	<input type="hidden" name="sub"	value="C" /> 
@@ -62,24 +58,24 @@ int revno=(Integer)request.getAttribute("Count");
 <div class="container-fluid">
 <div class="row" >
 <div class="col-md-6">
-<div  class="panel-group" style="  "><h5 class="text-white" style="font-weight: bold;font-size: large;background-color: #055C9D; text-align: center;"><%=getMA[1]!=null?StringEscapeUtils.escapeHtml4(getMA[1].toString()): " - " %> Milestone Activity Details ( Base Line <%=rev!=null?StringEscapeUtils.escapeHtml4(rev): " - " %> )</h5>  
+<div  class="panel-group" ><h5 class="text-white class2" ><%=getMA[1]!=null?StringEscapeUtils.escapeHtml4(getMA[1].toString()): " - " %> Milestone Activity Details ( Base Line <%=rev!=null?StringEscapeUtils.escapeHtml4(rev): " - " %> )</h5>  
 <div class="row container-fluid" >
                              <div class="col-md-2 " ><br><label class="control-label"> Type</label><br>Main
                     		
                         	</div>
                     		<div class="col-md-5 " ><br>
-                    		<label class="control-label" style="text-align: justify;"> Activity Name:   </label> <br><%=getMA[4]!=null?StringEscapeUtils.escapeHtml4(getMA[4].toString()): " - " %>
+                    		<label class="control-label" > Activity Name:   </label> <br><%=getMA[4]!=null?StringEscapeUtils.escapeHtml4(getMA[4].toString()): " - " %>
                         	</div>
                         	<div class="col-md-2 " align="center" ><br>
                     		<label class="control-label">Progress  </label><br>
                     		<%if(!getMA[11].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=getMA[11] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3" >
+															<div class="progress-bar progress-bar-striped width-<%=getMA[11] %>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=getMA[11]!=null?StringEscapeUtils.escapeHtml4(getMA[11].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar NoProgress" role="progressbar"   >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -98,24 +94,24 @@ int revno=(Integer)request.getAttribute("Count");
 Object[] getMA1=(Object[])request.getAttribute("MilestoneActivity1");
 	%>
 <div class="col-md-6">
-<div  class="panel-group" style="  "><h5 class="text-white" style="font-weight: bold;font-size: large;background-color: #055C9D; text-align: center;"><%=getMA[1] %> Milestone Activity Details ( Base Line <%=getMA1[8] %> )</h5>  
+<div  class="panel-group" ><h5 class="text-white class2" ><%=getMA[1] %> Milestone Activity Details ( Base Line <%=getMA1[8] %> )</h5>  
 <div class="row container-fluid" >
                              <div class="col-md-2 " ><br><label class="control-label">  Type</label><br>Main
                     		
                         	</div>
                     		<div class="col-md-4 " ><br>
-                    		<label class="control-label" style="text-align: justify;"> Activity Name: </label><br> <%=getMA1[4]!=null?StringEscapeUtils.escapeHtml4(getMA1[4].toString()): " - " %> 
+                    		<label class="control-label" > Activity Name: </label><br> <%=getMA1[4]!=null?StringEscapeUtils.escapeHtml4(getMA1[4].toString()): " - " %> 
                         	</div>
                         	<div class="col-md-2 " align="center" ><br>
                     		<label class="control-label">Progress  </label><br>
                     		<%if(!getMA1[11].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=getMA1[11] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3" >
+															<div class="progress-bar progress-bar-striped width-<%=getMA1[11] %> %>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=getMA1[11]!=null?StringEscapeUtils.escapeHtml4(getMA1[11].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar NoProgress" role="progressbar"  >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -151,7 +147,7 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
 					
 						
 						   <div class="row container-fluid" >
-						    <div class="col-md-2 " ><label class="control-label" style="margin-left: 5px;">A-<%=countA %><br></label>
+						    <div class="col-md-2 " ><label class="control-label ml-1" >A-<%=countA %><br></label>
                     		
                         	</div>
 						   <div  class="col-sm-5" align="left" >
@@ -161,13 +157,13 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                         	<div class="col-md-2 " align="center">
                     		 
                     		<%if(!ActivityA[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityA[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3" >
+															<div class="progress-bar progress-bar-striped width-<%=ActivityA[5] %>" role="progressbar"   " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=ActivityA[5]!=null?StringEscapeUtils.escapeHtml4(ActivityA[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar NoProgress" role="progressbar"  >
 															Not  Started
 															</div>
 															</div> <%} %>
@@ -195,7 +191,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
 		
                      
 						    <div class="row container-fluid" >
-						     <div class="col-md-2 " ><label class="control-label" style="margin-left: 5px;">B-<%=countB %><br></label>
+						     <div class="col-md-2 " ><label class="control-label ml-1" >B-<%=countB %><br></label>
                     		
                         	</div>
 						   <div  class="col-sm-5" align="left" >
@@ -205,13 +201,13 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                         	<div class="col-md-2 " align="center" >
                     		 
                     		<%if(!ActivityB[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityB[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3" >
+															<div class="progress-bar progress-bar-striped  width-<%=ActivityB[5] %>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=ActivityB[5]!=null?StringEscapeUtils.escapeHtml4(ActivityB[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar NoProgress" role="progressbar"   >
 															Not  Started
 															</div>
 															</div> <%} %>
@@ -243,7 +239,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
 					
 					
                             <div class="row container-fluid" >
-                             <div class="col-md-2 " ><label class="control-label"  style="margin-left:5px;">C-<%=countC %><br></label>
+                             <div class="col-md-2 " ><label class="control-label"  ">C-<%=countC %><br></label>
                     		
                         	</div>
 						   <div  class="col-sm-5" align="left" >
@@ -253,13 +249,13 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                         	<div class="col-md-2 " align="center"  >
                     		 
                     		<%if(!ActivityC[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityC[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3" >
+															<div class="progress-bar progress-bar-striped width-<%=ActivityC[5] %>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=ActivityC[5]!=null?StringEscapeUtils.escapeHtml4(ActivityC[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar NoProgress" role="progressbar"  >
 															Not  Started
 															</div>
 															</div> <%} %>
@@ -289,7 +285,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
 		
                      
 						    <div class="row container-fluid" >
-						     <div class="col-md-2 " ><label class="control-label" style="margin-left: 10px;">D-<%=countD %><br></label>
+						     <div class="col-md-2 " ><label class="control-label ml-3" >D-<%=countD %><br></label>
                     		
                         	</div>
 						   <div  class="col-sm-5" align="left" >
@@ -299,13 +295,13 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                         	<div class="col-md-2 " align="center" >
                     		 
                     		<%if(!ActivityD[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityD[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3" >
+															<div class="progress-bar progress-bar-striped width-<%=ActivityD[5] %>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=ActivityD[5]!=null?StringEscapeUtils.escapeHtml4(ActivityD[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar NoProgress" role="progressbar"  >
 															Not  Started
 															</div>
 															</div> <%} %>
@@ -337,7 +333,7 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
 					
 					
                             <div class="row container-fluid" >
-                             <div class="col-md-2 " ><label class="control-label"  style="margin-left:15px;">E-<%=countE %><br></label>
+                             <div class="col-md-2 " ><label class="control-label ml-4" >E-<%=countE %><br></label>
                     		
                         	</div>
 						   <div  class="col-sm-5" align="left" >
@@ -347,13 +343,13 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                         	<div class="col-md-2 " align="center"  >
                     		 
                     		<%if(!ActivityE[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityE[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3" >
+															<div class="progress-bar progress-bar-striped width-<%=ActivityE[5] %>" role="progressbar"    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=ActivityE[5]!=null?StringEscapeUtils.escapeHtml4(ActivityE[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3">
+															<div class="progress-bar NoProgress" role="progressbar"  >
 															Not  Started
 															</div>
 															</div> <%} %>
@@ -434,7 +430,7 @@ if(MilestoneActivity1A!=null&&MilestoneActivity1A.size()>0){
 
 					
 						   <div class="row container-fluid" >
-						    <div class="col-md-2 " ><label class="control-label" style="margin-left: 5px;">A-<%=countA %><br></label>
+						    <div class="col-md-2 " ><label class="control-label ml-1" >A-<%=countA %><br></label>
                     		
                         	</div>
 						   <div  class="col-sm-4" align="left" >
@@ -444,13 +440,13 @@ if(MilestoneActivity1A!=null&&MilestoneActivity1A.size()>0){
                         	<div class="col-md-2 " align="center" >
                     		 
                     		<%if(!ActivityA[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityA[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3" >
+															<div class="progress-bar progress-bar-striped width-<%=ActivityA[5] %>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=ActivityA[5]!=null?StringEscapeUtils.escapeHtml4(ActivityA[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar NoProgress" role="progressbar"  >
 															Not  Started
 															</div>
 															</div> <%} %>
@@ -481,7 +477,7 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
 		
               
 						    <div class="row container-fluid" >
-						     <div class="col-md-2 " ><label class="control-label" style="margin-left: 10px;">B-<%=countB %><br></label>
+						     <div class="col-md-2 " ><label class="control-label ml-2" >B-<%=countB %><br></label>
                     		
                         	</div>
 						   <div  class="col-sm-4" align="left" >
@@ -491,13 +487,13 @@ if(MilestoneActivityB!=null&&MilestoneActivityB.size()>0){
                         	<div class="col-md-2 " align="center" >
                     		 
                     		<%if(!ActivityB[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityB[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3">
+															<div class="progress-bar progress-bar-striped width-<%=ActivityB[5] %>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=ActivityB[5]!=null?StringEscapeUtils.escapeHtml4(ActivityB[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar NoProgress" role="progressbar"   >
 															Not  Started
 															</div>
 															</div> <%} %>
@@ -530,7 +526,7 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
 					
 					
                             <div class="row container-fluid" >
-                             <div class="col-md-2 " ><label class="control-label" style="margin-left: 10px;">C-<%=countC %><br></label>
+                             <div class="col-md-2 " ><label class="control-label ml-3">C-<%=countC %><br></label>
                     		
                         	</div>
 						   <div  class="col-sm-4" align="left" >
@@ -540,13 +536,13 @@ if(MilestoneActivityC!=null&&MilestoneActivityC.size()>0){
                         	<div class="col-md-2 " align="center" >
                     		 
                     		<%if(!ActivityC[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityC[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3" >
+															<div class="progress-bar progress-bar-striped width-<%=ActivityC[5] %>"  role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=ActivityC[5]!=null?StringEscapeUtils.escapeHtml4(ActivityC[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar NoProgress" role="progressbar"  >
 															Not  Started
 															</div>
 															</div> <%} %>
@@ -575,7 +571,7 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
 		
               
 						    <div class="row container-fluid" >
-						     <div class="col-md-2 " ><label class="control-label" style="margin-left: 15px;">D-<%=countD %><br></label>
+						     <div class="col-md-2 " ><label class="control-label ml-4" >D-<%=countD %><br></label>
                     		
                         	</div>
 						   <div  class="col-sm-4" align="left" >
@@ -585,13 +581,13 @@ if(MilestoneActivityD!=null&&MilestoneActivityD.size()>0){
                         	<div class="col-md-2 " align="center" >
                     		 
                     		<%if(!ActivityD[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityD[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3">
+															<div class="progress-bar progress-bar-striped width-<%=ActivityD[5] %>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=ActivityD[5]!=null?StringEscapeUtils.escapeHtml4(ActivityD[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar class3" role="progressbar"  >
 															Not  Started
 															</div>
 															</div> <%} %>
@@ -625,7 +621,7 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
 					
 					
                             <div class="row container-fluid" >
-                             <div class="col-md-2 " ><label class="control-label" style="margin-left: 15px;">E-<%=countE %><br></label>
+                             <div class="col-md-2 " ><label class="control-label ml-5" >E-<%=countE %><br></label>
                     		
                         	</div>
 						   <div  class="col-sm-4" align="left" >
@@ -635,13 +631,13 @@ if(MilestoneActivityE!=null&&MilestoneActivityE.size()>0){
                         	<div class="col-md-2 " align="center" >
                     		 
                     		<%if(!ActivityE[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=ActivityE[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<div class="progress class3" >
+															<div class="progress-bar progress-bar-striped width-<%=ActivityE[5] %>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=ActivityE[5]!=null?StringEscapeUtils.escapeHtml4(ActivityE[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar NoProgress" role="progressbar"   >
 															Not  Started
 															</div>
 															</div> <%} %>

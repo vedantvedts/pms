@@ -5,223 +5,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
-<title>PROJECT INT LIST</title>
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
-
-.card{
-box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 14px;
-border-radius: 10px;
-border: 0px;
-}
-
-.table button {
-	background-color: Transparent !important;
-	background-repeat: no-repeat;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-	outline: none;
-	text-align: left !important;
-}
-
-.table td {
-	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa-long-arrow-right {
-	font-size: 2.20rem;
-	padding: 0px 5px;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.card-deck{
-display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.pagin{
-display: grid;
-float:left;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.table-project-n {
-	color: #005086;
-}
-
-#table thead tr th {
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td {
-	padding: 2px 3px !important;
-}
-
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-	height: 28px;
-}
-
-.col-xl{
-height: 28px;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 28px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 28px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.sameline{
-display: inline-block;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.editable-click{
-float: left;
-z-index: 9;
-white-space: nowrap;
-height: 28px;
-margin: 0 5px 0 0;
-box-sizing: border-box;
-display: inline-block;
-}
-
-.editable-clicko{
-z-index: 9;
-white-space: nowrap;
-height: 28px;
-margin: 0 5px 0 0;
-box-sizing: border-box;
-display: inline-block;
-background: none;border-style: none;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-.label {
-	border-radius: 3px;
-	color: white;
-	padding: 1px 2px;
-}
-
-.label-primary {
-	background-color: #D62AD0; /* D62AD0 */
-}
-
-.label-warning {
-	background-color: #5C33F6;
-}
-
-.label-info {
-	background-color: #006400;
-}
-
-.label-success {
-	background-color: #4B0082;
-}
-
-.trup {
-	padding: 5px 10px 0px 10px;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-
-.trdown {
-	padding: 0px 10px 5px 10px;
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-.custom-style {
-    background-color: #fff3ab; 
-    color: #333; 
-    border: 1px solid #ddc67b;
-    pointer-events: none; 
-    user-select: none; 
-}
-
-.custom-sn-style {
-    background-color: #5d7cf4; 
-    color: white; 
-    border: 1px solid #497bd9;
-    pointer-events: none; 
-    user-select: none; 
-}
-
-
-</style>
+<spring:url value="/resources/css/projectModule/projectIntiationList.css" var="projectIntiationList" />
+<link href="${projectIntiationList}" rel="stylesheet" />
+<title>PROJECT INIT LIST</title>
 </head>
 <body>
 	
@@ -275,158 +67,10 @@ String labcode= (String) session.getAttribute("labcode");
 
 					<div class="card-body">
 
-<%-- 
-
-						<table
-							class="table table-bordered table-hover table-striped table-condensed "
-							id="table1">
-							<thead>
-
-								<tr>
-									<th>IsMain</th>
-									<th>Category</th>
-									<th>Title</th>
-									<th>Code</th>
-									<th>Security Classification</th>
-									<th>Cost</th>
-									<th>Duration</th>
-									<th style="width: 25%">Preview, Forward and Details</th>
-								</tr>
-							</thead>
-							<tbody>
-								<%for(Object[] 	obj:ProjectIntiationList){ %>
-
-								<tr>
-									<td class="center">
-										<%if(obj[8]!=null){%><%=obj[8] %>
-										<%}else{ %>-<%} %>
-									</td>
-									<td class="center">
-										<%if(obj[2]!=null){%><%=obj[2] %>
-										<%}else{ %>-<%} %>
-									</td>
-									<td class="wrap"><%=obj[5] %></td>
-									<td><%=obj[4] %></td>
-									<td class="wrap">
-										<%if(obj[3]!=null){%><%=obj[3] %>
-										<%}else{ %>-<%} %>
-									</td>
-									<td class="right">
-										<%if(obj[6]!=null){%><%=nfc.convert(Double.parseDouble(obj[6].toString())/100000) %>
-										<%}else{ %>-<%} %> <%if(obj[6]!=null){%><%=obj[6]%><%}else{ %>-<%} %>
-
-									</td>
-									<td class="center">
-										<%if(obj[7]!=null){%><%=obj[7] %>
-										<%}else{ %>-<%} %>
-									</td>
-
-									<td class="left width">
-										href="PreviewPage.htm?InitiationId=<%=obj[0]%>"
-
-
-										<form action="PreviewPage.htm" method="POST" name="myfrm"
-											style="display: inline">
-											<button class="editable-click" name="InitiationId"
-												value="<%=obj[0] %>" formtarget="_blank">
-												<div class="cc-rockmenu">
-													<div class="rolling">
-														<figure class="rolling_icon">
-															<img src="view/images/preview3.png">
-														</figure>
-														<span>Preview</span>
-													</div>
-												</div>
-											</button>
-											<input type="hidden" name="${_csrf.parameterName}"
-												value="${_csrf.token}" />
-										</form>
-
-
-										<form action="ProjectIntiationForward.htm" method="POST"
-											name="myfrm" style="display: inline">
-											<button class="editable-click" name="InitiationId"
-												value="<%=obj[0]%>"
-												onclick="return confirm('Are You Sure To Forward this Project?');">
-												<div class="cc-rockmenu">
-													<div class="rolling">
-														<figure class="rolling_icon">
-															<img src="view/images/forward1.png">
-														</figure>
-														<span>Forward</span>
-													</div>
-												</div>
-											</button>
-											<input type="hidden" name="${_csrf.parameterName}"
-											value="${_csrf.token}" /> 
-											<input type="hidden" name="projectcode" value="<%=obj[4] %>" /> 
-											<input type="hidden" name="pdd" value="<%=obj[9] %>" /> 
-											<input type="hidden" name="labcode" value="<%=obj[10] %>">
-										</form>
-
-
-										<form action="ProjectIntiationListSubmit.htm" method="POST"
-											name="myfrm" style="display: inline">
-											<button class="editable-click" name="sub" value="Details">
-												<div class="cc-rockmenu">
-													<div class="rolling">
-														<figure class="rolling_icon">
-															<img src="view/images/clipboard.png">
-														</figure>
-														<span>Details</span>
-													</div>
-												</div>
-											</button>
-
-											<input type="hidden" name="btSelectItem" value="<%=obj[0] %>" />
-											<input type="hidden" name="${_csrf.parameterName}"
-												value="${_csrf.token}" />
-
-										</form>
-
-										<form action="IntiationChecklist.htm" method="POST"
-											name="myfrm" style="display: inline">
-											<button class="editable-click" name="InitiationId"
-												value="<%=obj[0]%>">
-												<div class="cc-rockmenu">
-													<div class="rolling">
-														<figure class="rolling_icon">
-															<img src="view/images/checklist.png">
-														</figure>
-														<span>Checklist</span>
-													</div>
-												</div>
-											</button>
-											<input type="hidden" name="${_csrf.parameterName}"
-												value="${_csrf.token}" /> <input type="hidden"
-												name="initiationid" value="<%=obj[0] %>" />
-										</form>
-
-
-									</td>
-
-								</tr>
-								<%} %>
-							</tbody>
-							<tfoot>
-								<tr>
-
-									<td colspan="8" align="right"><b>Cost In Lakhs,
-											Duration In Months.</b></td>
-											
-								</tr>
-
-							</tfoot>
-
-						</table>
-
-
- --%>
-
 					</div>
 					
 					<!-- search box -->
-					<form method="get" class="form-inline my-2 my-lg-0" style="display: flex; justify-content: center; padding-bottom:10px;">
+					<form method="get" class="form-inline my-2 my-lg-0 cs-search">
 						<div >
 							<input name="search" required class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="Search" />
 							<input type="submit" class="btn btn-outline-success my-2 my-sm-0" name="clicked" value="Search" />
@@ -436,11 +80,10 @@ String labcode= (String) session.getAttribute("labcode");
 					
 					
 					<!-- card project visualizations -->
-					<div style="display: flex; justify-content: center;padding-bottom:10px;position: relative;">
-						<div class="card-deck" style="position: relative;">
+					<div class="cs-project">
+						<div class="card-deck position-relative">
 							<%for(Object[] 	obj:ProjectIntiationList){ %>
-							
-							<div class="card" style="margin:10px;min-width:447px; margin-left: 20px;margin-right: 20px;max-width:450px;">
+							<div class="card cs-initlist">
 								<div class="card-body">
 									<div class="container">
 				  						<div class="row">
@@ -459,7 +102,7 @@ String labcode= (String) session.getAttribute("labcode");
 					  						<div class="col-lg">
 												<h6> <%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %></h6>
 											</div>
-											<div class="col-" style="text-align: right;">
+											<div class="col- text-right">
 												<h6><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString()) %> lakhs
 												<%}else{ %>-<%} %>
 												</h6> 
@@ -487,7 +130,7 @@ String labcode= (String) session.getAttribute("labcode");
 										</div>
 									</div>
 									
-									<div class="container" style="height: 50px;">
+									<div class="container h-50px">
 				  						<div class="row">
 											<div class="col-xl">
 												duration: <%if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %> months
@@ -497,14 +140,11 @@ String labcode= (String) session.getAttribute("labcode");
 										</div>
 									</div>
 												
-									<div style="position: absolute ;bottom: 0px;margin-bottom: 15px;padding-top: 10px;">
+									<div class="cs-div">
 										<div class="container">
 					  						<div class="row">
 												<div class="col-xl">
-												
-												
-													<form action="PreviewPage.htm" method="POST" name="myfrm"
-														style="display: inline">
+													<form action="PreviewPage.htm" method="POST" name="myfrm" class="d-inline">
 														<button class="editable-clicko" name="InitiationId"
 															value="<%=obj[0] %>" formtarget="_blank">
 															<div class="cc-rockmenu">
@@ -522,7 +162,7 @@ String labcode= (String) session.getAttribute("labcode");
 											
 											<%if(!labcode.equalsIgnoreCase("ADE")){ %>
 													<form action="ProjectIntiationForward.htm" method="POST"
-														name="myfrm" style="display: inline">
+														name="myfrm" class="d-inline">
 														<button class="editable-clicko" name="InitiationId"
 															value="<%=obj[0]%>"
 															onclick="return confirm('Are You Sure To Forward this Project?');">
@@ -544,7 +184,7 @@ String labcode= (String) session.getAttribute("labcode");
 													<%} %>
 							
 													<form action="ProjectIntiationListSubmit.htm" method="POST"
-														name="myfrm" style="display: inline">
+														name="myfrm" class="d-inline">
 														<button class="editable-clicko" name="sub" value="Details">
 															<div class="cc-rockmenu">
 																<div class="rolling">
@@ -563,7 +203,7 @@ String labcode= (String) session.getAttribute("labcode");
 													</form>
 							
 													<form action="IntiationChecklist.htm" method="POST"
-														name="myfrm" style="display: inline">
+														name="myfrm" class="d-inline">
 														<button class="editable-clicko" name="InitiationId"
 															value="<%=obj[0]%>">
 															<div class="cc-rockmenu">
@@ -600,7 +240,7 @@ String labcode= (String) session.getAttribute("labcode");
 												
 												
 										<form action="IntiationFlow.htm" method="POST"
-														name="myfrm" style="display: inline">
+														name="myfrm" class="d-inline">
 														<button class="editable-clicko" name="InitiationId"
 															value="<%=obj[0]%>">
 															<div class="cc-rockmenu">
@@ -631,7 +271,7 @@ String labcode= (String) session.getAttribute("labcode");
 					</div>
 					<!-- card project visualizations FINISH -->
 					
-					<div class="pagin" style="display: flex; justify-content: center;padding-bottom:10px;">
+					<div class="pagin cs-pagein">
 					<nav aria-label="Page navigation example" >
 						<div class="pagination" >
 							<% int pagin = Integer.parseInt(request.getAttribute("pagination").toString()) ; %>
@@ -660,80 +300,6 @@ String labcode= (String) session.getAttribute("labcode");
 					</div>
 
 					<hr>
-
-
-<%-- 					<div class="row">
-						<div class="col-md-12" style="text-align: center;">
-							<b>Approval Flow</b>
-						</div>
-					</div>
-					<div class="row"
-						style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
-						<table align="center">
-							<tr>
-								<td class="trup" style="background: #B5EAEA;">Division Head
-								</td>
-								<td rowspan="2"><i class="fa fa-long-arrow-right "
-									aria-hidden="true"></i></td>
-
-								<td class="trup" style="background: #C6B4CE;">DO-P&C <!-- P&C DO -->
-
-								</td>
-								<td rowspan="2"><i class="fa fa-long-arrow-right "
-									aria-hidden="true"></i></td>
-
-								<td class="trup" style="background: #E8E46E;">AD</td>
-								<td rowspan="2"><i class="fa fa-long-arrow-right "
-									aria-hidden="true"></i></td>
-
-								<td class="trup" style="background: #FBC7F7;">TCM</td>
-								<!-- 		<td rowspan="2">
-				                			<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
-				                		</td> -->
-								<!-- 	<td class="trup" style="background: #FBC7F7;" >
-				                			CCM
-				                		</td> -->
-
-							</tr>
-
-							<tr>
-								<td class="trdown" style="background: #B5EAEA;">
-									  <%if(projectapprovalflowempdata.size()>0){ %>
-							                     <%for(Object[] obj : projectapprovalflowempdata){ %>
-							                     	<%if(obj[3].toString().equals("Division Head") ){ %>
-							                     		<%=obj[1] %>,<%=obj[2] %>
-							                     	<%} %>
-							                     <%} %>
-							               <%} %>      
-
-								</td>
-								<td class="trdown" style="background: #C6B4CE;">
-									<%if(projectapprovalflowempdata.size()>0){ %> <%for(Object[] obj : projectapprovalflowempdata){ %>
-									<%if(obj[3].toString().equals("DO-RTMD") ){ %> <%=obj[1] %>,<%=obj[2] %>
-									<%} %> <%} %> <%} %>
-								</td>
-								<td class="trdown" style="background: #E8E46E;">
-									<%if(projectapprovalflowempdata.size()>0){ %> <%for(Object[] obj : projectapprovalflowempdata){ %>
-									<%if(obj[3].toString().equals("AD") ){ %> <%=obj[1] %>,<%=obj[2] %>
-									<%} %> <%} %> <%} %>
-								</td>
-								<td class="trdown" style="background: #FBC7F7;">
-									<%if(projectapprovalflowempdata.size()>0){ %> 
-										<%for(Object[] ob : projectapprovalflowempdata){ %>
-											<%if(ob[3].toString().equals("TCM") ){ %>
-												<%=ob[1] %>,<br><%=ob[2] %>
-											<%} %> 
-										<%} %> 
-									<%} %>
-								</td>
-								<!-- <td class="trdown" style="background: #FBC7F7;" >	
-				                			
-				                		</td> -->
-							</tr>
-						</table>
-					</div> --%>
-					
-					
 				</div>
 			</div>
 		</div>
@@ -744,7 +310,7 @@ String labcode= (String) session.getAttribute("labcode");
 		    <div class="modal-content">
 		      <div class="modal-header">
 		        <h5 class="modal-title" id="milestoneModalLabel">
-		        <span style="color: #FF3D00;font-weight: 600"></span>
+		        <span class="cs-span"></span>
 		        </h5>
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 		          <span aria-hidden="true">&times;</span>
@@ -756,16 +322,17 @@ String labcode= (String) session.getAttribute("labcode");
 				     <form id="milestoneForm" action="ProjectMilestoneSubmit.htm" method="post" autocomplete="off">
 					    <div class="form-row">
 					        <div class="form-group col-md-1" align="center">
-					            <label for="sn" style="font-size: medium;">SN</label>
+					            <label for="sn" class="fs-md">SN</label>
 					        </div>
 					        <div class="form-group col-md-5" align="center">
-					            <label for="name" style="font-size: medium;">Status Name</label>
+					            <label for="name"class="fs-md">Status Name</label>
+
 					        </div>
 					        <div class="form-group col-md-6 probable-date-header" align="center">
-					            <label for="date" style="font-size: medium;">Probable Date</label>
+					            <label for="date" class="fs-md">Probable Date</label>
 					        </div>
 					        <div class="form-group col-md-3 actual-date-header" align="center">
-					            <label for="date" style="font-size: medium;">Actual Date</label>
+					            <label for="date"class="fs-md">Actual Date</label>
 					        </div>
 					    </div>
 					
@@ -773,12 +340,12 @@ String labcode= (String) session.getAttribute("labcode");
 					    
 					    </div>
 					    <div align="center">
-						   <button type="button" id="submitButton"  name="action" value="add" class="btn btn-success" onclick="addSubmit('add')" style="font-weight: 500">ADD</button>
+						   <button type="button" id="submitButton"  name="action" value="add" class="btn btn-success fw-500" onclick="addSubmit('add')">ADD</button>
 						   <input type="hidden" name="action" value="" id="actiontype">
-						   <button type="button" name="action" value="edit" class="btn btn-warning" onclick="addSubmit('edit')" style="font-weight: 500; display:none;">EDIT</button>
-						   <button type="button" name="action" value="baseline" class="btn btn-primary" onclick="addSubmit('baseline')" style="font-weight: 500; display:none;">SET BASELINE</button>
-						   <button type="button" name="action" value="revise" class="btn btn-primary" onclick="addSubmit('revise')" style="font-weight: 500; display:none;">REVISE</button>
-						   <button type="button" name="action" value="setactualdate" class="btn btn-secondary" onclick="openActualDate()" style="font-weight: 500; display:none;">UPDATE ACTUALDATE</button>
+						   <button type="button" name="action" value="edit" class="btn btn-warning cs-button" onclick="addSubmit('edit')">EDIT</button>
+						   <button type="button" name="action" value="baseline" class="btn btn-primary cs-button" onclick="addSubmit('baseline')">SET BASELINE</button>
+						   <button type="button" name="action" value="revise" class="btn btn-primary cs-button" onclick="addSubmit('revise')">REVISE</button>
+						   <button type="button" name="action" value="setactualdate" class="btn btn-secondary cs-button" onclick="openActualDate()">UPDATE ACTUALDATE</button>
 					       <input type="hidden" name="initiationid" id="projectIniId" value="" />
 					       <input type="hidden" name="project" id="project" value="" />
 					       <input type="hidden" name="remarks" id="remarksField" />
@@ -790,7 +357,7 @@ String labcode= (String) session.getAttribute("labcode");
 					    <div class="row">
 					        <div class="col-md-6">
 					             <label for="milestone">Select Milestone:</label>
-					            <select id="mileDropdown" name="mileDropdown" class="form-control selectdee" style="width: 100%;">
+					            <select id="mileDropdown" name="mileDropdown" class="form-control selectdee w-100">
 					               
 					            </select>
 					        </div>
@@ -805,8 +372,8 @@ String labcode= (String) session.getAttribute("labcode");
 					        </div>
 					    </div>
 					   <div align="center">
-					    <button type="button" id="actualSubmit" class="btn btn-success mt-3" onclick="actualSubmit()" style="font-weight: 500">SUBMIT</button>
-					    <button type="button" class="btn btn-info mt-3" onclick="actualBack()" style="font-weight: 500">BACK</button>
+					    <button type="button" id="actualSubmit" class="btn btn-success mt-3 fw-500" onclick="actualSubmit()">SUBMIT</button>
+					    <button type="button" class="btn btn-info mt-3 fw-500" onclick="actualBack()">BACK</button>
 					     <input type="hidden" name="milestonepkId" id="milestonepkId" value="">
 					   </div>
 					</div>
@@ -910,7 +477,7 @@ function openMilestone(initiationid, projectname) {
         milestoneBody(initiationid,statusid,statusname);
     });
     
-    $('#milestoneModal .modal-title').html('<span style="color: #FF3D00;">Project : ' + projectname + '</span>');
+    $('#milestoneModal .modal-title').html('<span class="span-color">Project : ' + projectname + '</span>');
     $('#projectIniId').val(initiationid);
     $('#project').val(projectname);
 }
@@ -936,11 +503,11 @@ function milestoneBody(initiationid,statusid,statusname){
 
                  var rowHtml = 
                      '<div class="form-group col-md-1">' +
-                         '<input class="form-control custom-sn-style" type="text" value="' + statusid + '" style="font-size: 16px;font-weight: 500; text-align: center;">' +
+                         '<input class="form-control custom-sn-style cs-ini-mil" type="text" value="' + statusid + '">' +
                          '<input type="hidden" name="statusId" value="' + statusid + '">'+
                      '</div>' +
                      '<div class="form-group col-md-6">' +
-                         '<input type="text" class="form-control custom-style" id="statusname_' + initiationid + '" name="statusName" value="' + statusname + '" style="font-size: 16px;font-weight: 500;">' +
+                         '<input type="text" class="form-control custom-style cs-ini-status" id="statusname_' + initiationid + '" name="statusName" value="' + statusname + '">' +
                      '</div>' +
                      '<div class="form-group col-md-5">' +
                      '<div class="input-group">' +
@@ -977,12 +544,12 @@ function milestoneBody(initiationid,statusid,statusname){
 
                              var rowHtml = 
                                  '<div class="form-group col-md-1 ">' +
-                                     '<input class="form-control custom-sn-style" type="text" value="' + statusid + '" style="font-size: 16px;font-weight: 500; text-align: center;">' +
+                                     '<input class="form-control custom-sn-style cs-ini-mil" type="text" value="' + statusid + '">' +
                                      '<input type="hidden" name="initiationMilestoneId" value="' + milestoneId + '">'+
                                      '<input type="hidden" name="statusId" value="' + statusid + '">'+
                                  '</div>' +
                                  '<div class="form-group col-md-5">' +
-                                     '<input type="text" class="form-control custom-style" id="statusname_' + initiationid + '" name="statusName" value="' + statusname + '" style="font-size: 16px;font-weight: 500;">' +
+                                     '<input type="text" class="form-control custom-style cs-ini-status" id="statusname_' + initiationid + '" name="statusName" value="' + statusname + '">' +
                                  '</div>';
 
                           if (showActualDate) {

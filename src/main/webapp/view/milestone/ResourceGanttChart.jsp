@@ -13,109 +13,9 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
-<style type="text/css">
-label{
-	font-weight: bold;
-	font-size: 13px;
-}
-body{
-	background-color: #f2edfa;
-	overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
+  <spring:url value="/resources/css/milestone/resourceGanttChart.css" var="resourceGanttChart" />     
 
-#containers, #containers2 {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.anychart-credits {
-   display: none;
-}
-
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.form-label {
-	font-weight: bold;
-	font-size: medium;
-}
-
-#taskTable {
-   border-collapse: collapse;
-   width: 100%;
-   table-layout: fixed;
-}
-#taskTable th, #taskTable td {
-    border: 1px solid #ccc;
-    padding: 5px;
-    text-align: center;
-    font-size: 12px;
-    position: relative;
-}
-#taskTable tr:nth-child(even) {
-  background-color: #fafafa;
-}
-#taskTable tr:hover {
-  background-color: #f1f1f1;
-}
-
-.scroll-container {
-  max-height: 600px; /* adjust as needed */
-  overflow-y: auto;
-  position: relative;
-}
-
-/* Sticky header */
-#taskTable thead th {
-  position: sticky;
-  top: 0;
-  background-color: #0D47A1;
-  color: #fff !important;
-  z-index: 2;
-}
-
-
-/* Sticky last row (total load row) */
-#taskTable tr.total-row {
-  position: sticky;
-  bottom: 0;
-  background-color: #f0f0f0;
-  z-index: 1;
-  font-weight: bold;
-}
-
-
-.bar {
-  height: 20px;
-  border-radius: 4px;
-  color: white;
-  font-weight: bold;
-  font-size: 12px;
-  line-height: 22px;
-  overflow: hidden;
-  text-align: center;
-}
-
-.controls {
-    margin-bottom: 20px;
-}
-
-#customTooltip {
-  transition: opacity 0.2s ease;
-  max-width: 450px;
-  white-space: normal;
-}
-
-</style>
-
+	<link href="${resourceGanttChart}" rel="stylesheet" />
 </head>
  
 <body>
@@ -166,7 +66,7 @@ h6{
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 					<input type="hidden" name="tabNo" id="tabNo" value="<%=tabNo%>">
 							
-					<div class="row" style="margin-top: -5px;">
+					<div class="row clx-1" >
 						<div class="col-md-5">
 							<h5>Resource Details</h5>  
 						</div>
@@ -214,20 +114,20 @@ h6{
 	        </div>
 	    </div>
 	<% } %>
-		<div class="row" style="margin: 0.5rem;">
+		<div class="row m-1" >
 			<div class="col-12">
-        		<ul class="nav nav-pills" id="pills-tab" role="tablist" style="background-color: #E1E5E8;padding:0px;">
-	  				<li class="nav-item" style="width: 33%;"  >
+        		<ul class="nav nav-pills clx-2" id="pills-tab" role="tablist" >
+	  				<li class="nav-item width-33"  >
 	    				<div class="nav-link center <%if(tabNo.equals("1")) {%>active<%} %>" id="pills-tab-1" data-toggle="pill" data-target="#tab-1" role="tab" aria-controls="tab-1" aria-selected="<%if(tabNo.equals("1")) {%>true<%} else{%>false<%}%>">
 		   					<span>Resource List</span> 
 	    				</div>
 	  				</li>
-	  				<li class="nav-item"  style="width: 34%;">
+	  				<li class="nav-item width-34"  >
 	    				<div class="nav-link center <%if(tabNo.equals("2")) {%>active<%} %>" id="pills-tab-2" data-toggle="pill" data-target="#tab-2" role="tab" aria-controls="tab-2" aria-selected="<%if(tabNo.equals("2")) {%>true<%} else{%>false<%}%>">
 	    	 				<span>Gantt Chart</span> 
 	    				</div>
 	  				</li>
-	  				<li class="nav-item"  style="width: 33%;">
+	  				<li class="nav-item width-33"  >
 	    				<div class="nav-link center <%if(tabNo.equals("3")) {%>active<%} %>" id="pills-tab-3" data-toggle="pill" data-target="#tab-3" role="tab" aria-controls="tab-3" aria-selected="<%if(tabNo.equals("3")) {%>true<%} else{%>false<%}%>">
 	    	 				<span>Resource Progress</span> 
 	    				</div>
@@ -285,15 +185,15 @@ h6{
 						                            			<%-- <td class="center"><%=obj[13]%></td> --%>
 						                            			<td>
 						                            				<%if(progress>0){ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																			<div class="progress-bar progress-bar-striped
-																				" role="progressbar" style=" width: <%=progress %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<div class="progress progress-1" >
+																			<div class="progress-bar progress-bar-striped width-<%=progress %>
+																				" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																				<%=progress %>
 																			</div> 
 																		</div> 
 																	<%}else{ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																			<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		<div class="progress progress-1" >
+																			<div class="progress-bar noProgress" role="progressbar"   >
 																				Not Started
 																			</div>
 																		</div> 
@@ -307,9 +207,9 @@ h6{
 						                            					<input type="hidden" name="tabNo" value="1">
 						                            					<input type="hidden" name="activityType" value="<%=activityType%>">
 						                            					
-						                            					<input type="number" name="loading" value="<%=obj[8] %>" min="0" max="100" required style="border-left: 0;border-top: 0;border-right: 0;width: 65%;">
+						                            					<input type="number" name="loading" value="<%=obj[8] %>" min="0" max="100" required class="clx-3">
 						                            					&emsp;
-																		<button type="submit" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" onclick="return confirm('Are you sure to submit?')" style="border-radius: 2rem;">
+																		<button type="submit" class="btn btn-sm btn-success clx-4" data-toggle="tooltip" data-placement="top" onclick="return confirm('Are you sure to submit?')" >
 																			<i class="fa fa-check" aria-hidden="true"></i> 
 																		</button>
 						                            				</form>
@@ -335,7 +235,7 @@ h6{
 						                            			<%-- <td class="center"><%=obj[13]%></td> --%>
 						                            			<td>
 						                            				<%if(progress>0){ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																		<div class="progress progress-1" >
 																			<div class="progress-bar progress-bar-striped
 																				<%if(obj[12].toString().equalsIgnoreCase("2")){ %>
 																					bg-success
@@ -344,15 +244,15 @@ h6{
 																				<%} else if(obj[12].toString().equalsIgnoreCase("4")){ %>
 																					bg-danger
 																				<%} else if(obj[12].toString().equalsIgnoreCase("5")){ %>
-																					bg-warning
-																				<%}  %>
-																				" role="progressbar" style=" width: <%=progress %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																					bg-warning 
+																				<%}  %> width-<%=progress %>
+																				" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																				<%=progress %>
 																			</div> 
 																		</div> 
 																	<%}else{ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																			<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		<div class="progress progress-1" >
+																			<div class="progress-bar noProgress" role="progressbar"   >
 																				Not Started
 																			</div>
 																		</div> 
@@ -367,9 +267,9 @@ h6{
 						                            					<input type="hidden" name="tabNo" value="1">
 						                            					<input type="hidden" name="activityType" value="<%=activityType%>">
 						                            					
-						                            					<input type="number" name="loading" value="<%=obj[17] %>" min="0" max="100" required style="border-left: 0;border-top: 0;border-right: 0;width: 65%;">
+						                            					<input type="number" name="loading" value="<%=obj[17] %>" min="0" max="100" required class="clx-5">
 						                            					&emsp;
-																		<button type="submit" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" onclick="return confirm('Are you sure to submit?')" style="border-radius: 2rem;">
+																		<button type="submit" class="btn btn-sm btn-success clx-4" data-toggle="tooltip" data-placement="top" onclick="return confirm('Are you sure to submit?')" >
 																			<i class="fa fa-check" aria-hidden="true"></i> 
 																		</button>
 						                            				</form>
@@ -392,7 +292,7 @@ h6{
 						                            			<%-- <td class="center"><%=obj[13]%></td> --%>
 						                            			<td>
 						                            				<%if(progress>0){ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																		<div class="progress progress-1" >
 																			<div class="progress-bar progress-bar-striped
 																				<%if(obj[12].toString().equalsIgnoreCase("2")){ %>
 																					bg-success
@@ -401,15 +301,15 @@ h6{
 																				<%} else if(obj[12].toString().equalsIgnoreCase("4")){ %>
 																					bg-danger
 																				<%} else if(obj[12].toString().equalsIgnoreCase("5")){ %>
-																					bg-warning
+																					bg-warning width-<%=progress %>
 																				<%}  %>
-																				" role="progressbar" style=" width: <%=progress %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																				" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																				<%=progress %>
 																			</div> 
 																		</div> 
 																	<%}else{ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																			<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		<div class="progress progress-1" >
+																			<div class="progress-bar noProgress" role="progressbar"   >
 																				Not Started
 																			</div>
 																		</div> 
@@ -424,9 +324,9 @@ h6{
 						                            					<input type="hidden" name="tabNo" value="1">
 						                            					<input type="hidden" name="activityType" value="<%=activityType%>">
 						                            					
-						                            					<input type="number" name="loading" value="<%=obj[14] %>" min="0" max="100" required style="border-left: 0;border-top: 0;border-right: 0;width: 65%;">
+						                            					<input type="number" name="loading" value="<%=obj[14] %>" min="0" max="100" required class="clx-3">
 						                            					&emsp;
-																		<button type="submit" class="btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" onclick="return confirm('Are you sure to submit?')" style="border-radius: 2rem;">
+																		<button type="submit" class="btn btn-sm btn-success clx-4" data-toggle="tooltip" data-placement="top" onclick="return confirm('Are you sure to submit?')">
 																			<i class="fa fa-check" aria-hidden="true"></i> 
 																		</button>
 						                            				</form>
@@ -452,7 +352,7 @@ h6{
 						<div class="card shadow-nohover">
 							<div class="card-header ">  
 		
-								<div class="row" style="margin-top: -5px;">
+								<div class="row" >
 									<div class="col-md-5">
 									</div>
 									<div class="col-md-4">
@@ -461,7 +361,7 @@ h6{
 									<div class="col-md-2">
 										<div>
 											<label class="form-label">Interval : </label>
-											<select class="form-control selectdee " name="interval" id="interval" required="required"  data-live-search="true"  style="width:150px !important; float : right;" >
+											<select class="form-control selectdee clx-6" name="interval" id="interval" required="required"  data-live-search="true"  " >
 			                                	<option value="quarter"> Quarterly </option>
 			                                	<option value="half" >Half-Yearly</option>
 			                                	<option value="year" >Yearly</option>
@@ -471,7 +371,7 @@ h6{
 									</div>
 								
 									<div class="col-md-1" >
-										 <button type="submit" class="btn btn-sm prints" id="prints" style="float:left" onclick="ChartPrint(interval)" >Print</button> 
+										 <button type="submit" class="btn btn-sm prints clx-7" id="prints"  onclick="ChartPrint(interval)" >Print</button> 
 									</div>
 									<%-- <div class="col-md-1" >
 										<form method="post">
@@ -486,17 +386,17 @@ h6{
 							
 							<div class="card-body "> 
 									
-								<div class="row" style="margin-top: -18px;">
+								<div class="row clx-8" >
 										
-									<div class="col-md-12" style="float: right;" >
+									<div class="col-md-12 clx-9"  >
 											
-										<div class="row" style="margin-top: 5px;font-weight: bold;"   >
+										<div class="row clx-10"    >
 											<div class="col-md-8"></div>
-											<div class="col-md-4">
-												<div style="font-weight: bold; " >
-													<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #4A90E2;  padding: 0px 15px; border-radius: 3px;"></span></span>
-													<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #059212;  padding: 0px 15px;border-radius: 3px;"></span></span>
-													<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #F5A623; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
+											<div class="col-md-4 ">
+												<div  class="font-weight-bold">
+													<span class="clx-11">Original :&ensp; <span class="clx-13"></span></span>
+													<span class="clx-12">Ongoing :&ensp; <span class="clx-14"></span></span>
+													<span class="clx-12">Revised :&ensp; <span class="clx-15"></span></span>
 												</div>
 											</div>
 										</div>
@@ -516,7 +416,7 @@ h6{
 						<div class="card shadow-nohover">
 							<div class="card-header ">  
 		
-								<div class="row" style="margin-top: -5px;">
+								<div class="row clx-16" >
 									<div class="col-md-4">
 									</div>
 									<div class="col-md-4">
@@ -531,7 +431,7 @@ h6{
 									
 									<div class="col-md-2">
 										<label class="form-label">Interval:</label>
-										<select class="form-control selectdee " id="viewType" required="required"  data-live-search="true"  style="width:150px !important; float : right;" >
+										<select class="form-control selectdee clx-17" id="viewType" required="required"  data-live-search="true"  >
 		                                	<option value="weekly" selected>Weekly</option>
 		                                	<option value="monthly"> Monthly </option>
 		                                	<option value="quarterly">Quarterly</option>
@@ -544,7 +444,7 @@ h6{
 							
 							<div class="card-body "> 
 									
-								<div class="row" style="margin-top: -18px;">
+								<div class="row clx-18" >
 										
 									<div class="col-md-12" >
 										<div class="scroll-container">
@@ -567,7 +467,7 @@ h6{
        		</div>	
 		</div>		
 	</div>
-<div id="customTooltip" style="position:absolute; display:none; z-index:9999; background:#fff; border:1px solid #ccc; padding:8px 10px; border-radius:6px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-size:13px; color:#333; pointer-events:none;"></div>
+<div id="customTooltip" class="clx-19" ></div>
 
 <script>
 	$(document).ready(function() {
@@ -715,16 +615,16 @@ h6{
 		   		        var html="";
 		   		        if(reDate===undefined){
 		   		        	html="";
-		   		        	html= "<span style='font-weight:600;font-size:10pt'> Actual : " +
+		   		        	html= "<span class='clx-20'> Actual : " +
 		   		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
 		   		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
 		   		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
 		   		        }else{
 		   		        	html="";
-		   		        html="<span style='font-weight:600;font-size:10pt'> Actual : " +
+		   		        html="<span class='clx-20'> Actual : " +
 		   		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
 		   		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
-		   		               "<span style='font-weight:600;font-size:10pt'> Revised : " +
+		   		               "<span class='clx-20'> Revised : " +
 		   		               anychart.format.dateTime(this.getData("baselineStart"), 'dd MMM yyyy') + " - " +
 		   		               anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +
 		   		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
@@ -900,9 +800,9 @@ h6{
 	   	timeline.tasks().labels().useHtml(true);
 	   	timeline.tasks().labels().format(function() {
 	   		if (this.progress == 1) {
-	   		    return "<span style='color:#388E3C;font-weight:bold;font-family:Lato;'>Completed</span>";  // Green for completion
+	   		    return "<span class='clx-21'>Completed</span>";  // Green for completion
 	   		  } else {
-	   		    return "<span style='color:#D32F2F;font-weight:bold;font-family:Lato;'></span>";  // Red for pending
+	   		    return "<span class='clx-22'></span>";  // Red for pending
 	   		  }
 	   	});
    	
@@ -1116,7 +1016,7 @@ $('#empId').on('change',function(){
 
         // Header
         timeHeader.innerHTML = "";
-        var headerHtml = '<th style="width: 40px;">SN</th><th style="width: 200px;">Task Name</th><th style="width: 100px;">Project</th>';
+        var headerHtml = '<th class="clx-23">SN</th><th class="clx-24">Task Name</th><th class="clx-25">Project</th>';
 
         for (var h = 0; h < headers.length; h++) {
             headerHtml += '<th>' + headers[h] + '</th>';

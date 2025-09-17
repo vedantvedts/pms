@@ -9,40 +9,13 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/action/actionPdcReport.css" var="actionPdcReport" />
+<link href="${actionPdcReport}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
  
 
 <title>Assignee List</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.table button{
-	
-	background-color: white !important;
-	border: 3px solid #17a2b8;
-	padding: .275rem .5rem !important;
-}
-
-.table button:hover {
-	color: black !important;
-	
-}
-#table tbody tr td {
-
-	    padding: 4px 3px !important;
-
-}
-
-</style>
 </head>
  
 <body>
@@ -86,16 +59,16 @@ h6{
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-					<div class="card-header ">  
+					<div class="card-header mb-2">  
 
 					<div class="row">
 						 <h4 class="col-md-2">Action Reports</h4>  <br>
-							<div class="col-md-10" style="float: right; margin-top: -8px;">
+							<div class="col-md-10 div-margin" >
 					   			<form method="post" action="ActionPdcReport.htm" name="dateform" id="dateform">
 					   				<table >
 					   					<tr>
 					   						<td >
-					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Project: </label>
+					   							<label class="control-label td-label">Project: </label>
 					   						</td>
 					   						<td >
                                                         <select class="form-control selectdee " name="Project" id="Project" required="required"  data-live-search="true"  >
@@ -110,11 +83,10 @@ h6{
 											</td>
 					   					
 					   						<td >
-					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Name: </label>
+					   							<label class="control-label td-label">Name: </label>
 					   						</td>
 					   						<td >
                                                         <select class="form-control selectdee " name="EmpId" id="EmpId" required="required"  data-live-search="true"  >
-                                                          <%--  <option value="A"  <%if(Employee.equalsIgnoreCase("A")){ %> selected="selected" <%} %>>ALL</option> --%>	
                                                            
                                                            <%
                                                            for(Object[] obj:EmployeeList){ %>
@@ -122,32 +94,21 @@ h6{
 														<%} %>
 																</select>	        
 											</td>
-											<!-- <td >
-					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;">Date Type: </label>
-					   						</td> -->
+											
 					   						<td>
-					   						<%-- <select class="form-control selectdee "
-												name="Position" id="Assignee" required="required"
-												data-live-search="true">
-													<option value="A" <%if ("A".equalsIgnoreCase(Position)) {%>
-														selected="selected" <%}%>>ALL</option>
-													<option value="P" <%if ("P".equalsIgnoreCase(Position)) {%>
-														selected="selected" <%}%>>PDC</option>
-													<option value="S" <%if ("S".equalsIgnoreCase(Position)) {%>
-														selected="selected" <%}%>>Assigned</option>
-											</select> --%>
+
 											<input type="hidden" name="Position" id="Assignee" value="P">
 											</td>
 					   				
 					   					    <td>
 					   						<td >
-					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;"> From Date:</label>
+					   							<label class="control-label td-label" > From Date:</label>
 					   						</td>
 					   						<td >
 					   							<input  class="form-control"  data-date-format="dd/mm/yyyy" id="fdate" name="fdate"  required="required"  value="<%=fdate%>">
 					   						</td>
 					   						<td>
-					   							<label class="control-label" style="font-size: 14px; margin-bottom: .0rem;"> To Date:</label>
+					   							<label class="control-label td-label" > To Date:</label>
 					   						</td>
 					   						<td >
 					   							<input  class="form-control "  data-date-format="dd/mm/yyyy" id="tdate" name="tdate"  required="required"  value="<%=tdate%>">
@@ -174,13 +135,8 @@ h6{
 												<div id="toolbar">
 													
 												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+											<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+
 													<thead>
 
 														<tr>
@@ -230,14 +186,14 @@ h6{
 																				        In progress
 																				 <%} %>
 																		</td>
-																		<td style="width:8% !important; "><%if(obj[11]!=null){ %>
-																            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																	            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<td class="td-width"><%if(obj[11]!=null){ %>
+																            <div class="progress div-progress" >
+																	            <div class="progress-bar progress-bar-striped width-<%=obj[11]%>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																	            <%=StringEscapeUtils.escapeHtml4(obj[11].toString()) %>
 																	            </div> 
 																            </div> <%}else{ %>
-																            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																	            <div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																            <div class="progress div-progress">
+																	            <div class="progress-bar progressbar" role="progressbar" >
 																	             Not Yet Started .
 																	            </div>
 																            </div> <%} %>
@@ -284,6 +240,15 @@ $('#fdate').daterangepicker({
 	locale : {
 		format : 'DD-MM-YYYY'
 	}
+});
+
+$(document).ready(function(){
+	  $("#myTable12").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 10
+
+	});
 });
 
 

@@ -187,27 +187,6 @@ public class ProjectController
 	private SimpleDateFormat sdf1=fc.getSqlDateAndTimeFormat(); /* new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); */
 	private SimpleDateFormat sdf3=fc.getSqlDateFormat();
 
-	//	@RequestMapping(value = "ProjectIntiationList.htm")
-	//	public String ProjectIntiationList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
-	//	{
-	//		String UserId = (String) ses.getAttribute("Username");
-	//		String LabCode =(String ) ses.getAttribute("labcode");
-	//		logger.info(new Date() +"Inside ProjectIntiationList.htm "+UserId);
-	//		
-	//		try {
-	//			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-	//			String LoginType=(String)ses.getAttribute("LoginType");
-	//			
-	//			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType,LabCode));
-	//			req.setAttribute("projectapprovalflowempdata", service.ProjectApprovalFlowEmpData(EmpId,LabCode));
-	//			return "project/ProjectIntiationList";                                                
-	//		}
-	//		catch (Exception e) {
-	//			logger.error(new Date() +" Inside ProjectIntiationList.htm "+UserId, e);
-	//			e.printStackTrace();
-	//    		return "static/Error";
-	//		} 
-	//	}
 
 	@RequestMapping(value = "ProjectIntiationList.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ProjectIntiationList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
@@ -289,67 +268,8 @@ public class ProjectController
 			return "static/Error";
 		} 
 	}
-	//	
-	//	@RequestMapping(value="ProjectOverAllRequirement.htm")
-	//	public String ProjectOverallRequirement(HttpServletRequest req,HttpSession ses, HttpServletResponse res,RedirectAttributes redir)throws Exception
-	//	{	
-	//		String UserId=(String)ses.getAttribute("Username");
-	//		String LabCode =(String ) ses.getAttribute("labcode");
-	//		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-	//		String LoginType=(String)ses.getAttribute("LoginType");
-	//		logger.info(new Date() +"Inside ProjectOverAllRequirement.htm"+UserId);
-	//		try {
-	//			String Project=req.getParameter("project");
-	//			if(Project!=null) {
-	//			String[]project=Project.split("/");
-	//			String initiationid=project[0];
-	//			String projectshortName=project[1];
-	//			String projectTitle=project[2];
-	//			req.setAttribute("initiationid", initiationid);
-	//			req.setAttribute("projectshortName",projectshortName );
-	//			req.setAttribute("RequirementList", service.RequirementList(initiationid) );
-	//			Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-	//			req.setAttribute("ProjectDetailes", ProjectDetailes);
-	//			req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
-	//			req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
-	//			req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
-	//			req.setAttribute("project", Project);
-	//			req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
-	//			req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid));
-	//	
-	//			req.setAttribute("MemberList", service.reqMemberList(initiationid));
-	//			req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
-	//			
-	//			}else {
-	//				if(service.ProjectIntiationList(EmpId,LoginType,LabCode).size()>0) {
-	//					String projectshortName=service.ProjectIntiationList(EmpId,LoginType,LabCode).get(0)[4].toString();
-	//					String initiationid=service.ProjectIntiationList(EmpId,LoginType,LabCode).get(0)[0].toString();
-	//					req.setAttribute("initiationid", initiationid);
-	//					req.setAttribute("projectshortName",projectshortName);
-	//				    req.setAttribute("project", initiationid+"/"+projectshortName+"/"+"NA");
-	//					req.setAttribute("RequirementList", service.RequirementList(initiationid) );
-	//					Object[] ProjectDetailes = service.ProjectDetailes(Long.parseLong(initiationid)).get(0);
-	//					req.setAttribute("ProjectDetailes", ProjectDetailes);
-	//					req.setAttribute("RequirementStatus", service.reqStatus(Long.parseLong(initiationid)));
-	//					req.setAttribute("DocumentApprovalFlowData", service.DocumentApprovalFlowData(LabCode,initiationid));
-	//					req.setAttribute("TrackingList", service.RequirementTrackingList(initiationid));
-	//					req.setAttribute("AbbreviationDetails",service.getAbbreviationDetails(initiationid));
-	//					req.setAttribute("EmployeeList", service.EmployeeList(LabCode,initiationid));
-	//					req.setAttribute("MemberList", service.reqMemberList(initiationid));
-	//					req.setAttribute("DocumentSummary", service.getDocumentSummary(initiationid));
-	//				}
-	//			}
-	//			req.setAttribute("TotalEmployeeList", service.EmployeeList(LabCode));
-	//			req.setAttribute("LabList", service.LabListDetails(LabCode));
-	//			req.setAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId,LoginType,LabCode));
-	//		
-	//		}catch (Exception e) {
-	//			e.printStackTrace(); 
-	//			logger.error(new Date() +" Inside ProjectOverAllRequirement.htm "+UserId, e);
-	//			return "static/Error";
-	//		}
-	//		return "project/ProjectOverallRequirement";
-	//	}
+
+	
 	@RequestMapping(value = "ProjectRequirement.htm")
 	public String ProjectRequirement(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{

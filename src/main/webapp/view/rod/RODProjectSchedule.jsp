@@ -9,99 +9,15 @@
 <%@page import="java.util.Arrays"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style>
-.card-body{
-	padding: 0px !important;
-}
-.control-label{
-	font-weight: bold !important;
-}
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
+<spring:url value="/resources/css/rodModule/rodProjectSchedule.css" var="rodProjectSchedule" />
+<link href="${rodProjectSchedule}" rel="stylesheet" />
 
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px; 
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-} 
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px;
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-}
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-
-.meetingsp{
-  width:75%;
-  transition: background-color 3s ease;
-  background-image: linear-gradient(to right, green 50%, #f8f9fa 50%);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  transition: background-position 0.5s ease;
-  color:black;
-  padding:10px;
-  border-radius: 8px;
-  display: block;
-  font-weight: 600;
-  margin:1%;
-  margin-left:12%;
-}
-.meetingsp:hover{
- 	/*  background-color: green;
-	 background-image: linear-gradient(to right, green, blue); */
-	 color:white;
- background-position: 0 0;
- box-shadow: 3px 3px 3px gray;
-	/* background-color:red; */
-color:white;
-font-weight: 600;	
-}
-#span{
-background: blue;
-}
-#span1{
-font-size: 10px;
-margin-left:10px
-}
-
-#span2{
-float:right;
-font-size: 10px;
-margin-right:10px
-}
-
-</style>
 </head>
 <body>
 <%
@@ -166,9 +82,9 @@ SimpleDateFormat sdf3=fc.getSqlDateFormat();
     </div>
 <% } %>
 
-<form method="post" action="RecordofDiscussion.htm" id="myformtype" style="">
+<form method="post" action="RecordofDiscussion.htm" id="myformtype">
 <div class="row">
-<div class="col-md-1" style="display: flex;justify-content: flex-end;">
+<div class="col-md-1 project-type">
 Project Type:
 </div>
 <div class="col-md-2">
@@ -187,8 +103,8 @@ Project Type:
 			<div class="card shadow-nohover">
 				<div class="card-header">
 					<div class="row" >
-						<div class="col" style="margin-top: -8px;">	
-							<form method="post" action="RecordofDiscussion.htm" id="myform" style="">
+						<div class="col div-col">	
+							<form method="post" action="RecordofDiscussion.htm" id="myform">
 								<input type="hidden" name="projectType" value="<%=projectType%>">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							</form>
@@ -206,9 +122,9 @@ Project Type:
 		                    	<input type="hidden" name="rodName" <%if(rodMasterDetails!=null) {%>value="<%=rodMasterDetails[1] %>"> <%}%>
 							</form>
 							
-							<table style="width:100%;">
+							<table class="table-width">
 								<tr>
-									<td style="width: 50%;">
+									<td class="td-width">
 										<table>
 								  			<tr>
 								  				<td>
@@ -253,7 +169,7 @@ Project Type:
 								  			</tr>
 						  				</table>
 									</td>
-									<td id="addNewFormtd" style="width: 50%;">
+									<td id="addNewFormtd" class="td-width">
 										<table>
 											<tr>
 												<td>
@@ -276,14 +192,14 @@ Project Type:
 										</table>
 									</td>
 									
-									<td id="myform1td" style="width: 50%;">
-										<table style="margin-left: 20%;">
+									<td id="myform1td" class="td-width">
+										<table class="table-ml">
 											<tr>
 												<td>
 													<label class="control-label">Date : </label>	
 												</td>
 												<td>
-													<input form="myfrm1" style=""  class="form-control "  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required"   readonly>
+													<input form="myfrm1"  class="form-control "  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required"   readonly>
 												</td>
 												<td>
 													<label class="control-label"> Time : </label>
@@ -293,7 +209,7 @@ Project Type:
 												</td>
 												<td>&nbsp;</td>
 												<td>
-													<input form="myfrm1" type="button" class="btn  btn-sm add " style="float: right" onclick="Add1('myfrm1')" value="ADD SCHEDULE" >
+													<input form="myfrm1" type="button" class="btn  btn-sm add input-right"  onclick="Add1('myfrm1')" value="ADD SCHEDULE" >
 												</td>
 											</tr>
 										</table>
@@ -306,18 +222,18 @@ Project Type:
 					</div>
 				</div>
 				
-				<div class="card-body" style="display: flex;justify-content: space-around;">
-					<div id="calendar" style="width:79%;float:left"></div>
-					<div id="meetings" style="background-color: #216583;;width:20%;margin:5px;">
-						<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;">
+				<div class="card-body custom-card">
+					<div id="calendar" class="custom-calender"></div>
+					<div id="meetings" class="custom-meetings">
+						<div class="custom-earlier">
 							Earlier Meetings
 						</div>
-						<div class="mt-2" id="scrollclass" style="height:520px;overflow: auto">
+						<div class="mt-2 custom-scroll" id="scrollclass">
 							<%if(!PreviousmeetingList.isEmpty()){
 								int i=0;
 								for(Object[]obj:PreviousmeetingList){
 							%>
-					 			<a class="tag meetingsp" style="text-decoration: none;" href="RODScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "%>
+					 			<a class="tag meetingsp custom-anchor" href="RODScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "%>
 									&nbsp;&nbsp;Date: <%= obj[3]!=null?sdf2.format(sdf3.parse(obj[3].toString())) :" - " %>
 								</a>
 							<%}}else{ %>

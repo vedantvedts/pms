@@ -3,125 +3,18 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+
+<spring:url value="/resources/css/projectModule/projectList.css" var="projectList" />
+<link href="${projectList}" rel="stylesheet" />
+
 <title>PROJECT LIST</title>
-<style type="text/css">
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-.table button {
-    background-color: Transparent !important;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    text-align: left !important;
-}
-.table td{
-	padding:5px !important;
-}
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-	
-.datatable-dashv1-list table tbody tr td{
-	padding: 8px 10px !important;
-}
-
-.table-project-n{
-	color: #005086;
-}
-
-#table thead tr th{
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td{
-	padding:2px 3px !important;
-}
-
-
-/* icon styles */
-
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:270px !important;
-}
-
-
-
-
-
-</style>
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -166,22 +59,22 @@ Project List</h3>
   </div>
 <div class="card-body"> 
     <form action="ProjectSubmit.htm" method="POST" name="frm1" >
-    <div class="row" style="margin-top: 20px;">
+    <div class="row mt-20">
       <div class="col-md-12">
  <div class="table-responsive">
 	   <table class="table table-bordered table-hover table-striped table-condensed" id="myTable"> 
-	   <thead style=" text-align: center;">
+	   <thead class="text-center">
 	   <tr>
-	   <th style="width: 3%;">Select</th>
-			<th style="width: 3%;">SN</th>
-			<th style="width:10%" class="text-nowrap">ProjectMain Code</th>
-			<th style="width:10%" class="text-nowrap">Project Code</th>
-			<th width="25%" class="text-nowrap">Project Name</th>
-			<th style="width:10%" class="text-nowrap">Sanc Date</th>
-			<th style="width: 124.892px;" >Sanc Cost<br>(&#8377; In Lakh)</th>
-			<th style="width:6%">PDC</th>
-			<th style="width:14%">Project Director</th>
-			<th style="width: 5%;">RevNo</th>
+	   <th class="w-3">Select</th>
+			<th class="w-3">SN</th>
+			<th class="text-nowrap w-10">ProjectMain Code</th>
+			<th class="text-nowrap w-10">Project Code</th>
+			<th class="text-nowrap w-25">Project Name</th>
+			<th class="text-nowrap w-10">Sanc Date</th>
+			<th class="w-124" >Sanc Cost<br>(&#8377; In Lakh)</th>
+			<th class="w-6">PDC</th>
+			<th class="w-14">Project Director</th>
+			<th class="w-5">RevNo</th>
 	  </tr>
 	   </thead> 
     <tbody>
@@ -231,10 +124,10 @@ NFormatConvertion nfc1=new NFormatConvertion();
 		<%if(loginTypes.contains(logintype)) {%>
 		<td> <button name="action" class="btn btn-sm  btn-success add" type="submit" value="add" >ADD</button>&nbsp;&nbsp;</td>
 		<td> <button name="action" class="btn btn-sm  btn-warning edit" type="submit" value="edit" id="editbtn" Onclick="Edit(frm1)">EDIT</button>&nbsp;&nbsp;</td>
-		<td> <button name="action" class="btn btn-sm  back" formaction="ProjectMasterRev.htm" style="background-color: #FF7800;color: black; border: 0" type="submit" value="revise" Onclick="Edit(frm1)">REVISE</button>&nbsp;&nbsp;</td>
-		<td> <button name="action" class="btn btn-sm  back" formaction="ProjectMasterAttach.htm" style="background-color: #7CD1B8;color: black; border: 0" type="submit" value="revise" Onclick="Edit(frm1)">ATTACHMENTS</button>&nbsp;&nbsp;</td>
+		<td> <button name="action" class="btn btn-sm  back cs-rev" formaction="ProjectMasterRev.htm" type="submit" value="revise" Onclick="Edit(frm1)">REVISE</button>&nbsp;&nbsp;</td>
+		<td> <button name="action" class="btn btn-sm  back cs-attach" formaction="ProjectMasterAttach.htm" type="submit" value="revise" Onclick="Edit(frm1)">ATTACHMENTS</button>&nbsp;&nbsp;</td>
 		<%} %>
-		<td> <button name="action" class="btn btn-sm  back" formaction="ProjectMasterRevView.htm" style="background-color: #22577E;color: white; border: 0" type="submit" value="revise" Onclick="Edit(frm1)">VIEW</button>&nbsp;&nbsp;</td>
+		<td> <button name="action" class="btn btn-sm  back cs-preview" formaction="ProjectMasterRevView.htm" type="submit" value="revise" Onclick="Edit(frm1)">VIEW</button>&nbsp;&nbsp;</td>
  	
 		<td> <a  class="btn  btn-sm  back"  href="MainDashBoard.htm"  >BACK</a>&nbsp;&nbsp;</td>
 	</tr>
@@ -247,10 +140,10 @@ NFormatConvertion nfc1=new NFormatConvertion();
 </div>
 </div>
 
-<div style="width: 100%; padding: 10px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: left;">
-    <h1 style="color: red; font-family: Arial, sans-serif; margin: 0; font-size: 16px; font-weight: bold;">Note:-</h1>
-    <h1 style="color: red; font-family: Arial, sans-serif; margin: 0; font-size: 16px; font-weight: bold;">1. If it is a main project, select YES and choose the specific project.</h1>
-    <h1 style="color: red; font-family: Arial, sans-serif; margin: 0; font-size: 16px; font-weight: bold;">2. If it is a sub project, select NO and choose the main project and fill the required details.</h1>
+<div class="cs-div">
+    <h1 class="cs-h1">Note:-</h1>
+    <h1 class="cs-h1">1. If it is a main project, select YES and choose the specific project.</h1>
+    <h1 class="cs-h1">2. If it is a sub project, select NO and choose the main project and fill the required details.</h1>
 </div>
 
 

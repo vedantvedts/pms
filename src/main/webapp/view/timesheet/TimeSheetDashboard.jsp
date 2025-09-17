@@ -7,188 +7,15 @@
 <%@page import="java.time.LocalDate"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+     <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
-.btn1{
-	border-top-left-radius: 5px !important;
-	border-bottom-left-radius: 5px !important;
-}
+<spring:url value="/resources/css/Timesheet/TimeSheetDashboard.css" var="holidayAddEdit" />     
+<link href="${holidayAddEdit}" rel="stylesheet" />
 
-.btn2, .btn3, .btn4, .btn5{
-    border-left: 1px solid black;
-}
-
-.left {
-	text-align: left;
-}
-.center{
-	text-align: center;
-}
-.right{
-	text-align: right;
-}
-</style>
-<style type="text/css">
-.highcharts-figure,	.highcharts-data-table table {
-	min-width: 310px;
-	max-width: 800px;
-}
-
-.highcharts-data-table table {
-    font-family: Verdana, sans-serif;
-    border-collapse: collapse;
-    border: 1px solid #ebebeb;
-    margin: 10px auto;
-    text-align: center;
-    width: 100%;
-    max-width: 500px;
-}
-
-.highcharts-data-table caption {
-    padding: 1em 0;
-    font-size: 1.2em;
-    color: #555;
-}
-
-.highcharts-data-table th {
-    font-weight: 600;
-    padding: 0.5em;
-}
-
-.highcharts-data-table td,
-.highcharts-data-table th,
-.highcharts-data-table caption {
-    padding: 0.5em;
-}
-
-.highcharts-data-table thead tr,
-.highcharts-data-table tr:nth-child(even) {
-    background: #f8f8f8;
-}
-
-.highcharts-data-table tr:hover {
-    background: #f1f7ff;
-}
-</style>
-
-<style type="text/css">
-.view-table{
-	border-collapse: collapse;
-	width: 100%;
-	/* border: 2px solid #216583; */
-	padding: 10px;
-    margin-top: 1.2rem;
-	overflow-y: auto; 
-	margin-left: 10px;
-	margin-right: 10px;
-	/* margin-top: -2rem; */
-}
-
-.view-table thead {
-    position: sticky;
-    top: 0; /* Stick the thead to the top */
-    z-index: 1; /* Ensure thead is above tbody */
-    background-color: #007bff;
-    color: white;"
-}
-
-.view-table th, .view-table td{
-	/* border: 2px solid #216583; */
-	padding: 7px;
-}
-
-.table-wrapper{
-    max-height: 400px; /* Set the max height for the table wrapper */
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: hidden; 
-	padding: 0px;
-	background-color: #f8f9fa;
-	border: 1px solid #dee2e6;
-	border-radius: 5px;
-}
-.table-wrapper2 {
-    max-height: 630px; /* Set the max height for the table wrapper */
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: hidden; 
-	padding: 0px;
-	background-color: #f8f9fa;
-	border: 1px solid #dee2e6;
-	border-radius: 5px;
-	margin-bottom: 10px;
-}
-.table-wrapper3 {
-    max-height: 400px; /* Set the max height for the table wrapper */
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: hidden; 
-	padding: 0px;
-	background-color: #f8f9fa;
-	border: 1px solid #dee2e6;
-	border-radius: 5px;
-}
-
-
-/* Firefox */
-.table-wrapper, .table-wrapper2, .table-wrapper3 {
-  scrollbar-width: thin;
-  scrollbar-color: #007bff #f8f9fa;
-}
-
-/* Chrome, Edge, and Safari */
-.table-wrapper::-webkit-scrollbar, .table-wrapper2::-webkit-scrollbar, .table-wrapper3::-webkit-scrollbar, {
-  width: 12px;
-}
-
-.table-wrapper::-webkit-scrollbar-track, .table-wrapper2::-webkit-scrollbar-track, .table-wrapper3::-webkit-scrollbar-track {
-  background: #f8f9fa;
-  border-radius: 5px;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb, .table-wrapper2::-webkit-scrollbar-thumb, .table-wrapper3::-webkit-scrollbar-thumb {
-  background-color: #007bff;
-  border-radius: 5px;
-  border: 2px solid #f8f9fa;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #0056b3;
-}
-
-</style>
-
-<style type="text/css">
-/* Style for the filter dropdown */
-.filter-dropdown {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.filter-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 120px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.filter-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.filter-content a:hover {background-color: #f1f1f1}
-
-.filter-dropdown:hover .filter-content {
-    display: block;
-}
-</style>
 </head>
 <body >
 	<%
@@ -238,13 +65,13 @@
 			</div>
 			<div class="col-md-3">
 				<!-- ----------- COMMON TOGGLE BUTTONS(PROJECT, INDIVIDUAL) STARTS --------------------------- --> 	
-			   	<div style="float: right;padding:5px;margin-top:-10px;">
+			   	<div class="divstyle1">
 			  		<div class="btn-group "> 
 			        	<button class="btn btn1 font-weight-bold">Project</button>
-			        	<button class="btn btn2 font-weight-bold" style="">Individual</button>
-			        	<button class="btn btn3 font-weight-bold" style="">Others</button>
-			        	<button class="btn btn4 font-weight-bold" style="">Extra Hrs</button>
-			        	<button class="btn btn5 font-weight-bold" style="">Extra Days</button>
+			        	<button class="btn btn2 font-weight-bold">Individual</button>
+			        	<button class="btn btn3 font-weight-bold">Others</button>
+			        	<button class="btn btn4 font-weight-bold">Extra Hrs</button>
+			        	<button class="btn btn5 font-weight-bold">Extra Days</button>
 			    	</div>
 			  	</div>	
 				<!-- ----------- COMMON TOGGLE BUTTONS(PROJECT, INDIVIDUAL) ENDS --------------------------- -->
@@ -260,17 +87,17 @@
 							<form action="#">
 								<div class="row">
 									<div class="col-md-12">
-										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
-											<div class="card-body" style="padding: 0px !important">
-												<table style="width: 100%;border-collapse: collapse;">
+										<div class="card divstyle2" id="project-attributes">
+											<div class="card-body card-bodyStyle1">
+												<table class="tablestyle1">
 													<tr>
-														<td style="width: 24%;"></td>
-														<th class="right" style="width: 5%;">From :</th>
-														<td style="width: 8%;"><input type="text" class="form-control" name="fromDate" id="aapFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
-														<th class="right" style="width: 5%;">To :</th>
-														<td style="width: 8%;"><input type="text" class="form-control" name="toDate" id="aapToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
-														<th class="right" style="width: 5%;">Project : </th>
-														<td style="width: 20%;">
+														<td class="tdstyle1"></td>
+														<th class="right thstyle1">From :</th>
+														<td class="tdstyle2"><input type="text" class="form-control" name="fromDate" id="aapFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
+														<th class="right thstyle2">To :</th>
+														<td class="tdstyle3"><input type="text" class="form-control" name="toDate" id="aapToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
+														<th class="right thstyle3">Project : </th>
+														<td class="tdstyle4">
 															<select class="form-control selectdee" name="projectId" id="aapProjectId">
 																<option value="0" selected >General</option>
 													            <%for(Object[] pro: projectList ){
@@ -280,8 +107,8 @@
 																<%} %>
 															</select>
 														</td>
-														<th class="right" style="width: 5%;">Employee : </th>
-														<td style="width: 20%;">
+														<th class="right thstyle4">Employee : </th>
+														<td class="tdstyle5">
 															<select class="form-control selectdee" name="empId" id="aapEmpId">
 																<!-- <option value="" disabled="disabled" selected="selected">--Select--</option> -->
 																<option value="A">All</option>
@@ -304,20 +131,20 @@
 					<!-- ------------------------- Action Analytics (Project) ------------------------------  -->
 					<div class="row">
 						<div class="col-md-8">
-							<div id="aapcontainer" style="display:block;" ></div>
+							<div id="aapcontainer" class="aapcontainer"></div>
 						</div>
 						<div class="col-md-4">
-							<div id="aapcontainer2" style="display:block;" ></div>
+							<div id="aapcontainer2" class="aapcontainer2"></div>
 						</div>
 					</div>
 					<!-- ------------------------- Action Analytics End (Project) ------------------------------  -->
 					<!-- ------------------------- Activity wise Analytics (Project) ------------------------------  -->
 					<div class="row mt-2">
 						<div class="col-md-8">
-							<div id="awapcontainer" style="display:block;" ></div>
+							<div id="awapcontainer" class="awapcontainer" ></div>
 						</div>
 						<div class="col-md-4">
-							<div id="awapcontainer2" style="display:block;" ></div>
+							<div id="awapcontainer2" class="awapcontainer2"></div>
 						</div>
 					</div>
 					<!-- ------------------------- Activity wise Analytics End (Project) ------------------------------  -->
@@ -336,17 +163,17 @@
 							<form action="#">
 								<div class="row">
 									<div class="col-md-12">
-										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
-											<div class="card-body" style="padding: 0px !important">
-												<table style="width: 100%;border-collapse: collapse;">
+										<div class="card divstyle3" id="project-attributes">
+											<div class="card-body card-bodyStyle1">
+												<table class="tableStyle2">
 													<tr>
-														<td style="width: 24%;"></td>
-														<th class="right" style="width: 5%;">From :</th>
-														<td style="width: 8%;"><input type="text" class="form-control" name="fromDate" id="aaiFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
-														<th class="right" style="width: 5%;">To :</th>
-														<td style="width: 8%;"><input type="text" class="form-control" name="toDate" id="aaiToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
-														<th class="right" style="width: 5%;">Employee : </th>
-														<td style="width: 20%;">
+														<td class="td1"></td>
+														<th class="right th123">From :</th>
+														<td class="td23"><input type="text" class="form-control" name="fromDate" id="aaiFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
+														<th class="right th123">To :</th>
+														<td class="td23"><input type="text" class="form-control" name="toDate" id="aaiToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
+														<th class="right th123" >Employee : </th>
+														<td class="td4">
 															<select class="form-control selectdee" name="empId" id="aaiEmpId">
 																<option value="" disabled="disabled" selected="selected">--Select--</option>
 																<%
@@ -356,8 +183,8 @@
 																<%} }%>
 															</select>
 														</td>
-														<th class="right" style="width: 5%;">Project : </th>
-														<td style="width: 20%;">
+														<th class="right th123" >Project : </th>
+														<td class="td4">
 															<select class="form-control selectdee" name="projectId" id="aaiProjectId">
 																<option value="A" selected>All</option>
 																<option value="0">General</option>
@@ -380,20 +207,20 @@
 					<!-- ------------------------- Action Analytics (Individual) ------------------------------  -->
 					<div class="row">
 						<div class="col-md-8">
-							<div id="aaicontainer" style="display:block;" ></div>
+							<div id="aaicontainer" class="awapcontainer"></div>
 						</div>
 						<div class="col-md-4">
-							<div id="aaicontainer2" style="display:block;" ></div>
+							<div id="aaicontainer2" class="awapcontainer" ></div>
 						</div>
 					</div>
 					<!-- ------------------------- Action Analytics End (Individual) ------------------------------  -->
 					<!-- ------------------------- Activity Wise Analytics (Individual) ------------------------------  -->
 					<div class="row mt-2">
 						<div class="col-md-8">
-							<div id="awaicontainer" style="display:block;" ></div>
+							<div id="awaicontainer" class="awapcontainer" ></div>
 						</div>
 						<div class="col-md-4">
-							<div id="awaicontainer2" style="display:block;" ></div>
+							<div id="awaicontainer2" class="awapcontainer" ></div>
 						</div>
 					</div>
 					<!-- ------------------------- Activity Wise Analytics End (Individual) ------------------------------  -->
@@ -414,13 +241,13 @@
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<div class="row">
 									<div class="col-md-12">
-										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
-											<div class="card-body" style="padding: 0px !important">
-												<table style="width: 100%;border-collapse: collapse;">
+										<div class="card divcard1" id="project-attributes">
+											<div class="card-body card-body11" >
+												<table class="tablestyle5">
 													<tr>
-														<td style="width: 35%;"></td>
-														<th class="right" style="width: 5%;">Project : </th>
-														<td style="width: 25%;">
+														<td class="tableTd1"></td>
+														<th class="right tableTh1">Project : </th>
+														<td class="tableTd2">
 															<select class="form-control selectdee" name="projectId" id="ptsProjectId">
 																<option value="A" selected data-projectname="All">All</option>
 																<option value="0" data-projectname="General">General</option>
@@ -434,16 +261,16 @@
 																<%} %>
 															</select>
 														</td>
-														<th class="right" style="width: 5%;">From :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="ptsFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
-														<th class="right" style="width: 5%;">To :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="ptsToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
-														<td style="width: 5%;" class="center">
-															<button type="submit" class="btn btn-sm" name="" formaction="ProjectTimeSheetPdfReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
-																<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+														<th class="right tableTh1">From :</th>
+														<td class="tableTd3"><input type="text" class="form-control" name="fromDate" id="ptsFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
+														<th class="right tableTh1">To :</th>
+														<td class="tableTd3"><input type="text" class="form-control" name="toDate" id="ptsToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
+														<td class="tableTd3" class="center">
+															<button type="submit" class="btn btn-sm btnbackcolor" name="" formaction="ProjectTimeSheetPdfReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="PDF Report">
+																<i class="fa fa-file-pdf-o file-pdf-style" aria-hidden="true"></i>
 														  	</button>
-															<button type="submit" class="btn btn-sm" name="" formaction="ProjectTimeSheetExcelReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
-																<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+															<button type="submit" class="btn btn-sm btnbackcolor" name="btnbackcolor" formaction="ProjectTimeSheetExcelReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report">
+																<i class="fa fa-file-excel-o file-excel-style" aria-hidden="true"></i>
 														  	</button>
 														</td>
 													</tr>
@@ -463,7 +290,7 @@
 							<table class="table table-bordered table-hover table-striped table-condensed view-table" id="ptscontainer">
 								<thead class="center" >
 									<tr>
-										<th colspan="4" style="">PROJECT TIME SHEET</th>
+										<th colspan="4">PROJECT TIME SHEET</th>
 									</tr>
 									<tr>
 										<th>SN</th>
@@ -488,7 +315,7 @@
 							</table>
 						</div>
 						<div class="col-md-4">
-							<div id="ptscontainer2" style="display:block;" ></div>
+							<div id="ptscontainer2" class="awapcontainer" ></div>
 						</div>
 					</div>
 					<!-- ------------------------- Project Time Sheet End ------------------------------  -->
@@ -508,21 +335,21 @@
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								<div class="row">
 									<div class="col-md-12">
-										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
-											<div class="card-body" style="padding: 0px !important">
-												<table style="width: 100%;border-collapse: collapse;">
+										<div class="card div-card-style2" id="project-attributes">
+											<div class="card-body card-bodyStyle1">
+												<table class="tablestyle5">
 													<tr>
-														<td style="width: 65%;"></td>
-														<th class="right" style="width: 5%;">From :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="tslFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
-														<th class="right" style="width: 5%;">To :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="tslToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
-														<td style="width: 5%;" class="center">
-															<button type="submit" class="btn btn-sm" name="" formaction="TimeSheetListPdfReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
-																<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+														<td class="tabletdstyle1"></td>
+														<th class="right tablethstyle1">From :</th>
+														<td class="tabletdstyle2"><input type="text" class="form-control" name="fromDate" id="tslFromDate" value="<%=fromDate!=null?fc.sdfTordf(fromDate):"-"%>"></td>
+														<th class="right tablethstyle1">To :</th>
+														<td class="tabletdstyle2"><input type="text" class="form-control" name="toDate" id="tslToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
+														<td class="center tablethstyle1">
+															<button type="submit" class="btn btn-sm btnbackcolor" name="" formaction="TimeSheetListPdfReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="PDF Report">
+																<i class="fa fa-file-pdf-o file-pdf-style" aria-hidden="true"></i>
 														  	</button>
-															<button type="submit" class="btn btn-sm" name="" formaction="TimeSheetListExcelReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
-																<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+															<button type="submit" class="btn btn-sm btnbackcolor" name="" formaction="TimeSheetListExcelReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report">
+																<i class="fa fa-file-excel-o file-excel-style" aria-hidden="true"></i>
 														  	</button>
 														</td>
 													</tr>
@@ -539,7 +366,7 @@
 							<table class="table table-bordered table-hover table-striped table-condensed view-table" id="tslcontainer">
 								<thead class="center">
 									<tr>
-										<th style="font-size: 16px;color: white;" colspan="9">TIME SHEET LIST</th>
+										<th class="thstyle11" colspan="9">TIME SHEET LIST</th>
 									</tr>
 									<tr>
 										<th>SN</th>
@@ -579,17 +406,17 @@
 								<div class="row">
 									
 									<div class="col-md-12">
-										<div class="card " id="project-attributes" style="margin: 0px 0px 5px; background-color: rgba(0, 0, 0, 0.1) !important;">
-											<div class="card-body" style="padding: 0px !important">
-												<table style="width: 100%;border-collapse: collapse;">
+										<div class="card div-card-style2" id="project-attributes">
+											<div class="card-body card-body11">
+												<table class="tablestyle5">
 													<tr>
-														<td style="width: 35%;"></td>
-														<th class="right" style="width: 5%;">From :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="fromDate" id="tsl2FromDate" value="<%=fromDate3!=null?fc.sdfTordf(fromDate3):"-"%>"></td>
-														<th class="right" style="width: 5%;">To :</th>
-														<td style="width: 10%;"><input type="text" class="form-control" name="toDate" id="tsl2ToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
-														<th class="right" style="width: 5%;">Employee : </th>
-														<td style="width: 25%;">
+														<td class="tableTd1"></td>
+														<th class="right thstyle1">From :</th>
+														<td class="tableTd3"><input type="text" class="form-control" name="fromDate" id="tsl2FromDate" value="<%=fromDate3!=null?fc.sdfTordf(fromDate3):"-"%>"></td>
+														<th class="right tableTh1">To :</th>
+														<td class="tableTd3"><input type="text" class="form-control tableTd3" name="toDate" id="tsl2ToDate" value="<%=toDate!=null ? fc.sdfTordf(toDate):"-"%>"></td>
+														<th class="right tableTh1">Employee : </th>
+														<td class="tableTd2">
 															<select class="form-control selectdee" name="empId" id="tsl2EmpId">
 																<%
 																if(empList!=null && empList.size()>0){
@@ -600,12 +427,12 @@
 																<%} }%>
 															</select>
 														</td>
-														<td style="width: 5%;" class="center">
-															<button type="submit" class="btn btn-sm" name="" formaction="TimeSheetExtraDaysPdfReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="PDF Report" style="background-color: #fff">
-																<i style="color: #cc0000;font-size: 24px;" class="fa fa-file-pdf-o" aria-hidden="true"></i>
+														<td class="center tableTh1">
+															<button type="submit" class="btn btn-sm btnbackcolor" name="" formaction="TimeSheetExtraDaysPdfReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="PDF Report">
+																<i class="fa fa-file-pdf-o file-pdf-style" aria-hidden="true"></i>
 														  	</button>
-															<button type="submit" class="btn btn-sm" name="" formaction="TimeSheetExtraDaysExcelReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report" style="background-color: #fff">
-																<i style="color: #009900;font-size: 24px;" class="fa fa-file-excel-o" aria-hidden="true"></i>
+															<button type="submit" class="btn btn-sm btnbackcolor" name="" formaction="TimeSheetExtraDaysExcelReport.htm" formtarget="blank" data-toggle="tooltip" data-placement="top" title="Excel Report">
+																<i class="fa fa-file-excel-o file-excel-style" aria-hidden="true"></i>
 														  	</button>
 														</td>
 													</tr>
@@ -628,7 +455,7 @@
 							<table class="table table-bordered table-hover table-striped table-condensed view-table" id="tslcontainer2">
 								<thead class="center">
 									<tr>
-										<th style="font-size: 16px;color: white;" colspan="4">EXTRA DAYS</th>
+										<th class="thstyle11" colspan="4">EXTRA DAYS</th>
 									</tr>
 									<tr>
 										<th>SN</th>
@@ -644,7 +471,7 @@
 						</div>
 						
 						<div class="col-md-4">
-							<div id="tslcontainer3" style="display:block;" ></div>
+							<div id="tslcontainer3" class="aapcontainer" ></div>
 						</div>
 					</div>
 					
@@ -2014,26 +1841,26 @@ function getEmpTimeSheetWorkingHrsList(){
 					//x+='<td>'+values[i][3]+'</td>';
 					x+='<td>'+values[i][4]+'</td>';
 					if(val5>0){
-						x+='<td style="color: red;font-weight: 600;">'+val5+'</td>';
-						x+='<td style="color: red;font-weight: 600;">'+values[i][6]+'</td>';
+						x+='<td class="jsstyle1">'+val5+'</td>';
+						x+='<td class="jsstyle1">'+values[i][6]+'</td>';
 					}else{
 						x+='<td>'+val5+'</td>';
 						x+='<td>'+values[i][6]+'</td>';
 					}
 					
 					if(val7>0){
-						x+='<td style="color: green;font-weight: 600;">'+values[i][7]+'</td>';
-						x+='<td style="color: green;font-weight: 600;">'+values[i][8]+'</td>';
+						x+='<td class="jsstyle2">'+values[i][7]+'</td>';
+						x+='<td class="jsstyle2">'+values[i][8]+'</td>';
 					}else{
 						x+='<td>'+values[i][7]+'</td>';
 						x+='<td>'+values[i][8]+'</td>';
 					}
 					if(overall<0){
 						//x+='<td style="color: red;font-weight: 600;">'+(overall)+'</td>';
-						x+='<td style="color: red;font-weight: 600;">'+(overallhrs)+'</td>';
+						x+='<td class="jsstyle1">'+(overallhrs)+'</td>';
 					}else{
 						//x+='<td style="color: green;font-weight: 600;">'+(overall)+'</td>';
-						x+='<td style="color: green;font-weight: 600;">'+(overallhrs)+'</td>';
+						x+='<td class="jsstyle1">'+(overallhrs)+'</td>';
 					}
 					
 					x+='</tr>';

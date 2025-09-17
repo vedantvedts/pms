@@ -992,7 +992,7 @@ private boolean isValidFileType(MultipartFile file) {
 				String levelcount = req.getParameter("LevelCount");
 				long count = service.ActionClosed(req.getParameter("ActionMainId"),Remarks, UserId,req.getParameter("ActionAssignId") ,levelcount);
 				
-			 
+			  
 			if (count > 0) {
 				redir.addAttribute("result", "Action Closed Successfully");
 			} else {
@@ -1006,7 +1006,9 @@ private boolean isValidFileType(MultipartFile file) {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside CloseSubmit.htm "+UserId, e);
 			}
-		
+			if("F".equalsIgnoreCase(req.getParameter("sub"))) {
+				redir.addAttribute("Type", "A");
+			}
 
 			return "redirect:/ActionForwardList.htm";
 		}
@@ -5605,6 +5607,110 @@ private boolean isValidFileType(MultipartFile file) {
 	   }
 
 	   
+	   @RequestMapping(value = "ActionReview.htm" , method={RequestMethod.POST,RequestMethod.GET})
+   	public String ActionReview(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+  	{
+  		String Logintype= (String)ses.getAttribute("LoginType");
+  		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+  		String labCode = (String)ses.getAttribute("labcode");
+  		try {
+  		List<Object[]>TotalActions= service.TotalActions();// get All the actions from List
+  		List<Object[]>FilteredTotalActions= new ArrayList<>();
+  		List<Object[]>projects= new ArrayList<>();
+    		String assignorid=req.getParameter("assignorid")!=null ?req.getParameter("assignorid"):"0";
+  		
+  		if(Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Z")) {
+  			
+  			if(assignorid.equalsIgnoreCase("0")) {
+  			FilteredTotalActions = TotalActions;
+  			}else {
+  				FilteredTotalActions = TotalActions.stream().filter(e->e[15].toString().equalsIgnoreCase(assignorid)).collect(Collectors.toList());
+  			}
+  			projects=service.ProjectList(); // get All the projects as login is admin or director
+  		}
+  		
+  		if(Logintype.equalsIgnoreCase("P")) {
+  			projects=service.getProjects(EmpId);// get All projects of that project director
+  			List<String>Projectids=new ArrayList<>();
+  			if(!projects.isEmpty()) {
+  				Projectids=projects.stream().map(i->i[0].toString()).collect(Collectors.toList());
+  			}
+  			List<String>temp=Projectids;
+  			if(!temp.isEmpty()) {
+  				FilteredTotalActions=TotalActions.stream().filter(i->temp.contains(i[14].toString())).collect(Collectors.toList());
+  			}
+  		}
+  		
+  		List<Object[]>	EmployeeList = service.LabEmployeeList(labCode);
+  		
+  		
+  		
+  		String projectid=req.getParameter("projectid");
+  		req.setAttribute("projects", projects);
+  		req.setAttribute("assignorid", assignorid);
+  		req.setAttribute("EmployeeList", EmployeeList);
+  		
+  		if(projectid!=null && !projectid.equalsIgnoreCase("A")) {
+  		FilteredTotalActions=FilteredTotalActions.stream().filter(i->i[14].toString().equalsIgnoreCase(projectid)).collect(Collectors.toList());//filtered the action items based on project
+  		
+  		req.setAttribute("projectid", projectid);
+  		}else {
+  		req.setAttribute("projectid", "A");
+  		}
+  		
+
+  		req.setAttribute("ForwardList", FilteredTotalActions);
+  		}
+  		catch (Exception e) {
+			e.printStackTrace();
+			}
+  		
+  		return "action/ActionReview";
+  	}
+	   
+	   	@RequestMapping(value = "ChangeAssignor.htm" , method={RequestMethod.POST,RequestMethod.GET})
+		public String ChangeAssignor(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+		{
+			String LabCode = (String) ses.getAttribute("labcode");
+			String UserId =(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside ChangeAssignor.htm "+UserId);
+			try {
+		
+					int count=0;
+					
+					String projectid=req.getParameter("projectid");
+					String AssignorId=req.getParameter("AssignorId");
+					
+					String assignId = req.getParameter("assignId");
+					
+					String []assignIds = assignId.split(",");
+					
+					
+					for(int i=0;i<assignIds.length;i++) {
+					ActionAssign assign=new ActionAssign();
+					assign.setAssignor(Long.parseLong(AssignorId));
+					assign.setActionAssignId(Long.parseLong(assignIds[i]));
+					count = count+service.ActionAssignerEdit(assign);
+					}
+					
+					
+					if(count>0) {
+	    				redir.addAttribute("result","Action assignor changed successfully");
+	    			}else {
+	    				redir.addAttribute("result","Action assignor change unsuccessful");
+	    			}
+				
+				redir.addAttribute("projectid",projectid);
+				redir.addAttribute("assignorid",AssignorId);
+				redir.addAttribute("ActionPath",req.getParameter("ActionPath"));
+				return "redirect:/ActionReview.htm";
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+	
 		private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
 		    redir.addAttribute("resultfail", message);
 		    return "redirect:/"+redirURL;

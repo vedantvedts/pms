@@ -10,7 +10,7 @@
 <head>
 <meta charset="ISO-8859-1">
 
-<style type="text/css">
+<!-- <style type="text/css">
    .modalcontainer {
       position: fixed;
       bottom: 45%;
@@ -109,7 +109,7 @@
 	vertical-align: text-bottom;
 	font-family: Lato;
 }
-</style>
+</style> -->
 
 </head>
 <%
@@ -127,8 +127,8 @@ System.out.println(projectIds.toString()+"----");
 %>
 
 <!-- Modal -->
-	<div class="modal fade bd-example-modal-xl" id="selectProjectsForSlideShowModal" style="width: 100%;display: none;" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-	  <div class="modal-dialog modal-lg " style="max-width: 1800px" role="document">
+	<div class="modal fade bd-example-modal-xl clx-77" id="selectProjectsForSlideShowModal"  tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg clx-78"  role="document">
 	  <form action="GetAllProjectSlide.htm" target="_blank" onsubmit="return checkslidesinput()" method="get" id="slideshowForm">
 	  <%-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />  --%>
 	  
@@ -136,19 +136,19 @@ System.out.println(projectIds.toString()+"----");
 	      <div class="modal-header">
 	      
 	      
-	        <h5 class="modal-title" style="width: 600px;text-align: left;" id="exampleModalLabel">
+	        <h5 class="modal-title clx-79"  id="exampleModalLabel">
 	        	Select Projects for SlideShow
         	<br><br>
         	<div class="row align-items-center">
-        		<div class="col-5 align-items-center" style="width: 90%">
-      				<div class="row align-items-center" style=" float: left;width: 90%" > 
+        		<div class="col-5 align-items-center width-90" >
+      				<div class="row align-items-center width-90"  > 
       					<div class="col-6">
-	        			<span style="font-size: 1rem;text-align: left;">Select All</span>
+	        			<span >Select All</span>
 	        			</div>
 	        			
-	        			<div class="col-4 align-items-center" style="margin: 0 0 0 0;">
-	        			<div style="margin: auto;" >
-	        				<input  type="checkbox" id="selectallprojects" style="width: 20px;height: 20px;margin-top: 20%;">
+	        			<div class="col-4 align-items-center" >
+	        			<div  >
+	        				<input  type="checkbox" id="selectallprojects" >
 	        			</div>
 	        			</div>
 	        			
@@ -156,7 +156,7 @@ System.out.println(projectIds.toString()+"----");
         		</div>
         		<div class="col align-items-center" >
 	        		<div class="row align-items-center">
-		        		<div class="col" style="width: 75%;" >
+		        		<div class="col"  >
 				        	<select id="fav" class="form-control" onchange="isAddFavClicked('select')">
 						        <option value="defaultValue" selected="selected">
 						        	Favourite
@@ -166,16 +166,16 @@ System.out.println(projectIds.toString()+"----");
 								</option>
 							</select>
 				       </div>
-				       <div class="col" style="width: 20%;" >
-				       		<button type="button" class="btn btn-warning btn-sm edit" onclick="isAddFavClicked('button');$('#selectFavProjectList').modal('show');" id="EditFav" style="display: none;">Edit Fav</button>
+				       <div class="col"  >
+				       		<button type="button" class="btn btn-warning btn-sm edit dis-none" onclick="isAddFavClicked('button');$('#selectFavProjectList').modal('show');" id="EditFav" >Edit Fav</button>
 				       </div>
 			       </div>
 		       </div>
 		    </div>
 	        </h5>
-	        <div id="alertsection" style="width: 30%"> 
+	        <div id="alertsection" > 
 			</div>
-	        <button type="button" class="close" style="width: 2%; margin: 0 0 0 0;padding: 0 0 0 0 " data-dismiss="modal" aria-label="Close">
+	        <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
 	       
@@ -190,7 +190,7 @@ System.out.println(projectIds.toString()+"----");
     				<div class="col-md-12">
 				        <div align="left">
 				        	<h5>
-				        		Main Projects: <input type="checkbox" id="selectmainprojects" style="width: 20px;height: 20px;"> 
+				        		Main Projects: <input type="checkbox" id="selectmainprojects" > 
 				        	</h5> 
 				        </div>
        	 				<hr>
@@ -201,10 +201,10 @@ System.out.println(projectIds.toString()+"----");
 		                       <div class="row">
 				                   <% } %>
 			                       <div class="col-3">
-			                           <div style="text-align: left;">
-			                               <input <%if(projectIds.contains(obj[2].toString())) {%>  checked<%} %> class="mainprojectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>" type='checkbox'/>
+			                           <div >
+			                               <input <%if(projectIds.contains(obj[2].toString())) {%>  checked<%} %> class="mainprojectlist" name="projectlist"  value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>" type='checkbox'/>
 			                               <label for="<%=obj[2]%>">
-			                                   <span class="tableprojectname" style="color:black !important;font-size: 13px"> 
+			                                   <span class="tableprojectname" > 
 			                                       <% if (obj[46] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[46].toString()) %><% } else { %>-<% } %> /
 			                                       <% if (obj[3] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[3].toString()) %><% } else { %>-<% } %> /
 			                                       <% if (obj[44] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[44].toString()) %><% } else { %>-<% } %>
@@ -223,11 +223,11 @@ System.out.println(projectIds.toString()+"----");
 				</div>
 
 	        	
-	        	<div class="row" style="margin-top: 1rem;">
+	        	<div class="row" >
 	        		<div class="col-md-12">
 	        			<div align="left">
 	        				<h5>
-	        					Sub Projects: <input type="checkbox" id="selectsubprojects" style="width: 20px;height: 20px;">
+	        					Sub Projects: <input type="checkbox" id="selectsubprojects" >
 	        				</h5>
 	        			</div>
 	        			<hr>
@@ -238,10 +238,10 @@ System.out.println(projectIds.toString()+"----");
 			        	<div class="row">
 			        	<%} %>
 							<div class="col-3" >
-								<div style="text-align: left;">
-									<input <%if(projectIds.contains(obj[2].toString())) {%>  checked<%} %> class="subprojectlist" name="projectlist" style="text-align: left;margin: 8px;width: 20px; height: 20px;" value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>" type='checkbox'/>
+								<div >
+									<input <%if(projectIds.contains(obj[2].toString())) {%>  checked<%} %> class="subprojectlist" name="projectlist"  value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>" type='checkbox'/>
 									<label for="<%=obj[2]%>">
-										<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
+										<span class="tableprojectname" > 
 										  	<%if(obj[46]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[46].toString()) %><%}else {%>-<%} %> /
 										  	<%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else {%>-<%} %> /
 										  	<%if(obj[44]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[44].toString()) %><%}else {%>-<%} %>
@@ -260,10 +260,10 @@ System.out.println(projectIds.toString()+"----");
 	      	</div>
 	      </div>
 	      <div class="modal-footer ">
-	      <div class="row" style="width: 100%">
+	      <div class="row" >
 	      	<div class="col">
 	      		<div class="d-flex justify-content-start" >
-	      			<p style="text-align: left"><span style="color: red">Note</span>: Master slide is the combination of latest Data of selected project</p>
+	      			<p ><span ">Note</span>: Master slide is the combination of latest Data of selected project</p>
 	      		</div>
 	      	</div>
 	      	<div class="col d-flex justify-content-end" >
@@ -278,12 +278,12 @@ System.out.println(projectIds.toString()+"----");
 	</div>
 	
 	<!-- Modal -->
-	<div class="modal fade" id="selectFavProjectList" style="width: 100%"
+	<div class="modal fade" id="selectFavProjectList" 
 		tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		aria-hidden="true">
 			<input type="hidden" name="${_csrf.parameterName}"
 				value="${_csrf.token}" />
-			<div class="modal-dialog modal-lg" style="max-width: 1800px"
+			<div class="modal-dialog modal-lg" 
 				role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -294,7 +294,7 @@ System.out.println(projectIds.toString()+"----");
 						</button>
 					</div>
 					<input class="form-control" type="text" placeholder="Favourite Title"
-							name="FavouriteSlidesTitle" id="favTitle" style="padding: 10px;max-width: 25%;margin-left: 5%;margin-top: 5px "  required="required">
+							name="FavouriteSlidesTitle" id="favTitle"  required="required">
 					<div class="modal-body">
 						<div class="container-fluid">
 							<div class="row">
@@ -302,7 +302,7 @@ System.out.println(projectIds.toString()+"----");
 									<div align="left">
 										<h5>
 											Main Projects: <input type="checkbox" id="selectmainproject"
-												style="width: 20px; height: 20px;">
+												>
 										</h5>
 									</div>
 									<hr>
@@ -313,12 +313,12 @@ System.out.println(projectIds.toString()+"----");
 									<div class="row">
 										<% } %>
 										<div class="col-3">
-											<div style="text-align: left;">
+											<div >
 												<input checked class="mainprojectlis" name="projectlist"
-													style="text-align: left; margin: 8px; width: 20px; height: 20px;"
+													
 													value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>" type='checkbox' /> <label
 													for="<%=obj[2]%>"> <span class="tableprojectname"
-													style="color: black !important; font-size: 13px"> <% if (obj[46] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[46].toString()) %>
+													> <% if (obj[46] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[46].toString()) %>
 														<% } else { %>-<% } %> / <% if (obj[3] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[3].toString()) %>
 														<% } else { %>-<% } %> / <% if (obj[44] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[44].toString())%>
 														<% } else { %>-<% } %>
@@ -335,12 +335,12 @@ System.out.println(projectIds.toString()+"----");
 									<% } %>
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1rem;">
+							<div class="row" >
 								<div class="col-md-12">
 									<div align="left">
 										<h5>
 											Sub Projects: <input type="checkbox" id="selectsubproject"
-												style="width: 20px; height: 20px;">
+												>
 										</h5>
 									</div>
 									<hr>
@@ -351,12 +351,12 @@ System.out.println(projectIds.toString()+"----");
 									<div class="row">
 										<%} %>
 										<div class="col-3">
-											<div style="text-align: left;">
+											<div >
 												<input checked class="subprojectlis" name="projectlist"
-													style="text-align: left; margin: 8px; width: 20px; height: 20px;"
+													
 													value="<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): ""%>" type='checkbox' /> <label
 													for="<%=obj[2]%>"> <span class="tableprojectname"
-													style="color: black !important; font-size: 13px"> <%if(obj[46]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[46].toString()) %>
+													> <%if(obj[46]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[46].toString()) %>
 														<%}else {%>-<%} %> / <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %>
 														<%}else {%>-<%} %> / <%if(obj[44]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[44].toString()) %>
 														<%}else {%>-<%} %>
@@ -378,8 +378,8 @@ System.out.println(projectIds.toString()+"----");
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							onclick="$('#favTitle').val('');$('#selectFavProjectList').modal('hide');isAddFavClicked('close') ">Close</button>
-						<button type="button" id="save" style="display: block;" onclick="SaveEditValues('save');" class="btn btn-primary mx-1">Save Favourite</button>
-						<button type="button" id="edit" style="display: none;" onclick="SaveEditValues('edit');" class="btn btn-primary mx-1">Edit favourite</button>
+						<button type="button" class="cl-80" id="save"  onclick="SaveEditValues('save');" class="btn btn-primary mx-1">Save Favourite</button>
+						<button type="button" class="dis-none" id="edit"onclick="SaveEditValues('edit');" class="btn btn-primary mx-1">Edit favourite</button>
 					</div>
 				</div>
 			</div>
@@ -781,7 +781,7 @@ function SaveEditValues(val)
 									$('#selectFavProjectList').modal('hide');
 									$("#addeditsuccessmessage").css("display","block");
 									val = val=='save'?'Saved':'Edited';
-									document.getElementById('alertsection').innerHTML='<div class="alert alert-success" id="addeditsuccessmessage" style="display:block" role="alert">Favourite Slides '+val+' succesfully </div>';
+									document.getElementById('alertsection').innerHTML='<div class="alert alert-success" id="addeditsuccessmessage cl-80"  role="alert">Favourite Slides '+val+' succesfully </div>';
 						            $("#addeditsuccessmessage").delay(5000).slideUp();
 						            
 								}
@@ -793,7 +793,7 @@ function SaveEditValues(val)
 					isAddFavClicked('select');
 					$("#addeditfailuremessage").css("display","block");
 					val = val=='save'?'Saved':'Edited';
-					document.getElementById('alertsection').innerHTML='<div class="alert alert-danger" id="addeditfailuremessage" style="display:block" role="alert">Favourite Slides '+val+' failed</div>';
+					document.getElementById('alertsection').innerHTML='<div class="alert alert-danger cl-80" id="addeditfailuremessage"  role="alert">Favourite Slides '+val+' failed</div>';
 
 		            $("#addeditfailuremessage").delay(5000).slideUp();
 			}

@@ -19,198 +19,12 @@
 <title>Product Tree</title>
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
 
-
+<spring:url value="/resources/css/producttree/ProductTreeView.css" var="productTreeview" />
+<link href="${productTreeview}" rel="stylesheet" />
 
 <script src="./resources/js/html2canvas.min.js"></script>
 
    
-
-<!-- ------------------------------- tree css ------------------------------- -->
-<style type="text/css">
-
-
-
-/*----------------genealogy-tree----------*/
- .genealogy-body{
-    white-space: nowrap;
-    overflow-y: hidden;
-    padding: 50px;
-    min-height: 500px;
-    padding-top: 0px;
-    text-align: center;
-}
-
-
-.genealogy-tree{
-  display: inline-block;
-} 
-.genealogy-tree ul {
-    padding-top: 20px; 
-    position: relative;
-    padding-left: 0px;
-    display: flex;
-    justify-content: center;
-}
-.genealogy-tree li {
-    float: left; text-align: center;
-    list-style-type: none;
-    position: relative;
-    padding: 17px 0px 0 0px;
-}
-
-
- 
- 
-
-.genealogy-tree li .before, .genealogy-tree li .after{
-  
-    position: absolute; 
-    top: 0; 
-    right: 50%;
-    border-top: 1px solid black;
-    width: 50%; 
-    height: 18px;
-}
-
-  .genealogy-tree li .after{
-    right: auto; 
-    left: 50%;
-     border-left: 2px solid black; 
-   
-} 
-  
-
-   .genealogy-tree li:only-child{ 
-    padding-top: 0;
-}  
- 
- 
- 
- 
-  .genealogy-tree ul ul .firstchildafter{
-    
-    position: absolute;
-     top: 0; 
-     left: 50%;
-    border-left: 2px solid black;
-    width: 0;
-     height: 20px;
-} 
-  
- 
- .genealogy-tree li .action-view-box{
-     text-decoration: none;
-     /* font-family: arial, verdana, tahoma; */
-     font-size: 11px;
-     display: inline-block;
-     border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-} 
-
-
-/*--------------memeber-card-design----------*/
-.member-view-box{
-    padding:0px 15px;
-    text-align: center;
-    border-radius: 4px;
-    position: relative;
-}
-
-
-
-
-</style>
- <!-- ------------------------------- tree css ------------------------------- -->
-
-
-<style type="text/css">
-.action-box
-{
-
-    border: 1px solid black;
-    max-width:100px;
-    
-    
-}
-
-
-.action-box-header
-{
-
-	padding:2px;
- 	text-align: center;
- 	 
- 	
-}
-.corner {
-  position: absolute;
-  width: 20px; /* Adjust the width of the corner */
-  height: 20px; /* Adjust the height of the corner */
-  background-color: red; /* Adjust the color as needed */
-}
-
-.top-left {
-  top: -2px; /* Adjust position from top */
-  left: -2px; /* Adjust position from left */
-}
-
-.top-right {
-  top: -2px; /* Adjust position from top */
-  right: -2px; /* Adjust position from right */
-}
-
-.bottom-left {
-  bottom: -2px; /* Adjust position from bottom */
-  left: -2px; /* Adjust position from left */
-}
-
-.bottom-right {
-  bottom: -2px; /* Adjust position from bottom */
-  right: -2px; /* Adjust position from right */
-}
-
-
-.gradient-background{
-
- 
-
-
-}
-
-.action-box-body
-{
-   padding:0px;
-	text-align: center;
-	background-color:#FFFFFF ;
-	display: block;
-    flex-wrap: wrap;
-    border-bottom-right-radius : 9px;
-	border-bottom-left-radius: 7px;
-}
-
-
-table,td{
-
-
-      border: 1px solid black;
-      border-collapse:collapse;
-      padding:2px;
-       width:43%;
-       font-size:12px;
-
-}
-
-.bottom-div {
-    position: fixed;
-    bottom: 50px;
-    left: -20px;
-    width: 100%; 
-}
-
-
-
-</style>
 
 </head>
 
@@ -235,24 +49,24 @@ table,td{
 
  %>
 
-<body style="background-color:#FFFFFF;overflow-y:auto ;" class="body genealogy-body genealogy-scroll">
+<body class="body bg-white over-y genealogy-body genealogy-scroll">
 
 	
 
-     <button  type="button" class="btn btn-sm "  id="generatePdfBtn" style="margin-left: 1rem;"  onclick="downloadPDF()"> <i class="fa fa-download fa-lg" ></i></button> 
+     <button  type="button" class="btn btn-sm ml-3"  id="generatePdfBtn"  onclick="downloadPDF()"> <i class="fa fa-download fa-lg" ></i></button> 
 
 		
 	    <div class="genealogy-tree"  >
 	  
 	 <ul>
 	  	<li> 
-			 <div class="member-view-box action-view-box" style=" padding:0px 15px;">
+			 <div class="member-view-box action-view-box p-15" >
 			                    
-			                         <div class="action-box" style="border:-1px;" > 
+			                         <div class="action-box"> 
 			                         	
 			                         	<div  class="action-box-header" >
 			                         	
-			                         	 <span style="cursor:pointer;font-weight: bold;font-size: 1.0em;color:#40A2E3;">
+			                         	 <span class="cursor span-font" >
 	                          			      <%=StringEscapeUtils.escapeHtml4(ProjectName) %>
 			                          		 </span>
 			                         			 
@@ -276,42 +90,41 @@ table,td{
 			                	<li >
 			                	<% List<Object[]> L1 =ProductTreeList.stream().filter(e-> e[2].toString().equalsIgnoreCase("1") ).collect(Collectors.toList());%>	
 			                	
+			                	<%
+									String topClass1 = "";
+									if(level1[6] != null){
+									    String val = level1[6].toString();
+									    if(val.equalsIgnoreCase("Design")) topClass1 = "status-design";
+									    else if(val.equalsIgnoreCase("Realisation")) topClass1 = "status-realisation";
+									    else if(val.equalsIgnoreCase("Testing & Evaluation")) topClass1 = "status-testing";
+									    else if(val.equalsIgnoreCase("Ready for Closure")) topClass1 = "status-ready";
+									    else topClass1 = "status-default";
+									}
+									
+									String bottomClass1 = "";
+									if(level1[7] != null){
+									    String val = level1[7].toString();
+									    if(val.equalsIgnoreCase("In-House Development")) bottomClass1 = "type-inhouse";
+									    else if(val.equalsIgnoreCase("BTP")) bottomClass1 = "type-btp";
+									    else if(val.equalsIgnoreCase("BTS")) bottomClass1 = "type-bts";
+									    else if(val.equalsIgnoreCase("COTS")) bottomClass1 = "type-cots";
+									    else bottomClass1 = "type-default";
+									}
+									%>
 			                	
-			                	
-			                	  <div class="before" <%if(i==1) {%> style="border:none;" <%} %> ></div>  
+			                	  <div  <%if(i==1) {%> class="before border-0" <%} else{ %> class="before" <%} %>></div>
 			                	
 									    <div class="member-view-box action-view-box">
 											 <div class="action-box" > 
 												
-												 <div  class="action-box-header" 
+												 <div  class="action-box-header gradient-box <%=topClass1%> <%=bottomClass1%>" >
 												
-												  style="background-image: -webkit-linear-gradient(top,
-																			<%if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
-																			<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%,
-																			<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%,
-																			<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
-																			
-																			<%}else { %> white 5%,
-																			<%} %>
-																			 white 5%, white 95%,
-																			
-																		    <%if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
-																			<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
-																			<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
-																			<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
-																			
-																			<%}else { %> white 95%
-																			<%} %>
-																			 
-																			 );" >
-												
-										             <span  style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;"> 
+										              <span class="cursor span-font-2" >
 										                <%=count%> <br> <%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()):"-" %>
 										                
 										             </span>  
 										            
 													          
-											<!--  <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													      
 			                          		    </div> 
 			                          	 </div> 
@@ -333,37 +146,38 @@ table,td{
 							                { %>
 							             
 												<li>
-												<div class="before" <%if(j==1) {%> style="border:none;" <%} %> ></div>  
+												
+												<%
+													String topClass2 = "";
+													if(level2[6] != null){
+													    String val = level2[6].toString();
+													    if(val.equalsIgnoreCase("Design")) topClass2 = "status-design";
+													    else if(val.equalsIgnoreCase("Realisation")) topClass2 = "status-realisation";
+													    else if(val.equalsIgnoreCase("Testing & Evaluation")) topClass2 = "status-testing";
+													    else if(val.equalsIgnoreCase("Ready for Closure")) topClass2 = "status-ready";
+													    else topClass2 = "status-default";
+													}
+													
+													String bottomClass2 = "";
+													if(level2[7] != null){
+													    String val = level2[7].toString();
+													    if(val.equalsIgnoreCase("In-House Development")) bottomClass2 = "type-inhouse";
+													    else if(val.equalsIgnoreCase("BTP")) bottomClass2 = "type-btp";
+													    else if(val.equalsIgnoreCase("BTS")) bottomClass2 = "type-bts";
+													    else if(val.equalsIgnoreCase("COTS")) bottomClass2 = "type-cots";
+													    else bottomClass2 = "type-default";
+													}
+													%>
+												<div  <%if(j==1) {%> class="before border-0" <%} else{ %> class="before" <%} %>></div>
 												
 													<div class="member-view-box action-view-box">
 															<div class=" action-box" >
-															  <div class="action-box-header" 
-															  
-															      style="background-image: -webkit-linear-gradient(top,
-																			<%if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
-																			<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%,
-																			<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%,
-																			<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
-																			
-																			<%}else { %> white 5%,
-																			<%} %>
-																			 white 5%, white 95%,
-																			
-																		    <%if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
-																			<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
-																			<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
-																			<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
-																			
-																			<%}else { %> white 95%
-																			<%} %>
-																			 
-																			 );" >
+															  <div class="action-box-header gradient-box <%=topClass2%> <%=bottomClass2%>" >
 														
-															       <span style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;"> 
+															        <span class="cursor span-font-2" > 
 			                          			                         <%=count%>.<%=countA%> <br> <%=level2[3]!=null?StringEscapeUtils.escapeHtml4(level2[3].toString()):"-" %>
 			                          			                   </span>
 			                          			                   
-			                          			                <!--   <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													
 													             
 												             
@@ -385,45 +199,44 @@ table,td{
 										                  { %>
 																  <li> 
 																  
-																
+																<%
+																		String topClass3 = "";
+																		if(level3[6] != null){
+																		    String val = level3[6].toString();
+																		    if(val.equalsIgnoreCase("Design")) topClass3 = "status-design";
+																		    else if(val.equalsIgnoreCase("Realisation")) topClass3 = "status-realisation";
+																		    else if(val.equalsIgnoreCase("Testing & Evaluation")) topClass3 = "status-testing";
+																		    else if(val.equalsIgnoreCase("Ready for Closure")) topClass3 = "status-ready";
+																		    else topClass3 = "status-default";
+																		}
+																		
+																		String bottomClass3 = "";
+																		if(level3[7] != null){
+																		    String val = level3[7].toString();
+																		    if(val.equalsIgnoreCase("In-House Development")) bottomClass3 = "type-inhouse";
+																		    else if(val.equalsIgnoreCase("BTP")) bottomClass3 = "type-btp";
+																		    else if(val.equalsIgnoreCase("BTS")) bottomClass3 = "type-bts";
+																		    else if(val.equalsIgnoreCase("COTS")) bottomClass3 = "type-cots";
+																		    else bottomClass3 = "type-default";
+																		}
+																		%>
 																 
-																   <div class="before" <%if(k==1) {%> style="border:none;" <%} %> ></div>  
+																  <div  <%if(k==1) {%> class="before border-0" <%} else{ %> class="before" <%} %>></div>  
 																   
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
-																		
-							                                                   style="background-image: -webkit-linear-gradient(top,
-																			<%if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%,
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%,
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
-																			
-																			<%}else { %> white 5%,
-																			<%} %>
-																			 white 5%, white 95%,
-																			
-																		    <%if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
-																			
-																			<%}else { %> white 95%
-																			<%} %>
-																			 
-																			 );" >
+																		<div class="action-box-header gradient-box <%=topClass3%> <%=bottomClass3%>">
 																		
                                                                       
 																			 
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
+																		 <span class="cursor span-font-2" >
 			                          			                             
 			                          			                                <%=count%>.<%=countA%>.<%=countB%>  <br><%=level3[3]!=null?StringEscapeUtils.escapeHtml4(level3[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                     <!--  <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													
 													                   
 			                          			                          
@@ -446,44 +259,42 @@ table,td{
 										                	  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) 
 										                     { %>    
 																  <li> 
-																  
-																   <div class="before" <%if(l==1) {%> style="border:none;" <%} %> ></div> 
+																  <%
+																		String topClass4 = "";
+																		if(level4[6] != null){
+																		    String val = level4[6].toString();
+																		    if(val.equalsIgnoreCase("Design")) topClass4 = "status-design";
+																		    else if(val.equalsIgnoreCase("Realisation")) topClass4 = "status-realisation";
+																		    else if(val.equalsIgnoreCase("Testing & Evaluation")) topClass4 = "status-testing";
+																		    else if(val.equalsIgnoreCase("Ready for Closure")) topClass4 = "status-ready";
+																		    else topClass4 = "status-default";
+																		}
+																		
+																		String bottomClass4 = "";
+																		if(level4[7] != null){
+																		    String val = level4[7].toString();
+																		    if(val.equalsIgnoreCase("In-House Development")) bottomClass4 = "type-inhouse";
+																		    else if(val.equalsIgnoreCase("BTP")) bottomClass4 = "type-btp";
+																		    else if(val.equalsIgnoreCase("BTS")) bottomClass4 = "type-bts";
+																		    else if(val.equalsIgnoreCase("COTS")) bottomClass4 = "type-cots";
+																		    else bottomClass4 = "type-default";
+																		}
+																		%>
+																   <div  <%if(l==1) {%> class="before border-0" <%} else{ %> class="before" <%} %>></div> 
 																   
 																  
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header" 
-																		
-																		
-																		 style="background-image: -webkit-linear-gradient(top,
-																			<%if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%,
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%,
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
-																			
-																			<%}else { %> white 5%,
-																			<%} %>
-																			 white 5%, white 90%,
-																			
-																		    <%if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
-																			
-																			<%}else { %> white 95%
-																			<%} %>
-																			 
-																			 );" >
+																		<div class="action-box-header gradient-box <%=topClass4%> <%=bottomClass4%>" >
 																		 
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
+																		 <span class="cursor span-font-2" >
 			                          			                             
 			                          			                                <%=count%>.<%=countA%>.<%=countB%>.<%=countC%> <br><%=level4[3]!=null?StringEscapeUtils.escapeHtml4(level4[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                         <!--  <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													
 													                     
 												                                              			
@@ -506,37 +317,37 @@ table,td{
 								                             {%> 
 																  <li> 
 																  
-																    
+																    <%
+																		String topClass5 = "";
+																		if(level5[6] != null){
+																		    String val = level5[6].toString();
+																		    if(val.equalsIgnoreCase("Design")) topClass5 = "status-design";
+																		    else if(val.equalsIgnoreCase("Realisation")) topClass5 = "status-realisation";
+																		    else if(val.equalsIgnoreCase("Testing & Evaluation")) topClass5 = "status-testing";
+																		    else if(val.equalsIgnoreCase("Ready for Closure")) topClass5 = "status-ready";
+																		    else topClass5 = "status-default";
+																		}
+																		
+																		String bottomClass5 = "";
+																		if(level5[7] != null){
+																		    String val = level5[7].toString();
+																		    if(val.equalsIgnoreCase("In-House Development")) bottomClass5 = "type-inhouse";
+																		    else if(val.equalsIgnoreCase("BTP")) bottomClass5 = "type-btp";
+																		    else if(val.equalsIgnoreCase("BTS")) bottomClass5 = "type-bts";
+																		    else if(val.equalsIgnoreCase("COTS")) bottomClass5 = "type-cots";
+																		    else bottomClass5 = "type-default";
+																		}
+																		%>
 																 
-																   <div class="before" <%if(m==1) {%> style="border:none;" <%} %> ></div>  
+																   <div  <%if(m==1) {%> class="before border-0" <%} else{ %> class="before" <%} %>></div>  
 																  
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
-																		
-																		 style="background-image: -webkit-linear-gradient(top,
-																			<%if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%,
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%,
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
-																			
-																			<%}else { %> white 5%,
-																			<%} %>
-																			 white 5%, white 90%,
-																			
-																		    <%if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
-																			
-																			<%}else { %> white 95%
-																			<%} %>
-																			 
-																			 );" >
+																		<div class="action-box-header gradient-box <%=topClass5%> <%=bottomClass5%>">
 																		
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
+																		 <span class="cursor span-font-2" >
 			                          			                             
 			                          			                               <%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%> <br> <%=level5[3]!=null?StringEscapeUtils.escapeHtml4(level5[3].toString()):"-" %>
 			                          			                                
@@ -544,7 +355,6 @@ table,td{
 			                          			                          
 			                          			                          
 			                          			                          
-			                          			                        <!--   <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													
 													                   
 												                                              			
@@ -566,37 +376,38 @@ table,td{
 								                             {%> 
 																  <li> 
 																  
+																    <%
+																		String topClass6 = "";
+																		if(level6[6] != null){
+																		    String val = level6[6].toString();
+																		    if(val.equalsIgnoreCase("Design")) topClass6 = "status-design";
+																		    else if(val.equalsIgnoreCase("Realisation")) topClass6 = "status-realisation";
+																		    else if(val.equalsIgnoreCase("Testing & Evaluation")) topClass6 = "status-testing";
+																		    else if(val.equalsIgnoreCase("Ready for Closure")) topClass6 = "status-ready";
+																		    else topClass6 = "status-default";
+																		}
+																		
+																		String bottomClass6 = "";
+																		if(level6[7] != null){
+																		    String val = level6[7].toString();
+																		    if(val.equalsIgnoreCase("In-House Development")) bottomClass6 = "type-inhouse";
+																		    else if(val.equalsIgnoreCase("BTP")) bottomClass6 = "type-btp";
+																		    else if(val.equalsIgnoreCase("BTS")) bottomClass6 = "type-bts";
+																		    else if(val.equalsIgnoreCase("COTS")) bottomClass6 = "type-cots";
+																		    else bottomClass6 = "type-default";
+																		}
+																		%>
 																    
 																 
-																   <div class="before" <%if(n==1) {%> style="border:none;" <%} %> ></div>  
+																   <div  <%if(n==1) {%> class="before border-0" <%} else{ %> class="before" <%} %>></div>  
 																  
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
-																		
-																		 style="background-image: -webkit-linear-gradient(top,
-																			<%if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
-																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%,
-																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%,
-																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
-																			
-																			<%}else { %> white 5%,
-																			<%} %>
-																			 white 5%, white 90%,
-																			
-																		    <%if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
-																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
-																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
-																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
-																			
-																			<%}else { %> white 95%
-																			<%} %>
-																			 
-																			 );" >
+																		<div class="action-box-header gradient-box <%=topClass6%> <%=bottomClass6%>" >
 																		
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
+																		 <span class="cursor span-font-2" >
 			                          			                             
 			                          			                               <%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%> <br> <%=level6[3]!=null?StringEscapeUtils.escapeHtml4(level6[3].toString()):"-" %>
 			                          			                                
@@ -604,7 +415,6 @@ table,td{
 			                          			                          
 			                          			                          
 			                          			                          
-			                          			                        <!--   <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													
 													                   
 												                                              			
@@ -625,38 +435,38 @@ table,td{
 								                        	  <% if(level7[2].toString().equalsIgnoreCase("7") && level6[0].toString().equalsIgnoreCase(level7[1].toString()) )
 								                             {%> 
 																  <li> 
-																  
+																  	<%
+																		String topClass7 = "";
+																		if(level7[6] != null){
+																		    String val = level6[6].toString();
+																		    if(val.equalsIgnoreCase("Design")) topClass7 = "status-design";
+																		    else if(val.equalsIgnoreCase("Realisation")) topClass7 = "status-realisation";
+																		    else if(val.equalsIgnoreCase("Testing & Evaluation")) topClass7 = "status-testing";
+																		    else if(val.equalsIgnoreCase("Ready for Closure")) topClass7 = "status-ready";
+																		    else topClass7 = "status-default";
+																		}
+																		
+																		String bottomClass7 = "";
+																		if(level7[7] != null){
+																		    String val = level6[7].toString();
+																		    if(val.equalsIgnoreCase("In-House Development")) bottomClass7 = "type-inhouse";
+																		    else if(val.equalsIgnoreCase("BTP")) bottomClass7 = "type-btp";
+																		    else if(val.equalsIgnoreCase("BTS")) bottomClass7 = "type-bts";
+																		    else if(val.equalsIgnoreCase("COTS")) bottomClass7 = "type-cots";
+																		    else bottomClass7 = "type-default";
+																		}
+																		%>
 																    
 																 
-																   <div class="before" <%if(o==1) {%> style="border:none;" <%} %> ></div>  
+																   <div  <%if(o==1) {%> class="before border-0" <%} else{ %> class="before" <%} %>></div>  
 																  
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
-																		
-																		 style="background-image: -webkit-linear-gradient(top,
-																			<%if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, 
-																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%,
-																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%,
-																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%,
-																			
-																			<%}else { %> white 5%,
-																			<%} %>
-																			 white 5%, white 90%,
-																			
-																		    <%if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 95% 
-																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 95% 
-																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 95%
-																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 95%
-																			
-																			<%}else { %> white 95%
-																			<%} %>
-																			 
-																			 );" >
+																		<div class="action-box-header gradient-box <%=topClass7%> <%=bottomClass7%>">
 																		
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;word-wrap: break-word;" >
+																		 <span class="cursor span-font-2" >
 			                          			                             
 			                          			                                <%=count%>.<%=countA%>.<%=countB%>.<%=countC%>.<%=countD%>.<%=countE%>.<%=countF%> <br><%=level7[3]!=null?StringEscapeUtils.escapeHtml4(level7[3].toString()):"-" %>
 			                          			                                
@@ -664,7 +474,6 @@ table,td{
 			                          			                          
 			                          			                          
 			                          			                          
-			                          			                        <!--   <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div> -->
 													
 													                   
 												                                              			
@@ -675,8 +484,7 @@ table,td{
 																		
 																		<%--------------------------------------------------------------------------------LEVEL 7 ---------------------------------------------%>
 																	
-																<div class="after"   <% if(o==Level6.size()) {%> style="border-top:none;" <%} %>></div> 	
-																	   
+																<div  <%if(o==Level6.size()) {%> class="after border-top-0" <%} else{ %> class="after" <%} %>></div>
 																   </li>
 															
 														    <%o++; 
@@ -691,7 +499,7 @@ table,td{
 																		
 																		<%--------------------------------------------------------------------------------LEVEL 6 ---------------------------------------------%>
 																	
-																<div class="after"   <% if(n==Level5.size()) {%> style="border-top:none;" <%} %>></div> 	
+																<div  <%if(n==Level5.size()) {%> class="after border-top-0" <%} else{ %> class="after" <%} %>></div> 	
 																	   
 																   </li>
 															
@@ -705,7 +513,7 @@ table,td{
 																	
 																	<%--------------------------------------------------------------------------------LEVEL 5 ---------------------------------------------%>
 																	
-																<div class="after"   <% if(m==Level4.size()) {%> style="border-top:none;" <%} %>></div> 	
+																<div  <%if(m==Level4.size()) {%> class="after border-top-0" <%} else{ %> class="after" <%} %>></div> 	
 																	   
 																   </li>
 															
@@ -718,7 +526,7 @@ table,td{
 													</ul>      
 																	
 														<%--------------------------------------------------------------------------------LEVEL 4 ---------------------------------------------%> 
-															<div class="after" <% if(l==Level3.size()) {%> style="border-top:none;" <%} %> ></div> 		    
+															<div  <%if(l==Level3.size()) {%> class="after border-top-0" <%} else{ %> class="after" <%} %>></div> 		    
 														 </li>
 															
 												    <%l++;
@@ -730,7 +538,7 @@ table,td{
 																    
 																    
 														<!-- --------------------------------------------------------   LEVEL 3 ---------------------------------------------------- -->  		    														    
-														<div class="after" <% if(k==Level2.size()) {%> style="border-top:none;" <%} %>></div> 			    
+														<div  <%if(k==Level2.size()) {%> class="after border-top-0" <%} else{ %> class="after" <%} %>></div> 			    
 															 
 							                		    </li>
 												
@@ -746,7 +554,7 @@ table,td{
 										                
 										                   
 										    <!-- --------------------------------------------------------   LEVEL 2 ---------------------------------------------------- -->  
-										<div class="after" <% if(j==Level1.size()) {%> style="border-top:none;" <%} %> ></div> 	  	
+										<div  <%if(j==Level1.size()) {%> class="after border-top-0" <%} else{ %> class="after" <%} %>></div> 	  	
 								 	 </li>
 								 <%j++;
 								 countA++;} %>
@@ -756,7 +564,7 @@ table,td{
 			                </ul>  
 						                  
 						        <!-- --------------------------------------------------------   LEVEL 1 ---------------------------------------------------- -->    
-						 	 <div class="after" <% if(i==L1.size()) {%> style="border-top:none;" <%} %> ></div>  			
+						 	 <div  <%if(i==L1.size()) {%> class="after border-top-0" <%} else{ %> class="after" <%} %>></div>  			
                 		 </li>
                 	   <%i++;
                 	   count++; } %>
@@ -786,21 +594,21 @@ table,td{
          <table >
 
                   <tr>
-						<td style="font-weight:bold;">Stage (Upper)</td>
-						<td style="background-color:#D24545;color:#FFFFFF">Design</td>
-						<td style="background-color:#E9B824;color:black">Realisation</td>
-						<td style="background-color:#0B60B0;color:#FFFFFF">Testing & Evaluation</td>
-						<td style="background-color:green;color:#FFFFFF">Ready for Closure</td>
+						<td class="font-weight-bold">Stage (Upper)</td>
+						<td class="design">Design</td>
+						<td class="realisation">Realisation</td>
+						<td class="testing">Testing & Evaluation</td>
+						<td class="closure">Ready for Closure</td>
                   </tr>
 
 
 
                  <tr>
-						<td style="font-weight:bold;">Module (Lower)</td>
-						<td style="background-color:#FF8911;color:black">In-House Development</td>
-						<td style="background-color:#FDE767;color:black">BTP</td>
-						<td style="background-color:#B67352;color:black">BTS</td>
-						<td style="background-color:#492E87;color:#FFFFFF">COTS</td>
+						<td class="font-weight-bold">Module (Lower)</td>
+						<td class="house">In-House Development</td>
+						<td class="btp">BTP</td>
+						<td class="bts">BTS</td>
+						<td class="cots">COTS</td>
                  </tr>
 
        </table>     

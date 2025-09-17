@@ -1,0 +1,97 @@
+/* Common Container */
+#print-section {
+    padding: 15px;
+}
+
+/* Project Table */
+.project-table {
+    float: left;
+    border: none;
+}
+
+.project-table td {
+    border: none;
+    padding: 4px;
+}
+
+.project-select {
+    width: 200px;
+}
+
+/* Back button */
+.back-btn {
+    float: right;
+}
+
+/* Heading */
+.sheet-heading {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Letter Header (Right aligned block) */
+.letter-header {
+    text-align: right;
+    padding-right: 35px;
+}
+
+/* Recipient section */
+.recipient {
+    padding-left: 35px;
+}
+
+/* Paragraphs */
+.note {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.subject {
+    text-align: center;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.justified-text {
+    padding-left: 35px;
+    text-align: justify;
+    margin: 10px 0;
+}
+
+/* Signature */
+.signature {
+    text-align: right;
+    padding-right: 50px;
+    margin-top: 20px;
+}
+
+/* Tables */
+.copy-table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    width: 90%;
+}
+
+.copy-table td, 
+.copy-table th {
+    border: 1px solid black;
+    padding: 8px;
+    vertical-align: top;
+}
+
+/* Submit Button */
+.submit-btn {
+    margin: 20px auto;
+    display: inline-block;
+}
+@media print {
+
+    #printbtn {
+        display :  none;
+    }
+}
+
+.date-input {
+    width: 9% !important;
+    display: inline-block;
+}

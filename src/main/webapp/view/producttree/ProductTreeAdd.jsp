@@ -12,231 +12,11 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
- 
+ <spring:url value="/resources/css/producttree/ProductTreeAdd.css" var="productTreeAdd" />
+<link href="${productTreeAdd}" rel="stylesheet" />
 
 <title>Product Tree</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 14px;
-}
 
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-
-.genealogy-body{
-    white-space: nowrap;
-    overflow-y: hidden;
-    padding: 50px;
-     min-height: 800px; 
-    padding-top: 10px;
-    text-align: center;
-}
-.genealogy-tree{
-  display: inline-block;
-} 
-.genealogy-tree ul {
-    padding-top: 20px; 
-    position: relative;
-    padding-left: 0px;
-    display: flex;
-    justify-content: center;
-}
-.genealogy-tree li {
-    float: left; text-align: center;
-    list-style-type: none;
-    position: relative;
-    padding: 20px 26px 0 12px;
-}
-.genealogy-tree li::before, .genealogy-tree li::after{
-    content: '';
-    position: absolute; 
-    top: 0; 
-    right: 50%;
-    border-top: 2px solid #ccc;
-    width: 50%; 
-    height: 18px;
-}
-.genealogy-tree li::after{
-    right: auto; left: 50%;
-    border-left: 2px solid #ccc;
-}
-.genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
-    display: none;
-}
-.genealogy-tree li:only-child{ 
-    padding-top: 0;
-}
-.genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
-    border: 0 none;
-}
-.genealogy-tree li:last-child::before{
-     border-right: 2px solid #ccc;
-     border-radius: 0 5px 0 0;
-    -webkit-border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-}
-.genealogy-tree li:first-child::after{
-    border-radius: 5px 0 0 0;
-    -webkit-border-radius: 5px 0 0 0;
-    -moz-border-radius: 5px 0 0 0;
-}
-.genealogy-tree ul ul::before{
-    content: '';
-    position: absolute; top: 0; left: 50%;
-    border-left: 2px solid #ccc;
-    width: 0; height: 20px;
-}
-.genealogy-tree li .action-view-box{
-     text-decoration: none;
-     /* font-family: arial, verdana, tahoma; */
-     font-size: 11px;
-     display: inline-block;
-     border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-}
-
-.genealogy-tree li a:hover+ul li::after, 
-.genealogy-tree li a:hover+ul li::before, 
-.genealogy-tree li a:hover+ul::before, 
-.genealogy-tree li a:hover+ul ul::before{
-    border-color:  #fbba00;
-}
-
-/*--------------memeber-card-design----------*/
-.member-view-box{
-    padding:0px 15px;
-    text-align: center;
-    border-radius: 4px;
-    position: relative;
-}
-.member-image{
-    width: 60px;
-    position: relative;
-}
-.member-image img{
-    width: 60px;
-    height: 60px;
-    border-radius: 6px;
-    background-color :#000;
-    z-index: 1;
-}
-.F{
- background: #FF69B4;
-    color: white;   
-}
-.S{
-background: #72cd23;
-    color: white;
-}
-
-
-.H{
-background: #FF8C00;
-    color: white;
-}
-</style>
- <!-- ------------------------------- tree css ------------------------------- -->
-
-
-<style type="text/css">
-.action-box
-{
-     width: fit-content ; 
-     height: fit-content;
-     /* min-width:190px; */
-   /*   min-width:190px; */
-    border: 1px solid black;
-}
-
-.action-box-header
-{
-	
- 	padding:3px;
- 	text-align: center;
- 	
-	
-}
-
-.action-box-body
-{
-	padding:0px;
-	text-align: center;
-	background-color:#FFFFFF ;
-	display: block;
-    flex-wrap: wrap;
-    border-bottom-right-radius : 9px;
-	border-bottom-left-radius: 7px;
-}
-
-th
-{
-
-  text-align: left;
- 	
-}
-
-
-.action-view-box {
-    position: relative;
-}
-
-.actions {
-    position: absolute;
-    top: 0;
-    right: -20px; /* initially hide the actions */
-    visibility: hidden;
-    transition: right 0.3s;
-}
-
-.action-view-box:hover .actions {
-    right: 0; /* show the actions on hover */
-    visibility: visible;
-}
-
-.update,
-.delet {
-    display: block; /* Change display to block to stack the icons and text */
-    padding: 5px 5px;
-    margin-right: -18px;
-    text-align: left; /* Align text to the left */
-    border: none; /* This line removes the border */
-    cursor:pointer;
-}
-
-img{
-width:18px;
-height:18px;
-
-}
-/* .update i,
-.delet i {
-    margin-right: 20px; /* Add some space between the icon and text */
-} */
-
-/* .edit:hover,
-.delete:hover {
-    background-color: #ccc;
-} */
-
-
-.bottom-div {
-
-            display: flex;
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            margin: 10px;  /* Ensures the div stretches across the entire width of the page */
-}
-
-
-
-
-
-</style>
 </head>
  
 
@@ -271,14 +51,14 @@ height:18px;
  %>
 <body>
  <form class="form-inline"  method="POST" action="ProductTree.htm" id="myfrm">
-  <div class="row" style="width: 100%;">
+  <div class="row w-100">
 
   
 	
                                     <div class="col-md-2">
                             		<label class="control-label">Project Type :</label>
                             		</div>
-                            		<div class="col-md-2" style="margin-top: -7px;">
+                            		<div class="col-md-2 mt-minus-7" >
                               		<select class="form-control selectdee" id="ProjectType" required="required" name="ProjectType" onchange="submit(myfrm)">
                               			<option disabled selected value="">Choose...</option>
                               			<option value="M" <%if(ProjectType.equalsIgnoreCase("M")){ %>selected<%} %>>Main Project</option>
@@ -287,10 +67,10 @@ height:18px;
                               		</select>
                               		</div>
                               		
-                              		<div class="col-md-7" style="text-align: right;">
-                              	      		<span style="background-color: #72cd23;padding: 0px 15px;border-radius: 3px;"></span><span>&nbsp; Software  </span>
-                              		<span style="background-color: #FF8C00;padding: 0px 15px;border-radius: 3px;"></span><span> &nbsp;Hardware </span>
-                              		<span style="background-color: #FF69B4;padding: 0px 15px;border-radius: 3px;"></span><span> &nbsp;Firmware  </span>
+                              		<div class="col-md-7 text-right">
+                              	      		<span class="software"></span><span>&nbsp; Software  </span>
+                              		<span class="hardware"></span><span> &nbsp;Hardware </span>
+                              		<span class="firmware"></span><span> &nbsp;Firmware  </span>
                               		</div>
                               		
                               		</div>
@@ -299,7 +79,7 @@ height:18px;
                               		</form>
                             <br>
  <form class="form-inline"  method="POST" action="ProductTree.htm" id="myfrm1">
-  <div class="row" style="width: 100%;">
+  <div class="row w-100" >
 
   
 	
@@ -307,7 +87,7 @@ height:18px;
                             		<label class="control-label">Project Name :</label>
                             		</div>
                             		<%if(ProjectType.equalsIgnoreCase("M")) {%>
-                            		<div class="col-md-2" style="margin-top: -7px;">
+                            		<div class="col-md-2 mt-minus-7">
                               		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
     									<option disabled selected value="">Choose...</option>
     										<% for (Object[] obj : ProjectList) {
@@ -321,7 +101,7 @@ height:18px;
   									<%} %>
   									
   											<%if(ProjectType.equalsIgnoreCase("I")) {%>
-                            		<div class="col-md-2" style="margin-top: -7px;">
+                            		<div class="col-md-2 mt-minus-7" >
                               		<select class="form-control selectdee" id="initiationId" required="required" name="initiationId" onchange="submit(myfrm1)">
     									<option disabled selected value="">Choose...</option>
     									<%for(Object[]obj:preProjectList){ %>
@@ -332,7 +112,7 @@ height:18px;
   									 <input type="hidden" name="ProjectId" value="<%=ProjectId%>">
   									<%} %>
   									
-  									<div class="col-md-4" style="margin-top:-7px;">
+  									<div class="col-md-4 mt-minus-7" >
   										
   										
   										<% if(ProductTreeList!=null && ProductTreeList.size()>0 ){ %>
@@ -350,7 +130,7 @@ height:18px;
 		                                       <%} %>
 		                                      										<% if(ProductTreeList!=null && ProductTreeList.size()>0 && ProjectType.equalsIgnoreCase("M")){ %>   
 		                                       
-		                                       <button name="action" class="btn btn-sm back" name ="ProjectId" value="<%=ProjectId %>" formaction="ProductTreeRevise.htm" style="background-color: green;color: white; border: 0" type="submit" value="revise"  onclick="return confirm('Are You Sure To Submit')">SET BASE LINE  ( <%=RevisionCount!=null &&  RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1) %> )</button>
+		                                       <button name="action" class="btn btn-sm back btn-add-pro" name ="ProjectId" value="<%=ProjectId %>" formaction="ProductTreeRevise.htm"   type="submit" value="revise"  onclick="return confirm('Are You Sure To Submit')">SET BASE LINE  ( <%=RevisionCount!=null &&  RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1) %> )</button>
                                                    <input type="hidden" name="REVCount" value="<%=RevisionCount.size()==0?0:String.valueOf(Integer.parseInt(RevisionCount.get(0)[0].toString())+1)%>" >
                                               
    
@@ -363,7 +143,6 @@ height:18px;
                                           
                                        <%} %>
                                        
-                                       <%-- <button  type="submit" class="btn btn-sm "  style="margin-left: 1rem;" name="ProjectId" value="<%=ProjectId %>"  formaction="ProductTreeDownload.htm" formtarget="_blank" ><i class="fa fa-download fa-lg" ></i></button>  --%>
                                       
                                        
                                    </div>
@@ -371,7 +150,7 @@ height:18px;
 			<div class="col-md-2">
 				<label class="control-label">Choose System Name :</label>
 			</div>
-			<div class="col-md-2" style="margin-top: -7px;">
+			<div class="col-md-2 mt-minus-7">
 				<select class="form-control selectdee" id="sid" 
 					name="sid" onchange="showSystemValue()">
 					<option disabled selected value="">Choose...</option>
@@ -399,7 +178,7 @@ height:18px;
 	<%---------------------------------------- Main Level -------------------------------------------------%>
 
 <!-- <form  method="GET" action="LevelNameAdd.htm" id="myForm"> -->
-	<div style="background-color:#FFFFFF;" class="body genealogy-body genealogy-scroll">
+	<div class="body genealogy-body bg-white genealogy-scroll">
 	
 	
 <% 
@@ -436,11 +215,11 @@ height:18px;
 	           
 						 <div class="member-view-box action-view-box">
 			                    
-			                         <div class="action-box" style="border:-1px;" > 
+			                         <div class="action-box" > 
 			                         	
 			                         	<div  class="action-box-header" >
 			                         	
-			                         	 <span style="cursor:pointer;font-weight: 600;font-size: 1.7em;">
+			                         	 <span class="cursor span-font" >
 	                          			 <%=ProjectName!=null?StringEscapeUtils.escapeHtml4(ProjectName):"-" %>
 			                          		 </span>
 			                         			 
@@ -463,46 +242,47 @@ height:18px;
 			            	   if(level1[2].toString().equalsIgnoreCase("1")) { %>
 			              
 			                	<li>	 		    
+			                	<%
+									String statusClass1 = "status-default";
+									if(level1[6] != null) {
+									    String status = level1[6].toString();
+									    if(status.equalsIgnoreCase("Design")) statusClass1 = "status-design";
+									    else if(status.equalsIgnoreCase("Realisation")) statusClass1 = "status-realisation";
+									    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass1 = "status-testing";
+									    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass1 = "status-ready";
+									}
+									
+									String typeClass1 = "type-default";
+									if(level1[7] != null) {
+									    String type = level1[7].toString();
+									    if(type.equalsIgnoreCase("In-House Development")) typeClass1 = "type-inhouse";
+									    else if(type.equalsIgnoreCase("BTP")) typeClass1 = "type-btp";
+									    else if(type.equalsIgnoreCase("BTS")) typeClass1 = "type-bts";
+									    else if(type.equalsIgnoreCase("COTS")) typeClass1 = "type-cots";
+									}
+									%>
 									    <div class="member-view-box action-view-box">
 											 <div class="action-box" > 
 												
-												<div  class="action-box-header" 
-												
-												style="background: linear-gradient(to bottom right, 
-												<%if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-												<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-												<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-												<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-												
-												<%}else { %> white 5%, white 10% 
-												<%} %>
-												, white 10%, white 90%,
-												
-											    <%if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-												<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-												<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-												<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-												
-												<%}else { %> white 5%, white 10% 
-												<%} %> );" > 
+												<div class="action-box-header gradient-box <%=statusClass1%> <%=typeClass1%>">
 												 
 												 
 												
-										             <span  class="<%=level1[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level1[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level1[13].toString() %>, <%=level1[10] %>"  <%} %>> 
+										             <span  class="cursor span-font <%=level1[12].toString()%>"    <%if(!level1[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level1[13].toString() %>, <%=level1[10] %>"  <%} %>> 
 										           <%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()):"-" %>
 										                
 										             </span> 
 										             
 										             
 										            
-										               <div style="margin-top:-5px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+										               <div class="mt-minus-5"><i class="fa fa-caret-down i-col cursor" aria-hidden="true"  ></i></div>
 												         
 			                          		   </div>
 										</div> 
 									 
 												<div class="actions">
 												       <button class="update" onclick="EditModal('<%=level1[0]%>','<%=level1[3]%>','<%=level1[6]%>','<%=level1[7]%>','1','<%=level1[9] %>','<%=level1[10] %>')" ><img src="view/images/edit.png" ></button>
-												    <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+												    <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 												         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 													     <input type="hidden" name="Action" value="TD">
 													      <input type="hidden" name="initiationId" value="<%=initiationId%>">
@@ -528,35 +308,34 @@ height:18px;
 							                { %>
 							             
 												<li>	
+												<%
+													String statusClass2 = "status-default";
+													if(level2[6] != null) {
+													    String status = level2[6].toString();
+													    if(status.equalsIgnoreCase("Design")) statusClass2 = "status-design";
+													    else if(status.equalsIgnoreCase("Realisation")) statusClass2 = "status-realisation";
+													    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass2 = "status-testing";
+													    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass2 = "status-ready";
+													}
+													
+													String typeClass2 = "type-default";
+													if(level2[7] != null) {
+													    String type = level2[7].toString();
+													    if(type.equalsIgnoreCase("In-House Development")) typeClass2 = "type-inhouse";
+													    else if(type.equalsIgnoreCase("BTP")) typeClass2 = "type-btp";
+													    else if(type.equalsIgnoreCase("BTS")) typeClass2 = "type-bts";
+													    else if(type.equalsIgnoreCase("COTS")) typeClass2 = "type-cots";
+													}
+													%>
 													<div class="member-view-box action-view-box">
 															<div class=" action-box" >
-															  <div class="action-box-header"
+															  <div class="action-box-header gradient-box <%=statusClass2%> <%=typeClass2%>">
 															  
-															  style="background: linear-gradient(to bottom right, 
-																<%if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																
-																<%}else { %> white 5%, white 10% 
-																<%} %>
-																, white 10%, white 90%,
-																
-															    <%if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																
-																<%}else { %> white 5%, white 10% 
-																<%} %>
-																 
-																 );" >
-															  
-															       <span class="<%=level2[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level2[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level2[13].toString() %>, <%=level2[10] %>"  <%} %>> 
+															       <span class="cursor span-font <%=level2[12].toString()%>"    <%if(!level2[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level2[13].toString() %>, <%=level2[10] %>"  <%} %>> 
 			                          			                              <%=level2[3]!=null?StringEscapeUtils.escapeHtml4(level2[3].toString()):"-" %>
 			                          			                   </span>
 			                          			                   
-			                          			                    <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                    <div class="mt-minus-2"><i class="fa fa-caret-down i-col cursor" aria-hidden="true"  ></i></div>
 													 
 			                          			             </div>
 													     </div>
@@ -564,7 +343,7 @@ height:18px;
 													      
 													              <div class="actions">
 																	       <button class="update" onclick="EditModal('<%=level2[0]%>','<%=level2[3]%>','<%=level2[6]%>','<%=level2[7]%>','2','<%=level2[9] %>','<%=level2[10] %>')" ><img src="view/images/edit.png" ></button>
-																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																	          <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																			     <input type="hidden" name="Action" value="TD">
 																			      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
@@ -587,48 +366,46 @@ height:18px;
 										                 if(level3[2].toString().equalsIgnoreCase("3") && level2[0].toString().equalsIgnoreCase(level3[1].toString()) )
 										                
 										                  { %>
-																  <li>      
+																  <li>     
+																  <%
+																			String statusClass3 = "status-default";
+																			if(level3[6] != null) {
+																			    String status = level3[6].toString();
+																			    if(status.equalsIgnoreCase("Design")) statusClass3 = "status-design";
+																			    else if(status.equalsIgnoreCase("Realisation")) statusClass3 = "status-realisation";
+																			    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass3 = "status-testing";
+																			    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass3 = "status-ready";
+																			}
+																			
+																			String typeClass3 = "type-default";
+																			if(level3[7] != null) {
+																			    String type = level3[7].toString();
+																			    if(type.equalsIgnoreCase("In-House Development")) typeClass3 = "type-inhouse";
+																			    else if(type.equalsIgnoreCase("BTP")) typeClass3 = "type-btp";
+																			    else if(type.equalsIgnoreCase("BTS")) typeClass3 = "type-bts";
+																			    else if(type.equalsIgnoreCase("COTS")) typeClass3 = "type-cots";
+																			}
+																			%> 
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header" 
+																		<div class="action-box-header gradient-box <%=statusClass3%> <%=typeClass3%>">							
 																		
 																		
-									                                      style="background: linear-gradient(to bottom right, 
-																			<%if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			, white 10%, white 90%,
-																			
-																		    <%if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			 
-																			 );" >									
-																		
-																		
-																		<span class="<%=level3[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"   <%if(!level3[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level3[13].toString() %>, <%=level3[10] %>"  <%} %>>
+																		<span  class="cursor span-font <%=level3[12].toString()%>"     <%if(!level3[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level3[13].toString() %>, <%=level3[10] %>"  <%} %>>
 			                          			                             
 			                          			                                <%=level3[3]!=null?StringEscapeUtils.escapeHtml4(level3[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                            <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div>
+			                          			                            <div class="mt-minus-2"><i class="fa fa-caret-down i-col cursor" aria-hidden="true"></i></div>
 													                         			
 													                 </div>
 													              </div>
 													              
 													              <div class="actions">
 																	       <button class="update" onclick="EditModal('<%=level3[0]%>','<%=level3[3]%>','<%=level3[6]%>','<%=level3[7]%>','3','<%=level3[9]%>','<%=level3[10]%>')" ><img src="view/images/edit.png" ></button>
-																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																	          <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																			     <input type="hidden" name="Action" value="TD">
 																			      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
@@ -654,40 +431,39 @@ height:18px;
 															                 
 										                	  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) 
 										                     { %>    
-																  <li>      
+																  <li>     
+																  <%
+																			String statusClass4 = "status-default";
+																			if(level4[6] != null) {
+																			    String status = level4[6].toString();
+																			    if(status.equalsIgnoreCase("Design")) statusClass4 = "status-design";
+																			    else if(status.equalsIgnoreCase("Realisation")) statusClass4 = "status-realisation";
+																			    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass4 = "status-testing";
+																			    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass4 = "status-ready";
+																			}
+																			
+																			String typeClass4 = "type-default";
+																			if(level4[7] != null) {
+																			    String type = level4[7].toString();
+																			    if(type.equalsIgnoreCase("In-House Development")) typeClass4 = "type-inhouse";
+																			    else if(type.equalsIgnoreCase("BTP")) typeClass4 = "type-btp";
+																			    else if(type.equalsIgnoreCase("BTS")) typeClass4 = "type-bts";
+																			    else if(type.equalsIgnoreCase("COTS")) typeClass4 = "type-cots";
+																			}
+																			%> 
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
-																		
-																		style="background: linear-gradient(to bottom right, 
-																			<%if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			, white 10%, white 90%,
-																			
-																		    <%if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			 
-																			 );" >
+																		<div class="action-box-header gradient-box <%=statusClass4%> <%=typeClass4%>">
 																		
 																		
-																		<span class="<%=level4[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level4[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level4[13].toString() %>, <%=level4[10] %>"  <%} %>>
+																		<span class="cursor span-font <%=level4[12].toString()%>"    <%if(!level4[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level4[13].toString() %>, <%=level4[10] %>"  <%} %>>
 			                          			                             
 			                          			                                <%=level4[3]!=null?StringEscapeUtils.escapeHtml4(level4[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                          <div class="mt-minus-2"><i class="fa fa-caret-down i-col cursor" aria-hidden="true"  ></i></div>
 													
 													                     
 												                                              			
@@ -698,7 +474,7 @@ height:18px;
 																 
 													              <div class="actions">
 																	       <button class="update" onclick="EditModal('<%=level4[0]%>','<%=level4[3]%>','<%=level4[6]%>','<%=level4[7]%>','4','<%=level4[9]%>','<%=level4[10]%>')" ><img src="view/images/edit.png" ></button>
-																	          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																	          <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 																		         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																			     <input type="hidden" name="Action" value="TD">
 																			      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
@@ -721,39 +497,38 @@ height:18px;
 										                	for(Object[] level5 : ProductTreeList){%>
 								                        	  <% if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) )
 								                             {%> 
-																  <li>      
+																  <li>  
+																  <%
+																			String statusClass5 = "status-default";
+																			if(level5[6] != null) {
+																			    String status = level5[6].toString();
+																			    if(status.equalsIgnoreCase("Design")) statusClass5 = "status-design";
+																			    else if(status.equalsIgnoreCase("Realisation")) statusClass5 = "status-realisation";
+																			    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass5 = "status-testing";
+																			    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass5 = "status-ready";
+																			}
+																			
+																			String typeClass5 = "type-default";
+																			if(level5[7] != null) {
+																			    String type = level5[7].toString();
+																			    if(type.equalsIgnoreCase("In-House Development")) typeClass5 = "type-inhouse";
+																			    else if(type.equalsIgnoreCase("BTP")) typeClass5 = "type-btp";
+																			    else if(type.equalsIgnoreCase("BTS")) typeClass5 = "type-bts";
+																			    else if(type.equalsIgnoreCase("COTS")) typeClass5 = "type-cots";
+																			}
+																			%>    
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
+																		<div class="action-box-header gradient-box <%=statusClass5%> <%=typeClass5%>">
 																		
-																		style="background: linear-gradient(to bottom right, 
-																			<%if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			, white 10%, white 90%,
-																			
-																		    <%if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			 
-																			 );" >
-																		
-																		<span class="<%=level5[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level5[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level5[13].toString() %>, <%=level5[10] %>"  <%} %>>
+																		<span class="cursor span-font <%=level5[12].toString()%>"    <%if(!level5[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level5[13].toString() %>, <%=level5[10] %>"  <%} %>>
 			                          			                             
 			                          			                                <%=level5[3]!=null?StringEscapeUtils.escapeHtml4(level5[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-													                                <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div> 
+													                                <div class="mt-minus-2"><i class="fa fa-caret-down i-col cursor" aria-hidden="true"></i></div> 
 													
 													                    
 												                                              			
@@ -764,7 +539,7 @@ height:18px;
 													                        
 																              <div class="actions">
 																				       <button class="update" onclick="EditModal('<%=level5[0]%>','<%=level5[3]%>','<%=level5[6]%>','<%=level5[7]%>','5','<%=level5[9]%>','<%=level5[10]%>')" ><img src="view/images/edit.png" ></button>
-																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																				          <form action="ProductTreeEditDelete.htm"  method="get"  class="d-inline">
 																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																						     <input type="hidden" name="Action" value="TD">
 																						      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
@@ -786,39 +561,38 @@ height:18px;
 											                        	  <% if(level6[2].toString().equalsIgnoreCase("6") && level5[0].toString().equalsIgnoreCase(level6[1].toString()) )
 											                             { %> 
 																  <li>      
+																  <%
+																			String statusClass6 = "status-default";
+																			if(level6[6] != null) {
+																			    String status = level6[6].toString();
+																			    if(status.equalsIgnoreCase("Design")) statusClass6 = "status-design";
+																			    else if(status.equalsIgnoreCase("Realisation")) statusClass6 = "status-realisation";
+																			    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass6 = "status-testing";
+																			    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass6 = "status-ready";
+																			}
+																			
+																			String typeClass6 = "type-default";
+																			if(level6[7] != null) {
+																			    String type = level6[7].toString();
+																			    if(type.equalsIgnoreCase("In-House Development")) typeClass6 = "type-inhouse";
+																			    else if(type.equalsIgnoreCase("BTP")) typeClass6 = "type-btp";
+																			    else if(type.equalsIgnoreCase("BTS")) typeClass6 = "type-bts";
+																			    else if(type.equalsIgnoreCase("COTS")) typeClass6 = "type-cots";
+																			}
+																			%>
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
+																		<div class="action-box-header gradient-box <%=statusClass6%> <%=typeClass6%>">
 																		
-																		style="background: linear-gradient(to bottom right, 
-																			<%if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			, white 10%, white 90%,
-																			
-																		    <%if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			 
-																			 );" >
-																		
-																		<span class="<%=level6[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;"  <%if(!level6[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level6[13].toString() %>, <%=level6[10] %>"  <%} %>>
+																		<span  class="cursor span-font <%=level6[12].toString()%>"  <%if(!level6[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level6[13].toString() %>, <%=level6[10] %>"  <%} %>>
 			                          			                             
 			                          			                                <%=level6[3]!=null?StringEscapeUtils.escapeHtml4(level6[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
 			                          			                          
-			                          			                           <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 1.2rem;color:black;padding-top:0px;padding-bottom:2px;cursor: pointer ;"></i></div> 
+			                          			                           <div class="mt-minus-2"><i class="fa fa-caret-down i-col cursor" aria-hidden="true"></i></div> 
 			                          			                            			
 													                    </div>
 													                        
@@ -827,7 +601,7 @@ height:18px;
 													                        
 																              <div class="actions">
 																				       <button class="update" onclick="EditModal('<%=level6[0]%>','<%=level6[3]%>','<%=level6[6]%>','<%=level6[7]%>','6','<%=level6[9]%>','<%=level6[10]%>')" ><img src="view/images/edit.png" ></button>
-																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																				          <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																						     <input type="hidden" name="Action" value="TD">
 																						      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
@@ -850,33 +624,32 @@ height:18px;
 													                	for(Object[] level7 : ProductTreeList){ %>
 											                        	  <% if(level7[2].toString().equalsIgnoreCase("7") && level6[0].toString().equalsIgnoreCase(level7[1].toString()) )
 											                             { %> 
-																  <li>      
+																  <li>  
+																  <%
+																			String statusClass7 = "status-default";
+																			if(level7[6] != null) {
+																			    String status = level7[6].toString();
+																			    if(status.equalsIgnoreCase("Design")) statusClass7 = "status-design";
+																			    else if(status.equalsIgnoreCase("Realisation")) statusClass7 = "status-realisation";
+																			    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass7 = "status-testing";
+																			    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass7 = "status-ready";
+																			}
+																			
+																			String typeClass7 = "type-default";
+																			if(level7[7] != null) {
+																			    String type = level7[7].toString();
+																			    if(type.equalsIgnoreCase("In-House Development")) typeClass7 = "type-inhouse";
+																			    else if(type.equalsIgnoreCase("BTP")) typeClass7 = "type-btp";
+																			    else if(type.equalsIgnoreCase("BTS")) typeClass7 = "type-bts";
+																			    else if(type.equalsIgnoreCase("COTS")) typeClass7 = "type-cots";
+																			}
+																			%>    
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
+																		<div class="action-box-header gradient-box <%=statusClass7%> <%=typeClass7%>">
 																		
-																		style="background: linear-gradient(to bottom right, 
-																			<%if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			, white 10%, white 90%,
-																			
-																		    <%if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			 
-																			 );" >
-																		
-																		<span class="<%=level7[12].toString()%>" style="cursor:pointer;font-weight: 600;font-size: 1.7em;" <%if(!level7[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level7[13].toString() %>, <%=level7[10] %>"  <%} %> >
+																		<span class="cursor span-font <%=level7[12].toString()%>" <%if(!level7[13].toString().equals("N")) {%> data-toggle="tooltip" data-placement="top" data-original-data="" title="" data-original-title="<%=level7[13].toString() %>, <%=level7[10] %>"  <%} %> >
 			                          			                             
 			                          			                                <%=level7[3]!=null?StringEscapeUtils.escapeHtml4(level7[3].toString()):"-" %>
 			                          			                                
@@ -889,7 +662,7 @@ height:18px;
 													                        
 																              <div class="actions">
 																				       <button class="update" onclick="EditModal('<%=level7[0]%>','<%=level7[3]%>','<%=level7[6]%>','<%=level7[7]%>','7','<%=level7[9]%>','<%=level7[10]%>')" ><img src="view/images/edit.png" ></button>
-																				          <form action="ProductTreeEditDelete.htm"  method="get" style="display: inline">
+																				          <form action="ProductTreeEditDelete.htm"  method="get" class="d-inline">
 																					         <input type="hidden" name="ProjectId" value="<%=ProjectId %>" >
 																						     <input type="hidden" name="Action" value="TD">
 																						      <input type="hidden" name="ProjectType" value="<%=ProjectType%>">
@@ -909,7 +682,7 @@ height:18px;
 														
 												   <li>
 				                                       <div class="member-view-box action-view-box">
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															<span class="cursor span-font"> 
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
@@ -939,7 +712,7 @@ height:18px;
 														
 												   <li>
 				                                       <div class="member-view-box action-view-box">
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															<span class="cursor span-font"> 
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
@@ -968,7 +741,7 @@ height:18px;
 														
 												   <li>
 				                                       <div class="member-view-box action-view-box">
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															<span class="cursor span-font"> 
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
@@ -998,7 +771,7 @@ height:18px;
 														
 														  <li>
 				                                       <div class="member-view-box action-view-box">
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															<span class="cursor span-font"> 
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
@@ -1029,7 +802,7 @@ height:18px;
                 	        
 				                	            <li>
 				                                       <div class="member-view-box action-view-box">
-															<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+															<span class="cursor span-font"> 
 															
 															<form action="LevelNameAdd.htm" method="get">
 													            <input type="text" name="LevelName" required >
@@ -1058,7 +831,7 @@ height:18px;
                 	        
                 	            <li>
                                        <div class="member-view-box action-view-box">
-											<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+											<span class="cursor span-font"> 
 											
 											<form action="LevelNameAdd.htm" method="get">
 									            <input type="text" name="LevelName" required >
@@ -1086,7 +859,7 @@ height:18px;
                     <li>
                 
                          <div class="member-view-box action-view-box">
-							<span style="cursor:pointer;font-weight: 600;font-size: 1.7em;"> 
+							<span class="cursor span-font"> 
 					            <form action="LevelNameAdd.htm" method="get">
 						            <input type="text" name="LevelName" required>
 						            <button type="submit" class="btn btn-sm btn-success" name="Split"  value="<%=ProjectId%>#1#0#<%=count %>#<%=initiationId %>" onclick="return confirm('Are You Sure To Submit')"> Add</button>
@@ -1136,7 +909,7 @@ height:18px;
       </div>
       <div class="modal-body" align="center">
         <form action="ProductTreeEditDelete.htm" method="get">
-        	<table style="width: 100%;">
+        	<table class="w-100" >
         		<tr>
         			<th>Level Name : &nbsp; </th>
         			<td><input type="text" class="form-control" name="LevelName" id="levelname" required></td>
@@ -1147,7 +920,7 @@ height:18px;
         			<th >Stage : &nbsp; </th>
         			<td >
         			
-        			<select class="form select selectdee " name="Stage"  id="stage"   style="width:100%;">
+        			<select class="form select selectdee w-100" name="Stage"  id="stage"  >
         			
         			        <option value="Design">Design</option>
 		      				<option value="Realisation">Realisation</option>
@@ -1165,7 +938,7 @@ height:18px;
         			     <th >Module : &nbsp; </th>
         			<td >
         			
-        			<select class="form select selectdee" id="Module" name="Module"   style="width:100%;">
+        			<select class="form select selectdee w-100" id="Module" name="Module" >
         					
         			        <option value="In-House-Development">In-House-Development</option>
 		      				<option value="BTP">BTP</option>
@@ -1179,27 +952,15 @@ height:18px;
         		<tr id="subsystemTr">
         		<th >Sub-Sytem Linked : &nbsp; </th>
         		<td>
-        		<select class="form select selectdee" id="subSystem" name="subSystem"   style="width:100%;">
+        		<select class="form select selectdee w-100" id="subSystem" name="subSystem"  >
         			
         			     
         			
         			</select>
         		</td>
         		</tr>
-        		<!-- <tr id="issoftwareTr">
-        		<th>
-        		Is Software:
-        		</th>
-        		<td>
-        		<select class="form select selectdee IsSoftware"  name="IsSoftware"   style="width:100%;">
-        		<option value="" selected="selected" disabled="disabled" >Select</option>
-        		<option value="Y">YES</option>
-        		<option value="N">NO</option>
-        		</select>
-        		</td>
-        		</tr> -->
         		<tr>
-        			<td colspan="2" style="text-align: center;">
+        			<td colspan="2" class="text-center">
         				<br>
         				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>Close</b></button>
         				<button class="btn btn-sm submit" onclick="return confirm('Are You Sure to Edit?');">SUBMIT</button>

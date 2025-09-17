@@ -1,36 +1,16 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.pfms.*,java.text.SimpleDateFormat,java.text.DecimalFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/projectModule/projectMainEdit.css" var="projectMainEdit" />
+<link href="${projectMainEdit}" rel="stylesheet" />
 <title>Project Main Edit</title>
-<style>
-label {
-	font-size: 14px;
-}
 
-.input-group-text {
-	font-weight: bold;
-}
-
-label {
-	font-weight: 800;
-	font-size: 16px;
-	color: #07689f;
-}
-
-hr {
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b {
-	font-family: 'Lato', sans-serif;
-}
-</style>
 </head>
 <body>
 
@@ -64,13 +44,13 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 
 
 <div class="container-fluid">
-<div class="row" style="margin-top: -10px;">
+<div class="row mt-n1p">
 <div class="col-md-12">
 <div class="card shadow-nohover" >
 
-    <div class="card-header" style=" background-color: #055C9D;margin-top: ">
-                    <h3 class="text-white">Project Main Edit</h3>
-        		</div>
+    <div class="card-header cs-header">
+           <h3 class="text-white">Project Main Edit</h3>
+	</div>
 
 
 <div class="card-body"> 
@@ -84,17 +64,16 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 					<!-- Text input-->
 					  <div class="tables">
   <div class="table-responsive">
-  
-	  <!-- changed the style -->
+ 
 	  
-	   <table class="table table-bordered table-hover table-striped table-condensed " style="border: 1px solid black !important;background-color:white;font-family: 'Montserrat', sans-serif;" >
+	   <table class="table table-bordered table-hover table-striped table-condensed cs-table">
   <thead>
 
 
 <tr>
   <th>
- <label style="margin-bottom: -10px;"> Project Code:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Project Code:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
@@ -103,8 +82,8 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
  
 </td>
   <th>
- <label style="margin-bottom: -10px;"> Project Name:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Project Name:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
@@ -116,8 +95,8 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
  
  <tr>
   <th>
- <label style="margin-bottom: -10px;"> Project Number:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Project Number:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
@@ -126,8 +105,8 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
  
 </td>
   <th>
- <label style="margin-bottom: -10px;"> Project Unit Code:
-<span class="mandatory" style="color: red;"></span>
+ <label class="mb-n1p"> Project Unit Code:
+<span class="mandatory text-danger"></span>
 </label>
 </th>
  <td >
@@ -138,7 +117,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
  </tr>
  
  <tr>
-	<th><label style="margin-bottom: -10px;"> End User:<span class="mandatory" style="color: red;">*</span></label></th>
+	<th><label class="mb-n1p"> End User:<span class="mandatory text-danger">*</span></label></th>
 		<td><select name="enduser" 	class="form-control  form-control selectdee" data-width="100%" data-live-search="true">
 				<option disabled="disabled" selected="selected" value="">Choose...</option>
 				<option value="IA" <%if(ProjectMainEditData[24]!=null && ProjectMainEditData[24].equals("IA")){ %> selected<%} %>>Indian Army</option>
@@ -148,13 +127,13 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 				<option value="DRDO" <%if(ProjectMainEditData[24]!=null && ProjectMainEditData[24].equals("DRDO")){ %> selected<%} %>>DRDO</option>
 				<option value="OH" <%if(ProjectMainEditData[24]!=null && ProjectMainEditData[24].equals("OH")){ %> selected<%} %>>Others</option>
 	</select></td>  
- <th><label style="margin-bottom: -10px;"> Project Short Name:<span class="mandatory" style="color: red;">*</span></label></th>
+ <th><label class="mb-n1p"> Project Short Name:<span class="mandatory text-danger">*</span></label></th>
 <td><input type="text"   name="projectshortname" placeholder="Enter Project Short Name" <%if(ProjectMainEditData!=null && ProjectMainEditData[26]!=null ){%>value="<%=StringEscapeUtils.escapeHtml4(ProjectMainEditData[26].toString())%>" <%}%>	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required"></td> 
  </tr>
   <tr>
   <th>
- <label style="margin-bottom: -10px;"> Category:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Category:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
@@ -168,8 +147,8 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 								<%} %>
 						</select>
 </td>
-<th><label style="margin-bottom: -10px;">
-															Security Classification: <span class="mandatory" style="color: red;">*</span>
+<th><label class="mb-n1p">
+															Security Classification: <span class="mandatory text-danger">*</span>
 													</label></th>
 													<td><select required="required" id="selectbasic"
 														name="securityClassification"
@@ -188,8 +167,8 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
  
    <tr>
   <th>
- <label style="margin-bottom: -10px;"> Project Director:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Project Director:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
@@ -205,8 +184,8 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 							</select>
 </td>
   <th>
- <label style="margin-bottom: -10px;"> Is Main Work Center:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Is Main Work Center:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
@@ -223,26 +202,14 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 </td>
 
  </tr>
-<%--  <tr>
-   <th>
- <label style="margin-bottom: -10px;"> WorkCenter Name:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td colspan="3" >
-<input type="text"  name="wcname"  value="<%=ProjectMainEditData[17] %>" class="form-control" maxlength="100" required="required">
- 
-</td>
- </tr> --%>
  
     <tr>
   <th>
- <label style="margin-bottom: -10px;"> Project Sanc Authority:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Project Sanc Authority:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
-<%-- <input type="text"  class="form-control"  value="<%=ProjectMainEditData[14] %>"  name="ProjectsancAuthority" maxlength="100" required="required"> --%>
 
 													<select required="required"
 														name="ProjectsancAuthority"
@@ -263,8 +230,8 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 
 </td>
   <th>
- <label style="margin-bottom: -10px;"> Project Sanction Letter No:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Project Sanction Letter No:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
@@ -275,27 +242,18 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
  
     <tr>
   <th>
- <label style="margin-bottom: -10px;"> Project Sanction Date:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Project Sanction Date:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
 <input type="text"  data-date-format="dd/mm/yyyy"  readonly id="sanc-date" name="sadate"  value=""
 								class="form-control form-control">
 </td>
-<%--   <th>
- <label style="margin-bottom: -10px;"> Sanction CostRE:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td >
-<input type="text"  name="sancostre" id="Recostid" value="<%=ProjectMainEditData[9] %>"
-								class="form-control number-only"  maxlength="18" required="required">
-</td> --%>
 
 <th>
- <label style="margin-bottom: -10px;">Total Sanction Cost (&#8377;):
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p">Total Sanction Cost (&#8377;):
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
@@ -307,13 +265,11 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
  </tr>
     <tr>
   <th>
- <label style="margin-bottom: -10px;"> Board Of  Reference:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Board Of  Reference:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
-<%-- <input type="text"   name="bor" value="<%=ProjectMainEditData[15] %>"
-								class="form-control" maxlength="50" required="required"> --%>
 								
 								<select required="required"
 														name="bor"
@@ -328,8 +284,8 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 								
 </td>
   <th>
- <label style="margin-bottom: -10px;"> Sanction Cost FE (&#8377;):
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Sanction Cost FE (&#8377;):
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
@@ -340,28 +296,18 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
  
  <tr>
   <th>
- <label style="margin-bottom: -10px;">PDC:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p">PDC:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
 <input  id="pdc-date"  data-date-format="dd/mm/yyyy" readonly name="pdc" value=""
 								class="form-control form-control">
 </td>
- <!--  <th>
- <label style="margin-bottom: -10px;">Total Sanction Cost:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td >
-<input type="text"  readonly="readonly"    id="totalcostid" name="tsancost"
-							class="form-control number-only" >
-</td> -->
-
 
   <th>
- <label style="margin-bottom: -10px;"> Sanction Cost RE (&#8377;):
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p"> Sanction Cost RE (&#8377;):
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td >
@@ -373,7 +319,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
  </tr>
   <!-- srikant code start -->
 								<tr>
-										<th><label style="margin-bottom: -10px;">Platform: <span class="mandatory"	style="color: red;">*</span></label></th>
+										<th><label class="mb-n1p">Platform: <span class="mandatory text-danger">*</span></label></th>
 													<td><select required="required" id="platformName" name="platformName" class="form-control form-control selectdee" data-width="100%" data-live-search="true">
 													<option disabled="disabled" value="" selected="selected">Choose..</option>
 								<%for(Object[] protype:PlatformList ){%>
@@ -386,16 +332,16 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 								
 <!-- srikant code end-->
  <tr>
-		<th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
+		<th colspan="1"><label class="mb-n1p">Nodal & Participating Lab:<span class="mandatory text-danger">*</span></label></th>
 		<td colspan="3"><input required="required"	name="Nodal" class="form-control alphanum-symbols-no-leading-space" maxlength="5000" value="<%if(ProjectMainEditData[21]!=null ){%><%=StringEscapeUtils.escapeHtml4(ProjectMainEditData[21].toString()) %><%} %>" /></td>
 </tr>
  <tr>
-		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
+		<th colspan="1"><label class="mb-n1p">Application:<span class="mandatory text-danger">*</span></label></th>
 		<td colspan="3"><textarea required="required" name="application" placeholder="Enter maximum 50 charcters " class="form-control " maxlength="49" rows="1" cols="53"><%if(ProjectMainEditData[25]!=null){%> <%=ProjectMainEditData[25].toString()%> <%}%></textarea></td>
 </tr>
  <tr>
-	<th colspan="1"><label style="margin-bottom: -10px;">Scope:
-		<span class="mandatory" style="color: red;">*</span>
+	<th colspan="1"><label class="mb-n1p">Scope:
+		<span class="mandatory text-danger">*</span>
 		</label>
 	</th>
 	<td colspan="3"><textarea required="required"
@@ -408,8 +354,8 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
  
  <tr>
   <th colspan="1">
- <label style="margin-bottom: -10px;">Objective:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p">Objective:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td colspan="3">
@@ -421,8 +367,8 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
  </tr>
   <tr>
   <th colspan="1">
- <label style="margin-bottom: -10px;">Deliverable:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="mb-n1p">Deliverable:
+<span class="mandatory text-danger">*</span>
 </label>
 </th>
  <td colspan="3">

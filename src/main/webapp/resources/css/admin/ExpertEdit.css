@@ -1,0 +1,42 @@
+@charset "UTF-8";
+
+.input-group-text {
+			font-weight: bold;
+		}
+
+		label {
+			font-weight: 800;
+			font-size: 16px;
+			color: #07689f;
+		}
+
+		hr {
+			margin-top: -2px;
+			margin-bottom: 12px;
+		}
+
+		.card b {
+			font-size: 20px;
+		}
+		
+		input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
+
+.bg-header{
+	background-color: #055C9D!important;
+}
+.bg-footer{
+	background: linear-gradient(to right, #334d50, #cbcaa5)!important;
+	padding: 25px!important; 
+}
+.input-font{
+	font-size: 5px!important;
+}

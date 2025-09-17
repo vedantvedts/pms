@@ -37,13 +37,14 @@
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
 <spring:url value="/resources/css/slides-style.css" var="SlidesStyleCSS" />
 <link href="${SlidesStyleCSS}" rel="stylesheet" />
-
+<spring:url value="/resources/css/print/agendaPresentation.css" var="agendaPresentation" />     
+<link href="${agendaPresentation}" rel="stylesheet" />
 <title>PMS - Presentation</title>
 
 <meta charset="ISO-8859-1">
 
 </head>
-<body style="background-color: #F9F2DF66;">
+<body class="agp-48">
 	<%
 		FormatConverter fc = new FormatConverter();
 		SimpleDateFormat sdf = fc.getRegularDateFormat();
@@ -111,28 +112,28 @@
 			<!-- ---------------------------------------- P-1  Div ----------------------------------------------------- -->
 			<div class="carousel-item active">
 
-				<div class="content" align="center"
-					style="height: 93vh !important; padding-top: 15px;">
+				<div class="content agp-2" align="center"
+					>
 
 					<div class="firstpage">
 
 						<div align="center">
-							<h2
-								style="color: #145374 !important; font-family: 'Muli' !important">Presentation</h2>
+							<h2 class="agp-1"
+								>Presentation</h2>
 						</div>
 						<div align="center">
-							<h3 style="color: #145374 !important">for</h3>
+							<h3 class="agp-3">for</h3>
 						</div>
 
 						<div align="center">
-							<h3 style="color: #4C9100 !important"><%=CommitteeName!=null?StringEscapeUtils.escapeHtml4(CommitteeName): " - " %>
+							<h3 class="agp-4"><%=CommitteeName!=null?StringEscapeUtils.escapeHtml4(CommitteeName): " - " %>
 								#<%=Long.parseLong(committeeMetingsCount[1].toString())+1 %>
 								Meeting
 							</h3>
 						</div>
 
 						<div align="center">
-							<h3 style="color: #4C9100 !important">
+							<h3 class="agp-5">
 								<%if(projectattributes!=null){%>
 								<%= projectattributes[1]!=null?StringEscapeUtils.escapeHtml4(projectattributes[1].toString()): " - " %>
 								(<%= projectattributes[0]!=null?StringEscapeUtils.escapeHtml4(projectattributes[0].toString()): " - "%>)
@@ -140,11 +141,11 @@
 							</h3>
 						</div>
 
-						<table class="executive home-table"
-							style="align: center; margin-left: auto; margin-right: auto; border: 0px; font-size: 16px;">
+						<table class="executive home-table agp-5"
+							>
 							<tr>
-								<th colspan="8" style="text-align: center; font-weight: 700;">
-									<img class="logo" style="width: 120px; height: 120px;"
+								<th colspan="8" class="agp-7">
+									<img class="logo agp-6" 
 									<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
 									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>> <br>
 								</th>
@@ -152,64 +153,61 @@
 							</tr>
 						</table>
 
-						<table style="align: center; width: 650px;">
-							<tr style="margin-top: 10px">
-								<th
-									style="text-align: center; font-size: 18px; border: 0px !important;">
+						<table class="agp-8">
+							<tr class="mt-1">
+								<th class="agp-9">
 									<u>Meeting Id </u>
 								</th>
 							</tr>
 							<tr>
-								<th
-									style="text-align: center; font-size: 18px; border: 0px !important;">
+								<th class="agp-10">
 									<%=scheduledata[11]!=null?StringEscapeUtils.escapeHtml4(scheduledata[11].toString()): " - " %>
 								</th>
 							</tr>
 						</table>
-						<table style="align: left; width: 650px;">
+						<table class="agp-11">
 							<tr>
 								<th
-									style="text-align: center; width: 50%; font-size: 18px; border: 0px !important;">
+									class="agp-12">
 									<u> Meeting Date </u>
 								</th>
-								<th
-									style="text-align: center; width: 50%; font-size: 18px; border: 0px !important;"><u>
+								<th class="agp-13"
+									><u>
 										Meeting Time </u></th>
 							</tr>
 							<tr>
 								<%-- <%LocalTime starttime = LocalTime.parse(LocalTime.parse(nextMeetVenue[3].toString(),DateTimeFormatter.ofPattern("HH:mm:ss")).format( DateTimeFormatter.ofPattern("HH:mm") ));   %> --%>
 								<td
-									style="text-align: center; width: 50%; font-size: 18px; padding-top: 5px; border: 0px !important;">
+									class="agp-14">
 									<b><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(scheduledata[2].toString())))%></b>
 								</td>
-								<td
-									style="text-align: center; width: 50%; font-size: 18px; padding-top: 5px; border: 0px !important;">
+								<td class="agp-14">
 									<b><%=scheduledata[3]!=null?StringEscapeUtils.escapeHtml4(scheduledata[3].toString()): " - "/* starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) */%></b>
 								</td>
 							</tr>
 						</table>
-						<table style="align: center; width: 650px;">
-							<tr style="margin-top: 10px">
+						<table class="agp-8">
+							<tr class="mt-1">
 								<th
-									style="text-align: center; font-size: 18px; border: 0px !important;">
+									class="agp-10">
 									<u>Meeting Venue</u>
 								</th>
 							</tr>
 							<tr>
 								<th
-									style="text-align: center;; font-size: 18px; border: 0px !important;">
+									class="agp-10">
 									<% if(scheduledata[12]!=null){ %><%=StringEscapeUtils.escapeHtml4(scheduledata[12].toString()) %> <%}else{ %>
 									- <%} %>
 								</th>
 							</tr>
 						</table>
 
-						<table class="executive home-table"
-							style="align: center; margin-bottom: 5px; margin-left: auto; margin-right: auto; border: 0px; font-size: 16px;">
+						<table class="executive home-table agp-15"
+							s>
 							<% if(labInfo!=null){ %>
 							<tr>
 								<th colspan="8"
-									style="text-align: center; font-weight: 700; font-size: 22px">
+									class="agp-16">
 									<%if(labInfo.getLabName()!=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabName())  %>
 									<%}else{ %>LAB NAME<%} %>
 								</th>
@@ -217,17 +215,17 @@
 							<%}%>
 							<tr>
 								<th colspan="8"
-									style="text-align: center; font-weight: 700; font-size: 15px"><br>Government
+									class="agp-17"><br>Government
 									of India, Ministry of Defence</th>
 							</tr>
 							<tr>
 								<th colspan="8"
-									style="text-align: center; font-weight: 700; font-size: 15px">Defence
+									class="agp-17">Defence
 									Research & Development Organization</th>
 							</tr>
 							<tr>
 								<th colspan="8"
-									style="text-align: center; font-weight: 700; font-size: 15px">
+									class="agp-17">
 									<%if(labInfo.getLabAddress() !=null){ %><%=StringEscapeUtils.escapeHtml4(labInfo.getLabAddress())  %>
 									, <%=labInfo.getLabCity()!=null?StringEscapeUtils.escapeHtml4(labInfo.getLabCity()): " - " %>
 									<%}else{ %>LAB ADDRESS<%} %>
@@ -251,23 +249,23 @@
 				<div class="content-header row ">
 
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
-					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
+					<div class="col-md-1 pt-2" align="left" >
+						<b class="agp-19"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
 						<h3>Agenda</h3>
 					</div>
-					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+					<div class="col-md-1 pt-2" align="right" >
+						<b class="agp-19"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
@@ -280,9 +278,9 @@
 
 
 					<% if(Long.parseLong(projectid)>0  && SplCommitteeCodes.contains(CommitteeCode)){ %>
-					<div class="row" style="float: right;">
+					<div class="row agp-20" >
 						<form action="#" method="post" id="myfrm" target="_blank"
-							style="float: right; margin-right: 25px; padding: 5px;">
+							class="agp-21">
 
 							<% if(scheduledata[23].toString().equalsIgnoreCase("Y")){%>
 							<input type="submit" class="btn btn-sm back"
@@ -291,13 +289,13 @@
 								title="Briefing Paper">
 							<%}%>
 
-							<button type="submit" class="btn btn-sm "
-								style="background-color: #96D500;"
+							<button type="submit" class="btn btn-sm agp-22"
+								
 								formaction="BriefingPresentation.htm" formmethod="post"
 								formtarget="_blank" data-toggle="tooltip"
 								data-placement="bottom" title="Presentation">
 								<img src="view/images/presentation.png"
-									style="width: 19px !important">
+									class="agp-23">
 							</button>
 							<input type="hidden" name="scheduleid" value="<%=scheduleid%>">
 							<input type="hidden" name="committeeid" value="<%=committeeid%>">
@@ -310,19 +308,19 @@
 
 
 					<table
-						class="table table-bordered table-hover table-striped table-condensed "
-						style="margin-top: 10px; width: 100%">
+						class="table table-bordered table-hover table-striped table-condensed agp-24"
+						>
 						<thead>
 							<tr>
-								<th style="width: 5%;">SN</th>
-								<th style="width: 22%;">Agenda Item</th>
+								<th class="width-5">SN</th>
+								<th  class="width-22" >Agenda Item</th>
 								<!-- 	<th style="width: 15%;">Reference</th>
 			                       	<th style="width: 10%;">Remarks</th> -->
-								<th style="width: 24%;">Presenter</th>
-								<th style="width: 14%;">Duration</th>
-								<th style="width: 10%;">Attachment</th>
+								<th class="width-24" >Presenter</th>
+								<th class="width-14" >Duration</th>
+								<th class="width-10" >Attachment</th>
 								<%if(scheduletype.equalsIgnoreCase("P")) {%>
-									<th width="10%">Present</th>
+									<th class="width-10">Present</th>
 								<%} %>
 							</tr>
 						</thead>
@@ -332,12 +330,12 @@
 								for(Object[] 	obj:AgendaList){ count++;%>
 							<tr>
 
-								<td style="text-align: center;"><%=count%></td>
+								<td class="text-center"><%=count%></td>
 								<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></td>
 								<%-- <td><%=obj[4] %>  </td>									
 									<td><%=obj[6] %></td> --%>
 								<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%>,  <%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %></td>
-								<td style="text-align: center;"><%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>
+								<td class="text-center"><%=starttime.format( DateTimeFormatter.ofPattern("hh:mm a") ) %>
 									- <%=starttime.plusMinutes(Long.parseLong(obj[12].toString())).format( DateTimeFormatter.ofPattern("hh:mm a") )  %>
 									<%starttime=starttime.plusMinutes(Long.parseLong(obj[12].toString()) /* + 1 */); %>
 
@@ -349,9 +347,9 @@
 												<tr>
 													<td><%=doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " %></td>
 												    <%if(Long.parseLong(initiationid) > 0){ %>
-														   <td style="width:1% ;white-space: nowrap;" ><a href="PrePRojectAgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+														   <td class="agp-25" ><a href="PrePRojectAgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download agp-26"  aria-hidden="true"></i></a></td>
 													<%}else{ %>
-															<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
+															<td class="agp-25" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download agp-26" aria-hidden="true"></i></a></td>
 													<%} %>
 												<tr>													
 											<%} }%>
@@ -360,7 +358,7 @@
 								<%if(scheduletype.equalsIgnoreCase("P")) {%>	
 									<td>
 										<form action="#" method="post" id="myfrm_<%=count %>" target="_blank"
-											style="float: right; margin-right: 25px; padding: 5px;">
+											class="agp-21">
 				
 											<% if(scheduledata[23].toString().equalsIgnoreCase("Y")){%>
 												<input type="submit" class="btn btn-sm back" 
@@ -368,10 +366,10 @@
 												data-placement="bottom" title="Briefing Paper">
 											<%}%>
 				
-											<button type="submit" class="btn btn-sm " style="background-color: #96D500;"
+											<button type="submit" class="btn btn-sm agp-22"
 												formaction="PrgmBriefingPresentation.htm" formmethod="post" formtarget="_blank" data-toggle="tooltip"
 												data-placement="bottom" title="Presentation">
-												<img src="view/images/presentation.png" style="width: 19px !important">
+												<img src="view/images/presentation.png" class="agp-23">
 											</button>
 											<input type="hidden" name="scheduleid" value="<%=scheduleid%>">
 											<input type="hidden" name="committeeid" value="<%=committeeid%>">
@@ -391,26 +389,26 @@
 
 			<div class="carousel-item">
 
-				<div class="content-header row ">
+			<div class="content-header row ">
 
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
-					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
+					<div class="col-md-1 pt-2" align="left" >
+						<b class="agp-19"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
-						<h3>Previous Meetings</h3>
+						<h3>Agenda</h3>
 					</div>
-					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+					<div class="col-md-1 pt-2" align="right" >
+						<b class="agp-19"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
@@ -421,12 +419,12 @@
 					<div class="row">
 					<div class="col-md-3"></div>
 					<div class="col-md-3">
-					<table class="subtables"
-						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+					<table class="subtables agp-27"
+						>
 								<thead>
 								<tr>
-								<th  style="width: 140px; ">Committee</th>
-								<th  style="width: 140px; "> Date Held</th>
+								<th class="agp-28">Committee</th>
+								<th class="agp-28"> Date Held</th>
 								</tr>
 							</thead>
 						<tbody>
@@ -444,12 +442,12 @@
 						
 						<%} %>
 						</td>
-						<td style="text-align: center;"> <%= sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[2].toString())))%> </td>
+						<td class="text-center"> <%= sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[2].toString())))%> </td>
 						</tr>
 						<%} %>
 						<%}else{ %>
 						<tr>
-						<td colspan="2" style="text-align: center;" >No Meetings Held !</td>
+						<td class="text-center" colspan="2"  >No Meetings Held !</td>
 						</tr>
 						<%} %>
 						</tbody>
@@ -459,12 +457,12 @@
 					</div>
 					<% if( meetingsHeld !=null && meetingsHeld.stream().skip(10).collect(Collectors.toList()).size()>0) {%>
 					<div class="col-md-3">
-					<table class="subtables"
-						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+					<table class="subtables agp-27"
+						>
 								<thead>
 								<tr>
-								<th  style="width: 140px; ">Committee</th>
-								<th  style="width: 140px; "> Date Held</th>
+								<th class="agp-28" >Committee</th>
+								<th class="agp-28" > Date Held</th>
 								</tr>
 							</thead>
 						<tbody>
@@ -483,7 +481,7 @@
 											href="CommitteeMinutesViewAllDownload.htm?committeescheduleid=<%=obj[0].toString()%>"><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> <%= "#" + (++meetingCount)%>
 										</a> <%} %>
 										</td>
-						<td style="text-align: center;"> <%= sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[2].toString())))%> </td>
+						<td class="text-center"> <%= sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[2].toString())))%> </td>
 						</tr>
 						<%} %>
 						
@@ -505,23 +503,23 @@
 				<div class="content-header row ">
 
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
-					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
+					<div class="col-md-1 pt-2" align="left" >
+						<b class="agp-19"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
-						<h3>Open Action Points From Previous Meetings</h3>
+						<h3>Agenda</h3>
 					</div>
-					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+					<div class="col-md-1 pt-2" align="right" >
+						<b class="agp-19"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
@@ -530,12 +528,12 @@
 
 				<div class="content">
 
-					<table class="subtables"
-						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+					<table class="subtables agp-27"
+						>
 						<thead>
 							<tr>
-								<td colspan="10" style="">
-									<p style="font-size: 12px; text-align: center">
+								<td colspan="10" >
+									<p class="agp-29">
 									
 										<span class="assigned">AA</span> : Activity Assigned
 										&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
@@ -547,13 +545,13 @@
 
 							</tr>
 							<tr>
-								<th class="std" style="width: 20px;">SN</th>
-								<th class="std" style="width: 60px;">Action No</th>
-								<th class="std" style="width: 300px;">Action Point</th>
-								<th class="std" style="width: 100px;">PDC</th>
-								<th class="std" style="width: 80px;">Progress</th>
-								<th class="std" style="width: 100px;">Responsibility</th>
-								<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+								<th class="std wid20" >SN</th>
+								<th class="std wid60" >Action No</th>
+								<th class="std wid300" >Action Point</th>
+								<th class="std wid100" >PDC</th>
+								<th class="std wid80" >Progress</th>
+								<th class="std wid100" >Responsibility</th>
+								<th class="std wid80" >Status<!-- (DD) --></th>
 							</tr>
 						</thead>
 
@@ -562,19 +560,19 @@
 							<%int count1=0;String key="";;
 								for(Object[]obj:OpenActionDetails){ %>
 							<tr>
-								<td class="std" align="center"
-									style="padding: 5px; text-align: center;"><%=++count1 %>.
+								<td class="std agp30" align="center"
+									><%=++count1 %>.
 								</td>
-								<td class="std"
-									style="text-align: center; padding: 2px; font-weight: 600">
-							<button class="btn btn-sm" style="text-align: justify; padding: 4px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+								<td class="std agp-31"
+									>
+							<button class="btn btn-sm agp-32"   onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 								</td>
-								<td class="std" style="text-align: justify; padding: 2px">
+								<td class="std agp-33" >
 									<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>
 								</td>
-								<td class="std" style="text-align: center;"><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[10].toString()))) %></td>
-								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
-								<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+								<td class="std tetx-center"><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[10].toString()))) %></td>
+								<td class="std .agp-34" ><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+								<td class="std .agp-34" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 								<td class="std">
 									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -596,7 +594,7 @@
 							<% }%>
 							<%}else{ %>
 							<tr>
-								<td colspan="7" style="text-align: center;">No Data Available</td>
+								<td colspan="7" class="text-center">No Data Available</td>
 							</tr>
 							<%} %>
 						</tbody>
@@ -614,37 +612,37 @@
 					<div class="carousel-item">
 						<div class="content-header row ">
 
-							<div class="col-md-1">
-								<img class="logo"
-									style="width: 45px; margin-left: 5px; margin-top: -2px;"
-									<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
-									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
-							</div>
-							<div class="col-md-1" align="left" style="padding-top: 19px;">
-								<b style="margin-left: -35px;"><%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></b>
-							</div>
-							<div class="col-md-8">
-								<h3>Open Action Points From Previous Meetings - <%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></h3>
-							</div>
-							<div class="col-md-1" align="right" style="padding-top: 19px;">
-								<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
-							</div>
-							<div class="col-md-1">
-								<img class="logo"
-									style="width: 45px; margin-left: 5px; margin-top: -2px;"
-									<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
-									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
-							</div>
-		
-						</div>
+					<div class="col-md-1">
+						<img class="agp-18"
+							
+							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+					<div class="col-md-1 pt-2" align="left" >
+						<b class="agp-19"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>Agenda</h3>
+					</div>
+					<div class="col-md-1 pt-2" align="right" >
+						<b class="agp-19"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="agp-18"
+							
+							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+
+				</div>
 
 						<div class="content">
 
-							<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+							<table class="subtables agp-27" >
 								<thead>
 									<tr>
-										<td colspan="10" style="">
-											<p style="font-size: 12px; text-align: center">
+										<td colspan="10">
+											<p class="agp-29">
 												<span class="assigned">AA</span> : Activity Assigned
 												&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
 												&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
@@ -654,13 +652,13 @@
 										</td>
 									</tr>
 									<tr>
-										<th class="std" style="width: 20px;">SN</th>
-										<th class="std" style="width: 60px;">Action No</th>
-										<th class="std" style="width: 300px;">Action Point</th>
-										<th class="std" style="width: 100px;">PDC</th>
-										<th class="std" style="width: 80px;">Progress</th>
-										<th class="std" style="width: 100px;">Responsibility</th>
-										<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+												<th class="std wid20" >SN</th>
+												<th class="std wid60" >Action No</th>
+												<th class="std wid300" >Action Point</th>
+												<th class="std wid100" >PDC</th>
+												<th class="std wid80" >Progress</th>
+												<th class="std wid100" >Responsibility</th>
+												<th class="std wid80" >Status<!-- (DD) --></th>
 									</tr>
 								</thead>
 
@@ -672,18 +670,18 @@
 										int count1=0;
 										for(Object[] obj : projectOpenAction){ %>
 											<tr>
-												<td class="std" align="center"
-													style="padding: 5px; text-align: center;"><%=++count1 %>.
+												<td class="std agp30" align="center"
+													><%=++count1 %>.
 												</td>
-												<td class="std" style="text-align: center; padding: 2px; font-weight: 600">
-													<button class="btn btn-sm" style="text-align: justify; padding: 4px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+												<td class="std agp-31" >
+													<button class="btn btn-sm agp-32"    onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 												</td>
-												<td class="std" style="text-align: justify; padding: 2px">
+												<td class="std agp-33" >
 													<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>
 												</td>
-												<td class="std" style="text-align: center;"><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[10].toString()))) %></td>
-												<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
-												<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+												<td class="std agp-34" ><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[10].toString()))) %></td>
+												<td class="std agp-34" ><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+												<td class="std agp-34" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 												<td class="std">
 													<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 																		int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -702,7 +700,7 @@
 										<% }%>
 									<%}else{ %>
 										<tr>
-											<td colspan="7" style="text-align: center;">No Data Available</td>
+											<td colspan="7" class="text-center">No Data Available</td>
 										</tr>
 									<%} %>
 								</tbody>
@@ -714,52 +712,55 @@
 
 						<div class="content-header row ">
 
-							<div class="col-md-1">
-								<img class="logo"
-									style="width: 45px; margin-left: 5px; margin-top: -2px;"
-									<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
-									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
-							</div>
-							<div class="col-md-1" align="left" style="padding-top: 19px;">
-								<b style="margin-left: -35px;"><%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></b>
-							</div>
-							<div class="col-md-8">
-								<h3>Close Action Points From Previous Meetings - <%=agenda[7]!=null?StringEscapeUtils.escapeHtml4(agenda[7].toString()): " - " %></h3>
-							</div>
-							<div class="col-md-1" align="right" style="padding-top: 19px;">
-								<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
-							</div>
-							<div class="col-md-1">
-								<img class="logo"
-									style="width: 45px; margin-left: 5px; margin-top: -2px;"
-									<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
-									alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
-							</div>
-		
-						</div>
+					<div class="col-md-1">
+						<img class="agp-18"
+							
+							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+					<div class="col-md-1 pt-2" align="left" >
+						<b class="agp-19"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>Agenda</h3>
+					</div>
+					<div class="col-md-1 pt-2" align="right" >
+						<b class="agp-19"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="agp-18"
+							
+							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+
+				</div>
 
 						<div class="content">
 
-							<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+							<table class="subtables agp-27" >
 								<thead>
 									<tr>
 										<td colspan="10" style="">
-											<p style="font-size: 12px; text-align: center">
-												<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
-													class="completeddelay">CD</span> : Completed with Delay
-												&nbsp;&nbsp;
-											</p>
+										<p class="agp-29">
+									
+										<span class="assigned">AA</span> : Activity Assigned
+										&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
+										&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
+										&nbsp;&nbsp; <span class="delay">FD</span> : Forwarded With
+										Delay &nbsp;&nbsp;<span class="ongoing">RC</span> : Review & Close &nbsp;&nbsp; 
+									</p>
 										</td>
 		
 									</tr>
 									<tr>
-										<th class="std" style="width: 20px;">SN</th>
-										<th class="std" style="width: 60px;">Action No</th>
-										<th class="std" style="width: 300px;">Action Point</th>
-										<th class="std" style="width: 100px;">PDC</th>
-										<th class="std" style="width: 80px;">Progress</th>
-										<th class="std" style="width: 100px;">Responsibility</th>
-										<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+										<th class="std wid20" >SN</th>
+								<th class="std wid60" >Action No</th>
+								<th class="std wid300" >Action Point</th>
+								<th class="std wid100" >PDC</th>
+								<th class="std wid80" >Progress</th>
+								<th class="std wid100" >Responsibility</th>
+								<th class="std wid80" >Status<!-- (DD) --></th>
 									</tr>
 								</thead>
 
@@ -771,18 +772,18 @@
 										int count1=0;
 										for(Object[] obj : projectCloseAction){ %>
 											<tr>
-												<td class="std" align="center"
-													style="padding: 5px; text-align: center;"><%=++count1 %>.
+												<td class="std agp30" align="center"
+													><%=++count1 %>.
 												</td>
-												<td class="std" style="text-align: center; padding: 2px; font-weight: 600">
-													<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+												<td class="std agp-31" >
+													<button class="btn btn-sm agp-31"   onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 												</td>
-												<td class="std" style="text-align: justify; padding: 2px">
+												<td class="std agp-33" >
 													<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
 												</td>
 												<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
-												<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
-												<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+												<td class="std agp-34"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+												<td class="std agp-34" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 												<td class="std">
 													<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 																		int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -806,7 +807,7 @@
 										<% }%>
 									<%}else{ %>
 										<tr>
-											<td colspan="7" style="text-align: center;">No Data Available</td>
+											<td colspan="7" class="text-center">No Data Available</td>
 										</tr>
 									<%} %>
 								</tbody>
@@ -820,39 +821,39 @@
 				<% }%>
 				
 				<div class="carousel-item">
-					<div class="content-header row ">
+				<div class="content-header row ">
 
-						<div class="col-md-1">
-							<img class="logo"
-								style="width: 45px; margin-left: 5px; margin-top: -2px;"
-								<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
-								alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
-						</div>
-						<div class="col-md-1" align="left" style="padding-top: 19px;">
-							<b style="margin-left: -35px;">Others</b>
-						</div>
-						<div class="col-md-8">
-							<h3>Open Action Points From Previous Meetings - Others</h3>
-						</div>
-						<div class="col-md-1" align="right" style="padding-top: 19px;">
-							<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
-						</div>
-						<div class="col-md-1">
-							<img class="logo"
-								style="width: 45px; margin-left: 5px; margin-top: -2px;"
-								<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
-								alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
-						</div>
-	
+					<div class="col-md-1">
+						<img class="agp-18"
+							
+							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
+					<div class="col-md-1 pt-2" align="left" >
+						<b class="agp-19"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>Agenda</h3>
+					</div>
+					<div class="col-md-1 pt-2" align="right" >
+						<b class="agp-19"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="agp-18"
+							
+							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+
+				</div>
 
 					<div class="content">
 
-						<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+						<table class="subtables agp-27">
 							<thead>
 								<tr>
-									<td colspan="10" style="">
-										<p style="font-size: 12px; text-align: center">
+									<td colspan="10" >
+										<p class="agp-29">
 											<span class="assigned">AA</span> : Activity Assigned
 											&nbsp;&nbsp; <span class="ongoing">OG</span> : On Going
 											&nbsp;&nbsp; <span class="delay">DO</span> : Delay - On Going
@@ -862,13 +863,13 @@
 									</td>
 								</tr>
 								<tr>
-									<th class="std" style="width: 20px;">SN</th>
-									<th class="std" style="width: 60px;">Action No</th>
-									<th class="std" style="width: 300px;">Action Point</th>
-									<th class="std" style="width: 100px;">PDC</th>
-									<th class="std" style="width: 80px;">Progress</th>
-									<th class="std" style="width: 100px;">Responsibility</th>
-									<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+									<th class="std wid20" >SN</th>
+								<th class="std wid60" >Action No</th>
+								<th class="std wid300" >Action Point</th>
+								<th class="std wid100" >PDC</th>
+								<th class="std wid80" >Progress</th>
+								<th class="std wid100" >Responsibility</th>
+								<th class="std wid80" >Status<!-- (DD) --></th>
 								</tr>
 							</thead>
 
@@ -880,18 +881,18 @@
 									int count1=0;
 									for(Object[] obj : projectOpenAction){ %>
 										<tr>
-											<td class="std" align="center"
-												style="padding: 5px; text-align: center;"><%=++count1 %>.
+											<td class="std agp30" align="center"
+												><%=++count1 %>.
 											</td>
-											<td class="std" style="text-align: center; padding: 2px; font-weight: 600">
-												<button class="btn btn-sm" style="text-align: justify; padding: 4px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+											<td class="std agp-31">
+												<button class="btn btn-sm agp-32"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 											</td>
-											<td class="std" style="text-align: justify; padding: 2px">
+											<td class="std agp-33" >
 												<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%>
 											</td>
-											<td class="std" style="text-align: center;"><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[10].toString()))) %></td>
-											<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
-											<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+											<td class="std agp-34" ><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(obj[10].toString()))) %></td>
+											<td class="std agp-34" ><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+											<td class="std agp-34" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 											<td class="std">
 												<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 																	int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -910,7 +911,7 @@
 									<% }%>
 								<%}else{ %>
 									<tr>
-										<td colspan="7" style="text-align: center;">No Data Available</td>
+										<td colspan="7" class="text-center">No Data Available</td>
 									</tr>
 								<%} %>
 							</tbody>
@@ -920,39 +921,39 @@
 				
 				<div class="carousel-item">
 
-					<div class="content-header row ">
+						<div class="content-header row ">
 
-						<div class="col-md-1">
-							<img class="logo"
-								style="width: 45px; margin-left: 5px; margin-top: -2px;"
-								<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
-								alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
-						</div>
-						<div class="col-md-1" align="left" style="padding-top: 19px;">
-							<b style="margin-left: -35px;">Others</b>
-						</div>
-						<div class="col-md-8">
-							<h3>Close Action Points From Previous Meetings - Others</h3>
-						</div>
-						<div class="col-md-1" align="right" style="padding-top: 19px;">
-							<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
-						</div>
-						<div class="col-md-1">
-							<img class="logo"
-								style="width: 45px; margin-left: 5px; margin-top: -2px;"
-								<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
-								alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
-						</div>
-	
+					<div class="col-md-1">
+						<img class="agp-18"
+							
+							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
+					<div class="col-md-1 pt-2" align="left" >
+						<b class="agp-19"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
+					</div>
+					<div class="col-md-8">
+						<h3>Agenda</h3>
+					</div>
+					<div class="col-md-1 pt-2" align="right" >
+						<b class="agp-19"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+					</div>
+					<div class="col-md-1">
+						<img class="agp-18"
+							
+							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
+							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
+					</div>
+
+				</div>
 
 					<div class="content">
 
-						<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+						<table class="subtables agp-27" >
 							<thead>
 								<tr>
-									<td colspan="10" style="">
-										<p style="font-size: 12px; text-align: center">
+									<td colspan="10" >
+										<p class="agp-29">
 											<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
 												class="completeddelay">CD</span> : Completed with Delay
 											&nbsp;&nbsp;
@@ -961,13 +962,13 @@
 	
 								</tr>
 								<tr>
-									<th class="std" style="width: 20px;">SN</th>
-									<th class="std" style="width: 60px;">Action No</th>
-									<th class="std" style="width: 300px;">Action Point</th>
-									<th class="std" style="width: 100px;">PDC</th>
-									<th class="std" style="width: 80px;">Progress</th>
-									<th class="std" style="width: 100px;">Responsibility</th>
-									<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+									<th class="std wid20" >SN</th>
+								<th class="std wid60" >Action No</th>
+								<th class="std wid300" >Action Point</th>
+								<th class="std wid100" >PDC</th>
+								<th class="std wid80" >Progress</th>
+								<th class="std wid100" >Responsibility</th>
+								<th class="std wid80" >Status<!-- (DD) --></th>
 								</tr>
 							</thead>
 
@@ -979,18 +980,18 @@
 									int count1=0;
 									for(Object[] obj : projectCloseAction){ %>
 										<tr>
-											<td class="std" align="center"
-												style="padding: 5px; text-align: center;"><%=++count1 %>.
+											<td class="std agp30" align="center"
+												><%=++count1 %>.
 											</td>
-											<td class="std" style="text-align: center; padding: 2px; font-weight: 600">
-												<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+											<td class="std agp-31" >
+												<button class="btn btn-sm agp-31"   onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 											</td>
-											<td class="std" style="text-align: justify; padding: 2px">
+											<td class="std agp-33" >
 												<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
 											</td>
 											<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
-											<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
-											<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+											<td class="std agp-34" ><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+											<td class="std agp-34" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 											<td class="std">
 												<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 																	int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -1014,7 +1015,7 @@
 									<% }%>
 								<%}else{ %>
 									<tr>
-										<td colspan="7" style="text-align: center;">No Data Available</td>
+										<td colspan="7" class="text-center">No Data Available</td>
 									</tr>
 								<%} %>
 							</tbody>
@@ -1029,26 +1030,26 @@
 
 			<div class="carousel-item">
 
-				<div class="content-header row ">
+			<div class="content-header row ">
 
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
-					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
+					<div class="col-md-1 pt-2" align="left" >
+						<b class="agp-19"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
-						<h3>Close Action Points From Previous Meetings</h3>
+						<h3>Agenda</h3>
 					</div>
-					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+					<div class="col-md-1 pt-2" align="right" >
+						<b class="agp-19"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
@@ -1057,12 +1058,12 @@
 
 				<div class="content">
 
-					<table class="subtables"
-						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+					<table class="subtables agp-27"
+						>
 						<thead>
 							<tr>
-								<td colspan="10" style="">
-									<p style="font-size: 12px; text-align: center">
+								<td colspan="10" >
+									<p class="agp-29">
 										<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
 											class="completeddelay">CD</span> : Completed with Delay
 										&nbsp;&nbsp;
@@ -1071,13 +1072,13 @@
 
 							</tr>
 							<tr>
-								<th class="std" style="width: 20px;">SN</th>
-								<th class="std" style="width: 60px;">Action No</th>
-								<th class="std" style="width: 300px;">Action Point</th>
-								<th class="std" style="width: 100px;">PDC</th>
-								<th class="std" style="width: 80px;">Progress</th>
-								<th class="std" style="width: 100px;">Responsibility</th>
-								<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+							<th class="std wid20" >SN</th>
+								<th class="std wid60" >Action No</th>
+								<th class="std wid300" >Action Point</th>
+								<th class="std wid100" >PDC</th>
+								<th class="std wid80" >Progress</th>
+								<th class="std wid100" >Responsibility</th>
+								<th class="std wid80" >Status<!-- (DD) --></th>
 							</tr>
 						</thead>
 
@@ -1086,19 +1087,19 @@
 							<%int count1=0;String key="";;
 								for(Object[]obj:closeActionDetails){ %>
 							<tr>
-								<td class="std" align="center"
-									style="padding: 5px; text-align: center;"><%=++count1 %>.
+								<td class="std agp30" align="center"
+									><%=++count1 %>.
 								</td>
-									<td class="std"
-									style="text-align: center; padding: 2px; font-weight: 600">
-							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+									<td class="std agp-31"
+									>
+							<button class="btn btn-sm agp-31"   onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 								</td>
-								<td class="std" style="text-align: justify; padding: 2px">
+								<td class="std agp-33" >
 									<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
 								</td>
 								<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
-								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
-								<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+								<td class="std agp-34" ><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+								<td class="std agp-34" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 								<td class="std">
 									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -1124,7 +1125,7 @@
 							<% }%>
 							<%}else{ %>
 							<tr>
-								<td colspan="7" style="text-align: center;">No Data Available</td>
+								<td colspan="7"class="text-center">No Data Available</td>
 							</tr>
 							<%} %>
 						</tbody>
@@ -1141,23 +1142,23 @@
 				<div class="content-header row ">
 
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
-					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
+					<div class="col-md-1 pt-2" align="left" >
+						<b class="agp-19"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
-						<h3>All Action Points From Previous Meetings</h3>
+						<h3>Agenda</h3>
 					</div>
-					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+					<div class="col-md-1 pt-2" align="right" >
+						<b class="agp-19"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
@@ -1166,12 +1167,12 @@
 
 				<div class="content">
 
-					<table class="subtables"
-						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+					<table class="subtables agp-27"
+						>
 						<thead>
 							<tr>
-								<td colspan="10" style="">
-									<p style="font-size: 12px; text-align: center">
+								<td colspan="10" >
+									<p class="agp-29">
 										<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
 											class="completeddelay">CD</span> : Completed with Delay
 										&nbsp;&nbsp; <span class="assigned">AA</span> : Activity
@@ -1185,13 +1186,13 @@
 
 							</tr>
 							<tr>
-								<th class="std" style="width: 20px;">SN</th>
-								<th class="std" style="width: 60px;">Action No</th>
-								<th class="std" style="width: 300px;">Action Point</th>
-								<th class="std" style="width: 100px;">PDC</th>
-								<th class="std" style="width: 80px;">Progress</th>
-								<th class="std" style="width: 100px;">Responsibility</th>
-								<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+								<th class="std wid20" >SN</th>
+								<th class="std wid60" >Action No</th>
+								<th class="std wid300" >Action Point</th>
+								<th class="std wid100" >PDC</th>
+								<th class="std wid80" >Progress</th>
+								<th class="std wid100" >Responsibility</th>
+								<th class="std wid80" >Status<!-- (DD) --></th>
 							</tr>
 						</thead>
 
@@ -1200,19 +1201,19 @@
 							<%int count1=0;String key="";;
 								for(Object[]obj:ActionDetails){ %>
 							<tr>
-								<td class="std" align="center"
-									style="padding: 5px; text-align: center;"><%=++count1 %>.
+								<td class="std agp30" align="center"
+									><%=++count1 %>.
 								</td>
-								<td class="std"
-									style="text-align: center; padding: 2px; font-weight: 600">
-							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+								<td class="std agp-31"
+									>
+							<button class="btn btn-sm agp-32"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 								</td>
-								<td class="std" style="text-align: justify; padding: 2px">
+								<td class="std agp-33" >
 									<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
 								</td>
 								<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
-								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
-								<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+								<td class="std agp-34"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+								<td class="std agp-34" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 								<td class="std">
 									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -1238,7 +1239,7 @@
 							<% }%>
 							<%}else{ %>
 							<tr>
-								<td colspan="7" style="text-align: center;">No Data Available</td>
+								<td colspan="7" class="text-center">No Data Available</td>
 							</tr>
 							<%} %>
 						</tbody>
@@ -1260,23 +1261,23 @@
 				<div class="content-header row ">
 
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
-					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
+					<div class="col-md-1 pt-2" align="left" >
+						<b class="agp-19"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
-						<h3>All  Recommendation  Points From Previous Meetings</h3>
+						<h3>Agenda</h3>
 					</div>
-					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+					<div class="col-md-1 pt-2" align="right" >
+						<b class="agp-19"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
@@ -1285,12 +1286,12 @@
 
 				<div class="content">
 
-					<table class="subtables"
-						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+					<table class="subtables agp-27"
+						>
 						<thead>
 							<tr>
-								<td colspan="10" style="">
-									<p style="font-size: 12px; text-align: center">
+								<td colspan="10">
+									<p class="agp-29">
 										<span class="completed">CO</span> :Completed &nbsp;&nbsp; <span
 											class="completeddelay">CD</span> : Completed with Delay
 										&nbsp;&nbsp; <span class="assigned">AA</span> : Activity
@@ -1304,13 +1305,13 @@
 
 							</tr>
 							<tr>
-								<th class="std" style="width: 20px;">SN</th>
-								<th class="std" style="width: 60px;">Action No</th>
-								<th class="std" style="width: 300px;">Action Point</th>
-								<th class="std" style="width: 100px;">PDC</th>
-								<th class="std" style="width: 80px;">Progress</th>
-								<th class="std" style="width: 100px;">Responsibility</th>
-								<th class="std" style="width: 70px;">Status<!-- (DD) --></th>
+								<th class="std wid20" >SN</th>
+								<th class="std wid60" >Action No</th>
+								<th class="std wid300" >Action Point</th>
+								<th class="std wid100" >PDC</th>
+								<th class="std wid80" >Progress</th>
+								<th class="std wid100" >Responsibility</th>
+								<th class="std wid80" >Status<!-- (DD) --></th>
 							</tr>
 						</thead>
 
@@ -1319,19 +1320,19 @@
 							<%int count1=0;String key="";;
 								for(Object[]obj:recommendationList){ %>
 							<tr>
-								<td class="std" align="center"
-									style="padding: 5px; text-align: center;"><%=++count1 %>.
+								<td class="std agp30" align="center"
+									><%=++count1 %>.
 								</td>
-								<td class="std"
-									style="text-align: center; padding: 2px; font-weight: 600">
-							<button class="btn btn-sm" style="text-align: justify; padding: 2px; font-weight: 600"  onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
+								<td class="std agp-31"
+									>
+							<button class="btn btn-sm agp-32"   onclick="ActionDetails( <%=obj[0] %>);" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> </button>		
 								</td>
-								<td class="std" style="text-align: justify; padding: 2px">
+								<td class="std agp-33" >
 									<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
 								</td>
 								<td class="std"><%=sdf.format(sdf1.parse(obj[10].toString())) %></td>
-								<td class="std" style="font-size: 14px;text-align: center;"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
-								<td class="std" style="font-size: 14px;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+								<td class="std agp-34" ><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - " %></td>
+								<td class="std agp-34" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 								<td class="std">
 									<%if(obj[4]!= null){ %> <%	String actionstatus = obj[3].toString();
 														int progress = obj[13]!=null ? Integer.parseInt(obj[13].toString()) : 0;
@@ -1357,7 +1358,7 @@
 							<% }%>
 							<%}else{ %>
 							<tr>
-								<td colspan="7" style="text-align: center;">No Data Available</td>
+								<td colspan="7"class="text-center">No Data Available</td>
 							</tr>
 							<%} %>
 						</tbody>
@@ -1376,26 +1377,26 @@
 			
 					<div class="carousel-item">
 
-				<div class="content-header row ">
+			<div class="content-header row ">
 
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
-					<div class="col-md-1" align="left" style="padding-top: 19px;">
-						<b style="margin-left: -35px;"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
+					<div class="col-md-1 pt-2" align="left" >
+						<b class="agp-19"><%=ProjectCode!=null?StringEscapeUtils.escapeHtml4(ProjectCode): " - " %></b>
 					</div>
 					<div class="col-md-8">
-						<h3>All  Decision  Points From Previous Meetings</h3>
+						<h3>Agenda</h3>
 					</div>
-					<div class="col-md-1" align="right" style="padding-top: 19px;">
-						<b style="margin-right: -35px;"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
+					<div class="col-md-1 pt-2" align="right" >
+						<b class="agp-19"><%=MeetingNo!=null?StringEscapeUtils.escapeHtml4(MeetingNo): " - " %></b>
 					</div>
 					<div class="col-md-1">
-						<img class="logo"
-							style="width: 45px; margin-left: 5px; margin-top: -2px;"
+						<img class="agp-18"
+							
 							<%if(lablogo!=null ){ %> src="data:image/*;base64,<%=lablogo%>"
 							alt="Logo" <%}else{ %> alt="File Not Found" <%} %>>
 					</div>
@@ -1404,8 +1405,8 @@
 
 				<div class="content">
 
-					<table class="subtables"
-						style="align: left; margin-top: 10px; margin-left: 25px; border-collapse: collapse;">
+					<table class="subtables agp-27"
+				>
 						<thead>
 					<!-- 		<tr>
 								<td colspan="10" style="border: 0">
@@ -1423,8 +1424,8 @@
 
 							</tr> -->
 							<tr>
-								<th class="std" style="width: 20px;">SN</th>
-								<th class="std" style="width: 300px;">Details</th>
+								<th class="std wid20" >SN</th>
+								<th class="std wid300" >Details</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -1433,7 +1434,7 @@
 							for(Object[]obj:decesions){	
 						%>
 						<tr>
-						<td style="text-align: center;"><%=++decCount %>.</td>
+						<td class="text-center"><%=++decCount %>.</td>
 						<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
 						</tr>
 						<%}}else{ %>
@@ -1460,16 +1461,16 @@
 
 		</div>
 
-		<a class="carousel-control-prev" href="#presentation-slides"
+		<a class="carousel-control-prev agp-35" href="#presentation-slides"
 			role="button" data-slide="prev"
-			style="width: 0%; padding-left: 20px;"> <span aria-hidden="true">
-				<i class="fa fa-chevron-left fa-2x" style="color: #000000"
+			> <span aria-hidden="true">
+				<i class="fa fa-chevron-left fa-2x agp-36"
 				aria-hidden="true"></i>
 		</span> <span class="sr-only">Previous</span>
-		</a> <a class="carousel-control-next" href="#presentation-slides"
+		</a> <a class="carousel-control-next agp-37" href="#presentation-slides"
 			role="button" data-slide="next"
-			style="width: 0%; padding-right: 20px;"> <span aria-hidden="true">
-				<i class="fa fa-chevron-right fa-2x" style="color: #000000"
+			> <span aria-hidden="true">
+				<i class="fa fa-chevron-right fa-2x agp-36" 
 				aria-hidden="true"></i>
 		</span> <span class="sr-only">Next</span>
 		</a>
@@ -1539,10 +1540,10 @@
 	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="action_modal">
 		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
 			<div class="modal-content">
-				<div class="modal-header" style="background-color: #FFE0AD; ">
+				<div class="modal-header agp-38" >
 					<div class="row w-100"  >
 						<div class="col-md-12" >
-							<h5 class="modal-title" id="modal_action_no" style="font-weight:700; color: #A30808;"></h5>
+							<h5 class="modal-title agp-39" id="modal_action_no" ></h5>
 						</div>
 					</div>
 					
@@ -1552,28 +1553,28 @@
 				</div>
 				<div class="modal-body" align="center">
 					<form action="#" method="post" autocomplete="off"  >
-						<table style="width: 100%;">
+						<table class="width-100">
 							<tr>
-								<td style="width:20%;padding: 5px;border :0;font-weight: bold;"> Action Item :</td>
-								<td class="tabledata" style="width:80%;padding: 5px;word-wrap:break-word;border :0;" colspan="3" id="modal_action_item"></td>
+								<td class="width-20 agp-40"> Action Item :</td>
+								<td class="tabledata width-80 agp-41" scolspan="3" id="modal_action_item"></td>
 							</tr>
 							<tr>
-								<td style="padding: 5px;border :0;font-weight: bold;" >Assign Date :</td>
-								<td style="padding: 5px;border :0;" id="modal_action_date"></td>
-								<td style="padding: 5px;border :0;font-weight: bold;" >PDC :</td>
-								<td style="padding: 5px;border :0;" id="modal_action_PDC"></td>
+								<td class="agp-42" >Assign Date :</td>
+								<td class="agp-43" id="modal_action_date"></td>
+								<td class="agp-42" >PDC :</td>
+								<td class="agp-43" id="modal_action_PDC"></td>
 							</tr>
 							<tr>
-								<td style="padding: 5px;border :0;font-weight: bold;" >Assignor :</td>
-								<td style="padding: 5px;border :0;" class="tabledata" id="modal_action_assignor"></td>
-								<td style="padding: 5px;border :0;font-weight: bold;" >Assignee :</td>
-								<td style="padding: 5px;border :0;" class="tabledata" id="modal_action_assignee"></td>
+								<td class="agp-42" >Assignor :</td>
+								<td class="agp-43" class="tabledata" id="modal_action_assignor"></td>
+								<td class="agp-42" >Assignee :</td>
+								<td class="agp-43" class="tabledata" id="modal_action_assignee"></td>
 							</tr>
 							<tr>
-								<td style="padding: 5px;border :0;font-weight: bold;" >Final Progress :</td>
-								<td style="padding: 5px;border :0;" id="modal_action_progress"></td>
-								<td style="padding: 5px;border :0;font-weight: bold;" > Type :</td>
-								<td style="padding: 5px;font-weight: bold;color:#A30808 ;border :0;" id="modal_action_type"></td>
+								<td class="agp-42" >Final Progress :</td>
+								<td class="agp-43" id="modal_action_progress"></td>
+								<td class="agp-42" > Type :</td>
+								<td class="agp-44" id="modal_action_type"></td>
 							</tr>
 							
 						</table>
@@ -1581,14 +1582,14 @@
 						<hr>
 						<form action="#" method="get">
 						
-						<table class="table table-bordered table-hover table-striped table-condensed " id="" style="width: 100%">
+						<table class="table table-bordered table-hover table-striped table-condensed width-100" id="" >
 							<thead> 
-								<tr style="background-color: #055C9D; color: white;">
-									<th style="text-align: center;width:5% !important;">SN</th>
-									<th style="text-align: center;width:15% !important;">Progress Date</th>
-									<th style="text-align: center;width:15% !important;"> Progress</th>
-									<th style="width:60% !important;">Remarks</th>
-									<th style="text-align: center;width:5% !important;">Download</th>
+								<tr class="agp-45">
+									<th class="text-center width-5" >SN</th>
+									<th class="text-center width-15" >Progress Date</th>
+									<th class="text-center width-15" > Progress</th>
+									<th class="width-60" ">Remarks</th>
+									<th class="text-center width-5" >Download</th>
 								</tr>
 							</thead>
 							<tbody id="modal_progress_table_body">
@@ -1676,16 +1677,16 @@ function ActionDetails(InAssignId)
 				
 				if(InProgress.trim() === '0')
 				{
-					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height: 1.5rem !important;">'; 
-					progressBar += 		'<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >';
+					var progressBar ='<div class="progress agp-46">'; 
+					progressBar += 		'<div class="progress-bar agp-47" role="progressbar"   >';
 					progressBar +=		'Not Started'
 					progressBar +=		'</div>'; 
 					progressBar += '</div>'; 
 				}
 				else
 				{
-					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height:1.5rem !important; ">'; 
-					progressBar += 		'<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: '+InProgress+'%;  " aria-valuemin="0" aria-valuemax="100" >';
+					var progressBar ='<div class="progress agp-46" ">'; 
+					progressBar += 		'<div class="progress-bar progress-bar-striped width-'+InProgress+'" role="progressbar"  aria-valuemin="0" aria-valuemax="100" >';
 					progressBar +=		InProgress
 					progressBar +=		'</div>'; 
 					progressBar += '</div>'; 
@@ -1709,17 +1710,17 @@ function ActionDetails(InAssignId)
 					for(var v=0;v<result.length;v++)
 						{
 						htmlStr += '<tr>';
-						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ (v+1) + '</td>';
-						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ moment(new Date(result[v][3]) ).format('DD-MM-YYYY') + '</td>';
-						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ result[v][2] + ' %</td>';
-						htmlStr += '<td class="tabledata" >'+ result[v][4] + '</td>';
+						htmlStr += '<td class="tabledata text-center"  >'+ (v+1) + '</td>';
+						htmlStr += '<td class="tabledata text-center"   >'+ moment(new Date(result[v][3]) ).format('DD-MM-YYYY') + '</td>';
+						htmlStr += '<td class="tabledata text-center"  >'+ result[v][2] + ' %</td>';
+						htmlStr += '<td class="tabledata text-center" >'+ result[v][4] + '</td>';
 						if(result[v][5]=== null)
 						{
-						htmlStr += '<td class="tabledata" style="text-align: center;">-</td>';
+						htmlStr += '<td class="tabledata text-center" >-</td>';
 						}
 						else
 						{
-						htmlStr += '<td class="tabledata" style="text-align: center;"><button type="submit" class="btn btn-sm" name="ActionSubId" value="'+ result[v][5] + '" target="blank" formaction="ActionDataAttachDownload.htm" ><i class="fa fa-download"></i></button></td>';
+						htmlStr += '<td class="tabledata text-center" ><button type="submit" class="btn btn-sm" name="ActionSubId" value="'+ result[v][5] + '" target="blank" formaction="ActionDataAttachDownload.htm" ><i class="fa fa-download"></i></button></td>';
 						}
 						htmlStr += '</tr>';
 					}
@@ -1727,7 +1728,7 @@ function ActionDetails(InAssignId)
 				else
 				{
 					htmlStr += '<tr>';
-					htmlStr += '<td colspan="5" style="text-align: center;"> Progress Not Updated </td>';
+					htmlStr += '<td colspan="5" class="text-center"> Progress Not Updated </td>';
 					htmlStr += '</tr>';
 				}
 				setModalDataTable();

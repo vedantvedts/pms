@@ -12,228 +12,8 @@
 <spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
 <link href="${sweetalertCss}" rel="stylesheet" />
 <script src="${sweetalertJs}"></script>
-<style type="text/css">
-label{  
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-}
-h6{
-	text-decoration: none;
-}
-
-h6 span{
-	font-size: 16px;
-	color:white;
-}
-
-</style>
-
-
-
-<style>
-
-.control-label{
-	font-weight: bold !important;
-}
-
-
-.table thead th{
-	
-	vertical-align: middle !important;
-}
-
-.header{
-        position:sticky;
-        top: 0 ;
-        background-color: #346691;
-    }
-    
-    .table button{
-    	
-    	font-size: 12px;
-    }
-    
- label{
- 	font-size: 15px !important;
- }
- 
-.attachlist
-{
-	width: 100%;
-}
- 
-</style>
-<!-- --------------  tree   ------------------- -->
-<style>
-ul, #myUL {
-  list-style-type: none;
-}
-
-#myUL {
-  margin: 0;
-  padding: 0;
-}
-
-.caret {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-.caret::before {
-  content: "  \25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-down::before {
-  content: "\25B6  ";
-  -ms-transform: rotate(90deg); /* IE 9 */
-  -webkit-transform: rotate(90deg); /* Safari */'
-  transform: rotate(90deg);  
-}
-
-.caret-last {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-
-.caret-last::before {
-  content: "\25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-
-.nested {
-  display: none;
-}
-
-.active {
-  display: block;
-}
-</style>
-
-<!-- ---------------- tree ----------------- -->
-<!-- -------------- model  tree   ------------------- -->
-<style>
-
-.caret-1 {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-.caret-last-1 {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-
-.caret-last-1::before {
-  content: "\25B7" ;
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-1::before {
-  content: "\25B7" ;
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-down-1::before {
-  content: "\25B6";
-  -ms-transform: rotate(90deg); /* IE 9 */
-  -webkit-transform: rotate(90deg); /* Safari */'
-  transform: rotate(90deg);  
-}
-
-.nested-1 {
-  display: none;
-}
-
-.active-1 {
-  display: block;
-}
-
-
-.folder-tree {
-  list-style: none;
-  padding-left: 0;
-}
-
-.folder-tree .list-group-item {
-  border: none;
-  padding: 8px 15px;
-  transition: all 0.3s ease;
-  border-radius: 6px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-
-.folder-tree .folder-item:hover {
-  background: #f0f8ff;
-  transform: translateX(5px);
-}
-
-.folder-tree .file-item:hover {
-  background: #f9f9f9;
-  transform: scale(1.02);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.folder-tree .subfolder {
-  display: none;
-  margin-left: 20px;
-  padding-left: 10px;
-  border-left: 2px dashed #ddd;
-}
-
-.folder-tree .folder-item.open > .subfolder {
-  display: block;
-}
-
-.folder-icon {
-  margin-right: 8px;
-  transition: transform 0.3s;
-  font-size: 18px;
-}
-
-.pdf-check {
-  cursor: pointer;
-}
-
-.folder-item.open > .folder-icon {
-  color: #f39c12 !important;
-  transform: scale(1.3);
-  transition: all 0.3s ease;
-}
-
-.folder-tree .folder-item:hover {
-  background: #f0f8ff;
-  transform: translateX(5px);
-}
-
-</style>
+<spring:url value="/resources/css/rodModule/rodScheduleAgenda.css" var="rodScheduleAgenda" />
+<link href="${rodScheduleAgenda}" rel="stylesheet" />
 
 </head>
  
@@ -285,16 +65,16 @@ ul, #myUL {
 
 
 <div class="container-fluid">
-	<div style="margin-bottom:20px;"> 
+	<div> 
     		<div class="card">
     	
 	    	<form action="RODScheduleView.htm" name="myfrm" id="myfrm" method="post">
-	    		<div class="card-header" style="background-color: #055C9D;">
-      				<h6 style="color: orange;font-weight: bold;font-size: 1.2rem !important " align="left"><%=scheduledata[7]!=null?StringEscapeUtils.escapeHtml4(scheduledata[7].toString()): " - " %> <span> (Meeting Date and Time :      				
+	    		<div class="card-header custom-header-color">
+      				<h6 class="custom-h6" align="left"><%=scheduledata[7]!=null?StringEscapeUtils.escapeHtml4(scheduledata[7].toString()): " - " %> <span> (Meeting Date and Time :      				
 	      				 &nbsp;<%=sdf.format(sdf1.parse(scheduledata[2].toString()))%> - <%=scheduledata[3]!=null?StringEscapeUtils.escapeHtml4(scheduledata[3].toString()): " - " %>) </span>      				
 						<input type="hidden" name="projectid" value="<%=projectid%>"/>
-	      				<input type="submit" class="btn  btn-sm view" value="VIEW" style="float:right;" />
-	      				<span  style="float:right;margin: 5px 12px;" > (Meeting Id : <%=scheduledata[11]!=null?StringEscapeUtils.escapeHtml4(scheduledata[11].toString()): " - " %>) </span> 
+	      				<input type="submit" class="btn  btn-sm view custom-view" value="VIEW" />
+	      				<span class="custom-mettingId"> (Meeting Id : <%=scheduledata[11]!=null?StringEscapeUtils.escapeHtml4(scheduledata[11].toString()): " - " %>) </span> 
 	      				<input type="hidden" name="scheduleid" value="<%=scheduledata[6] %>">
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />      				
       				 </h6>
@@ -305,8 +85,8 @@ ul, #myUL {
 	      			<form method="post" action="CommitteeAgendaSubmit.htm"  id="addagendafrm" name="addagendafrm">	        
 	        			<div >
 	        			
-	          				<div style="float: right;"><span style="font-size: 15px ;color: blue ; font-weight: ">Duration in Minutes</span></div>
-	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
+	          				<div class="align-right"><span class="custom-duration">Duration in Minutes</span></div>
+	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-30" id="myTable20">
 								<thead>  
 									<tr id="">
 										<th>Agenda Item</th>
@@ -316,7 +96,7 @@ ul, #myUL {
 										<th>Presenter</th>
 										<th>Duration </th>
 										<th>Attach File </th> 
-										<th> <button type="button" class="tr_clone_addbtn btn " name="add"> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  ;"></i></button></th>	
+										<th> <button type="button" class="tr_clone_addbtn btn " name="add"> <i class="btn btn-sm fa fa-plus text-success p-0"></i></button></th>	
 									</tr>
 										
 									<tr class="tr_clone">
@@ -325,7 +105,7 @@ ul, #myUL {
 										
 										<td width="15%">
 											<%if(Long.parseLong(projectid) > 0) { %>
-												<select class="form-control child  items" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
+												<select class="form-control child  items custom-select" name="projectid"  required="required" data-live-search="true" data-container="body">
 												
 											    <% for (Object[] obj : projectlist) {
 											    	if(obj[0].toString().equals(projectid)){%>						    				 	
@@ -334,7 +114,7 @@ ul, #myUL {
 									    		}%>					
 												</select>
 											<%}else if(Long.parseLong(initiationid) > 0) {%>
-												<select class="form-control child  items" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
+												<select class="form-control child  items custom-select" name="projectid"  required="required" data-live-search="true" data-container="body">
 											    	<% for (Object[] obj : preProjectlist) {
 												    	if(obj[0].toString().equals(initiationid)){%>						    				 	
 										     				<option value="<%=obj[0]%>"><%=obj[3]%> (<%=obj[4] %>)</option>
@@ -342,7 +122,7 @@ ul, #myUL {
 										    		}%>		
 												</select>
 											<%}else{ %>									
-												<select class="form-control items" name="projectid" required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
+												<select class="form-control items custom-select" name="projectid" required="required" data-live-search="true" data-container="body">
 																							
 									        		<option disabled  selected value="">Choose...</option>
 									        		<option value="0"><%=labdata[1] %>(GEN)</option>
@@ -355,7 +135,7 @@ ul, #myUL {
 						         		<td  width="20%"><input type="text" name="remarks" class="form-control item_name child" maxlength="255" required="required" /></td>      
 						         		 
 						         		 <td>
-						         		 	<select class="form-control items PresLabCode" name="PresLabCode" id="PresLabCode_0"  required="required" style="width: 200px" onchange="AgendaPresentors('0')"  data-live-search="true" data-container="body">
+						         		 	<select class="form-control items PresLabCode w-200" name="PresLabCode" id="PresLabCode_0"  required="required" onchange="AgendaPresentors('0')"  data-live-search="true" data-container="body">
 												<option disabled="disabled"  selected value="">Lab Name</option>
 											    <% for (Object[] obj : AllLabList) {%>
 												    <option value="<%=obj[3]%>" <%if(LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %>  ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -366,7 +146,7 @@ ul, #myUL {
 						         		 </td>
 						         		         	                             
 						         		<td width="15%">						         		
-											<select class="form-control items presenterid" name="presenterid" id="presenterid_0"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
+											<select class="form-control items presenterid custom-select" name="presenterid" id="presenterid_0"  required="required" data-live-search="true" data-container="body">
 								        		<option disabled="disabled" selected value="">Choose...</option>
 										        <% for(Object[] emp : LabEmpList){ %>
 										        	<option value="<%=emp[0] %>"><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>(<%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %>)</option>
@@ -377,16 +157,16 @@ ul, #myUL {
 										 	<input type="number" name="duration" class="form-control item_name child" min="1"   placeholder="Minutes" required/>
 										</td>						         		                                      
 																	
-										<td style="text-align: left; width: 15%;">
+										<td class="td-w-15">
 										
-											<button type="button" class=" btn btn-sm btnfileattachment" name="add" onclick="openMainModal('0','0',' ','<%=projectid %>','0','add')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button> 
+											<button type="button" class=" btn btn-sm btnfileattachment" name="add" onclick="openMainModal('0','0',' ','<%=projectid %>','0','add')" > <i class="btn btn-sm fa fa-plus text-success p-0"></i></button> 
 											<br>
 											<table class="attachlist" id="attachlistdiv_0">
 												
 											</table>										
 										</td>							
 										<td>
-											<button type="button" class="tr_clone_sub btn  " name="sub" > <i class="btn btn-sm fa fa-minus" style="color: red;padding: 0px  ;"> </i></button>
+											<button type="button" class="tr_clone_sub btn  " name="sub" > <i class="btn btn-sm fa fa-minus text-danger p-0"> </i></button>
 										</td>								
 									</tr>
 								</thead>
@@ -394,7 +174,7 @@ ul, #myUL {
 
 	          				<div align="center">
 				            	<input type="submit"  class="btn  btn-sm submit" value="SUBMIT" onclick="return allfilessizecheck('addagendafrm'); "/> <!-- return confirm('Are You Sure To Add This Agenda(s) ?') -->
-				            	<button type="reset" class="btn btn-sm reset" style="color: white" onclick="$('.hidden').val(''); $('.attachname').html('');" > RESET</button>
+				            	<button type="reset" class="btn btn-sm reset text-light" onclick="$('.hidden').val(''); $('.attachname').html('');" > RESET</button>
 				            	<input type="button"  class="btn  btn-sm edit" value="Copy Agenda from old Meetings" onclick="submitForm('agendasprevious'); "/>
 	          				</div>
 	        			</div>
@@ -416,25 +196,25 @@ ul, #myUL {
 
 
 <% if(rodagendalist.size()>0){ %> 
-<div class="row">
+<div class="row mt-5">
 
 	<div class="col-md-12">
-    	<div class="card" style="">
+    	<div class="card">
       		<div class="card-body" >
       			<div class="row">
 
-		   			<div class="col-md-12" style="padding-left: 0px">
+		   			<div class="col-md-12">
 		   
 		   				<div class="table-responsive">
 		   				
-		    				<table class="table table-bordered table-hover  table-condensed" id="myTable3" style="margin-top: 20px;">
+		    				<table class="table table-bordered table-hover  table-condensed mt-4" id="myTable3">
 								<thead>
 									<tr>
-										<th colspan="10" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;" >Agenda Details</th>									
+										<th colspan="10" class="th-agenda">Agenda Details</th>									
 									</tr>	
 									<tr>			
-										<th style="padding-top: 50px;">Priority</th>		
-										<th style="text-align: left;">Agenda Item</th>
+										<th>Priority</th>		
+										<th>Agenda Item</th>
 										<th>Reference</th>
 										<th>Remarks</th>	
 										<th>Presenter Lab</th>							
@@ -451,7 +231,7 @@ ul, #myUL {
 									<form name="myForm1" id="myForm1<%=count%>" action="CommitteeScheduleAgendaEdit.htm" method="POST"  > <!-- enctype="multipart/form-data" -->
 										<tr>
 											<td width="5%" >
-												<input type="number" class="form-control" style="line-height: 1.6 !important" name="priority" value="<%=obj[8]%>" onkeypress="return isNumber(event)" min="1" max="<%=rodagendalist.size()%>" form="priority_form">
+												<input type="number" class="form-control custom-line" name="priority" value="<%=obj[8]%>" onkeypress="return isNumber(event)" min="1" max="<%=rodagendalist.size()%>" form="priority_form">
 												<input type="hidden" name="agendaid"  value="<%=obj[0]%>" form="priority_form">
 											</td>
 											<td width="12%">
@@ -459,7 +239,7 @@ ul, #myUL {
 											</td>
 											<td width="4%">
 												<%if(Long.parseLong(projectid) > 0) { %>
-													<select class="form-control" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
+													<select class="form-control custom-select" name="projectid"  required="required" data-live-search="true" data-container="body">
 														<% for (Object[] obj1 : projectlist) {
 															if(obj1[0].toString().equals(projectid)){%>						    				 	
 											     				<option value="<%=obj1[0]%>"><%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - "%> (<%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()): " - " %>)</option>
@@ -467,7 +247,7 @@ ul, #myUL {
 											    		}%>					
 													</select>
 												<%}else if(Long.parseLong(initiationid) > 0) { %>
-												  <select class="form-control child items" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body">
+												  <select class="form-control child items custom-select" name="projectid"  required="required"  data-live-search="true" data-container="body">
 												      <% for (Object[] obj2 : preProjectlist) {
 												    	 if(obj2[0].toString().equals(initiationid)){%>						    				 	
 										     				<option value="<%=obj2[0]%>"><%=obj2[3]%> (<%=obj2[4] %>)</option>
@@ -475,7 +255,7 @@ ul, #myUL {
 										    		  }%>
 										    		</select>
 												<%}else{ %>
-													<select class="form-control items" name="projectid"  required="required" style=" font-weight: bold; text-align-last: left; width: 220px;" data-live-search="true" data-container="body">
+													<select class="form-control items custom-select" name="projectid"  required="required"  data-live-search="true" data-container="body">
 										          		<option value="0" ><%=labdata[1] %></option>
 												    	<% for (Object[] obj1 : projectlist) {%>
 									     					<option value="<%=obj1[0]%>" <%if(obj[5].toString().equals(obj1[0].toString()))  {%> selected <%} %>><%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - "%> (<%=obj1[2]!=null?StringEscapeUtils.escapeHtml4(obj1[2].toString()): " - " %>)</option>
@@ -483,11 +263,11 @@ ul, #myUL {
 													</select>
 												<%} %>
 											</td>
-											<td style="text-align: left; width: 10%;"> 
+											<td class="td-wl-10"> 
 												<input type="text" class="form-control form-control" name="remarks" value="<%=obj[6].toString()%>"  maxlength="255" >
 											</td>
 											<td>
-							         		 	<select class="form-control items " name="PresLabCode" id="PresLabCode_Edit_<%=obj[0] %>"  required="required" style="width: 200px" onchange="AgendaPresentors('Edit_<%=obj[0] %>')"  data-live-search="true" data-container="body">
+							         		 	<select class="form-control items custom-select" name="PresLabCode" id="PresLabCode_Edit_<%=obj[0] %>"  required="required" onchange="AgendaPresentors('Edit_<%=obj[0] %>')"  data-live-search="true" data-container="body">
 													<option disabled="disabled"  selected value="">Lab Name</option>
 												    <% for (Object[] lab : AllLabList) {%>
 													    <option value="<%=lab[3]%>" <%if(obj[14].toString().equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
@@ -495,35 +275,35 @@ ul, #myUL {
 												    <option value="@EXP" <%if(obj[14].toString().equalsIgnoreCase("@EXP")) {%>selected<%} %>>Expert</option>
 												</select>
 							         		</td>
-											<td style="width:1%">
-												<select class="form-control edititemsdd" name="presenterid" id="presenterid_Edit_<%=obj[0] %>" required="required" style=" font-weight: bold; text-align-last: left; width: 220px;" data-live-search="true" data-container="body">
+											<td>
+												<select class="form-control edititemsdd custom-select" name="presenterid" id="presenterid_Edit_<%=obj[0] %>" required="required" data-live-search="true" data-container="body">
 													<option disabled="true"  selected value="">Choose...</option>
 										        					
 												</select>
 											</td>	
-											<td  width="10%">
+											<td width="10%">
 												<input type="number" name="duration" class="form-control item_name" min="1"  placeholder="Minutes " value="<%=obj[12] %>" required />
 											</td>
-											<td style="text-align: left; width: 18%;">
+											<td class="td-wl-18">
 												<table>
 												<%for(Object[] doc : AgendaDocList) { 
 													if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 													<tr>
 														<td><%= doc[3] + " <span class='text-muted'> Ver " + doc[4] + "." + doc[5] + "</span>" %></td>
-														<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
-														<td style="width:1% ;white-space: nowrap;" ><a type="button" onclick="removeDocRow(this,<%=doc[0] %>);" > <i class=" fa fa-minus" style="color: red;"   ></i> </a></td>
+														<td class="td-ws-1"><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download text-success" aria-hidden="true"></i></a></td>
+														<td class="td-ws-1"><a type="button" onclick="removeDocRow(this,<%=doc[0] %>);" > <i class="fa fa-minus text-danger"></i> </a></td>
 													<tr>													
 												<%} }%>
 												</table>
 									
 											</td>
 										
-											<td style="text-align: left; width: 5%;"> 
+											<td class="td-wl-5"> 
 												<span id="editattachname_<%=obj[0] %>" class="attachname"></span>
-												<button type="button" class=" btn btn-sm" name="add" id="attacheditbtn_<%=obj[0] %>" onclick="openMainModal('<%=obj[0] %>','<%=obj[1] %>','<%=obj[3] %>','<%=obj[5] %>','0','edit')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+												<button type="button" class=" btn btn-sm" name="add" id="attacheditbtn_<%=obj[0] %>" onclick="openMainModal('<%=obj[0] %>','<%=obj[1] %>','<%=obj[3] %>','<%=obj[5] %>','0','edit')" > <i class="btn btn-sm fa fa-plus text-success p-0"></i></button>
 												<input type="hidden" name="attachid" id="editattachid_<%=obj[0] %>" value="">												
 											</td>																	
-											<td style="text-align: left; width: 6%;">
+											<td class="td-wl-5">
 				                                <input type="hidden" name="${_csrf.parameterName}"   value="${_csrf.token}" />
 												<input type="hidden"  name="AgendaPriority" value="<%= obj[8]%>"/>
 												<input type="hidden" name="committeescheduleagendaid" value="<%=obj[0]%>"/>
@@ -560,182 +340,9 @@ ul, #myUL {
 </form>
 <%} %>  
 
-<!--  -----------------------------------------------agenda attachment ---------------------------------------------- -->
 
-		<div class="modal" tabindex="-1" role="dialog" id="attachmentmodal" aria-labelledby="myLargeModalLabel" aria-hidden="true">
- 				 <div class="modal-dialog modal-dialog-centered " style="max-width: 75% !important; ">
-   					 <div class="modal-content">
-   						 <div class="modal-header">
-					        <h4 class="modal-title" style="color: #145374">Select Document for linking</h4>
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          <span aria-hidden="true">&times;</span>
-					        </button>
-						 </div>
-						<div class="modal-body">   
-		<!-- --------------------------------------------left page ----------------------------------------------------->
-							<div class="col-md-12" >		
-		<!-- -------------------------------- tree ----------------------------- -->
-								<div class="row" style="height: 28rem; overflow-y:auto;verflow-x:auto; ">		
-									<ul>	
-									<%for(Object[] obj :filerepmasterlistall)
-									{ 
-										if(Long.parseLong(obj[1].toString())==0)
-										{%>  
-										<li>
-											<span class="caret" id="system<%=obj[0]%>"  onclick="onclickchangeMain(this);" >
-							             		<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>
-							             	</span>
-							             	<span>
-									           
-							             	</span>
-											<ul  class="nested">
-												<li>
-								<!-- ----------------------------------------level 1------------------------------------- -->	
-													<%for(Object[] obj1 :filerepmasterlistall)
-													{ 
-														if(Long.parseLong(obj1[1].toString())==Long.parseLong(obj[0].toString()))
-														{%>  
-														<li>
-															<span class="caret" id="system<%=obj1[0]%>" onclick="onclickchangeMain(this);" >
-							             						<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - " %>
-							             					</span>
-															<span>
-																<button type="button" id="upbutton<%=obj1[0]%>" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','-','','-','','-','',1)">
-									             					<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i>
-									             				</button>
-									             			
-							             					</span>
-															<ul  class="nested">
-																<li>
-												<!-- ----------------------------------------level 2------------------------------------- -->	
-																		<%for(Object[] obj2 :filerepmasterlistall)
-																		{ 
-																			if(Long.parseLong(obj2[1].toString())==Long.parseLong(obj1[0].toString()))
-																			{ %>  
-																			<li>
-																				<span class="caret" id="system<%=obj2[0]%>" onclick="onclickchangeMain(this);" >
-																					<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - " %>
-																				</span>
-																				<span>
-																					<button type="button" id="upbutton<%=obj2[0]%>" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','-','','-','',2)">
-													             						<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i>
-													             					</button>
-													             					
-													             					
-											             						</span>
-																				<ul  class="nested">
-																					<li>
-																	<!-- ----------------------------------------level 3------------------------------------- -->	
-																							<%for(Object[] obj3 :filerepmasterlistall)
-																							{ 
-																								if(Long.parseLong(obj3[1].toString())==Long.parseLong(obj2[0].toString()))
-																								{%>  
-																								<li>
-																									<span class="caret" id="system<%=obj3[0]%>"  onclick="onclickchangeMain(this);" >
-																										<%=obj3[3]!=null?StringEscapeUtils.escapeHtml4(obj3[3].toString()): " - " %>
-																									</span>
-																									<span>
-																										<button type="button" id="upbutton<%=obj3[0]%>" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','<%=obj3[0]%>','<%=obj3[3] %>','-','',3)">
-																		             						<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i>
-																		             					</button>
-																		             					
-																             						</span>
-																									<ul  class="nested">
-																										<li>
-																						<!-- ----------------------------------------level 4------------------------------------- -->	
-																											<%for(Object[] obj4 :filerepmasterlistall)
-																											{ 
-																												if(Long.parseLong(obj4[1].toString())==Long.parseLong(obj3[0].toString()))
-																												{%>  
-																												<li>
-																													
-																														<span class="caret-last"  id="system<%=obj4[0]%>" onclick="onclickchangeMain(this);" >
-																															<%=obj4[3]!=null?StringEscapeUtils.escapeHtml4(obj4[3].toString()): " - " %>
-																														</span>
-																														<span> 
-																															<button type="button" id="upbutton<%=obj4[0]%>" class="btn" data-target="#exampleModalCenter" style="background-color: transparent;margin: -5px 0px;" onclick="modalbox('<%=obj[0]%>','<%=obj[3] %>','<%=obj1[0]%>','<%=obj1[3] %>','<%=obj2[0]%>','<%=obj2[3] %>','<%=obj3[0]%>','<%=obj3[3] %>','<%=obj4[0]%>','<%=obj4[3] %>',4)">
-																							             						<i class="fa fa-arrow-right" style="color: #007bff" aria-hidden="true"></i>
-																							             					</button>
-																							             					
-																							             					
-																							             					
-																					             						</span>
-																													
-																												</li>	
-																											<% }
-																											} %>			
-																									
-																						<!-- ----------------------------------------level 4------------------------------------- -->
-																										</li>
-																									</ul>
-																								</li>	
-																							<%}
-																							} %>	
-																				
-																	<!-- ----------------------------------------level 3------------------------------------- -->
-																					</li>
-																				</ul>
-																			</li>	
-																		<%}
-																		} %>		
-															
-												<!-- ----------------------------------------level 2------------------------------------- -->
-																</li>
-															</ul>
-														</li>	
-													<%}
-													} %>
-											
-								<!-- ----------------------------------------level 1------------------------------------- -->
-												</li>
-											</ul>
-										</li>	
-									<%}
-									} %>
-									</ul>							
-								</div>
-		<!-- -------------------------------- tree end ----------------------------- -->				
-							</div>
-		<!-- ------------------------------------------left page end --------------------------------------------- -->
-						</div>	
-					</div> 
-				</div> 
-			</div>
-<!--  -----------------------------------------------agenda attachment ---------------------------------------------- -->
-
-
-<!-- --------------------------------------------  model start  -------------------------------------------------------- -->
-
-		<div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered "  style="max-width: 60% !important;">
-		
-				<div class="modal-content" >
-					   
-				    <div class="modal-header" style="background-color: rgba(0,0,0,.03);">
-				    	<h4 class="modal-title" id="model-card-header" style="color: #145374"></h4>
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				    </div>
-					<div class="modal-body"  style="padding: 0.5rem !important;">
-							
-						<div class="card-body" style="min-height:30% ;max-height: 93% !important;overflow-y: auto;">
-							<div class="row">
-								<div class="col-md-8">
-									<div style="margin-top: 5px;" id="fileuploadlist">
-						
-									</div>
-								</div>
-									
-			           		</div>					
-						</div>
-					</div>
-				</div>
-			</div> 
-		</div>
 		
 		<input type="hidden" name="projectid" id="ProjectId" value="<%=projectid %>" />
-<!-- --------------------------------------------  model end  -------------------------------------------------------- -->
 
 <form method="POST" action="FileUnpack.htm"  id="downloadform" target="_blank"> 
 	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
@@ -757,7 +364,7 @@ ul, #myUL {
          <ul class="list-group folder-tree" id="folderTree"></ul>
       </div>
 	  <div class="modal-footer">
-		 <div style="color: red;font-weight: 500;">Note - Please upload PDF files only and PDF size should be smaller than 10mb.</div>
+		 <div class="text-danger">Note - Please upload PDF files only and PDF size should be smaller than 10mb.</div>
 	  </div>
     </div>
   </div>
@@ -985,27 +592,27 @@ function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendaty
                     if (folderMap.hasOwnProperty(mainId)) {
                         html += '<li class="list-group-item folder-item" data-id="' + mainId + '" onclick="toggleFolder(this, ' + mainId + ', '+ projectid +', \'mainLevel\', \'' + agendatype + '\', '+ agendaid +')">';
                         html += '<i class="fa fa-folder folder-icon text-warning"></i> ' + folderMap[mainId].name;
-                        html += '<ul class="list-group subfolder" style="display:none;">';
+                        html += '<ul class="list-group subfolder custom-subfolder">';
 
                         var subfolders = folderMap[mainId].subfolders;
                         for (var k = 0; k < subfolders.length; k++) {
                             var sub = subfolders[k];
                             html += '<li class="list-group-item folder-item" data-id="' + sub.id + '" onclick="toggleFolder(this, ' + sub.id + ', '+ projectid +', \'subLevel\', \'' + agendatype + '\', '+ agendaid +')">';
                             html += '<i class="fa fa-folder folder-icon text-warning"></i> ' + sub.name;
-                            html += '<ul class="list-group subfolder" id="subfolder-files-' + sub.id + '" style="display:none;"></ul>';
+                            html += '<ul class="list-group subfolder custom-subfolder" id="subfolder-files-' + sub.id + '"></ul>';
                             html += '</li>';
                         }
 
-                        html += '<div class="" id="mainfolder-files-' + mainId + '" style="display:none;"></div>';
+                        html += '<div class="custom-subfolder" id="mainfolder-files-' + mainId + '"></div>';
                         html += '</ul></li>';
                     }
                 }
             }else if(initiationId > 0){
                 html += '<div>No Data Available.</div></br>';
-	            html += '<div>Please go to <span style="font-weight: 500; color: blue;">Document Repository Module &rarr; Pre Project Doc Repo</span>, create a folder, and upload pdfs.</div></br>';
+	            html += '<div>Please go to <span class="span-notice">Document Repository Module &rarr; Pre Project Doc Repo</span>, create a folder, and upload pdfs.</div></br>';
             }else{
 	           	html += '<div>No Data Available.</div></br>';
-                html += '<div>Please go to <span style="font-weight: 500; color: blue;">Document Repository Module &rarr; Document Rep Master</span>, create a folder, and upload pdfs.</div></br>';
+                html += '<div>Please go to <span class="span-notice">Document Repository Module &rarr; Document Rep Master</span>, create a folder, and upload pdfs.</div></br>';
             }
 
             $('.folder-tree').html(html);
@@ -1087,14 +694,14 @@ function loadFolderFiles(folderId, projecId, type, agendatype, agendaid) {
                 }
                 html += '/>';
                 html += '<i class="fa fa-file-pdf-o text-danger"></i> ' + fileName;
-                html += '<span class="text-muted" style="font-size:13px"> Ver '+data[i][4]+'.'+data[i][5]+'</span>';
-                html += '<i class="fa fa-download" style="cursor: pointer; margin-left:8px;" onclick="fileDownload(' + data[i][7] + ', \'' + type + '\')"></i>';
+                html += '<span class="text-muted span-mute"> Ver '+data[i][4]+'.'+data[i][5]+'</span>';
+                html += '<i class="fa fa-download file-download" onclick="fileDownload(' + data[i][7] + ', \'' + type + '\')"></i>';
                 if (initiationId && initiationId >=0 ) {
                     html += '';
                 }else{
-                    html += '<i class="fa fa-upload" aria-hidden="true" style="color: #0a5dff; cursor: pointer; margin-left:12px;" onclick="fileUpload(\''+data[i][0]+'\')"></i></button><br/>';
+                    html += '<i class="fa fa-upload file-upload" aria-hidden="true" onclick="fileUpload(\''+data[i][0]+'\')"></i></button><br/>';
                 }
-                html += '<label for="fileInput" id="uploadlabel'+data[i][0]+'" style="margin-left: 20px; margin-top: 10px; display: none;">'
+                html += '<label for="fileInput" id="uploadlabel'+data[i][0]+'" class="label-file">'
                 html += '<input type="file" name="docFileInput" id="fileInput'+data[i][0]+'" required="required"  accept="application/pdf"/> '
                 html += '<button type="button" class="btn btn-sm back" onclick="fileSubmit(\''+type+'\',\''+data[i][0]+'\',\''+data[i][2]+'\',\''+data[i][3]+'\',\''+data[i][4]+'\',\''+data[i][5]+'\',\''+data[i][6]+'\', '+agendaid+')">Upload</button>'
                 html += '</label>'
@@ -1318,8 +925,8 @@ function setagendaattachval(attachid, attchName)
 		let agendano=$('#agendano').val();
 		let html= $("#attachlistdiv_"+agendano).html();
 		let attname =attchName;
-		html += '<tr id="a_'+agendano+'"><td title='+attchName+'> '+attname+'</td><td style="width:1% ;white-space: nowrap;">';
-		html += '<button type="button"  onclick="$(this).parent(\'td\').parent(\'tr\').remove();"  > <i class="btn btn-sm fa fa-minus" style="color: red;"   ></i> </button>';
+		html += '<tr id="a_'+agendano+'"><td title='+attchName+'> '+attname+'</td><td class="td-ws-1">';
+		html += '<button type="button"  onclick="$(this).parent(\'td\').parent(\'tr\').remove();"  > <i class="btn btn-sm fa fa-minus text-danger"></i> </button>';
 		html += '<input type="hidden" name="attachid_'+agendano+'" value="'+attachid+'" /></td>';
 		html += '</tr>';
 		$("#attachlistdiv_"+agendano).html(html);

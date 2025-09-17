@@ -19,252 +19,11 @@
 <spring:url value="/resources/css/projectdetails.css" var="projetdetailscss" />
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
+<spring:url value="/resources/css/projectModule/soc.css" var="socCss"/>
+<link rel="stylesheet" type="text/css" href="${socCss}">
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
 <link href="${projetdetailscss}" rel="stylesheet" />
-
-<style type="text/css">
-
-.tab-pane p{
-	text-align: justify;
-	
-}
-
-.card-body{
-	padding: 0rem !important;
-}
-.navigation_btn{
-	margin: 1%;
-}
-
- .b{
-	background-color: #ebecf1;	
-}
-.a{
-	background-color: #d6e0f0;
-}
-
-.nav-link{
-	text-align: left;
-}
-.nav-tabs>.nav-item>.nav-link{
-	padding: 11px 15px !important;
-}
-body { 
-   font-family : "Lato", Arial, sans-serif !important;
-   overflow-x: hidden;
-}
-
-input,select,table,div,label,span {
-font-family : "Lato", Arial, sans-serif !important;
-}
-.text-center{
-	text-align: left !imporatant;
-}
-
-.control-label,.mandatory{
-float: left;
-font-weight: bold;
-font-size: 1rem;
-}
-.control-label{
-color: purple;
-}
-</style>
-
-<style type="text/css">
-
-.panel-info {
-	border-color: #bce8f1;
-}
-.panel {
-	margin-bottom: 10px;
-	background-color: #fff;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
-.panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-	color: #1d5987;
-}
-.panel-title {
-	margin-top: 0;
-	margin-bottom: 0;
-	font-size: 13px;
-	color: inherit;
-	font-weight: bold;
-	display: contents;
-}
-.buttonEd {
-	float: right;
-	margin-top: -0.5rem;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-div {
-	display: block;
-}
-
-
-.olre-body .panel-info .panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-heading {
-	padding: 18px 15px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.p-5 {
-	padding: 5px;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-user agent stylesheet
-div {
-	display: block;
-}
-
-.panel-info {
-	border-color: #bce8f1;
-}
-
-.rsqr-column{
- float : left;
-}
-
-.scrollclass::-webkit-scrollbar {
-    width:7px;
-}
-.scrollclass::-webkit-scrollbar-track {
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3); 
-    border-radius:5px;
-}
-.scrollclass::-webkit-scrollbar-thumb {
-    border-radius:5px;
-  /*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
-}
-.scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
- 	transition: 0.5s;
-}
-
-
-.trup{
-	padding:6px 10px 6px 10px ;			
-	border-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-.trdown{
-	padding:0px 10px 5px 10px ;			
-	border-bottom-left-radius : 5px; 
-	border-bottom-right-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-
-
-
-p
-{
-	text-align: justify !important;
-  	text-justify: inter-word;
-}
-p,td,th
-{
-  word-wrap: break-word;
-  word-break: normal ;
-}
-
-.textunderline{
-	text-decoration: underline;
-}
-
-
-</style>
-
-<style type="text/css">
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	/* font-weight: 800; */
-	font-size: 16px;
-	/* color:#07689f; */
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-.form-group {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-</style>
-
-<style type="text/css">
-
-#tabledata{
- margin-left : 30px;
- border-collapse : collapse;
- /* border : 1px solid black; */
- width : 98.5%;
-}
-#tabledata th{
- text-align : center;
- font-size: 14px;
-}
-#tabledata td{
- text-align : left;
- vertical-align: top;
- word-wrap: break-word;
- word-break: normal;
-}
-#tabledata td,th{
- /* border : 1px solid black; */
- padding : 5px;
-}
-
-#select2-LabCode-container,#select2-approverEmpId-container{
-	text-align: left;
-}
-</style>
 </head>
 <body>
 
@@ -334,10 +93,10 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
    		<div class="col-md-12">
        		<div class="card slider">
        			<!-- This is for Slider Headers -->
-         		<div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 0%;">
+         		<div class="card-header slider_header card-header1">
              		<h4 class="category">Project Closure SoC - <%if(projectMaster!=null) {%><%=projectMaster.getProjectShortName()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectShortName()): " - "%> (<%=projectMaster.getProjectCode()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectCode()): " - " %>) <%} %>
 
-             			<a class="btn btn-info btn-sm  shadow-nohover back"
+             			<a class="btn btn-info btn-sm  shadow-nohover back back-btn"
              				<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y") ) {%>
                					href="ProjectClosureApprovals.htm"
                				<%} else if(isApproval!=null &&  isApproval.equalsIgnoreCase("N") ) {%>
@@ -346,10 +105,10 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                					href="ProjectClosureList.htm"
                				<%} %>
              		
-             			  style="color: white!important;float: right;">Back</a>
+             			  >Back</a>
              		</h4>
-             		<hr style="margin: -8px 0px !important;">
-             		<ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
+             		<hr class="margin-80">
+             		<ul class="nav nav-tabs justify-content-center padding-bottom-0" role="tablist">
 
             			<li class="nav-item" id="nav-socdetails">
              				<%if(socTabId!=null && socTabId.equalsIgnoreCase("1")){ %> 
@@ -377,7 +136,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
          		
          		<!-- This is for Tab Panes -->
          		<div class="card">
-         			<div class="tab-content text-center" style="margin-top : 0.2rem;">
+         			<div class="tab-content text-left mt02rem">
          				<!-- *********** SoC Details ***********      --> 
                			<%if(socTabId!=null && socTabId.equalsIgnoreCase("1")){ %> 
          					<div class="tab-pane active" id="socdetails" role="tabpanel">
@@ -385,63 +144,30 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
               				<div class="tab-pane " id="socdetails" role="tabpanel">
                			<%} %>
                					<div class="container">
-									<div class="row" style="width: 140%; margin-left: -15rem;margin-top: 1rem;">
+									<div class="row container-row">
 										<div class="col-md-12">
 											<div class="card shadow-nohover" >
-												<div class="card-header" style=" /* background: linear-gradient(to right, #334d50, #cbcaa5); */ /* background-color:rgba(6,103,200,1); */ background-color: #055C9D;text-align: left;">
-								                    <b class="text-white" style="">SoC Details: </b> 
+												<div class="card-header card-header-bg">
+								                    <b class="text-white">SoC Details: </b> 
 								                    <hr>
-								                    <span class="text-white" style="float:right;font-weight: 600"> </span>
+								                    <span class="text-white float-right fw-600"> </span>
 							        			</div> 
 												<div class="card-body">
 								        		
 													<form action="ProjectClosureSoCDetailsSubmit.htm" method="POST" enctype="multipart/form-data">
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 												    	<input type="hidden" name="closureId" value="<%=closureId%>">
-												    	<div class="row" style="margin-left: 2%;margin-right: 2%;">
-												    		
-												        	<%-- <div class="col-md-2" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">Closure Category:</label><span class="mandatory">*</span>
-												                    <select name="closureCategory" id="closureCategory" class="form-control  form-control selectdee" onchange="closurecategorychange()" data-width="100%" data-live-search="true" required>
-			                											<option value="-1" disabled="disabled" selected="selected">--Select--</option>
-												               			<%
-												                			for(String category: closurecategory ){
-												                		%>
-																			<option value="<%=category%>" <%if(soc!=null && soc.getClosureCategory()!=null){ if(category.equalsIgnoreCase(soc.getClosureCategory())){%>selected="selected" <%}} %>  style="text-align: left;"><%=category %></option>
-																		<%} %>
-																	</select>
-												                </div>
-												            </div> --%>
-												        	<div class="col-md-2" style="">
+												    	<div class="row ml2-mr2">
+												    	
+												        	<div class="col-md-2">
 												        		<div class="form-group">
 												                	<label class="control-label">QR No:</label>
 												                    <input  class="form-control form-control" type="text" name="qrNo" placeholder="Enter QRNo" 
 												                     value="<%if(soc!=null && soc.getQRNo()!=null) {%><%=soc.getQRNo()!=null?StringEscapeUtils.escapeHtml4(soc.getQRNo()): " - " %><%} %>" > 
 												                </div>
 												            </div>
-												            <%-- <div class="col-md-2" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">Expnd as on :</label><span class="mandatory">*</span>
-												                    <input  class="form-control form-control" type="text" name="expndAsOn" id="expndAsOn"
-												                     value="<%if(soc!=null && soc.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(soc.getExpndAsOn()) %><%} %>" required> 
-												                </div>
-												            </div>
-												        	<div class="col-md-2" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">Total Expnd (<span style="font-size: 14px;">&#x20B9;</span> Cr):</label><span class="mandatory">*</span>
-												                    <input  class="form-control form-control" type="number" step="0.1" name="totalExpnd" placeholder="Enter Total Expenditure" maxlength="6"
-												                     value="<%if(soc!=null && soc.getTotalExpnd()!=null) {%><%=String.format("%.2f", Double.parseDouble(soc.getTotalExpnd())/10000000) %><%} %>" required> 
-												                </div>
-												            </div>
-												        	<div class="col-md-2" style="">
-												        		<div class="form-group">
-												                	<label class="control-label">Total FE Expnd (<span style="font-size: 14px;">&#x20B9;</span> Cr):</label><span class="mandatory">*</span>
-												                    <input  class="form-control form-control" type="number" step="0.1" name="totalExpndFE" placeholder="Enter Total Expenditure FE" maxlength="6"
-												                     value="<%if(soc!=null && soc.getTotalExpndFE()!=null) {%><%=String.format("%.2f", Double.parseDouble(soc.getTotalExpndFE())/10000000) %><%} %>" required> 
-												                </div>
-												            </div> --%>
-												            <div class="col-md-2" style="">
+												            
+												            <div class="col-md-2">
 												        		<div class="form-group">
 												                	<label class="control-label">Direction of DMC:</label><span class="mandatory">*</span>
 												                	<select name="dmcDirection" id="dmcDirection" class="form-control  form-control selectdee" data-width="100%" data-live-search="true" required>
@@ -449,66 +175,64 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												               			<%
 												                			for(String direction: dmcdirection ){
 												                		%>
-																			<option value="<%=direction%>" <%if(soc!=null && soc.getDMCDirection()!=null){ if(direction.equalsIgnoreCase(soc.getDMCDirection())){%>selected="selected" <%}} %>  style="text-align: left;"><%=direction!=null?StringEscapeUtils.escapeHtml4(direction): " - " %></option>
+																			<option value="<%=direction%>" <%if(soc!=null && soc.getDMCDirection()!=null){ if(direction.equalsIgnoreCase(soc.getDMCDirection())){%>selected="selected" <%}} %>  class="text-left"><%=direction!=null?StringEscapeUtils.escapeHtml4(direction): " - " %></option>
 																		<%} %>
 																	</select>
-												                    <%-- <textarea class="form-control form-control" name="dmcDirection" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
-                              		  								 placeholder="Enter Direction of DMC" required><%if(soc!=null && soc.getDMCDirection()!=null){ %><%=soc.getDMCDirection() %><%} %></textarea>  --%>
-												                </div>
+																	</div>
 												            </div>
 												            
 												        </div>
 												        
-												        <div class="row" style="margin-left: 2%;margin-right: 2%;">
-												        	<div class="col-md-6" style="">
+												        <div class="row ml2-mr2">
+												        	<div class="col-md-6">
 												        		<div class="form-group">
 												                	<label class="control-label">Present Status:</label><span class="mandatory">*</span>
-												                    <textarea class="form-control form-control" name="presentStatus" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
+												                    <textarea class="form-control form-control fs15px" name="presentStatus" maxlength="5000" rows="2" cols="65" 
                               		  								 placeholder="Enter Present Status" required><%if(soc!=null && soc.getPresentStatus()!=null){ %><%=soc.getPresentStatus() %><%} %></textarea> 
 												                </div>
 												            </div>
-												            <div class="col-md-6" style="">
+												            <div class="col-md-6">
 												        		<div class="form-group">
 												                	<label class="control-label">Detailed reasons/considerations for closure:</label><span class="mandatory">*</span>
-												                    <textarea class="form-control form-control" name="reason" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
+												                    <textarea class="form-control form-control fs15px" name="reason" maxlength="5000" rows="2" cols="65" 
                               		  								 placeholder="Enter Detailed reasons/considerations for closure" required><%if(soc!=null && soc.getReason()!=null){ %><%=soc.getReason() %><%} %></textarea> 
 												                </div>
 												            </div>
 												        </div>
 												        
-												        <div class="row" id="recommendationdiv" style="margin-left: 2%;margin-right: 2%;">
-												        	<div class="col-md-12" style="">
+												        <div class="row ml2-mr2" id="recommendationdiv">
+												        	<div class="col-md-12">
 												        		<div class="form-group">
 												                	<label class="control-label">Recommendation of Review Committee for Project success:</label><span class="mandatory">*</span>
-												                    <textarea class="form-control form-control" name="recommendation" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
+												                    <textarea class="form-control form-control fs15px" name="recommendation" maxlength="5000" rows="2" cols="65" 
                               		  								 placeholder="Enter Recommendation of Review Committee for Project success"><%if(soc!=null && soc.getRecommendation()!=null){ %><%=soc.getRecommendation() %><%} %></textarea> 
 												                </div>
 												            </div>
 												        </div>
 												        
-												        <div class="row" style="margin-left: 2%;margin-right: 2%;">
-												        	<div class="col-md-6" style="">
+												        <div class="row ml2-mr2">
+												        	<div class="col-md-6">
 												        		<div class="form-group">
 												                	<label class="control-label">Recommendations of the highest monitoring committee for closure:</label><span class="mandatory">*</span>
-												                    <textarea class="form-control form-control" name="monitoringCommittee" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
+												                    <textarea class="form-control form-control fs15px" name="monitoringCommittee" maxlength="5000" rows="2" cols="65" 
                               		  								 placeholder="Enter Minutes of Monitoring Committee Meetings held so far and recommendations of the highest monitoring committee for closure of the project/programme" required><%if(soc!=null && soc.getMonitoringCommittee()!=null){ %><%=soc.getMonitoringCommittee() %><%} %></textarea> 
 												                </div>
 												            </div>
-												            <div class="col-md-6" style="">
+												            <div class="col-md-6">
 												        		<div class="form-group">
 												                	<label class="control-label">Other relevant details:</label>
-												                    <textarea class="form-control form-control" name="otherRelevant" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
+												                    <textarea class="form-control form-control fs15px" name="otherRelevant" maxlength="5000" rows="2" cols="65" 
                               		  								 placeholder="Enter Other relevant details" ><%if(soc!=null && soc.getOtherRelevant()!=null){ %><%=soc.getOtherRelevant() %><%} %></textarea> 
 												                </div>
 												            </div>
 												        </div>
 												        
-												        <div class="row" style="margin-left: 2%;margin-right: 2%;">
-												        	<div class="col-md-3" style="">
+												        <div class="row ml2-mr2">
+												        	<div class="col-md-3">
 												        		<div class="form-group">
 												                	<label class="control-label">Monitoring Committee:</label><span class="mandatory">*</span>
 												                	<%if(soc!=null && soc.getMonitoringCommitteeAttach()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 						<button type="submit" class="btn btn-sm padding5px8px" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
@@ -516,11 +240,11 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                               		      							<input type="file" class="form-control modals" name="monitoringCommitteeAttach" <%if(soc==null) {%>required<%} %> accept=".pdf">
 												                </div>
 												            </div>
-												            <div class="col-md-3" style="">
+												            <div class="col-md-3">
 												        		<div class="form-group">
 												                	<label class="control-label">Lessons Learnt:</label><span class="mandatory">*</span>
 												                    <%if(soc!=null && soc.getLessonsLearnt()!=null){ %>
-                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+                            					 						<button type="submit" class="btn btn-sm padding5px8px" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 	value="lessonslearntfile" formaction="ProjectClosureSoCFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Lessons Learnt Download">
                             					 							<i class="fa fa-download fa-lg"></i>
                             					 						</button>
@@ -531,7 +255,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												            
 												        </div>
 												        
-								               			<div align="center" style="margin-top: 1rem; margin-bottom: 1rem;">
+								               			<div align="center" class="mt1rem-mb1rem">
 															<%if(soc!=null){ %>
 															    <input type="hidden" name="closureId" value="<%=soc.getClosureId()%>">
 																<button type="submit" class="btn btn-sm btn-warning edit btn-soc" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')" >UPDATE</button>
@@ -546,19 +270,19 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                							</div>
                						</div>
                					</div>
-               					<div style="display: flex;justify-content: space-between;">
+               					<div class="displex-juscont">
                						<div></div>
-		               				<div class="navigation_btn"  style="text-align: center;">
+		               				<div class="navigation_btn text-center">
 		               					<%if(soc!=null){ %>
 				               				<form action="">
-				               					<button type="submit" class="btn btn-sm " formaction="ProjectClosureSoCDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="SoC Download" style="background-color: purple;border: none;color: white;font-weight: bold;">SoC</button>
+				               					<button type="submit" class="btn btn-sm soc-btn" formaction="ProjectClosureSoCDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="SoC Download">SoC</button>
 				               					<input type="hidden" name="closureId" value="<%=closureId%>">
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 				               				</form>
 			               				<%} %>
 									</div>
-		               				<div class="navigation_btn"  style="text-align: right;">
-            							<a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectClosureList.htm" style="color: white!important">Back</a>
+		               				<div class="navigation_btn text-right">
+            							<a class="btn btn-info btn-sm  shadow-nohover back white-color" href="ProjectClosureList.htm">Back</a>
 										<button class="btn btn-info btn-sm next">Next</button>
 									</div>
                					</div>
@@ -577,14 +301,17 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
                			<%} %>
                					<%if(soc!=null) {%>
                						<div class="col-md-8 mt-2">
-               							<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%; <%if(isApproval==null) {%>max-height: 600px;<%} else{%>max-height: 700px;<%} %>  overflow-y: auto;">
+               						<%
+									   String maxHeightClass = (isApproval == null) ? "mh-600" : "mh-700";
+									%>
+               							<div class="card card-custom <%=maxHeightClass%>">
                								<div class="card-body mt-2 ml-4">
                									<form action="#">
                										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                    									<input type="hidden" name="closureId" value="<%=closureId%>">
                    									<input type="hidden" name="closureSoCId" value="<%=soc.getClosureSoCId()%>">
 			               							<div class="mt-2" align="center">
-			               								<h5 style="font-weight: bold;margin-top: 1.5rem;">STATEMENT OF CASE FOR PROJECT COMPLETED WITH
+			               								<h5 class="heading-size">STATEMENT OF CASE FOR PROJECT COMPLETED WITH
 				               								<%if(closure!=null) {
 				               								 String category = closure.getClosureCategory();
 				               								%>
@@ -601,66 +328,66 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 			               							<%int slno=0; %>
     												<table id="tabledata">
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Name of Lab/Est</td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Name of Lab/Est</td>
 												    		<td>: <%=labMaster.getLabName()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabName()): " - "%> (<%= labMaster.getLabCode()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabCode()): " - " %>), <%=labMaster.getLabAddress()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabAddress()): " - "%> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Title of the Project/Programme</td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Title of the Project/Programme</td>
 												    		<td>: <%=projectMaster.getProjectName()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectName()): " - "%> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Project/Programme No.</td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Project/Programme No.</td>
 												    		<td>: <%=projectMaster.getSanctionNo()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getSanctionNo()): " - " %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Category of Project</td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Category of Project</td>
 												    		<td>: <%if(potherdetails!=null && potherdetails[0]!=null) {%><%=StringEscapeUtils.escapeHtml4(potherdetails[0].toString()) %><%} %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Sponsoring Agency and QR No.</td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Sponsoring Agency and QR No.</td>
 												    		<td>: <%if(projectMaster.getEndUser()!=null) {%> <%=StringEscapeUtils.escapeHtml4(projectMaster.getEndUser()) %><%} else{%>--<%} %> and <%if(soc.getQRNo()!=null && !soc.getQRNo().isEmpty()) {%> <%=StringEscapeUtils.escapeHtml4(soc.getQRNo()) %><%} else{%>NA<%} %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Date of Sanction</td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Date of Sanction</td>
 												    		<td>: <%if(projectMaster.getSanctionDate()!=null) {%><%=fc.SqlToRegularDate(projectMaster.getSanctionDate()+"") %><%} %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">PDC original given and <br> Subsequent amendment, if any </td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">PDC original given and <br> Subsequent amendment, if any </td>
 												    		<td>: <%if(projectMaster.getPDC()!=null) {%><%=fc.SqlToRegularDate(projectMaster.getPDC()+"") %><%} %>
 												    		
 												    		<br>: <%if(potherdetails!=null && potherdetails[8]!=null) {%><%=fc.SqlToRegularDate(potherdetails[8].toString()) %><%} else{%>--<%} %>
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Sanctioned Cost ( <span style="font-size: 12px;">&#x20B9;</span> Cr) </td>
-												    		<td style="">: Total 
-												    			<span style="text-decoration: underline;">
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Sanctioned Cost ( <span class="fs12px">&#x20B9;</span> Cr) </td>
+												    		<td>: Total 
+												    			<span class="txt-decoration">
 												    				<%=df.format(projectMaster.getTotalSanctionCost()/10000000) %>
 												    			</span> Cr (FE 
-												    			<span style="text-decoration: underline;">
+												    			<span class="txt-decoration">
 												    				<%=df.format(projectMaster.getSanctionCostRE()/10000000 ) %>
 												    			</span> Cr)
 												    		</td>
 												    	</tr> 
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Statement of Accounts ( as on <%-- <%if(soc.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(soc.getExpndAsOn()) %><%} %> --%> )</td>
-												    		<td>: Expenditure incurred (<span style="font-size: 12px;">&#x20B9;</span> Cr) 
-												    		: Total <span style="text-decoration: underline;">
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Statement of Accounts ( as on <%-- <%if(soc.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(soc.getExpndAsOn()) %><%} %> --%> )</td>
+												    		<td>: Expenditure incurred (<span class="fs12px">&#x20B9;</span> Cr) 
+												    		: Total <span class="txt-decoration">
 												    			<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpnd())/10000000 ) %> --%>
 												    			<%if(expndDetails!=null && expndDetails[0]!=null) {%>
 												    				<%=df.format(Double.parseDouble(expndDetails[0].toString())/10000000 ) %> 
 												    			<%} %>
 												    		</span> Cr 
-												    		(FE <span style="text-decoration: underline;">
+												    		(FE <span class="txt-decoration">
 												    			<%-- <%=String.format("%.2f", Double.parseDouble(soc.getTotalExpndFE())/10000000 ) %> --%>
 												    			<%if(expndDetails!=null && expndDetails[1]!=null) {%>
 												    				<%=df.format(Double.parseDouble(expndDetails[1].toString())/10000000 ) %> 
@@ -669,54 +396,52 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<!-- <td style="width: 39.2%;">Present Status</td>
-												    		<td style="width: 55.3%;">:</td> -->
-												    		<td style="width: 40%;">Present Status</td>
-												    		<td style="">: <%=soc.getPresentStatus()!=null?StringEscapeUtils.escapeHtml4(soc.getPresentStatus()): " - " %> </td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Present Status</td>
+												    		<td>: <%=soc.getPresentStatus()!=null?StringEscapeUtils.escapeHtml4(soc.getPresentStatus()): " - " %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Detailed reasons/considerations for Project <%=closure.getClosureCategory() %> </td>
-												    		<td style="">: <%if(soc.getReason()!=null) {%><%=StringEscapeUtils.escapeHtml4(soc.getReason()) %> <%} else{%>-<%} %> </td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Detailed reasons/considerations for Project <%=closure.getClosureCategory() %> </td>
+												    		<td>: <%if(soc.getReason()!=null) {%><%=StringEscapeUtils.escapeHtml4(soc.getReason()) %> <%} else{%>-<%} %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Recommendation of Review Committee for Project success (as applicable)</td>
-												    		<td style="">: <%if(soc.getRecommendation()!=null && !soc.getRecommendation().isEmpty()) {%><%=StringEscapeUtils.escapeHtml4(soc.getRecommendation()) %> <%} else{%>NA<%} %> </td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Recommendation of Review Committee for Project success (as applicable)</td>
+												    		<td>: <%if(soc.getRecommendation()!=null && !soc.getRecommendation().isEmpty()) {%><%=StringEscapeUtils.escapeHtml4(soc.getRecommendation()) %> <%} else{%>NA<%} %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">
 												    			Minutes of Monitoring Committee Meetings held so far and recommendations 
 												 				of the highest monitoring committee for closure of the project/programme
 												 			</td>
-												    		<td style="">: <%=soc.getMonitoringCommittee()!=null?StringEscapeUtils.escapeHtml4(soc.getMonitoringCommittee()): " - " %>
-												    			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+												    		<td>: <%=soc.getMonitoringCommittee()!=null?StringEscapeUtils.escapeHtml4(soc.getMonitoringCommittee()): " - " %>
+												    			<button type="submit" class="btn btn-sm padding5px8px" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 	 		     value="monitoringcommitteefile" formaction="ProjectClosureSoCFileDownload.htm" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Download">
                             					 				 	<i class="fa fa-download fa-lg"></i>
                             					 				</button>
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Direction of DMC</td>
-												    		<td style="">: <%=soc.getDMCDirection()!=null?StringEscapeUtils.escapeHtml4(soc.getDMCDirection()): " - " %> </td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Direction of DMC</td>
+												    		<td>: <%=soc.getDMCDirection()!=null?StringEscapeUtils.escapeHtml4(soc.getDMCDirection()): " - " %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Lessons Learnt</td>
-												    		<td style="">: 
-												    		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Lessons Learnt</td>
+												    		<td>: 
+												    		<button type="submit" class="btn btn-sm padding5px8px" name="filename" formmethod="post" formnovalidate="formnovalidate"
                             					 	 		 value="lessonslearntfile" formaction="ProjectClosureSoCFileDownload.htm" data-toggle="tooltip" data-placement="top" title="Lessons learnt Download">
                             					 				<i class="fa fa-download fa-lg"></i>
                             					 			</button>
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;">Other relevant details</td>
-												    		<td style="">: <%if(soc.getOtherRelevant()!=null && !soc.getOtherRelevant().isEmpty()) {%><%=StringEscapeUtils.escapeHtml4(soc.getOtherRelevant())%> <%} else{%>--<%} %></td>
+												    		<td class="width4per""><%=++slno %>.</td>
+												    		<td class="width40per"">Other relevant details</td>
+												    		<td>: <%if(soc.getOtherRelevant()!=null && !soc.getOtherRelevant().isEmpty()) {%><%=StringEscapeUtils.escapeHtml4(soc.getOtherRelevant())%> <%} else{%>--<%} %></td>
 												    	</tr>
    	 												</table>
    	 												
@@ -724,64 +449,64 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 			               		   					
 			               		   					<!-- Signatures and timestamps -->
 			               		   					
-													<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 10px;margin-top: 30px;">
-		               								 	<div style="font-size: 15px;">Project Director</div>
+													<div class="sign-timestamp">
+		               								 	<div class="fs15px">Project Director</div>
 						               					<%for(Object[] apprInfo : socApprovalEmpData){ %>
 						   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("SFW")){ %>
-						   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-						   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-						   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - "  %>]</label>
+						   								<label class="txt-transform mt-15"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+						   								<label class="txt-transform"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+						   								<label class="fs12px">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - "  %>]</label>
 						   			    				<%break;}} %>  
 							            			 </div>
 							            			 
 							            			 <%for(Object[] apprInfo : socApprovalEmpData) {%>
-							            			 	<div style="width: 96%;text-align: left;margin-left: 40px;line-height: 10px;margin-top: 50px;">
+							            			 	<div class="appr-info">
 							            			 		<%if(apprInfo[8].toString().equalsIgnoreCase("SAG")){ %>
-							            			 			<div style="font-size: 15px;"> Signature of GD</div>
-								   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
+							            			 			<div class="fs15px"> Signature of GD</div>
+								   								<label class="txt-transform mt-15"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="txt-transform"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="fs12px" ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAA")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of AD</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - "  %>]</label>
+							   			    					<div class="fs15px"> Signature of AD</div>
+							   			    					<label class="txt-transform mt-15"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="txt-transform"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="fs12px" ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - "  %>]</label>
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAP")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of GD-DP&C</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19) :" - " %>]</label>
+							   			    					<div class="fs15px"> Signature of GD-DP&C</div>
+							   			    					<label class="txt-transform mt-15"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="txt-transform"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="fs12px" ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19) :" - " %>]</label>
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAD")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of Director</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - "  %>]</label>
+							   			    					<div class="fs15px"> Signature of Director</div>
+							   			    					<label class="txt-transform mt-15"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="txt-transform"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="fs12px" ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - "  %>]</label>
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAC")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of Competent Authority</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) %>]</label>
+							   			    					<div class="fs15px"> Signature of Competent Authority</div>
+							   			    					<label class="txt-transform mt-15"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="txt-transform"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="fs12px" ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) %>]</label>
 							   			    			
 							   			    				<%} %>
 							            			 	</div>	
 							            			 <%} %>
 							            			 
 							            			 <!-- Remarks History -->
-							            			 <div class="row mt-2" style="margin-left: 18px;">
+							            			 <div class="row mt-2 ml18px">
 														<%if(socRemarksHistory.size()>0){ %>
-															<div class="col-md-8" align="left" style="margin: 10px 0px 5px 25px; padding:0px;border: 1px solid black;border-radius: 5px;">
+															<div class="col-md-8 remark-history" align="left">
 																<%if(socRemarksHistory.size()>0){ %>
-																	<table style="margin: 3px;padding: 0px">
+																	<table class="mr3-pd0">
 																		<tr>
-																			<td style="border:none;padding: 0px">
-																			<h6 style="text-decoration: underline;">Remarks :</h6> 
+																			<td class="bdnone-pd0">
+																			<h6 class="txt-decoration">Remarks :</h6> 
 																			</td>											
 																		</tr>
 																		<%for(Object[] obj : socRemarksHistory){%>
 																		<tr>
-																			<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
+																			<td class="soc-remark-history">
 																				<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>&nbsp; :
-																				<span style="border:none; color: blue;">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
+																				<span class="bdnone-colorblue">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 																			</td>
 																		</tr>
 																		<%} %>
@@ -791,7 +516,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 														<%} %>
 					   								</div>
 							            			
-							            			<div class="row mt-2 mb-4" style="margin-left: 18px;">
+							            			<div class="row mt-2 mb-4 ml18px">
 														<div class="col-md-12" align="center">
 															<%if(statuscode!=null && socforward.contains(statuscode)) {%>
 																<div class="ml-2" align="left">
@@ -802,7 +527,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 															<%} %>
 															<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y")) {%>
 																<%if(statuscode!=null && statuscode.contains("SAD")  ) {%>
-																	<div class="row externalapproval" style="">
+																	<div class="row externalapproval">
 																		<div class="col-md-3">
 																			<label class="control-label">Lab</label><span class="mandatory">*</span>
 																			<select class="form-control selectdee" id="LabCode" name="LabCode" onchange="LabcodeSubmit()" data-live-search="true"  required="required">
@@ -835,19 +560,19 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
 								         						</div>
 								         						<%if(statuscode!=null && (statuscode.contains("SAP") || statuscode.contains("SAD"))) {%>
-								         						<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
+								         						<button type="submit" class="btn btn-sm btn-success fw-600" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');">
 										    						Approve	
 									      						</button>
 									      						
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+									      						<button type="submit" class="btn btn-sm btn-danger fw-600 return-btn-color" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();">
 										 							Return
 																</button>
 								         						<%} else{%>
-																<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" style="font-weight: 600;">
+																<button type="submit" class="btn btn-sm btn-success fw-600" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');">
 										    						Recommend	
 									      						</button>
 									      						
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+									      						<button type="submit" class="btn btn-sm btn-danger fw-600 return-btn-color" id="finalSubmission" formaction="ProjectClosureSoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();">
 										 							Return
 																</button>
 															<%} }%>
@@ -861,50 +586,50 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 			               							
                					
                					<%} else{%>
-			               			<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-			               				<h4 style="font-weight: bold;color: red;">Please fill SoC Details..!</h4>
+			               			<div class="mt-4 heading-2">
+			               				<h4 class="heading-2-size">Please fill SoC Details..!</h4>
 			               			</div>
                					<%} %>
                					
-               					<div style="display: flex;justify-content: space-between;">
+               					<div class="disflex-juscont">
 	               					<div></div>
 		               				<div>
 		               					<%if(isApproval==null) {%>
 		               					<div class="row"  >
-				 		  					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For SoC Approval</b></div>
+				 		  					<div class="col-md-12 text-center"><b>Approval Flow For SoC Approval</b></div>
 				 	    				</div>
-				 	    				<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+				 	    				<div class="row txt-pt10-pb15">
 			              					<table align="center"  >
 			               						<tr>
-			               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+			               							<td class="trup pd-data">
 			                							PD -  <%=PDData[2]!=null?StringEscapeUtils.escapeHtml4(PDData[2].toString()): " - " %>
 			                						</td>
 			                		
 		                        					<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+			                						<td class="trup gd-data">
 			                							GD - <%if(GD!=null) {%><%=GD[1]!=null?StringEscapeUtils.escapeHtml4(GD[1].toString()): " - " %> <%} else{%>GD<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
+			                						<td class="trup ad-data">
 			                							AD - <%if(AD!=null) {%><%=AD[1]!=null?StringEscapeUtils.escapeHtml4(AD[1].toString()): " - " %> <%} else{%>AD<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #76ebcb 10%, transparent 115%);">
+			                						<td class="trup dpnc-data">
 			                							GD-DP&C - <%if(GDDPandC!=null) {%><%=GDDPandC[1]!=null?StringEscapeUtils.escapeHtml4(GDDPandC[1].toString()): " - " %> <%} else{%>GD-DP&C<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #13f816 10%, transparent 115%);">
+			                						<td class="trup director-data">
 			                							Director - <%if(Director!=null) {%><%=Director[1]!=null?StringEscapeUtils.escapeHtml4(Director[1].toString()): " - " %> <%} else{%>Director<%} %>
 			                	    				</td>
 			                	    				
@@ -912,7 +637,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #00c7e4 10%, transparent 115%);">
+			                						<td class="trup ca-data">
 			                							Competent Authority - Competent Authority
 			                	    				</td>
 			               						</tr> 	
@@ -920,7 +645,7 @@ String statuscode = closure!=null?closure.getClosureStatusCode():null;
 					 					</div>
 					 					<%} %>
 		               				</div>
-		               				<div class="navigation_btn"  style="text-align: right;">
+		               				<div class="navigation_btn text-right">
 		            					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 										<button class="btn btn-info btn-sm next">Next</button>
 									</div>

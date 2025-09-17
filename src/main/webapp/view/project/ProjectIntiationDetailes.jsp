@@ -2,251 +2,18 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
-    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
-<title>PROJECT INT  LIST</title>
+<title>PROJECT INIT  LIST</title>
 
-<spring:url value="/resources/css/projectdetails.css" var="projetdetailscss" />
-<link href="${projetdetailscss}" rel="stylesheet" />
+<spring:url value="/resources/css/projectModule/projectIntiationDetailes.css" var="projectIntiationDetailes" />
+<link href="${projectIntiationDetailes}" rel="stylesheet" />
 
-<style type="text/css">
-
-/* .container-fluid  {
-overflow-x: auto;
-} */
-#initiation  {
-padding-left:0px;
-}
-
-#scrollButton {
-	display: none; /* Hide the button by default */
-	position: fixed;
-	/* Fixed position to appear in the same place regardless of scrolling */
-	bottom: 11%;
-	right: 30px;
-	z-index: 99; /* Ensure it appears above other elements */
-	font-size: 15px;
-	border: none;
-	outline: none;
-	background-color: #007bff;
-	color: white;
-	cursor: pointer;
-	padding: 10px;
-	border-radius: 4px;
-}
-.addreq {
-	margin-left: -10%;
-	margin-top: 5%;
-}
-.column p{
-	padding: 0px !important;
-}
-#MyTable1>thead{
-    background: #055C9D;
-    color: white;
-    font-weight: 800;
-    font-size: 1rem;
-}
-#MyTable1:hover{
-box-shadow: 2px 2px 2px gray;
-margin:8px;
-}
-#modalreqheader {
-	background: #145374;
-	height: 44px;
-	display: flex;
-	font-family: 'Muli';
-	align-items: center;
-	color: white;
-}
-input[type=radio] {
- accent-color: green;
-}
-#scrollclass::-webkit-scrollbar {
-    width:7px;
-}
-#scrollclass::-webkit-scrollbar-track {
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3); 
-    border-radius:5px;
-}
-#scrollclass::-webkit-scrollbar-thumb {
-    border-radius:5px;
-  /*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
-}
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
- 	transition: 0.5s;
-}
-#risk-vertical li{
-list-style-type: inherit;
-text-align: justify;
-}
-#risk-vertical table{
-border:1px solid red;
-}
-
-.sidelabel{
-font-weight:600;
-font-size: 15px;
-color:#145374;
-}
-.tab-pane p{
-	text-align: justify;
-	
-}
-
-.card-body{
-	padding: 0rem !important;
-}
-.navigation_btn{
-	margin: 1%;
-}
-
- .b{
-	background-color: #ebecf1;	
-}
-.a{
-	background-color: #d6e0f0;
-}
-
-.lab_add{
-	background-color: #ebecf1;
-	padding: 0px !important;
-	outline: none !important;
-	border: none !important;
-	font-family: 'Muli',sans-serif !important;
-	font-size: 15px;
-	background-color: #ebecf1 !important;
-	font-weight: 400;
-	font-style: italic;
-}
-.requirement{
-background-color:#80d8ff;
-padding:0px 5px 0px 5px; 
-border-radius:5px;
-height:36px;
-}
-#reqbtn{
-font-weight: 800;
-margin-right:16px;
-margin-top:3px;
-color:buttonshadow;
-font-family: 'Montserrat', sans-serif;
-}
-#addreq{
-width:40%;
-}
-.modalbtn{
-font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif !important;
-font-weight: 800 !important;
-}
-#reqmodal{
- width: 140%;
- margin-left: -164px;
- margin-top: 45px;
- }
-.nav-link{
-	text-align: left;
-}
-.nav-tabs>.nav-item>.nav-link{
-	padding: 11px 15px !important;
-}
-/* .nav-tabs>.nav-item>#nav{
-	padding: 0px 5px !important;
-}
- */
-body { 
-   overflow-x: hidden;
-}
-
-.text-center{
-	text-align: left !imporatant;
-}
-#req{
-background-color: rgba(50, 115, 220, 0.3);
-margin-top:7px;
-border-radius:5px;
- height:28px; 
-
-}
-#reqbtn1{  
-
-margin-top: 1%;
-
- font-size:13px;
-
-}
-.reqtable::-webkit-scrollbar{
-display:none;
-}
-#reqbtn2{
- float:left;
- height:20px;
-margin-left: 20%;
- margin-top:4px;
- font-size:13px;
- width:30px;
-
-}
-s/
-
-/*  .table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-} */
-
-
-
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-}
-
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
-} */
-#reqaction{
-display:flex;
-align-items: center;
-justify-content: center;
-}
-
-#modalbody{
-border-radius: 10px;
-
-}
-#modalbody:hover{
-box-shadow: 4px 4px 4px gray;
-margin:30px;
-}
-.modals{
-box-shadow: 2px 2px 2px gray;
-}
-</style>
 </head>
 <body>
 <%
@@ -289,7 +56,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
         </div>
     </div>
 <% } %>
-	<div align="center"  id="successdiv" style="display:None"> 
+	<div align="center"  id="successdiv" class="dis-none"> 
 	<div class="alert alert-success" id="divalert"  role="alert">Data Edited Successfully.</div>
 	</div>
 
@@ -300,47 +67,40 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
   
   <div class="row">
     <div class="col-md-12">
-    
-<%--      <p class="category">Initiation Details <span style="color: #335d2d">( Project Title :&nbsp;<%=ProjectDetailes[7] %> (<%=ProjectDetailes[6] %>) )</span></p> 
- --%>      
-      <!-- Nav tabs -->
-      
+   
       <div class="card slider">
       
       
-        <div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 130px;
-        
-        
-        ">
+        <div class="card-header slider_header cs-slider">
         
              <h3 class="category">Initiation Details 
              
              <%if(ProjectDetailes[17].toString().equalsIgnoreCase("N")){ %>
              
-             	<span style="color: #335d2d">( Project Title :&nbsp; <%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %> )</span> 
+             	<span class="cs-project">( Project Title :&nbsp; <%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %> )</span> 
              
              <%}else{ %>
              
-             	<span style="color: #335d2d">( Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %> (<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>) )</span> 
+             	<span class="cs-project">( Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %> (<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>) )</span> 
              
              <%} %>
 
-             <a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectIntiationList.htm" style="color: white!important; float: right;">BACK</a>
+             <a class="btn btn-info btn-sm  shadow-nohover back text-light float-right" href="ProjectIntiationList.htm">BACK</a>
              
-             <span class="mr-2" style="color: #335d2d;float:right;margin-top: 5px;"> <%if(ProjectDetailes[17].toString().equalsIgnoreCase("N")){ %> Main Project : <%=ProjectDetailes[16]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[16].toString()): " - " %> &nbsp;&nbsp;&nbsp;&nbsp; <%} %> </span>
-			 <span style="display:inline-block;float: right">
+             <span class="mr-2 cs-span"> <%if(ProjectDetailes[17].toString().equalsIgnoreCase("N")){ %> Main Project : <%=ProjectDetailes[16]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[16].toString()): " - " %> &nbsp;&nbsp;&nbsp;&nbsp; <%} %> </span>
+			 <span class="cs-span1">
              <form action="#">
-    			  <button type="submit" class="btn btn-sm" formmethod="GET" formaction="ProjectProposal.htm" formtarget="_blank" style="border:none"  data-toggle="tooltip" data-placement="bottom" title="Project Presentation"><img alt="" src="view/images/presentation.png" style="width:19px !important"></button>&nbsp;&nbsp;
-				  <button type="submit" class="btn btn-sm" formmethod="GET" style="background: transparent" formtarget="_blank" formaction="ProposalPresentationDownload.htm" data-toggle="tooltip" data-placement="bottom" title="Project Presentation Download"><i class="fa fa-download fa-lg" aria-hidden="true"></i></button>&nbsp;&nbsp;
+    			  <button type="submit" class="btn btn-sm border-0 w-20px" formmethod="GET" formaction="ProjectProposal.htm" formtarget="_blank" data-toggle="tooltip" data-placement="bottom" title="Project Presentation"><img alt="" src="view/images/presentation.png"></button>&nbsp;&nbsp;
+				  <button type="submit" class="btn btn-sm bg-trans" formmethod="GET" formtarget="_blank" formaction="ProposalPresentationDownload.htm" data-toggle="tooltip" data-placement="bottom" title="Project Presentation Download"><i class="fa fa-download fa-lg" aria-hidden="true"></i></button>&nbsp;&nbsp;
 	 			  <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 				  <input type="hidden" name="IntiationId"	value="<%=ProjectDetailes[0] %>" /> 
 							 
     			</form>
              </span>
              </h3> 
-        <hr style=" margin: 0 !important;">
+        <hr class="m-0">
         
-          <ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
+          <ul class="nav nav-tabs justify-content-center pb-0" role="tablist">
             <li class="nav-item" id="nav">
              <%if(TabId==null){ %> <a class="nav-link active " data-toggle="tab" href="#home" id="nav" role="tab"><%}else{ %>
                <a class="nav-link  " data-toggle="tab" href="#home" role="tab">
@@ -361,13 +121,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
               <%}else{ %>
               <a class="nav-link" data-toggle="tab" href="#authority" role="tab" >
                 <%} %>
-                <img src="view/images/authority.png" style="vertical-align: sub;height: 22px;">
+                <img src="view/images/authority.png" class="cs-ref">
                   &nbsp; REFERENCE
               </a>
               <%}else{%>
               <form action="ProjectAuthorityAdd.htm" method="POST" id="AuthorityAdd">
                  <a class="nav-link condn-nav-link" data-toggle="tab" href="#" role="tab" onclick='$("#AuthorityAdd").submit()'>
-                <img src="view/images/authority.png" style="vertical-align: sub;height: 22px;">
+                <img src="view/images/authority.png" class="cs-ref">
                   &nbsp;REFERENCE
               </a>
               	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -388,13 +148,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
                 <%} %>
               
              
-                <i class="fa fa-folder-open" aria-hidden="true" style="color:orange"></i>
+                <i class="fa fa-folder-open color-orange"  aria-hidden="true"></i>
 				DETAILS
               </a>
               <%}else{%>
               <form action="ProjectOtherDetailsAdd.htm" method="POST" id="DetailsAdd">
                  <a class="nav-link condn-nav-link" data-toggle="tab" href="#" role="tab" onclick='$("#DetailsAdd").submit()'>
-                <i class="fa fa-folder-open" aria-hidden="true" style="color:orange"></i>
+                <i class="fa fa-folder-open color-orange" aria-hidden="true"></i>
 				DETAILS
               </a>
               	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -411,13 +171,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
               <a class="nav-link" data-toggle="tab" href="#messages" role="tab" >
                 <%} %>
               
-				<i class="fa fa-inr" aria-hidden="true" style="color:#005086"></i>
+				<i class="fa fa-inr color-cost" aria-hidden="true"></i>
 				 COST
               </a>
                <%}else{%>
                <form action="ProjectCostAdd.htm" method="POST" id="CostAdd">
                   <a class="nav-link condn-nav-link" data-toggle="tab" href="#messages" role="tab" onclick='$("#CostAdd").submit()'>
-				<i class="fa fa-inr" aria-hidden="true" style="color:#005086"></i>
+				<i class="fa fa-inr color-cost" aria-hidden="true"></i>
 				 COST
               </a>
                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -432,13 +192,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
               <%}else{ %>
               <a class="nav-link" data-toggle="tab" href="#settings" role="tab" >
                 <%} %>
-                <img src="view/images/myschedule.png" style="vertical-align: sub">
+                <img src="view/images/myschedule.png" class="ver-sub">
                  &nbsp;&nbsp;SCHEDULE
               </a>
                <%}else{%>
                 <form action="ProjectScheduleAdd.htm" method="POST" id="ScheduleAdd">
                    <a class="nav-link  condn-nav-link" data-toggle="tab" href="#settings" role="tab" onclick='$("#ScheduleAdd").submit()'>
-                <img src="view/images/myschedule.png" style="vertical-align: sub">
+                <img src="view/images/myschedule.png" class="ver-sub">
                  &nbsp;&nbsp;SCHEDULE
               </a>
                   	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -454,13 +214,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
               <%}else{ %>
               <a class="nav-link" data-toggle="tab" href="#attachment" role="tab" >
                 <%} %>
-               <img src="view/images/file.png" style="vertical-align: sub">
+               <img src="view/images/file.png" class="ver-sub">
                   &nbsp;&nbsp;ATTACHMENT
               </a>
                <%}else{%>
                 <form action="ProjectAttachmentAdd.htm" method="POST" id="AttachmentAdd">
                    <a class="nav-link  condn-nav-link" data-toggle="tab" href="#attachment" role="tab" onclick='$("#AttachmentAdd").submit()'>
-                <img src="view/images/file.png" style="vertical-align: sub">
+                <img src="view/images/file.png" class="ver-sub">
                   &nbsp;&nbsp;ATTACHMENT
               </a>
                   	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -491,45 +251,45 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				  <form action="ProjectLabAdd.htm" method="POST" name="myfrm" id="myfrm" >
 				 		
 					<div class="row" >
-			 			<div class="col-md-12" style="margin-left: 60px">
+			 			<div class="col-md-12 ml-60px">
 			 			
 							<div class="row details">
-							  <div class="column a" style="width:23%;border-bottom: 2px solid #394989;border-top-left-radius: 5px">
+							  <div class="column a cs-col-a">
 							    <h6>Project/Programme</h6>
 							    <p><%if(ProjectDetailes[3]!=null){ if(ProjectDetailes[3].toString().equalsIgnoreCase("PRJ")){%> Project <%}if(ProjectDetailes[3].toString().equalsIgnoreCase("PGM")){ %>Program <% } }else{ %>-<%} %></p>
 							  </div>
-							   <div class="column b" style="width:23%;border-bottom: 2px solid #394989;">
+							   <div class="column b cs-col-b">
 							    <h6>Category</h6>
 							    <p><%if(ProjectDetailes[4]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[4].toString()) %><%}else{ %>-<%} %></p>
 							  </div>
-							  <div class="column a" style="width:23%;border-bottom: 2px solid #394989;">
+							  <div class="column a cs-col-b">
 							    <h6>Security Classification</h6>
 							    <p><%if(ProjectDetailes[5]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[5].toString()) %><%}else{ %>-<%} %></p>
 							  </div>
-							  <div class="column b" style="width:23%;border-bottom: 2px solid #394989;border-top-right-radius: 5px">
+							  <div class="column b cs-col-b1">
 							    <h6>Planned</h6>
 							    <p><%if(ProjectDetailes[10]!=null){ if(ProjectDetailes[10].toString().equalsIgnoreCase("P")){%>Plan<%}if(ProjectDetailes[10].toString().equalsIgnoreCase("N")){%>Non-Plan<%}}else{ %>-<%} %></p>
 							  </div>
 							</div>
 							
 							<div class="row details">
-								<div class="column b" style="width:23%;border-bottom: 2px solid #394989;">
+								<div class="column b cs-col-b">
 								    <h6>Short Name</h6>
 								    <p><%if(ProjectDetailes[6]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()) %><%}else{ %>-<%} %></p>
 							  	</div>
 								
-								<div class="column a" style="width:69%;border-bottom: 2px solid #394989;">
+								<div class="column a cs-col-b">
 								    <h6>Title</h6>
 								    <p><%if(ProjectDetailes[7]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()) %><%}else{ %>-<%} %></p>
 							  	</div>		
 							</div>
 							
 							<div class="row details">
-							  <div class="column a" style="width:23%;border-bottom: 2px solid #394989;">
+							  <div class="column a cs-col-b">
 							    <h6>Deliverable</h6>
 							    <p><%if(ProjectDetailes[12]!=null && !ProjectDetailes[12].toString().equalsIgnoreCase("")){%>	<%=StringEscapeUtils.escapeHtml4(ProjectDetailes[12].toString()) %><%}else{ %>-<%} %></p>
 							  </div>
-							   <div class="column b" style="width:23%;border-bottom: 2px solid #394989;">
+							   <div class="column b cs-col-b">
 							   <div class="row">
 							   	<div class="col">
 							   		<h6>Fe Cost</h6>
@@ -541,11 +301,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 							   	</div>
 							   </div>
 							  </div>
-							  <div class="column a" style="width:23%;border-bottom: 2px solid #394989;">
+							  <div class="column a cs-col-b">
 							    <h6>Duration (Months)</h6>
 							    <p><%if(ProjectDetailes[9]!=null){%><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[9].toString()) %><%}else{ %>-<%} %></p>
 							  </div>  
- 							<div class="column b" style="width:23%;border-bottom: 2px solid #394989;">
+ 							<div class="column b cs-col-b">
 							    <h6>Multi Lab</h6>
 							    <p><%if(ProjectDetailes[11]!=null){ if(ProjectDetailes[11].toString().equalsIgnoreCase("Y")){%>
 							    	Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="submit" class="btn btn-link lab_add"  > <u>Click here to Add Lab</u> </button>  
@@ -554,19 +314,19 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 							</div>
 							
 							<div class="row details">
-							  <div class="column b" style="width:23%;border-bottom: 4px solid #394989;border-bottom-left-radius: 5px">
+							  <div class="column b cs-col-b2">
 							    <h6>PDD</h6>
 							    <p><%if(ProjectDetailes[1]!=null){%>	<%=StringEscapeUtils.escapeHtml4(ProjectDetailes[1].toString()) %><%}else{ %>-<%} %></p>
 							  </div>
-							   <div class="column a" style="width:23%;border-bottom: 4px solid #394989;">
+							   <div class="column a cs-col-a1">
 							   	<h6>Indicative Duration (Months)</h6>
 							    <p><%if(ProjectDetailes[9]!=null && Integer.parseInt(ProjectDetailes[9].toString())>0){ %><%=ProjectDetailes[9]%><%}else if(ProjectDetailes[18]!=null){ %><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[18].toString())%><%}else{ %>-<%} %></p>
 							  </div>
-							  <div class="column b" style="width:23%;border-bottom: 4px solid #394989;">
+							  <div class="column b cs-col-a1">
 							    <h6>Indicative Cost (&#8377;.) </h6> 	
 							    <p><%if(ProjectDetailes[8]!=null && Double.parseDouble(ProjectDetailes[8].toString())>0){%><%=nfc.convert(Double.parseDouble( ProjectDetailes[8].toString())/100000 )%> &nbsp;&nbsp;Lakhs<%} else if(ProjectDetailes[20]!=null &&  Double.parseDouble( ProjectDetailes[20].toString())>0 ){%><%=nfc.convert(Double.parseDouble( ProjectDetailes[20].toString())/100000 )%>&nbsp;&nbsp;Lakhs<%}else{ %>-<%} %></p>
 							  </div>  
- 							<div class="column a" style="width:23%;border-bottom: 4px solid #394989;border-bottom-right-radius: 5px">
+ 							<div class="column a cs-col-b3">
 							    <h6>P&C Remarks</h6>
 							    <p><%if(ProjectDetailes[19]!=null){%>	<%=StringEscapeUtils.escapeHtml4(ProjectDetailes[19].toString()) %><%}else{ %>-<%} %></p>
 							  </div>
@@ -579,19 +339,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 	 			</div>
 
 
-	            <div style="text-align: right;margin-top: 30px;">
+	            <div class="text-right mt-30">
 	           
-						<div style="margin-top: 30px;" align="center">
-							<%-- <%if(ProjectDetailes[11].toString().equalsIgnoreCase("Y")){%>
-							 <button type="submit" class="btn btn-primary btn-sm add" >LAB ADD </button>
-							 <%} %> --%>
+						<div class="mt-30" align="center">
 							 <button type="submit" class="btn btn-warning btn-sm edit" formaction="ProjectIntiationEdit.htm"   >EDIT</button>&nbsp;&nbsp;
-							 
 							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ExecutiveSummaryDownload.htm" formtarget="_blank" formmethod="GET"  >Print Executive Summary</button>&nbsp;&nbsp;
-							 
 							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectProposalDownload.htm" formtarget="_blank" formmethod="GET" >Print Project Proposal</button>&nbsp;&nbsp;
-							 <button type="submit" class="btn btn-warning btn-sm prints" formaction="ProjectSanction.htm"  style="background:brown;border:none;"  data-toggle="tooltip" data-placement="top" style="background:" title="Project SOC"><img alt="" src="view/images/requirement.png" style="width:19px !important">&nbsp;SOC</button>
-							<!-- <button type="button"  class="btn btn-sm prints bg-secondary" style="border:white;" onclick="showsqrModal()">SQR</button> -->
+							 <button type="submit" class="btn btn-warning btn-sm prints cs-soc" formaction="ProjectSanction.htm" data-toggle="tooltip" data-placement="top" title="Project SOC"><img alt="" src="view/images/requirement.png" class="w-19px">&nbsp;SOC</button>
 							<input type="hidden" name="project" value="<%=ProjectDetailes[0]+"/"+ProjectDetailes[6]+"/"+ProjectDetailes[7]%>">
 						</div>	 	
 					
@@ -602,8 +356,8 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
           	</div>
           </form>
 	           
-	            <div class="navigation_btn"  style="text-align: right;">
-            		<a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectIntiationList.htm" style="color: white!important">Back</a>
+	            <div class="navigation_btn text-right">
+            		<a class="btn btn-info btn-sm  shadow-nohover back text-light" href="ProjectIntiationList.htm">Back</a>
 					<button class="btn btn-info btn-sm next">Next</button>
 				</div>
           
@@ -619,9 +373,9 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
                 <%} %>
             
           
-                <div class="table-responsive" style="width: 97%; margin-left: 24px;">
+                <div class="table-responsive cs-table">
 				                    <table class="table">
-				                       <thead class="thead" style="color:white!important;background-color: #055C9D">
+				                       <thead class="thead cs-thead">
 				                            <tr>
 				                            <th scope="col" >Reference Authority</th>
 				                            <th scope="col" >Reference Date</th>
@@ -670,7 +424,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                             	
 						                             		
 						                           <tr>
-						                           		<td colspan="4" style="text-align: center">
+						                           		<td colspan="4" class="text-center">
 						                           			No Data !
 						                           		</td>
 						                           </tr>
@@ -683,9 +437,9 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 
 							<form action="ProjectAuthorityAdd.htm" method="POST" name="myfrm4" id="myfrm4" >
 
-							     <div style="text-align: right;margin-top: 30px;">
+							     <div class="mt-30 text-right">
 								           		
-										<div style="margin-top: 30px;" align="center">
+										<div class="mt-30" align="center">
 										  <%if(Integer.parseInt(ProjectProgressCount[4].toString())>0){ %>
 										
 											<button type="submit" class="btn  btn-sm edit" >Edit</button>&nbsp;&nbsp;
@@ -701,7 +455,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 							    </div>
           					</form>
 
-				            <div class="navigation_btn"  style="text-align: right;">
+				            <div class="navigation_btn text-right">
 				           
 								<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>	
 								<button class="btn btn-info btn-sm next">Next</button>
@@ -728,12 +482,6 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
               <%}else{ %>
               <div class="tab-pane" id="profile" role="tabpanel">
                 <%} %>
-            
-            <!-- 	<div style="text-align: right;margin-bottom: 20px;margin-top: -35px">
-            		<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
-					<button class="btn btn-info btn-sm next">Next</button>
-				</div> -->
-            
 
              <div class="container-fluid">
 		        <div class="row">
@@ -1001,11 +749,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            	
 				                            		<!-- <div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Requirement</b></h4>
+				                            			<h4 class="cs-req-h4"><b>Requirement</b></h4>
 				                            		</div>
 				                            		
-					                   				<div class="col-md-2" style="margin-bottom: 2px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm" >
+					                   				<div class="col-md-2 mb-1">
+														<button class="share-button cs-share" form="myForm" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm">			 
 														</button>
@@ -1019,9 +767,9 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	 
 	
 											</form>
-											<div class="col-md-1"  id="initiation" ;style="padding-left:0px !important;" align="left">
- 											<label style="margin-top:0px;  margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif;" ><b>Brief</b></h5>
+											<div class="col-md-1 p-0"  id="initiation" align="left">
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm"><b>Brief</b></h5>
  											</label></div>
 						                  
 											<p><%if(obj[13]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[13].toString()) %><%}else{ %>-<%} %></p>	
@@ -1036,11 +784,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            		
 				                            	<!-- 	<div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Objective</b></h4>
+				                            			<h4 class="cs-obj-fm"><b>Objective</b></h4>
 				                            		</div>
 				                            	
 					                   				<div class="col-md-2" >
-														<button class="share-button" style="border: none;font-size:13px" form="myForm1" >
+														<button class="share-button cs-share" form="myForm1" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm1">			 
 														</button>
@@ -1058,13 +806,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<%-- <p><%if(obj[1]!=null){%><%=obj[1] %><%}else{ %>-<%} %></p> --%>
 											
 													<div class="col-md-1" id="initiation" align="left">
- 											<label style="margin-top:0px; margin-left:0px; margin-bottom:0px;font-weight: 800; 	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif;"><b>Brief</b></h5>
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm"><b>Brief</b></h5>
  											</label></div>
 						                   
 											<p><%if(obj[14]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
-											<div class="col-md-1" id="initiation" ><label style="margin-top:0px;margin-bottom:0px; margin-left:0px;font-weight: 800;font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif;" ><b>Detailed</b></h5></label></div>				                
+											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
 											<div><p><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%}else{ %>-<%} %></p></div>
 											
 										</div>
@@ -1079,11 +827,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            	
 				                            		<!-- <div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Scope</b></h4>
+				                            			<h4 class="cs-obj-fm"><b>Scope</b></h4>
 				                            		</div>
 				                            	
-					                   				<div class="col-md-2" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm2" >
+					                   				<div class="col-md-2 mt-1">
+														<button class="share-button cs-share" form="myForm2" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm2">			 
 														</button>
@@ -1100,13 +848,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 								
                                 			<%-- <p><%if(obj[2]!=null){%><%=obj[2] %><%}else{ %>-<%} %></p> --%>
                                 					<div class="col-md-1" id="initiation" align="left">
- 											<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif;"><b>Brief</b></h5>
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm"><b>Brief</b></h5>
  											</label></div>
 						                 
 											<p><%if(obj[15]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[15].toString()) %><%}else{ %>-<%} %></p>
 											<hr>
-											<div class="col-md-1"  id="initiation"><label style="margin-top:0px; margin-left:0px; margin-bottom:0px;font-weight: 800;font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif;"  ><b>Detailed</b></h5></label></div>				                
+											<div class="col-md-1"  id="initiation"><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
 											<div><p><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></p></div>
 
 										</div>
@@ -1121,11 +869,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            	
 				                            		<!-- <div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Multi-Lab Work Share	</b></h4>
+				                            			<h4 class="cs-obj-fm"><b>Multi-Lab Work Share	</b></h4>
 				                            		</div>
 				                            		
-					                   				<div class="col-md-2" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm3" >
+					                   				<div class="col-md-2 mb-1">
+														<button class="share-button cs-share" form="myForm3" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm3">			 
 														</button>
@@ -1142,13 +890,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 								
                                 			<%-- <p><%if(obj[3]!=null){%><%=obj[3] %><%}else{ %>-<%} %></p>	 --%>
                                 					<div class="col-md-1" id="initiation" align="left">
- 											<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif;"><b>Brief</b></h5>
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm"><b>Brief</b></h5>
  											</label></div>
 						                    
 											<p><%if(obj[16]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[16].toString()) %><%}else{ %>-<%} %></p>
 											<hr>
-											<div class="col-md-1" id="initiation" ><label style="margin-top:0px; margin-left:0px;margin-bottom:0px; font-weight: 800;font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif;" ><b>Detailed</b></h5></label></div>				                
+											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm" ><b>Detailed</b></h5></label></div>				                
 											<div><p><%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %>-<%} %></p></div>			                
 										</div>
 										
@@ -1162,11 +910,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            	
 				                            		<!-- <div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Earlier Work</b></h4>
+				                            			<h4 class="cs-obj-fm"><b>Earlier Work</b></h4>
 				                            		</div>
 				                            		
-					                   				<div class="col-md-2" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm4" >
+					                   				<div class="col-md-2 mt-1">
+														<button class="share-button cs-share" form="myForm4" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm4">			 
 														</button>
@@ -1183,13 +931,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 								
                                 			<%-- <p><%if(obj[4]!=null){%><%=obj[4] %><%}else{ %>-<%} %></p> --%>
                                 						<div class="col-md-1" id="initiation" align="left">
- 											<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif;" ><b>Brief</b></h5>
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm" ><b>Brief</b></h5>
  											</label></div>
 						                   
 											<p><%if(obj[17]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[17].toString()) %><%}else{ %>-<%} %></p>
 											<hr>
-											<div class="col-md-1" id="initiation" ><label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px; font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif;" ><b>Detailed</b></h5></label></div>				                
+											<div class="col-md-1" id="initiation" ><labelclass="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
 											<div><p><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %><%}else{ %>-<%} %></p></div>	
                                 			
                                 									                
@@ -1205,11 +953,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            		
 				                            		<!-- <div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Competency</b></h4>
+				                            			<h4 class="cs-obj-fm"><b>Competency</b></h4>
 				                            		</div>
 				                            	
-					                   				<div class="col-md-2" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm5" >
+					                   				<div class="col-md-2 mb-1">
+														<button class="share-button cs-share" form="myForm5" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm5">			 
 														</button>
@@ -1226,13 +974,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 								
                                 			<%-- <p><%if(obj[5]!=null){%><%=obj[5] %><%}else{ %>-<%} %></p> --%>
                                 						<div class="col-md-1" id="initiation" align="left">
- 											<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px; 	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif;"><b>Brief</b></h5>
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm"><b>Brief</b></h5>
  											</label></div>
 						                  
 											<%if(obj[18]!=null){%><p><%=StringEscapeUtils.escapeHtml4(obj[18].toString()) %></p><%}else{ %>-<%} %>
 											<hr>
-											<div class="col-md-1" id="initiation"><label style="margin-top:0px; margin-left:0px;font-weight: 800;margin-bottom:0px;font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif;" ><b>Detailed</b></h5></label></div>				                
+											<div class="col-md-1" id="initiation"><label sclass="cs-label"><h5 class="cs-brief-fm" ><b>Detailed</b></h5></label></div>				                
 											<div><%if(obj[5]!=null){%><p><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %></p><%}else{ %>-<%} %></div>		                
 										</div>
 										
@@ -1246,11 +994,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            	
 				                            		<!-- <div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Need of Project</b></h4>
+				                            			<h4 class="cs-obj-fm"><b>Need of Project</b></h4>
 				                            		</div>
 				                            	
-					                   				<div class="col-md-2" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm6" >
+					                   				<div class="col-md-2 mb-1">
+														<button class="share-button cs-share" form="myForm6" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm6">			 
 														</button>
@@ -1265,16 +1013,15 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 	
 											</form>
 											<div class="col-md-1" id="initiation" align="left">
- 											<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif;"><b>Brief</b></h5>
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm"><b>Brief</b></h5>
  											</label></div>
 						                    
 											<p><%if(obj[19]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[19].toString()) %><%}else{ %>-<%} %></p>
 											<hr>
-											<div class="col-md-1" id="initiation"><label style="margin-top:0px; margin-left:0px;font-weight: 800;margin-bottom:0px;font-size: 20px; color:#07689f;"><h5  style="font-family: 'Lato',sans-serif;"><b>Detailed</b></h5></label></div>				                
+											<div class="col-md-1" id="initiation"><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
 											<div><p><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString()) %><%}else{ %>-<%} %></p></div>	
                                 			
-                                			<%-- <p><%if(obj[6]!=null){%><%=obj[6] %><%}else{ %>-<%} %></p>	 --%>				                
 										</div>
 										
 										
@@ -1287,11 +1034,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            	
 				                            		<!-- <div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Technology Challenges</b></h4>
+				                            			<h4 class="cs-obj-fm"><b>Technology Challenges</b></h4>
 				                            		</div>
 				                            		
-					                   				<div class="col-md-2" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm7" >
+					                   				<div class="col-md-2 mb-1">
+														<button class="share-button cs-share" form="myForm7" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm7">			 
 														</button>
@@ -1310,13 +1057,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
                                 									                 --%>
                                 									                 
                                 			<div class="col-md-1" id="initiation" align="left">
- 											<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif;" ><b>Brief</b></h5>
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm"><b>Brief</b></h5>
  											</label></div>
 						                  
 											<p><%if(obj[20]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[20].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
-											<div class="col-md-1" id="initiation" ><label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif;" ><b>Detailed</b></h5></label></div>				                
+											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm" ><b>Detailed</b></h5></label></div>				                
 											<div><p><%if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %><%}else{ %>-<%} %></p></div>	
 										</div>
 										
@@ -1330,11 +1077,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            	
 				                            	<!-- 	<div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Risk Mitigation</b></h4>
+				                            			<h4 class="cs-obj-fm"><b>Risk Mitigation</b></h4>
 				                            		</div>
 				                            		
-					                   				<div class="col-md-2" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm8" >
+					                   				<div class="col-md-2 mb-1">
+														<button class="share-button cs-share" form="myForm8" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm8">			 
 														</button>
@@ -1351,13 +1098,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 								
                                 			<%-- <p><%if(obj[8]!=null){%><%=obj[8] %><%}else{ %>-<%} %></p> --%>	
                                 			<div class="col-md-1" id="initiation" align="left">
- 											<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif;"  ><b>Brief</b></h5>
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm"><b>Brief</b></h5>
  											</label></div>
 						                    
 											<p><%if(obj[21]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[21].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
-											<div class="col-md-1" id="initiation" ><label style="margin-top:0px; margin-left:0px; margin-bottom:0px;font-weight: 800;font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif;" ><b>Detailed</b></h5></label></div>				                
+											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
 											<div><p><%if(obj[8]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[8].toString()) %><%}else{ %>-<%} %></p></div>						                
 										</div>
 										
@@ -1371,11 +1118,11 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            	
 				                            	<!-- 	<div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Proposal</b></h4>
+				                            			<h4 class="cs-obj-fm"><b>Proposal</b></h4>
 				                            		</div>
 				                            		
-					                   				<div class="col-md-2" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm9" >
+					                   				<div class="col-md-2 mb-1">
+														<button class="share-button cs-share" form="myForm9" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm9">			 
 														</button>
@@ -1393,13 +1140,13 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
                                 		<%-- 	<p><%if(obj[9]!=null){%><%=obj[9] %><%}else{ %>-<%} %></p> --%>		
                                 		
                                 					<div class="col-md-1" id="initiation" align="left">
- 											<label style="margin-top:0px; margin-left:0px;font-weight: 800;margin-bottom:0px; 	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif"><b>Brief</b></h5>
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm"><b>Brief</b></h5>
  											</label></div>
 						                  
 											<p><%if(obj[22]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[22].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
-											<div class="col-md-1" id="initiation" ><label style="margin-top:0px; margin-left:0px; margin-bottom:0px;font-weight: 800;font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif; " ><b>Detailed</b></h5></label></div>				                
+											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
 											<div><p><%if(obj[9]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[9].toString()) %><%}else{ %>-<%} %></p></div>	
                                 						                
 										</div>
@@ -1414,10 +1161,10 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            	
 				                            		<!-- <div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Realization Plan</b></h4>
+				                            			<h4 class="cs-obj-fm"><b>Realization Plan</b></h4>
 				                            		</div>
-					                   				<div class="col-md-2" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm10" >
+					                   				<div class="col-md-2 mb-1">
+														<button class="share-button cs-share" form="myForm10" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm10">			 
 														</button>
@@ -1432,16 +1179,15 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 	
 											</form>
 											<div class="col-md-1" id="initiation" align="left">
- 											<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif"><b>Brief</b></h5>
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm"><b>Brief</b></h5>
  											</label></div>
 						                   
 											<p><%if(obj[23]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[23].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
-											<div class="col-md-1" id="initiation" ><label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif"><b>Detailed</b></h5></label></div>				                
+											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
 											<div><p><%if(obj[10]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[10].toString()) %><%}else{ %>-<%} %></p></div>	
                                	 				
-                               	 				<%-- <p><%if(obj[10]!=null){%><%=obj[10] %><%}else{ %>-<%} %></p> --%>						                
 										</div>
 										
 										 <div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("worldscenario")){ %> show active <%} %>    " id="worldscenario-vertical" role="tabpanel" aria-labelledby="worldscenario-vertical-tab">
@@ -1452,10 +1198,10 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                            	
 				                            		<!-- <div class="col-md-1"></div> -->
 				                            		<div class="col-md-10" align="left">
-				                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>World Scenario</b></h4>
+				                            			<h4 class="cs-obj-fm"><b>World Scenario</b></h4>
 				                            		</div>
-					                   				<div class="col-md-2" style="margin-bottom: 5px">
-														<button class="share-button" style="border: none;font-size:13px" form="myForm11" >
+					                   				<div class="col-md-2 mb-1">
+														<button class="share-button cs-share" form="myForm11" >
 											  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 											  				<input type="submit"  class="edit-btn" name="sub" value="EDIT" form="myForm11">			 
 														</button>
@@ -1470,16 +1216,15 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 	
 											</form>
 								
-                               	 				<%-- <p><%if(obj[12]!=null){%><%=obj[12] %><%}else{ %>-<%} %></p> --%>	
                                	 				
                                	 							<div class="col-md-1" id="initiation" align="left">
- 											<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 											<h5 style="font-family: 'Lato',sans-serif"><b>Brief</b></h5>
+ 											<label class="cs-label">
+ 											<h5 class="cs-brief-fm"><b>Brief</b></h5>
  											</label></div>
 						                  
 											<p><%if(obj[24]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[24].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
-											<div class="col-md-1" id="initiation"><label style="margin-top:0px; margin-left:0px;font-weight: 800;margin-bottom:0px;font-size: 20px; color:#07689f;"><h5 style="font-family: 'Lato',sans-serif" ><b>Detailed</b></h5></label></div>				                
+											<div class="col-md-1" id="initiation"><label class="cs-label"><h5 class="cs-brief-fm" ><b>Detailed</b></h5></label></div>				                
 											<div><p><%if(obj[12]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[12].toString()) %><%}else{ %>-<%} %></p></div>						                
 										</div>
 										
@@ -1501,7 +1246,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
     </div> 
 						      
 	           
-	            <div class="navigation_btn"  style="text-align: right;">
+	            <div class="navigation_btn text-right">
             		<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 					<button class="btn btn-info btn-sm next">Next</button>
 				</div>
@@ -1512,27 +1257,23 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
                  <%if(TabId!=null&&TabId.equalsIgnoreCase("6")){ %>
                <div class="tab-pane active" id="requirement" role="tabpanel">
               	<%}else{ %>
- 				<div class="tab-pane" id="requirement" role="tabpanel" style=" margin-top: -12px;">
+ 				<div class="tab-pane mt-n12" id="requirement" role="tabpanel">
                 <%} %> 
-                 <div class="container-fluid" style="margin-top:7px;">
+                 <div class="container-fluid mt-2">
 		        <div class="row">
 		            <div class="col-md-12 details_container">
 						        <div class="tab-vertical">
 						
 				 <div class="table-responsive">
-				<!--  <form action="ProjectRequirementUpdate.htm" method="POST" name="" id="myform5"> -->
 				<%  int i=1;%>
-				 <div class="reqtable" style="height: 300px; overflow: auto;border: 1px solid aliceblue; box-shadow: 2px 2px 5px lightgrey;">
-	 			 <table class="table" id="myTableReq" style="<%if(i>4) {%> height: 270px;<%}%>"> 
-	 			 <thead style="background-color: #055C9D;color:white; top:-2px; position: sticky;">
+				 <div class="reqtable cs-reqtable">
+	 			 <table class="table <%if(i>4) {%> h-270 <%}%>" id="myTableReq"> 
+	 			 <thead class="cs-req-thead">
 	 			 <tr >
-<!-- 	 			  <th style="width: 5%;">Select</th> -->
-				<th style="width: 3%; ">SN</th>
-				<th style="width:8%" class="text-nowrap">ID</th>
-				<!-- <th style="width:8%" class="text-nowrap">Requirement Type</th> -->
-				<th style="width:70%" class="text-nowrap" >Brief</th>
-				<th style="width:14%">Action</th>
-			<!-- 	<th style="width:20%">ADD</th> -->
+				<th class="w-3">SN</th>
+				<th class="text-nowrap w-8">ID</th>
+				<th class="text-nowrap w-70">Brief</th>
+				<th class="w-14">Action</th>
 	 			 </table>
 	 			</div>
 	 			<hr>
@@ -1540,7 +1281,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				  <form action="ProjectRequirementAdd.htm" method="POST" id="ReqAdd">
                    					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									<input type="hidden" name="IntiationId" value="<%=ProjectDetailes[0] %>" />
-				                  	  	 <button type="submit" class="btn btn-success " id="reqbtn" style="margin-left: 22px;">ADD
+				                  	  	 <button type="submit" class="btn btn-success ml-22" id="reqbtn">ADD
 				                 	 </button>
 				                  	</form>		
 	 			</div>
@@ -1551,7 +1292,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 						        </div>
 						        
 						        
-                  <div class="navigation_btn"  style="text-align: right;">
+                  <div class="navigation_btn text-right">
             		<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 					<button class="btn btn-info btn-sm next">Next</button>
 				</div>
@@ -1580,7 +1321,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				               
 				                <div class="table-responsive">
 				                  <table class="table table-bordered table-hover table-striped table-condensed ">
-                                        <thead style="background: #055C9D;color:white;">
+                                        <thead class="cs-thead">
                                          
                                             <tr>
                                                 <th >Item</th>
@@ -1607,27 +1348,27 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 									    for(Object[] 	obj:entry.getValue()){ 	    %>
 
 											<tr>
-		 										<td style="width: 500px; " align="left"> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> (<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>) (<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>)</td>
-									    		<td style="width: 550px;" align="left"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
-									    		<td style="text-align: right">&#8377; <%=nfc.convert(Double.parseDouble(obj[5].toString().split("\\.")[0])/100000) %></td>
+		 										<td class="w-500" align="left"> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> (<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>) (<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>)</td>
+									    		<td class="w-550" align="left"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+									    		<td class="text-right">&#8377; <%=nfc.convert(Double.parseDouble(obj[5].toString().split("\\.")[0])/100000) %></td>
 								 				<td align="center"><%-- <button type="button" class="btn btn-sm btn-success ml-2" onclick="showAddModal(<%=obj[0].toString()%>,<%=obj[5].toString()%>,<%=obj[1].toString()%>)">ADD</button>  --%>
-								 				<button type="button" class="btn btn-sm btn-info ml-2" onclick="viewModal(<%=obj[0].toString()%>,<%=obj[5].toString()%>,<%=obj[1].toString()%>)" style="font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif">VIEW</button></td>
+								 				<button type="button" class="btn btn-sm btn-info ml-2 cs-view" onclick="viewModal(<%=obj[0].toString()%>,<%=obj[5].toString()%>,<%=obj[1].toString()%>)">VIEW</button></td>
 								 			</tr>
 								
 									    <% cost=cost+Double.parseDouble(obj[5].toString()) ;
 									    } totalcost=totalcost+cost; %>
 									    
 	    									<tr>
-	    										<td colspan="2" style="text-align: right"><b style="color: green;"> <%=entry.getKey() !=null?StringEscapeUtils.escapeHtml4(entry.getKey()): " - "%> Cost</b></td>
-	    										<td  style="text-align: right"><b style="color: green; text-align: right;">&#8377; <%=nfc.convert(cost/100000) %></b></td>
+	    										<td colspan="2" class="text-right"><b class="text-success"> <%=entry.getKey() !=null?StringEscapeUtils.escapeHtml4(entry.getKey()): " - "%> Cost</b></td>
+	    										<td class="text-right"><b class="text-success text-right">&#8377; <%=nfc.convert(cost/100000) %></b></td>
 	    										<td></td>
 	    									</tr>
 	
 	    						<%} %>
 	    	
 								    		<tr>
-								    			<td colspan="2" align="right"><b style="color: green;"> Total Cost</b></td>
-								    			<td style="text-align: right"><b style="color: green;">&#8377; <%=nfc.convert(totalcost/100000) %>&nbsp;&nbsp;Lakhs</b></td>
+								    			<td colspan="2" align="right"><b class="text-success"> Total Cost</b></td>
+								    			<td class="text-right"><b class="text-success">&#8377; <%=nfc.convert(totalcost/100000) %>&nbsp;&nbsp;Lakhs</b></td>
 								    			<td > </td>
 								    		</tr>
 							
@@ -1644,10 +1385,10 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				    
 				    </div>
 
-       <div style="text-align: right;margin-top: 30px;">
+       <div class="text-right mt-30">
 	           
 	           		<center>
-						<div style="margin-top: 30px;">
+						<div class="mt-30">
 						
 							 <button type="submit" class="btn btn-warning btn-sm edit" >EDIT</button>&nbsp;&nbsp;
 							 
@@ -1662,7 +1403,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
           
           </form>
 
-	            <div class="navigation_btn"  style="text-align: right">
+	            <div class="navigation_btn text-right">
 	           
 					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>	
 					<button class="btn btn-info btn-sm next">Next</button>
@@ -1685,15 +1426,14 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
            	<form action="ProjectScheduleAdd.htm" method="POST" name="myfrm" id="myfrm" >
 				 	
 				    <div class="row">
-				        <div class="col-12"  style="max-width: 97%;margin-left: 24px;">
+				        <div class="col-12 cs-sch-add">
 				            <div class="card">
 				               
 				                <div class="table-responsive">
 				                    <table class="table">
-				                       <thead class="thead" style="color:white!important;background-color: #055C9D">
+				                       <thead class="thead cs-thead">
 				                            <tr>
-<!-- 				                                <th> <label class="customcheckbox m-b-20"> <input type="checkbox" id="mainCheckbox"> <span class="checkmark"></span> </label> </th>
- -->				                            <th scope="col" >Milestone No</th>
+				                                <th scope="col" >Milestone No</th>
 				                                <th scope="col">Milestone Activity</th>
 				                                <th scope="col">Milestone Month</th>
 				                                <th scope="col">Remarks</th>
@@ -1703,9 +1443,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                        <tbody class="customtable">
 				                        
 				                        	<%for(Object[] 	obj:ScheduleList){ %>
-				                            <tr>
-<!-- 				                                <th> <label class="customcheckbox"> <input type="checkbox" class="listCheckbox"> <span class="checkmark"></span> </label> </th>
- -->				                                     
+				                            <tr>				                                     
 				                                <td><%if(obj[0]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[0].toString()) %><%}else{ %>-<%} %></td>
 				                                <td align="left" ><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%}else{ %>-<%} %></td>
 				                                <td><%if(obj[2]!=null){%><%="T"%><sub><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></sub><%="+"+StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
@@ -1722,10 +1460,10 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				        </div>
 				    </div>
 
-     <div style="text-align: right;margin-top: 30px;">
+     <div class="text-right mt-30">
 	           
 	           		<center>
-						<div style="margin-top: 30px;">
+						<div class="mt-30">
 						
 							 <button type="submit" class="btn btn-warning btn-sm edit" >EDIT</button>&nbsp;&nbsp;
 							 
@@ -1745,7 +1483,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				<input type="hidden" name="IntiationId"	value="<%=ProjectDetailes[0] %>" /> 
           
           </form>
-               <div class="navigation_btn"  style="text-align: right;">
+               <div class="navigation_btn text-right">
 	           
 					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>	
 					<button class="btn btn-info btn-sm next">Next</button>
@@ -1764,9 +1502,9 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
                 <%} %>
             
           
-                <div class="table-responsive" style="width: 97%;margin-left: 24px;">
+                <div class="table-responsive cs-table">
 				                    <table class="table">
-				                       <thead class="thead" style="color:white!important;background-color: #055C9D">
+				                       <thead class="thead cs-thead">
 				                            <tr>
 				                            <th scope="col" >File Name</th>
 				                            <th scope="col" >Created By</th>
@@ -1826,7 +1564,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				                           
 				                           
 				                           <tr>
-				                           		<td colspan="5" style="text-align: center">
+				                           		<td colspan="5" class="text-center">
 				                           			No Data !
 				                           		</td>
 				                           </tr>
@@ -1841,10 +1579,10 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 
 <form action="ProjectAttachmentAdd.htm" method="POST" name="myfrm4" id="myfrm4" >
 
-     <div style="text-align: right;margin-top: 30px;">
+     <div class="text-right mt-30">
 	           
 	           		<center>
-						<div style="margin-top: 30px;">
+						<div class="mt-30">
 						
 							 <button type="submit" class="btn  btn-sm add" >Add</button>&nbsp;&nbsp;
 							 
@@ -1858,7 +1596,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
           	</div>
           	</form>
 
-	            <div class="navigation_btn"  style="text-align: right;">
+	            <div class="navigation_btn text-right">
 	           
 					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>	
 					
@@ -1892,21 +1630,21 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content addreq" style="width: 130%;">
+				<div class="modal-content addreq w-130">
 					<div class="modal-header" id="modalreqheader">
 						<h5 class="modal-title" id="exampleModalLabel">Procurement
 							Plan</h5>
-							<h6 class="mt-3 ml-5" id="addBugetLeft" style="margin-left: 40% !important;"></h6>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close" style="color: white" id="cross2">
+							<h6 class="mt-3 ml-5 ml-40" id="addBugetLeft"></h6>
+						<button type="button" class="close text-light" data-dismiss="modal"
+							aria-label="Close" id="cross2">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<div class="col-md-12">
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-2 label">
-									<label class="sidelabel">Item:</label><span class="mandatory" style="color: red;">*</span>
+									<label class="sidelabel">Item:</label><span class="mandatory text-danger">*</span>
 								</div>
 								<div class="col-md-7">
 									<input type="text" class="form-control" id="Item" name="Item" placeholder="Enter Item"
@@ -1916,30 +1654,30 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 							<input type="hidden" id="InitiationCostId" value="0">
 							<input type="hidden" id="initiationid" value="0">
 							<input type="hidden" id="totabudgetcost" value="0">
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-2 label">
-									<label class="sidelabel">Purpose:</label><span class="mandatory"
-										style="color: red;">*</span>
+									<label class="sidelabel text-danger">Purpose:</label><span class="mandatory"
+										>*</span>
 								</div>
 								<div class="col-md-7">
-									<input type="text" class="form-control" id="Purpose"
-										name="Purpose" maxlength="450" style="line-height: 3rem" placeholder="Enter Purpose"
+									<input type="text" class="form-control cs-line-height" id="Purpose"
+										name="Purpose" maxlength="450" placeholder="Enter Purpose"
 										required="required">
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-2 label">
-									<label class="sidelabel">Source:</label><span class="mandatory"
-										style="color: red;">*</span>
+									<label class="sidelabel">Source:</label><span class="mandatory text-danger"
+										>*</span>
 								</div>
 								<div class="col-md-7">
 									<input type="text" class="form-control" id="Source" placeholder="Enter Source"
 										name="Source" maxlength="300" required="required">
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-2 label">
-									<label class="sidelabel">Mode:</label><span class="mandatory" style="color: red;">*</span>
+									<label class="sidelabel">Mode:</label><span class="mandatory text-danger">*</span>
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
@@ -1960,10 +1698,10 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 									</div>
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-2 label">
-									<label class="sidelabel">Cost (in &#8377;):</label><span class="mandatory"
-										style="color: red;">*</span>
+									<label class="sidelabel">Cost (in &#8377;):</label><span class="mandatory text-danger"
+										>*</span>
 								</div>
 								<div class="col-md-3">
 									<input type="text" id="cost" class="form-control" name="cost"
@@ -1971,30 +1709,30 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 								</div>
 								<div class="col-md-3 label">
-									<label class="sidelabel">EPC Approval required</label><span class="mandatory"
-										style="color: red;">*</span>
+									<label class="sidelabel">EPC Approval required</label><span class="mandatory text-danger"
+										>*</span>
 								</div>
 								<div class="col-md-2" >
 									<input type="radio" name="Approved" value="Y" id="Approve"	>
-									&nbsp;YES <input style="margin-left: 15px;" type="radio"
-									id="Approve"	name="Approved" value="N" checked> &nbsp;NO
+									&nbsp;YES <input type="radio" class="ml-15"
+									id="Approve" name="Approved" value="N" checked> &nbsp;NO
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-6 label">
 									<label class="sidelabel">Estimated months after Project Sanction Date
 										&nbsp;&nbsp;(T<sub>0</sub>)
 									</label>
-									<hr style="margin-left: 0% !important; width: 80%">
+									<hr class="cs-hr">
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-1 label">
 									<label class="sidelabel">Demand:</label>
 								</div>
 								<div class="col-md-2">
-									<input style="width: 59%;" type="text" id="Demand"
-										class="form-control" name="Demand" placeholder="Months" value="0"
+									<input type="text" id="Demand"
+										class="form-control w-59" name="Demand" placeholder="Months" value="0"
 										required="required"  onchange="showcostvalues()"
 										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 								</div>
@@ -2002,8 +1740,8 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 									<label class="sidelabel">Tender:</label>
 								</div>
 								<div class="col-md-2">
-									<input type="text" style="width: 59%;" id="Tender" value="0" readonly
-										class="form-control" name="Tender" placeholder="Months" onchange="checKDemand()"
+									<input type="text" id="Tender" value="0" readonly
+										class="form-control w-59" name="Tender" placeholder="Months" onchange="checKDemand()"
 										required="required"
 										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 								</div>
@@ -2011,26 +1749,23 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 									<label class="sidelabel">Order:</label>
 								</div>
 								<div class="col-md-2">
-									<input type="text" id="Order" style="width: 59%;" value="0" readonly
+									<input type="text" id="Order" value="0" readonly
 										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-										class="form-control" name="Order" placeholder="Months"
+										class="form-control w-59" name="Order" placeholder="Months"
 										required="required"onchange="chechKTender()">
 								</div>
 								<div class="col-md-1 label">
 									<label class="sidelabel">Payment:</label>
 								</div>
 								<div class="col-md-2">
-									<input type="text" style="width: 59%;" id="Payout" readonly
-										class="form-control" value="0" name="Payout" placeholder="Months"
+									<input type="text" id="Payout" readonly
+										class="form-control w-59" value="0" name="Payout" placeholder="Months"
 										required="required" onchange="chechkOrder()"
 										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 								</div>
 							</div>
 
-						<%-- 	<input type="hidden" name="IntiationId"
-								value="<%=initiationid %>" /> <input type="hidden"
-								name="projectshortName" value="<%=projectshortName %>" /> --%>
-							<div class="form-group" align="center" style="margin-top: 3%;">
+							<div class="form-group mt-3p" align="center">
 								<input type="hidden" name="${_csrf.parameterName}"
 									value="${_csrf.token}" />
 								<button type="submit" class="btn btn-primary btn-sm submit"
@@ -2051,32 +1786,32 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content addreq" style="width: 150%;margin-left: -25%">
-					<div class="modal-header" id="modalreqheader" style="background: #145374; height: 50px;">
-						<h5 class="modal-title" style="color:white;font-size: 20px;">Procurement Plan</h5>
+				<div class="modal-content addreq cs-addreq">
+					<div class="modal-header cs-addreq-head" id="modalreqheader">
+						<h5 class="modal-title cs-addreq-title">Procurement Plan</h5>
 							<h6 class="ml-5 mt-3"  id="totalBudget"></h6>
 							<h6 class="ml-5 mt-3"  id="BudgetAdded">Expenditure Done-&#8377;0.00 Lakhs</h6>
 							<h6 class="ml-5 mt-3"  id="Budgetleft">Expenditure left-&#8377;0.00 Lakhs</h6>
-						<button type="button" class="close" data-dismiss="modal" 
-							aria-label="Close" style="color: white" id="cross1">
+						<button type="button" class="close text-light" data-dismiss="modal" 
+							aria-label="Close" id="cross1">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<input type="hidden" id="maincost">
 					<input type="hidden" id="planid" value=0>
 					<div class="modal-body">
-					<div id="scrollclass" style="height:400px;overflow-y:scroll">
-					<table class="table table-striped table-bordered" id="mytable" style="width: 100%;font-family: 'FontAwesome';">
-					<thead style="background: #055C9D;color: white;position: sticky;top:-2px;">
-					<tr style="text-align: center;">
-					<th style="width:3%">Selcet</th>
-					<th style="width:3%">SN</th>
-					<th style="width:35%">Item</th>
-					<th style="width:10%">Mode </th>
-					<th style="width:15%">Source</th>
-					<th style="width:10%">Cost</th>
-					<th style="width:10%">Months</th>
-					<th style="width:10%" align="left">EPC (Y/N)</th>
+					<div id="scrollclass cs-scrollclass">
+					<table class="table table-striped table-bordered cs-mytable" id="mytable">
+					<thead class="cs-thead1">
+					<tr class="text-center">
+					<th class="w-3">Selcet</th>
+					<th class="w-3">SN</th>
+					<th class="w-35">Item</th>
+					<th class="w-10">Mode </th>
+					<th class="w-15">Source</th>
+					<th class="w-10">Cost</th>
+					<th class="w-10">Months</th>
+					<th class="w-10" align="left">EPC (Y/N)</th>
 					</tr>
 					</thead>
 					<tbody id="tbody2">
@@ -2098,53 +1833,53 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content addreq" style="width: 130%;">
+				<div class="modal-content addreq w-130">
 					<div class="modal-header" id="modalreqheader">
 						<h5 class="modal-title" id="exampleModalLabel">Procurement
 							Plan</h5>
-							<h6 class="mt-3 ml-4" id="EditTotalBudget" style="margin-left: 40% !important;"></h6> 
+							<h6 class="mt-3 ml-4 ml-40" id="EditTotalBudget"></h6> 
 							<h6 class="mt-3" id="EditPlannedBudget" ></h6> 
 							<h6 id="values"></h6>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close" style="color: white" id="cross3">
+						<button type="button" class="close text-light" data-dismiss="modal"
+							aria-label="Close" id="cross3">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<div class="col-md-12">
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-2 label">
-									<label class="sidelabel">Item:</label><span class="mandatory" style="color: red;">*</span>
+									<label class="sidelabel">Item:</label><span class="mandatory text-danger">*</span>
 								</div>
 								<div class="col-md-7">
 									<input type="text" class="form-control" id="Itemedit" name="Item"
 										maxlength="300" >
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-2 label">
-									<label class="sidelabel">Purpose:</label><span class="mandatory"
-										style="color: red;">*</span>
+									<label class="sidelabel">Purpose:</label><span class="mandatory text-danger"
+										>*</span>
 								</div>
 								<div class="col-md-7">
-									<input type="text" class="form-control" id="Purposeedit"
-										name="Purpose" maxlength="450" style="line-height: 3rem"
+									<input type="text" class="form-control cs-line-height" id="Purposeedit"
+										name="Purpose" maxlength="450"
 										required="required">
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-2 label">
-									<label class="sidelabel">Source:</label><span class="mandatory"
-										style="color: red;">*</span>
+									<label class="sidelabel">Source:</label><span class="mandatory text-danger"
+										>*</span>
 								</div>
 								<div class="col-md-7">
 									<input type="text" class="form-control" id="Sourceedit"
 										name="Source" maxlength="300" required="required">
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-2 label">
-									<label class="sidelabel">Mode:</label><span class="mandatory" style="color: red;">*</span>
+									<label class="sidelabel">Mode:</label><span class="mandatory text-danger">*</span>
 								</div>
 								<div class="col-md-5">
 									<div class="form-group">
@@ -2165,10 +1900,10 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 									</div>
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-2 label">
-									<label class="sidelabel">Cost (in &#8377;):</label><span class="mandatory"
-										style="color: red;">*</span>
+									<label class="sidelabel text-danger">Cost (in &#8377;):</label><span class="mandatory"
+										>*</span>
 								</div>
 								<div class="col-md-3">
 									<input type="text" id="costedit" class="form-control" name="cost"
@@ -2177,30 +1912,27 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 								<input type="hidden" id="previouscost">
 								</div>
 								<div class="col-md-3 label">
-									<label class="sidelabel">EPC Approval required</label><span class="mandatory"
-										style="color: red;">*</span>
+									<label class="sidelabel text-danger">EPC Approval required</label><span class="mandatory"
+										>*</span>
 								</div>
 								<div class="col-md-2"  id="Approvededit">
-<!-- 									<input type="radio" name="Approvededit" value="Y" id="Approve"	>
-									&nbsp;YES <input style="margin-left: 15px;" type="radio"
-									id="Approve"	name="Approvededit" value="N" checked> &nbsp;NO -->
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-6 label">
 									<label class="sidelabel">Estimated months after Project Sanction Date
 										&nbsp;&nbsp;(T<sub>0</sub>)
 									</label>
-									<hr style="margin-left: 0% !important; width: 80%">
+									<hr class="cs-hr">
 								</div>
 							</div>
-							<div class="row" style="margin-top: 1%">
+							<div class="row mt-1p">
 								<div class="col-md-1 label">
 									<label class="sidelabel">Demand:</label>
 								</div>
 								<div class="col-md-2">
-									<input style="width: 59%;" type="text" id="Demandedit"
-										class="form-control" name="Demand" placeholder="Months" value="0"
+									<input type="text" id="Demandedit"
+										class="form-control w-59" name="Demand" placeholder="Months" value="0"
 										required="required"  onchange="showcostvalues()"
 										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 								</div>
@@ -2208,8 +1940,8 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 									<label class="sidelabel">Tender:</label>
 								</div>
 								<div class="col-md-2">
-									<input type="text" style="width: 59%;" id="Tenderedit" value="0" 
-										class="form-control" name="Tender" placeholder="Months" onchange="checKDemand()"
+									<input type="text" id="Tenderedit" value="0" 
+										class="form-control w-59" name="Tender" placeholder="Months" onchange="checKDemand()"
 										required="required"
 										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 								</div>
@@ -2217,26 +1949,23 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 									<label class="sidelabel">Order:</label>
 								</div>
 								<div class="col-md-2">
-									<input type="text" id="Orderedit" style="width: 59%;" value="0" 
+									<input type="text" id="Orderedit" value="0" 
 										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-										class="form-control" name="Order" placeholder="Months"
+										class="form-control w-59" name="Order" placeholder="Months"
 										required="required"onchange="chechKTender()">
 								</div>
 								<div class="col-md-1 label">
 									<label class="sidelabel">Payment:</label>
 								</div>
 								<div class="col-md-2">
-									<input type="text" style="width: 59%;" id="Payoutedit" 
-										class="form-control" value="0" name="Payout" placeholder="Months"
+									<input type="text" id="Payoutedit" 
+										class="form-control w-59" value="0" name="Payout" placeholder="Months"
 										required="required" onchange="chechkOrder()"
 										oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 								</div>
 							</div>
 
-						<%-- 	<input type="hidden" name="IntiationId"
-								value="<%=initiationid %>" /> <input type="hidden"
-								name="projectshortName" value="<%=projectshortName %>" /> --%>
-							<div class="form-group" align="center" style="margin-top: 3%;" id="editModal">
+							<div class="form-group mt-3p" align="center" id="editModal">
 								<button type="submit" class="btn btn-primary btn-sm submit"id="" name="action" value="SUBMIT"onclick="EditProcurement()">SUBMIT</button>
 
 							</div>
@@ -2246,191 +1975,8 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 				</div>
 			</div>
 		</div>
-	<%-- <div class="modal fade bd-example-modal-lg" id="sqrModal"tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content" style="margin-left:-10%;width:120%;">
-        <div class="modal-header" style="background: antiquewhite;">
-        <h5 class="modal-title" id="exampleModalLabel" style="color:#07689f !important;">Staff Qualification Requirement</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="hidemodalbody()">
-          <span aria-hidden="true" style="color:red;">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-      <table class="table table-bordered" id="MyTable1">
-      <thead>
-      <tr style="text-align: center;">
-      <th>SN</th>
-      <th>User</th>
-      <th>Ref No.</th>
-      <th>Date</th>
-      <th>Version</th>
-      <th>Issuing Authority</th>
-      <th>Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <%if(SQRFile==null){ %>
-      <tr>
-      <td colspan="7" style="text-align:center;">No Data Available</td>
-      </tr>
-      <%}else{ %>
-      <tr>
-      <td style="text-align: center">1.</td>
-      <td>
-      <%if(SQRFile[0].toString().equalsIgnoreCase("IA")) {%>Indian Army<%} %>
-      <%if(SQRFile[0].toString().equalsIgnoreCase("IN")) {%>Indian Navy<%} %>
-      <%if(SQRFile[0].toString().equalsIgnoreCase("OH")) {%>Others<%} %>
-      <%if(SQRFile[0].toString().equalsIgnoreCase("DO")) {%>DRDO<%} %>
-      <%if(SQRFile[0].toString().equalsIgnoreCase("IAF")) {%>Indian Air Force<%} %>
-      </td>
-      <td ><%if(SQRFile[1]!=null) {%><%=SQRFile[1].toString()%><%} %></td>
-      <td><%if(SQRFile[5]!=null){%><%=(sdf.format(SQRFile[5])) %><%} %></td>
-      <td style="text-align: right"><%if(SQRFile[4]!=null) {%><%=SQRFile[4].toString()%><%}%></td>
-       <td><%if(SQRFile[3]!=null) {%><%=SQRFile[3].toString()%><%}%></td>
-       <td align="center"><button class="btn btn-sm bg-transparent"><i class="fa fa-download" aria-hidden="true" style="color:green;"></i></button></td>
-      </tr>
-      <%} %>
-      </tbody>
-      </table>
-      <div align="center">
-<!--       <button type="button" class="btn btn-success btn-sm modalbtn" onclick="showmodalbody()">ADD</button>
-      <button type="button" class="btn btn-warning btn-sm ml-2 modalbtn">EDIT</button></div> -->
-     <span id="SQRdata"> <button class="btn btn-lg bg-transparent" id="sqr" onclick="showmodalbody()"><i class="fa fa-lg fa-caret-down" aria-hidden="true" style="color:green"></i></button></span>
-     <form action="ProjectSqrSubmit.htm" method="post" enctype="multipart/form-data">
-      <div id="modalbody" class="mt-2" style="padding:20px;display:none;background: aliceblue">
-      <div class="col-md-12">
-      <div class="row">
-      <div class="col-md-3">
-      <label style="font-size: 17px; margin-top: 5%;  margin-left: 5%; color: #07689f;font-weight:bold">User:</label>
-     <span class="mandatory" style="color: red;">*</span>
-      </div>
-      <div class="col-md-4">
-      <select class="form-control modals" required name="users">
-      <option value="IA" <%if(SQRFile!=null && SQRFile[0].toString().equalsIgnoreCase("IA")) {%>selected<%} %>>Indian Army</option>
-      <option value="IN" <%if(SQRFile!=null && SQRFile[0].toString().equalsIgnoreCase("IN")) {%>selected<%} %>>Indian Navy</option>
-      <option value="IAF" <%if(SQRFile!=null && SQRFile[0].toString().equalsIgnoreCase("IAF")) {%>selected<%} %>>Indian Air Force</option>
-      <option value="DO" <%if(SQRFile!=null && SQRFile[0].toString().equalsIgnoreCase("DO")) {%>selected<%} %>>DRDO</option>
-      <option value="OH"  <%if(SQRFile!=null && SQRFile[0].toString().equalsIgnoreCase("OH")) {%>selected<%} %>>Other</option>
-      </select>
-      </div>
-      </div>
-      <div class="row mt-2" >
-      <div class="col-md-3">
-      <label style="font-size: 17px; margin-top: 5%;  margin-left: 5%; color: #07689f;font-weight:bold">Refernce No:</label>
-      <span class="mandatory" style="color: red;">*</span>
-      </div>
-      <div class="col-md-4">
-      <input class="form-control modals" type="text" required name="refNo" maxlength="255 characters" value="<%if(SQRFile!=null && SQRFile[1]!=null) {%><%=SQRFile[1].toString()%><%} %>">
-      </div>
-      </div>
-       <div class="row mt-2">
-       <div class="col-md-4">
-      <label style="font-size: 17px; margin-top: 5%;  margin-left: -5%; color: #07689f;font-weight:bold">Issuing Authority:</label>
-     	<span class="mandatory" style="color: red;">*</span>
-      </div>
-      <div class="col-md-4" style="margin-left: -6%;">
-      <input type="text" class="form-control modals" name="IssuingAuthority" required maxlength="255 characters" value="<%if(SQRFile!=null && SQRFile[3]!=null) {%><%=SQRFile[3].toString()%><%} %>">
-      </div>
-      </div>
-      <div class="row mt-2">
-      <div class="col-md-3">
-      <label style="font-size: 17px; margin-top: 5%;  margin-left: 5%; color: #07689f;font-weight:bold">  Version No.&nbsp;:</label>
-     	<span class="mandatory" style="color: red;">*</span>
-      </div>
-      <div class="col-md-4">
-      <input class="form-control modals" id="versionUpdates" type="text" style="width:50%;float:left;" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" name="version" 
-      value="<%if(SQRFile!=null && SQRFile[4]!=null) {%><%=SQRFile[4].toString()%><%} %>" <%if(SQRFile!=null) {%>readonly<%} %>>
-      <%if(SQRFile!=null){%>
-     <span id="versionUpdatespan"> <button class="bt btn-sm bg-transparent" type="button" style="border:none;" onclick="versionUpdate()"><i class="fa fa-pencil" aria-hidden="true" style="color:blue"></i></button><%} %>  </span> </div>
-      </div>
-      <div class="row mt-2">
-      <div class="col-md-3">
-      <label style="font-size: 17px; margin-top: 5%;  margin-left: 5%; color: #07689f;font-weight:bold">Choose file:</label>
-		<span class="mandatory" style="color: red;">*</span>     
-      </div>
-      <div class="col-md-6">
-      <input type="file" class="form-control modals" required accept=".pdf" name="Attachments">
-      </div>
-      </div>
-      <div align="center" class="mt-3">
-  	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />	
-	<input type="hidden" name="initiationid"	value="<%=ProjectDetailes[0] %>" /> 
-	<input type="hidden" name="projectShortName"	value="<%=ProjectDetailes[6] %>" /> 
-     <span>
-     <%if(SQRFile!=null) {%>
-     <button class="btn btn-sm edit" type="submit" onclick="return confirm('Are you sure you want to update?')" style="box-shadow:2px 2px 2px gray;">UPDATE</button>
-     <%}else{ %>
-     <button class="btn btn-sm submit" type="submit" onclick="return confirm('Are you sure you want to submit?')">SUBMIT</button>
-      <%} %>
-      </span>
-      </div>
-      </div>
-      </div>
-      </form>
-      </div>
-    </div>
-  </div>
-</div>	
-</div>	 --%>
+
 <script type="text/javascript">
-
-
-/* function tabcontrol(){
-	
-	
-	
-	 var i, items = $('.tab-control');
-	
-
-	 $('.next').on('click', function(){
-		 
-
-	       for(i = 0; i < items.length; i++){
-	    	  
-	 
-	          if($(items[i]).defaultChecked = true){
-	      
-	 
-	        	  
-	              break;
-	          }
-	      } 
-	      
-	      
-	      if(i < items.length - 1){
-	     
-	    	  $(items[i]).checkboxObject=false;
-	    	 	
-	    	  $(items[i-1]).checkboxObject=true;
-  
-	           $(items[i+1]).trigger('click'); 
-	        
-	      }
-	      
-	      
-
-	  }); 
-	 
-	 
-	 
-	 $('.previous').on('click', function(){
-	      for(i = 0; i < items.length; i++){
-	          if($(items[i]).defaultChecked = true){
-	        	  
-	        	  alert('inside previous');
-	        	  
-	              break;
-	          }
-	      }
-	      if(i != 0){
-	         
-	          $(items[i-1]).trigger('click');
-	         
-	      }
-	  });
-	
-}
-tabcontrol(); */
 
  function bootstrapTabControl(){
 	  var i, items = $('.nav-link'), pane = $('.tab-pane');
@@ -2490,36 +2036,6 @@ tabcontrol(); */
 	
 </script>
 
-<!--  Get the modal
-
-
- /*   function modal(){
-var modal = document.getElementById("myModal");
-
-console.log(modal);
-// Get the button that opens the modal
-var btn = document.getElementById("reqbtn2");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-}   -->
 <script type="text/javascript">
 function balanceCheck(){
 	var cost=$('#cost').val();
@@ -2794,9 +2310,9 @@ $('#cross2').click(function (){
 				 $('#costedit').val(ajaxresult[4]);
 			/* 	 $('#Approvededit').val(ajaxresult[9]); */
 				 if(ajaxresult[9]=="Y"){
-					 $('#Approvededit').html('<input type="radio" name="Approved1"  value="Y" checked>  YES  <input style="margin-left: 15px;" type="radio" name="Approved1" value="N">  NO');
+					 $('#Approvededit').html('<input type="radio" name="Approved1"  value="Y" checked>  YES  <input class="ml-15" type="radio" name="Approved1" value="N">  NO');
 				 }else{
-					 $('#Approvededit').html('<input type="radio" name="Approved1"  value="Y" >  YES  <input style="margin-left: 10px;" type="radio" name="Approved1" value="N" checked>  NO');
+					 $('#Approvededit').html('<input type="radio" name="Approved1"  value="Y" >  YES  <input class="ml-10" type="radio" name="Approved1" value="N" checked>  NO');
 
 				 }
 				 $('#previouscost').val(ajaxresult[4]);
@@ -2878,21 +2394,21 @@ function showsqrModal(){
 }
 function showmodalbody(){
 	$('#modalbody').show();
-	$('#SQRdata').html('<button class="btn btn-lg bg-transparent" id="sqr" onclick="hidemodalbody()"><i class="fa fa-lg fa-caret-up" aria-hidden="true" style="color:green"></i></button>')
+	$('#SQRdata').html('<button class="btn btn-lg bg-transparent" id="sqr" onclick="hidemodalbody()"><i class="fa fa-lg fa-caret-up text-success" aria-hidden="true"></i></button>')
 }
 function hidemodalbody(){
 	$('#modalbody').hide();
-	$('#SQRdata').html('<button class="btn btn-lg bg-transparent" id="sqr" onclick="showmodalbody()"><i class="fa fa-lg fa-caret-down" aria-hidden="true" style="color:green"></i></button>')
-	$('#versionUpdatespan').html('<button class="bt btn-sm bg-transparent" type="button" style="border:none;" onclick="versionUpdate()"><i class="fa fa-pencil" aria-hidden="true" style="color:blue"></i></button>');
+	$('#SQRdata').html('<button class="btn btn-lg bg-transparent" id="sqr" onclick="showmodalbody()"><i class="fa fa-lg fa-caret-down text-success" aria-hidden="true"></i></button>')
+	$('#versionUpdatespan').html('<button class="bt btn-sm bg-transparent border-0" type="button" onclick="versionUpdate()"><i class="fa fa-pencil text-primary" aria-hidden="true"></i></button>');
 	/* $("#versionUpdates").attr("readonly", true); */
 }
 
 function versionUpdate(){
-	$('#versionUpdatespan').html('<button class="bt btn-sm bg-transparent" type="button" style="border:none;" onclick="versionUpdateClose()"><i class="fa fa-lg fa-times" aria-hidden="true" style="color:red"></i></button>');
+	$('#versionUpdatespan').html('<button class="bt btn-sm bg-transparent border-0" type="button" onclick="versionUpdateClose()"><i class="fa fa-lg fa-times text-danger" aria-hidden="true"></i></button>');
 	$("#versionUpdates").attr("readonly", false);
 }
 function versionUpdateClose(){
-	$('#versionUpdatespan').html('<button class="bt btn-sm bg-transparent" type="button" style="border:none;" onclick="versionUpdate()"><i class="fa fa-pencil" aria-hidden="true" style="color:blue"></i></button>');
+	$('#versionUpdatespan').html('<button class="bt btn-sm bg-transparent border-0" type="button" onclick="versionUpdate()"><i class="fa fa-pencil text-primary" aria-hidden="true"></i></button>');
 	$("#versionUpdates").attr("readonly", true);
 }
 $(function () {

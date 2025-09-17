@@ -7,55 +7,15 @@
 <%@page import="com.vts.pfms.roadmap.model.RoadMap"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
-body { 
-   font-family : "Lato", Arial, sans-serif !important;
-   overflow-x: hidden;
-}
+<spring:url value="/resources/css/roadMapModule/roadMapPreview.css" var="roadMapPreview" />
+<link href="${roadMapPreview}" rel="stylesheet" />
 
-input,select,table,div,label,span {
-font-family : "Lato", Arial, sans-serif !important;
-}
-.text-center{
-	text-align: left !imporatant;
-}
-
-.scrollclass::-webkit-scrollbar {
-    width:7px;
-}
-.scrollclass::-webkit-scrollbar-track {
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3); 
-    border-radius:5px;
-}
-.scrollclass::-webkit-scrollbar-thumb {
-    border-radius:5px;
-  /*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
-}
-.scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
- 	transition: 0.5s;
-}
-
-#roadmaptable{
-	width : 98%;
-	/* border : 1px solid black; */
-	margin-top : 1.5rem;
-	margin-left : 0.8rem;
-	font-size: 15px;
-}
-#roadmaptable td, #roadmaptable th{
-	border : 1px solid black;
-	text-align: left;
-	padding : 5px;
-	vertical-align: top;
-}
-</style>
 </head>
 <body>
 <%
@@ -96,9 +56,9 @@ FormatConverter fc = new FormatConverter();
 			<!-- <div class="col-md-2"></div> -->
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-	  				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+	  				<div class="card-header custom-header-color">
 	                    <h3 class="text-white">Road Map Preview
-	                    	<a class="btn btn-info btn-sm mr-4 shadow-nohover back"
+	                    	<a class="btn btn-info btn-sm mr-4 shadow-nohover back cs-back"
 	                    	<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y")) {%>
                					href="RoadMapApprovals.htm" 
                				<%} else if(isApproval!=null && isApproval.equalsIgnoreCase("N")) {%>
@@ -109,7 +69,7 @@ FormatConverter fc = new FormatConverter();
                					href="RoadMapList.htm" 
                				<%} %>
 	                    	 
-	                    	 style="color: white!important; float: right;margin-top: -5.5px;">BACK</a>
+	                    	 >BACK</a>
 	                    </h3>
 	        		</div>
 	        		<div class="card-body">
@@ -121,7 +81,7 @@ FormatConverter fc = new FormatConverter();
 									<%if(roadMap!=null) {%>
 									<div class="card">
 										<div class="mt-2" align="center">
-               								<h5 style="font-weight: bold;margin-top: 1.5rem;">Road Map Details
+               								<h5 class="cs-map-h5">Road Map Details
                									&emsp;<button type="submit" class="btn btn-sm"
                									 formaction="RoadMapPreviewDownload.htm" name="roadMapId" value="<%=roadMapId%>" formtarget="blank" formmethod="post" data-toggle="tooltip" data-placement="top" title="Download" formnovalidate="formnovalidate">
 								  	 				<i class="fa fa-lg fa-download" aria-hidden="true"></i>
@@ -130,8 +90,8 @@ FormatConverter fc = new FormatConverter();
                							</div>
 										<table id="roadmaptable">
 											<tr>
-												<th style="width: 20%;">Title</th>
-												<td style="width: 78%;">
+												<th class="w-20">Title</th>
+												<td class="w-78">
 													<%if(roadMap.getProjectTitle()!=null) {%>
 														<%=StringEscapeUtils.escapeHtml4(roadMap.getProjectTitle()) %>
 													<%} else{%>-<%} %>
@@ -221,24 +181,24 @@ FormatConverter fc = new FormatConverter();
 										</table>
 										
 										<!-- Signatures and timestamps -->
-										<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 10px;margin-top: 30px;">
-              								<div style="font-size: 15px;"> Signature of Initiator</div>
+										<div class="cs-initiate">
+              								<div class="fs-15"> Signature of Initiator</div>
 			               					<%for(Object[] apprInfo : roadMapApprovalEmpData){ %>
 			   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("RFW")){ %>
-				   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-				   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-				   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%= apprInfo[4]!=null? (fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - "  %>]</label>
+				   								<label class="cs-label1"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+				   								<label class="text-capitalize"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+				   								<label class="fs-12">[Forwarded On:&nbsp; <%= apprInfo[4]!=null? (fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - "  %>]</label>
 			   			    				<%break;}} %>  
 				            			 </div>
 							            
 							            <%for(Object[] apprInfo : roadMapApprovalEmpData) {%>
-							            	<div style="width: 96%;text-align: left;margin-left: 10px;line-height: 10px;margin-top: 10px;">
+							            	<div class="cs-director">
 							            			 		
 							            		<%if(apprInfo[8].toString().equalsIgnoreCase("RAD")){ %>
-							            			<div style="font-size: 15px;"> Signature of Director</div>
-							   						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-							   						<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-							   						<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=apprInfo[4]!=null? (fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
+							            			<div class="fs-15"> Signature of Director</div>
+							   						<label class="cs-label1"><%=apprInfo[2]%></label>,<!-- <br> -->
+							   						<label class="text-capitalize"><%=apprInfo[3]%></label><br>
+							   						<label class="fs-12">[Recommended On:&nbsp; <%=apprInfo[4]!=null? (fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
 								   				<%} %>
 							            	</div>	
 							            <%} %>
@@ -247,19 +207,19 @@ FormatConverter fc = new FormatConverter();
 										<!-- Remarks -->
                		   					<div class="row mt-2">
 											<%if(roadMapRemarksHistory.size()>0){ %>
-												<div class="col-md-8" align="left" style="margin: 10px 0px 5px 25px; padding:0px;border: 1px solid black;border-radius: 5px;">
+												<div class="col-md-8 cs-history" align="left">
 													<%if(roadMapRemarksHistory.size()>0){ %>
-														<table style="margin: 3px;padding: 0px">
+														<table class="m-3 p-0">
 															<tr>
-																<td style="border:none;padding: 0px">
-																<h6 style="text-decoration: underline;">Remarks :</h6> 
+																<td class="border-0 p-0">
+																 <h6 class="text-underline">Remarks :</h6>
 																</td>											
 															</tr>
 															<%for(Object[] obj : roadMapRemarksHistory){%>
 															<tr>
-																<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
+																<td class="cs-remark-hist">
 																	<%if(obj[3]!=null) {%> <%=StringEscapeUtils.escapeHtml4(obj[3].toString())%> <%} else{%><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> <%} %> &nbsp; :
-																	<span style="border:none; color: blue;"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
+																	<span class="border-0 text-primary"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 																</td>
 															</tr>
 															<%} %>
@@ -283,11 +243,11 @@ FormatConverter fc = new FormatConverter();
 						   								<b >Remarks :</b><br>
 						   								<textarea rows="3" cols="65" name="remarks" id="remarksarea" maxlength="1000"></textarea>
 					         						</div>
-													<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="RoadMapApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" style="font-weight: 600;">
+													<button type="submit" class="btn btn-sm btn-success fw-600" id="finalSubmission" formaction="RoadMapApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');">
 							    						Recommend	
 						      						</button>
 						      						
-						      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="RoadMapApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+						      						<button type="submit" class="btn btn-sm btn-danger cs-return" id="finalSubmission" formaction="RoadMapApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();">
 							 							Return
 													</button>
 												<%} %>

@@ -6,80 +6,16 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate"%>
-    
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>  
    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/projectModule/projectRisk.css" var="projectRisk" />
+<link href="${projectRisk}" rel="stylesheet" />
 <title>Risk </title>
-
-
- <style type="text/css">
- 
- p{
-  text-align: justify;
-  text-justify: inter-word;
-}
-
-  label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-  
- th
- {
- 	
- 	text-align: center;
- 	
- }
- 
-
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-.table button {
-    background-color: Transparent !important;
-    background-repeat:no-repeat;
-    border: none;
-    cursor:pointer;
-    overflow: hidden;
-    outline:none;
-    text-align: left !important;
-}
-.table td{
-	padding:5px ;
-}
- 
-  
- .textcenter{
- 	
- 	text-align: center;
- }
- .border
- {
- 	border: 1px solid black;
- }
- .textleft{
- 	text-align: left;
- }
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-</style>
-
 
 <meta charset="ISO-8859-1">
 
@@ -124,25 +60,24 @@ List<String> riskdatapresentlist=(List<String>)request.getAttribute("riskdatapre
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 					<div class="col-md-12">
-						<div class="row card-header" style="margin-left: -13px;width: 102%;">
+						<div class="row card-header cs-header">
 				   			<div class="col-md-3">
 								<h4>Project Risk List</h4>
 							</div>
 							<div class="col-md-5">
 							
-							<a class="btn btn-sm" style="float:right" href="RiskTemplate.htm" target="blank">
+							<a class="btn btn-sm float-right" href="RiskTemplate.htm" target="blank">
 							Risk Management Plan Template <i class="fa fa-download" aria-hidden="true"></i>
 							</a>
 							</div>
-							<div class="col-md-4 justify-content-end" style="margin-top: -8px;">
-								<table style="float: right;" >
+							<div class="col-md-4 justify-content-end mt-n8">
+								<table class="float-right" >
 									<tr>
 										<td ><h5>Project :</h5></td>
 										<td >
 											<form method="post" action="ProjectRisk.htm" id="projectchange">
-												<select class="form-control items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
+												<select class="form-control items cs-select" name="projectid"  required="required" data-live-search="true" data-container="body" onchange="submitForm('projectchange');">
 													<option disabled  selected value="">Choose...</option>
-													<%-- <option <%if(projectid!=null && projectid.equals("0")) { %>selected <%} %>value="0" >General</option> --%>
 													<%for(Object[] obj : projectslist){ 
 													
 													String projectShortName=(obj[17]!=null)?"( "+obj[17].toString()+" )":"";
@@ -165,13 +100,13 @@ List<String> riskdatapresentlist=(List<String>)request.getAttribute("riskdatapre
 						<table class="table table-bordered table-hover table-striped table-condensed "  id="myTable" >
 							<thead>
 								<tr>
-									<th style="width: 5%;" data-field="0" tabindex="0" >SN</th>
-									<th style="width: 17%;">Risk Id</th>
-									<th style="width: 33%;">Risk Description</th>
-									<th style="width: 10%;">PDC</th>
-									<th style="width: 15%;">Assigned To</th>
-									<th style="width: 10%;">Status</th>
-									<th style="width: 10%;">View / Add</th>
+									<th class="w-5" data-field="0" tabindex="0" >SN</th>
+									<th class="w-17">Risk Id</th>
+									<th class="w-33">Risk Description</th>
+									<th class="w-10">PDC</th>
+									<th class="w-15">Assigned To</th>
+									<th class="w-10">Status</th>
+									<th class="w-10">View / Add</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -197,7 +132,7 @@ List<String> riskdatapresentlist=(List<String>)request.getAttribute("riskdatapre
 									<%}%>
 								</td>
 								<td> 
-								<div  style="display:flex;">
+								<div class="disp-flex">
 								<form action="ProjectRiskData.htm" method="post">
 										<%if(riskdatapresentlist.contains(riskdatalist.get(i)[0])){%>
 											<button type="submit" class="btn"><i class="fa fa-eye fa-lg" aria-hidden="true"></i></button>											

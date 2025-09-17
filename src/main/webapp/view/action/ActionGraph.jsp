@@ -8,57 +8,11 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
-#container {
-  height: 400px;
-}
+<spring:url value="/resources/css/action/actionGraph.css" var="actionGraph" />
+<link href="${actionGraph}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
 
-.highcharts-figure,
-.highcharts-data-table table {
-  min-width: 310px;
-  max-width: 800px;
-  margin: 1em auto;
-}
-
-.highcharts-data-table table {
-  font-family: Verdana, sans-serif;
-  border-collapse: collapse;
-  border: 1px solid #ebebeb;
-  margin: 10px auto;
-  text-align: center;
-  width: 100%;
-  max-width: 500px;
-}
-
-.highcharts-data-table caption {
-  padding: 1em 0;
-  font-size: 1.2em;
-  color: #555;
-}
-
-.highcharts-data-table th {
-  font-weight: 600;
-  padding: 0.5em;
-}
-
-.highcharts-data-table td,
-.highcharts-data-table th,
-.highcharts-data-table caption {
-  padding: 0.5em;
-}
-
-.highcharts-data-table thead tr,
-.highcharts-data-table tr:nth-child(even) {
-  background: #f8f8f8;
-}
-
-.highcharts-data-table tr:hover {
-  background: #f1f7ff;
-}
-
-
-
-</style>
 </head>
 <body>
   <%
@@ -120,13 +74,13 @@
 					<div class="card-header ">  
 					<div class="row">
 						<h5 class="col-md-8">Action Status Reports</h5>  
-							<div class="col-md-4" style="float: right; margin-top: -8px;">
+							<div class="col-md-4 div-margin" >
 							<table>
 					   			<tr>
 					   				<td>
-					   					<label class="control-label" style="font-size: 17px;font-weight: 600; margin-bottom: .0rem;">Project : </label>
+					   					<label class="control-label td-label" >Project : </label>
 					   				</td>
-					   				<td style="max-width: 500px; padding-right: 50px">
+					   				<td class="td-padding">
 						   				<form method="post" action="ActionGraph.htm" name="ststusform" id="ststusform">
 	                                         <select class="form-control selectdee " name="projectid" id="projectid" required="required"  data-live-search="true"  onchange="this.form.submit()">
 	                                            <option value="A" <%if(projectid.equalsIgnoreCase("A")){ %> selected="selected" <%} %>>All</option>	
@@ -146,14 +100,14 @@
 		   			</div>
 					</div>
 					<div class="card-body "> 
-						<div class="row" style="margin-top: -18px;">
-							<div class="col-md-6" style="float: right;" align="center">
+						<div class="row div-margin-row" >
+							<div class="col-md-6 float-right"  align="center">
 								<figure class="highcharts-figure">
 								<div id="container"></div>
 								<div align="center">
-									<button onclick="submitForm('M','N');" class="btn btn-sm " style="margin-right:85px;float:right; background-color: #b70000;color:white; padding: 4px 13px; "> <b><%=Miletotal%></b> </button>
-			                        <button onclick="submitForm('N','N');" class="btn btn-sm " style="margin-left:-55px;margin-right:80px;background-color: #cd3a66;color:white; padding: 4px 13px; "> <b> <%=acttotal%></b> </button>
-			                        <button onclick="submitForm('S','N');" class="btn btn-sm " style="margin-left:59px;margin-right: -60px; background-color: #8544b1;color:white; padding: 4px 13px; "> <b><%=Meetingttl%></b> </button>
+									<button onclick="submitForm('M','N');" class="btn btn-sm mn-btn"> <b><%=Miletotal%></b> </button>
+			                        <button onclick="submitForm('N','N');" class="btn btn-sm nn-btn"> <b> <%=acttotal%></b> </button>
+			                        <button onclick="submitForm('S','N');" class="btn btn-sm sn-btn"> <b><%=Meetingttl%></b> </button>
 		                      	</div>
 								</figure>
 							</div>

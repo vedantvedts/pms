@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -208,7 +209,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		MaRev.setRevisionNo(Integer.parseInt(dto.getRevisionNo()));
 		MaRev.setStatusRemarks(getMA.getStatusRemarks());
 		MaRev.setCreatedBy(getMA.getCreatedBy());
-		MaRev.setCreatedDate(getMA.getCreatedDate());
+		MaRev.setCreatedDate(LocalDateTime.now().toString());
 		MaRev.setIsActive(1);
 		long rev=dao.MilestoneActivityRev(MaRev);
 		if(rev>0) {
@@ -227,7 +228,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		SubA.setStartDate(MileA.getStartDate());
 		SubA.setEndDate(MileA.getEndDate());
 		SubA.setCreatedBy(MileA.getCreatedBy());
-		SubA.setCreatedDate(MileA.getCreatedDate());
+		SubA.setCreatedDate(LocalDateTime.now().toString());
 		SubA.setIsActive(1);
 		dao.MilestoneActivitySubRev(SubA);
 		List<MilestoneActivityLevel> listB=dao.ActivityLevelList(MileA.getActivityId(),count+1);
@@ -245,7 +246,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		SubB.setStartDate(MileB.getStartDate());
 		SubB.setEndDate(MileB.getEndDate());
 		SubB.setCreatedBy(MileB.getCreatedBy());
-		SubB.setCreatedDate(MileB.getCreatedDate());
+		SubB.setCreatedDate(LocalDateTime.now().toString());
 		SubB.setIsActive(1);
 		dao.MilestoneActivitySubRev(SubB);
 		List<MilestoneActivityLevel> listC=dao.ActivityLevelList(MileB.getActivityId(),count+2);
@@ -263,7 +264,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		SubC.setStartDate(MileC.getStartDate());
 		SubC.setEndDate(MileC.getEndDate());
 		SubC.setCreatedBy(MileC.getCreatedBy());
-		SubC.setCreatedDate(MileC.getCreatedDate());
+		SubC.setCreatedDate(LocalDateTime.now().toString());
 		SubC.setIsActive(1);
 		dao.MilestoneActivitySubRev(SubC);
 		List<MilestoneActivityLevel> listD=dao.ActivityLevelList(MileC.getActivityId(),count+3);
@@ -281,7 +282,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		SubD.setStartDate(MileD.getStartDate());
 		SubD.setEndDate(MileD.getEndDate());
 		SubD.setCreatedBy(MileD.getCreatedBy());
-		SubD.setCreatedDate(MileD.getCreatedDate());
+		SubD.setCreatedDate(LocalDateTime.now().toString());
 		SubD.setIsActive(1);
 		dao.MilestoneActivitySubRev(SubD);
 		List<MilestoneActivityLevel> listE=dao.ActivityLevelList(MileD.getActivityId(),count+4);
@@ -299,7 +300,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		SubE.setStartDate(MileE.getStartDate());
 		SubE.setEndDate(MileE.getEndDate());
 		SubE.setCreatedBy(MileE.getCreatedBy());
-		SubE.setCreatedDate(MileE.getCreatedDate());
+		SubE.setCreatedDate(LocalDateTime.now().toString());
 		SubE.setIsActive(1);
 		dao.MilestoneActivitySubRev(SubE);
 		

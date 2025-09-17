@@ -1,0 +1,334 @@
+/*----------------genealogy-tree----------*/
+.genealogy-body {
+	white-space: nowrap;
+	overflow-y: hidden;
+	padding: 50px;
+	min-height: 500px;
+	padding-top: 10px;
+	text-align: center;
+}
+
+.genealogy-tree {
+	display: inline-block;
+}
+
+.genealogy-tree ul {
+	padding-top: 20px;
+	position: relative;
+	padding-left: 0px;
+	display: flex;
+	justify-content: center;
+}
+
+.genealogy-tree li {
+	float: left;
+	text-align: center;
+	list-style-type: none;
+	position: relative;
+	padding: 20px 5px 0 5px;
+}
+
+.genealogy-tree li::before, .genealogy-tree li::after {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 50%;
+	border-top: 2px solid #ccc;
+	width: 50%;
+	height: 18px;
+}
+
+.genealogy-tree li::after {
+	right: auto;
+	left: 50%;
+	border-left: 2px solid #ccc;
+}
+
+.genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before
+	{
+	display: none;
+}
+
+.genealogy-tree li:only-child {
+	padding-top: 0;
+}
+
+.genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after
+	{
+	border: 0 none;
+}
+
+.genealogy-tree li:last-child::before {
+	border-right: 2px solid #ccc;
+	border-radius: 0 5px 0 0;
+	-webkit-border-radius: 0 5px 0 0;
+	-moz-border-radius: 0 5px 0 0;
+}
+
+.genealogy-tree li:first-child::after {
+	border-radius: 5px 0 0 0;
+	-webkit-border-radius: 5px 0 0 0;
+	-moz-border-radius: 5px 0 0 0;
+}
+
+.genealogy-tree ul ul::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 50%;
+	border-left: 2px solid #ccc;
+	width: 0;
+	height: 20px;
+}
+
+.genealogy-tree li .action-view-box {
+	text-decoration: none;
+	font-family: arial, verdana, tahoma;
+	font-size: 11px;
+	display: inline-block;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
+.genealogy-tree li a:hover+ul li::after, .genealogy-tree li a:hover+ul li::before,
+	.genealogy-tree li a:hover+ul::before, .genealogy-tree li a:hover+ul ul::before
+	{
+	border-color: #fbba00;
+}
+
+/*--------------memeber-card-design----------*/
+.member-view-box {
+	padding: 0px 15px;
+	text-align: center;
+	border-radius: 4px;
+	position: relative;
+}
+
+.member-image {
+	width: 60px;
+	position: relative;
+}
+
+.member-image img {
+	width: 60px;
+	height: 60px;
+	border-radius: 6px;
+	background-color: #000;
+	z-index: 1;
+}
+
+/* ------------------------------- tree css ------------------------------- */
+.action-box {
+	width: fit-content;
+	height: fit-content;
+	min-width: 220px;
+	border: 1px solid black;
+	border-radius: 10px;
+}
+
+.action-box-header {
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+	padding: 5px;
+	text-align: center;
+}
+
+.action-box-body {
+	padding: 5px;
+	text-align: center;
+	background-color: #ffffff;
+	display: block;
+	flex-wrap: wrap;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+.action-box-body1 {
+	padding: 5px;
+	text-align: center;
+	background-color: #ffffff;
+	display: block;
+	flex-wrap: wrap;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+.card-body-table {
+	width: 100%;
+}
+
+.card-body-table  td {
+	border: 0px;
+	text-align: left;
+}
+
+.card-body-table th {
+	border: 0px;
+}
+
+.Q1 {
+	background-color: #DC3535;
+	color: #FFFFFF;
+}
+
+.Q2 {
+	background-color: #FF7000;
+	color: #FFFFFF;
+}
+
+.Q3 {
+	background-color: #FED049;
+	color: #000000;
+}
+
+.Q4 {
+	background-color: #5F8D4E;
+	color: #FFFFFF;
+}
+
+.Q5 {
+	background-color: #3d3a32;
+	color: #FFFFFF;
+}
+
+th {
+	text-align: left;
+	overflow-wrap: break-word;
+}
+
+td {
+	text-align: justify;
+	text-justify: inter-word;
+}
+
+.tabledata {
+	white-space: -o-pre-wrap;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+	white-space: -moz-pre-wrap;
+	white-space: -pre-wrap;
+}
+
+.gbody {
+	background-color: #FDFFCF69;
+	overflow-y: auto
+}
+
+.span1 {
+	margin: 0px 0px 10px 10px;
+}
+
+.span1-in {
+	padding: 0px 15px;
+	border-radius: 3px;
+}
+
+.span2 {
+	margin: 0px 0px 10px 15px;
+}
+
+.cursor-pointer {
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.cursor-pointer-copy {
+	cursor: pointer;
+}
+
+.padding-left10px {
+	padding-left: 10px;
+}
+
+.div-progress {
+	background-color: #cdd0cb !important;
+	height: 0.80rem !important;
+}
+
+.progressbar {
+	width: 100%;
+	background-color: #cdd0cb !important;
+	color: black;
+	font-weight: bold;
+}
+
+.marging-btnN {
+	margin-bottom: -10px;
+	cursor: pointer;
+}
+
+.icon-styl {
+	font-size: 1.2rem;
+	color: black;
+}
+
+.margin-top12px {
+	margin-top: 12px;
+}
+
+.modal-bg {
+	background-color: #FFE0AD;
+}
+
+.h5-title {
+	font-weight: 700;
+	color: #A30808;
+}
+
+.padding5px {
+	padding: 5px;
+}
+
+.modal-action-type {
+	padding: 5px;
+	font-weight: bold;
+	color: #A30808
+}
+
+.modal-action-item {
+	width: 90%;
+	padding: 5px;
+	word-wrap: break-word;
+}
+
+.tr-styl {
+	background-color: #055C9D;
+	color: white;
+}
+
+.th-sn {
+	text-align: center;
+	width: 5% !important;
+}
+
+.th-progress-date {
+	text-align: center;
+	width: 10% !important;
+}
+
+.th-progress {
+	text-align: center;
+	width: 15% !important;
+}
+
+.th-remarks {
+	width: 65% !important;
+}
+
+.th-download {
+	text-align: center;
+	width: 5% !important;
+}
+
+.script-progress {
+	background-color: #cdd0cb !important;
+	height: 1.5rem !important;
+}
+
+.script-progressbar {
+	width: 100%;
+	background-color: #cdd0cb !important;
+	color: black;
+	font-weight: bold;
+}

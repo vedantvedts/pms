@@ -13,139 +13,10 @@
 
 <jsp:include page="../static/header.jsp"></jsp:include>
 
-
-<style>
-
-.control-label{
-	font-weight: bold !important;
-}
-
-
-.table thead th{
-	
-	vertical-align: middle !important;
-}
-
-.header{
-        position:sticky;
-        top: 0 ;
-        background-color: #346691;
-    }
-    
-    .table button{
-    	background-color: background !important;
-    	font-size: 12px;
-    }
-    
-.col-form-label{
-	font-weight: 600!important;
-	
-}
- 
-.title ul {
-    -moz-column-count: 3;
-    -moz-column-gap: 10px;
-    -webkit-column-count: 3;
-    -webkit-column-gap: 10px;
-    column-count: 3;
-    column-gap: 10px;
-}
- 
- .fa-upload{
- 	color:#007bff;
- }
- 
-.documenttitle label{
-	font-size: 15px;
-	font-family: 'Lato',sans-serif;
-}
-
-.fa-file-text{
-	color:green;
-}
-
-.version{
-	color:#145374;
-	font-size: 14px;
-    font-weight: 600;
-    font-family: 'Muli';
-
-}
-
-.noselect {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
-}
-
- 
-</style>
-<!-- --------------  tree   ------------------- -->
-<style>
-ul, #myUL {
-  list-style-type: none;
-}
-
-#myUL {
-  margin: 0;
-  padding: 0;
-}
-
-.caret {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-.caret-last {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-
-.caret-last::before {
-  content: "\25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret::before {
-  content: "\25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-down::before {
-  content: "\25B6  ";
-  -ms-transform: rotate(90deg); /* IE 9 */
-  -webkit-transform: rotate(90deg); /* Safari */'
-  transform: rotate(90deg);  
-}
-
-.nested {
-  display: none;
-}
-
-.active {
-  display: block;
-}
-</style>
-
-<!-- ---------------- tree ----------------- -->
-
+<spring:url value="/resources/css/fileRepo/ProjectDocument.css" var="projectDocument" />
+<link href="${projectDocument}" rel="stylesheet" />
 </head>
-<body style="background-color: #e2ebf0" >
+<body  >
 
 <%
 
@@ -183,9 +54,9 @@ String projectname="";
 						<div class="col-md-6">
 							<h4 class="control-label" >Project Documents </h4>
 						</div>
-						<div class="col-md-6" style="margin-top: -8px;">
+						<div class="col-md-6 m-minus8" >
 							<form  method="post" action="ProjectDocumets.htm" id="myform">	
-								<table style="float: right;">
+								<table class="f-right">
 									<tr>
 										<td><label class="control-label">Project :&nbsp;&nbsp; </label></td>
 								    	<td>
@@ -208,7 +79,7 @@ String projectname="";
 				</div>
 			<!-- card header -->
 
-				<div class="card-body" style="min-height: 31rem; "> 	
+				<div class="card-body min-height"> 	
 <!----------------------------------- tree Start ---------------------------------------------- -->
 						<div class="row" >
 							<form action="ProjectDocumetsSubmit.htm" method="post" id="prodocsadd">
@@ -251,32 +122,23 @@ String projectname="";
 																						<input class="checkbox" type="checkbox" disabled="disabled" name="documentid" value="<%=obj2[0]%>_<%=obj2[1]%>" >
 																					<%} %>
 																				</span><!-- 	class="caret1" onclick="onclickchange(this);" -->
-																				<span class="noselect"	<%if(Integer.parseInt(obj2[5].toString())==0){ %>														
-																						 style= "cursor: pointer;" onclick="onclickcheck('checkbox<%=obj2[0]%>');"
+																				<span <%if(Integer.parseInt(obj2[5].toString())==0){ %>														
+																						class="noselect cursor"  onclick="onclickcheck('checkbox<%=obj2[0]%>');"
 																						<%}else if(Integer.parseInt(obj2[5].toString())==1){ %>
-																						 style="font-weight: 700; color: black; cursor: pointer;" 
-																						<%} %> >
+																						class="noselect cursor font-color" 
+																						<%}else { %>class="noselect cursor"<%} %> >
 																					<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - " %>(<%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - " %>)
 																				</span>
 																			</span>
 																			<span>
 																			<!-- prakarsh -------------------------------------------------------->
 																			<%if(Integer.parseInt(obj2[5].toString())==1){ %>
-																	 	<button name="FileParentId"   type="button" id="activeButton"   class="btnx"  style="color: red;border:0px;background-color:white;font-size:16px;" formaction="IsActive.htm" value="<%=obj2[0]%>_<%=obj2[1]%>_<%=projectid%>">
+																	 	<button name="FileParentId"   type="button" id="activeButton"   class="btnx btn-fileparentid" formaction="IsActive.htm" value="<%=obj2[0]%>_<%=obj2[1]%>_<%=projectid%>">
 																	 	   <i class="fa fa-times" aria-hidden="true"></i></button> 
 																	 	<input type="hidden" name="projectid" value="<%=projectid%>">
 																	<%} %>
 																			
-																				<%-- <button type="button" class="btn"  style="background-color: transparent;margin: -5px 0px;"  >                    
-																					<i class="fa fa-upload" style="color: #007bff" aria-hidden="true"></i>
-																				</button>
-																				<%if(stageobj2[4].toString() !="0"){ %>
-																				<span class="version">Ver <%=stageobj2[8]+"."+stageobj2[6] %>
-																					<button type="submit" class="btn"  style="background-color: transparent;;margin: -5px 0px;" onclick="fileunpack('<%=stageobj2[4] %>')">
-																					   	<i class="fa fa-download" aria-hidden="true"></i>
-																					</button>
-																				</span>
-																				<%} %> --%>
+																				
 																			</span>
 																		</li>	
 																	<%}

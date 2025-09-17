@@ -3,32 +3,16 @@
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+<spring:url value="/resources/css/projectModule/projectAttachmentEdit.css" var="projectAttachmentEdit" />
+<link href="${projectAttachmentEdit}" rel="stylesheet" />
 <title>PROJECT ATTACHMENT  EDIT</title>
-<style type="text/css">
 
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-
-</style>
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -36,17 +20,6 @@ String IntiationId=(String) request.getAttribute("IntiationId");
 String InitiationAttachmentId=(String) request.getAttribute("InitiationAttachmentId");
 String FileName=(String) request.getAttribute("FileName");
 %>
-
-
-
-
-
-
-
-
-
-
-
 <% 
     String ses = (String) request.getParameter("result");
     String ses1 = (String) request.getParameter("resultfail");
@@ -71,7 +44,7 @@ String FileName=(String) request.getAttribute("FileName");
 
 
     <div class="container">
-<div class="row" style="">
+<div class="row">
 
 <div class="col-md-12">
 
@@ -99,14 +72,14 @@ String FileName=(String) request.getAttribute("FileName");
           <div class="col-md-1 ">
  <div class="form-group">
 
-<input type="submit" class="btn btn-primary btn-sm submit " onclick="Add(myfrm)" value="SUBMIT" name="sub" style="margin-top: 40px;"> 
+<input type="submit" class="btn btn-primary btn-sm submit mt-40" onclick="Add(myfrm)" value="SUBMIT" name="sub"> 
 </div>
 </div>   
 
           <div class="col-md-2 ">
  <div class="form-group">
 
- <input type="submit" class="btn btn-secondary btn-sm submit " formnovalidate="formnovalidate"  value="BACK"   name="sub" style="margin-top: 40px;" >
+ <input type="submit" class="btn btn-secondary btn-sm submit mt-40" formnovalidate="formnovalidate"  value="BACK"   name="sub">
 </div>
 </div> 
  

@@ -7,7 +7,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+
+<spring:url value="/resources/css/projectModule/projectInitiationDetailsEdit.css" var="projectInitiationDetailsEdit" />
+<link href="${projectInitiationDetailsEdit}" rel="stylesheet" />
 
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/content.css" var="contentCss" />
@@ -18,63 +20,6 @@
 
 <title>PROJECT INT  LIST</title>
 
-
-<style type="text/css">
-.container-fluid  {
-overflow-x: hidden;
-}
-
-.control-label{
-	font-size: 24px;
-    font-family: Muli;
-    margin-left: 4px;
-    color:black;
-    text-transform: uppercase;
-
-}
-
-.card-body{
-	background-color: #e2ebf0;
-}
-
-.card{
-	border: 1px solid grey;
-	
-	}
-	
-small{
-	margin-top: 7px;
-    color: green;
-    font-weight: 500;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-.card-body{
-	background-color: #e2ebf0;
-	padding-left:30px;
-	padding-right:0px;
-	padding-top:0px;
-	padding-bottom:0px;
-}
-
-.card{
-	border: 1px solid grey;
-	
-	}
-	
-small{
-	margin-top: 7px;
-    color: green;
-    font-weight: 500;
-}
-
-
-</style>
 </head>
 <body>
 
@@ -98,19 +43,19 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Requirements
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
 						  	<div class="row">
 						  					
 		                               <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        		</div>
 		                   					
 										<div class="col-md-11" >
 		                                     <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ReqBrief" maxlength="250" value="<%if(obj[13]!=null && !obj[13].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%><%}else{%><%}%> "placeholde="maximum 250 characters" >  
+		                                        <input type="text" class="form-control mt-25" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ReqBrief" maxlength="250" value="<%if(obj[13]!=null && !obj[13].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString())%><%}else{%><%}%> "placeholde="maximum 250 characters" >  
 		                        			 </div>
 		                   				</div> 
 		                   							
@@ -119,7 +64,7 @@ small{
 						<div class="card-body">
 									    <!-- 		<label >Detailed: </label> -->
 						  	<div id="content">
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
+								<div class="row cs-row">
 							
 									<input type="hidden" name="details" value="requirement" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
@@ -134,7 +79,7 @@ small{
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>
@@ -151,18 +96,18 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Objective
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
 							<div class="row">
 									<div class="form-group">
-		                                 <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                 <label class="cs-brief">Brief : </label>
 		                        	</div>
 		                   					 
 									<div class="col-md-11">
 		                                 <div class="form-group">
-		                                   <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ObjBrief" maxlength="250" value="<%if(obj[14]!=null && !obj[14].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[14].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                   <input type="text" class="form-control mt-15" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ObjBrief" maxlength="250" value="<%if(obj[14]!=null && !obj[14].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[14].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        		</div>
 		                   			</div>
 		                   		</div>
@@ -171,14 +116,14 @@ small{
 								<label >Detailed: </label>
 						  	<div id="content">
 						  	
-								<div class="row"  style="margin-bottom:10px; margin-top: -5px;">
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+								<div class="row cs-row" >
+									<div class="col-md-12 cs-col-12"  align="left">
 									
 										<div  id="summernote" class="center"><%if(obj[1]!=null && !obj[1].equals("-")){%><%=obj[1].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									 
-									<textarea name="objective" style="display:none;"></textarea>
+									<textarea name="objective" class="disp-none"></textarea>
 									
 									<input type="hidden" name="details" value="objective" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
@@ -188,14 +133,14 @@ small{
 								
 								<br>
 									 			
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
   							
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>
@@ -212,19 +157,19 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Scope
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
 						  	
 						  	<div class="row">
 											   <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ScopeBrief" maxlength="250" value="<%if(obj[15]!=null && !obj[15].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[15].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ScopeBrief" maxlength="250" value="<%if(obj[15]!=null && !obj[15].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[15].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   	</div>
@@ -234,14 +179,14 @@ small{
 						  
 						  	<div id="content">
 						  	
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+								<div class="row cs-row">
+									<div class="col-md-12 cs-col-12"  align="left">
 									
 										<div  id="summernote" class="center"><%if(obj[2]!=null && !obj[2].equals("-")){%><%=obj[2].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
-									<textarea name="scope" style="display:none;"></textarea>
+									<textarea name="scope" class="disp-none"></textarea>
 									
 									<input type="hidden" name="details" value="scope" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
@@ -249,7 +194,7 @@ small{
 												
 								</div>		
 									 			
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								
 								  
   							</div>	
@@ -257,7 +202,7 @@ small{
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>
@@ -273,18 +218,18 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Multi-Lab Work Share
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
 						  	<div class="row">
 									<div class="form-group">
-		                                 <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                 <label class="cs-brief">Brief : </label>
 		                        	</div>
 		                   					 
 									<div class="col-md-11">
 		                                   <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="MultiLabBrief" maxlength="250" value="<%if(obj[16]!=null && !obj[16].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[16].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="MultiLabBrief" maxlength="250" value="<%if(obj[16]!=null && !obj[16].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[16].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			</div>
 		                   			</div> 
 		                   	</div>
@@ -294,14 +239,14 @@ small{
 						  
 						  	<div id="content">
 						  	
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+								<div class="row cs-row">
+									<div class="col-md-12 cs-col-12"  align="left">
 									
 										<div  id="summernote" class="center"><%if(obj[3]!=null && !obj[3].equals("-")){%><%=obj[3].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
-									<textarea name="multilab" style="display:none;"></textarea>
+									<textarea name="multilab" class="disp-none"></textarea>
 									
 									<input type="hidden" name="details" value="multilab" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
@@ -309,14 +254,14 @@ small{
 												
 								</div>	
 									 			
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
   							
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>
@@ -332,19 +277,19 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Earlier Work
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
 						  	
 						  	<div class="row">
 									<div class="form-group">
-		                                  <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                  <label class="cs-brief">Brief : </label>
 		                        	</div>
 		                   					 
 									<div class="col-md-11">
 		                                <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" name="EarlierWorkBrief" maxlength="250" value="<%if(obj[17]!=null && !obj[17].equals("-") ){%><%=StringEscapeUtils.escapeHtml4(obj[17].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" name="EarlierWorkBrief" maxlength="250" value="<%if(obj[17]!=null && !obj[17].equals("-") ){%><%=StringEscapeUtils.escapeHtml4(obj[17].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        		</div>
 		                   			</div> 
 		                   					  
@@ -355,28 +300,28 @@ small{
 						  
 						  	<div id="content">
 						  	
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+								<div class="row cs-row">
+									<div class="col-md-12 cs-col-12"  align="left" >
 									
 										<div  id="summernote" class="center"><%if(obj[4]!=null && !obj[4].equals("-")){%><%=obj[4].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
-									<textarea name="earlierwork" style="display:none;"></textarea>
+									<textarea name="earlierwork" class="disp-none"></textarea>
 									
 									<input type="hidden" name="details" value="earlierwork" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
 								</div>	 			
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
   							
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>
@@ -392,7 +337,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Competency Established
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -400,12 +345,12 @@ small{
 						  
 						  	<div class="row">
 												 <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="CompentencyBrief" maxlength="250" value="<%if(obj[18]!=null && !obj[18].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[18].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="CompentencyBrief" maxlength="250" value="<%if(obj[18]!=null && !obj[18].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[18].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					  
@@ -416,28 +361,28 @@ small{
 						  
 						  	<div id="content">
 						  	
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+								<div class="row cs-row">
+									<div class="col-md-12 cs-col-12"  align="left" >
 									
 										<div  id="summernote" class="center"><%if(obj[5]!=null&& !obj[5].equals("-")){%><%=obj[5].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
-									<textarea name="competency" style="display:none;"></textarea>
+									<textarea name="competency" class="disp-none"></textarea>
 									
 									<input type="hidden" name="details" value="competency" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
 								</div>
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
   							
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>
@@ -453,7 +398,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Need Of Project
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -461,12 +406,12 @@ small{
 						  
 						  	<div class="row">
 												 <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="NeedOfProjectBrief" maxlength="250" value="<%if(obj[19]!=null && !obj[19].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[19].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="NeedOfProjectBrief" maxlength="250" value="<%if(obj[19]!=null && !obj[19].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[19].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					   
@@ -477,28 +422,28 @@ small{
 						  
 						  	<div id="content">
 						  	
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+								<div class="row cs-row">
+									<div class="col-md-12 cs-col-12"  align="left">
 									
 										<div  id="summernote" class="center"><%if(obj[6]!=null&& !obj[6].equals("-")){%><%=obj[6].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
-									<textarea name="needofproject" style="display:none;"></textarea>
+									<textarea name="needofproject" class="disp-none"></textarea>
 									
 									<input type="hidden" name="details" value="needofproject" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
 								</div>	
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
   							
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>
@@ -515,7 +460,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Technology Challenges
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -523,12 +468,12 @@ small{
 						  
 						  	<div class="row">
 												 <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" name="TechnologyBrief" id="Brief" maxlength="250" value="<%if(obj[20]!=null&& !obj[20].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[20].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" name="TechnologyBrief" id="Brief" maxlength="250" value="<%if(obj[20]!=null&& !obj[20].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[20].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					 
@@ -539,28 +484,28 @@ small{
 						  
 						  	<div id="content">
 						  	
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+								<div class="row cs-row">
+									<div class="col-md-12 cs-col-12"  align="left">
 									
 										<div  id="summernote" class="center"><%if(obj[7]!=null&& !obj[7].equals("-")){%><%=obj[7].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
-									<textarea name="technology" style="display:none;"></textarea>
+									<textarea name="technology" class="disp-none"></textarea>
 									
 									<input type="hidden" name="details" value="technology" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
 								</div>		
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
   							
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>
@@ -576,7 +521,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Risk Mitigation
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -584,12 +529,12 @@ small{
 						  
 						  	<div class="row">
 											 <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="RiskMitigationBrief" maxlength="250" value="<%if(obj[21]!=null&& !obj[21].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[21].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="RiskMitigationBrief" maxlength="250" value="<%if(obj[21]!=null&& !obj[21].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[21].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					   </div>
@@ -599,28 +544,28 @@ small{
 						  
 						  	<div id="content">
 						  	
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+								<div class="row cs-row">
+									<div class="col-md-12 cs-col-12"  align="left" >
 									
 										<div  id="summernote" class="center"><%if(obj[8]!=null&& !obj[8].equals("-")){%><%=obj[8].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
-									<textarea name="riskmitigation" style="display:none;"></textarea>
+									<textarea name="riskmitigation" class="disp-none"></textarea>
 									
 									<input type="hidden" name="details" value="riskmitigation" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
                 					<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />   
 												
 								</div>			
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
   							
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>
@@ -636,19 +581,19 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Proposal
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
 						  	
 						  	<div class="row">
 											 <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ProposalBrief" maxlength="250" value="<%if(obj[22]!=null&& !obj[22].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[22].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ProposalBrief" maxlength="250" value="<%if(obj[22]!=null&& !obj[22].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[22].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					   </div>
@@ -658,14 +603,14 @@ small{
 						  
 						  	<div id="content">
 						  	
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+								<div class="row cs-row">
+									<div class="col-md-12 cs-col-12"  align="left" >
 									
 										<div  id="summernote" class="center"><%if(obj[9]!=null&& !obj[9].equals("-")){%><%=obj[9].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
-									<textarea name="proposal" style="display:none;"></textarea>
+									<textarea name="proposal" class="disp-none"></textarea>
 									
 									<input type="hidden" name="details" value="proposal" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
@@ -673,14 +618,14 @@ small{
 												
 								</div>
 									
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
   							
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>
@@ -696,18 +641,18 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	Realization Plan
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
 						  	<div class="row">
 										 <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="RealizationBrief" maxlength="250" value="<%if(obj[23]!=null&& !obj[23].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[23].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="RealizationBrief" maxlength="250" value="<%if(obj[23]!=null&& !obj[23].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[23].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					   
@@ -718,14 +663,14 @@ small{
 						  
 						  	<div id="content">
 						  	
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+								<div class="row cs-row">
+									<div class="col-md-12 cs-col-12"  align="left">
 									
 										<div  id="summernote" class="center"><%if(obj[10]!=null&& !obj[10].equals("-")){%><%=obj[10].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
-									<textarea name="realization" style="display:none;"></textarea>
+									<textarea name="realization" class="disp-none"></textarea>
 									
 									<input type="hidden" name="details" value="realization" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
@@ -733,14 +678,14 @@ small{
 												
 								</div>
 									 			
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
   							
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>
@@ -757,7 +702,7 @@ small{
                 	<div class="card" >
 						<h3 class="card-header " > 
 						 	World Scenario
-						 <small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+						 <small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						 </h3>
 						  
 						  <div class="card-body" >
@@ -765,12 +710,12 @@ small{
 						   
 						  	<div class="row">
 								 <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="WorldScenarioBrief" maxlength="250" value="<%if(obj[24]!=null&& !obj[24].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[24].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="WorldScenarioBrief" maxlength="250" value="<%if(obj[24]!=null&& !obj[24].equals("-")){%><%=StringEscapeUtils.escapeHtml4(obj[24].toString())%><%}else{%><%}%>" placeholde="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					   </div>
@@ -780,16 +725,16 @@ small{
 						  					<div id="content">
 						  	
 								
-								<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
+								<div class="row cs-row">
 									
 									
-									<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									<div class="col-md-12 cs-col-12"  align="left" >
 									
 										<div  id="summernote" class="center"><%if(obj[12]!=null&& !obj[12].equals("-")){%><%=obj[12].toString()%><%}else{%><%}%></div>
 												
 									</div>
 									  
-									<textarea name="worldscenario" style="display:none;"></textarea>
+									<textarea name="worldscenario" class="disp-none"></textarea>
 									
 									<input type="hidden" name="details" value="worldscenario" />
                 					<input type="hidden" name="IntiationId"	value="<%=obj[11]%>" /> 
@@ -797,14 +742,14 @@ small{
 												
 								</div>
 									 			
-								<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+								<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 								  
   							</div>	
   							
 						  </div>
 					</div>
 						
-					<div class="form-group" align="center" style="margin-top: 15px">
+					<div class="form-group mt-15" align="center">
 						<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 						<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 					</div>

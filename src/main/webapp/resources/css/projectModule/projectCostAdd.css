@@ -1,0 +1,51 @@
+.input-group-text {
+	font-weight: bold;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+hr {
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+b {
+	font-family: 'Lato', sans-serif;
+}
+
+label {
+	font-size: 14px;
+}
+
+.table thead tr th {
+	background-color: aliceblue;
+	text-align: left;
+}
+
+.table thead tr td {
+	background-color: #f9fae1;
+}
+
+.mt-35{
+	margin-top: 35px;
+}
+
+.w-400px{
+	width: 400px;
+}
+
+.w-550px{
+	width: 550px;
+}
+
+
+
+
+
+
+
+

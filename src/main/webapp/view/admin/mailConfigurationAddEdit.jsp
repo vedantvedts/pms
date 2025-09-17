@@ -1,40 +1,16 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 <title>MAIL CONFIGURATION ADD EDIT</title>
-<style>
-.toggle-password {
-      float: right;
-      cursor: pointer;
-      margin-top: -30px;
-      font-size: 23px;
-      position: relative; /* Add this line */
-      z-index: 2;
-    }
+<spring:url value="/resources/css/admin/mailConfigurationAddEdit.css" var="mailConfigurationAddEdit" />
+<link href="${mailConfigurationAddEdit}" rel="stylesheet" />
 
-.disabled-password{
-float: right;
-      cursor: pointer;
-      margin-top: -30px;
-      font-size: 23px;
-      position: relative; /* Add this line */
-      z-index: 2;
-      color:grey;
-}
-
-    .password-container {
-      position: relative; /* Add this line */
-    }
-
-    .form-control {
-      padding-right: 40px; /* Adjust as needed based on your icon size */
-    }
-</style>
 </head>
 <body>
 <%
@@ -49,7 +25,7 @@ String pass=(String)request.getAttribute("pass");
 <div class="card-header page-top">
 		<div class="row">
 			<div class="col-md-3 heading-breadcrumb">
-				<h5 style="font-weight: 700 !important"><%if(Action.equalsIgnoreCase("Add")){%>MAIL CONFIGURATION ADD<%}else if(Action.equalsIgnoreCase("Edit")){ %>MAIL CONFIGURATION EDIT<%} %></h5>
+				<h5 class="h5-font"><%if(Action.equalsIgnoreCase("Add")){%>MAIL CONFIGURATION ADD<%}else if(Action.equalsIgnoreCase("Edit")){ %>MAIL CONFIGURATION EDIT<%} %></h5>
 			</div>
 		
 		  </div>
@@ -57,8 +33,8 @@ String pass=(String)request.getAttribute("pass");
 <div  align="center"> 
 
 <form action="#" id="MailConfigAddEditFrm" method="POST" autocomplete="off">
-   <div class="col-sm-8"  style="top: 10px;" align="center">
-      <div class="card"  style="background-color: aliceblue;">
+   <div class="col-sm-8 mt-3"  align="center">
+      <div class="card bg-alice"  >
           <div class="card-body">
  
       <div class="form-group">
@@ -66,17 +42,17 @@ String pass=(String)request.getAttribute("pass");
                  <table class="table table-bordered table-hover table-striped table-condensed "  >
                   
                    <tr>
-                   <th><label >USER NAME:<span class="mandatory" style="color: red;">*</span></label></th>
+                   <th><label >USER NAME:<span class="mandatory">*</span></label></th>
                    <td  colspan="4" >
-                   <input  class="form-control form-control" placeholder="UserName" type="text"
-                    name="UserNameData"  id="UserNameVal" required="required" maxlength="50" style="font-size: 15px;"
+                   <input  class="form-control form-control input-font" placeholder="UserName" type="text"
+                    name="UserNameData"  id="UserNameVal" required="required" maxlength="50" 
                     <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=StringEscapeUtils.escapeHtml4(EditObject[1].toString()) %>"<%} %>
                      >
                    </td>
                    </tr> 
        
                     <tr>
-                   <th><label >HOST TYPE:<span class="mandatory" style="color: red;">*</span></label></th>
+                   <th><label >HOST TYPE:<span class="mandatory" >*</span></label></th>
                    <td >
                    <select class="form-control selectpicker" data-container="body" data-live-search="true" 
                     name="HostTypeData" id="HostTypeVal"  required="required" >
@@ -90,10 +66,10 @@ String pass=(String)request.getAttribute("pass");
                  
                  
                    <tr>
-                   <th><label >HOST :<span class="mandatory" style="color: red;">*</span></label></th>
+                   <th><label >HOST :<span class="mandatory" >*</span></label></th>
                    <td >
-                   <input  class="form-control form-control" placeholder="Host" type="text"
-                    name="Host"  id="Host" required="required" maxlength="50" style="font-size: 15px;"
+                   <input  class="form-control form-control input-font" placeholder="Host" type="text"
+                    name="Host"  id="Host" required="required" maxlength="50" 
                     <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=StringEscapeUtils.escapeHtml4(EditObject[2].toString()) %>"<%} %>
                      >
                   </td>
@@ -101,21 +77,21 @@ String pass=(String)request.getAttribute("pass");
                  
                  
                    <tr>
-                   <th><label >PORT :<span class="mandatory" style="color: red;">*</span></label></th>
+                   <th><label >PORT :<span class="mandatory" >*</span></label></th>
                    <td >
-                   <input  class="form-control form-control" placeholder="Port" type="text"
-                    name="Port"  id="Port" required="required" maxlength="50" style="font-size: 15px;"
+                   <input  class="form-control form-control input-font" placeholder="Port" type="text"
+                    name="Port"  id="Port" required="required" maxlength="50" 
                     <%if( Action.equalsIgnoreCase("Edit") && EditObject!=null){%>value="<%=StringEscapeUtils.escapeHtml4(EditObject[4].toString()) %>"<%} %>
                      >
                   </td>
                  </tr>
                  
                  <tr>
-                   <th><label >ENTER PASSWORD:<span class="mandatory" style="color: red;">*</span></label></th>
+                   <th><label >ENTER PASSWORD:<span class="mandatory" >*</span></label></th>
                    <td  colspan="4" >
                    <div class="password-container">
-                <input class="form-control" placeholder="Password" type="password"
-                name="PasswordData" id="PasswordVal" required="required" maxlength="50" style="font-size: 15px;"
+                <input class="form-control input-font" placeholder="Password" type="password"
+                name="PasswordData" id="PasswordVal" required="required" maxlength="50" 
                 <%if( Action.equalsIgnoreCase("Edit") && pass!=null){%>value="<%=StringEscapeUtils.escapeHtml4(pass) %>" <%} %>>
                <%if( Action.equalsIgnoreCase("Add") && EditObject==null){%>
              <i class="toggle-password fa fa-fw fa-eye-slash"></i>
@@ -126,11 +102,11 @@ String pass=(String)request.getAttribute("pass");
                    </tr> 
                    
                    <tr>
-                   <th><label >CONFIRM PASSWORD:<span class="mandatory" style="color: red;">*</span></label></th>
+                   <th><label >CONFIRM PASSWORD:<span class="mandatory" >*</span></label></th>
                    <td  colspan="4" >
                    <div class="password-container">
-                <input class="form-control" placeholder="Password" type="password"
-                name="NewPasswordVal" id="NewPasswordVal" required="required" maxlength="50" style="font-size: 15px;"
+                <input class="form-control input-font" placeholder="Password" type="password"
+                name="NewPasswordVal" id="NewPasswordVal" required="required" maxlength="50" 
                 <%if( Action.equalsIgnoreCase("Edit") && pass!=null){%>value="<%=StringEscapeUtils.escapeHtml4(pass) %>"  <%} %>>
                <%if( Action.equalsIgnoreCase("Add") && EditObject==null){%>
              <i class="toggle-password fa fa-fw fa-eye-slash"></i>

@@ -1,0 +1,40 @@
+label {
+	font-size: 14px;
+}
+
+.input-group-text {
+	font-weight: bold;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+hr {
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+b {
+	font-family: 'Lato', sans-serif;
+}
+
+.mt-n1p {
+	margin-top: -10px;
+}
+
+.mb-n1p {
+	margin-bottom: -10px;
+}
+
+.cs-header {
+	background-color: #055C9D;
+}
+
+.cs-table {
+	border: 1px solid black !important;
+	background-color: white;
+	font-family: 'Montserrat', sans-serif;
+}

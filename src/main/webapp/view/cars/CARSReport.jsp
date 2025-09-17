@@ -4,236 +4,15 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
-<style type="text/css">
-
-label {
-	font-weight: 800;
-	font-size: 16px;
-	color: #07689f;
-}
-
-.center {
-	text-align: center !important;
-}
-
-.right {
-	text-align: right !important;
-}
-
-.left {
-	text-align: left !important;
-}
-
-.fw-bold {
-	font-weight: bold;
-}
-
-.tabpanes1 {
-	min-height: 690px;
-    max-height: 690px;
-    overflow-y: auto; /* Vertical scrollbar */
-  	overflow-x: hidden; /* Optional if no horizontal scroll */
-    scrollbar-width: thin;
-    scrollbar-height: thin;
-  	scrollbar-color: #007bff #f8f9fa;
-}
-
-/* Chrome, Edge, and Safari */
-.tabpanes1::-webkit-scrollbar{
-  width: 12px;
-}
-
-.tabpanes1::-webkit-scrollbar-track{
-  background: #f8f9fa;
-  border-radius: 5px;
-}
-
-.tabpanes1::-webkit-scrollbar-thum{
-  background-color: #007bff;
-  border-radius: 5px;
-  border: 2px solid #f8f9fa;
-}
-
- .trackingTable {
-	width: 100%;
-	border-collapse: collapse;
-	border: 1px solid #ced4da;
-	padding: 1rem;
-	overflow-y: auto; 
-	overflow-x: auto; 
-	font-family: 'Muli' !important;
-}
-
-.trackingTable thead {
-	position: sticky;
-	top: 0; /* Keeps the header at the top */
-	z-index: 10; /* Ensure the header stays on top of the body */
-	background-color: white; /* For visibility */
-}
-
-.trackingTable tbody{
-	font-size: 1rem !important;
-}
-
-.trackingTable th {
-	text-align: center;
-	font-size: 1.2rem !important;
-	border: 1px solid #ced4da;
-	padding: 10px;
-}
-
-.trackingTable td {
-	border: 1px solid #ced4da;
-	padding: 0.2rem;
-}
-
-.link-button {
-	margin-right: 0.25rem;
-	margin-left: 0.25rem;
-	/* margin-top: 0.5rem; */
-	width: 97%;
-	border-radius: 0.75rem;
-	border: 3px solid #007bff; 
-}
-
-</style>
-
-<style type="text/css">
-/* Tracking Line */
-.tracking-container {
-  /* position: relative; */
-  width: 90%;
-  height: 3rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  margin-left: 3%;
-  margin-top: 1.5%;
-
-}
-
-.tracking-line {
-  /* position: absolute; */
-  top: 50%;
-  left: 0;
-  width: 15%;
-  height: 6px;
-  background-color: #ced4da;
-  z-index: 0;
-}
-
-.tracking-line.active {
-  background-color: #28a745;
-}
-
-.track-btn {
-  /* position: relative; */
-  z-index: 1;
-  background-color: #ced4da;
-  border: 2px solid #ced4da;
-  border-radius: 2rem;
-  width: 2.5rem;
-  height: 2.2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-.track-btn.active {
-  background-color: #28a745;
-  border: 2px solid #28a745;
-  color: #fff;
-}
-
-.minus {
-  font-size: 1rem;
-  color: #007bff;
-  margin: 0 0.5rem;
-}
-
-/* @media (max-width: 768px) {
-  .tracking-container {
-    flex-direction: column;
-    height: auto;
-  }
-  .tracking-line {
-    width: 2px;
-    height: 100%;
-  }
-}  */
-
-/* Tracking Header */
-.tracking-header-container {
-  position: relative;
-  width: 98%;
-  height: 3rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  /* margin-bottom: 2rem; */
-  margin-left: 1%;
-  margin-right: 1%; 
-}
-</style>
-
-<style type="text/css">
-.custom-tooltip {
-    position: absolute;
-    background-color: #fff7e3;
-    color: black;
-    padding: 5px;
-    border-radius: 3px;
-    z-index: 9999;
-    box-shadow: 0px 0px 9px black;
-}
-
- .message-blue:after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-top: 15px solid black;
-    border-left: 15px solid transparent;
-    top: 0;
-    left: -15px;
-} 
-
- .blueBottom:after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-top: 15px solid black;
-    border-left: 15px solid transparent;
-    bottom: 0;
-    left: -15px;
-    
-    transform: rotate(90deg);
-    
-}
-
-#TooltipStyle {
-	margin: 0.3rem;
-}
- 
-#TooltipStyle td {
-	font-size: 1rem;
-	border-collapse: collapse;
-    border-color: white; 
-    font-family: 'Muli' !important;
-    font-weight: 900;
-}
-
-</style>
+<spring:url value="/resources/css/cars/CARSReport.css" var="carsReport" />
+<link href="${carsReport}" rel="stylesheet" />
 </head>
 <body>
 <%
@@ -260,23 +39,16 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("initiationL
 
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
- 			<div class="card-header" style="background-color: transparent;height: 3rem;">
+ 			<div class="card-header card-header-bg" >
  				<div class="row">
  					<div class="col-md-3">
- 						<h3 class="text-dark" style="font-weight: bold;">CARS Report</h3>
+ 						<h3 class="text-dark fw-bold" >CARS Report</h3>
  					</div>
  					<div class="col-md-7"></div>
  					<div class="col-md-2 right">
  						<a class="btn btn-sm btn-outline-success" href="CARSReportPresentation.htm" target="_blank" title="CARS Presentation">
-								<img alt="" src="view/images/presentation.png" style="width:19px !important">
+								<img alt="" src="view/images/presentation.png"  class="w-19">
 						</a>
-	 					<!-- <form action="#" method="post">
-							<input type="hidden" name="ccmScheduleId" value="81">
-							<input type="hidden" name="committeeId" value="12">
-							<input type="hidden" name="_csrf" value="2be07c98-e96d-4306-8db3-b4f4fa6555ae">
-				        									
-    						
-						</form> -->
  					</div>
  				</div>
  			</div>
@@ -285,8 +57,8 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("initiationL
 					<table class=" trackingTable">
 						<thead>  
 							<tr>
-								<th style="width: 15%;">CARS No</th>
-								<th style="width: 85%;">
+								<th class="w-15">CARS No</th>
+								<th class="w-85">
 									<div class="tracking-header-container">
 										<div>&emsp;Initiation</div>
 										<div>&emsp;RSQR Approval</div>
@@ -336,84 +108,77 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("initiationL
 											</button>
 						                  
 						                  
-											<div class="tracking-line <%if(transactionCodes.contains("AGD") || transactionCodes.contains("APD")) { ++count;%>active<%} %>"
-						                   		<%if(count<=1) {%> style="background: linear-gradient(to right, #28a745 25%, #ced4da 25%);" <%} %> >
+											<div class="tracking-line <%if(transactionCodes.contains("AGD") || transactionCodes.contains("APD")) { ++count;%>active <%} %> <%if(count<=1) {%>  track-bg  <%} %>" >
 						                    </div>
 						                  
 						                    <!-- Approval Button -->
-						                    <button type="button" class="track-btn <%if(transactionCodes.contains("AGD") || transactionCodes.contains("APD")) {%>active<%} %>" data-toggle="tooltip" title="RSQR Approval">
+						                    <button type="button" class="track-btn <%if(transactionCodes.contains("AGD") || transactionCodes.contains("APD")) {%>active <%} %>" data-toggle="tooltip" title="RSQR Approval">
 						                  		<%if(transactionCodes.contains("AGD") || transactionCodes.contains("APD")) {%>
 						                    		<i class="fa fa-check" aria-hidden="true"></i>
 						                    	<%} %>
 						                  	</button>
 						                  
 						                  
-						                  	<div class="tracking-line <%if(transactionCodes.contains("SIN")) { ++count;%>active<%} %>"
-										  		<%if(count>1 && count<=2) {%> style="background: linear-gradient(to right, #28a745 25%, #ced4da 25%);" <%} %> >
+						                  	<div class="tracking-line <%if(transactionCodes.contains("SIN")) { ++count;%>active <%} %> <%if(count>1 && count<=2) { %> track-bg  <% } %>" >
 						                  	</div>
 						                  
 						                  	<!-- SoC Button -->
-						                  	<button type="button" class="track-btn <%if(transactionCodes.contains("SIN")) {%>active<%} %>" data-toggle="tooltip" title="SoC Details">
+						                  	<button type="button" class="track-btn <%if(transactionCodes.contains("SIN")) {%>active <%} %>" data-toggle="tooltip" title="SoC Details">
 						                  		<%if(transactionCodes.contains("SIN")) {%>
 						                    		<i class="fa fa-check" aria-hidden="true"></i>
 						                    	<%} %>
 						                  	</button>
 						                  
 						                  
-						                  	<div class="tracking-line <%if(transactionCodes.contains("SFG") || transactionCodes.contains("SFP")) { ++count;%>active<%} %>"
-										  		<%if(count>2 && count<=3) {%> style="background: linear-gradient(to right, #28a745 25%, #ced4da 25%);" <%} %> >
+						                  	<div class="tracking-line <%if(transactionCodes.contains("SFG") || transactionCodes.contains("SFP")) { ++count;%>active <%} %> <%if(count>2 && count<=3) {%>  track-bg  <%} %>" >
 						                  	</div>
 						                  
 						                  	<!-- SoC Approval Button -->
-						                  	<button type="button" class="track-btn <%if(transactionCodes.contains("SFG") || transactionCodes.contains("SFP")) {%>active<%} %>" data-toggle="tooltip" title="SoC Approval">
+						                  	<button type="button" class="track-btn <%if(transactionCodes.contains("SFG") || transactionCodes.contains("SFP")) {%>active <%} %>" data-toggle="tooltip" title="SoC Approval">
 						                  		<%if(transactionCodes.contains("SFG") || transactionCodes.contains("SFP")) {%>
 						                    		<i class="fa fa-check" aria-hidden="true"></i>
 						                    	<%} %>
 						                  	</button>
 						                  
 						                  
-						                  	<div class="tracking-line <%if(obj[16]!=null) { ++count;%>active<%} %>"
-										  		<%if(count>3 && count<=4) {%> style="background: linear-gradient(to right, #28a745 25%, #ced4da 25%);" <%} %> >
+						                  	<div class="tracking-line <%if(obj[16]!=null) { ++count;%>active <%} %> <%if(count>3 && count<=4) {%> track-bg  <%} %>" >
 						                  	</div>
 						                  
 						                  	<!-- MoM Upload Button -->
-						                  	<button type="button" class="track-btn <%if(obj[16]!=null) {%>active<%}%>" data-toggle="tooltip" title="MoM Upload">
+						                  	<button type="button" class="track-btn <%if(obj[16]!=null) {%>active <%}%>" data-toggle="tooltip" title="MoM Upload">
 						                  		<%if(obj[16]!=null) {%>
 						                    		<i class="fa fa-check" aria-hidden="true"></i>
 						                    	<%} %>
 						                  	</button>
 						                  
 						                  
-						                  	<div class="tracking-line <%if(obj[14]!=null && obj[14].toString().equalsIgnoreCase("A")) { ++count;%>active<%} %>"
-										  		<%if(count>4 && count<=5) {%> style="background: linear-gradient(to right, #28a745 25%, #ced4da 25%);" <%} %> >
+						                  	<div class="tracking-line <%if(obj[14]!=null && obj[14].toString().equalsIgnoreCase("A")) { ++count;%>active <%} %> <%if(count>4 && count<=5) {%>  track-bg  <%} %>" >
 						                  	</div>
 						                  
 						                  	<!-- DP&C SoC Approval Button -->
-						                  	<button type="button" class="track-btn <%if(obj[14]!=null && obj[14].toString().equalsIgnoreCase("A")) {%>active<%}%>" data-toggle="tooltip" title="DP&C Approval">
+						                  	<button type="button" class="track-btn <%if(obj[14]!=null && obj[14].toString().equalsIgnoreCase("A")) {%>active <%}%>" data-toggle="tooltip" title="DP&C Approval">
 						                  		<%if(obj[14]!=null && obj[14].toString().equalsIgnoreCase("A")) {%>
 						                    		<i class="fa fa-check" aria-hidden="true"></i>
 						                    	<%} %>
 						                  	</button>
 						                  
 						                  
-						                  	<div class="tracking-line <%if(transactionCodes.contains("CAD")) { ++count;%>active<%} %>"
-										  		<%if(count>5 && count<=6) {%> style="background: linear-gradient(to right, #28a745 25%, #ced4da 25%);" <%} %> >
+						                  	<div class="tracking-line <%if(transactionCodes.contains("CAD")) { ++count;%>active <%} %> <%if(count>5 && count<=6) {%> track-bg  <%} %> ">
 						                  	</div>
 						                  
 						                  	<!-- Contract Signature Button -->
-						                  	<button type="button" class="track-btn <%if(transactionCodes.contains("CAD")) {%>active<%} %>" data-toggle="tooltip" title="Contract Signature">
+						                  	<button type="button" class="track-btn <%if(transactionCodes.contains("CAD")) {%>active <%} %>" data-toggle="tooltip" title="Contract Signature">
 							                  	<%if(transactionCodes.contains("CAD")) {%>
 							                    	<i class="fa fa-check" aria-hidden="true"></i>
 							                    <%} %>
 						                  	</button>
 						                  
 						                  
-						                  	<div class="tracking-line <%if(actualMilestoneCount>0 && actualMilestoneCount==approvedMilestoneCount) { ++count;%>active<%} %>"
-										  		<%if(count>6 && count<=7) {%> style="background: linear-gradient(to right, #28a745 <%=milestoneProgress %>%, #ced4da 25%);" <%} %> >
+						                  	<div class="tracking-line <%if(actualMilestoneCount>0 && actualMilestoneCount==approvedMilestoneCount) { ++count;%>active <%} %> <%if(count>6 && count<=7) {%> progress-bar  <%} %>" <%if(count>6 && count<=7) {%> data-progress="<%= milestoneProgress %>"<%} %> >
 						                  	</div>
 						                  
 						                  	<!-- Milestone Payment Button -->
-						                  	<button type="button" class="track-btn <%if(actualMilestoneCount>0 && actualMilestoneCount==approvedMilestoneCount) {%>active<%} %>" data-toggle="tooltip" title="Milestone Payment">
+						                  	<button type="button" class="track-btn <%if(actualMilestoneCount>0 && actualMilestoneCount==approvedMilestoneCount) {%>active <%} %>" data-toggle="tooltip" title="Milestone Payment">
 							                  	<%if(actualMilestoneCount>0 && actualMilestoneCount==approvedMilestoneCount) {%>
 							                    	<i class="fa fa-check" aria-hidden="true"></i>
 							                    <%} %>
@@ -431,6 +196,11 @@ List<Object[]> intiationList = (List<Object[]>)request.getAttribute("initiationL
 
 <script type="text/javascript">
 
+document.querySelectorAll('.progress-bar').forEach(el => {
+	  const p = el.dataset.progress;
+	  el.style.setProperty('--progress', p + '%');
+	});
+
 var tooltip ='';
 function ShowProjectDetails(carsNo, initiationTitle, fundsFrom, duration, amount)
 {
@@ -443,23 +213,23 @@ function ShowProjectDetails(carsNo, initiationTitle, fundsFrom, duration, amount
 	Text += '<div class="custom-tooltip message-blue blueBottom" id="hoverDiv">';
 	Text += '<table id="TooltipStyle">';
 	Text += '<tr>';
-	Text += '<td class="center" colspan="2" style="background-color: #4B70F5;color: #ffff;">' + carsNo + '</td>';
+	Text += '<td class="center cars-no" colspan="2">' + carsNo + '</td>';
 	Text += '</tr>';
 	Text += '<tr>';
-	Text += '<td class="left" style="">Title</td>';
-	Text += '<td class="left" style="">:&emsp;' + initiationTitle + '</td>';
+	Text += '<td class="left" >Title</td>';
+	Text += '<td class="left" >:&emsp;' + initiationTitle + '</td>';
 	Text += '</tr>';
 	Text += '<tr>';
-	Text += '<td class="left" style="">Funds from</td>';
-	Text += '<td class="left" style="">:&emsp;' + fundsFrom + '</td>';
+	Text += '<td class="left" >Funds from</td>';
+	Text += '<td class="left" >:&emsp;' + fundsFrom + '</td>';
 	Text += '<tr>';
 	Text += '<tr>';
-	Text += '<td class="left" style="">Duration</td>';
-	Text += '<td class="left" style="">:&emsp;' + duration + ' (In Months)</td>';
+	Text += '<td class="left" >Duration</td>';
+	Text += '<td class="left" >:&emsp;' + duration + ' (In Months)</td>';
 	Text += '<tr>';
 	Text += '<tr>';
-	Text += '<td class="left" style="">Cost</td>';
-	Text += '<td class="left" style="">:&emsp;' + amount + ' (In Lakhs)</td>';
+	Text += '<td class="left" >Cost</td>';
+	Text += '<td class="left" >:&emsp;' + amount + ' (In Lakhs)</td>';
 	Text += '<tr>';
 	Text += '</table>';
 	Text += '</div>';

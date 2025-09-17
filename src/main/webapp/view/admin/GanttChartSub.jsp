@@ -10,42 +10,12 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/admin/GanttChartSub.css" var="ganttChartSub" />
+<link href="${ganttChartSub}" rel="stylesheet" />
 
  
 
 <title>Gantt Chart</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-
- #containers {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.anychart-credits {
-   display: none;
-}
-
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-</style>
-
-
 
 
 </head>
@@ -71,15 +41,15 @@ h6{
 				<div class="card shadow-nohover">
 					<div class="card-header ">  
 
-					<div class="row">
+					<div class="row m-minus">
 						<h3 class="col-md-4">
 							Gantt Chart
 						</h3>  
 						<div class="col-md-3 justify-content-end">
 						
-							<form class="form-inline" method="post" action="GanttChart.htm" name="myform" id="myform" style="float:right">
+							<form class="form-inline f-right" method="post" action="GanttChart.htm" name="myform" id="myform" >
                             	<label>Project : &nbsp;&nbsp;&nbsp; </label>
-                            	<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId" style="width:220px !important">
+                            	<select class="form-control selectdee w-220" id="ProjectId" required="required" name="ProjectId" >
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ProjectList) {%>
 										<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> </option>
@@ -91,9 +61,9 @@ h6{
 							</form>						
 						</div>
 						
-						<div class="col-md-3 justify-content-end" style="float:right">
+						<div class="col-md-3 justify-content-end f-right" >
 							<label>Interval : &nbsp;&nbsp;&nbsp; </label>
-							<select class="form-control selectdee " name="interval" id="interval" required="required"  data-live-search="true"  style="width:150px !important" >
+							<select class="form-control selectdee w-150" name="interval" id="interval" required="required"  data-live-search="true"  >
                                 <option value="quarter"> Quarterly </option>
                                 <option value="half" >Half-Yearly</option>
                                 <option value="year" >Yearly</option>
@@ -103,7 +73,7 @@ h6{
 						
 							
 							<div class="col-md-2">
-								<form action="GanttChart.htm" method="post" style="float: right;">
+								<form class="f-right" action="GanttChart.htm" method="post" >
 									<button type="submit" class="btn btn-info btn-sm shadow-nohover back"   >Back</button>		
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 									<input type="hidden" name="ProjectId"  id="ProjectId" value="<%=ProjectId %>" /> 
@@ -112,22 +82,22 @@ h6{
 			   		</div>	   							
 
 					</div>
-						<div class="card-body " style="padding: 10px;"> 
+						<div class="card-body p-3" > 
 							
-								<div class="row" style="margin-bottom: 5px;font-weight: bold;"   >
+								<div class="row mb-2 f-bold"  >
 										<div class="col-md-4"></div>
 										<div class="col-md-4"></div>
 										<div class="col-md-4">
-											<div style="font-weight: bold; " >
-												<span style="margin:0px 0px 10px  10px;">Original :&ensp; <span style=" background-color: #455a64;  padding: 0px 15px; border-radius: 3px;"></span></span>
-												<span style="margin:0px 0px 10px  15px;">Ongoing :&ensp; <span style=" background-color: #059212;  padding: 0px 15px;border-radius: 3px;"></span></span>
-												<span style="margin:0px 0px 10px  15px;">Revised :&ensp; <span style=" background-color: #f25287; opacity: 0.5; padding: 0px 15px;border-radius: 3px;"></span></span>
+											<div class="f-bold" >
+												<span class="text-margin">Original :&ensp; <span class="text-padding bg-blue"></span></span>
+												<span class="text-margin">Ongoing :&ensp; <span class="text-padding bg-success"></span></span>
+												<span class="text-margin">Revised :&ensp; <span class="text-padding bg-orange" ></span></span>
 											</div>
 										</div>
 									</div>
 							<div class="row" >
 								
-								<div class="col-md-12" style="float: right;" align="center">
+								<div class="col-md-12 f-right"  align="center">
 							
 					   				<div class="flex-container" id="containers" ></div>
 
@@ -449,16 +419,16 @@ $('#ProjectId').on('change',function(){
 								        		        var html="";
 								        		        if(reDate===undefined){
 								        		        	html="";
-								        		        	html= "<span style='font-weight:600;font-size:10pt'> Actual : " +
+								        		        	html= "<span class='span-font'> Actual : " +
 								        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
 								        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
 								        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
 								        		        }else{
 								        		        	html="";
-								        		        html="<span style='font-weight:600;font-size:10pt'> Actual : " +
+								        		        html="<span class='span-font'> Actual : " +
 								        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
 								        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
-								        		               "<span style='font-weight:600;font-size:10pt'> Revised : " +
+								        		               "<span class='span-font'> Revised : " +
 								        		               anychart.format.dateTime(this.getData("baselineStart"), 'dd MMM yyyy') + " - " +
 								        		               anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +
 								        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
@@ -467,10 +437,10 @@ $('#ProjectId').on('change',function(){
 								        		        return html;
 								        		    }		
 								        
-								       /*    "<span style='font-weight:600;font-size:10pt'> Actual : " +
+								       /*    "<span class='span-font'> Actual : " +
 								          "{%actualStart}{dateTimeFormat:dd MMM yyyy} - " +
 								          "{%actualEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
-								          "<span style='font-weight:600;font-size:10pt'> Revised : " +
+								          "<span class='span-font'> Revised : " +
 								          "{%baselineStart}{dateTimeFormat:dd MMM yyyy} - " +
 								          "{%baselineEnd}{dateTimeFormat:dd MMM yyyy}</span><br>" +
 								          "Progress: {%baselineProgressValue}<br>"  */
@@ -638,9 +608,9 @@ $('#ProjectId').on('change',function(){
 								     	timeline.tasks().labels().useHtml(true);
 								     	timeline.tasks().labels().format(function() {
 								     	  if (this.progress == 1) {
-								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'></span>";
+								     	    return "<span class='span-col-1'></span>";
 								     	  } else {
-								     	    return "<span style='color:black;font-weight:bold'></span>";
+								     	    return "<span class='span-col-2'></span>";
 								     	  }
 								     	});
 								     	

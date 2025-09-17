@@ -4,6 +4,7 @@
 <%@page import="java.math.BigDecimal"%> 
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.time.LocalDate,java.util.stream.Collectors"%>
     
@@ -16,178 +17,8 @@
 
 <title>Product Tree Revision </title>
 
-
- <style type="text/css">
- 
-
-  
-/*  th
- {
- 	border: 0;
- 	text-align: center;
- 	padding: 5px;
- }
- 
- td
- {
- 	border: 0;
- 	padding: 5px;
- }
- 
-  }
-
- .border
- {
- 	border: 1px solid black;
- } */
-
-  
-  .genealogy-body{
-    white-space: nowrap;
-    overflow-y: hidden;
-    padding: 50px;
-    min-height: 500px;
-    padding-top: 0px;
-    text-align: center;
-}
-
-
-.genealogy-tree{
-  display: inline-block;
-} 
-.genealogy-tree ul {
-    padding-top: 20px; 
-    position: relative;
-    padding-left: 0px;
-    display: flex;
-    justify-content: center;
-}
-.genealogy-tree li {
-    float: left; text-align: center;
-    list-style-type: none;
-    position: relative;
-    padding: 17px 0px 0 0px;
-}
-
-.genealogy-tree li::before, .genealogy-tree li::after{
-    content: '';
-    position: absolute; 
-    top: 0; 
-    right: 50%;
-    border-top: 2px solid black;
-    width: 50%; 
-    height: 18px;
-}
-.genealogy-tree li::after{
-    right: auto; 
-    left: 50%;
-    border-left: 2px solid black;
-}
- .genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
-    display: none;
-}
-.genealogy-tree li:only-child{ 
-    padding-top: 0;
-}
-.genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
-    border: 0 none;
-} 
-.genealogy-tree li:last-child::before{
-     border-right: 2px solid black;
-     border-radius: 0 5px 0 0;
-    -webkit-border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-}
-.genealogy-tree li:first-child::after{
-    border-radius: 5px 0 0 0;
-    -webkit-border-radius: 5px 0 0 0;
-    -moz-border-radius: 5px 0 0 0;
-}
-.genealogy-tree ul ul::before{
-    content: '';
-    position: absolute;
-     top: 0; 
-     left: 50%;
-    border-left: 2px solid black;
-    width: 0;
-     height: 20px;
-}
-.genealogy-tree li .action-view-box{
-     text-decoration: none;
-     /* font-family: arial, verdana, tahoma; */
-     font-size: 11px;
-     display: inline-block;
-     border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-}
-
-
-/*--------------memeber-card-design----------*/
-.member-view-box{
-    padding:0px 15px;
-    text-align: center;
-    border-radius: 4px;
-    position: relative;
-}
-
-
-
-
-</style>
- <!-- ------------------------------- tree css ------------------------------- -->
-
-
-<style type="text/css">
-.action-box
-{
-    /*  width: fit-content ; 
-     height: fit-content; */
-     /* min-width:190px; */
-   /*   min-width:190px; */
-  
-    border: 1px solid black;
-    
-    max-width:100px;
-    /* max-height:110px; */
-/*     display: block; */
-    
-   
-    /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%); */
-    
-}
-
-
-.action-box-header
-{
-
-
-/*  max-width:120px; */
-	padding:2px;
- 	text-align: center;
- 	 
-   
- 	/* color: #3468C0; */
-	 /* background: linear-gradient(to bottom right, #0B60B0 5%, #0B60B0 10%, white 10%, white 90%, #D24545 0%, #D24545 0%);  */
-}
-
-
-
-
-.action-box-body
-{
-   padding:0px;
-	text-align: center;
-	background-color:#FFFFFF ;
-	display: block;
-    flex-wrap: wrap;
-    border-bottom-right-radius : 9px;
-	border-bottom-left-radius: 7px;
-}
-  
-  
-  
-</style>
+<spring:url value="/resources/css/producttree/ProductTreeRevision.css" var="productTreeRevision" />
+<link href="${productTreeRevision}" rel="stylesheet" />
 
 
 <meta charset="ISO-8859-1">
@@ -243,13 +74,13 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 						<!-- <div class="col-md-2"></div> -->	
 					<div class="col-md-4">	
 					<form method="post" action="ProductTreeRevisionData.htm" id="" >				
-						<div class="row" style="">
+						<div class="row" >
 						
 							 <h4>Revision:</h4>
                             		
-                            		<div class="col-md-3" style="margin-top: -7px;">
+                            		<div class="col-md-3 mt-minus-7">
                             		
-                              		   <select class="form-control selectdee" name="revCount"   style="width:220px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
+                              		   <select class="form-control selectdee w-220" name="revCount" data-live-search="true" data-container="body" onchange="this.form.submit();">
 										
 										<%for(Object[] obj : projectdatarevlist){ %>
 											    <option  value="<%=obj[0] %>"  <% if(RevCount.toString().equals(obj[0].toString())) {%> selected <%} %> >REV - <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):"-" %> (<%=obj[1]!=null?sdf.format(sdf1.parse(obj[1].toString()) ):"-" %>)</option>
@@ -259,7 +90,7 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                               		
   									</div>
-  									<div class="col-md-2" style="margin-left:130px;">
+  									<div class="col-md-2 ml-130">
   									       <input type="submit" class="btn btn-primary btn-sm back "  value="Back"  onclick="SubmitBack()"  formaction="ProductTree.htm"> 
   									</div>
   							    			
@@ -272,7 +103,7 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 					 
 				
 					<div class="">	
-						<div style="background-color:#FFFFFF;" class="body genealogy-body genealogy-scroll">
+						<div class="body genealogy-body genealogy-scroll bg-white">
 						
 						<div class="genealogy-tree"  >
 	  
@@ -280,13 +111,13 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 			  		<ul>
 						<li>      
 			
-						 <div class="member-view-box action-view-box" style=" padding:0px 15px;">
+						 <div class="member-view-box action-view-box p-15">
 			                    
-			                         <div class=" action-box" style="border:-1px;" > 
+			                         <div class=" action-box" > 
 			                         	
 			                         	<div  class="action-box-header" >
 			                         	
-			                         	 <span style="cursor:pointer;font-weight: bold;font-size: 1.0em;">
+			                         	 <span class="cursor span-font" >
 	                          			         <%if(projectid!=null){	%>
 	                          			        	<%=ProjectDetails.get(0)[1]!=null?StringEscapeUtils.escapeHtml4(ProjectDetails.get(0)[1].toString()):"-" %>
 	                          			               <%} %> 
@@ -306,39 +137,38 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 			            	   if(level1[2].toString().equalsIgnoreCase("1")) { %>
 			              
 			                	<li >	 
+			                	<%
+									String statusClass1 = "status-default";
+									if(level1[6] != null) {
+									    String status = level1[6].toString();
+									    if(status.equalsIgnoreCase("Design")) statusClass1 = "status-design";
+									    else if(status.equalsIgnoreCase("Realisation")) statusClass1 = "status-realisation";
+									    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass1 = "status-testing";
+									    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass1 = "status-ready";
+									}
+									
+									String typeClass1 = "type-default";
+									if(level1[7] != null) {
+									    String type = level1[7].toString();
+									    if(type.equalsIgnoreCase("In-House Development")) typeClass1 = "type-inhouse";
+									    else if(type.equalsIgnoreCase("BTP")) typeClass1 = "type-btp";
+									    else if(type.equalsIgnoreCase("BTS")) typeClass1 = "type-bts";
+									    else if(type.equalsIgnoreCase("COTS")) typeClass1 = "type-cots";
+									}
+									%>
 			                	
 									    <div class="member-view-box action-view-box">
 											 <div class="action-box" > 
 												
-												 <div  class="action-box-header" 
+												 <div  class="action-box-header gradient-box level1 <%=statusClass1%> <%=typeClass1%>" >
 												
-												style="background: linear-gradient(to bottom right, 
-												<%if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-												<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-												<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-												<%}else if(level1[6]!=null && level1[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-												
-												<%}else { %> white 5%, white 10% 
-												<%} %>
-												, white 10%, white 90%,
-												
-											    <%if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-												<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-												<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-												<%}else if(level1[7]!=null && level1[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-												
-												<%}else { %> white 5%, white 10% 
-												<%} %>
-												 
-												 );" >  
-												
-										             <span  style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;"> 
+										             <span class="cursor span-font-1"> 
 										                  <%=level1[3]!=null?StringEscapeUtils.escapeHtml4(level1[3].toString()):"-" %>
 										                
 										             </span>  
 										            
 													          
-											 <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+											 <div class="mt-minus-2"><i class="fa fa-caret-down i-font cursor" aria-hidden="true" ></i></div>
 													      
 			                          		    </div> 
 			                          	 </div> 
@@ -354,36 +184,35 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 							                { %>
 							             
 												<li>
+												<%
+													String statusClass2 = "status-default";
+													if(level2[6] != null) {
+													    String status = level2[6].toString();
+													    if(status.equalsIgnoreCase("Design")) statusClass2 = "status-design";
+													    else if(status.equalsIgnoreCase("Realisation")) statusClass2 = "status-realisation";
+													    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass2 = "status-testing";
+													    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass2  = "status-ready";
+													}
+													
+													String typeClass2 = "type-default";
+													if(level2[7] != null) {
+													    String type = level2[7].toString();
+													    if(type.equalsIgnoreCase("In-House Development")) typeClass2 = "type-inhouse";
+													    else if(type.equalsIgnoreCase("BTP")) typeClass2 = "type-btp";
+													    else if(type.equalsIgnoreCase("BTS")) typeClass2 = "type-bts";
+													    else if(type.equalsIgnoreCase("COTS")) typeClass2 = "type-cots";
+													}
+													%>
 												
 													<div class="member-view-box action-view-box">
 															<div class=" action-box" >
-															  <div class="action-box-header" 
-															  
-															      style="background: linear-gradient(to bottom right, 
-																<%if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																<%}else if(level2[6]!=null && level2[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																
-																<%}else { %> white 5%, white 10% 
-																<%} %>
-																, white 10%, white 90%,
-																
-															    <%if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																<%}else if(level2[7]!=null && level2[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																
-																<%}else { %> white 5%, white 10% 
-																<%} %>
-																 
-																 );" >
+															  <div  class="action-box-header gradient-box level1 <%=statusClass2%> <%=typeClass2%>" >
 														
-															       <span style="cursor:pointer;font-weight:bold;font-size: 1.0em;white-space:normal;"> 
+															       <span class="cursor span-font-1"> 
 			                          			                              <%=level2[3]!=null?StringEscapeUtils.escapeHtml4(level2[3].toString()):"-" %>
 			                          			                   </span>
 			                          			                   
-			                          			                  <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                  <div class="mt-minus-2"><i class="fa fa-caret-down i-font cursor" aria-hidden="true" ></i></div>
 													
 													             
 												             
@@ -401,39 +230,38 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 										                
 										                  { %>
 																  <li>  
+																  <%
+																	String statusClass3 = "status-default";
+																	if(level3[6] != null) {
+																	    String status = level3[6].toString();
+																	    if(status.equalsIgnoreCase("Design")) statusClass3 = "status-design";
+																	    else if(status.equalsIgnoreCase("Realisation")) statusClass3 = "status-realisation";
+																	    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass3 = "status-testing";
+																	    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass3  = "status-ready";
+																	}
+																	
+																	String typeClass3 = "type-default";
+																	if(level3[7] != null) {
+																	    String type = level3[7].toString();
+																	    if(type.equalsIgnoreCase("In-House Development")) typeClass3 = "type-inhouse";
+																	    else if(type.equalsIgnoreCase("BTP")) typeClass3 = "type-btp";
+																	    else if(type.equalsIgnoreCase("BTS")) typeClass3 = "type-bts";
+																	    else if(type.equalsIgnoreCase("COTS")) typeClass3 = "type-cots";
+																	}
+																	%>
 																   <div class="line-top"></div>    
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
+																		<div  class="action-box-header gradient-box level1 <%=statusClass3%> <%=typeClass3%>" >
 																		
-																		  style="background: linear-gradient(to bottom right, 
-																			<%if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level3[6]!=null && level3[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			, white 10%, white 90%,
-																			
-																		    <%if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level3[7]!=null && level3[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			 
-																			 );" >
-																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+																		<span class="cursor span-font-1" >
 			                          			                             
 			                          			                                <%=level3[3]!=null?StringEscapeUtils.escapeHtml4(level3[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                      <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                      <div class="mt-minus-2"><i class="fa fa-caret-down i-font cursor" aria-hidden="true" ></i></div>
 													
 													                   
 			                          			                          
@@ -452,42 +280,40 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 															                 
 										                	  if(level4[2].toString().equalsIgnoreCase("4") && level3[0].toString().equalsIgnoreCase(level4[1].toString())) 
 										                     { %>    
-																  <li> 
+																  <li> <%
+																		String statusClass4 = "status-default";
+																		if(level4[6] != null) {
+																		    String status = level4[6].toString();
+																		    if(status.equalsIgnoreCase("Design")) statusClass4 = "status-design";
+																		    else if(status.equalsIgnoreCase("Realisation")) statusClass4 = "status-realisation";
+																		    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass4 = "status-testing";
+																		    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass4 = "status-ready";
+																		}
+																		
+																		String typeClass4 = "type-default";
+																		if(level4[7] != null) {
+																		    String type = level4[7].toString();
+																		    if(type.equalsIgnoreCase("In-House Development")) typeClass4 = "type-inhouse";
+																		    else if(type.equalsIgnoreCase("BTP")) typeClass4 = "type-btp";
+																		    else if(type.equalsIgnoreCase("BTS")) typeClass4 = "type-bts";
+																		    else if(type.equalsIgnoreCase("COTS")) typeClass4 = "type-cots";
+																		}
+																		%>
+																  
 																   <div class="line-top"></div>     
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
-																		
-																		 
-																		  style="background: linear-gradient(to bottom right, 
-																			<%if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level4[6]!=null && level4[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			, white 10%, white 90%,
-																			
-																		    <%if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level4[7]!=null && level4[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			 
-																			 );" >
+																		<div  class="action-box-header gradient-box level1 <%=statusClass4%> <%=typeClass4%>" >
 																		
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+																		<span class="cursor span-font-1" >
 			                          			                             
 			                          			                                <%=level4[3]!=null?StringEscapeUtils.escapeHtml4(level4[3].toString()):"-" %>
 			                          			                                
 			                          			                          </span>
 			                          			                          
-			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                          <div class="mt-minus-2"><i class="fa fa-caret-down i-font cursor" aria-hidden="true" ></i></div>
 													
 													                     
 												                                              			
@@ -506,34 +332,34 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 								                        	  <% if(level5[2].toString().equalsIgnoreCase("5") && level4[0].toString().equalsIgnoreCase(level5[1].toString()) )
 								                             { %> 
 																  <li> 
+																  <%
+																	String statusClass5 = "status-default";
+																	if(level5[6] != null) {
+																	    String status = level5[6].toString();
+																	    if(status.equalsIgnoreCase("Design")) statusClass5 = "status-design";
+																	    else if(status.equalsIgnoreCase("Realisation")) statusClass5 = "status-realisation";
+																	    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass5 = "status-testing";
+																	    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass5 = "status-ready";
+																	}
+																	
+																	String typeClass5 = "type-default";
+																	if(level5[7] != null) {
+																	    String type = level5[7].toString();
+																	    if(type.equalsIgnoreCase("In-House Development")) typeClass5 = "type-inhouse";
+																	    else if(type.equalsIgnoreCase("BTP")) typeClass5 = "type-btp";
+																	    else if(type.equalsIgnoreCase("BTS")) typeClass5 = "type-bts";
+																	    else if(type.equalsIgnoreCase("COTS")) typeClass5 = "type-cots";
+																	}
+																	%>
+																																	  
 																   <div class="line-top"></div>     
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
-																		
-																		 style="background: linear-gradient(to bottom right, 
-																			<%if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level5[6]!=null && level5[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			, white 10%, white 90%,
-																			
-																		    <%if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level5[7]!=null && level5[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			 
-																			 );" >
+																		<div  class="action-box-header gradient-box level1 <%=statusClass5%> <%=typeClass5%>" >
 																		
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+																		<span class="cursor span-font-1" >
 			                          			                             
 			                          			                                <%=level5[3]!=null?StringEscapeUtils.escapeHtml4(level5[3].toString()):"-" %>
 			                          			                                
@@ -541,7 +367,7 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 			                          			                          
 			                          			                          
 			                          			                          
-			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                          <div class="mt-minus-2"><i class="fa fa-caret-down i-font cursor" aria-hidden="true" ></i></div>
 													
 													                   
 												                                              			
@@ -563,34 +389,35 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 								                        	  <% if(level6[2].toString().equalsIgnoreCase("6") && level5[0].toString().equalsIgnoreCase(level6[1].toString()) )
 								                             {%> 
 																  <li> 
+																  <%
+																	String statusClass6 = "status-default";
+																	if(level6[6] != null) {
+																	    String status = level6[6].toString();
+																	    if(status.equalsIgnoreCase("Design")) statusClass6 = "status-design";
+																	    else if(status.equalsIgnoreCase("Realisation")) statusClass6 = "status-realisation";
+																	    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass6 = "status-testing";
+																	    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass6 = "status-ready";
+																	}
+																	
+																	String typeClass6 = "type-default";
+																	if(level6[7] != null) {
+																	    String type = level6[7].toString();
+																	    if(type.equalsIgnoreCase("In-House Development")) typeClass6 = "type-inhouse";
+																	    else if(type.equalsIgnoreCase("BTP")) typeClass6 = "type-btp";
+																	    else if(type.equalsIgnoreCase("BTS")) typeClass6 = "type-bts";
+																	    else if(type.equalsIgnoreCase("COTS")) typeClass6 = "type-cots";
+																	}
+																	%>
+																																	  
+																																	  
 																   <div class="line-top"></div>     
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
-																		
-																		 style="background: linear-gradient(to bottom right, 
-																			<%if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level6[6]!=null && level6[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			, white 10%, white 90%,
-																			
-																		    <%if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level6[7]!=null && level6[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			 
-																			 );" >
+																		<div  class="action-box-header gradient-box level1 <%=statusClass6%> <%=typeClass6%>" >
 																		
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+																		<span class="cursor span-font-1" >
 			                          			                             
 			                          			                                <%=level6[3]!=null?StringEscapeUtils.escapeHtml4(level6[3].toString()):"-" %>
 			                          			                                
@@ -598,7 +425,7 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 			                          			                          
 			                          			                          
 			                          			                          
-			                          			                          <div style="margin-top:-2px;"><i class="fa fa-caret-down" aria-hidden="true" style="font-size: 0.8rem;color:black;padding-top:0px;padding-bottom:0px;cursor: pointer ;"></i></div>
+			                          			                          <div class="mt-minus-2"><i class="fa fa-caret-down i-font cursor" aria-hidden="true" ></i></div>
 													
 													                   
 												                                              			
@@ -621,34 +448,34 @@ List<Object[]> ProductRevTreeList=(List<Object[]>)request.getAttribute("ProductR
 								                        	  <% if(level7[2].toString().equalsIgnoreCase("7") && level6[0].toString().equalsIgnoreCase(level7[1].toString()) )
 								                             { %> 
 																  <li> 
+																  <%
+																	String statusClass7 = "status-default";
+																	if(level7[6] != null) {
+																	    String status = level7[6].toString();
+																	    if(status.equalsIgnoreCase("Design")) statusClass7 = "status-design";
+																	    else if(status.equalsIgnoreCase("Realisation")) statusClass7 = "status-realisation";
+																	    else if(status.equalsIgnoreCase("Testing & Evaluation")) statusClass7 = "status-testing";
+																	    else if(status.equalsIgnoreCase("Ready for Closure")) statusClass7 = "status-ready";
+																	}
+																	
+																	String typeClass7 = "type-default";
+																	if(level7[7] != null) {
+																	    String type = level7[7].toString();
+																	    if(type.equalsIgnoreCase("In-House Development")) typeClass7 = "type-inhouse";
+																	    else if(type.equalsIgnoreCase("BTP")) typeClass7 = "type-btp";
+																	    else if(type.equalsIgnoreCase("BTS")) typeClass7 = "type-bts";
+																	    else if(type.equalsIgnoreCase("COTS")) typeClass7 = "type-cots";
+																	}
+																	%>
+																  
 																   <div class="line-top"></div>     
 																	<div class="member-view-box action-view-box">
 																		<div class=" action-box" >
 																		
-																		<div class="action-box-header"
-																		
-																		 style="background: linear-gradient(to bottom right, 
-																			<%if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Design")) {%> #D24545  5%, #D24545 10%
-																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Realisation")){ %> #E9B824 5%, #E9B824 10%
-																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Testing & Evaluation")){ %> #0B60B0 5%, #0B60B0 10%
-																			<%}else if(level7[6]!=null && level7[6].toString().equalsIgnoreCase("Ready for Closure")){ %> green 5%, green 10%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			, white 10%, white 90%,
-																			
-																		    <%if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("In-House Development")) {%>  #FF8911 0%, #FF8911 0%
-																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTP")){ %>  #FDE767 0%, #FDE767 0%
-																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("BTS")){ %>  #B67352 0%, #B67352 0%
-																			<%}else if(level7[7]!=null && level7[7].toString().equalsIgnoreCase("COTS")){ %>  #492E87 0%, #492E87 0%
-																			
-																			<%}else { %> white 5%, white 10% 
-																			<%} %>
-																			 
-																			 );" >
+																		<div  class="action-box-header gradient-box level1 <%=statusClass7%> <%=typeClass7%>" >
 																		
 																		
-																		<span style="cursor:pointer;font-weight: bold;font-size: 1.0em;white-space:normal;" >
+																		<span class="cursor span-font-1" >
 			                          			                             
 			                          			                                <%=level7[3]!=null?StringEscapeUtils.escapeHtml4(level7[3].toString()):"-" %>
 			                          			                                

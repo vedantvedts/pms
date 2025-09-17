@@ -1,36 +1,15 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.pfms.*,java.text.SimpleDateFormat,java.text.DecimalFormat"%>
+         <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%> 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/projectModule/projectMasterRev.css" var="ExternalCSS" /> 
+<link href="${ExternalCSS}" rel="stylesheet" />
 <title>Project Revision</title>
-<style>
-label {
-	font-size: 14px;
-}
-
-.input-group-text {
-	font-weight: bold;
-}
-
-label {
-	font-weight: 800;
-	font-size: 16px;
-	color: #07689f;
-}
-
-hr {
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b {
-	font-family: 'Lato', sans-serif;
-}
-</style>
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -63,7 +42,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 
 
 
-<div class="row" style="margin-top: -10px;">
+<div class="row margin-top: -10px;">
 <div class="col-md-12">
 <div class="card shadow-nohover" >
 <div class="card-header"><h4>
@@ -80,18 +59,13 @@ Project Revision</h4>
 					<!-- Text input-->
 					  <div class="tables">
   <div class="table-responsive">
-  
-	  <!-- changed the style -->
-	  
-	   <table class="table table-bordered table-hover table-striped table-condensed " style="border: 1px solid black !important;background-color:white;font-family: 'Montserrat', sans-serif;" >
+	   <table class="table table-bordered table-hover table-striped table-condensed style2" >
   <thead>
-
-
 
 <tr>
    <th>
- <label style="margin-bottom: -10px;"> Project Main:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Project Main:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td>
@@ -106,8 +80,8 @@ Project Revision</h4>
 						</select>
 </td>
   <th>
- <label style="margin-bottom: -10px;"> Project Name:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Project Name:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -119,8 +93,8 @@ Project Revision</h4>
  
  <tr>
   <th>
- <label style="margin-bottom: -10px;"> Project Number:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Project Number:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -129,8 +103,8 @@ Project Revision</h4>
  
 </td>
   <th>
- <label style="margin-bottom: -10px;"> Project Unit Code:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Project Unit Code:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -141,28 +115,10 @@ Project Revision</h4>
  </tr>
  
   <tr>
-<%--   <th>
- <label style="margin-bottom: -10px;"> Project Main:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td >
-		<select required="required" id="selectbasicc" name="projecttype" class="form-control form-control selectpicker" data-width="80%" data-live-search="true">
-								<%for(Object[] protype:ProjectTypeMainList ){
-	
-	                           %>
-								<option value="<%=protype[0] %>" <%if(protype[0].toString().equalsIgnoreCase(ProjectEditData[1].toString())){ %>
-								 selected="selected"  <%} %>
-								><%=protype[1] %></option>
-								<%} %>
-						</select>
-</td> --%>
-
-
 
 <th>
- <label style="margin-bottom: -10px;"> Project Code:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Project Code:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -172,36 +128,20 @@ Project Revision</h4>
 </td>
 
     <th>
-<label style="margin-bottom: -10px;"> Project Short Name:
-<span class="mandatory" style="color: red;">*</span>
+<label class="style3"> Project Short Name:
+<span class="mandatory style4">*</span>
 </label>
 </th>
 <td>
  <input type="text"   name="projectshortname" <%if(ProjectEditData[23]!=null){%> value="<%=StringEscapeUtils.escapeHtml4(ProjectEditData[23].toString())%>"<%} %>	class="form-control alphanum-symbols-no-leading-space" maxlength="20" required="required">
 </td>
-  <%-- <th>
- <label style="margin-bottom: -10px;"> IsMainWorkCenter:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td >
-	<select name="ismainwc" class="form-control selectpicker" data-width="80%">
-							<option value="1"  <%if("1".equalsIgnoreCase(ProjectEditData[16].toString())){ %>
-								 selected="selected"  <%} %>
-							>Yes</option>
-							<option value="0"
-							 <%if("0".equalsIgnoreCase(ProjectEditData[16].toString())){ %>
-								 selected="selected"  <%} %>
-							>No</option>
-							</select>
- 
-</td> --%>
+
  </tr>
  
    <tr>
        <th>
- <label style="margin-bottom: -10px;"> End User:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> End User:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -220,8 +160,8 @@ Project Revision</h4>
    
    
   <th>
- <label style="margin-bottom: -10px;"> Project Director:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Project Director:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -236,25 +176,15 @@ Project Revision</h4>
 								<%} %>
 							</select>
 </td>
-  <%-- <th>
- <label style="margin-bottom: -10px;"> WorkCenter Name:
-<span class="mandatory" style="color: red;">*</span>
-</label>
-</th>
- <td >
-<input type="text"  name="wcname"  value="<%=ProjectEditData[17] %>" class="form-control" maxlength="100" required="required">
- 
-</td> --%>
  </tr>
  
     <tr>
   <th>
- <label style="margin-bottom: -10px;"> Project Sanc Authority:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Project Sanc Authority:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
-<%-- <input type="text"  class="form-control"  value="<%=ProjectEditData[14] %>"  name="ProjectsancAuthority" maxlength="100" required="required"> --%>
 		<select required="required"
 				name="ProjectsancAuthority"
 				class="form-control  form-control selectdee"
@@ -271,8 +201,8 @@ Project Revision</h4>
 		</select>
 </td>
   <th>
- <label style="margin-bottom: -10px;"> Project Sanction No:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Project Sanction No:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -283,8 +213,8 @@ Project Revision</h4>
  
     <tr>
   <th>
- <label style="margin-bottom: -10px;"> Project Sanction Date:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Project Sanction Date:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -293,8 +223,8 @@ Project Revision</h4>
 </td>
 
 <th>
- <label style="margin-bottom: -10px;">Total Sanction Cost (&#8377;):
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3">Total Sanction Cost (&#8377;):
+<span  class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -306,8 +236,8 @@ Project Revision</h4>
  
     <tr>
   <th>
- <label style="margin-bottom: -10px;"> Board Of  Reference:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Board Of  Reference:
+<span  class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -328,8 +258,8 @@ Project Revision</h4>
 								
 </td>
   <th>
- <label style="margin-bottom: -10px;"> Sanction Cost FE (&#8377;):
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Sanction Cost FE (&#8377;):
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -340,8 +270,8 @@ Project Revision</h4>
  
  <tr>
   <th>
- <label style="margin-bottom: -10px;">PDC:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3">PDC:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -350,8 +280,8 @@ Project Revision</h4>
 </td>
  
   <th>
- <label style="margin-bottom: -10px;"> Sanction Cost RE (&#8377;):
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3"> Sanction Cost RE (&#8377;):
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -360,8 +290,8 @@ Project Revision</h4>
 </td>
  </tr>
     <tr>
-    <th><label style="margin-bottom: -10px;">
-															Category: <span class="mandatory" style="color: red;">*</span>
+    <th><label class="style3">
+															Category: <span class="mandatory style4">*</span>
 													</label></th>
 													<td><select required="required" id="selectbasic1" 
 														name="projectTypeID"
@@ -378,8 +308,8 @@ Project Revision</h4>
 													<input name="projectTypeID" id="projectTypeIDid" hidden="hidden"  value="<%=ProjectEditData[22]%>" >
 													</td>
   <th>
- <label style="margin-bottom: -10px;">Security Classification:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3">Security Classification:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td >
@@ -401,7 +331,7 @@ Project Revision</h4>
  </tr>
  <!-- srikant code start -->
 <tr>
-<th><label style="margin-bottom: -10px;">	Platform: <span class="mandatory"	style="color: red;">*</span></label></th>
+<th><label class="style3">	Platform: <span  class="mandatory style4">*</span></label></th>
 <td><select required="required" id="platformName" name="platformName" class="form-control form-control selectdee" data-width="100%" data-live-search="true">
 <option disabled="disabled" value="" selected="selected">Choose..</option>
 <%for(Object[] protype:PlatformList ){%>
@@ -414,17 +344,17 @@ Project Revision</h4>
 								
 <!-- srikant code end-->
   <tr>
-		<th colspan="1"><label style="margin-bottom: -10px;">Nodal & Participating Lab:<span class="mandatory" style="color: red;">*</span></label></th>
+		<th colspan="1"><label class="style3">Nodal & Participating Lab:<span class="mandatory style4">*</span></label></th>
 		<td colspan="3"><input required="required"	name="LabParticipating" class="form-control alphanum-symbols-no-leading-space" maxlength="5000" value="<%if(ProjectEditData[27]!=null ){%><%=StringEscapeUtils.escapeHtml4(ProjectEditData[27].toString()) %><%} %>" /></td>
 </tr>
  <tr>
-		<th colspan="1"><label style="margin-bottom: -10px;">Application:<span class="mandatory" style="color: red;">*</span></label></th>
+		<th colspan="1"><label class="style3">Application:<span class="mandatory style4">*</span></label></th>
 		<td colspan="3"><textarea required="required" name="Application"  class="form-control " rows="1" cols="53"><%if(ProjectEditData[26]!=null){%> <%=ProjectEditData[26].toString()%> <%}%></textarea></td>
 </tr>
    <tr>
   <th colspan="1">
- <label style="margin-bottom: -10px;">Scope:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3">Scope:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td colspan="3">
@@ -434,8 +364,8 @@ Project Revision</h4>
  </tr>
  <tr>
   <th colspan="1">
- <label style="margin-bottom: -10px;">Objective:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3">Objective:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td colspan="3">
@@ -445,8 +375,8 @@ Project Revision</h4>
  </tr>
   <tr>
   <th colspan="1">
- <label style="margin-bottom: -10px;">Deliverable:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3">Deliverable:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td colspan="3">
@@ -456,8 +386,8 @@ Project Revision</h4>
  </tr>
   <tr>
   <th colspan="1">
- <label style="margin-bottom: -10px;">Remarks:
-<span class="mandatory" style="color: red;">*</span>
+ <label class="style3">Remarks:
+<span class="mandatory style4">*</span>
 </label>
 </th>
  <td colspan="3">

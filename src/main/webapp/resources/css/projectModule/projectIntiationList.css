@@ -1,0 +1,281 @@
+label {
+	font-weight: bold;
+	font-size: 13px;
+}
+
+.table .font {
+	font-family: 'Muli', sans-serif !important;
+	font-style: normal;
+	font-size: 13px;
+	font-weight: 400 !important;
+}
+
+.card {
+	box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 14px;
+	border-radius: 10px;
+	border: 0px;
+}
+
+.table button {
+	background-color: Transparent !important;
+	background-repeat: no-repeat;
+	border: none;
+	cursor: pointer;
+	overflow: hidden;
+	outline: none;
+	text-align: left !important;
+}
+
+.table td {
+	padding: 5px !important;
+}
+
+.resubmitted {
+	color: green;
+}
+
+.fa-long-arrow-right {
+	font-size: 2.20rem;
+	padding: 0px 5px;
+}
+
+.datatable-dashv1-list table tbody tr td {
+	padding: 8px 10px !important;
+}
+
+.card-deck {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.pagin {
+	display: grid;
+	float: left;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.table-project-n {
+	color: #005086;
+}
+
+#table thead tr th {
+	padding: 0px 0px !important;
+}
+
+#table tbody tr td {
+	padding: 2px 3px !important;
+}
+
+/* icon styles */
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+	height: 28px;
+}
+
+.col-xl {
+	height: 28px;
+}
+
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 34px;
+	height: 28px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 28px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.sameline {
+	display: inline-block;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.editable-click {
+	float: left;
+	z-index: 9;
+	white-space: nowrap;
+	height: 28px;
+	margin: 0 5px 0 0;
+	box-sizing: border-box;
+	display: inline-block;
+}
+
+.editable-clicko {
+	z-index: 9;
+	white-space: nowrap;
+	height: 28px;
+	margin: 0 5px 0 0;
+	box-sizing: border-box;
+	display: inline-block;
+	background: none;
+	border-style: none;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+
+.width {
+	width: 270px !important;
+}
+
+.label {
+	border-radius: 3px;
+	color: white;
+	padding: 1px 2px;
+}
+
+.label-primary {
+	background-color: #D62AD0; /* D62AD0 */
+}
+
+.label-warning {
+	background-color: #5C33F6;
+}
+
+.label-info {
+	background-color: #006400;
+}
+
+.label-success {
+	background-color: #4B0082;
+}
+
+.trup {
+	padding: 5px 10px 0px 10px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.trdown {
+	padding: 0px 10px 5px 10px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.custom-style {
+	background-color: #fff3ab;
+	color: #333;
+	border: 1px solid #ddc67b;
+	pointer-events: none;
+	user-select: none;
+}
+
+.custom-sn-style {
+	background-color: #5d7cf4;
+	color: white;
+	border: 1px solid #497bd9;
+	pointer-events: none;
+	user-select: none;
+}
+
+.cs-search{
+	display: flex;
+    justify-content: center; 
+    padding-bottom:10px;
+}
+
+.cs-project{
+	display: flex; 
+	justify-content: center;
+	padding-bottom:10px;
+	position: relative;
+}
+
+.cs-initlist{
+	margin:10px !important;
+	min-width:447px; 
+	margin-left: 20px;
+	margin-right: 20px;
+	max-width:450px;
+}
+
+.h-50px{
+	height: 50px;
+}
+
+.cs-div{
+	position: absolute;
+	bottom: 0px;
+	margin-bottom: 15px;
+	padding-top: 10px;
+}
+
+.cs-pagein{
+	display: flex; 
+	justify-content: center;
+	padding-bottom:10px;
+}
+
+.cs-span{
+	color: #FF3D00;
+	font-weight: 600;
+}
+
+.fs-md{
+	font-size: medium;
+}
+
+.fw-500{
+	font-weight: 500;
+}
+
+.cs-button{
+	font-weight: 500; 
+	display:none;
+}
+
+.span-color{
+	color: #FF3D00;
+}
+
+.cs-ini-mil{
+	font-size: 16px;
+	font-weight: 500; 
+	text-align: center;
+}
+
+.cs-ini-status{
+	font-size: 16px;
+	font-weight: 500;
+}
+
+

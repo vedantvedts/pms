@@ -27,583 +27,10 @@
 
 <spring:url value="/resources/css/masterdashboard.css" var="masterdashboardCss" />
 <link href="${masterdashboardCss}" rel="stylesheet" />
+<spring:url value="/resources/css/header/dashBoard.css" var="dashBoard" />
+<link href="${dashBoard}" rel="stylesheet" />
 
 
-<style type="text/css">
-   .modalcontainer {
-      position: fixed;
-      bottom: 45%;
-      right: 20px;
-      width: 300px;
-      max-width: 80%;
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
-      z-index: 1000;
-      font-family: Arial, sans-serif;
-     display: none;
-    }
-
-
-    .modal-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 300px;
-      max-width: 80%;
-    
-      background-color: #fff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
-      display: none;
-      z-index: 1000;
-      font-family: Arial, sans-serif;
-     
-    }
-
-    .modalheader {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    padding:8px;
-      background-color: #FFC436;
-      color: #fff;
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
-    }
-
-    .modalcontent {
-    
-      padding: 10px 10px 10px 10px;
-    }
-
-    .modalfooter {
-      text-align: right;
-      border-bottom-left-radius: 8px;
-      border-bottom-right-radius: 8px;
-    }
-
-    .modal-close {
-      cursor: pointer;
-      color: red;
-    }
-
-    /* Style for the button */
-    .open-modal-button {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      background-color: #007bff;
-      color: #fff;
-      padding: 5px;
-      border: none;
-      border-radius: 5px;
-      font-weight:bold;
-      cursor: pointer;
-      z-index: 1001; /* Make sure the button is above the modal */
-    }
-    
-    #brifingBtn{
-    display:none;
-      position: fixed;
-      bottom: 70px;
-      right: 10px;
-      background-color: #007bff;
-      color: #fff;
-      padding: 5px;
-      border: none;
-      border-radius: 20px;
-      font-weight:bold;
-      cursor: pointer;
-      z-index: 1001; /* Make sure the button is above the modal */
-    }
-
- 	#wrapper{
-		background-image: url("view/images/pfmsbg.png") !important;
-		background-repeat: no-repeat;
-		background-size: auto 100%;
-		width: 100%;
-	}
-	
-	.myschedule{
-		background-image: url("view/images/myschedule.png") !important;
-		background-repeat: no-repeat;
-		background-position: left;
-		background-position-x: 5px;
-    	padding-left: 16px;
-	}
-	
-	.gantt{
-	background-image: url("view/images/gantt.png");
-	background-repeat: no-repeat;
-	background-position: left;
-	background-position-x: 5px;
-    padding-left: 16px;
-}
-
-.approval{
-	margin-left: -0.75rem !important;
-    margin-top: -.15rem !important;
-}
-
-.badge-today{
-	font-size: 65% !important;
-}
-
-.btn1{
-	border-top-left-radius: 5px !important;
-	border-bottom-left-radius: 5px !important;
-}
-
-.btn2{
-	
-    border-left: 1px solid black;
-}
-
-.btn3{
-	border-left: 1px solid black;
-}
-.btn4{
-	margin: 0px 10px;
-	color:green !important;
-}
-.meeting thead tr td{
-	font-family: 'Muli',sans-serif;
-	font-size: 16px !important
-}
-
-
-.overall-card{
-	box-shadow: 5px 10px 11px -3px rgb(0 0 0 / 20%);
-    border: none;
-}
-
-.yellow{
-	color: #ffc107;
-}
-
-.red{
-	color:#dc3545!important;
-}
-
-.green{
-	color:#28a745!important;
-}
-
-.blue{
-	color:#007bff!important;
-}
-
-.legend-shadow{
-	text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
-}
-
-.overall-card{
-	background: #005C97;  /* fallback for old browsers */
-	background: -webkit-linear-gradient(to left, #363795, #005C97);  /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(to left, #363795, #005C97); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	color:white;
-}
-
-
-.overall-card h3{
-	line-height: inherit;
-}
-
-@media  screen and (max-width: 1565px){
-	
-	.health-title{
-		    margin-bottom: 12px !important;
-    		font-size: 20px !important;
-	}
-}
-
-/* Project Details Graph Css */
-
-.highcharts-figure,
-.highcharts-data-table table {
-    min-width: 310px;
-    max-width: 800px;
-    margin: 1em auto;
-}
-
-.highcharts-data-table table {
-    font-family: Verdana, sans-serif;
-    border-collapse: collapse;
-    border: 1px solid #ebebeb;
-    margin: 10px auto;
-    text-align: center;
-    width: 100%;
-    max-width: 500px;
-}
-
-.highcharts-data-table caption {
-    padding: 1em 0;
-    font-size: 1.2em;
-    color: #555;
-}
-
-.highcharts-data-table th {
-    font-weight: 600;
-    padding: 0.5em;
-}
-
-.highcharts-data-table td,
-.highcharts-data-table th,
-.highcharts-data-table caption {
-    padding: 0.5em;
-}
-
-.highcharts-data-table thead tr,
-.highcharts-data-table tr:nth-child(even) {
-    background: #f8f8f8;
-}
-
-.highcharts-data-table tr:hover {
-    background: #f1f7ff;
-}
-
-.fixed-table tbody .custom-td{
-	padding-left : 1rem !important;
-}
-
-.fixed-table tbody .custom-td .col-md-11, .fixed-table tbody .custom-td .col-md-10 {
-	padding-left : 25px !important;
-}
-
-.overall-card .card-body{
-	padding: 0.8rem 1rem !important;
-}
-
-.tableFixHead          { overflow: auto;  }
-.tableFixHead thead td { position: sticky; top: 0; z-index: 1; }
-.tableFixHead thead td {background-color: #1363DF}
-
-.progress {
-	height : 1.3rem !important;
-	cursor:pointer;
-}
-
-
-.flex-container-new {
-    display: flex;
-}
-
-.flex-child {
-    flex: 1;
-}  
-
-.health-circle {
-    display: inline-block;
-    height: 22px;
-    width: 22px;
-    line-height: 22px;
-    border-radius: 50px;
-    color: white;
-    text-align: center;
-    font-size: 10px;
-    font-weight: 800;
-}
-
-.modal-hr{
-	margin: 0px 10px -10px 10px !important;
-}
-
-.modal-list{
-	font-size: 14px;
-	text-align: left;
-	padding: 0px !important;
-	margin-bottom: 5px;
-}
-
-.modal-list li{
-	display: inline-block;
-}
-
-.modal-list li .modal-span{
-	font-size: 2rem;
-	padding: 0px 7px;
-}
-
-.modal-list li .modal-text{
-	font-size: 1rem;
-	vertical-align: text-bottom;
-	font-family: Lato;
-}
-
-
-@media screen and (max-width:1380px){
-	.tableprojectname{
-		font-size: 12px !important;
-	}
-	.tableprojectnametd{
-		width:13% !important;
-	}
-
-}
-
-.changes-btn:hover{
-	background-color: #A6D1E6 !important;
-}
-
-.changes-btn{
-	background-color: rgba(255, 255, 255, 0.08888) !important;
-	border: 1px solid rgba(0,0,0,.125);
-	padding: 0px 7px !important;
-}
-
-.changes-font{
-	font-size: 0.7rem !important;
-}
-
-.changes-badge{
-	top:-8px !important;
-}
-
-/* DG Dashboard */
-
-
-.circular-progress .progress {
-  width: 110px;
-  height: 110px !important ;
-  background: none;
-  position: relative;
-  margin-bottom: 10px
-}
-
-.circular-progress .progress::after {
-  content: "";
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 15px solid #eee;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.circular-progress .progress>span {
-  width: 50%;
-  height: 100%;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  z-index: 1;
-}
-
-.circular-progress .progress .progress-left {
-  left: 0;
-}
-
-.circular-progress .progress .progress-bar {
-  width: 100%;
-  height: 100%;
-  background: none;
-  border-width: 15px;
-  border-style: solid;
-  position: absolute;
-  top: 0;
-}
-
-.circular-progress .progress .progress-left .progress-bar {
-  left: 100%;
-  border-top-right-radius: 80px;
-  border-bottom-right-radius: 80px;
-  border-left: 0;
-  -webkit-transform-origin: center left;
-  transform-origin: center left;
-}
-
-.circular-progress .progress .progress-right {
-  right: 0;
-}
-
-.circular-progress .progress .progress-right .progress-bar {
-  left: -100%;
-  border-top-left-radius: 80px;
-  border-bottom-left-radius: 80px;
-  border-right: 0;
-  -webkit-transform-origin: center right;
-  transform-origin: center right;
-}
-
-.circular-progress .progress .progress-value {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-
-.detailscard{
-	background-color: rgba(0,0,0,.08) !important;
-	border: none !important;
-}
-
-.detailscard .card-body{
-	padding:0.5rem !important;	
-}
-	
-.detailscard hr{
-	margin: 10px !important;
-}
-
-.detailscard h5{
-	margin: 0px !important;
-}
-.countstable , .normalfont{
-	font-family: 'Lato';
-	font-weight: 700;
-}
-
-.card-deck-table tr td{
-	padding: 0px 0px !important;
-}
-
-.border-orange{
-	border-color: #EE5007 !important;
-}
-
-@media screen and (min-width:1100px) and (max-width:1500px){
-	.circular-progress .progress{
-		width:75px !important;
-		height:75px !important;
-	} 
-	
-	.circular-progress .progress-value .h4{
-		font-size: 16px;
-	}
-	
-	.circular-progress .progress .progress-bar {
-		border-width:7px;
-	}
-	
-	.circular-progress .progress::after {
-		border-width: 7px;	
-	}
-	
-	.bigcount h1{
-		font-size: 2rem !important;
-	}
-	
-	.normalfont{
-		font-size: 12px !important;
-	}
-	
-	.bigcount h3{
-		font-size: 20px !important;
-	}
-	
-	.bigcount h4{
-		font-size: 1.2rem !important;
-	}
-	
-	.detailscard h5{
-		font-size: 16px !important;
-	}
-	
-	.bigcount p{
-		margin-bottom: 0rem !important;
-	}
-	
-	.countstable tbody {
-		font-size: 14px !important;
-	}
-	
-}
-	.bigcount h1{
-		margin-bottom: -7px;
-	}
-		
-	.bigcount h4,h3{
-		margin-bottom: -4px;
-	}
-	
-	.cashoutgotable, .financetable{
-		margin-bottom: 0rem !important
-	}
-	
-	.financetable tr td{
-		font-size: 13px !important;
-		font-weight: 600 !important;
-	}
-	
-	.financetable tr th{
-		font-size: 13px !important;
-		padding: 0.5rem !important;
-		text-align: left;
-	}
-	
-	.cashoutgotable > tbody > tr >td, .financetable > tbody > tr >td{
-		 border-top:1px solid grey !important;
-	}
-	
-	.cashoutgotable > tbody > tr >th, .financetable > tbody > tr >th{
-		 border-top:1px solid grey !important;
-	}
-	
-	.cashoutgotable > thead > tr >th , .financetable > thead > tr >th{
-		 border-top:1px solid transparent !important;
-		 border-bottom:1px solid grey !important;
-		 text-align: center;
-	}
-
-	.textfont{
-		font-size: 12px !important;
-	}
-	
-	.nil-bar{
-		margin: 0px 10px !important;
-	}
-	
-	.cashoutgotable tr {
-		font-size: 13px !important;
-		font-weight: 600 !important;
-	}
-	.cashoutgotable tr th{
-		font-size: 13px !important;
-		padding: 0.1rem !important;
-		text-align: left;
-	}
-	
-	.cashoutgotable thead{
-		height: auto !important;
-	}
-	
-	.bigcount p{
-		margin-bottom: 0rem !important;
-	}
-	
-	label{
-		font-weight: bold;
-	  	font-size: 13px;
-	}
-
-	.cashoutgo .primary{
-			/* background-color: #5C192F !important; */
-			background-color: #8D0404 !important; 
-	}
-		
-	.cashoutgo .bg-success{
-			/* background-color: #466136 !important; */
-			background-color: #39850C !important; 
-	}
-		
-	.cashoutgo .bg-info{
-			/* background-color:#591A69 !important; */
-			background-color: #7F109B !important;			 
-	}
-  #popupModal {
-      position: fixed;
-      bottom: 0;
-      right: 0;
-      transform: translate(-50%, -50%);
-    }	
-
-</style>
 
 </head>
 
@@ -611,16 +38,16 @@
 <!-- Mahesh code  -->
 <%  if(request.getAttribute("showmodal").equals("yes")){ List<Object[]> projectdet=(List<Object[]>)request.getAttribute("lastupdatedate");%>
 	<!-- Button trigger modal -->
-	<button type="button" style="display: none;" id="showmodal"
+	<button type="button"  id="showmodal"
 		class="btn btn-primary" data-toggle="modal"
 		data-target=".bd-example-modal-lg"></button>
 	<!-- Modal -->	
 	<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg modal-dialog-centered" >
-			<div class="modal-content" style="border: 15px solid #0C2B89;">
+			<div class="modal-content ab1" >
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Weekly Update</h5>
-					<p  style="display:flex;" class="modal-title mx-auto"> 
+					<p   class="modal-title mx-auto d1"> 
 					<select  class="form-control" name="UProjects" id="UProjects" 
 					onclick="getElementById('Usubmit').value=getElementById('UProjects').value;"
 					onchange="changedates(getElementById('UProjects').value)">
@@ -639,17 +66,17 @@
 				</div>
 				<form action="weeklyupdate.htm" id="weeklyupdate" onsubmit="getElementById('weeklyupdate').disable=true;">
 					<div class="container" >
-						<div class="row"style="text-align: left">
-							<div class="col-3" style="margin-top: 20px; margin-bottom: 20px;" >
+						<div class="row text-left">
+							<div class="col-3 mt20mb20"  >
 							<p id="actionmodifieddate"></p>
 							</div>
-							<div class="col-sm"
-								style="margin-top: 20px; margin-bottom: 20px;">
+							<div class="col-sm mt20mb20"
+								>
 								<lable for="actionpoints">Have you updated action
 								Items?</lable>
 							</div>
-							<div class="col-3"
-								style="margin-top: 20px; margin-bottom: 20px;">
+							<div class="col-3 mt20mb20"
+								>
 								
 								<select required="required" class="form-control" name="actionpoints" id="actionpoints" required="required">
 									<option value="" selected disabled hidden>Update Here</option>
@@ -659,7 +86,7 @@
 								</select> <br />
 							</div>
 						</div>
-						<div class="row"style="text-align: left">
+						<div class="row text-left">
 							<div class="col-3">
 							<p id="meetingdate"></p>
 							</div>
@@ -675,7 +102,7 @@
 								</select> <br /> <br />
 							</div>
 						</div>
-						<div class="row"style="text-align: left">
+						<div class="row text-left">
 							<div class="col-3">
 							<p id="Milestones"></p>
 							</div>
@@ -691,7 +118,7 @@
 								</select> <br /> <br />
 							</div>
 						</div>
-						<div class="row"style="text-align: left">
+						<div class="row text-left">
 							<div class="col-3">
 							<p id="ProcurementDate"></p>
 							</div>
@@ -708,7 +135,7 @@
 								</select> <br /> <br />
 							</div>
 						</div>
-						<div class="row"style="text-align: left">
+						<div class="row text-left">
 							<div class="col-3">
 							<p id="riskdetailsdate"></p>
 							</div>
@@ -725,11 +152,11 @@
 								</select> <br /> <br />
 							</div>
 						</div>
-						<button type="submit" name="USubmit" class="btn btn-primary" style="width: 300px" id="Usubmit">Update</button>
+						<button type="submit" name="USubmit" class="btn btn-primary wdith-300"  id="Usubmit">Update</button>
 					</div>
 				</form>
 				<div class="modal-header">
-					<p id='lastupdatedate' style="float: left;">last update date: ---- </p> </div>
+					<p id='lastupdatedate' class="fl-left">last update date: ---- </p> </div>
 				</div>
 			</div>
 			</div>
@@ -924,7 +351,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 
 <!-- @@@@@@@@ MAIN ROW START @@@@@@@ -->	
-	<div class="row" style="margin-bottom: -20px;">
+	<div class="row m-b20" >
 	
 <!-- @@@@@@@@ MAIN ROW col-md-9 START @@@@@@@ -->			
 		<div class="col-md-9" >
@@ -939,7 +366,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 
          <!-- ----------------PROJECT DASHBOARD PROJECT NAME DISPLAY START --------------- -->
 			      	 <%if(ProjectList!=null){ %>
-						 <div class="row" style="display: none" id="projectname" >
+						 <div class="row pd1"  id="projectname" >
 							<div class="col-md-12" align="center">
 								<div id="carouselExampleSlidesOnly" class=""  data-ride=""  >
 									<div class="carousel-inner">	
@@ -947,8 +374,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 											String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
 										%>
 										 <div class="carousel-item" id="projectname<%=obj[0]%>">
-										 	<div class="row" style="margin:0px !important">
-												<div class="col-md-12" style="text-transform: uppercase;font-size: 22px; ">
+										 	<div class="row" >
+												<div class="col-md-12 t1U" >
 													<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - " %>
 													<br><br>
 												</div>
@@ -964,18 +391,18 @@ String IsDG = (String)request.getAttribute("IsDG");
 			      
 			 <!-- ----------------- ACTION DASHBOARD TODAY'S SCHEDULE START -------------------------- -->
 			 	
-				      <div class="card" style="background: transparent;display: none" id="todayschedules">
-							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
-								<span style="color:white">Today's Schedule <span class="badge badge-today badge-success" style="position: absolute;top: 0px;"></span> </span> 
+				      <div class="card d1u"  id="todayschedules">
+							<nav class="navbar navbar-light bg-primary bg1" >
+								<span class="text-light">Today's Schedule <span class="badge badge-today badge-success pos1" ></span> </span> 
 					 	  		<%if(logintype.equalsIgnoreCase("A")) {%><button class="btn btn-sm" id="sendMail" onclick="sendMail('<%=LocalDate.now()%>')"> <i class="fa fa-paper-plane" aria-hidden="true"></i></button><%} %>
 					 	  		<form class=" form-inline" method="post" action="MySchedules.htm" id="myform" >
-									<input  class="btn btn-primary myschedule" type="submit" name="sub" value=" &nbsp;&nbsp;" style="background-color: #23689b;font-size: 0.875rem;border: 2px solid lightslategrey" >
+									<input  class="btn btn-primary myschedule pot1" type="submit" name="sub" value=" &nbsp;&nbsp;"  >
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								</form>
 							</nav>	
-							<div class="card-body" style="padding: 0.5rem 0.5rem 0rem 0.5rem;" >
-								<div  style="color:black ">
-								    <div style="height:6.2rem ;overflow-y: hidden ; ">
+							<div class="card-body pp1"  >
+								<div  class="text-dark">
+								    <div class="height1">
 								     <div id="carouselExampleControls5" class="carousel vert slide" data-ride="carousel" data-interval="5000">
 										<div class="carousel-inner">
 											<% 
@@ -985,11 +412,11 @@ String IsDG = (String)request.getAttribute("IsDG");
 											  	if(!obj[6].toString().equalsIgnoreCase("E")){
 											  		if(obj[3].toString().equalsIgnoreCase(TodayDate)){
 											  		%>
-												<div class="carousel-item action" id="schedule" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black ;overflow: hidden">
-														<ul style="padding: 0px;margin-bottom: 5px !important">	
-															<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important; padding : 10px 0px !important;">
-																 <a href="javascript:void(0)" onclick="location.href='CommitteeScheduleView.htm?scheduleid=<%=obj[2] %>' " style="color:black" >
-													                <i class="fa fa-arrow-right faa-pulse animated faa-fast" aria-hidden="true" style="color: green;font-size: 1.3rem !important"></i> 
+												<div class="carousel-item action height2" id="schedule" >
+														<ul class="ul1">	
+															<li class="list-group-item bg2" >
+																 <a href="javascript:void(0)" onclick="location.href='CommitteeScheduleView.htm?scheduleid=<%=obj[2] %>' " class="text-dark" >
+													                <i class="fa fa-arrow-right faa-pulse animated faa-fast cl3" aria-hidden="true" ></i> 
 															    	<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %> -
 															    	<i class="fa fa-clock-o" aria-hidden="true"></i> <%=obj[4] !=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> &nbsp;&nbsp;
 															    </a>
@@ -1000,7 +427,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 								
 												<%if(count==0) { %>
 													<ul>
-														<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Events ! </li>
+														<li class="list-group-item bg3"  >No Events ! </li>
 													</ul>
 												<%} %>
 											
@@ -1009,11 +436,11 @@ String IsDG = (String)request.getAttribute("IsDG");
 								    </div>
 								</div>
 					 	  </div>
-					 	  <div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
-					 	  	<a class="navbar-brand" href="MySchedules.htm" style="color:black;">Upcoming Schedule</a><span class="badge <%if(todayschedulelist.size()-count> 0) {%>  badge-danger <%} else { %> badge-success <%} %>badge-counter"><%if(todayschedulelist.size()-count >0){%> <%=todayschedulelist.size()-count %><%} %></span>
+					 	  <div class="card-footer pd4" >
+					 	  	<a class="navbar-brand text-dark" href="MySchedules.htm" >Upcoming Schedule</a><span class="badge <%if(todayschedulelist.size()-count> 0) {%>  badge-danger <%} else { %> badge-success <%} %>badge-counter"><%if(todayschedulelist.size()-count >0){%> <%=todayschedulelist.size()-count %><%} %></span>
 					 	  </div>
-					 	  <div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
-					 	  	<a class="navbar-brand"  href="ActionSelfReminderAdd.htm" style="color:black;">My Reminders</a><span class="badge <%if(selfremindercount> 0) {%>  badge-danger <%} %> badge-counter"><%if(selfremindercount >0){%><%=selfremindercount %><%} %></span>
+					 	  <div class="card-footer pd5" >
+					 	  	<a class="navbar-brand text-dark"  href="ActionSelfReminderAdd.htm" >My Reminders</a><span class="badge <%if(selfremindercount> 0) {%>  badge-danger <%} %> badge-counter"><%if(selfremindercount >0){%><%=selfremindercount %><%} %></span>
 					 	  </div>
 					</div> 
 					
@@ -1021,16 +448,16 @@ String IsDG = (String)request.getAttribute("IsDG");
 					
 		<!-- ----------------PROJECT DASHBOARD PROJECT DETAILS LEFT SIDE START --------------- -->
 					
-					<div  style="display: none" id="projectdetails1">
+					<div  class="prode" id="projectdetails1">
 					 	 <%if(ProjectList!=null){ %>
-						 <div class="row" style="" >
+						 <div class="row"  >
 							<div class="col-md-12" align="center">
 								<div id=carouselprojectdetailsSlidesOnly class=""  data-ride=""  >	
 									<div class="carousel-inner">	
 										<%	for (Object[] obj : ProjectList) { %>
 										 <div class="carousel-item" id="projectdetailsname<%=obj[0]%>">
-										 	<div class="row" style="margin:0px !important">
-												<div class="col-md-12" style="text-align: right;">
+										 	<div class="row" >
+												<div class="col-md-12 text-right" >
 													<%if(obj[8]!=null) { if(!obj[8].toString().equals("0")){ %>
 													<h6>Project Code : </h6>
 													<h6>Project Name : </h6>
@@ -1058,10 +485,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 					 	
 		<!---------------- OVERALL DASHBOARD CHANGES,WEEK,TODAY AND MONTH DIV START --------->
 					 	
-				<div style="display: none" class="overallheader" id="changes-tab">
+				<div class="overallheader overallheaderNone" id="changes-tab">
 					<% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype")) && (ProjectList!=null && ProjectList.size()>0)){ %>
-					<div data-toggle="tooltip" title="" style="text-align: left;" >
-					<button data-toggle="tooltip" onclick ="showDashboardProjectModal()" class="btn btn-sm bg-transparent faa-pulse animated faa-fast" style="cursor: pointer;"  type="button"  data-toggle="tooltip" data-placement="right"  title="Select DashBoard Projects" ><img src="view/images/dashboard.png" style="width: 25px;" ></button>
+					<div data-toggle="tooltip" title="" class="text-left" >
+					<button data-toggle="tooltip" onclick ="showDashboardProjectModal()" class="btn btn-sm bg-transparent faa-pulse animated faa-fast cu-p"   type="button"  data-toggle="tooltip" data-placement="right"  title="Select DashBoard Projects" ><img src="view/images/dashboard.png" class="wi-25" ></button>
 					<jsp:include page="../static/DashBoardSelection.jsp"></jsp:include></div>  
 					<%} %>
 						
@@ -1077,12 +504,12 @@ String IsDG = (String)request.getAttribute("IsDG");
 		 <!-- -----------------PROJECT DASHBOARD PROJECTDROPDOWN START---------------------------- -->
 			      		<%if(ProjectList!=null){ %>
 						 <div class="row">
-							<div class="col-md-12" style="display: none" id="projectdropdown" >
+							<div class="col-md-12 pd-1"  id="projectdropdown" >
 								<select class="form-control selectdee" id="projectid" required="required" name="projectid" onchange="dropdown()"  >
 									<%	for (Object[] obj2 : ProjectList) {
 										String projectshortName=(obj2[17]!=null)?" ( "+obj2[17].toString()+" ) ":"";
 										%>
-										<option value="<%=obj2[0]%>"  style="text-align: left !important" ><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>
+										<option value="<%=obj2[0]%>"   ><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "+projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%></option>
 									<%} %>
 								</select>
 								<br><br>
@@ -1093,62 +520,58 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 	   <!-- -----------------ACTION DASHBOARD APPROVAL'S(TO BE APPROVED BY ME) SCHEDULE START---------------------------- -->
 							
-						<div class="card" style="background: transparent;display: none" id="approvalblock">
-							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
-								<a class="navbar-brand" style="color:white"; >To be Approved By Me</a>
+						<div class="card bg-t"  id="approvalblock">
+							<nav class="navbar navbar-light bg-primary bg-4" >
+								<a class="navbar-brand text-light"  >To be Approved By Me</a>
 							</nav>					
-							<div id="carouselExampleControls8" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;">
+							<div id="carouselExampleControls8" class="carousel slide carousel-interval p312" data-ride="carousel"  >
 								<div class="carousel-inner">
 									<% int approvalcount=0;
 										for(Object[] obj : approvallist){ %>
 										<%if((obj[0]).toString().equalsIgnoreCase("DO")){ if(Integer.valueOf((String) obj[1].toString())>0){ %>
-									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
-										<a class="navbar-brand" href="ProjectApprovalPd.htm" style="color:black;" id="" >Initiation (DO)
-										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i> 
+									<div class="card-footer pd4" >
+										<a class="navbar-brand text-dark" href="ProjectApprovalPd.htm"  id="" >Initiation (DO)
+										<i class="fa fa-bell fa-fw c-p" aria-hidden="true" ></i> 
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span> 
 										</a>
 									</div>
 										<%approvalcount++; }} %>
 										<%if((obj[0]).toString().equalsIgnoreCase("RTMD-DO")){ if(Integer.valueOf((String) obj[1].toString())>0){ %>
-									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
-										<a class="navbar-brand" href="ProjectApprovalRtmddo.htm" style="color:black" id="" >Initiation (P&C-DO)
-										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
+									<div class="card-footer pd4" >
+										<a class="navbar-brand text-dark" href="ProjectApprovalRtmddo.htm"  id="" >Initiation (P&C-DO)
+										<i class="fa fa-bell fa-fw c-p" aria-hidden="true" ></i>
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span></a>
 									</div>
 										<%approvalcount++;} }%>
 										<%if((obj[0]).toString().equalsIgnoreCase("AD")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
-									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
-										<a class="navbar-brand" href="ProjectApprovalAd.htm" style="color:black" id="" >Initiation (AD)
-										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
+									<div class="card-footer pd4" >
+										<a class="navbar-brand text-dark" href="ProjectApprovalAd.htm"  id="" >Initiation (AD)
+										<i class="fa fa-bell fa-fw c-p" aria-hidden="true" ></i>
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span></a>
 									</div>
 										<%approvalcount++;} }%>
 										<%if((obj[0]).toString().equalsIgnoreCase("TCM")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
-									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
-										<a class="navbar-brand" href="ProjectApprovalTcc.htm" style="color:black" id="" >Initiation (TCM)
-										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
+									<div class="card-footer pd4">
+										<a class="navbar-brand text-dark" href="ProjectApprovalTcc.htm"  id="" >Initiation (TCM)
+										<i class="fa fa-bell fa-fw c-p" aria-hidden="true" ></i>
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span></a>
 									</div> 
 										<%approvalcount++;}} %>
 										<%if((obj[0]).toString().equalsIgnoreCase("Meeting")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
 									
-								<%-- 	<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
-										<a class="navbar-brand" href="MeetingApprovalAgenda.htm" style="color:black" id="" >Meeting
-										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
-										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1] %></span></a>
-									</div>  --%>
+								
 										<%/* approvalcount++; */}} %>
 										<%if((obj[0]).toString().equalsIgnoreCase("Committee")){ if(Integer.valueOf((String) obj[1].toString())>0){  %>
-									<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
-										<a class="navbar-brand" href="CommitteeMainApprovalList.htm" style="color:black" id="" >Committee
-										<i class="fa fa-bell fa-fw " aria-hidden="true" style="color: purple"></i>
+									<div class="card-footer pd4" >
+										<a class="navbar-brand text-dark" href="CommitteeMainApprovalList.htm"  id="" >Committee
+										<i class="fa fa-bell fa-fw c-p" aria-hidden="true" ></i>
 										<span class="badge badge-danger badge-counter approval" id=""><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span></a>
 									</div> 
 										<%approvalcount++;}} %>
 									<%} %>
 									<%if(approvalcount==0){ %>
-										<div class="card-footer" style="padding: 0.2rem 1.25rem !important;text-align: left">
-										<a class="navbar-brand"  style="color:black" id="" >No Approvals</a>
+										<div class="card-footer pd4" s>
+										<a class="navbar-brand text-dark"   id="" >No Approvals</a>
 									</div> 
 									<%} %>
 								</div>
@@ -1159,19 +582,19 @@ String IsDG = (String)request.getAttribute("IsDG");
 					
 	     <!-- -----------------PROJECT DASHBOARD SELECTED PROJECTED DETAILS DISPLAY START---------------------------- -->				
 						
-					<div  style="display: none" id="projectdetails2">
+					<div  class="projectd-2" id="projectdetails2">
 					 	<%if(ProjectList!=null){ %>
-						 <div class="row" style="" >
+						 <div class="row"  >
 							<div class="col-md-12" align="center">
 								<div id=carouselprojectdetailsSlides2Only class=""  data-ride=""  >	
 									<div class="carousel-inner">	
 										<%	for (Object[] obj : ProjectList) { %>
 										 <div class="carousel-item" id="projectinfo<%=obj[0]%>">
-										 	<div class="row" style="margin:0px !important">
-												<div class="col-md-12" style="text-align: left;">
+										 	<div class="row" >
+												<div class="col-md-12 text-left" >
 													<h6><%if(!obj[0].toString().equals("0")){%><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%><%} %></h6>
 													<%if(!obj[0].toString().equals("0")){ if(obj[1].toString().chars().count()>17){ %>
-														<div style="font-size: 12px;margin-bottom: 0px !important;min-height: 48px"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></div>
+														<div class="fr-1"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></div>
 													<%}else{ %>
 														<h6><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%><br><br></h6>
 													<%} %>
@@ -1203,19 +626,19 @@ String IsDG = (String)request.getAttribute("IsDG");
 	 <!-- -----------------PROJECT DASHBOARD SELECTED FINANCIAL PERFORMANCE DISPLAY START---------------------------- -->	
 	 	 
 		<%if(error!=null){ %>
-				<h4 style="color:#ce1212;margin-top: 25%;display:none" id="financialdataerror" ><%=StringEscapeUtils.escapeHtml4(error)%></h4>  
+				<h4 class="hr-1" id="financialdataerror" ><%=StringEscapeUtils.escapeHtml4(error)%></h4>  
 		 <%} %> 
 		 <% if(!logintype.equalsIgnoreCase("U")){ %>
 			 <%if(budgetlist!=null && budgetlist.size()>0){ %>	
-				<div class="card-body" style="padding: 0.4rem !important;display:none" align="center" id="financialdata"  > 
+				<div class="card-body kr-1"  align="center" id="financialdata"  > 
 					<div id="carouselExampleControls" class=""  data-ride=""  >		
 							<div class="carousel-inner">					
-							<div style="background-color: white;">
+							<div class="bg-white">
 									<%long i=0;
 									for(ProjectSanctionDetailsMaster obj : budgetlist){
 										%>
-									<div class="carousel-item" style="border-radius: 15px;padding-bottom: 10px;" id="chart<%=obj.getProjectid()%>"> 
-										<nav class="navbar navbar-light " style="background-color: #e3f2fd;">
+									<div class="carousel-item bot1"  id="chart<%=obj.getProjectid()%>"> 
+										<nav class="navbar navbar-light bg1" >
 											<a class="navbar-brand" >Financial Performance</a>
 										    <form class="form-inline" target="_blank" method="post" id="ibasform" action="<%=ibasUri%>/loginFromPfms">
 										    <input type="hidden" name="empNo" value="<%=EmpNo%>">
@@ -1226,25 +649,25 @@ String IsDG = (String)request.getAttribute("IsDG");
 											<input type="hidden" name="Dipl" value="<%=obj.getDipl()%>">
 											<input type="hidden" name="BalAmt" value="<%=obj.getBalAmt()%>">
 											<input type="hidden" name="asOndate" value="<%=obj.getAsOnDate()%>">
-										    <button type="submit" class="btn btn-sm" style="float: right;background-color: #23689b;color: white" ><img src="view/images/projecticon.png"/> &nbsp;Project Details</button>
+										    <button type="submit" class="btn btn-sm lop1"  ><img src="view/images/projecticon.png"/> &nbsp;Project Details</button>
 										  </form>
 										</nav>
-										<div class="" id="container<%=obj.getSno()%>" style="height: 12rem;"></div>
+										<div class="h-12" id="container<%=obj.getSno()%>" ></div>
 											<div>
 												<table>
 													<tr>
-														<td  style="padding : 0px 30px;"><span style="font-size :12px;font-weight: bold; ">SANC	</span></td>
-											       		<td  style="padding : 0px 30px;"><span style="font-size :12px;font-weight: bold; ">EXP</span></td>
-											       		<td  style="padding : 0px 30px;"><span style="font-size :12px;font-weight: bold;  ">OS</span></td>
-											       		<td  style="padding : 0px 30px;"><span style="font-size :12px;font-weight: bold;  ">DIPL</span></td>
-											       		<td  style="padding : 0px 30px;"><span style="font-size :12px;font-weight: bold;  ">BAL</span></td>	       			
+														<td  class="p030" ><span class="f-12">SANC	</span></td>
+											       		<td  class="p030"><span class="f-12">EXP</span></td>
+											       		<td  class="p030"><span class="f-12">OS</span></td>
+											       		<td  class="p030"><span class="f-12">DIPL</span></td>
+											       		<td  class="p030"><span class="f-12">BAL</span></td>	       			
 											       	</tr>
 													<tr>
-														<td align="center"><button type="button"  class="btn btn-sm " style="background-color: #f7be16; "  ><%=obj.getSancAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getSancAmt().toString()): " - " %> L </button></td>
-														<td align="center"><button type="button"  class="btn btn-sm " style="background-color: #ac0d0d;color:white; "><%=obj.getExpAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getExpAmt().toString()): " - " %> L</button></td>
-													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #fb7813;color:white; "><%=obj.getOsComAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getOsComAmt().toString()): " - " %> L</button></td>
-													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #0e49b5;color:white; "><%=obj.getDipl()!=null?StringEscapeUtils.escapeHtml4(obj.getDipl().toString()): " - " %> L</button></td>
-													    <td align="center"><button type="button"  class="btn btn-sm " style="background-color: #06623b;color:white; "><%=obj.getBalAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getBalAmt().toString()): " - " %> L</button></td>					
+														<td align="center"><button type="button"  class="btn btn-sm bg-1"  ><%=obj.getSancAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getSancAmt().toString()): " - " %> L </button></td>
+														<td align="center"><button type="button"  class="btn btn-sm bg-2" ><%=obj.getExpAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getExpAmt().toString()): " - " %> L</button></td>
+													    <td align="center"><button type="button"  class="btn btn-sm bg-3" ><%=obj.getOsComAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getOsComAmt().toString()): " - " %> L</button></td>
+													    <td align="center"><button type="button"  class="btn btn-sm bg-4"><%=obj.getDipl()!=null?StringEscapeUtils.escapeHtml4(obj.getDipl().toString()): " - " %> L</button></td>
+													    <td align="center"><button type="button"  class="btn btn-sm bg-5" ><%=obj.getBalAmt()!=null?StringEscapeUtils.escapeHtml4(obj.getBalAmt().toString()): " - " %> L</button></td>					
 											       	</tr>
 												</table>
 											</div>	
@@ -1313,65 +736,63 @@ String IsDG = (String)request.getAttribute("IsDG");
 		       
 		<!-- -----------------ACTION DASHBOARD TASKBAR STARTS---------------------------- -->	
 		      
-		       <div class="card" style="background: transparent;display:none" id="mytasks">
-							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
-								<a class="navbar-brand" style="color:white;" >My Tasks</a><a style="color:white" href="FeedBack.htm" title="Feedback"><i class="fa fa-commenting" aria-hidden="true"></i></a>
+		       <div class="card bg-trans"  id="mytasks">
+							<nav class="navbar navbar-light bg-primary bg1" >
+								<a class="navbar-brand text-light"  >My Tasks</a><a class="text-light" href="FeedBack.htm" title="Feedback"><i class="fa fa-commenting" aria-hidden="true"></i></a>
 							</nav>					
-								<div id="" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;">
+								<div id="" class="carousel slide carousel-interval p312" data-ride="carousel"  >
 									<div class="carousel-inner">
-										    	<table class="table meeting" style="height: 70px; margin : 0px 0px 0px 0px;"  >													
+										    	<table class="table meeting h70"   >													
 													<tr>
-														<td style="padding : 5px 15px 5px 15px;"></td>
-													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold; ">All PDC</span></td>
-													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">In Progress</span></td>
-													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Today PDC</span></td>
-<!-- 													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Upcoming</span></td>
- -->													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Review</span></td>
+														<td class="p-515"></td>
+													    <td  class="p-515"><span class="f-12">All PDC</span></td>
+													    <td  class="p-515"><span class="f-12">In Progress</span></td>
+													    <td  class="p-515"><span class="f-12">Today PDC</span></td>
+<!-- 													   
+ -->													    <td  class="p-515"><span class="f-12">Review</span></td>
 													</tr>
 													<tr>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left">Action</td>
+														<td  class="p505">Action</td>
 														<%int actionCounts=0;
 														for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Actions")){ %>
-														<td><button type="button" onclick="actionformtask('N','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> <%} %> " style="background-color: green;color:white; "><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>
-														<td><button type="button" onclick="actionformtask('I','N')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
-														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm  <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
-<%-- 														<td><button type="button" onclick="actionformtask('S','N')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
- --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'"  class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
+														<td><button type="button" onclick="actionformtask('N','N')" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %> <%} %> bg1-3" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>
+														<td><button type="button" onclick="actionformtask('I','N')"  class="btn btn-sm bg1-4" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
+														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm  <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> bg1-5" ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
+													    <td><button type="button" onclick="document.location='ActionForwardList.htm'"  class="btn btn-sm bg1-6" ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
 														<% actionCounts+=Integer.parseInt(obj[3].toString());}   } %>
 													</tr>
 													<tr>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left">Meeting</td>
+														<td  class="p505">Meeting</td>
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Meeting")){ %>
-														<td><button type="button" onclick="actionformtask('N','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>   <!--changed 'E' to 'N'  -->   
-														<td><button type="button" onclick="actionformtask('I','S')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
-														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %> class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
-<%-- 														<td><button type="button" onclick="actionformtask('S','S')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
- --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
+														<td><button type="button" onclick="actionformtask('N','S')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> bg1-3" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>   <!--changed 'E' to 'N'  -->   
+														<td><button type="button" onclick="actionformtask('I','S')"  class="btn btn-sm bg1-4"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
+														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %> class="btn btn-sm bg1-5<%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
+														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm bg1-6" ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
 														<% actionCounts+=Integer.parseInt(obj[3].toString());}  } %>
 													<tr>
 													<%if(!IsDG.equalsIgnoreCase("Yes")){ %>
 													<tr>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left">Milestone</td>
+														<td  class="p505" >Milestone</td>
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Milestone")){ %>
-														<td><button type="button" onclick="actionformtask('N','M')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>
-														<td><button type="button" onclick="actionformtask('I','M')"  class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
-														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
-<%-- 														<td><button type="button" onclick="actionformtask('S','A')"  class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
- --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
+														<td><button type="button" onclick="actionformtask('N','M')"  class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> bg1-3" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>
+														<td><button type="button" onclick="actionformtask('I','M')"  class="btn btn-sm bg1-4" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
+														<td><button type="button" <%if(!obj[3].toString().equals("0")){ %> onclick="document.location='AssigneeList.htm'"<%} %>  class="btn btn-sm bg1-5<%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
+<%-- 														
+ --%>														<td><button type="button" onclick="document.location='ActionForwardList.htm'" class="btn btn-sm bg1-6" ><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
 														<% actionCounts+=Integer.parseInt(obj[3].toString());} } %>
 													</tr>
 													<tr>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left">Fracas</td>
+														<td  class="p505">Fracas</td>
 														<%for(Object[] obj : MyTaskList){
 														  	if(obj[0].toString().equalsIgnoreCase("Fracas")){ %>
-														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> " style="background-color: green;color:white; "><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>
-														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
-														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " style="background-color: #448fea;color:white; "><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
-<%-- 														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj[4] %></button></td>
- --%>														<td><button type="button" onclick="document.location='FracasToReviewList.htm'" class="btn btn-sm " style="background-color: #233E8B;color:white; "><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm <%if(!obj[1].toString().equals("0")){ %>  <%} %> bg1-3" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></button></td>
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm bg1-4" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></button></td>
+														<td><button type="button" onclick="document.location='FracasAssigneeList.htm'" class="btn btn-sm bg1-5<%if(!obj[3].toString().equals("0")){ %> fa faa-pulse animated faa-fast <%} %> " ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></button></td>
+<%-- 														
+ --%>														<td><button type="button" onclick="document.location='FracasToReviewList.htm'" class="btn btn-sm bg1-6" s><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></button></td>
 														<% actionCounts+=Integer.parseInt(obj[3].toString());} } %>
 													</tr>
 													<%} %>
@@ -1384,9 +805,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 		<!-- -----------------OVERALL DASHBOARD HEADING STARTS---------------------------- -->							
 						<div class="row" >
 							<div class="col-md-6">
-								<div style="display: none" class="overallheader">
-									<h4 style="color: #145374;margin-bottom: 7px" id="projecttitle" class="health-title"> PROJECT HEALTH</h4>
-									<hr style="margin: 3px 0px 9px 0px !important">
+								<div class="overallheader ohD1">
+									<h4  id="projecttitle" class="health-title cl-2"> PROJECT HEALTH</h4>
+									<hr class="m-39">
 								</div>
 							</div>
 							<div class="col-md-2">
@@ -1400,7 +821,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 	          <div class="col-md-12">
 			    	
 			      	<%if(ProjectList!=null){ %>
-						<div style="background: transparent;display: none" id="ganttchart" >
+						<div class="d2u" id="ganttchart" >
 						<div class="card"  >
 				
 							<div id="carouselExampleControls2" class="" data-ride=""  >
@@ -1409,25 +830,25 @@ String IsDG = (String)request.getAttribute("IsDG");
 								 if(!"0".equalsIgnoreCase(obj1[0].toString())){
 								 %>
 			
-								    <div class="carousel-item " style="overflow-y: auto;" id="Mil<%=obj1[0]%>">
-									    <nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
+								    <div class="carousel-item of-auto"  id="Mil<%=obj1[0]%>">
+									    <nav class="navbar navbar-light bg-primary bg1">
 												<form class="form-inline" method="post" action="GanttChart.htm" id="myform" >
 													<input type="hidden" name="ProjectId"  id="ProjectId" value="<%=obj1[0] %>" /> 
-								 					<input  class="btn btn-primary gantt navbar-brand text-white" id="gantt" type="submit" name="sub" value=" &nbsp;&nbsp;&nbsp; Gantt Chart" style="background-color: #23689b;color:white" > 
+								 					<input  class="btn btn-primary gantt navbar-brand text-white bgc-1" id="gantt" type="submit" name="sub" value=" &nbsp;&nbsp;&nbsp; Gantt Chart"  > 
 								 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 								 				</form>
 								 				
 												<%if(!obj1[0].toString().equalsIgnoreCase("0")){ %>
-														<span style="font-size: 15px;text-transform: capitalize;color:white"><%=obj1[14]!=null?StringEscapeUtils.escapeHtml4(obj1[14].toString()): " - " %> (<%=obj1[11]!=null?StringEscapeUtils.escapeHtml4(obj1[11].toString()): " - " %>)</span>
+														<span class="fwc"><%=obj1[14]!=null?StringEscapeUtils.escapeHtml4(obj1[14].toString()): " - " %> (<%=obj1[11]!=null?StringEscapeUtils.escapeHtml4(obj1[11].toString()): " - " %>)</span>
 												<%} %>
 								 				<form method="post" action="ProjectBriefingPaper.htm">
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-													<button  class="btn btn-primary navbar-brand text-white" style="background-color: #23689b;color:white" ><img src="view/images/camera.png"/> Project Snapshot </button>
+													<button  class="btn btn-primary navbar-brand text-white bgc-1" ><img src="view/images/camera.png"/> Project Snapshot </button>
 													<input type="hidden" name="projectid" value="<%=obj1[0] %>" />
 												</form>
 										</nav> 
 						
-					   				<div class="flex-container" id="containers<%=obj1[0] %>" style="height:13.5rem" ></div>
+					   				<div class="flex-container h135" id="containers<%=obj1[0] %>"  ></div>
 									</div>
 			
 								 <%} } } %>
@@ -1506,16 +927,16 @@ String IsDG = (String)request.getAttribute("IsDG");
 									        		        var html="";
 									        		        if(reDate===undefined){
 									        		        	html="";
-									        		        	html= "<span style='font-weight:600;font-size:10pt'> Actual : " +
+									        		        	html= "<span class='span-c1'> Actual : " +
 									        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
 									        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
 									        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
 									        		        }else{
 									        		        	html="";
-									        		        html="<span style='font-weight:600;font-size:10pt'> Actual : " +
+									        		        html="<span class='span-c1'> Actual : " +
 									        		               anychart.format.dateTime(actualStart, 'dd MMM yyyy') + " - " +
 									        		               anychart.format.dateTime(actualEnd, 'dd MMM yyyy') + "</span><br>" +
-									        		               "<span style='font-weight:600;font-size:10pt'> Revised : " +
+									        		               "<span class='span-c1'> Revised : " +
 									        		               anychart.format.dateTime(this.getData("baselineStart"), 'dd MMM yyyy') + " - " +
 									        		               anychart.format.dateTime(this.getData("baselineEnd"), 'dd MMM yyyy') + "</span><br>" +
 									        		               "Progress: " + this.getData("baselineProgressValue") + "<br>"
@@ -1595,9 +1016,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 								     	timeline.tasks().labels().useHtml(true);
 								     	timeline.tasks().labels().format(function() {
 								     	  if (this.progress == 1) {
-								     	    return "<span style='color:orange;font-weight:bold;font-family:'Lato';'><Completed</span>";
+								     	    return "<span class='span-c2'><Completed</span>";
 								     	  } else {
-								     	    return "<span style='color:black;font-weight:bold'></span>";
+								     	    return "<span class='span-c3'></span>";
 								     	  }
 								     	});
 
@@ -1616,18 +1037,18 @@ String IsDG = (String)request.getAttribute("IsDG");
     
           <div class="col-md-4">
 		       <br>	
-		       <div class="card" style="background: transparent;display: none" id="upcomingschedules">
-							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
-								<a class="navbar-brand" style="color:white"; >Upcoming Schedule Details</a>
+		       <div class="card div-c3"  id="upcomingschedules">
+							<nav class="navbar navbar-light bg-primary bg1" >
+								<a class="navbar-brand text-light"  >Upcoming Schedule Details</a>
 							</nav>					
-								<div style="background-color: rgba(255, 255, 255, 0.39999) !important;max-height:14rem ;overflow-y: auto ;border-radius: 4px ">
+								<div class="j-1">
 									<table class="table meeting " >	
 										<thead>												
 											<tr>
-												<td ><span style="font-size :15px;font-weight: bold; "></span></td>
-												<td ><span style="font-size :15px;font-weight: bold; ">Date</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Time</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Committee</span></td>
+												<td ><span class="j-2"></span></td>
+												<td ><span class="j-2">Date</span></td>
+												<td ><span class="j-2">Time</span></td>
+												<td ><span class="j-2">Committee</span></td>
 											</tr>
 										</thead>
 										<%
@@ -1638,7 +1059,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 												if(!obj[3].toString().equalsIgnoreCase(TodayDate)){	%>
 										<tbody>
 											<tr>
-												<td><a href="javascript:void(0)" onclick="location.href='CommitteeScheduleView.htm?scheduleid=<%=obj[2] %>' " ><i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
+												<td><a href="javascript:void(0)" onclick="location.href='CommitteeScheduleView.htm?scheduleid=<%=obj[2] %>' " ><i class="fa fa-hand-o-right j-3" aria-hidden="true" ></i></a></td>
 												<td><%=obj[3]!=null?sdf.format(obj[3]):" - " %></td>
 												<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 												<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></td>
@@ -1666,18 +1087,18 @@ String IsDG = (String)request.getAttribute("IsDG");
 		       <br>	
 		       	<!-- -----------------ACTION DASHBOARD MY TASK DETAILS STARTS---------------------------- -->	
 		       	
-		       		 <div class="card" style="background: transparent;display:none" id="mytaskdetails">
-							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
-								<a class="navbar-brand" style="color:white"; >My Task Details</a>
+		       		 <div class="card j-4"  id="mytaskdetails">
+							<nav class="navbar navbar-light bg-primary bg1" >
+								<a class="navbar-brand text-light"   >My Task Details</a>
 							</nav>					
-								<div style="background-color: rgba(255, 255, 255, 0.39999) !important;max-height:14rem ;overflow-y: auto ;border-radius: 4px ">
+								<div class="j-1">
 									<table class="table meeting " >	
 										<thead>												
 											<tr>
-												<td ><span style="font-size :15px;font-weight: bold; "></span></td>
-												<td ><span style="font-size :15px;font-weight: bold; ">Action Item</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;">PDC </span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Assigned By</span></td>
+												<td ><span class="j-2" ></span></td>
+												<td ><span class="j-2">Action Item</span></td>
+												<td ><span class="j-2">PDC </span></td>
+												<td ><span class="j-2">Assigned By</span></td>
 											</tr>
 										</thead>
 										<%
@@ -1690,9 +1111,9 @@ String IsDG = (String)request.getAttribute("IsDG");
 												%>
 										<tbody>
 											<tr>
-												<td><a href="javascript:MyTaskDetails(<%=obj[0]%>)"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
-												<td style="text-align:justify; "><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
-												<td style="width:100px"><%=obj[4]!=null?sdf.format(obj[4]):" - " %></td>
+												<td><a href="javascript:MyTaskDetails(<%=obj[0]%>)"> <i class="fa fa-hand-o-right j-3" aria-hidden="true" ></i></a></td>
+												<td class="clx-51"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+												<td class="width-100x"><%=obj[4]!=null?sdf.format(obj[4]):" - " %></td>
 												<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>
 													<form name="MyTaskDetails<%=obj[0]%>" id="MyTaskDetails<%=obj[0]%>" action="<%=obj[14] %>" method="POST" >
 														<input type="hidden" name="Assigner" value="<%=obj[12]%>,<%=obj[13]%>"/>													
@@ -1725,7 +1146,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 							
 							<%if(!IsDG.equalsIgnoreCase("Yes")){ %>
 							<%if(QuickLinkList.size()>0){ %>
-							<div class="multi-button" id="quicklinks" style="display: none">
+							<div class="multi-button q-1" id="quicklinks">
 									  <span><span class="badge badge-success"><i class="fa fa-link" aria-hidden="true"></i></span>  Links : </span>
 									<%for(Object[] obj : QuickLinkList){ %>
 										<a class="button" href="<%=obj[1] %>" id="cut"><span><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %> &nbsp;<i class="fa fa-file-text" aria-hidden="true"></i></span></a>									  <%} %>
@@ -1743,7 +1164,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 		 <div class="col-md-3" >
 		
 		 <!-- ----------- COMMON TOGGLE BUTTONS(ACTION,PROJECT,OVERALL) STARTS --------------------------- --> 	
-		   <div style="float: right;padding:5px;margin-top:-7px; <%if(logintype.equalsIgnoreCase("U") ) { %>  display:none   <%}%> ">
+		   <div class="df-1 <%if(logintype.equalsIgnoreCase("U") ) { %> dis-none   <%}%> ">
 		  	 <div class="btn-group "> 
 		  	<form id="pmsToIbasForm" action="<%=pmsToStatsUrl%>" target="blank" method="get"> 
              <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -1753,28 +1174,28 @@ String IsDG = (String)request.getAttribute("IsDG");
 <!-- 		  <button type="submit" class="btn External" data-toggle="tooltip" title="STATS" ><img src="view/images/stats.png" /></button>
  -->		  	</form>
 		  	 	
-		  	 	<form action="ProjectHealthUpdate.htm" method="get" style=" <%if (IsDG.equalsIgnoreCase("Yes") ){%> display:none   <%}%>" >
-		        	<button type="submit" class="btn btn4" data-toggle="tooltip" title="Refresh" ><i class="fa fa-refresh" style="font-size: 21px" aria-hidden="true"></i></button>
+		  	 	<form action="ProjectHealthUpdate.htm" method="get" class="<%if (IsDG.equalsIgnoreCase("Yes") ){%> dis-none   <%}%>" >
+		        	<button type="submit" class="btn btn4" data-toggle="tooltip" title="Refresh" ><i class="fa fa-refresh f-21"  aria-hidden="true"></i></button>
 		        </form>
 		        <button class="btn btn1">Action</button>
-		        <button class="btn btn2" style="<% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> border-right: 1px solid black !important;<%}%><%if (IsDG.equalsIgnoreCase("Yes") ){%>display:none<%} %>">Project</button>
-		        <button class="btn <%if (IsDG.equalsIgnoreCase("Yes") ){%>btn5<%} else {%>btn3<%} %>"  style="<% if(!Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> display:none  <%}%>  " >Overall</button>
+		        <button class="btn btn2 <% if(Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %>bd-1<%}%> <%if (IsDG.equalsIgnoreCase("Yes") ){%>dis-none<%} %>" >Project</button>
+		        <button class="btn <%if (IsDG.equalsIgnoreCase("Yes") ){%>btn5<%} else {%>btn3<%} %> <% if(!Arrays.asList(LoginTypes).contains((String)request.getAttribute("logintype"))){ %> dis-none  <%}%>"  >Overall</button>
 		      </div>
 		  </div>	
 		 <!-- ----------- COMMON TOGGLE BUTTONS(ACTION,PROJECT,OVERALL) ENDS --------------------------- --> 	
 
 		 <!-- ----------- ACTION DASHBOARD NOTICE MAIN ROW STARTS--------------------------- --> 	
-		  		<div class="card notice col-12 "  style="margin-top: 4px;"  >
-					<div class="card-body"  style="background-color : #0000 ;padding-bottom: 5px !important;display: none" id="noticeboard" >
+		  		<div class="card notice col-12 m-4p"    >
+					<div class="card-body d-12"   id="noticeboard" >
 						<span class="side-stick"></span>
-						<div class="side-stick-right "  style="max-width: 10%;" > 
+						<div class="side-stick-right max-10"   > 
 							<table>
 								<%if(noticeElib>0){%> 	
 									<tr>
-										<td style="padding: 5px;"> <a  data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" ><i class="fa fa-plus-square fa-lg" style="color: #ec524b" aria-hidden="true"></i> </a></td>
+										<td class="p5x"> <a  data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" ><i class="fa fa-plus-square fa-lg clx"  aria-hidden="true"></i> </a></td>
 									</tr>
 									<tr>
-										<td style="padding: 5px;"> <a  href="IndividualNoticeList.htm" ><i class="fa fa-file-text fa-lg "  style="color: #7868e6 "  aria-hidden="true">  </i></a> </td>
+										<td class="p5x"> <a  href="IndividualNoticeList.htm" ><i class="fa fa-file-text fa-lg clx-1"    aria-hidden="true">  </i></a> </td>
 									</tr>
 								<%} %>
 								<%if(notice!=null&& notice.size()>1){%> 
@@ -1783,19 +1204,19 @@ String IsDG = (String)request.getAttribute("IsDG");
 							   <%} %>
 							</table>
 						</div>
-						<div style="max-width: 90%;" >
- 							<blink>	<h5 style="color: #e84545;">Notice</h5></blink>
+						<div class="max-90" >
+ 							<blink>	<h5 class="clx-2">Notice</h5></blink>
 							<div id="carouselExampleControls6" class="carousel vert slide" data-ride="carousel" data-interval="5000">
 								    <div class="carousel-inner">
 								        	<% if(notice.size()>0){
 										  for(Object[] obj : notice){
 											  	%>
-								            <div class="carousel-item " id="notice" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black ;">
-											    <p style="font-weight: lighter; font-size: 12px;text-align:justify;  text-justify: inter-word;" align = "center" ><%if(notice!=null && notice.size()>0){ %> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> <%} %> </p>
-												<p style="font-weight: lighter; font-size: 12px;" align="right" > <%if(notice!=null && notice.size()>0){ %>-&nbsp; <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%} %> </p> 
+								            <div class="carousel-item height3" id="notice" >
+											    <p class="clx-3" align = "center" ><%if(notice!=null && notice.size()>0){ %> <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> <%} %> </p>
+												<p class="clx-4" align="right" > <%if(notice!=null && notice.size()>0){ %>-&nbsp; <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%} %> </p> 
 								            </div>
 											<%} }else{%>
-										 	<p style="font-weight: lighter; font-size: 12px;" align="right" > No Notice. </p> 
+										 	<p class="clx-5" align="right" > No Notice. </p> 
 										 <%} %> 
 								      </div>
 							   </div> 
@@ -1808,87 +1229,87 @@ String IsDG = (String)request.getAttribute("IsDG");
 							
     <!-- @@@@@@@@@@@@@@@@ DIV CARD BOX STARTS @@@@@@@@@@@@@@@@@@@@@@@ -->
             <%if(!logintype.equalsIgnoreCase("U") ) { %>
-				<div class="card box" style="background: transparent;margin-top: 5px;background-color: rgba(255, 255, 255, 0.3) !important;display:none" id="mainactivitystatus" >
-						<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display: none" id="activitystatusheader">
+				<div class="card box clx-6"  id="mainactivitystatus" >
+						<div class="card-header clx-7"  id="activitystatusheader">
 								    Activity Status 
 						</div>
-						<div class="card-body" style="padding: 0px;">
+						<div class="card-body" >
 					 <!-- ----------- PROJECT DASHBOARD ACTIVITY STATUS STARTS------------- -->
-							<!-- <div id="carouselExampleControls3" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;"> -->
+
 							<!-- Uncomment the above line to add carousel -->	
-							<div id="carouselExampleControls3" class="" data-ride=""  style="padding: 3px 0px 7px 4px;">
-									<div class="carousel-inner" style="display: none" id="activitystatus">
+							<div id="carouselExampleControls3 " class="p312" data-ride=""  >
+									<div class="carousel-inner dis-none"  id="activitystatus">
 											<%if(actionscount!=null){ %>	
 										    	<%if(ProjectList!=null){ %>
 									   				 <%for(Object[] obj : ProjectList){ %>
 										<div class="carousel-item "  id="act<%=obj[0]%>">
-										    	<table class="table" style="height: 70px; margin : 0px 0px 0px 0px;"  >
+										    	<table class="table h70"   >
 										<tr>
-											<td style="padding: 5px 15px 5px 15px;"></td>
-											<td style="padding: 5px 15px 5px 15px;"><span
-												style="font-size: 12px; font-weight: bold;">P</span></td>
-											<td style="padding: 5px 15px 5px 15px;"><span
-												style="font-size: 12px; font-weight: bold;">F</span></td>
-											<td style="padding: 5px 15px 5px 15px;"><span
-												style="font-size: 12px; font-weight: bold;">C</span></td>
-											<td style="padding: 5px 15px 5px 15px;"><span
-												style="font-size: 12px; font-weight: bold;">D</span></td>
+											<td class="p-515"></td>
+											<td class="p-515"><span
+												class="clx-8">P</span></td>
+											<td class="p-515"><span
+												class="clx-8">F</span></td>
+											<td class="p-515"><span
+												class="clx-8">C</span></td>
+											<td class="p-515"><span
+												class="clx-8">D</span></td>
 										</tr>
 										<%if (actionscount != null) {%>	
 											  <%for(Object[] obj2 : actionscount){ %>
 												<%if(obj[0].toString().equalsIgnoreCase(obj2[5].toString())) { %>
 									                <tr>
 									                  <%if(obj2[0].toString().equalsIgnoreCase("Actions")){ %>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left" >Action Items</td>
-													   	<td><button type="button" onclick="submitForm('P','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - " %> </button></td>
-											            <td><button type="button" onclick="submitForm('F','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea; color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - " %> </button></td>
-											            <td><button type="button" onclick="submitForm('C','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - " %> </button></td>
-											            <td><button type="button" onclick="submitForm('D','NA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - " %> </button></td>					
+														<td  class="p505" >Action Items</td>
+													   	<td><button type="button" onclick="submitForm('P','NA','<%=obj[0] %>');" class="btn btn-sm bg1-4" ><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - " %> </button></td>
+											            <td><button type="button" onclick="submitForm('F','NA','<%=obj[0] %>');" class="btn btn-sm bg1-5" ><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - " %> </button></td>
+											            <td><button type="button" onclick="submitForm('C','NA','<%=obj[0] %>');" class="btn btn-sm bg1-7" ><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - " %> </button></td>
+											            <td><button type="button" onclick="submitForm('D','NA','<%=obj[0] %>');" class="btn btn-sm bg1-8" ><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - " %> </button></td>					
 									       			  <% }%>
 									       			</tr>
 									       			 <tr>
 									       			   <%if(obj2[0].toString().equalsIgnoreCase("Milestone")){ %>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left">Milestones</td>
-													   	<td><button type="button" onclick="submitForm('P','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('F','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('C','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('D','MLA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
+														<td  class="p505">Milestones</td>
+													   	<td><button type="button" onclick="submitForm('P','MLA','<%=obj[0] %>');" class="btn btn-sm bg1-4" ><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('F','MLA','<%=obj[0] %>');" class="btn btn-sm bg1-5" ><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('C','MLA','<%=obj[0] %>');" class="btn btn-sm bg1-7" ><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('D','MLA','<%=obj[0] %>');" class="btn btn-sm bg1-8" ><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
 									       			   <% }%>
 									       			</tr>
 									       			<tr>
 									       			    <%if(obj2[0].toString().equalsIgnoreCase("Meeting")){ %>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left">Meetings</td>
-													   	<td><button type="button" onclick="submitForm('P','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('F','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('C','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('D','MA','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
+														<td  class="p505">Meetings</td>
+													   	<td><button type="button" onclick="submitForm('P','MA','<%=obj[0] %>');" class="btn btn-sm bg1-4" ><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('F','MA','<%=obj[0] %>');" class="btn btn-sm bg1-5" ><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('C','MA','<%=obj[0] %>');" class="btn btn-sm bg1-7" ><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('D','MA','<%=obj[0] %>');" class="btn btn-sm bg1-8" ><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
 									       			    <% }%>
 									       			</tr>
 									       			<tr>
 									       			    <%if(obj2[0].toString().equalsIgnoreCase("Risk")){ %>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left">Risks</td>
-													   	<td><button type="button" onclick="submitForm('P','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('F','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('C','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('D','RK','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
+														<td  class="p505">Risks</td>
+													   	<td><button type="button" onclick="submitForm('P','RK','<%=obj[0] %>');" class="btn btn-sm bg1-4" ><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('F','RK','<%=obj[0] %>');" class="btn btn-sm bg1-5"  "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('C','RK','<%=obj[0] %>');" class="btn btn-sm bg1-7"  "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('D','RK','<%=obj[0] %>');" class="btn btn-sm bg1-8"  "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
 									       			    <% }%>
 									       			</tr>
 									       			<tr>
 									       			    <%if(obj2[0].toString().equalsIgnoreCase("Issue")){ %>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left;">Issues</td>
-													   	<td><button type="button" onclick="submitForm('P','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('F','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('C','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('D','IU','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
+														<td  class="p505">Issues</td>
+													   	<td><button type="button" onclick="submitForm('P','IU','<%=obj[0] %>');" class="btn btn-sm bg1-4"><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('F','IU','<%=obj[0] %>');" class="btn btn-sm bg1-5"><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('C','IU','<%=obj[0] %>');" class="btn btn-sm bg1-7"><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('D','IU','<%=obj[0] %>');" class="btn btn-sm bg1-8"><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
 									       			    <% }%>
 									       			</tr>
 									       			<tr>
 									       			    <%if(obj2[0].toString().equalsIgnoreCase("Recommendation")){ %>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left;">Recommendations</td>
-													   	<td><button type="button" onclick="submitForm('P','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #ff8400;color:white;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('F','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('C','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
-											            <td><button type="button" onclick="submitForm('D','RC','<%=obj[0] %>');" class="btn btn-sm " style="background-color: #e85342;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
+														<td  class="p505">Recommendations</td>
+													   	<td><button type="button" onclick="submitForm('P','RC','<%=obj[0] %>');" class="btn btn-sm bg1-4" ><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('F','RC','<%=obj[0] %>');" class="btn btn-sm bg1-5" ><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('C','RC','<%=obj[0] %>');" class="btn btn-sm bg1-7" ><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+											            <td><button type="button" onclick="submitForm('D','RC','<%=obj[0] %>');" class="btn btn-sm bg1-8" ><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>					
 									       			    <% }%>
 									       			</tr> 
 													<%}%>
@@ -1898,7 +1319,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 								    </div>
 								    <%}} %>
 								    <%} else{ %>
-								    	<div class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;border: none;margin: 19%">
+								    	<div class="list-group-item clx-9" >
 								    		No Activities
 								    	</div>
 								    <%} %>
@@ -1909,23 +1330,23 @@ String IsDG = (String)request.getAttribute("IsDG");
 								
 
 	     <!-- ----------- ACTION DASHBOARD  REVIEW  BLOCK STARTS------------- -->
-		   					<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display:none" id="reviewheader">
-								<span style="font-size:12px ">Review - Pending with My Approver</span>
+		   					<div class="card-header clx-10"  id="reviewheader">
+								<span class="font12">Review - Pending with My Approver</span>
 							</div>	
-							<div style="margin-top:5px;display:none" id="review">
+							<div class="clx-11" id="review">
 									
 									 <!-- <div align="center"> Action Items</div> -->		
 													
 													<!-- Actions Start -->
-											<div style="  <%if(logintype.equalsIgnoreCase("U")){ %>   max-height:9rem <%}else{ %> max-height:9rem  <%} %>;overflow-y: auto ; ">
-															<ul style="padding: 0px">	 
+											<div class="<%if(logintype.equalsIgnoreCase("U")){ %>maxHeight9 <%}else{ %>maxHeight9<%} %>">
+															<ul >	 
 																<% int formcount=1;
 																	if(dashboardactionpdc.size()>0){
 																  for(Object[] obj : dashboardactionpdc){
 																	  if(obj[15].toString().equalsIgnoreCase("A")){
 																	  	%>
 																  
-																    <li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important; padding : 12px 0px !important;">
+																    <li class="list-group-item clx-12" >
 																    	<form name="Action<%=formcount%>" id="Action<%=formcount%>" action="<%=obj[7] %>" method="POST" >
 																    		<input type="hidden" name="Assigner" value="<%=obj[11]%>,<%=obj[13]%>"/>													
 		                                                                    <input type="hidden" name="ActionLinkId" value="<%=obj[10]%>"/>
@@ -1937,18 +1358,18 @@ String IsDG = (String)request.getAttribute("IsDG");
 		 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																    	</form>
 
-																    	<a href="javascript:actionform(<%=formcount%>)" class="btn btn-sm" style=" border-radius: 3px; 
-																	    	<%if("A".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #FF4500; <%} %>
-																	    	<%if("I".equalsIgnoreCase(obj[3].toString()) || "F".equalsIgnoreCase(obj[3].toString()) &&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #FF4500; <%} %>
-																	    	<%if("C".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #00917c; <%} %>
-																	    	<%if("2".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px 	#DC143C; <%} %>
-																    		transition: all 200ms ease-out;color:black;font-weight:bold;"> 
+																    	<a href="javascript:actionform(<%=formcount%>)" class="btn btn-sm clx-45 
+																	    	<%if("A".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> clx-46 <%} %>
+																	    	<%if("I".equalsIgnoreCase(obj[3].toString()) || "F".equalsIgnoreCase(obj[3].toString()) &&"1".equalsIgnoreCase(obj[8].toString())){ %> clx-47 <%} %>
+																	    	<%if("C".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> clx-48 <%} %>
+																	    	<%if("2".equalsIgnoreCase(obj[8].toString())){ %> clx-49 <%} %>
+																    		clx-50"> 
 																    	<!-- <i class="fa fa-arrow-right" aria-hidden="true" style="color: #1687a7;font-size: 1.00 rem !important"></i>  -->
 																    		<%=obj[11] !=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%> <br> <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %> &nbsp;&nbsp;
 																    	</a> 
 														   			 </li>
 																 <%formcount++;}} }else{%>
-																 	<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Review Pending !
+																 	<li class="list-group-item clx-13"  >No Review Pending !
 																 	</li>
 																 <%} %> 
 													 	 </ul> 
@@ -1959,19 +1380,19 @@ String IsDG = (String)request.getAttribute("IsDG");
 				 		<%-- 	 <%if(!logintype.equalsIgnoreCase("U")){ %>	 --%>
 				 				
 				 			<br>	
-				 			<div class="card-header" style="padding: .25rem 1.25rem !important;background-color: #007bff;color:white;text-align: left;border-radius:5px;display:none" id="reviewheader2">
-							<span style="font-size:12px ">Review - Pending with Me</span>
+				 			<div class="card-header clx-10"  id="reviewheader2">
+							<span class="font12">Review - Pending with Me</span>
 							</div>	
-								<div style="margin-top:5px;display:none" id="review2">
-											<div style="max-height:9rem ;overflow-y: auto ; ">
-															<ul style="padding: 0px">	 
+								<div class="clx-11" id="review2">
+											<div class="maxHeight9">
+															<ul >	 
 																<% int formcount1=55;
 																	if(dashboardactionpdc.size()>0){
 																  for(Object[] obj : dashboardactionpdc){
 																	  if(obj[15].toString().equalsIgnoreCase("G")){
 																	  	%>
 																  
-																    <li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important; padding : 12px 0px !important;">
+																    <li class="list-group-item clx-12" >
 																    	<form name="Action<%=formcount1%>" id="Action<%=formcount1%>" action="<%=obj[7] %>" method="POST" >
 																    		<input type="hidden" name="Assigner" value="<%=obj[11]%>,<%=obj[13]%>"/>													
 		                                                                    <input type="hidden" name="ActionLinkId" value="<%=obj[10]%>"/>
@@ -1984,17 +1405,17 @@ String IsDG = (String)request.getAttribute("IsDG");
 		 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																    	</form>
 
-																    	<a href="javascript:actionform(<%=formcount1%>)" class="btn btn-sm" style=" border-radius: 3px; 
-																	    	<%if("A".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #FF4500; <%} %>
-																	    	<%if("I".equalsIgnoreCase(obj[3].toString()) || "F".equalsIgnoreCase(obj[3].toString()) &&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #FF4500; <%} %>
-																	    	<%if("C".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px #00917c; <%} %>
-																	    	<%if("2".equalsIgnoreCase(obj[8].toString())){ %> box-shadow: 0 0 0 2px 	#DC143C; <%} %>
-																    		transition: all 200ms ease-out;color:black;font-weight:bold;"> 
+																    	<a href="javascript:actionform(<%=formcount1%>)" class="btn btn-sm clx-45; 
+																	    	<%if("A".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> clx-46 <%} %>
+																	    	<%if("I".equalsIgnoreCase(obj[3].toString()) || "F".equalsIgnoreCase(obj[3].toString()) &&"1".equalsIgnoreCase(obj[8].toString())){ %> clx-47 <%} %>
+																	    	<%if("C".equalsIgnoreCase(obj[3].toString())&&"1".equalsIgnoreCase(obj[8].toString())){ %> clx-48 <%} %>
+																	    	<%if("2".equalsIgnoreCase(obj[8].toString())){ %> clx-49 <%} %>
+																    		clx-50 "> 
 																    		<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %> <br> <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %> &nbsp;&nbsp;
 																    	</a> 
 														   			 </li>
 																 <%formcount1++;} }}else{%>
-																 	<li class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;color:black " >No Review Pending !
+																 	<li class="list-group-item clx-13"  >No Review Pending !
 																 	</li>
 																 <% } %> 
 													 	 </ul> 
@@ -2013,25 +1434,25 @@ String IsDG = (String)request.getAttribute("IsDG");
 				<!-- Removing Card 5 -->	
 				<!-- ----------- PROJECT DASHBOARD  MEETINGS  BLOCK STARTS------------- -->
 				 			
-				 			<div class="card" style="background: transparent;margin-top:1%;display: none"  id="meetingblock">
-							<nav class="navbar navbar-light bg-primary " style="background-color: #e3f2fd;">
-								<a class="navbar-brand" style="color:white;" >Meetings</a>
+				 			<div class="card background: transparent;margin-top:1%;display: none"  id="meetingblock">
+							<nav class="navbar navbar-light bg-primary bg1" >
+								<a class="navbar-brand text-light"  >Meetings</a>
 							</nav>					
-								<!-- <div id="carouselExampleControls1" class="carousel slide carousel-interval" data-ride="carousel"  style="padding: 3px 0px 7px 4px;"> -->
+								
 								<!-- Uncomment the above line to add carousel -->
-								<div id="carouselExampleControls1" class="" data-ride=""  style="padding: 3px 0px 7px 4px;">
+								<div id="carouselExampleControls1" class="p312" data-ride=""  >
 									<div class="carousel-inner">
 									
 										<%if(ProjectList!=null){ %>
 									    <%for(Object[] obj : ProjectList){
 									    	%>
-									    <div class="carousel-item" id="Meeting<%=obj[0]%>" <%if(obj[0].toString().equals("0")){ %> style="display: none" <%} %>>
-										    	<table class="table meeting" style="height: 70px; margin : 0px 0px 0px 0px;"  >													
+									    <div class="carousel-item <%if(obj[0].toString().equals("0")){ %> dis-none <%} %>" id="Meeting<%=obj[0]%>" >
+										    	<table class="table meeting h70"  >													
 													<tr>
-														<td style="padding : 5px 15px 5px 15px;"></td>
-													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold; ">Total</span></td>
-													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Held</span></td>
-													    <td  style="padding : 5px 15px 5px 15px;"><span style="font-size :12px;font-weight: bold;  ">Rem</span></td>
+														<td class="p-515"></td>
+													    <td  class="p-515"><span class="f-12">Total</span></td>
+													    <td  class="p-515"><span class="f-12">Held</span></td>
+													    <td  class="p-515"><span class="f-12">Rem</span></td>
 													</tr>
 				
 													<%if(ProjectMeetingCount!=null ){ %>	
@@ -2039,22 +1460,22 @@ String IsDG = (String)request.getAttribute("IsDG");
 														<%if(obj[0].toString().equalsIgnoreCase(obj2[9].toString())) { %>
 														  <!-- (project status) ==> all = All, B = held and C = remaining -->
 													<tr>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left">EB</td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[0]!=null?StringEscapeUtils.escapeHtml4(obj2[0].toString()): " - "  %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
+														<td  class="p505">EB</td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'all');" class="btn btn-sm bg1-5" ><%=obj2[0]!=null?StringEscapeUtils.escapeHtml4(obj2[0].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'B');" 	class="btn btn-sm bg1-7" ><%=obj2[1]!=null?StringEscapeUtils.escapeHtml4(obj2[1].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',2,'C');" 	class="btn btn-sm bg1-4" ><%=obj2[2]!=null?StringEscapeUtils.escapeHtml4(obj2[2].toString()): " - "  %></button></td>
 													</tr>
 													<tr>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left">PMRC</td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[5]!=null?StringEscapeUtils.escapeHtml4(obj2[5].toString()): " - "  %></button></td>
+														<td class="p505">PMRC</td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'all');" class="btn btn-sm bg1-5" ><%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'B');" 	class="btn btn-sm bg1-7" ><%=obj2[4]!=null?StringEscapeUtils.escapeHtml4(obj2[4].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>',1,'C');" 	class="btn btn-sm bg1-4" ><%=obj2[5]!=null?StringEscapeUtils.escapeHtml4(obj2[5].toString()): " - "  %></button></td>
 													<tr>
 													<tr>
-														<td  style="padding : 5px 0px 5px 0px;text-align: left">Others</td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','all');" class="btn btn-sm " style="background-color: #448fea;color:white; "><%=obj2[6]!=null?StringEscapeUtils.escapeHtml4(obj2[6].toString()): " - "  %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','B');" class="btn btn-sm " style="background-color: #008891;color:white; "><%=obj2[7]!=null?StringEscapeUtils.escapeHtml4(obj2[7].toString()): " - "  %></button></td>
-														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','C');" class="btn btn-sm " style="background-color: #ff8400;color:white; "><%=obj2[8]!=null?StringEscapeUtils.escapeHtml4(obj2[8].toString()): " - "  %></button></td>
+														<td  class="p505">Others</td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','all');" 	class="btn btn-sm bg1-5" ><%=obj2[6]!=null?StringEscapeUtils.escapeHtml4(obj2[6].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','B');" 	class="btn btn-sm bg1-7" ><%=obj2[7]!=null?StringEscapeUtils.escapeHtml4(obj2[7].toString()): " - "  %></button></td>
+														<td><button type="button" onclick="CommitteeForm('<%=obj2[9] %>','others','C');" 	class="btn btn-sm bg1-4" ><%=obj2[8]!=null?StringEscapeUtils.escapeHtml4(obj2[8].toString()): " - "  %></button></td>
 													</tr>
 													
 													 <%}%>
@@ -2064,7 +1485,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 										    </div>
 										    <%} %>
 										    <%} else{ %>
-										    	<div class="list-group-item" style="background-color: rgba(255, 255, 255, 0.08888) !important;border: none; ">
+										    	<div class="list-group-item clx-15" >
 										    		No Meetings
 										    	</div>
 										    <%} %>
@@ -2111,7 +1532,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 					                                     <div class="col-md-12">
 															<div class="form-group">
 																<label class="control-label">Notice</label> 
-															    <textarea class="form-control" name="noticeFiled" id="noticeText" style="height: 9rem;" maxlength="255"  placeholder="Enter Notice here with max 255 characters" required="required"></textarea>
+															    <textarea class="form-control max-9" name="noticeFiled" id="noticeText" " maxlength="255"  placeholder="Enter Notice here with max 255 characters" required="required"></textarea>
 															</div>
 														</div>       
 														<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
@@ -2132,10 +1553,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 <!-- ****************************************************************** OVERALL DASHBOARD MODULE STARTS********************************************************************************* -->
 
-	<div class="container-fluid" style="display: none" id="overalltable">
+	<div class="container-fluid dis-none"  id="overalltable">
 		
 		<!-- ///////////////  CAR DECK (MEETING,MILESTONE,ACTION,RISK,FINANCE) STARTS //////////// -->
-		<div class="card-deck" style="margin-top: -20px;" id="overallmodulecarddeck" >
+		<div class="card-deck clx-16"  id="overallmodulecarddeck" >
 		<!-- jsp for DashBoard progress -->
 		<%if(!session.getAttribute("LoginType").toString().equalsIgnoreCase("X")) {%><jsp:include page="DashBoard-circular.jsp" /><%} %>
 		</div>
@@ -2151,22 +1572,22 @@ String IsDG = (String)request.getAttribute("IsDG");
 		
 		<!-- /////////////// ALL PROJECT DETAILS IN OVERALL DASHBOARD STARTS //////////// -->
 
-		<div class="card" style="background: transparent;margin-top:5px" >
+		<div class="card clx-17" >
 		
-								<div id="overalldiv" style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;/* max-height: 26rem */; overflow-y:auto;overflow-x:hidden  ">
+								<div id="overalldiv" class="clx-18" >
 								
-									<table class="table meeting tableFixHead fixed-table "  style="table-layout: fixed"> 
-										<thead style=" background: #1363DF; color: white;">												
+									<table class="table meeting tableFixHead fixed-table clx-19" > 
+										<thead class="clx-20">												
 											<tr>
-												<td style="width:4%">
-													<a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a>
+												<td class="width-4">
+													<a  data-toggle="modal"  class="fa faa-pulse animated clx-21" data-target="#exampleModal1" data-whatever="@mdo"  ><i class="fa fa-info-circle f13re"  aria-hidden="true"></i> </a>
 												</td>
-												<td class="tableprojectnametd" style="width:12%"><span style="font-size :15px;font-weight: bold; ">Project</span></td>
-												<td style="width:2%">
+												<td class="tableprojectnametd width-12" ><span class="fw-15">Project</span></td>
+												<td class="width-2">
 													<div data-toggle="tooltip" title="Master Slide">
 														
 															<button type="button" data-toggle="modal" data-target="" id="slideDIv" class="bg-transparent">
-																<img src="view/images/silde.png" style="width: 25px;"/>
+																<img src="view/images/silde.png" class="width25"/>
 															</button>
 													
 													</div>
@@ -2174,15 +1595,15 @@ String IsDG = (String)request.getAttribute("IsDG");
 												<!-- Button trigger modal -->
 												<!-- Modal -->
 												<jsp:include page="../print/ProjectsSlideShowSelection.jsp"></jsp:include>
-												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">DoS</span></td>
-												<td style="width:6%"><span style="font-size :15px;font-weight: bold; ">PDC</span></td>
-												<!-- <td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">AB</span></td> -->
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB / PMB </span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC / PJB </span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone </span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Action</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Risk</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Finance</span></td>
+												<td class="width-6"><span class="fw-15">DoS</span></td>
+												<td class="width-6"><span class="fw-15">PDC</span></td>
+												
+												<td ><span class="fw-15">EB / PMB </span></td>
+												<td ><span class="fw-15">PMRC / PJB </span></td>
+												<td ><span class="fw-15">Milestone </span></td>
+												<td ><span class="fw-15">Action</span></td>
+												<td ><span class="fw-15">Risk</span></td>
+												<td ><span class="fw-15">Finance</span></td>
 											</tr>
 										</thead>
 										
@@ -2199,16 +1620,15 @@ String IsDG = (String)request.getAttribute("IsDG");
 											%>
 										
 											<tr>
-												<td><a href="javascript:ProjectDetails('<%=obj[2]%>','<%=obj[46]%>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
-												<td style="font-weight: 800; font-size:1rem;text-align:left;
-												
-														<% if(obj[45]!=null) {if(obj[45].toString().equalsIgnoreCase("IA")){%>color: green<%} 
-														else if(obj[45].toString().equalsIgnoreCase("IN")){%>color: #007bff <%} 
-														else if(obj[45].toString().equalsIgnoreCase("IAF")){%>color: #1F4690 <%} 
-														else if(obj[45].toString().equalsIgnoreCase("IH")){%>color: #8E3200 <%} 
-														else if(obj[45].toString().equalsIgnoreCase("OH")){%>color: #EE5007 <%} 
-														else if(obj[45].toString().equalsIgnoreCase("DRDO")){%>color: #231955 <%} 
-														else {%>color:black <%} }else{ %>color:black <%}%>">
+												<td><a href="javascript:ProjectDetails('<%=obj[2]%>','<%=obj[46]%>')"> <i class="fa fa-hand-o-right clx-22" aria-hidden="true" ></i></a></td>
+												<td class="c-7
+														<% if(obj[45]!=null) {if(obj[45].toString().equalsIgnoreCase("IA")){%>c-6<%} 
+														else if(obj[45].toString().equalsIgnoreCase("IN")){%>c-1 <%} 
+														else if(obj[45].toString().equalsIgnoreCase("IAF")){%>c-2 <%} 
+														else if(obj[45].toString().equalsIgnoreCase("IH")){%>c-3 <%} 
+														else if(obj[45].toString().equalsIgnoreCase("OH")){%>c-4 <%} 
+														else if(obj[45].toString().equalsIgnoreCase("DRDO")){%>c-5 <%} 
+														else {%>text-dark <%} }else{ %>text-dark <%}%>">
 												
 												<div data-toggle="tooltip" 
 													title="<%if(obj[45]!=null) { if(obj[45].toString().equalsIgnoreCase("IA")){%>Indian Army<%}
@@ -2219,7 +1639,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 													else if(obj[45].toString().equalsIgnoreCase("OH")){%>Others <%} 
 													else {%> -  <%} }else{ %>-<%}%>">
 												
-														  &#11044;&nbsp; <span class="tableprojectname" style="color:black !important;font-size: 13px"> 
+														  &#11044;&nbsp; <span class="tableprojectname clx-23" > 
 														  	<%if(obj[46]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[46].toString())%><%}else {%>-<%} %> /
 														  	<%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else {%>-<%} %> /
 														  	<%if(obj[44]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[44].toString()) %><%}else {%>-<%} %>
@@ -2230,69 +1650,34 @@ String IsDG = (String)request.getAttribute("IsDG");
 												</td>
 												<td>
 												<form action="#">
-												<button class="bg-transparent"  style="cursor: pointer;"  type="submit" name="projectid" value="<%=obj[2]%>" formaction="PfmsProjectSlides.htm" formmethod="get" formtarget="blank" data-toggle="tooltip"  data-original-title="Project Slide"> <img src="view/images/silde.png" style="width: 25px;"/></button>
+												<button class="bg-transparent cu-p"    type="submit" name="projectid" value="<%=obj[2]%>" formaction="PfmsProjectSlides.htm" formmethod="get" formtarget="blank" data-toggle="tooltip"  data-original-title="Project Slide"> <img src="view/images/silde.png" class="width25"/></button>
 												</form>
-											<%-- 	<a style="cursor: pointer;" href="PfmsProjectSlides.htm?projectid=<%=obj[2]%>" target="_blank" title="Project Slide">
-												 <img src="view/images/silde.png" style="width: 25px;"/></a> --%></td>
-												<td style="font-size: 13px;font-weight: 600; "><%if(obj[50]!=null){%><%= sdf3.format(sdf2.parse(obj[50].toString()))%><%}else{ %> - <%} %></td>
-												<td style="font-size: 13px;font-weight: 600; <%if(obj[47]!=null){ if(LocalDate.parse(obj[47].toString()).isBefore(LocalDate.now())){ %>color:maroon<%}}%>  "><%if(obj[47]!=null){%><%= sdf3.format(sdf2.parse(obj[47].toString()))%><%}else{ %> - <%} %></td>
-												<%-- <td class="custom-td">
-												<%if (obj[52].toString().equalsIgnoreCase("Y")) {%>
+											
+												</td>
+												<td class="clx-24"><%if(obj[50]!=null){%><%= sdf3.format(sdf2.parse(obj[50].toString()))%><%}else{ %> - <%} %></td>
+												<td class="clx-24 <%if(obj[47]!=null){ if(LocalDate.parse(obj[47].toString()).isBefore(LocalDate.now())){ %>c-8<%}}%>  "><%if(obj[47]!=null){%><%= sdf3.format(sdf2.parse(obj[47].toString()))%><%}else{ %> - <%} %></td>
 												
-												
-														<%if(Integer.parseInt(obj[69].toString())>0){ %>
-														<div class="row">
-															<div class="col-md-11">
-																<div class="progress" data-toggle="tooltip" title="AB Held : <%=obj[65]%> <br> AB To Be Held : <%=obj[69] %><br> Total AB To Be Held : <%=obj[70] %>">
-																  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[66]%>%;"></div>
-																  <div class="progress-bar progress-bar-striped bg-primary"  style="width:<%=obj[68]%>%;"></div>
-																</div>
-															</div>
-															<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[66].toString())<=25){%> background-color:red <%}%>
-																								   <%if( (Integer.parseInt(obj[66].toString())>25) && (Integer.parseInt(obj[66].toString())<=50)){%> background-color:#EE5007; <%}%>
-																								   <%if( (Integer.parseInt(obj[66].toString())>50) && (Integer.parseInt(obj[66].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
-																								   <%if( (Integer.parseInt(obj[66].toString())>75) && (Integer.parseInt(obj[66].toString())<=100)){%> background-color:green<%}%>
-																"><%=obj[66] %></span>
-															</div>
-														</div>
-													<%}else{ %>
-													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-															Nil
-														</div>
-													</div>
-													<%} %>
-													
-													<%}else{ %>
-														<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
-															Nil
-														</div>
-													</div>
-													<%} %>
-												</td> --%>
 												<td class="custom-td">
 												<%if (obj[52].toString().equalsIgnoreCase("N")) {%>
 													<%if(Integer.parseInt(obj[13].toString())>0){ %>
 														<div class="row">
 															<div class="col-md-11">
 																<div class="progress" data-toggle="tooltip" title="EB Held : <%=obj[9]%> <br> EB To Be Held : <%=obj[13] %><br> Total EB To Be Held : <%=obj[49] %>">
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'B')" style="width:<%=obj[10]%>%;"></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'C')" style="width:<%=obj[12]%>%;"></div>
+																  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[10]%>" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'B')" ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary width-<%=obj[12]%>" onclick="overallmeetingredirect('<%=obj[2]%>','2', 'C')" ></div>
 																</div>
 															</div>
-															<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[10].toString())<=25){%> background-color:red <%}%>
-																								   <%if( (Integer.parseInt(obj[10].toString())>25) && (Integer.parseInt(obj[10].toString())<=50)){%> background-color:#EE5007; <%}%>
-																								   <%if( (Integer.parseInt(obj[10].toString())>50) && (Integer.parseInt(obj[10].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
-																								   <%if( (Integer.parseInt(obj[10].toString())>75)){%> background-color:green<%}%>
+															<div class="col-md-1 pl-0" >
+																<span class="health-circle <%if(Integer.parseInt(obj[10].toString())<=25){%> bg-p1 <%}%>
+																								   <%if( (Integer.parseInt(obj[10].toString())>25) && (Integer.parseInt(obj[10].toString())<=50)){%> bg-p2 <%}%>
+																								   <%if( (Integer.parseInt(obj[10].toString())>50) && (Integer.parseInt(obj[10].toString())<=75)){%> bg-p3 <%}%>
+																								   <%if( (Integer.parseInt(obj[10].toString())>75)){%> bg-p4<%}%>
 																"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></span>
 															</div>
 														</div>
 													<%}else{ %>
-													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress nil-bar  noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"   >
 															Nil
 														</div>
 													</div>
@@ -2302,21 +1687,21 @@ String IsDG = (String)request.getAttribute("IsDG");
 														<div class="row">
 															<div class="col-md-11">
 																<div class="progress" data-toggle="tooltip" title="PMB Held : <%=obj[59]%> <br> PMB To Be Held : <%=obj[63] %><br> Total PMB To Be Held : <%=obj[64] %>">
-																  <div class="progress-bar progress-bar-striped bg-success"  style="width:<%=obj[60]%>%;"></div>
-																  <div class="progress-bar progress-bar-striped bg-primary"  style="width:<%=obj[62]%>%;"></div>
+																  <div class="progress-bar progress-bar-striped bg-success  width-<%=obj[60]%>"  ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary width-<%=obj[62]%>"  ></div>
 																</div>
 															</div>
-															<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[60].toString())<=25){%> background-color:red <%}%>
-																								   <%if((Integer.parseInt(obj[60].toString())>25) && (Integer.parseInt(obj[60].toString())<=50)){%> background-color:#EE5007; <%}%>
-																								   <%if((Integer.parseInt(obj[60].toString())>50) && (Integer.parseInt(obj[60].toString())<=75)){%> background-color:#F8CB2E;color:black; <%}%>
-																								   <%if((Integer.parseInt(obj[60].toString())>75)){%> background-color:green<%}%>
+															<div class="col-md-1 pl-0">
+																<span class="health-circle <%if(Integer.parseInt(obj[60].toString())<=25){%> bg-p1 <%}%>
+																								   <%if((Integer.parseInt(obj[60].toString())>25) && (Integer.parseInt(obj[60].toString())<=50)){%> bg-p2 <%}%>
+																								   <%if((Integer.parseInt(obj[60].toString())>50) && (Integer.parseInt(obj[60].toString())<=75)){%> bg-p3 <%}%>
+																								   <%if((Integer.parseInt(obj[60].toString())>75)){%> bg-p4<%}%>
 																"><%=obj[60]!=null?StringEscapeUtils.escapeHtml4(obj[60].toString()): " - " %></span>
 															</div>
 														</div>
 													<%}else{ %>
-													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress nil-bar noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"  >
 															Nil
 														</div>
 													</div>
@@ -2330,15 +1715,15 @@ String IsDG = (String)request.getAttribute("IsDG");
 														<div class="row">
 															<div class="col-md-11">
 															    <div class="progress" data-toggle="tooltip" title="PMRC Held : <%=obj[4]%> <br> PMRC To Be Held : <%=obj[8] %><br> Total PMRC To Be Held : <%=obj[48] %>"  >
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'B')" style="width:<%=obj[5]%>%;" ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[7]%>%;" ></div>
+																  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[5]%>" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'B')"  ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary width-<%=obj[7]%>" onclick="overallmeetingredirect('<%=obj[2]%>','1', 'C' )"  ></div>
 																</div>
 														  	</div>
-															<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[5].toString())<=25){%> background-color:red <%}%>
-																								   <%if( (Integer.parseInt(obj[5].toString())>25) && (Integer.parseInt(obj[5].toString())<=50)){%> background-color: #EE5007; <%}%>
-																								   <%if( (Integer.parseInt(obj[5].toString())>50) && (Integer.parseInt(obj[5].toString())<=75)){%> background-color:  #F8CB2E;color:black;  <%}%>
-																								   <%if( (Integer.parseInt(obj[5].toString())>75)){%> background-color:green <%}%>
+															<div class="col-md-1 pl-0" >
+																<span class="health-circle <%if(Integer.parseInt(obj[5].toString())<=25){%> bg-p1 <%}%>
+																								   <%if( (Integer.parseInt(obj[5].toString())>25) && (Integer.parseInt(obj[5].toString())<=50)){%> bg-p2 <%}%>
+																								   <%if( (Integer.parseInt(obj[5].toString())>50) && (Integer.parseInt(obj[5].toString())<=75)){%>bg-p3  <%}%>
+																								   <%if( (Integer.parseInt(obj[5].toString())>75)){%> bg-p4 <%}%>
 																">
 																<%if(Integer.parseInt(obj[5].toString())>100){ %>
 																	100
@@ -2350,8 +1735,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 														</div>
 						
 													<%}else{ %>
-													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress nil-bar noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar" >
 															Nil
 														</div>
 													</div>
@@ -2362,15 +1747,15 @@ String IsDG = (String)request.getAttribute("IsDG");
 														<div class="row">
 															<div class="col-md-11">
 															    <div class="progress" data-toggle="tooltip" title="PJB Held : <%=obj[53]%> <br> PJB To Be Held : <%=obj[57] %><br> Total PJB To Be Held : <%=obj[58] %>"  >
-																  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[54]%>%;" ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary"  style="width:<%=obj[56]%>%;" ></div>
+																  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[54]%>"  ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary width-<%=obj[56]%>"   ></div>
 																</div>
 														  	</div>
-															<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[54].toString())<=25){%> background-color:red <%}%>
-																								   <%if( (Integer.parseInt(obj[54].toString())>25) && (Integer.parseInt(obj[54].toString())<=50)){%> background-color: #EE5007; <%}%>
-																								   <%if( (Integer.parseInt(obj[54].toString())>50) && (Integer.parseInt(obj[54].toString())<=75)){%> background-color:  #F8CB2E;color:black;  <%}%>
-																								   <%if( (Integer.parseInt(obj[54].toString())>75)){%> background-color:green <%}%>
+															<div class="col-md-1 pl-0" >
+																<span class="health-circle <%if(Integer.parseInt(obj[54].toString())<=25){%> bg-p1 <%}%>
+																								   <%if( (Integer.parseInt(obj[54].toString())>25) && (Integer.parseInt(obj[54].toString())<=50)){%> bg-p2 <%}%>
+																								   <%if( (Integer.parseInt(obj[54].toString())>50) && (Integer.parseInt(obj[54].toString())<=75)){%> bg-p3  <%}%>
+																								   <%if( (Integer.parseInt(obj[54].toString())>75)){%> bg-p4 <%}%>
 																">
 																<%if(Integer.parseInt(obj[54].toString())>100){ %>
 																	100
@@ -2382,8 +1767,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 														</div>
 						
 													<%}else{ %>
-													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress nil-bar noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"   >
 															Nil
 														</div>
 													</div>
@@ -2399,22 +1784,22 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<div class="row">
 														<div class="col-md-11">
 															<div class="progress" onclick="overallcommonredirect('mil','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[19]%>%" data-toggle="tooltip" title="Completed : <%=obj[18]%> / <%=obj[20] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[17]%>%" data-toggle="tooltip" title="Delayed : <%=obj[16]%> / <%=obj[20] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[15]%>%" data-toggle="tooltip" title="Pending : <%=obj[14]%> / <%=obj[20] %>" ></div>															  
+															  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[19]%>"  data-toggle="tooltip" title="Completed : <%=obj[18]%> / <%=obj[20] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning width-<%=obj[17]%>"  data-toggle="tooltip" title="Delayed : <%=obj[16]%> / <%=obj[20] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger width-<%=obj[15]%>" data-toggle="tooltip" title="Pending : <%=obj[14]%> / <%=obj[20] %>" ></div>															  
 															</div>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[19].toString())<=25){%> background-color:red <%}%>
-																								   <%if( (Integer.parseInt(obj[19].toString())>25) && (Integer.parseInt(obj[19].toString())<=50)){%> background-color: #EE5007;<%}%>
-																								   <%if( (Integer.parseInt(obj[19].toString())>50) && (Integer.parseInt(obj[19].toString())<=75)){%> background-color:#F8CB2E;color:black;<%}%>
-																								   <%if( (Integer.parseInt(obj[19].toString())>75) && (Integer.parseInt(obj[19].toString())<=100)){%> background-color:green <%}%>
+														<div class="col-md-1 pl-0" >
+																<span class="health-circle <%if(Integer.parseInt(obj[19].toString())<=25){%> bg-p1 <%}%>
+																								   <%if( (Integer.parseInt(obj[19].toString())>25) && (Integer.parseInt(obj[19].toString())<=50)){%> bg-p2<%}%>
+																								   <%if( (Integer.parseInt(obj[19].toString())>50) && (Integer.parseInt(obj[19].toString())<=75)){%> bg-p3<%}%>
+																								   <%if( (Integer.parseInt(obj[19].toString())>75) && (Integer.parseInt(obj[19].toString())<=100)){%> bg-p4 <%}%>
 																"><%=obj[19]!=null?StringEscapeUtils.escapeHtml4(obj[19].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
-													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar " role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress nil-bar noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"  >
 															Nil
 														</div>
 													</div>
@@ -2425,23 +1810,23 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<div class="row">
 														<div class="col-md-11">
 															<div class="progress" onclick="overallcommonredirect('action','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[28]%>%" data-toggle="tooltip" title="Completed : <%=obj[27]%> / <%=obj[29]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[26]%>%" data-toggle="tooltip" title="Delayed : <%=obj[25]%> / <%=obj[29]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[24]%>%" data-toggle="tooltip" title="Forwarded : <%=obj[23]%> / <%=obj[29]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[22]%>%" data-toggle="tooltip" title="Pending : <%=obj[21]%> / <%=obj[29]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[28]%>"  data-toggle="tooltip" title="Completed : <%=obj[27]%> / <%=obj[29]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning width-<%=obj[26]%>" data-toggle="tooltip" title="Delayed : <%=obj[25]%> / <%=obj[29]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-primary width-<%=obj[24]%>"  data-toggle="tooltip" title="Forwarded : <%=obj[23]%> / <%=obj[29]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger width-<%=obj[22]%>"  data-toggle="tooltip" title="Pending : <%=obj[21]%> / <%=obj[29]%>" ></div>
 															</div>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important">
-															<span class="health-circle" style="<%if(Integer.parseInt(obj[28].toString())<=25){%> background-color:red<%}%>
-																									   <%if( (Integer.parseInt(obj[28].toString())>25) && (Integer.parseInt(obj[28].toString())<=50)){%> background-color: #EE5007; <%}%>
-																									   <%if( (Integer.parseInt(obj[28].toString())>50) && (Integer.parseInt(obj[28].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
-																									   <%if( (Integer.parseInt(obj[28].toString())>75) && (Integer.parseInt(obj[28].toString())<=100)){%> background-color:green <%}%>
+														<div class="col-md-1 pl-0">
+															<span class="health-circle <%if(Integer.parseInt(obj[28].toString())<=25){%> bg-p1<%}%>
+																									   <%if( (Integer.parseInt(obj[28].toString())>25) && (Integer.parseInt(obj[28].toString())<=50)){%> bg-p2 <%}%>
+																									   <%if( (Integer.parseInt(obj[28].toString())>50) && (Integer.parseInt(obj[28].toString())<=75)){%> bg-p3 <%}%>
+																									   <%if( (Integer.parseInt(obj[28].toString())>75) && (Integer.parseInt(obj[28].toString())<=100)){%> bg-p4 <%}%>
 															"><%=obj[28]!=null?StringEscapeUtils.escapeHtml4(obj[28].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
-													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress nil-bar noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"   >
 															Nil
 														</div>
 													</div>
@@ -2452,21 +1837,21 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<div class="row">
 														<div class="col-md-11">
 															<div class="progress" onclick="overallcommonredirect('risk','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[31]%>%" data-toggle="tooltip" title="Completed : <%=obj[30]%> / <%=obj[34] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[33]%>%" data-toggle="tooltip" title="Pending : <%=obj[32]%> / <%=obj[34] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[31]%>"data-toggle="tooltip" title="Completed : <%=obj[30]%> / <%=obj[34] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger width-<%=obj[33]%>" data-toggle="tooltip" title="Pending : <%=obj[32]%> / <%=obj[34] %>" ></div>
 															</div>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[31].toString())<=25){%> background-color:red <%}%>
-																										   <%if( (Integer.parseInt(obj[31].toString())>25) && (Integer.parseInt(obj[31].toString())<=50)){%> background-color: #EE5007; <%}%>
-																										   <%if( (Integer.parseInt(obj[31].toString())>50) && (Integer.parseInt(obj[31].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
-																										   <%if( (Integer.parseInt(obj[31].toString())>75) && (Integer.parseInt(obj[31].toString())<=100)){%> background-color:green <%}%>
+														<div class="col-md-1 pl-0" >
+																<span class="health-circle <%if(Integer.parseInt(obj[31].toString())<=25){%> bg-p1 <%}%>
+																										   <%if( (Integer.parseInt(obj[31].toString())>25) && (Integer.parseInt(obj[31].toString())<=50)){%> bg-p2 <%}%>
+																										   <%if( (Integer.parseInt(obj[31].toString())>50) && (Integer.parseInt(obj[31].toString())<=75)){%> bg-p3 <%}%>
+																										   <%if( (Integer.parseInt(obj[31].toString())>75) && (Integer.parseInt(obj[31].toString())<=100)){%> bg-p4 <%}%>
 																"><%=obj[31]!=null?StringEscapeUtils.escapeHtml4(obj[31].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
-													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress nil-bar noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"   >
 															Nil
 														</div>
 													</div>
@@ -2490,27 +1875,27 @@ String IsDG = (String)request.getAttribute("IsDG");
 																																		<br><b>Total : &#8377; <%=nfc.rupeeFormat(total.toString())%> </b>
 																																																		">
 
-															  	<div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[36]%>%"  > </div>
-															 	<div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[38]%>%" > </div>
-															  	<div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[40]%>%"  > </div>
-															  	<div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[42]%>%" > </div>
+															  	<div class="progress-bar progress-bar-striped bg-success width-<%=obj[36]%>"   > </div>
+															 	<div class="progress-bar progress-bar-striped bg-warning width-<%=obj[38]%>"  > </div>
+															  	<div class="progress-bar progress-bar-striped bg-primary width-<%=obj[40]%>"   > </div>
+															  	<div class="progress-bar progress-bar-striped bg-danger width-<%=obj[42]%>"   > </div>
 															  	
 															</div>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important;">
-																	<span class="health-circle"  style="cursor: pointer;<%if(Integer.parseInt(obj[42].toString())<=25){%> background-color:red<%}%>
-																											   <%if( (Integer.parseInt(obj[42].toString())>25) && (Integer.parseInt(obj[42].toString())<=50)){%> background-color: #EE5007; <%}%>
-																											   <%if( (Integer.parseInt(obj[42].toString())>50) && (Integer.parseInt(obj[42].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
-																											   <%if( (Integer.parseInt(obj[42].toString())>75) && (Integer.parseInt(obj[42].toString())<=100)){%> background-color:green <%}%>"
+														<div class="col-md-1 pl-0" >
+																	<span class="health-circle <%if(Integer.parseInt(obj[42].toString())<=25){%> bg-p1<%}%>
+																											   <%if( (Integer.parseInt(obj[42].toString())>25) && (Integer.parseInt(obj[42].toString())<=50)){%> bg-p2 <%}%>
+																											   <%if( (Integer.parseInt(obj[42].toString())>50) && (Integer.parseInt(obj[42].toString())<=75)){%> bg-p3 <%}%>
+																											   <%if( (Integer.parseInt(obj[42].toString())>75) && (Integer.parseInt(obj[42].toString())<=100)){%> bg-p4 <%}%>"
 																	><%=obj[42]!=null?StringEscapeUtils.escapeHtml4(obj[42].toString()): " - " %></span>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important">
+														<div class="col-md-1 pl-0" >
 														</div>
 													</div>
 													
 													<%}else{ %>
-													<div class="progress nil-bar" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress nil-bar noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"  >
 															Nil
 														</div>
 													</div>
@@ -2537,12 +1922,12 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 	 <!-- *************************************** INDIVIDUAL PROJECT DETAILS STARTS ******************************** -->
 	
-	<div class="card" style="background: white;display:none;margin: -2px 10px" id="projectgraph" >
-		<div style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;overflow-x:hidden " align="center">
-			<div  style="margin: 5px">
-				<span class="ProjecChartCardTitle" style="color: #145374;font-size: 20px;text-decoration: underline;"></span>
-				<button class="btn prints" style="float: left;padding: 3px 7px;margin: 0px 5px ;" onclick="overalldoc()" data-toggle="tooltip" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
-				<button class="btn  btn-danger" style="float: left;padding: 3px 7px;" onclick="overalldetails('A')" data-toggle="tooltip" title="Close" >CLOSE &nbsp;<i class="fa fa-times-circle faa-pulse animated faa-fast" aria-hidden="true"></i></button>
+	<div class="card clx-25"  id="projectgraph" >
+		<div class="clx-26" align="center">
+			<div  class="clx-44">
+				<span class="ProjecChartCardTitle clx-27" ></span>
+				<button class="btn prints clx-28"  onclick="overalldoc()" data-toggle="tooltip" title="Doc"><i class="fa fa-file-text-o" aria-hidden="true"></i></button>
+				<button class="btn  btn-danger clx-29"  onclick="overalldetails('A')" data-toggle="tooltip" title="Close" >CLOSE &nbsp;<i class="fa fa-times-circle faa-pulse animated faa-fast" aria-hidden="true"></i></button>
 				
 				<br>
 			</div>
@@ -2597,7 +1982,7 @@ String IsDG = (String)request.getAttribute("IsDG");
 			<div class="modal-content">
 				      
 				<div class="modal-header ">
-					<h5 class="modal-title" id="exampleModalLabel" style="color:#145374">Colour Coding Summary</h5>
+					<h5 class="modal-title clx-30" id="exampleModalLabel" >Colour Coding Summary</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 			        </button>
@@ -2609,16 +1994,16 @@ String IsDG = (String)request.getAttribute("IsDG");
 					 if(!IsDG.equalsIgnoreCase("Yes") ) { %>	
 						
 					<div class="row">
-						<div style="text-align: left">
-								<p style="margin-bottom: 0px !important;margin-left:10px">Users </p>
+						<div class="text-left">
+								<p class="clx-31">Users </p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
-						          	<li><span class="modal-span" style="color:green">&#8226;</span><span class="modal-text">Indian Army</span></li>
-						           	<li><span class="modal-span" style="color:#007bff">&#8226;</span><span class="modal-text">Indian Navy</span></li>
-						           	<li><span class="modal-span" style="color:#1F4690">&#8226;</span><span class="modal-text">Indian Air Forces</span></li>
-						           	<li><span class="modal-span" style="color:#8E3200">&#8226;</span><span class="modal-text">Home Land Security</span></li>
-						           	<li><span class="modal-span" style="color:#231955">&#8226;</span><span class="modal-text">DRDO</span></li>
-						           	<li><span class="modal-span" style="color:#EE5007">&#8226;</span><span class="modal-text">Others</span></li>
+						          	<li><span class="modal-span cl-g" >&#8226;</span><span class="modal-text">Indian Army</span></li>
+						           	<li><span class="modal-span cl-1" >&#8226;</span><span class="modal-text">Indian Navy</span></li>
+						           	<li><span class="modal-span cl-2" >&#8226;</span><span class="modal-text">Indian Air Forces</span></li>
+						           	<li><span class="modal-span cl-3" >&#8226;</span><span class="modal-text">Home Land Security</span></li>
+						           	<li><span class="modal-span cl-4" >&#8226;</span><span class="modal-text">DRDO</span></li>
+						           	<li><span class="modal-span cl-5" >&#8226;</span><span class="modal-text">Others</span></li>
 					            </ul>
 							</div>
 					</div>
@@ -2626,21 +2011,21 @@ String IsDG = (String)request.getAttribute("IsDG");
 					<%} %>
 						
 					<div class="row">
-						<div style="text-align: left">
-								<p style="margin-bottom: 0px !important;margin-left:10px">Project Health (Completed %)</p>
+						<div class="text-left">
+								<p class="mb0l10">Project Health (Completed %)</p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
-									<li><span class="modal-span" style="color:red">&#8226;</span><span class="modal-text">0-25%</span></li>
-						           	<li><span class="modal-span" style="color:#EE5007;">&#8226;</span><span class="modal-text">26-50%</span></li>
-						           	<li><span class="modal-span" style="color:#F8CB2E;">&#8226;</span><span class="modal-text">51-75%</span></li>
-						           	<li><span class="modal-span" style="color:green">&#8226;</span><span class="modal-text">76-100%</span></li>
+									<li><span class="modal-span cl-6" >&#8226;</span><span class="modal-text">0-25%</span></li>
+						           	<li><span class="modal-span cl-5" >&#8226;</span><span class="modal-text">26-50%</span></li>
+						           	<li><span class="modal-span cl-7" >&#8226;</span><span class="modal-text">51-75%</span></li>
+						           	<li><span class="modal-span cl-g" >&#8226;</span><span class="modal-text">76-100%</span></li>
 					            </ul>
 							</div>
 					</div>		
 
 					<div class="row">
-						<div style="text-align: left">
-								<p style="margin-bottom: 0px !important;margin-left:10px">Milestone</p>
+						<div class="text-left">
+								<p class="mb0l10">Milestone</p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
 									<li><span class="modal-span green" >&#8226;</span><span class="modal-text">Completed</span></li>
@@ -2651,8 +2036,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 					</div>		
 					
 					<div class="row">
-						<div style="text-align: left">
-								<p style="margin-bottom: 0px !important;margin-left:10px">Action</p>
+						<div class="text-left">
+								<p class="mb0l10">Action</p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
 						           	<li><span class="modal-span green" >&#8226;</span><span class="modal-text">Completed</span></li>
@@ -2664,8 +2049,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 					</div>
 					
 					<div class="row">
-						<div style="text-align: left">
-								<p style="margin-bottom: 0px !important;margin-left:10px">Risks</p>
+						<div class="text-left">
+								<p class="mb0l10">Risks</p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
 									<li><span class="modal-span green" >&#8226;</span><span class="modal-text">Completed</span></li>
@@ -2676,8 +2061,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 					</div>
 					
 					<div class="row">
-						<div style="text-align: left">
-								<p style="margin-bottom: 0px !important;margin-left:10px">Finance</p>
+						<div class="text-left">
+								<p class="mb0l10">Finance</p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
 						          	<li><span class="modal-span green" >&#8226;</span><span class="modal-text">Expenditure</span></li>
@@ -2688,13 +2073,13 @@ String IsDG = (String)request.getAttribute("IsDG");
 							</div>
 					</div>
 					<div class="row">
-						<div style="text-align: left">
-								<p style="margin-bottom: 0px !important;margin-left:10px">Cash Out Go</p>
+						<div class="text-left">
+								<p class="mb0l10">Cash Out Go</p>
 								<hr class="modal-hr">
 								<ul class="modal-list">
-						          	<li><span class="modal-span" style="color:#5C192F;">&#8226;</span><span class="modal-text">Capital</span></li>
-						           	<li><span class="modal-span" style="color:#466136;">&#8226;</span><span class="modal-text">Revenue</span></li>
-						           	<li><span class="modal-span" style="color:#591A69;">&#8226;</span><span class="modal-text">Others</span></li>
+						          	<li><span class="modal-span cl-8" >&#8226;</span><span class="modal-text">Capital</span></li>
+						           	<li><span class="modal-span cl-9" >&#8226;</span><span class="modal-text">Revenue</span></li>
+						           	<li><span class="modal-span cl-10" >&#8226;</span><span class="modal-text">Others</span></li>
 					            </ul>
 							</div>
 					</div>
@@ -2709,10 +2094,10 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 	<!-- *************************************** DG VIEW START****************************************************** -->
 	
-	<div style="display:none" id="dgdashboard">
+	<div class="dis-none" id="dgdashboard">
 	
 		<div class="container-fluid">
-		<div class="card-deck" style="margin-top: -20px;margin-bottom: 5px;" >
+		<div class="card-deck clx-32"  >
 		 	<%if(session.getAttribute("LoginType").toString().equalsIgnoreCase("X")) {%><jsp:include page="DashBoard-circular.jsp" /><%} %>
 		</div>
 		</div>
@@ -2721,24 +2106,24 @@ String IsDG = (String)request.getAttribute("IsDG");
 
 		<div class="container-fluid">
 
-		<div class="card" style="background: transparent;">
+		<div class="card bg-transparent">
 		
-			<div id="overalldivdg" style="background-color: rgba(255, 255, 255, 0.39999) !important ;border-radius: 4px ;/* max-height: 26rem */; overflow-y:auto;overflow-x:hidden  ">
+			<div id="overalldivdg" class="clx-33">
 								
-				<table class="table meeting tableFixHead fixed-table "  style="table-layout: fixed;margin-bottom: 0rem !important"> 
-										<thead style=" background: #1363DF; color: white;">												
+				<table class="table meeting tableFixHead fixed-table clx-34"  > 
+										<thead class="clx-35">												
 											<tr>
-												<td style="width:4%">
+												<td class="width-4">
 													<!-- <a  data-toggle="modal"  class="fa faa-pulse animated " data-target="#exampleModal1" data-whatever="@mdo" style="padding: 0px 1.5rem;cursor:pointer" ><i class="fa fa-info-circle " style="font-size: 1.3rem;color: " aria-hidden="true"></i> </a> -->
 												</td>
-												<td style="width:5%"><span style="font-size :15px;font-weight: bold; ">Lab</span></td>
+												<td class="width-4"><span class="j-2">Lab</span></td>
 												<!-- <td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">AB</span></td> -->
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">EB / PMB</span></td>
-												<td style="padding: 0px !important"><span style="font-size :15px;font-weight: bold;">PMRC / PJB</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Milestone</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Action</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Risk</span></td>
-												<td ><span style="font-size :15px;font-weight: bold;  ">Finance</span></td>
+												<td class="pl-0"><span class="j-2">EB / PMB</span></td>
+												<td class="pl-0"><span class="j-2">PMRC / PJB</span></td>
+												<td ><span class="j-2">Milestone</span></td>
+												<td ><span class="j-2">Action</span></td>
+												<td ><span class="j-2">Risk</span></td>
+												<td ><span class="j-2">Finance</span></td>
 											</tr>
 										</thead>
 										
@@ -2747,8 +2132,8 @@ String IsDG = (String)request.getAttribute("IsDG");
 											<tr>
 												<td>
 												<%-- <%=obj[2] %> --%>
-												<a href="javascript:LabDetails('<%=obj[45] %>')"> <i class="fa fa-hand-o-right" aria-hidden="true" style="color: purple;font-size: 1.3rem !important"></i></a></td>
-												<td style="font-weight: 800; font-size:0.75rem;text-align:left;"><%=obj[45]!=null?StringEscapeUtils.escapeHtml4(obj[45].toString()): " - " %>	</td>
+												<a href="javascript:LabDetails('<%=obj[45] %>')"> <i class="fa fa-hand-o-right clx-22" aria-hidden="true" ></i></a></td>
+												<td class="clx-36"><%=obj[45]!=null?StringEscapeUtils.escapeHtml4(obj[45].toString()): " - " %>	</td>
 												<%-- <td class="custom-td">
 													<%if(Integer.parseInt(obj[62].toString())>0){ %>
 														<div class="row">
@@ -2782,22 +2167,22 @@ String IsDG = (String)request.getAttribute("IsDG");
 														<div class="row">
 															<div class="col-md-11">
 															    <div class="progress"  data-toggle="tooltip" title="EB Held : <%=obj[3]%> <br> EB To Be Held : <%=obj[5]%><br> Total EB To Be Held : <%=obj[47] %>">
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')" style="width:<%=obj[31]%>%;"  ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[32]%>%;" ></div>
+																  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[31]%>" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')"   ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary width-<%=obj[32]%>" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )"  ></div>
 																</div>
 														  	</div>
-															<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[31].toString())<=25){%> background-color:red <%}%>
-																								   <%if( (Integer.parseInt(obj[31].toString())>25) && (Integer.parseInt(obj[31].toString())<=50)){%> background-color: #EE5007; <%}%>
-																								   <%if( (Integer.parseInt(obj[31].toString())>50) && (Integer.parseInt(obj[31].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
-																								   <%if( (Integer.parseInt(obj[31].toString())>75) && (Integer.parseInt(obj[31].toString())<=100)){%> background-color: green <%}%>
+															<div class="col-md-1 pl-0" >
+																<span class="health-circle <%if(Integer.parseInt(obj[31].toString())<=25){%> bg-p1 <%}%>
+																								   <%if( (Integer.parseInt(obj[31].toString())>25) && (Integer.parseInt(obj[31].toString())<=50)){%> bg-p2 <%}%>
+																								   <%if( (Integer.parseInt(obj[31].toString())>50) && (Integer.parseInt(obj[31].toString())<=75)){%> bg-p3 <%}%>
+																								   <%if( (Integer.parseInt(obj[31].toString())>75) && (Integer.parseInt(obj[31].toString())<=100)){%> bg-p4 <%}%>
 																"><%=obj[31]!=null?StringEscapeUtils.escapeHtml4(obj[31].toString()): " - " %></span>
 															</div>
 														</div>
 						
 													<%}else{ %>
-													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"   >
 															Nil
 														</div>
 													</div>
@@ -2808,23 +2193,23 @@ String IsDG = (String)request.getAttribute("IsDG");
 														<div class="row">
 															<div class="col-md-11">
 															    <div class="progress" data-toggle="tooltip" title="PMRC Held : <%=obj[0]%> <br> PMRC To Be Held : <%=obj[2]%><br> Total PMRC To Be Held : <%=obj[46] %>" >
-																  <div class="progress-bar progress-bar-striped bg-success" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')" style="width:<%=obj[29]%>%;"  ></div>
-																  <div class="progress-bar progress-bar-striped bg-primary" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )" style="width:<%=obj[30]%>%;" ></div>
+																  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[29]%>" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'B')"   ></div>
+																  <div class="progress-bar progress-bar-striped bg-primary width-<%=obj[30]%>" onclick="overallmeetingredirectdg('<%=obj[2]%>','1', 'C' )" ></div>
 																</div>
 														  	</div>
-															<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[29].toString())<=25){%> background-color:red <%}%>
-																								   <%if( (Integer.parseInt(obj[29].toString())>25) && (Integer.parseInt(obj[29].toString())<=50)){%> background-color: #EE5007; <%}%>
-																								   <%if( (Integer.parseInt(obj[29].toString())>50) && (Integer.parseInt(obj[29].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
-																								   <%if( (Integer.parseInt(obj[29].toString())>75) && (Integer.parseInt(obj[29].toString())<=100)){%> background-color:green <%}%>
+															<div class="col-md-1 pl-0">
+																<span class="health-circle <%if(Integer.parseInt(obj[29].toString())<=25){%>bg-p1 <%}%>
+																								   <%if( (Integer.parseInt(obj[29].toString())>25) && (Integer.parseInt(obj[29].toString())<=50)){%> bg-p2 <%}%>
+																								   <%if( (Integer.parseInt(obj[29].toString())>50) && (Integer.parseInt(obj[29].toString())<=75)){%> bg-p3 <%}%>
+																								   <%if( (Integer.parseInt(obj[29].toString())>75) && (Integer.parseInt(obj[29].toString())<=100)){%> bg-p4 <%}%>
 																"><%=obj[29]!=null?StringEscapeUtils.escapeHtml4(obj[29].toString()): " - " %></span>
 															</div>
 											
 														</div>
 						
 													<%}else{ %>
-													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"   >
 															Nil
 														</div>
 													</div>
@@ -2835,22 +2220,22 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<div class="row">
 														<div class="col-md-11">
 															<div class="progress" onclick="overallcommonredirectdg('mil','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[10]%>%" data-toggle="tooltip" title="Completed : <%=obj[8]%> / <%=obj[9] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[33]%>%" data-toggle="tooltip" title="Delayed : <%=obj[7]%> / <%=obj[9] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[44]%>%" data-toggle="tooltip" title="Pending : <%=obj[6]%> / <%=obj[9] %>" ></div>															  
+															  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[10]%>"  data-toggle="tooltip" title="Completed : <%=obj[8]%> / <%=obj[9] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning width-<%=obj[33]%>"  data-toggle="tooltip" title="Delayed : <%=obj[7]%> / <%=obj[9] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger width-<%=obj[44]%>"  data-toggle="tooltip" title="Pending : <%=obj[6]%> / <%=obj[9] %>" ></div>															  
 															</div>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[10].toString())<=25){%> background-color:red <%}%>
-																								   <%if( (Integer.parseInt(obj[10].toString())>25) && (Integer.parseInt(obj[10].toString())<=50)){%> background-color: #EE5007; <%}%>
-																								   <%if( (Integer.parseInt(obj[10].toString())>50) && (Integer.parseInt(obj[10].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
-																								   <%if( (Integer.parseInt(obj[10].toString())>75) && (Integer.parseInt(obj[10].toString())<=100)){%> background-color:green <%}%>
+														<div class="col-md-1 pl-0">
+																<span class="health-circle <%if(Integer.parseInt(obj[10].toString())<=25){%> bg-p1 <%}%>
+																								   <%if( (Integer.parseInt(obj[10].toString())>25) && (Integer.parseInt(obj[10].toString())<=50)){%> bg-p2 <%}%>
+																								   <%if( (Integer.parseInt(obj[10].toString())>50) && (Integer.parseInt(obj[10].toString())<=75)){%> bg-p3 <%}%>
+																								   <%if( (Integer.parseInt(obj[10].toString())>75) && (Integer.parseInt(obj[10].toString())<=100)){%> bg-p4 <%}%>
 																"><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
-													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"   >
 															Nil
 														</div>
 													</div>
@@ -2861,23 +2246,23 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<div class="row">
 														<div class="col-md-11">
 															<div class="progress" onclick="overallcommonredirect('action','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[37]%>%" data-toggle="tooltip" title="Completed : <%=obj[14]%> / <%=obj[15]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[36]%>%" data-toggle="tooltip" title="Delayed : <%=obj[13]%> / <%=obj[15]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[35]%>%" data-toggle="tooltip" title="Forwarded : <%=obj[12]%> / <%=obj[15]%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[34]%>%" data-toggle="tooltip" title="Pending : <%=obj[11]%> / <%=obj[15]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[37]%>"  data-toggle="tooltip" title="Completed : <%=obj[14]%> / <%=obj[15]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning width-<%=obj[36]%>"  data-toggle="tooltip" title="Delayed : <%=obj[13]%> / <%=obj[15]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-primary width-<%=obj[35]%>"  data-toggle="tooltip" title="Forwarded : <%=obj[12]%> / <%=obj[15]%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger width-<%=obj[34]%>"   data-toggle="tooltip" title="Pending : <%=obj[11]%> / <%=obj[15]%>" ></div>
 															</div>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important">
-															<span class="health-circle" style="<%if(Integer.parseInt(obj[37].toString())<=25){%> background-color:red <%}%>
-																									   <%if( (Integer.parseInt(obj[37].toString())>25) && (Integer.parseInt(obj[37].toString())<=50)){%> background-color: #EE5007; <%}%>
-																									   <%if( (Integer.parseInt(obj[37].toString())>50) && (Integer.parseInt(obj[37].toString())<=75)){%> background-color: #F8CB2E;color:black <%}%>
-																									   <%if( (Integer.parseInt(obj[37].toString())>75) && (Integer.parseInt(obj[37].toString())<=100)){%> background-color:green <%}%>
+														<div class="col-md-1 pl-0">
+															<span class="health-circle <%if(Integer.parseInt(obj[37].toString())<=25){%> bg-p1 <%}%>
+																									   <%if( (Integer.parseInt(obj[37].toString())>25) && (Integer.parseInt(obj[37].toString())<=50)){%> bg-p2 <%}%>
+																									   <%if( (Integer.parseInt(obj[37].toString())>50) && (Integer.parseInt(obj[37].toString())<=75)){%> bg-p3 <%}%>
+																									   <%if( (Integer.parseInt(obj[37].toString())>75) && (Integer.parseInt(obj[37].toString())<=100)){%> bg-p4 <%}%>
 															"><%=obj[37]!=null?StringEscapeUtils.escapeHtml4(obj[37].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
-													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"   >
 															Nil
 														</div>
 													</div>
@@ -2888,21 +2273,21 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<div class="row">
 														<div class="col-md-11">
 															<div class="progress" onclick="overallcommonredirect('risk','<%=obj[2]%>')">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[39]%>%" data-toggle="tooltip" title="Completed : <%=obj[16]%> / <%=obj[18] %>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[38]%>%" data-toggle="tooltip" title="Pending : <%=obj[17]%> / <%=obj[18] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[39]%>" data-toggle="tooltip" title="Completed : <%=obj[16]%> / <%=obj[18] %>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger width-<%=obj[38]%>"  data-toggle="tooltip" title="Pending : <%=obj[17]%> / <%=obj[18] %>" ></div>
 															</div>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important">
-																<span class="health-circle" style="<%if(Integer.parseInt(obj[39].toString())<=25){%> background-color:red <%}%>
-																										   <%if( (Integer.parseInt(obj[39].toString())>25) && (Integer.parseInt(obj[39].toString())<=50)){%> background-color: #EE5007; <%}%>
-																										   <%if( (Integer.parseInt(obj[39].toString())>50) && (Integer.parseInt(obj[39].toString())<=75)){%> background-color: #F8CB2E;color:black<%}%>
-																										   <%if( (Integer.parseInt(obj[39].toString())>75) && (Integer.parseInt(obj[39].toString())<=100)){%> background-color: green <%}%>
+														<div class="col-md-1 pl-0">
+																<span class="health-circle <%if(Integer.parseInt(obj[39].toString())<=25){%> bg-p1 <%}%>
+																										   <%if( (Integer.parseInt(obj[39].toString())>25) && (Integer.parseInt(obj[39].toString())<=50)){%> bg-p2 <%}%>
+																										   <%if( (Integer.parseInt(obj[39].toString())>50) && (Integer.parseInt(obj[39].toString())<=75)){%> bg-p3<%}%>
+																										   <%if( (Integer.parseInt(obj[39].toString())>75) && (Integer.parseInt(obj[39].toString())<=100)){%> bg-p4 <%}%>
 																"><%=obj[39]!=null?StringEscapeUtils.escapeHtml4(obj[39].toString()): " - " %></span>
 														</div>
 													</div>
 													<%}else{ %>
-													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"  >
 															Nil
 														</div>
 													</div>
@@ -2915,26 +2300,26 @@ String IsDG = (String)request.getAttribute("IsDG");
 													<div class="row">
 														<div class="col-md-10">
 															<div class="progress" onclick="overallfinance()">
-															  <div class="progress-bar progress-bar-striped bg-success" style="width:<%=obj[40]%>%" data-toggle="tooltip" title="Expenditure : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[19].toString() ))))%>" ></div>
-															  <div class="progress-bar progress-bar-striped bg-warning" style="width:<%=obj[41]%>%" data-toggle="tooltip" title="OC : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[20].toString() ))))%> " ></div>
-															  <div class="progress-bar progress-bar-striped bg-primary" style="width:<%=obj[42]%>%" data-toggle="tooltip" title="DIPL : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[21].toString() ))))%> " ></div>
-															  <div class="progress-bar progress-bar-striped bg-danger" style="width:<%=obj[43]%>%" data-toggle="tooltip" title="Balance : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[22].toString() ))))%> " ></div>
+															  <div class="progress-bar progress-bar-striped bg-success width-<%=obj[40]%>"  data-toggle="tooltip" title="Expenditure : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[19].toString() ))))%>" ></div>
+															  <div class="progress-bar progress-bar-striped bg-warning width-<%=obj[41]%>"  data-toggle="tooltip" title="OC : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[20].toString() ))))%> " ></div>
+															  <div class="progress-bar progress-bar-striped bg-primary width-<%=obj[42]%>"  data-toggle="tooltip" title="DIPL : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[21].toString() ))))%> " ></div>
+															  <div class="progress-bar progress-bar-striped bg-danger width-<%=obj[43]%>"   data-toggle="tooltip" title="Balance : &#8377; <%=nfc.rupeeFormat(String.valueOf(Math.round(Double.parseDouble(obj[22].toString() ))))%> " ></div>
 															</div>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important">
-																	<span class="health-circle" style="<%if(Integer.parseInt(obj[43].toString())<=25){%> background-color:green <%}%>
-																											   <%if( (Integer.parseInt(obj[43].toString())>25) && (Integer.parseInt(obj[43].toString())<=50)){%> background-color: #F8CB2E;color:black <%}%>
-																											   <%if( (Integer.parseInt(obj[43].toString())>50) && (Integer.parseInt(obj[43].toString())<=75)){%> background-color: #EE5007 <%}%>
-																											   <%if( (Integer.parseInt(obj[43].toString())>75) && (Integer.parseInt(obj[43].toString())<=100)){%> background-color:red <%}%>
+														<div class="col-md-1 pl-0">
+																	<span class="health-circle <%if(Integer.parseInt(obj[43].toString())<=25){%> bg-p1 <%}%>
+																											   <%if( (Integer.parseInt(obj[43].toString())>25) && (Integer.parseInt(obj[43].toString())<=50)){%> bg-p2 <%}%>
+																											   <%if( (Integer.parseInt(obj[43].toString())>50) && (Integer.parseInt(obj[43].toString())<=75)){%> bg-p3 <%}%>
+																											   <%if( (Integer.parseInt(obj[43].toString())>75) && (Integer.parseInt(obj[43].toString())<=100)){%> bg-p4 <%}%>
 																	"><%=obj[43]!=null?StringEscapeUtils.escapeHtml4(obj[43].toString()): " - " %></span>
 														</div>
-														<div class="col-md-1" style="padding-left: 0px !important">
+														<div class="col-md-1 pl-0">
 														</div>
 													</div>
 													
 													<%}else{ %>
-													<div class="progress" style="background-color:#cdd0cb !important;height: 1.2rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress noProgressDiv" >
+														<div class="progress-bar noProgress" role="progressbar"  >
 															Nil
 														</div>
 													</div>
@@ -3020,20 +2405,20 @@ String IsDG = (String)request.getAttribute("IsDG");
 	</form>
  <button class="open-modal-button" id="modalbtn" onclick="openModal()"><i class="fa fa-arrow-left" aria-hidden="true"></i></button>
 <form action="#" >
- <%if(ProjectList.size()>0){%><button type="submit" class="open-modal-button " id="brifingBtn" onclick="" data-toggle="tooltip" title="Briefing"  formaction="ProjectBriefingPaper.htm" formmethod="get"><img class="fa faa-pulse animated faa-fast" alt="" src="view/images/requirements.png" style="width:21px" ></button><%} %>
+ <%if(ProjectList.size()>0){%><button type="submit" class="open-modal-button " id="brifingBtn" onclick="" data-toggle="tooltip" title="Briefing"  formaction="ProjectBriefingPaper.htm" formmethod="get"><img class="fa faa-pulse animated faa-fast width21x" alt="" src="view/images/requirements.png"  ></button><%} %>
 </form>
   <!-- Modal Container -->
   <div id="myModal" class="modal-container" >
-    <div class="modalheader" style="justify-content: start;color:red;">
-    	<p style="margin-top:0.3rem; margin-bottom:0.4rem;"><b> Today's Date : &nbsp;</b><%=sdf.format(sdf1.parse( LocalDate.now().toString()))%></p>
+    <div class="modalheader clx-37" >
+    	<p class="clx-38"><b> Today's Date : &nbsp;</b><%=sdf.format(sdf1.parse( LocalDate.now().toString()))%></p>
      <!--  <span class="modal-close"  onclick="closeModal()">&times;</span> -->
     </div>
     <div class="modalcontent" >
-      <p style="font-weight: 600;text-align: justify; cursor: pointer;"onclick="openModalDetails('M',<%=todayMeetingCount%>)"> <span style="text-decoration: underline">Meetings Scheduled Today</span>:&nbsp;&nbsp;<span style="border:1px solid trasparent;padding:4px;border-radius: 5px;background: green;color:white;"><%=todayMeetingCount %></span> </p>
-      <a <%if(actionCounts>0){ %> href="AssigneeList.htm"<%} %> style="font-weight: 600;float:left; color:black; "><span style="text-decoration: underline">Actions PDC Today</span>:
-      <span style="border:1px solid trasparent;padding:4px;border-radius: 5px;background: green;color:white;"><%=actionCounts %></span>
+      <p class="clx-39" onclick="openModalDetails('M',<%=todayMeetingCount%>)"> <span class="clx-40">Meetings Scheduled Today</span>:&nbsp;&nbsp;<span class="clx-41"><%=todayMeetingCount %></span> </p>
+      <a <%if(actionCounts>0){ %> href="AssigneeList.htm"<%} %>class="clx-42"><span class="clx-40">Actions PDC Today</span>:
+      <span class="clx-41"><%=actionCounts %></span>
       </a>
-      <%if(LabCode.equalsIgnoreCase("ADE")){ %>
+    <%--   <%if(LabCode.equalsIgnoreCase("ADE")){ %>
       <%if(todayRfaCount1>0){ %>
       <a href="RfaAction.htm?Status=O" style="font-weight: 600;float:left; color:black; margin-top: 10px"><span style="text-decoration: underline">RFA Pending</span>:
       <span style="border:1px solid trasparent;padding:4px;border-radius: 5px;background: green;color:white;"><%=todayRfaCount1 %></span>
@@ -3054,10 +2439,10 @@ String IsDG = (String)request.getAttribute("IsDG");
       <span style="border:1px solid trasparent;padding:4px;border-radius: 5px;background: green;color:white;"><%=rfaInspectionAprCount %></span>
       </a>
       <%} %>
-      <%}%>
+      <%}%> --%>
     </div>
     <div class="modalfooter">
-      <button class="btn" style="padding: 0px !important;font-weight: 500" onclick="closeModal()">Close</button>
+      <button class="btn clx-43" onclick="closeModal()">Close</button>
     </div>
   </div>
 
@@ -4342,7 +3727,7 @@ function openModalDetails(a,b){
 
 	var html="";
 	for(var i=0;i<jsObjectList.length;i++){
-		html=html+'<p style="font-weight: 600;">'+"Project:"+jsObjectList[i][8]+"; Meeting:"+jsObjectList[i][7]+"; Time:"+jsObjectList[i][4]+';</p>'
+		html=html+'<p class="font-weight-bold">'+"Project:"+jsObjectList[i][8]+"; Meeting:"+jsObjectList[i][7]+"; Time:"+jsObjectList[i][4]+';</p>'
 	}
 	document.getElementById('modalcontents').innerHTML=html;
 	if(jsObjectList.length>0){
