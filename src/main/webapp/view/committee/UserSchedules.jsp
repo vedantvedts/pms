@@ -12,17 +12,8 @@
 <META HTTP-EQUIV="Refresh" CONTENT="60">
 
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-
-<style>
-.card-body{
-	padding: 0px !important;
-}
-.control-label{
-	font-weight: bold !important;
-}
-</style>
-
+<spring:url value="/resources/css/committeeModule/UserSchedules.css" var="UserSchedules" />
+<link href="${UserSchedules}" rel="stylesheet" />
 </head>
 <body>
 
@@ -58,7 +49,7 @@ List<Object[]> userschedulelist=(List<Object[]>)request.getAttribute("userschedu
 		<div class="row">
 			<div class="col-md-12">	
 				<div class="card shadow-nohover">
-					<div class="card-header" style="background-color: rgba(0,0,0,.03)">
+					<div class="card-header cardHeaderStyle">
 
 						<div class="col-md-3">
 							<h3>My Schedules </h3>

@@ -15,87 +15,8 @@
 <META HTTP-EQUIV="Refresh" CONTENT="60">
 
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-
-<style>
-.card-body{
-	padding: 0px !important;
-}
-.control-label{
-	font-weight: bold !important;
-	font-size: 18px;
-}
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px; 
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-} 
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px;
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-}
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-
-.meetingsp{
-  width:75%;
-  transition: background-color 3s ease;
-  background-image: linear-gradient(to right, green 50%, #f8f9fa 50%);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  transition: background-position 0.5s ease;
-  color:black;
-  padding:10px;
-  border-radius: 8px;
-  display: block;
-  font-weight: 600;
-  margin:1%;
-  margin-left:12%;
-}
-.meetingsp:hover{
- 	/*  background-color: green;
-	 background-image: linear-gradient(to right, green, blue); */
-	 color:white;
- background-position: 0 0;
- box-shadow: 3px 3px 3px gray;
-	/* background-color:red; */
-color:white;
-font-weight: 600;	
-}
-#span{
-background: blue;
-}
-</style>
-
+<spring:url value="/resources/css/committeeModule/prgmSchedule.css" var="prgmSchedule" />
+<link href="${prgmSchedule}" rel="stylesheet" />
 </head>
 <body>
 
@@ -135,7 +56,7 @@ background: blue;
 				<div class="card shadow-nohover">
 					<div class="card-header">
 						<div class="row" >
-							<div class="col-md-6" style="margin-top: -8px;">	
+							<div class="col-md-6 mt-n8">	
 								<form class="form-inline" method="post" action="PrgmSchedule.htm" id="myform">
 						  			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					  				<div class="row">
@@ -156,7 +77,7 @@ background: blue;
 								</form>
 							</div>
 					
-							<div class="col-md-6" style="margin-top: -8px;">		
+							<div class="col-md-6 mt-n8">		
 					
 								<%if(programmeId!=null){ %>
 						 			<form class="form-check-inline" action="CommitteeScheduleAddSubmit.htm" method="POST" name="myfrm1" id="myfrm1" > 
@@ -164,11 +85,11 @@ background: blue;
 											<label class="control-label"> Date &nbsp;&nbsp; : </label>
 										</div>
 									
-										<div class="col" style="margin-left:-8%;">
-					                          <input style="width:135%"  class="form-control "  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required"   readonly>	
+										<div class="col ml-n8">
+					                          <input class="form-control startDateWidth"  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required"   readonly>	
 					                    </div>
 			                    
-					                    <div class="col " style="text-align: right;">
+					                    <div class="col text-right">
 					                    	<label class="control-label"> Time &nbsp;&nbsp; : </label>
 					                    </div>
 			                 
@@ -185,7 +106,7 @@ background: blue;
 					                    	<input type="hidden" name="committeeMainId" value="<%=committeeMainId%>" /> 
 					                    	<input type="hidden" name="committeename" value="PMC" /> 
 					                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-					                    	<input type="button" class="btn  btn-sm add " style="float: right" onclick="Add1('myfrm1')" value="ADD SCHEDULE" > 	
+					                    	<input type="button" class="btn  btn-sm add float-right" onclick="Add1('myfrm1')" value="ADD SCHEDULE" > 	
 				                    	</div>                   	
 	                  				</form> 
 	                  			<%} %>
@@ -193,13 +114,13 @@ background: blue;
 						</div>
 					</div>
 					<div class="card-body">
-						<div id="calendar" style="width:79%;float:left"></div>
-						<div id="meetings" style="background-color: #216583;;width:20%;margin:5px;float: right">
-						<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;">Meetings</div>
-							<div class="mt-4" id="scrollclass" style="height:520px;overflow: auto">
+						<div id="calendar" class="float-left calendarWidth"></div>
+						<div id="meetings" class="float-right meetingsWidth">
+						<div class="text-center text-white meetingsFont">Meetings</div>
+							<div class="mt-4" id="scrollclass scrollHeight">
 								<%if(!committeeschedulelist.isEmpty()){
 									for(Object[]obj:committeeschedulelist){ %>
-				 						<a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
+				 						<a class="tag meetingsp committeeScheduleViewDecor" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>
 											&nbsp;&nbsp; Date: <%=obj[3]!=null?fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(obj[3].toString())):" - " %>
 										</a>
 								<%}}else{ %>

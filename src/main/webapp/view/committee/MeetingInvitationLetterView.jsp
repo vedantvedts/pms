@@ -96,35 +96,6 @@ String rodflag = (String)request.getAttribute("rodflag");
 		 </tr>
 		</table>
 		
-		
-		<%-- <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >	
-		 <tr>
-			
-			 <th colspan="3" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Committee Members</th>
-			
-		 </tr>
-		 <%int j=0;
-		 for(int i=0;i<invitedlist.size();i++)
-		 {
-			 j++;%>	 	
-		 	 <tr>
-		 	 <td style="border: 1px solid black; padding: 5px;text-align: left"> <%=j%> </td>
-		 	  	<td style="border: 1px solid black; padding: 5px;text-align: left">  
-		 	  	
-		 			<%= invitedlist.get(i)[6]%> (<%=invitedlist.get(i)[7] %>)  
-			 	</td>	
-			 	<td style="border: 1px solid black;padding: 5px ;text-align: left">		 	
-			 		<%if(invitedlist.get(i)[3].toString().equals("CC")){ %>Chairperson<%}
-			 		else if(invitedlist.get(i)[3].toString().equals("CS")){ %>Member Secretary<%} 
-			 		else if(invitedlist.get(i)[3].toString().equals("C")){ %>Committee Member<%} 
-			 		else if(invitedlist.get(i)[3].toString().equals("E")){ %>External Member<%} 
-			 		else if(invitedlist.get(i)[3].toString().equals("I")){ %>Internal Member<%}
-			 		else if(invitedlist.get(i)[3].toString().equals("P")){ %>Presenter<%} %> 	 		
-		 		</td>	
-		 		</tr>
-		 <%
-		 } %>
-	 </table> --%>
 	 <br><br><br>
 	 <table style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 15px; max-width: 650px; font-size: 16px; border-collapse:collapse;" >	
 	 	<tr><td><span style=" font-size: 17px">Thank You,</span></td></tr>	

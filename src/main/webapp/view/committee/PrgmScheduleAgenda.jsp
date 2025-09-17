@@ -13,233 +13,9 @@
 <spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
 <link href="${sweetalertCss}" rel="stylesheet" />
 <script src="${sweetalertJs}"></script>
+<spring:url value="/resources/css/committeeModule/PrgmScheduleAgenda.css" var="PrgmScheduleAgenda" />
+<link href="${PrgmScheduleAgenda}" rel="stylesheet" />
 <title>COMMITTEE AGENDA </title>
-<style type="text/css">
-label{  
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-}
-h6{
-	text-decoration: none;
-}
-
-h6 span{
-	font-size: 16px;
-	color:white;
-}
-
-</style>
-
-
-
-<style>
-
-.control-label{
-	font-weight: bold !important;
-}
-
-
-.table thead th{
-	
-	vertical-align: middle !important;
-}
-
-.header{
-        position:sticky;
-        top: 0 ;
-        background-color: #346691;
-    }
-    
-    .table button{
-    	
-    	font-size: 12px;
-    }
-    
- label{
- 	font-size: 15px !important;
- }
- 
-.attachlist
-{
-	width: 100%;
-}
- 
-</style>
-<!-- --------------  tree   ------------------- -->
-<style>
-ul, #myUL {
-  list-style-type: none;
-}
-
-#myUL {
-  margin: 0;
-  padding: 0;
-}
-
-.caret {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-.caret::before {
-  content: "  \25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-down::before {
-  content: "\25B6  ";
-  -ms-transform: rotate(90deg); /* IE 9 */
-  -webkit-transform: rotate(90deg); /* Safari */'
-  transform: rotate(90deg);  
-}
-
-.caret-last {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-
-.caret-last::before {
-  content: "\25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-
-.nested {
-  display: none;
-}
-
-.active {
-  display: block;
-}
-</style>
-
-<!-- ---------------- tree ----------------- -->
-<!-- -------------- model  tree   ------------------- -->
-<style>
-
-.caret-1 {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-.caret-last-1 {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-
-.caret-last-1::before {
-  content: "\25B7" ;
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-1::before {
-  content: "\25B7" ;
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-down-1::before {
-  content: "\25B6";
-  -ms-transform: rotate(90deg); /* IE 9 */
-  -webkit-transform: rotate(90deg); /* Safari */'
-  transform: rotate(90deg);  
-}
-
-.nested-1 {
-  display: none;
-}
-
-.active-1 {
-  display: block;
-}
-
-
-.folder-tree {
-  list-style: none;
-  padding-left: 0;
-}
-
-.folder-tree .list-group-item {
-  border: none;
-  padding: 8px 15px;
-  transition: all 0.3s ease;
-  border-radius: 6px;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-
-.folder-tree .folder-item:hover {
-  background: #f0f8ff;
-  transform: translateX(5px);
-}
-
-.folder-tree .file-item:hover {
-  background: #f9f9f9;
-  transform: scale(1.02);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.folder-tree .subfolder {
-  display: none;
-  margin-left: 20px;
-  padding-left: 10px;
-  border-left: 2px dashed #ddd;
-}
-
-.folder-tree .folder-item.open > .subfolder {
-  display: block;
-}
-
-.folder-icon {
-  margin-right: 8px;
-  transition: transform 0.3s;
-  font-size: 18px;
-}
-
-.pdf-check {
-  cursor: pointer;
-}
-
-.folder-item.open > .folder-icon {
-  color: #f39c12 !important;
-  transform: scale(1.3);
-  transition: all 0.3s ease;
-}
-
-.folder-tree .folder-item:hover {
-  background: #f0f8ff;
-  transform: translateX(5px);
-}
-
-.select2-container{
-	width: 100% !important;
-}
-</style>
-
 </head>
  
 <body>
@@ -279,16 +55,16 @@ ul, #myUL {
 
 
 	<div class="container-fluid">
-		<div style="margin-bottom:20px;"> 
+		<div class="mb-20px"> 
     		<div class="card">
     	
 	    		<form action="CommitteeScheduleView.htm" name="myfrm" id="myfrm" method="post">
-	    			<div class="card-header" style="background-color: #055C9D;">
-	      				<h6 style="color: orange;font-weight: bold;font-size: 1.2rem !important " align="left"><%=scheduledata[7]!=null?StringEscapeUtils.escapeHtml4(scheduledata[7].toString()): " - " %> <span> (Meeting Date and Time :      				
+	    			<div class="card-header cardHeaderBgColor">
+	      				<h6 class="h6Style" align="left"><%=scheduledata[7]!=null?StringEscapeUtils.escapeHtml4(scheduledata[7].toString()): " - " %> <span> (Meeting Date and Time :      				
 		      				 &nbsp;<%=scheduledata[2]!=null?sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(scheduledata[2].toString()))):" - " %> - <%=scheduledata[3]!=null?StringEscapeUtils.escapeHtml4(scheduledata[3].toString()): " - " %>) </span>      				
 							<input type="hidden" name="projectid" value="<%=projectid%>"/>
-		      				<input type="submit" class="btn  btn-sm view" value="VIEW" style="float:right;" />
-		      				<span  style="float:right;margin: 5px 12px;" > (Meeting Id : <%=scheduledata[11] %>) </span> 
+		      				<input type="submit" class="btn  btn-sm view float-right" value="VIEW"/>
+		      				<span  class="meetingIdStyle"> (Meeting Id : <%=scheduledata[11] %>) </span> 
 		      				<input type="hidden" name="scheduleid" value="<%=scheduledata[6] %>">
 		      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />      				
 	      				 </h6>
@@ -300,15 +76,15 @@ ul, #myUL {
 				if(committeeAgendaList.size()>0){ %> 
 					<div class="row">
 						<div class="col-md-12">
-	    					<div class="card" style="">
+	    					<div class="card">
 	      						<div class="card-body" >
 	      							<div class="row">
-			   							<div class="col-md-12" style="padding-left: 0px">
+			   							<div class="col-md-12 pl-0px">
 			   								<div class="table-responsive">
-			    								<table class="table table-bordered table-hover  table-condensed" id="mainTableEdit" style="margin-top: 20px;">
+			    								<table class="table table-bordered table-hover  table-condensed mt-20px" id="mainTableEdit">
 													<thead>
 														<tr>
-															<th colspan="9" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;" >Agenda Details</th>									
+															<th colspan="9" class="thHeaderStyle">Agenda Details</th>									
 														</tr>	
 														<tr>			
 															<th>Priority</th>		
@@ -327,7 +103,7 @@ ul, #myUL {
 														for(Object[] obj: committeeAgendaList){ %>
 															<tr>
 																<td>
-																	<input type="number" class="form-control" style="line-height: 1.6 !important" name="priority" value="<%=obj[8]%>" onkeypress="return isNumber(event)" min="1" max="<%=committeeAgendaList.size()%>" form="priority_form">
+																	<input type="number" class="form-control lineHeightStyle" name="priority" value="<%=obj[8]%>" onkeypress="return isNumber(event)" min="1" max="<%=committeeAgendaList.size()%>" form="priority_form">
 																	<input type="hidden" name="agendaid"  value="<%=obj[0]%>" form="priority_form">
 																</td>
 																<td>
@@ -337,7 +113,7 @@ ul, #myUL {
 																	<input form="inlineeditform_<%=count%>" type="text" class="form-control" name="remarks" value="<%=obj[6].toString()%>"  maxlength="255" >
 																</td>
 																<td>
-												         		 	<select form="inlineeditform_<%=count%>" class="form-control items PresLabCode" name="PresLabCode" id="PresLabCode_<%=count %>" required="required" style="width: 200px" onchange="AgendaPresentors('<%=count %>')"  data-live-search="true" data-container="body">
+												         		 	<select form="inlineeditform_<%=count%>" class="form-control items PresLabCode width-200px" name="PresLabCode" id="PresLabCode_<%=count %>" required="required" onchange="AgendaPresentors('<%=count %>')"  data-live-search="true" data-container="body">
 																		<option disabled="disabled"  selected value="">Lab Name</option>
 																	    <% for (Object[] lab : allLabList) {%>
 																		    <option value="<%=lab[3]%>" <%if(obj[14].toString().equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>  ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
@@ -346,7 +122,7 @@ ul, #myUL {
 																	</select>
 												         		</td>
 																<td>
-																	<select form="inlineeditform_<%=count%>" class="form-control items presenterid" name="presenterid" id="presenterid_<%=count %>"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body" onchange="getEmployee(this)">
+																	<select form="inlineeditform_<%=count%>" class="form-control items presenterid presenterIdStyle" name="presenterid" id="presenterid_<%=count %>"  required="required" data-live-search="true" data-container="body" onchange="getEmployee(this)">
 														        		<option disabled="disabled" selected value="">Choose...</option>
 																        <% for(Object[] emp : labEmpList){ %>
 																        	<option value="<%=emp[0] %>" <%if(obj[9].toString().equalsIgnoreCase(emp[0].toString())) {%>selected<%} %> ><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>(<%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %>)</option>
@@ -363,8 +139,8 @@ ul, #myUL {
 																		if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
 																		<tr>
 																			<td><%= doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " %> <%= " <span class='text-muted'> Ver " %> <%= doc[4]!=null?StringEscapeUtils.escapeHtml4(doc[4].toString()): " - " %> . <%= doc[5]!=null?StringEscapeUtils.escapeHtml4(doc[5].toString()): " - " %> <%= "</span>" %></td>
-																			<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
-																			<td style="width:1% ;white-space: nowrap;" ><a type="button" onclick="removeDocRow(this,<%=doc[0] %>);" > <i class=" fa fa-minus" style="color: red;"   ></i> </a></td>
+																			<td class="tdStyle"><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download text-success" aria-hidden="true"></i></a></td>
+																			<td class="tdStyle"><a type="button" onclick="removeDocRow(this,<%=doc[0] %>);" > <i class=" fa fa-minus text-danger"></i> </a></td>
 																		<tr>													
 																	<%} }%>
 																	</table>
@@ -373,7 +149,7 @@ ul, #myUL {
 											
 																<td class="center"> 
 																	<span id="editattachname_<%=obj[0] %>" class="attachname"></span>
-																	<button form="inlineeditform_<%=count%>" type="button" class=" btn btn-sm" name="add" id="attacheditbtn_<%=obj[0] %>" onclick="openMainModal('<%=obj[0] %>','<%=obj[1] %>','<%=obj[3] %>','<%=obj[5] %>','0','edit')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																	<button form="inlineeditform_<%=count%>" type="button" class=" btn btn-sm" name="add" id="attacheditbtn_<%=obj[0] %>" onclick="openMainModal('<%=obj[0] %>','<%=obj[1] %>','<%=obj[3] %>','<%=obj[5] %>','0','edit')" > <i class="btn btn-sm fa fa-plus text-success paddingStyle"></i></button>
 																	<input form="inlineeditform_<%=count%>" type="hidden" name="attachid" id="editattachid_<%=obj[0] %>" value="">												
 																</td>																	
 																<td>
@@ -426,8 +202,8 @@ ul, #myUL {
 					<div class="card-body">
 		      			<form action="CommitteeAgendaSubmit.htm" method="post">
 		        			<div >
-		          				<div style="float: right;"><span style="font-size: 15px ;color: blue ; font-weight: ">Duration in Minutes</span></div>
-		          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="mainTable" style="margin-top: 30px;width: 100%;">
+		          				<div class="float-right"><span class="fs-15px text-primary">Duration in Minutes</span></div>
+		          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover w-100 mt-30px" id="mainTable">
 									<thead>  
 										<tr>
 											<th width="20%">Agenda Item</th>
@@ -456,7 +232,7 @@ ul, #myUL {
 													<input type="text" class="form-control" name="remarks" value="NIL" maxlength="255" required="required" />
 												</td>
 												<td>
-								         		 	<select class="form-control items PresLabCode" name="PresLabCode" id="PresLabCode_<%=count %>" required="required" style="width: 200px" onchange="AgendaPresentors('<%=count %>')"  data-live-search="true" data-container="body">
+								         		 	<select class="form-control items PresLabCode width-200px" name="PresLabCode" id="PresLabCode_<%=count %>" required="required" onchange="AgendaPresentors('<%=count %>')"  data-live-search="true" data-container="body">
 														<option disabled="disabled"  selected value="">Lab Name</option>
 													    <% for (Object[] lab : allLabList) {%>
 														    <option value="<%=lab[3]%>" <%if(obj[7].toString().equalsIgnoreCase(lab[3].toString())){ %>selected <%} %>  ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
@@ -465,7 +241,7 @@ ul, #myUL {
 													</select>
 								         		</td>
 												<td>
-													<select class="form-control items presenterid" name="presenterid" id="presenterid_<%=count %>"  required="required" style=" font-weight: bold; text-align-last: left; width: 300px;" data-live-search="true" data-container="body" onchange="getEmployee(this)">
+													<select class="form-control items presenterid presenterIdFontStyle" name="presenterid" id="presenterid_<%=count %>"  required="required" data-live-search="true" data-container="body" onchange="getEmployee(this)">
 										        		<option disabled="disabled" selected value="">Choose...</option>
 												        <% for(Object[] emp : empList){ %>
 												        	<option value="<%=emp[0] %>" <%if(obj[4].toString().equalsIgnoreCase(emp[0].toString())) {%>selected<%} %> ><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>(<%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %>)</option>
@@ -476,8 +252,8 @@ ul, #myUL {
 												<td>
 													<input type="number" name="duration" class="form-control" min="1" value="20" placeholder="Minutes" required/>
 												</td>
-												<td style="text-align: left; width: 15%;">
-													<button type="button" class=" btn btn-sm btnfileattachment" name="add" onclick="openMainModal('0','0',' ','<%=projectid %>','0','add')" > <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button> 
+												<td class="text-left width-15per">
+													<button type="button" class=" btn btn-sm btnfileattachment" name="add" onclick="openMainModal('0','0',' ','<%=projectid %>','0','add')" > <i class="btn btn-sm fa fa-plus text-success paddingStyle"></i></button> 
 													<br>
 													<table class="attachlist" id="attachlistdiv_0">
 														
@@ -505,7 +281,7 @@ ul, #myUL {
 		    	<% }%>	
 		    		
 				<!-- Draft Table -->
-				<table class="table table-bordered" id="draftTable" style="margin-top:20px; display:none;">
+				<table class="table table-bordered draftTableStyle" id="draftTable">
 					<thead>
 				    	<tr>
 				      		<th>Agenda Item</th>
@@ -533,7 +309,7 @@ ul, #myUL {
 
 	<div class="modal fade" id="meetingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   		<div class="modal-dialog" role="document">
-    		<div class="modal-content" style="width: 180%;margin-left: -50%;">
+    		<div class="modal-content modalContentWidth">
       			<div class="modal-header">
         			<h6 class="modal-title" id="exampleModalLabel"> Presenter is already Having meeting on  That Particular Day</h6>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -580,7 +356,7 @@ ul, #myUL {
 			   		<ul class="list-group folder-tree" id="folderTree"></ul>
 				</div>
 				<div class="modal-footer">
-					<div style="color: red;font-weight: 500;">Note - Please upload PDF files only and PDF size should be smaller than 10mb.</div>
+					<div class="text-danger fontWeight-500">Note - Please upload PDF files only and PDF size should be smaller than 10mb.</div>
 				</div>
 			</div>
 		</div>
@@ -662,17 +438,13 @@ function setagendaattachval(attachid, attchName)
 		}else{
 			attname=attchName;
 		} */
-		html += '<tr id="a_'+agendano+'"><td title='+attchName+'> '+attname+'</td><td style="width:1% ;white-space: nowrap;">';
-		html += '<button type="button"  onclick="$(this).parent(\'td\').parent(\'tr\').remove();"  > <i class="btn btn-sm fa fa-minus" style="color: red;"   ></i> </button>';  /* onclick="$(\'#a_'+agendano+'\').remove();" */
+		html += '<tr id="a_'+agendano+'"><td title='+attchName+'> '+attname+'</td><td class="agendaTdStyle">';
+		html += '<button type="button"  onclick="$(this).parent(\'td\').parent(\'tr\').remove();"  > <i class="btn btn-sm fa fa-minus text-danger"></i> </button>';  /* onclick="$(\'#a_'+agendano+'\').remove();" */
 		html += '<input type="hidden" name="attachid_'+agendano+'" value="'+attachid+'" /></td>';
 		html += '</tr>';
 		$("#attachlistdiv_"+agendano).html(html);
 	}
-	/* else if($addedit==='edit'){		
-		$('#editattachid_'+$agendaelem).val(attachid);
-		$('#editattachname_'+$agendaelem).html(attchName+'&nbsp;&nbsp; <i class="btn btn-sm fa fa-minus" style="color: red;" onclick="editattachremove('+$agendaelem+');"  ></i>');
-		$('#attacheditbtn_'+$agendaelem).hide();
-	} */
+	
 	$('#pdfModal').modal('hide');
 /* 	$('#attachmentmodal').modal('hide'); */
 }
@@ -846,24 +618,24 @@ function openMainModal(agendaid,scheduleid,agendaname,projectid,cloneId,agendaty
                     if (folderMap.hasOwnProperty(mainId)) {
                         html += '<li class="list-group-item folder-item" data-id="' + mainId + '" onclick="toggleFolder(this, ' + mainId + ', '+ projectid +', \'mainLevel\', \'' + agendatype + '\', '+ agendaid +')">';
                         html += '<i class="fa fa-folder folder-icon text-warning"></i> ' + folderMap[mainId].name;
-                        html += '<ul class="list-group subfolder" style="display:none;">';
+                        html += '<ul class="list-group subfolder subFolderStyle">';
 
                         var subfolders = folderMap[mainId].subfolders;
                         for (var k = 0; k < subfolders.length; k++) {
                             var sub = subfolders[k];
                             html += '<li class="list-group-item folder-item" data-id="' + sub.id + '" onclick="toggleFolder(this, ' + sub.id + ', '+ projectid +', \'subLevel\', \'' + agendatype + '\', '+ agendaid +')">';
                             html += '<i class="fa fa-folder folder-icon text-warning"></i> ' + sub.name;
-                            html += '<ul class="list-group subfolder" id="subfolder-files-' + sub.id + '" style="display:none;"></ul>';
+                            html += '<ul class="list-group subfolder" id="subfolder-files-' + sub.id + ' subFolderStyle"></ul>';
                             html += '</li>';
                         }
 
-                        html += '<div class="" id="mainfolder-files-' + mainId + '" style="display:none;"></div>';
+                        html += '<div class="" id="mainfolder-files-' + mainId + ' subFolderStyle"></div>';
                         html += '</ul></li>';
                     }
                 }
             }else {
                 html += '<div>No Data Available.</div></br>';
-                html += '<div>Please go to <span style="font-weight: 500; color: blue;">Document Repository Module &rarr; Document Rep Master</span>, create a folder, and upload pdfs.</div></br>';
+                html += '<div>Please go to <span class="text-primary fontWeight-500">Document Repository Module &rarr; Document Rep Master</span>, create a folder, and upload pdfs.</div></br>';
             }
 
             $('.folder-tree').html(html);
@@ -933,10 +705,10 @@ function loadFolderFiles(folderId, projecId, type, agendatype, agendaid) {
                 }
                 html += '/>';
                 html += '<i class="fa fa-file-pdf-o text-danger"></i> ' + fileName;
-                html += '<span class="text-muted" style="font-size:13px"> Ver '+data[i][4]+'.'+data[i][5]+'</span>';
-                html += '<i class="fa fa-download" style="cursor: pointer; margin-left:8px;" onclick="fileDownload(' + data[i][7] + ', \'' + type + '\')"></i>';
-                html += '<i class="fa fa-upload" aria-hidden="true" style="color: #0a5dff; cursor: pointer; margin-left:12px;" onclick="fileUpload(\''+data[i][0]+'\')"></i></button><br/>';
-                html += '<label for="fileInput" id="uploadlabel'+data[i][0]+'" style="margin-left: 20px; margin-top: 10px; display: none;">'
+                html += '<span class="text-muted fs-13px"> Ver '+data[i][4]+'.'+data[i][5]+'</span>';
+                html += '<i class="fa fa-download faDownloadStyle" onclick="fileDownload(' + data[i][7] + ', \'' + type + '\')"></i>';
+                html += '<i class="fa fa-upload faUploadStyle" aria-hidden="true" onclick="fileUpload(\''+data[i][0]+'\')"></i></button><br/>';
+                html += '<label for="fileInput" class="uploadfileLabelStyle" id="uploadlabel'+data[i][0]+'">'
                 html += '<input type="file" name="docFileInput" id="fileInput'+data[i][0]+'" required="required"  accept="application/pdf"/> '
                 html += '<button type="button" class="btn btn-sm back" onclick="fileSubmit(\''+type+'\',\''+data[i][0]+'\',\''+data[i][2]+'\',\''+data[i][3]+'\',\''+data[i][4]+'\',\''+data[i][5]+'\',\''+data[i][6]+'\', '+agendaid+')">Upload</button>'
                 html += '</label>'

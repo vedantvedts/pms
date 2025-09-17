@@ -1,34 +1,15 @@
 	<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/committeeModule/ProjectCommitteeMainEdit.css" var="ProjectCommitteeMainEdit" />
+<link href="${ProjectCommitteeMainEdit}" rel="stylesheet" />
 <title>COMMITTEE MAIN MODIFY</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-b{
-	font-family: 'Lato',sans-serif;
-}
-
-</style>
 </head>
 <body>
 <%
@@ -64,7 +45,7 @@ String projectid=(String) request.getAttribute("projectid");
 
 <div class="container">
 
-	<div class="row" style="">
+	<div class="row">
 		<div class="col-md-12">
 		
 		 <div class="card shadow-nohover" >
@@ -72,9 +53,6 @@ String projectid=(String) request.getAttribute("projectid");
 			 
 				 <div class="row" >
 					<div class="col-md-12 ">
-					  <%-- <b style="color: green;">Title : &nbsp;<%=ProjectTccData[2] %> ( <%=ProjectTccData[1] %> ) &nbsp;&nbsp;&nbsp;&nbsp; ||
-					  &nbsp;&nbsp;&nbsp;&nbsp; Chairperson : &nbsp;<%=ProjectTccData[3]%>&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp; Secretary :&nbsp;<%=ProjectTccData[4]%>
-					  </b> --%>
 					<table>	<tr>	
 						<td>    <h4><%=committeemaineditdata[6]!=null?StringEscapeUtils.escapeHtml4(committeemaineditdata[6].toString()): " - "%> (<%=committeemaineditdata[7]!=null?StringEscapeUtils.escapeHtml4(committeemaineditdata[7].toString()): " - "%>) </h4></td><td>
 					  
@@ -93,7 +71,7 @@ String projectid=(String) request.getAttribute("projectid");
 					  
 					
 					  <form method="post" action="CommitteeDetails.htm">
-					 <button  type="submit" class="btn btn-sm add" style="float:right;" >CONSTITUTE NEW COMMITTEE</button>
+					 <button  type="submit" class="btn btn-sm add float-right">CONSTITUTE NEW COMMITTEE</button>
 					  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					  	<input type="hidden" name="committeemainid" value="<%=committeemaineditdata[1]%>">
 					  </form>
@@ -152,7 +130,7 @@ String projectid=(String) request.getAttribute("projectid");
              </div>     <!--    --------------------------------- hideonedit --------------------------------- -->
               <!--    --------------------------------- showonedit --------------------------------- -->
            <form action="CommitteeMainEditSubmit.htm" method="post"> 
-           <div id="showonedit" style="display: none;"> 
+           <div id="showonedit" class="showEditStyle"> 
             
                 <div class="row">
                 
@@ -164,7 +142,7 @@ String projectid=(String) request.getAttribute("projectid");
                             <label class="control-label">Chairperson : </label>
                             </td>
                             <td>
-                             <select class="custom-select" id="chairperson" required="required" name="chairperson" style="margin-top: -5px"> 
+                             <select class="custom-select mt-n5px" id="chairperson" required="required" name="chairperson"> 
 									    <option disabled="true"  selected value="">Choose...</option>
 									    	<% for (Object[] obj : EmployeeList1) {%>
 										<option value="<%=obj[0]%>" <%if(committeemaineditdata[8].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>) </option>
@@ -182,7 +160,7 @@ String projectid=(String) request.getAttribute("projectid");
                             	<label class="control-label">Member Secretary : </label>
                             </td>
                             <td>
-                           	<select class="custom-select" id="secretary" required="required" name="Secretary" style="margin-top: -5px">
+                           	<select class="custom-select mt-n5px" id="secretary" required="required" name="Secretary">
 				    			<option disabled="true"  selected value="" >Choose...</option>
 				    				<% for (Object[] obj : EmployeeList1) {%>
 									<option value="<%=obj[0]%>" <%if(committeemaineditdata[10].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>)</option>
@@ -244,7 +222,7 @@ String projectid=(String) request.getAttribute("projectid");
 				<br>
 	
 		
-			<div class="row" style="">
+			<div class="row">
 			<div class="col-md-1"></div>
 				<div class="col-md-10">
 				<%if(committeemainmemberlist.size()>0){ %>
@@ -280,23 +258,23 @@ String projectid=(String) request.getAttribute("projectid");
 		        
 		            <form action="CommitteeMainMembersAddSubmit.htm" method="POST" name="myfrm" id="myfrm">
 		        
-			      		<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
+			      		<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-30px" id="myTable20">
 							<thead>  
 								<tr id="Memberrow0" >
 									<th >Member Name</th>
-									<th><i class="btn btn-sm fa fa-plus" style="color: green;"  onclick="MemberAdd()"></i></th>
+									<th><i class="btn btn-sm fa fa-plus text-success"  onclick="MemberAdd()"></i></th>
 								</tr>
 								<input type="hidden"  id="MemberAdd" value="0" />
 								<tr id="Memberrow0">
 									<td >
-										<select class="form-control "name="Member" id="Member0" required="required" style=" font-weight: bold; text-align-last: left; width: 500px;" data-live-search="true" data-container="body">										
+										<select class="form-control memberNameStyle" name="Member" id="Member0" required="required" data-live-search="true" data-container="body">										
 				          					<option disabled="true"  selected value="">Choose...</option>
 						    					<% for (Object[] obj : EmployeeList) {%>
 			       									<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>) </option>
 			    								<%} %>					
 										</select>
 									</td>									
-			                     	<td><i class="btn btn-sm fa fa-minus" style="color: red;" id="MemberMinus0" onclick="Memberremove(this)" ></i></td>								
+			                     	<td><i class="btn btn-sm fa fa-minus text-danger" id="MemberMinus0" onclick="Memberremove(this)" ></i></td>								
 								</tr>
 							</thead>
 						</table>  

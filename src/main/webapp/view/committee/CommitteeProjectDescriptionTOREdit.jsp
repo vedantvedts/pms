@@ -9,32 +9,12 @@
 <html>
 
 <head>
-	<meta charset="ISO-8859-1">
-	<jsp:include page="../static/header.jsp"></jsp:include>
-	<script src="${ckeditor}"></script>
-	<link href="${contentCss}" rel="stylesheet" />
-
-
-	<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-	</style>
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+<script src="${ckeditor}"></script>
+<link href="${contentCss}" rel="stylesheet" />
+<spring:url value="/resources/css/committeeModule/committeeProjectDescriptionTOREdit.css" var="committeeProjectDescriptionTOREdit" />
+<link href="${committeeProjectDescriptionTOREdit}" rel="stylesheet" />
 </head>
 
 <body>
@@ -72,11 +52,8 @@ String committeemainid=committeemaindata[0].toString();
 			<div class="col-md-12">
 
 				<div class="card shadow-nohover">
-					<div class="card-header"
-						style=" background-color: #055C9D;margin-top: ">
-
+					<div class="card-header headerBgColor">
 						<b class="text-white">Purpose and Terms of Reference</b>
-
 					</div>
 					<form action="ProjectCommitteeDescriptionTOREditSubmit.htm" method="post" name="addcommitteefrm" id="addcommitteefrm" >
 					
@@ -119,8 +96,8 @@ String committeemainid=committeemaindata[0].toString();
 						</div>
 					</div>
 					<div class="row" >
-					<div class="col-md-5"></div><div class="col-md-3"  style="margin-bottom: 15px;" > 
-						
+					<div class="col-md-5"></div>
+					<div class="col-md-3 mb-15px"> 
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								
 								
@@ -245,7 +222,7 @@ document.getElementById('periodic').addEventListener('change', function() {
 					name : 'Borderless Table',
 					element : 'table',
 					styles : {
-						'border-style' : 'hidden',
+						'border-style' : 'hidden', 
 						'background-color' : '#E6E6FA'
 					}
 				}, {

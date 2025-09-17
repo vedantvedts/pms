@@ -1,0 +1,30 @@
+.mt-25px{
+	margin-top: 25px;
+}
+
+.modalDailogCenteredStyle{
+	max-width: 60% !important;
+}
+
+.modalHeaderStyle{
+	background-color: rgba(0,0,0,.03);
+}
+
+.ModalHeaderTitleStyle{
+	color: #145374;
+}
+
+.modalBodyStyle{
+	padding: 0.5rem !important;
+}
+
+.modalCardBodyStyle{
+	min-height:30%;
+	max-height: 93% !important;
+	overflow-y: auto;
+	width: 100%;
+}
+
+.mt-25px{
+	margin-top: 25px;
+}

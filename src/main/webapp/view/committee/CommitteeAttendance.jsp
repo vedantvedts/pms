@@ -1,54 +1,15 @@
 	<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+<spring:url value="/resources/css/committeeModule/CommitteeAttendance.css" var="CommitteeAttendance" />
+<link href="${CommitteeAttendance}" rel="stylesheet" />
 <title>COMMMITTEE ATTENDANCE</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-b{
-	font-family: 'Lato',sans-serif;
-}
-
-.toggle.btn{
-	min-height: 2.0rem !important;
-	font-size: 0.95rem !important;
-	padding: 0.35rem 0.75rem !important;
-}
-
-.fa{
-	font-size: 1rem;
-}
-
-
-.card-header{
-	background-color: #07689f;
-	color:white;
-}
-
-.card{
-	border-color: #07689f;
-}
-
-</style>
 </head>
 <body>
 <%
@@ -89,7 +50,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 
 
 <div class="container">
-	<div class="row" style="">
+	<div class="row">
 		<div class="col-md-12">
 		
 		 <div class="card shadow-nohover" >
@@ -98,8 +59,8 @@ String committeeId = (String) request.getAttribute("committeeId");
 							<div class="col-md-3" >
 					  			<h4><%=committeescheduledata[8]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[8].toString()): " - " %> Invitations </h4>
 							 </div>
-							 <div class="col-md-9" align="right" style="margin-top: 3px;" >
-					 			<h5 style="color: white"  > (Meeting Date & Time : <%= committeescheduledata[2]!=null?sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(committeescheduledata[2].toString()))) : " - "%>  &  <%=committeescheduledata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[3].toString()): " - " %>)</h5>
+							 <div class="col-md-9 mt-3px" align="right">
+					 			<h5 class="colorWhite"> (Meeting Date & Time : <%= committeescheduledata[2]!=null?sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(committeescheduledata[2].toString()))) : " - "%>  &  <%=committeescheduledata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[3].toString()): " - " %>)</h5>
 							 </div>
 					 	</div>
 			  </div>
@@ -107,12 +68,12 @@ String committeeId = (String) request.getAttribute("committeeId");
 		      <div class="card-body" >
 		   
               		
-			<div class="row" style="">
+			<div class="row">
 			
 				<div class="col-md-12">
 
 				<div align="center">
-					<h5 style="color:#145374" >(Meeting Id : <%=committeescheduledata[12]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[12].toString()): " - " %>) </h5>
+					<h5 class="meetingIdColor">(Meeting Id : <%=committeescheduledata[12]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[12].toString()): " - " %>) </h5>
 				</div>
 
 				<%
@@ -227,26 +188,26 @@ String committeeId = (String) request.getAttribute("committeeId");
 <!------------------------------------------------------------------------------------------------------------------------------------------------ -->	
 			
 				<div class=row>
-		       		<div class="col-md-12" id="addmemtitleid" style="display: none;">
-		       			<h5 style="color:#145374">Add Additional Members</h5>
+		       		<div class="col-md-12 addMembersDisplay" id="addmemtitleid">
+		       			<h5 class="addMembersColor">Add Additional Members</h5>
 		       			<hr> 
 		          	</div>
-		          	<div class="col-md-12" id="reptitleid" style="display: none;">
-		       			<h5 style="color:#145374">Add Representative Members</h5>
+		          	<div class="col-md-12 addMembersDisplay" id="reptitleid">
+		       			<h5 class="addMembersColor">Add Representative Members</h5>
 		       			<hr> 
 		          	</div>
 		          	
 		     	</div>			
 					
 <!-- --------------------------------internal add ----------------------------------------------- -->
-			<div id="additionalmemadd" style="visibility: collapse;"> 
-				<div class="row" id="repselect" style="visibility :collapse ;" >						
+			<div id="additionalmemadd" class="additionalCollapse"> 
+				<div class="row" id="repselect">						
 					<div class="col-md-6">	 
 						
-						<table  style="margin-top: 10px;width:100%">
+						<table class="mt-10 w-100">
 							<tr >			
 									
-								<td style="width: 100%;">	
+								<td class="w-100">	
 									<label>Representative Type</label>										
 									<select class="form-control selectdee " name="reptype" id="reptype"  data-live-search="true" onchange="setreptype();" >
 											<option selected value="0"  > Choose... </option>
@@ -265,7 +226,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 				<form  action="CommitteeAttendanceSubmit.htm" method="POST" name="myfrm1" id="myfrm1">					
 				<div class="row">						
 					<div class="col-md-6">
-						<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
+						<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-10 w-100" id="">
 							<thead>  
 								<tr id="" >
 									<th> Internal Members</th>
@@ -305,14 +266,14 @@ String committeeId = (String) request.getAttribute("committeeId");
 				
 				<div class="col-md-6">
 					
-					<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="table1" style="margin-top: 10px;">
+					<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-10" id="table1">
 						<thead>  
 							<tr id="">
 								<th colspan="2"> External Members (Within DRDO)</th>
 							</tr>
 						</thead>
 						<tr>
-							<td style="width:30%">							
+							<td class="width-30">							
 								<div class="input select">
 									<select class="form-control selectdee" name="LabId" tabindex="-1"   id="LabCode" onchange="employeename()" required>
 										<option disabled="true"  selected value="">Lab Name</option>
@@ -355,7 +316,7 @@ String committeeId = (String) request.getAttribute("committeeId");
 				
 				<div class="col-md-6">
 					
-						<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
+						<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-10 w-100" id="">
 						<thead>  
 							<tr id="">
 								<th> External Members (Outside DRDO)</th>

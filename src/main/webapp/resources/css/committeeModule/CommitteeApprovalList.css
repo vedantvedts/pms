@@ -1,0 +1,141 @@
+#sidebarCollapse{
+display:none;
+}
+
+#sidebar{
+display:none;
+}
+
+.btn-status {
+  position: relative;
+  z-index: 1; 
+}
+
+.btn-status:hover {
+  transform: scale(1.05);
+  z-index: 5;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+label {
+		font-weight: 800;
+		font-size: 16px;
+		color: #07689f;
+}
+
+.width-1{
+	width: 1%;
+}
+
+.width-5{
+	width: 5%;
+}
+
+
+.width-10{
+	width: 10%;
+}
+
+
+.width-20{
+	width: 20%;
+}
+
+
+.width-20px{
+	width: 20px;
+}
+
+.width-196px{
+	width: 196px;
+}
+
+.width-80px{
+	width: 80px;
+}
+
+.width-113px{
+	width:113px;
+}
+.justify-content-evenly {
+  justify-content: space-evenly !important;
+}
+
+.tdJustify{
+	text-align: justify;
+}
+
+.mt-1{
+	margin-top: 1%;
+}
+
+.fs-90 {
+  font-size: 0.90rem !important;
+}
+
+.mt-n5{
+	margin-top: -5px;
+}
+
+.committeeApprovalColor{
+	color:#055C9D;
+}
+
+.pendingListStyle{
+	background-color: #E1E5E8;
+	padding:0px;
+}
+
+.fs-16px {
+  font-size: 16px;
+}
+
+.mt-n10{
+	margin-top: -10px;
+}
+
+.committeeEnoteLetterDownloadStyle{
+	background: #088395;
+	border-color: #088395;
+}
+
+
+.C000000 {
+  color: #000000 !important;
+}
+
+.C2155CD {
+  color: #2155CD !important;
+}
+
+.CFF7F3F {
+  color: #FF7F3F !important;
+}
+
+.C1CD6CE {
+  color: #1CD6CE !important;
+}
+
+.CD61C4E {
+  color: #D61C4E !important;
+}
+
+.CE247E7 {
+  color: #E247E7 !important;
+}
+
+.C157ECD {
+  color: #157ECD !important;
+}
+
+.C9C27B0 {
+  color: #9C27B0 !important;
+}
+
+.C2B7A0B {
+  color: #2B7A0B !important;
+}
+
+
+.fw-800{
+	font-weight: 600;
+}

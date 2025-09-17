@@ -14,86 +14,8 @@
 <META HTTP-EQUIV="Refresh" CONTENT="60">
 
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-
-<style>
-.card-body{
-	padding: 0px !important;
-}
-.control-label{
-	font-weight: bold !important;
-}
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px; 
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-} 
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px;
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-}
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-
-.meetingsp{
-  width:75%;
-  transition: background-color 3s ease;
-  background-image: linear-gradient(to right, green 50%, #f8f9fa 50%);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  transition: background-position 0.5s ease;
-  color:black;
-  padding:10px;
-  border-radius: 8px;
-  display: block;
-  font-weight: 600;
-  margin:1%;
-  margin-left:12%;
-}
-.meetingsp:hover{
- 	/*  background-color: green;
-	 background-image: linear-gradient(to right, green, blue); */
-	 color:white;
- background-position: 0 0;
- box-shadow: 3px 3px 3px gray;
-	/* background-color:red; */
-color:white;
-font-weight: 600;	
-}
-#span{
-background: blue;
-}
-</style>
-
+<spring:url value="/resources/css/committeeModule/CommitteeScheduleSelect.css" var="CommitteeScheduleSelect" />
+<link href="${CommitteeScheduleSelect}" rel="stylesheet" />
 </head>
 <body>
 
@@ -113,12 +35,12 @@ List<Object[]>  committeeschedulelist=(List<Object[]>)request.getAttribute("comm
 System.out.println("committeeid: "+committeeid);
 %>
 
-<div class="card-header" style="margin-top: -1%">
+<div class="card-header mt-n1">
 	<div class="row">	
 		<div class="col-md-6">
 			<h4>Committee Meeting Schedules</h4>
 		</div>
-		<div class="col-md-6" align="right" style="margin-top: -8px;">
+		<div class="col-md-6 mt-n8px" align="right">
 			<form method="post" action="CommitteeScheduleList.htm" id="myform">
 			
 			  <table><tr><td>
@@ -164,7 +86,7 @@ System.out.println("committeeid: "+committeeid);
 				<div class="card shadow-nohover">
 					<div class="card-header">
 					
-					<div class="row" style="margin-top:-10px;">
+					<div class="row mt-n10px">
 					
 					 <form class="form-check-inline" action="CommitteeScheduleAddSubmit.htm" method="POST" name="myfrm" id="myfrm" > 
 					
@@ -196,7 +118,7 @@ System.out.println("committeeid: "+committeeid);
 		                    	<input type="hidden" name="projectid" value="0"/> 
 		                    	<input type="hidden" name="initiationid" value="0"/> 
 		                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-		                    	<input type="submit" class="btn  btn-sm add " style="float: right" onclick="Add1('myfrm')" value="ADD SCHEDULE" > 	
+		                    	<input type="submit" class="btn  btn-sm add float-right" onclick="Add1('myfrm')" value="ADD SCHEDULE" > 	
 	                    	</div>                   	
                   		</form> 
 						
@@ -204,14 +126,14 @@ System.out.println("committeeid: "+committeeid);
 					
 					</div>
 					<div class="card-body">
-						<div id="calendar" style="width:79%;float:left"></div>
-						<div id="meetings" style="background-color: #216583;;width:20%;margin:5px;float: right">
-						<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;">Meetings</div>
-						<div class="mt-4" id="scrollclass" style="height:520px;overflow: auto">
+						<div id="calendar" class="calendarStyle"></div>
+						<div id="meetings" class="meetingStyle">
+						<div class="meetingFontStyle">Meetings</div>
+						<div class="mt-4 ScrollDivStyle" id="scrollclass">
 						<%if(!committeeschedulelist.isEmpty()){
 							for(Object[]obj:committeeschedulelist){
 							%>
-						 <a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>
+						 <a class="tag meetingsp text-decoration-none" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>
 						&nbsp;&nbsp; Date: <%=obj[3]!=null? sdf2.format(sdf3.parse(StringEscapeUtils.escapeHtml4(obj[3].toString()))): " - "  %>
 							</a>
 						<%}}else{ %>
