@@ -1058,123 +1058,270 @@ public class PFTSController {
 		}
 		
 		
-		 @RequestMapping(value="ManualDemandExcelSubmit.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
-			public String ManualDemandExcelSubmit( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
-			{
-			  
-				String UserId = (String) ses.getAttribute("Username");
-				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-				String Logintype= (String)ses.getAttribute("LoginType");
-				String LabCode = (String)ses.getAttribute("labcode");
-				String projectid =req.getParameter("ProjectId");
-			
-			
-				
-				try {
-					if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
-						   Part filePart = req.getPart("filename");
-							List<ProjectOverallFinance>list = new ArrayList<>();
-							InputStream fileData = filePart.getInputStream();
-							
-						Long count =0l;
-							Workbook workbook = new XSSFWorkbook(fileData);
-							Sheet sheet  = workbook.getSheetAt(0);
-							int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 
-						
-							for (int i=1;i<=rowCount;i++) {
-								PFTSFile pf = new PFTSFile();
-								int cellcount= sheet.getRow(i).getLastCellNum();
-								
-								 Row row = sheet.getRow(i);
-								 DecimalFormat df = new DecimalFormat("#");
-							
-								for(int j=1;j<cellcount;j++) {
-									Cell cell = row.getCell(j);
-									if(cell!=null) {
-										if(j==1) {
-											switch(sheet.getRow(i).getCell(j).getCellType()) {
-											case BLANK:
-												break;
-											case NUMERIC:
-												pf.setDemandNo(df.format(sheet.getRow(i).getCell(j).getNumericCellValue()));
-												break;
-											case STRING:
-												pf.setDemandNo(sheet.getRow(i).getCell(j).getStringCellValue());
-												break;	 
-											}
-										}
-										
-										if(j==2) {
-											System.out.println("sheet.getRow(i).getCell(j)"+sheet.getRow(i).getCell(j));
-											
-											switch(sheet.getRow(i).getCell(j).getCellType()) {
-											case BLANK:
-												break;
-											case NUMERIC:
-												 if (DateUtil.isCellDateFormatted(sheet.getRow(i).getCell(j))) {
-											            java.util.Date date = sheet.getRow(i).getCell(j).getDateCellValue();
-											            pf.setDemandDate(new java.sql.Date(date.getTime()));
-											        }
-												break;
-											case STRING:
-												pf.setDemandDate(new java.sql.Date(inputFormat.parse((sheet.getRow(i).getCell(j).getStringCellValue())).getTime()));
-												break;	 
-											
-											}
-										}
-										
-										if(j==3) {
-											switch(sheet.getRow(i).getCell(j).getCellType()) {
-											case BLANK:
-												break;
-											case NUMERIC:
-												pf.setEstimatedCost(sheet.getRow(i).getCell(j).getNumericCellValue());
-												break;
-											case STRING:
-												pf.setEstimatedCost(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue()));
-												break;	 
-											}
-										}
-										
-										if(j==4) {
-											switch(sheet.getRow(i).getCell(j).getCellType()) {
-											case BLANK:
-												break;
-											case NUMERIC:
-												break;
-											case STRING:
-												pf.setItemNomenclature(sheet.getRow(i).getCell(j).getStringCellValue());
-												break;	 
-											}
-										}
-									}
-								}
-								 pf.setDemandType("M");
-								 pf.setPftsStatusId(1l);
-							     pf.setRemarks("Nil");
-							     pf.setIsActive(1);
-								 pf.setCreatedBy(UserId);
-								 pf.setCreatedDate(sdf.format(new Date()));
-								 pf.setProjectId(Long.parseLong(projectid));
-								 
-								 if(pf.getDemandNo()!=null) {
-								  count=count+service.addDemandfile(pf);
-								 }
-							}
-							if(count>0) {
-								redir.addAttribute("result","Demands Added Successfully ");
-							}else {
-								redir.addAttribute("resultfail","Something went worng");
-							}
-					}
-				} catch (Exception e) {
-				e.printStackTrace();
-				}
-				redir.addAttribute("projectid", projectid);
-				return "redirect:/ProcurementStatus.htm";
-				
-			}
-		 
+//		 @RequestMapping(value="ManualDemandExcelSubmit.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
+//			public String ManualDemandExcelSubmit( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
+//			{
+//			  
+//				String UserId = (String) ses.getAttribute("Username");
+//				String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//				String Logintype= (String)ses.getAttribute("LoginType");
+//				String LabCode = (String)ses.getAttribute("labcode");
+//				String projectid =req.getParameter("ProjectId");
+//			
+//			
+//				
+//				try {
+//					if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
+//						   Part filePart = req.getPart("filename");
+//							List<ProjectOverallFinance>list = new ArrayList<>();
+//							InputStream fileData = filePart.getInputStream();
+//							
+//						Long count =0l;
+//							Workbook workbook = new XSSFWorkbook(fileData);
+//							Sheet sheet  = workbook.getSheetAt(0);
+//							int rowCount=sheet.getLastRowNum()-sheet.getFirstRowNum(); 
+//						
+//							for (int i=1;i<=rowCount;i++) {
+//								PFTSFile pf = new PFTSFile();
+//								int cellcount= sheet.getRow(i).getLastCellNum();
+//								
+//								 Row row = sheet.getRow(i);
+//								 DecimalFormat df = new DecimalFormat("#");
+//							
+//								for(int j=1;j<cellcount;j++) {
+//									Cell cell = row.getCell(j);
+//									if(cell!=null) {
+//										if(j==1) {
+//											switch(sheet.getRow(i).getCell(j).getCellType()) {
+//											case BLANK:
+//												break;
+//											case NUMERIC:
+//												pf.setDemandNo(df.format(sheet.getRow(i).getCell(j).getNumericCellValue()));
+//												break;
+//											case STRING:
+//												pf.setDemandNo(sheet.getRow(i).getCell(j).getStringCellValue());
+//												break;	 
+//											}
+//										}
+//										
+//										if(j==2) {
+//											System.out.println("sheet.getRow(i).getCell(j)"+sheet.getRow(i).getCell(j));
+//											
+//											switch(sheet.getRow(i).getCell(j).getCellType()) {
+//											case BLANK:
+//												break;
+//											case NUMERIC:
+//												 if (DateUtil.isCellDateFormatted(sheet.getRow(i).getCell(j))) {
+//											            java.util.Date date = sheet.getRow(i).getCell(j).getDateCellValue();
+//											            pf.setDemandDate(new java.sql.Date(date.getTime()));
+//											        }
+//												break;
+//											case STRING:
+//												pf.setDemandDate(new java.sql.Date(inputFormat.parse((sheet.getRow(i).getCell(j).getStringCellValue())).getTime()));
+//												break;	 
+//											
+//											}
+//										}
+//										
+//										if(j==3) {
+//											switch(sheet.getRow(i).getCell(j).getCellType()) {
+//											case BLANK:
+//												break;
+//											case NUMERIC:
+//												pf.setEstimatedCost(sheet.getRow(i).getCell(j).getNumericCellValue());
+//												break;
+//											case STRING:
+//												pf.setEstimatedCost(Double.parseDouble(sheet.getRow(i).getCell(j).getStringCellValue()));
+//												break;	 
+//											}
+//										}
+//										
+//										if(j==4) {
+//											switch(sheet.getRow(i).getCell(j).getCellType()) {
+//											case BLANK:
+//												break;
+//											case NUMERIC:
+//												break;
+//											case STRING:
+//												pf.setItemNomenclature(sheet.getRow(i).getCell(j).getStringCellValue());
+//												break;	 
+//											}
+//										}
+//									}
+//								}
+//								 pf.setDemandType("M");
+//								 pf.setPftsStatusId(1l);
+//							     pf.setRemarks("Nil");
+//							     pf.setIsActive(1);
+//								 pf.setCreatedBy(UserId);
+//								 pf.setCreatedDate(sdf.format(new Date()));
+//								 pf.setProjectId(Long.parseLong(projectid));
+//								 
+//								 if(pf.getDemandNo()!=null) {
+//								  count=count+service.addDemandfile(pf);
+//								 }
+//							}
+//							if(count>0) {
+//								redir.addAttribute("result","Demands Added Successfully ");
+//							}else {
+//								redir.addAttribute("resultfail","Something went worng");
+//							}
+//					}
+//				} catch (Exception e) {
+//				e.printStackTrace();
+//				}
+//				redir.addAttribute("projectid", projectid);
+//				return "redirect:/ProcurementStatus.htm";
+//				
+//			}
+//		 
+		
+		private boolean isValidExcelFile(String fileName, String contentType) {
+		    if (fileName == null || contentType == null) return false;
+
+		    String lowerFile = fileName.toLowerCase();
+
+		    if (lowerFile.endsWith(".xls") && contentType.equalsIgnoreCase("application/vnd.ms-excel")) {
+		        return true;
+		    }
+		    if (lowerFile.endsWith(".xlsx") && contentType.equalsIgnoreCase("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+		        return true;
+		    }
+		    return false;
+		}
+
+		
+		
+		
+		
+		@RequestMapping(value = "ManualDemandExcelSubmit.htm", method = {RequestMethod.POST, RequestMethod.GET})
+		public String ManualDemandExcelSubmit(RedirectAttributes redir, HttpServletRequest req, HttpServletResponse res, HttpSession ses) throws Exception {
+
+		    String UserId = (String) ses.getAttribute("Username");
+		    String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		    String Logintype = (String) ses.getAttribute("LoginType");
+		    String LabCode = (String) ses.getAttribute("labcode");
+		    String projectid = req.getParameter("ProjectId");
+
+		    try {
+		        if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
+
+		            Part filePart = req.getPart("filename");
+		            String fileName = filePart.getSubmittedFileName();
+		            String contentType = filePart.getContentType();
+
+		            // ✅ Step 1: Validate Excel file (only xls or xlsx allowed)
+		            if (!isValidExcelFile(fileName, contentType)) {
+		                redir.addAttribute("resultfail", "Only Excel files (.xls, .xlsx) are allowed");
+		                return "redirect:/ProcurementStatus.htm";
+		            }
+
+		            // ✅ Step 2: Read the Excel file
+		            InputStream fileData = filePart.getInputStream();
+		            Workbook workbook = null;
+
+		            if (fileName.toLowerCase().endsWith(".xls")) {
+		                workbook = new XSSFWorkbook(fileData); // old format
+		            } else if (fileName.toLowerCase().endsWith(".xlsx")) {
+		                workbook = new XSSFWorkbook(fileData); // new format
+		            }
+
+		            Sheet sheet = workbook.getSheetAt(0);
+		            int rowCount = sheet.getLastRowNum() - sheet.getFirstRowNum();
+
+		            Long count = 0L;
+
+		            for (int i = 1; i <= rowCount; i++) {
+		                PFTSFile pf = new PFTSFile();
+		                Row row = sheet.getRow(i);
+		                int cellcount = row.getLastCellNum();
+		                DecimalFormat df = new DecimalFormat("#");
+
+		                for (int j = 1; j < cellcount; j++) {
+		                    Cell cell = row.getCell(j);
+		                    if (cell != null) {
+		                        if (j == 1) {
+		                            switch (cell.getCellType()) {
+		                                case BLANK: break;
+		                                case NUMERIC:
+		                                    pf.setDemandNo(df.format(cell.getNumericCellValue()));
+		                                    break;
+		                                case STRING:
+		                                    pf.setDemandNo(cell.getStringCellValue());
+		                                    break;
+		                            }
+		                        }
+
+		                        if (j == 2) {
+		                            switch (cell.getCellType()) {
+		                                case BLANK: break;
+		                                case NUMERIC:
+		                                    if (DateUtil.isCellDateFormatted(cell)) {
+		                                        java.util.Date date = cell.getDateCellValue();
+		                                        pf.setDemandDate(new java.sql.Date(date.getTime()));
+		                                    }
+		                                    break;
+		                                case STRING:
+		                                    pf.setDemandDate(new java.sql.Date(inputFormat.parse(cell.getStringCellValue()).getTime()));
+		                                    break;
+		                            }
+		                        }
+
+		                        if (j == 3) {
+		                            switch (cell.getCellType()) {
+		                                case BLANK: break;
+		                                case NUMERIC:
+		                                    pf.setEstimatedCost(cell.getNumericCellValue());
+		                                    break;
+		                                case STRING:
+		                                    pf.setEstimatedCost(Double.parseDouble(cell.getStringCellValue()));
+		                                    break;
+		                            }
+		                        }
+
+		                        if (j == 4) {
+		                            switch (cell.getCellType()) {
+		                                case BLANK: break;
+		                                case STRING:
+		                                    pf.setItemNomenclature(cell.getStringCellValue());
+		                                    break;
+		                            }
+		                        }
+		                    }
+		                }
+
+		                pf.setDemandType("M");
+		                pf.setPftsStatusId(1L);
+		                pf.setRemarks("Nil");
+		                pf.setIsActive(1);
+		                pf.setCreatedBy(UserId);
+		                pf.setCreatedDate(sdf.format(new Date()));
+		                pf.setProjectId(Long.parseLong(projectid));
+
+		                if (pf.getDemandNo() != null) {
+		                    count = count + service.addDemandfile(pf);
+		                }
+		            }
+
+		            if (count > 0) {
+		                redir.addAttribute("result", "Demands Added Successfully");
+		            } else {
+		                redir.addAttribute("resultfail", "Something went wrong");
+		            }
+		        }
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        redir.addAttribute("resultfail", "Error processing file: " + e.getMessage());
+		    }
+
+		    redir.addAttribute("projectid", projectid);
+		    return "redirect:/ProcurementStatus.htm";
+		}
+
+		
+		
+		
+		
 		@RequestMapping(value="addProcurementMilestone.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
 		public String addProcurementMilestone (RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses) throws Exception {
 		

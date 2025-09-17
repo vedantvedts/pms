@@ -50,6 +50,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -1253,6 +1254,56 @@ public class MilestoneController {
 		return "milestone/MileActivityUpdate";
 
 	}
+private boolean isValidFileType(MultipartFile file) {
+		
+		
+		
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
+		
+	    if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+
+	    
+	    
+	  
+	    if (contentType == null) {
+	        return false;
+	    }
+	    
+	 // Extract extension in lowercase
+	    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+	    
+	 // Check mapping between MIME type and extension
+	    switch (extension) {
+	        case "pdf":
+	            return contentType.equalsIgnoreCase("application/pdf");
+	        case "jpeg":
+	        case "jpg":
+	            return contentType.equalsIgnoreCase("image/jpeg");
+	        case "png":
+	            return contentType.equalsIgnoreCase("image/png");
+	        default:
+	            return false;
+	    }
+
+//	    // Allow only images and PDF
+//	 // Allowed MIME types
+//	    boolean validMime = contentType.equalsIgnoreCase("application/pdf")
+//	            || contentType.equalsIgnoreCase("image/jpeg")
+//	            || contentType.equalsIgnoreCase("image/png");
+//
+//	    // Allowed extensions
+//	    boolean validExtension = extension.equals("pdf")
+//	            || extension.equals("jpeg")
+//	            || extension.equals("jpg")
+//	            || extension.equals("png");
+//
+//	    return validMime && validExtension;
+	}
+
+
 
 
 	@RequestMapping(value = "M-A-UpdateSubmit.htm", method = RequestMethod.POST)   
@@ -1271,6 +1322,17 @@ public class MilestoneController {
 				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
 				return redirectWithError(redir, "M-A-Update.htm", "'Remarks' should not contain HTML Tags.!");
 			}
+			
+			  if (!isValidFileType(FileAttach)) {
+				    redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
+					redir.addAttribute("ActivityId", req.getParameter("ActivityId"));
+					redir.addAttribute("ActivityType", req.getParameter("ActivityType"));
+					redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
+		            return redirectWithError(redir, "M-A-Update.htm",
+		                    "Invalid file type. Only PDF or Image files are allowed!");
+		        }
+			
+			
 			redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
 			redir.addFlashAttribute("ActivityId", req.getParameter("ActivityId"));
 			redir.addFlashAttribute("ActivityType", req.getParameter("ActivityType"));
@@ -1743,6 +1805,24 @@ public class MilestoneController {
 			String ProjectId=req.getParameter("projectidvalue");
 			long release=Long.parseLong(req.getParameter("Rev"));
 			long version=Long.parseLong(req.getParameter("Ver"));
+			
+			
+			  if (!isValidFileType(FileAttach)) {
+				  redir.addFlashAttribute("MainSystemValue", req.getParameter("mainsystemval"));
+					redir.addFlashAttribute("s1", req.getParameter("s1"));
+					redir.addFlashAttribute("s2", req.getParameter("s2"));
+					redir.addFlashAttribute("s3", req.getParameter("s3"));
+					redir.addFlashAttribute("s4", req.getParameter("s4"));
+					redir.addFlashAttribute("sublevel", req.getParameter("sublevel"));
+					redir.addFlashAttribute("projectid", req.getParameter("projectidvalue"));
+					redir.addFlashAttribute("doclev1", req.getParameter("doclev1"));
+					redir.addFlashAttribute("doclev2", req.getParameter("doclev2"));
+					redir.addFlashAttribute("doclev3", req.getParameter("documenttitle"));
+					
+		            return redirectWithError(redir, "TestingFileRepo.htm",
+		                    "Invalid file type. Only PDF or Image files are allowed!");
+		        }
+			
 
 			if(req.getParameter("isnewver").equalsIgnoreCase("N")) 
 			{
@@ -2585,7 +2665,28 @@ public class MilestoneController {
 		String LabCode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside AddDocAmendment.htm "+UserId);
 		try {
-			//								
+			//		
+			
+			  if (!isValidFileType(FileAttach)) {
+					redir.addFlashAttribute("MainSystemValue", req.getParameter("mainsystemval"));
+					redir.addFlashAttribute("s1", req.getParameter("s1"));
+					redir.addFlashAttribute("s2", req.getParameter("s2"));
+					redir.addFlashAttribute("s3", req.getParameter("s3"));
+					redir.addFlashAttribute("s4", req.getParameter("s4"));
+					redir.addFlashAttribute("sublevel", req.getParameter("sublevel"));
+					redir.addFlashAttribute("projectid", req.getParameter("projectidvalue"));
+					redir.addFlashAttribute("doclev1", req.getParameter("doclev1"));
+					redir.addFlashAttribute("doclev2", req.getParameter("doclev2"));
+					redir.addFlashAttribute("doclev3", req.getParameter("documenttitle"));
+					
+		            return redirectWithError(redir, "TestingFileRepo.htm",
+		                    "Invalid file type. Only PDF or Image files are allowed!");
+		        }
+			
+			
+			
+			
+			
 			FileDocAmendmentDto amenddoc=new FileDocAmendmentDto(); 
 			amenddoc.setFileRepUploadId(req.getParameter("uploaddocid"));
 			amenddoc.setFileName(FileAttach.getOriginalFilename());
@@ -3396,7 +3497,7 @@ public class MilestoneController {
 	/* ************************************************** MS Project End *************************************************************** */
 
 	@PostMapping(value = "DocFileUpload.htm")
-	public @ResponseBody String DocFileUploadAjax(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res,
+	public @ResponseBody ResponseEntity<String> DocFileUploadAjax(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res,
 			@RequestParam(name = "file", required = false) MultipartFile file,
 			@RequestParam("fileRepId") String fileRepId,
 			@RequestParam("projectid") String projectid,
@@ -3411,7 +3512,11 @@ public class MilestoneController {
 		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside DocFileUpload.htm "+UserId);
 		try {
-
+			
+			  if (!isValidFileType(file)) {
+				  return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+		        }
+			
 			String agendaid = req.getParameter("agendaid");
 
 			FileUploadDto upload = new FileUploadDto();
@@ -3431,13 +3536,13 @@ public class MilestoneController {
 
 			long result = service.DocFileUploadAjax(upload);
 
-			Gson json = new Gson();
-			return json.toJson(result);
+			
+			return new ResponseEntity<String>("200",HttpStatus.OK);
 
 		} catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside DocFileUpload.htm "+UserId, e); 
-			return "static/Error";
+			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -3741,7 +3846,7 @@ public class MilestoneController {
 	}
 	
 	@RequestMapping(value = "uploadFileData.htm", method = RequestMethod.POST)
-	public @ResponseBody String uploadFileData(HttpServletRequest req,HttpSession ses,
+	public @ResponseBody ResponseEntity<String> uploadFileData(HttpServletRequest req,HttpSession ses,
 			@RequestParam(name = "fileAttach", required = false) MultipartFile file,
 			@RequestParam("docName") String docName,
 			@RequestParam("fileRepId") String fileRepId,
@@ -3757,6 +3862,31 @@ public class MilestoneController {
 		long result = 0l;
 		Gson json = new Gson();
 		try {
+			
+			
+			 // 🔹 Check if file is missing
+	        if (file == null || file.isEmpty()) {
+	            return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+	        }
+	        
+	        String originalFilename = file.getOriginalFilename();
+	        
+	     // Extract extension in lowercase
+		    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+
+	        // 🔹 Validate: Only PDF allowed
+	        String contentType = file.getContentType();
+	        if (contentType == null || !contentType.equalsIgnoreCase("application/pdf")) {
+	        	 return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+	        }
+	        
+	        System.out.println("extension--"+extension);
+
+	        if (!extension.equalsIgnoreCase("pdf")) {
+	        	 return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+	        }
+
+			
 			
 			FileUploadDto upload = new FileUploadDto();
 			upload.setFileId(fileRepId);
@@ -3776,7 +3906,7 @@ public class MilestoneController {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside getOldFileDocNames"+UserId, e);
 		}
-		return json.toJson(result);	
+		return new ResponseEntity<String>("200", HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "fileDownload.htm/{id}", method = RequestMethod.GET)
@@ -4571,6 +4701,14 @@ public class MilestoneController {
 		long result = 0l;
 		Gson json = new Gson();
 		try {
+			
+		
+			// 🔹 Validate file types
+	        if (!isValidFileType(file) ) {
+
+	        	 return "error:Invalid file type. Only PDF or Image files are allowed!";
+	        }
+			
 			
 			FileUploadDto upload = new FileUploadDto();
 			upload.setFileId(fileRepId);
