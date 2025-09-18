@@ -64,7 +64,7 @@ public class InputValidator {
     }
 
     public static boolean isContainsHTMLTags(String input) {
-        return withHTMLTagPattern.matcher(input).find();
+        return input!=null && withHTMLTagPattern.matcher(input).find();
     }
     public static boolean isContainsNumberOnly(String input) {
     	return match(input, withNumericPattern);
