@@ -28,6 +28,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -267,6 +268,40 @@ public class ProjectClosureController {
 		} 
 	}
 	
+private boolean isValidFileType(MultipartFile file) {
+		
+		
+		
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
+		
+	    if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+
+	    
+	    
+	  
+	    if (contentType == null) {
+	        return false;
+	    }
+	    
+	 // Extract extension in lowercase
+	    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+	    
+	 // Check mapping between MIME type and extension
+	    switch (extension) {
+	        case "pdf":
+	            return contentType.equalsIgnoreCase("application/pdf");
+	      
+	        default:
+	            return false;
+	    }
+
+
+	}
+
+	
 	@RequestMapping(value="ProjectClosureSoCDetailsSubmit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String projectClosureSoCDetailsSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,
 			@RequestPart(name="monitoringCommitteeAttach", required = false) MultipartFile monitoringCommitteeAttach,
@@ -274,6 +309,10 @@ public class ProjectClosureController {
 		String UserId = (String) ses.getAttribute("Username");
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		try {
+			
+			
+			
+			
 			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
 			
@@ -281,8 +320,21 @@ public class ProjectClosureController {
 			String presentStatus = req.getParameter("presentStatus");
 			String reason = req.getParameter("reason");
 			String recommendation = req.getParameter("recommendation");
-			String monitoringCommittee  = req.getParameter("monitoringCommittee ");
+			String monitoringCommittee  = req.getParameter("monitoringCommittee");
 			String otherRelevant = req.getParameter("otherRelevant");
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(monitoringCommitteeAttach) || !isValidFileType(lessonsLearnt)
+	               ) {
+
+	        	redir.addAttribute("closureId", closureId);
+				redir.addAttribute("socTabId","2");
+	        	return redirectWithError(redir, "ProjectClosureSoCDetails.htm",
+	                    "Invalid file type. Only PDF  files are allowed.");
+	        }
+			
+			
+			
 			
 			if(Stream.of(qrNo, presentStatus, reason, recommendation, monitoringCommittee, otherRelevant).anyMatch(field-> InputValidator.isContainsHTMLTags(field))) {
 				redir.addAttribute("closureId", closureId);
@@ -794,6 +846,33 @@ public class ProjectClosureController {
 				redir.addAttribute("acpTabId", "1");					
 				return redirectWithError(redir, "ProjectClosureACPDetails.htm", "HTML tags are not permitted.");
 			}
+			
+			// 🔹 Validate file types
+			
+			if(monitoringCommitteeAttach!=null && !monitoringCommitteeAttach.isEmpty()  ) {
+	        if (!isValidFileType(monitoringCommitteeAttach)  ) {
+
+	    		redir.addAttribute("closureId", closureId);
+				redir.addAttribute("details", details);
+				redir.addAttribute("acpTabId", "1");
+	        	
+	        	return redirectWithError(redir, "ProjectClosureACPDetails.htm",
+	                    "Invalid file type. Only PDF  files are allowed.");
+	        }
+		}
+			
+			if(labCertificateAttach!=null && !labCertificateAttach.isEmpty()) {
+				   if (!isValidFileType(labCertificateAttach) ) {
+
+			    		redir.addAttribute("closureId", closureId);
+						redir.addAttribute("details", details);
+						redir.addAttribute("acpTabId", "1");
+			        	
+			        	return redirectWithError(redir, "ProjectClosureACPDetails.htm",
+			                    "Invalid file type. Only PDF  files are allowed.");
+			        }
+			}
+
 		
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
@@ -989,6 +1068,28 @@ public class ProjectClosureController {
 				redir.addAttribute("acpTabId", "1");					
 				return redirectWithError(redir, "ProjectClosureACPDetails.htm", "HTML tags are not permitted.");				
 			}
+			
+			
+			// 🔹 Validate file types for multiple attachments (PDF + Images only)
+			if (attachment != null) {
+			    for (MultipartFile file : attachment) {
+			        if (file != null && !file.isEmpty()) {
+			        	 if (!isValidFileType(file))  {
+
+			                redir.addAttribute("closureId", req.getParameter("closureId"));
+			                redir.addAttribute("details", req.getParameter("details"));
+			                redir.addAttribute("acpTabId", "1");
+
+			                return redirectWithError(
+			                    redir,
+			                    "ProjectClosureACPDetails.htm",
+			                    "Invalid file type. Only PDF  files are allowed."
+			                );
+			            }
+			        }
+			    }
+			}
+
 		
 			ProjectClosureACPDTO dto = new ProjectClosureACPDTO();
 			dto.setUserId(UserId);
@@ -1529,10 +1630,35 @@ public class ProjectClosureController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		
 		try {
+		
+			
+			// 🔹 Validate file types
+			if (!isValidFileType(QARMilestoneAttach) 
+			        || !isValidFileType(QARCostBreakupAttach) 
+			        || !isValidFileType(QARNCItemsAttach) 
+			        || !isValidFileType(EquipProcuredAttach) 
+			        || !isValidFileType(EquipProcuredBeforePDCAttach) 
+			        || !isValidFileType(CommittmentRegister) 
+			        || !isValidFileType(BudgetDocument) 
+			        || !isValidFileType(SPActualpositionAttach) 
+			        || !isValidFileType(SPGeneralSpecificAttach)) {
+ 
+				
+				System.out.println("inside --------------------");
+			    return redirectWithError(
+			        redir, 
+			        "ProjectClosureCheckList.htm?closureId=" + req.getParameter("closureId") + "&chlistTabId=1",
+			        "Invalid file type. Only PDF  files are allowed."
+			    );
+			}
+
+			
+			
 			String closureId = req.getParameter("closureId");
 			String action = req.getParameter("Action");
 			
 			ProjectCheckListRevDto dto=new ProjectCheckListRevDto();
+			
 			
 			ProjectClosureCheckList clist = (action!=null && action.equalsIgnoreCase("Add"))?new ProjectClosureCheckList() : service.getProjectClosureCheckListByProjectId(closureId);
 			
@@ -2797,6 +2923,26 @@ public class ProjectClosureController {
 			String[] Appendix = req.getParameterValues("Appendix");
 			
 			String action = req.getParameter("Action");
+			
+			
+			
+			// 🔹 Validate file types for multiple attachments
+			if (attachment != null) {
+			    for (MultipartFile file : attachment) {
+			        if (file != null && !file.isEmpty()) {
+			            if (!isValidFileType(file))  {
+			                
+			                redir.addAttribute("ClosureId", closureId);
+			                return redirectWithError(
+			                    redir,
+			                    "TechClosureContent.htm",
+			                    "Invalid file type. Only PDF  files are allowed."
+			                );
+			            }
+			        }
+			    }
+			}
+
 			
 			if(Stream.of(Appendix).anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
 				redir.addAttribute("ClosureId", closureId);				

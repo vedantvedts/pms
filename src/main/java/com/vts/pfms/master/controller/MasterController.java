@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1183,6 +1184,59 @@ public class MasterController {
 		return "master/FeedBack";
 
 	}
+	
+	
+	
+	
+private boolean isValidFileType(MultipartFile file) {
+		
+		
+		
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
+		
+	    if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+
+	    
+	    
+	  
+	    if (contentType == null) {
+	        return false;
+	    }
+	    
+	 // Extract extension in lowercase
+	    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+	    
+	 // Check mapping between MIME type and extension
+	    switch (extension) {
+	        case "pdf":
+	            return contentType.equalsIgnoreCase("application/pdf");
+	        case "jpeg":
+	        case "jpg":
+	            return contentType.equalsIgnoreCase("image/jpeg");
+	        case "png":
+	            return contentType.equalsIgnoreCase("image/png");
+	        default:
+	            return false;
+	    }
+
+//	    // Allow only images and PDF
+//	 // Allowed MIME types
+//	    boolean validMime = contentType.equalsIgnoreCase("application/pdf")
+//	            || contentType.equalsIgnoreCase("image/jpeg")
+//	            || contentType.equalsIgnoreCase("image/png");
+//
+//	    // Allowed extensions
+//	    boolean validExtension = extension.equals("pdf")
+//	            || extension.equals("jpeg")
+//	            || extension.equals("jpg")
+//	            || extension.equals("png");
+//
+//	    return validMime && validExtension;
+	}
+
 
 	@RequestMapping(value = "FeedBackAdd.htm", method = RequestMethod.POST)
 	public String FeedBackAdd(Model model,HttpServletRequest req, HttpSession ses,RedirectAttributes redir,
@@ -1195,9 +1249,26 @@ public class MasterController {
 			Long EmpId = (Long) ses.getAttribute("EmpId");
 			String Feedback=req.getParameter("Feedback");
 			String feedbacktype=req.getParameter("feedbacktype");
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(FileAttach) ) {
+
+	            return redirectWithError(redir, "FeedBack.htm",
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+			
+			
+			
+			
+			
+			
+			
 			if(!FileAttach.isEmpty()){
 
 			}
+			
+			
+			
 			if(Feedback ==null || Feedback.trim().equalsIgnoreCase("")) {			
 				redir.addAttribute("resultfail", "Feedback Field is Empty, Please Enter Feedback");
 				return "redirect:/FeedBack.htm";
@@ -1206,6 +1277,11 @@ public class MasterController {
 				redir.addAttribute("resultfail", "Please Select the FeedbackType");
 				return "redirect:/FeedBack.htm";
 			}
+			
+			
+			
+			
+			
 			PfmsFeedback feedback=new PfmsFeedback();
 			feedback.setEmpId(EmpId);
 			feedback.setStatus("O");
