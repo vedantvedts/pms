@@ -4,43 +4,18 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
     <%@page import="java.time.LocalTime"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 
 <head>
-	<meta charset="ISO-8859-1">
-	<jsp:include page="../static/header.jsp"></jsp:include>
-
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/committeeModule/CommitteeAutoScheduleEdit.css" var="CommitteeAutoScheduleEdit" />
+<link href="${CommitteeAutoScheduleEdit}" rel="stylesheet" />
 <title> AUTO SCHEDULE</title>
-<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-		
-		#content {
-    	 margin-bottom: 0%; 
-		}
-		
-	</style>
 </head>
-
 <body>
-
 <%
 
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -93,7 +68,7 @@ String projectstatus=(String)request.getAttribute("projectstatus");
 						
 						<div class="col-md-5">	
 								<h3><%String day=LocalDate.parse(scheduledata[2] .toString()).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);%>							
-								<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> style="color: red" <%} %> > <%=day!=null?StringEscapeUtils.escapeHtml4(day): " - "%> </span>&nbsp; 
+								<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> class="text-danger" <%} %> > <%=day!=null?StringEscapeUtils.escapeHtml4(day): " - "%> </span>&nbsp; 
 								- &nbsp;<%=LocalDate.parse(scheduledata[2] .toString()).getMonth().getDisplayName(TextStyle.FULL, Locale.US)%> &nbsp; 
 								- &nbsp; <%= sdf.format(sdf1.parse( scheduledata[2] .toString()))%></h3>  
 						</div>

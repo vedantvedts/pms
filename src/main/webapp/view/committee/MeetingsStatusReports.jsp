@@ -9,25 +9,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
- 
-
+<spring:url value="/resources/css/committeeModule/MeetingsStatusReports.css" var="MeetingsStatusReports" />
+<link href="${MeetingsStatusReports}" rel="stylesheet" />
 <title>PD Action Reports</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-
-
-</style>
 </head>
  
 <body>
@@ -52,13 +36,13 @@ h6{
 
 					<div class="row">
 						<h5 class="col-md-8">Meetings Status Reports</h5>  
-							<div class="col-md-4" style="float: right; margin-top: -8px;">
+							<div class="col-md-4 float-right mt-n8px">
 							<table >
 					   					<tr>
 					   					<td >
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Project : </label>
+					   							<label class="control-label fs-17px mb-0rem">Project : </label>
 					   						</td>
-					   						<td style="max-width: 500px; padding-right: 50px">
+					   						<td class="tdStyleWidth">
 					   						<form method="post" action="MeetingStatusWiseReport.htm" name="ststusform" id="ststusform">
                                                         <select class="form-control selectdee " name="projectid" id="projectid" required="required"  data-live-search="true"  >
                                                            <option value="0" <%if(projectid.equalsIgnoreCase("0")){ %> selected="selected" <%} %>>General</option>	
@@ -80,33 +64,21 @@ h6{
 
 					</div>
 						<div class="card-body "> 
-						<div class="row" style="margin-top: -18px;">
-						<div class="col-md-6" style="float: right;" align="center">
+						<div class="row mt-n18px">
+						<div class="col-md-6 float-right" align="center">
 							
-					   	<div id="container" style="min-width: 440px; max-width: 440px; height: 400px;"></div>
+					   	<div id="container" class="containerStyle"></div>
 					   <div >	
-					   <button onclick="submitForm('UP');" class="btn btn-sm " style="margin-right:30px;background-color: #A4DD74;color:white; padding: 4px 13px; "> <b id="upcoming"></b> </button>
-                       <button onclick="submitForm('CO');" class="btn btn-sm " style="margin-left:55px;margin-right:55px;background-color: #448fea;color:white; padding: 4px 13px; "> <b id="completed"></b> </button>
-                        <button onclick="submitForm('CA');" class="btn btn-sm " style="margin-left:30px;background-color: #e85342;color:white; padding: 4px 13px; "> <b id="cancelled"></b> </button>
+					   <button onclick="submitForm('UP');" class="btn btn-sm upcomingBtnStyle"> <b id="upcoming"></b> </button>
+                       <button onclick="submitForm('CO');" class="btn btn-sm completedBtnStyle"> <b id="completed"></b> </button>
+                        <button onclick="submitForm('CA');" class="btn btn-sm cancelledBtnStyle"> <b id="cancelled"></b> </button>
                       
 					</div>
                         </div>
-					   	<div class="col-md-6" style="float: right;">
-		                <div id="container2" style="width: 500px; height: 430px;"></div>
-                      
+					   	<div class="col-md-6 float-right">
+		                <div id="container2" class="width-500px height-430px"></div>
                          </div>
-        
 					   	</div>
-						 <!-- <div class="row">
-						<div class="col-md-6" style="float: right;">
-					   	<div id="chart_div"></div>
-                        </div>
-					   	<div class="col-md-6" style="float: right;">
-		               
-                      
-                         </div>
-        
-					   	</div> -->
 						</div>
 					
 						<div class="card-footer" align="right">&nbsp;</div>

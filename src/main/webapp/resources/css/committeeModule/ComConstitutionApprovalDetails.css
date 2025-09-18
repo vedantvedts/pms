@@ -1,0 +1,138 @@
+.input-group-text {
+	font-weight: bold;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+hr {
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+.card b {
+	font-size: 20px;
+}
+
+.tdclass {
+	padding-top: 7px;
+	padding-bottom: 7px;
+}
+
+tr_clone .select2 {
+	width: 600px !important;
+}
+
+tr_clone1 .select2 {
+	width: 350px !important;
+}
+
+tr_clone2 select .select2 {
+	width: 350px !important;
+}
+
+sp::before {
+	content: "\2022";
+	color: red;
+	font-weight: bold;
+	display: inline-block;
+	width: 1em;
+	margin-left: 1em;
+}
+
+.label {
+	border-radius: 3px;
+	color: white;
+	padding: 1px 2px;
+}
+
+.label-primary {
+	background-color: #D62AD0; /* D62AD0 */
+}
+
+.label-warning {
+	background-color: #5C33F6;
+}
+
+.label-info {
+	background-color: #006400;
+}
+
+.label-success {
+	background-color: #4B0082;
+}
+
+.trup {
+	padding: 5px 5px 0px 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.trdown {
+	padding: 0px 5px 5px 5px;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.mt-n2{
+	margin-top: -2%;
+}
+
+.h4Color{
+	color:  #055C9D;
+}
+
+.mt-5px{
+	margin-top: 5px;
+}
+
+.chairPerson{
+	margin-bottom: 4px !important;
+}
+
+.hr-pt{
+	padding-top: 5px;
+}
+
+.hr-pb{
+	padding-bottom: 5px;
+}
+
+.internalMembersColor{
+	color: #FF5733;
+}
+
+.mt-10{
+	margin-top: 10px;
+}
+
+.fs-90 {
+  font-size: 0.90rem !important;
+}
+
+.backDivStyle{
+	margin:10px 0px;
+}
+
+.pt-10px{
+	padding-top: 10px;
+}
+
+.constituteByBg{
+	background: #B5EAEA;
+}
+
+.groupHeadBg{
+	background: #C6B4CE;
+}
+
+.p&cdoBg{
+	background: #E8E46E;
+}
+
+.directorBg{
+	background: #FBC7F7;
+}

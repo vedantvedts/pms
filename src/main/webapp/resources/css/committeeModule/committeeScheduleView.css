@@ -1,0 +1,218 @@
+h6 {
+	color: black;
+	font-family: 'Lato', sans-serif;
+	font-weight: 800;
+}
+
+.card-header {
+	background-color: #07689f;
+	color: white;
+}
+
+.card {
+	box-shadow: 2px 2px 2px gray;
+}
+
+.input-group-text {
+	font-weight: bold;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+hr {
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+.form-group {
+	margin-top: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+.mandatory {
+	font-weight: 800;
+}
+
+b {
+	font-family: 'Lato', sans-serif;
+}
+
+.form-block form {
+	display: inline-block;
+}
+
+.fa-input {
+	font-family: FontAwesome, 'Lato', sans-serif;
+}
+
+td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.mt-10{
+	margin-top: 10px;
+}
+
+.operationsColor{
+	color: #07689f;
+}
+
+.scheduleListStyles{
+	margin-left: 50px; 
+    font-size: 15px; 
+    font-weight: bold; 
+    margin-top: -2px;
+}
+
+.scheduleMeetingColor{
+	color: #07689f;
+}
+
+.pl-20{
+	padding-left: 20px;
+}
+
+.pl-40{
+	padding-left: 40px;
+}
+
+.venueUpdateTblWidth{
+	width: 95%;
+}
+
+.width-100px{
+	width: 100px;
+}
+
+.pr-10px{
+	padding-right: 10px;
+}
+
+.mb-n20{
+	margin-bottom: -20px;
+}
+
+.mt-25px{
+	margin-top: 25px;
+}
+
+
+.agendaTdWidth{
+	width: 1%; 
+	white-space: nowrap;
+}
+
+.editPadding{
+	padding: 2px 13px !important;
+}
+
+.mr-p5{
+	margin-right: 5%
+}
+
+.attachedMinutesBgColor{
+	background-color: #009DAE;
+}
+
+.fs-12px{
+	font-size: 12px;
+}
+
+.committeeMinutesDownloadBgColor{
+	background-color: #0e49b5;
+}
+
+.ml-30px{
+	margin-left: 30px;
+}
+
+.fs-20px{
+	font-size: 20px;
+}
+
+.lineMargin{
+	margin: 0.5rem 0rem !important;
+}
+
+.agendaApprovedMargin{
+	margin: 5px 0px;
+}
+
+.agendaApprovedIconFs{
+	font-size: 1.0rem;
+}
+
+.meetingKickedOffStyle{
+	background-color: #81b214; 
+	color: white; 
+	border-color: #81b214;
+}
+
+.minutesApprovedStyle{
+	background-color: #28a745; 
+	color: white; 
+	border-color: #28a745;
+}
+
+.backBgColor{
+	background-color: #0e49b5;
+}
+
+.backBgBorder{
+	border-color: #0e49b5;
+}
+
+.committeeAttendanceSubmitStyles{
+	background-color: #16697a; 
+	color: white; 
+	border-color: #16697a;
+}
+
+.minutesSubmitStyle{
+	background-color: #24a0ed; 
+	color: white; 
+	border-color: #24a0ed;
+}
+
+.minutesApprovalSubmitStyles{
+	background-color: #0e49b5; 
+	color: white;
+}
+
+.kickOffMeetingSubmitStyle{
+	background-color: #06623b; 
+	color: white;
+}
+
+.otpDivStyle{
+	margin-left: 1%; 
+	display: -webkit-box;
+}
+
+.font-weight-600 {
+  font-weight: 600 !important;
+}
+
+.otpInputStyle{
+	padding: .15rem .75rem !important; 
+	margin: 0px 15px; 
+	width: 40% !important;
+}
+
+.validateInputStyle{
+	color: white; 
+	margin: 0px 5px;
+}
+
+.agendaPresentationSubmitStyle{
+	background-color: #96D500;
+}
+
+.presentationImgWidth{
+	width: 19px !important;
+}

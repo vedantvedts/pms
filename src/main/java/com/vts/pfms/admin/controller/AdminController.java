@@ -327,6 +327,18 @@ public class AdminController {
 			throws Exception {
 		final String UserId = (String) ses.getAttribute("Username");
 		AdminController.logger.info(new Date() + "Inside ExpertAddSubmit.htm " + UserId);
+		
+		if(InputValidator.isContainsHTMLTags(req.getParameter("expertname"))) {
+			return  redirectWithError(redir,"Expert.htm","Expert Name should not contain HTML elements !");
+		}
+		if(InputValidator.isContainsHTMLTags(req.getParameter("email"))) {
+			return  redirectWithError(redir,"Expert.htm"," Expert Email should not contain HTML elements !");
+		}
+		if(InputValidator.isContainsHTMLTags(req.getParameter("organization"))) {
+			return  redirectWithError(redir,"Expert.htm","Expert Organization should not contain HTML elements !");
+		}
+		
+		
 		final Expert newExpert = new Expert();
 		newExpert.setTitle(req.getParameter("title"));
 		newExpert.setSalutation(req.getParameter("salutation"));
@@ -391,6 +403,17 @@ public class AdminController {
 			throws Exception {
 		final String UserId = (String) ses.getAttribute("Username");
 		AdminController.logger.info(new Date() + "Inside ExpertEditSubmit.htm " + UserId);
+	
+		if(InputValidator.isContainsHTMLTags(req.getParameter("expertname"))) {
+			return  redirectWithError(redir,"Expert.htm","Expert Name should not contain HTML elements !");
+		}
+		if(InputValidator.isContainsHTMLTags(req.getParameter("email"))) {
+			return  redirectWithError(redir,"Expert.htm"," Expert Email should not contain HTML elements !");
+		}
+		if(InputValidator.isContainsHTMLTags(req.getParameter("organization"))) {
+			return  redirectWithError(redir,"Expert.htm","Expert Organization should not contain HTML elements !");
+		}
+		
 		final Expert newExpert = new Expert();
 		newExpert.setTitle(req.getParameter("title"));
 		newExpert.setSalutation(req.getParameter("salutation"));
@@ -1371,6 +1394,10 @@ public class AdminController {
 	    logger.info(new Date() + " Inside AuditPatchesubmit.htm " + UserId);
 	    
 	    try {
+	    	if(InputValidator.isContainsHTMLTags(req.getParameter("Description"))) {
+				//redir.addAttribute("resultfail", "Action Item should not contain HTML elements !");
+				return  redirectWithError(redir,"AuditPatchesView.htm","Audit Patch Description should not contain HTML elements !");
+			}
 	        String versionNo = req.getParameter("versionNo");
 	        String Description = req.getParameter("Description");
 	        byte[] fileData = null; // To store the file data

@@ -5,60 +5,16 @@
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/committeeModule/prgmCommitteeConstitution.css" var="prgmCommitteeConstitution" />
+<link href="${prgmCommitteeConstitution}" rel="stylesheet" />
 <title> COMMITTEE MEMBERS </title>
-<style type="text/css">
-.input-group-text {
-	font-weight: bold;
-}
-	.select2-container{
-		width:100% !important;
-		}
-label {
-	font-weight: 800;
-	font-size: 16px;
-	color: #07689f;
-}
-
-hr {
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-.card b {
-	font-size: 20px;
-}
-
-.tdclass {
-	padding-top:7px;
-	padding-bottom: 7px;
-}
-
-tr_clone .select2{
-	width:600px !important;
-}
-
-tr_clone1 .select2{
-	width:350px !important;
-}
-tr_clone2 select .select2{
-	width:350px !important;
-}
-sp::before {
-	content: "\2022";
-  	color: red;
-  	font-weight: bold;
-  	display: inline-block; 
-  	width: 1em;
-  	margin-left: 1em;
-}		
-</style>
 </head>
 
 <body>
@@ -155,12 +111,12 @@ sp::before {
 					<div class="card-header">						
 						<div class="row">										
 							<div class="col-md-8">
-								<h3 style="color: #055C9D;">Programme Management Council (PMC)</h3>
+								<h3 class="headerBgColor">Programme Management Council (PMC)</h3>
 							</div>	
 							<div class="col-md-1 right">
 								<label class="form-label">Programme:</label>
 							</div>
-							<div class="col-md-2 " style="margin-top: -0.4rem;">
+							<div class="col-md-2 programListMarginTopNeg">
 								<form action="PrgmCommitteeConstitution.htm" method="post">
 									<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 									<input type="hidden" name="committeeId" value="<%=committeeId%>">
@@ -198,13 +154,13 @@ sp::before {
 					<div class="card-body">	
 						<form action="PrgmCommitteeSubmit.htm" method="post" id="committeeesubfrm">				
 							<div class="row">							
-								<div class="col-md-8" style="margin-top:5px; ">									 
-					            	<label class="control-label" style="margin-bottom: 4px !important">Chairperson<span class="mandatory" style="color: red;">*</span></label>
-					            	<table style="width:100%">
+								<div class="col-md-8 mt-p5">									 
+					            	<label class="control-label chairPerson">Chairperson<span class="mandatory text-danger">*</span></label>
+					            	<table class="w-100">
 					                	<tr >
-											<td style="width:25%; border:0:">
+											<td class="w-25 border-0">
 												<div class="input select" id="cplab-col">
-													<select class="form-control selectdee" name="CpLabCode" tabindex="-1" required="required" style="width: 200px" id="CpLabCode" onchange="chairpersonfetch('1')">
+													<select class="form-control selectdee labNameWidth" name="CpLabCode" tabindex="-1" required="required" id="CpLabCode" onchange="chairpersonfetch('1')">
 														<option disabled="disabled"  selected value="">Lab Name</option>
 													    <% for (Object[] obj : allLabList) {%>
 														    <option <%if(chairperson!=null && chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -213,7 +169,7 @@ sp::before {
 													</select>
 												</div>
 											</td>										
-											<td style="border:0;">
+											<td class="border-0">
 												<div class="input select">
 													<select class="form-control selectdee" name="chairperson" id="chairperson" data-live-search="true" required="required"   data-placeholder="Select Chairperson" >
 													</select>	
@@ -226,13 +182,13 @@ sp::before {
 							</div> 
 							
 							<div class="row">
-								<div class="col-md-8" style="margin-top:5px; ">									 
-					            	<label class="control-label" style="margin-bottom: 4px !important">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
-					           		<table style="width:100%">
+								<div class="col-md-8 mt-p5">									 
+					            	<label class="control-label chairPerson">Member Secretary<span class="mandatory text-danger">*</span></label>
+					           		<table class="w-100">
 					                	<tr >
-											<td style="width:25%; border:0:">
+											<td class="w-25 border-0">
 												<div class="input select" id="cplab-col">
-													<select class="form-control selectdee" name="msLabCode" tabindex="-1" required="required" style="width: 200px" id="mSLabCode" onchange="msfetch('1')">
+													<select class="form-control selectdee labNameWidth" name="msLabCode" tabindex="-1" required="required" id="mSLabCode" onchange="msfetch('1')">
 														<option disabled="disabled"  selected value="">Lab Name</option>
 													    <% for (Object[] obj : allLabList) {%>
 														    <option <%if(secretary!=null&& secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -241,7 +197,7 @@ sp::before {
 													</select>
 												</div>
 											</td>										
-											<td style="border:0;">
+											<td class="border-0">
 												<div class="input select">
 													<select class="form-control selectdee" name="Secretary" id="secretary" data-live-search="true" required="required"   data-placeholder="Select Member secretary" >
 													</select>	
@@ -257,7 +213,7 @@ sp::before {
 								<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Member Secretary (Proxy)</label>
-										<select class="form-control selectdee" id="proxysecretary" required="required" name="proxysecretary"style="margin-top: -5px">
+										<select class="form-control selectdee mt-n5" id="proxysecretary" required="required" name="proxysecretary">
 				    						<option value="0"  selected >None</option>
 				    						<% for (Object[] obj : employeeList1) {%>
 												<option value="<%=obj[0]%>" <%if(proxysecretary!=null && proxysecretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></option>
@@ -268,67 +224,8 @@ sp::before {
 				  						<%}%> 
 									</div>
 								</div>
-								
-								<%-- <div class="col-md-8" style="margin-top:5px; ">									 
-					            	<label class="control-label"> Co-Chairperson </label>
-					            	<table style="width:100%">
-					                	<tr >
-											<td style="width:25%; border:0:">
-												 <div class="input select" id="cplab-col">
-													<select class="form-control selectdee" name="ccplabocode" tabindex="-1"  style="width: 200px" id="ccplabocode" onchange="ccchairpersonfetch('1')">
-														<option disabled="disabled"  selected value="">SELECT</option>
-													    <% for (Object[] obj : allLabList) {%>
-														    <option <%if(co_chairperson!=null &&   co_chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]%></option>
-													    <%} %>
-													    <option <%if(co_chairperson!=null && co_chairperson[9].toString().equalsIgnoreCase("@EXP")){ %>selected <%} %>value="@EXP">Expert</option>
-													</select>
-															
-												</div>
-											</td>										
-											<td style="border:0;">
-												<div class="input select">
-													<select class="form-control selectdee" name="co_chairperson" id="co_chairperson" data-live-search="true"    data-placeholder="Select co-chairPerson" >
-												             
-													</select>	
-													<%if(co_chairperson!=null){ %>
-								  						<input type="hidden" name="comemberid" value="<%=co_chairperson[0]%>">
-								  						<%} %>									
-												</div>														
-											</td>						
-										</tr>
-									</table>
-								</div> --%>
-							<%-- 	<div class="col-md-7">
-									<div class="form-group">
-										
-										<select class="form-control selectdee" id="co_chairperson" required="required" name="co_chairperson"style="margin-top: -5px">
-				    						<option selected value="0" >None</option>
-				    						<% for (Object[] obj : EmployeeList1) {%>
-												<option value="<%=obj[0]%>" <%if(co_chairperson !=null && co_chairperson[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%>, <%=obj[3] %></option>
-											<%} %>
-				  						</select>
-				  						<%if(co_chairperson!=null){ %>
-				  						<input type="hidden" name="comemberid" value="<%=co_chairperson[0]%>">
-				  						<%} %>	
-									</div>
-								</div> --%>
 							</div>
 						
-							<%-- <div class="row">
-								<div class="col-md-3">
-									<div class="form-group">
-										<label class="control-label">Reference No.</label>
-										<input type="text" class="form-control"   name="ReferenceNo" value="<%= committeedata!=null && committeedata[11] != null ? committeedata[11] : "--" %>" >
-									</div>
-								</div>
-						
-								<div class="col-md-4">
-						         	<div class="form-group">
-						            	<label class="control-label" >Formation Date</label>
-						  				<input type="date" class="form-control"  data-date-format="dd/mm/yyyy" id="Formationdate" name="Formationdates" <%if(committeedata!=null && committeedata[12] != null) { %> value="<%=committeedata[12]%>" <%} %>  >
-						        	</div>
-					        	</div>
-							</div>  --%>
 							<div class="row">			
 								<div class="col-md-12" align="center">
 					              	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                  	
@@ -359,7 +256,7 @@ sp::before {
 			 			%>
  
  						<%if(tempcommitteemembersall.size()>0 ){ %>
- 							<hr  style="padding-top: 5px;padding-bottom: 5px;">
+ 							<hr  class="hr-pt hr-pb">
  						<%} %>
  				 		<%if(tempcommitteemembersall.size()>0 ){ %>
  							<div class="row">
@@ -370,7 +267,7 @@ sp::before {
 							            	<thead>
 							               		<tr>
 							               			
-							               			<th style="width:170px;text-align: center"> Sl No.</th>
+							               			<th class="text-center srNo"> Sl No.</th>
 							               			<th >Participants</th>			                    	
 							                    	<th>Member Type</th>
 							                   		<%if(loginTypes.contains(logintype)) {%>
@@ -382,8 +279,8 @@ sp::before {
 			              						<%int count=0;
 			              							for(Object[]obj:tempcommitteemembersall){%>
 			              								<tr>
-			              									<td style="display: flex;justify-content: center;align-items: center;">
-			            										<input type="number" class="form-control" name="newslno" value="<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): "" %>" min="1" max="<%=tempcommitteemembersall.size()%>" style="width:50%"> 
+			              									<td class="d-flex justify-content-center align-items-center">
+			            										<input type="number" class="form-control w-50" name="newslno" value="<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): "" %>" min="1" max="<%=tempcommitteemembersall.size()%>"> 
 			              										<input type="hidden" name="memberId" value="<%=obj[0].toString() %>">
 			              									</td>
 			              									<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>,<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
@@ -407,7 +304,7 @@ sp::before {
 															</td>
 												            <%if(loginTypes.contains(logintype)) {%> 
 																<td class="center">
-																	<button class="btn btn-danger " type="submit" name="committeememberid" value="<%=obj[0] %>" style="background-color: white;border-color: white;"
+																	<button class="btn btn-danger bg-white border border-white" type="submit" name="committeememberid" value="<%=obj[0] %>"
 																		formaction="CommitteeMemberDelete.htm" formmethod="POST" formnovalidate="formnovalidate"
 																	  onclick="return confirm('Are You Sure To Delete this Member?');" >
 																	  	<i class="fa fa-trash fa-lg" aria-hidden="true"></i>
@@ -417,7 +314,7 @@ sp::before {
 			              								</tr>
 		              								<%}%>
 		              							<tr>
-			              							<td colspan=1 style="display: flex;justify-content: center;align-items: center">
+			              							<td colspan=1 class="d-flex justify-content-center align-items-center">
 										              	<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
 										              	<input type="hidden" name="committeeId" value="<%=committeeId%>">
 										              	<input type="hidden" name="programmeId" value="<%=programmeId%>">
@@ -457,7 +354,7 @@ sp::before {
 									</td> --%>
 									<td>
 										<form  method="post" action="CommitteeConstitutionLetterDownload.htm" target="_blank" >
-											<button  type="submit"  class="btn btn-sm edit"  ><i class="fa fa-download" style="   font-size: 0.90rem; " ></i></button>
+											<button  type="submit"  class="btn btn-sm edit"  ><i class="fa fa-download fs-90"></i></button>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />    												
 											<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
 										</form>
@@ -469,15 +366,7 @@ sp::before {
 						              		<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
 						              	 </form>
 				             		</td>	
-										
-								 	<%-- <td>
-										<form  method="post" action="ProjectCommitteeDescriptionTOREdit.htm">
-											<button  type="submit" class="btn btn-sm edit">DESCRIPTION</button>
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
-											<input type="hidden" name="committeemainid" value="<%=committeemainid%>">		
-											<input type="hidden" name="operation" value="approve">								
-										</form>
-									</td> --%>								
+															
 								</tr>
 							</table>
 						</div>	
@@ -485,14 +374,14 @@ sp::before {
 						<!-- ------------------------------------- add new members ---------------------------------------------------------------- -->
 	
 						<div class="row">
-							<div class="col-md-6" style="margin-left: 15px;">
-								<label  style="margin-bottom: 4px !important" for="repids"> Add More Members</label>
+							<div class="col-md-6 ml-3">
+								<label class="chairPerson" for="repids"> Add More Members</label>
 								<hr>
 								<!-- -------------------------------------- Internal members -------------------------------------------- -->
 								<form action="CommitteeMainMembersSubmit.htm" method="post" name="editfrm" id="editfrm" >	
 									<div class="row">				
 										<div class="col-md-9">
-											<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
+											<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover w-100 mt-10">
 												<thead>  
 													<tr>
 														<th> Internal Members</th>
@@ -502,7 +391,7 @@ sp::before {
 													<tr class="tr_clone">
 														<td>
 															<div class="input select">
-																<select class="form-control selectdee " name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple style="width:400px">
+																<select class="form-control selectdee internalMembers" name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple>
 												                <%for(Object[] obj:employeeList){ %>																							
 																	<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>																				
 																<%} %>
@@ -532,18 +421,18 @@ sp::before {
 								<form action="CommitteeMainMembersSubmit.htm" method="post" name="editfrm" id="editfrm" >							
 									<div class="row">				
 										<div class="col-md-9">
-											<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
+											<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover w-100 mt-10">
 												<thead>  
 													<tr >
 														<th colspan="2">External Members (Within DRDO)
-														<button class="btn bg-primary" type="button" id="externalAdd" style="float: right;color:White;">ADD NEW </button> </th>
+														<button class="btn bg-primary float-right addExpertButtonColor" type="button" id="externalAdd">ADD NEW </button> </th>
 													</tr>
 												</thead>								
 												<tbody>
 													<tr class="tr_clone1">
-														<td style="width:30%">
+														<td class="trCloneWidth">
 															 <div class="input select">
-																 <select class="form-control selectdee" name="Ext_LabCode" tabindex="-1" required style="" id="Ext_LabCode" onchange="employeename()">
+																 <select class="form-control selectdee" name="Ext_LabCode" tabindex="-1" required id="Ext_LabCode" onchange="employeename()">
 																	<option disabled="true"  selected value="">Lab Name</option>
 																	    <% for (Object[] obj : allLabList) {
 																	    if(!labcode.equals(obj[3].toString())){%>
@@ -554,7 +443,7 @@ sp::before {
 																
 															</div>
 														</td>										
-														<td style="width:70%">
+														<td class="externalMemberIdWidth">
 															<div class="input select">
 																<select class="form-control selectdee" name="ExternalMemberIds" id="ExternalMember" data-live-search="true"   data-placeholder="Select Members" multiple>
 	
@@ -580,17 +469,17 @@ sp::before {
 								<form action="CommitteeMainMembersSubmit.htm" method="post"  >				
 									<div class="row">				
 										<div class="col-md-9">
-											<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
+											<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover w-100 mt-10">
 												<thead>  
 													<tr>
-														<th colspan="2">Expert Member (Outside DRDO)<button class="btn bg-primary" type="button" id="expertAdd" style="float: right;color:White;">ADD EXPERT </button> </th>
+														<th colspan="2">Expert Member (Outside DRDO)<button class="btn bg-primary float-right addExpertButtonColor" type="button" id="expertAdd">ADD EXPERT </button> </th>
 													</tr>
 												</thead>								
 												<tbody>
 													<tr class="tr_clone2">
 														<td >
 															<div class="input select ">
-																<select class="selectdee" name="ExpertMemberIds"  id="ExpertMemberIds"  data-live-search="true" style="width: 350px"  data-placeholder="Select Members" required multiple>
+																<select class="selectdee expertMemberIdWidth" name="ExpertMemberIds"  id="ExpertMemberIds"  data-live-search="true" data-placeholder="Select Members" required multiple>
 													            	<%for(Object[] obj:expertList){ %>																									
 																		<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>	
 																														
@@ -620,16 +509,16 @@ sp::before {
 								<form action="CommitteeMainMembersSubmit.htm" method="post"  >				
 									<div class="row">				
 										<div class="col-md-9">
-											<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="table1" style="margin-top: 10px;">
+											<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-10" id="table1">
 												<thead>  
 													<tr id="">
 														<th colspan="2"> Industry Partner</th>
 													</tr>
 												</thead>
 												<tr class="tr_clone1">
-													<td style="width:30%">							
+													<td class="trCloneWidth">							
 														<div class="input select">
-															<select class="form-control selectdee" name="industryPartnerId" tabindex="-1"  style="" id="industryPartnerId" onchange="industrypartnerrepname()" required>
+															<select class="form-control selectdee" name="industryPartnerId" tabindex="-1" id="industryPartnerId" onchange="industrypartnerrepname()" required>
 												<option disabled="true"  selected value="">Industry Partner</option>
 													<% for (IndustryPartner partner : industryPartnerList) {
 													%>
@@ -645,7 +534,7 @@ sp::before {
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 						 								<input type="hidden" name="rep" id="rep4" value="0" />
 													</td>
-													<td style="width:70%">
+													<td class="externalMemberIdWidth">
 														<div class="input select ">
 															<select class="form-control selectdee" name="industryPartnerRep" id="industryPartnerRep" data-live-search="true"   data-placeholder="Select Members" onchange ="addIndusRep()" multiple>
 															</select>
@@ -670,24 +559,24 @@ sp::before {
 				
 							<div class="col-md-5">
 								<div class="row">	
-									<div  class="col-md-12" style="margin-top: 20px; margin-left: 20px;">
+									<div  class="col-md-12 mt-t20 mt-l20">
 										<form action="CommitteeRepMemberAdd.htm" method="post">
-											<table style="width: 100%;">	
+											<table class="w-100">	
 												<tr>
 													<td colspan="2">
-										           		<label  style="margin-bottom: 4px !important" for="repids"> Add Representatives </label>
+										           		<label class="chairPerson" for="repids"> Add Representatives </label>
 										           	</td>
 										        </tr>   	
 										        <tr>
-											    	<td style="width: 60%;">
-											  			<select class="form-control selectdee" id="repids" name="repids" style="" data-placeholder="Select Rep Types" multiple="multiple" >
+											    	<td class="width-60">
+											  			<select class="form-control selectdee" id="repids" name="repids" data-placeholder="Select Rep Types" multiple="multiple" >
 															<option  disabled="disabled" value="0">Choose...</option>
 															<%	for (Object[] obj  : committeerepnotaddedlist) {%>
 														     	<option value="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>  </option>
 															<% } %>
 														</select>
 													</td>
-													<td style="width: 20%;"> 		  					
+													<td class="width-20"> 		  					
 											     	  	<button class="btn  btn-sm submit" type="submit"  onclick="return confirm('Are you Sure to Add this Representatives(s)');" >SUBMIT</button>
 											     	</td>
 										     	</tr>							
@@ -702,8 +591,8 @@ sp::before {
 									</div>
 								</div>
 								<div class="row">	
-									<div  class="col-md-12" style="margin-top: 20px; margin-left: 20px;">
-										<h5 style="color: #FF5733">Representatives</h5>
+									<div  class="col-md-12 mt-t20 mt-l20">
+										<h5 class="representativeColor">Representatives</h5>
 										<hr>						
 										<table border='0'>
 											<tbody>
@@ -713,7 +602,7 @@ sp::before {
 														<tr id="repmem<%=obj[0] %>">
 															<td><sp> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> </sp></td>
 															<td>
-																<button class="fa fa-trash btn btn-danger " type="button"  style="background-color: white;border-color: white;" onclick="memberrepdelete('<%=obj[0] %>');" ></button>
+																<button class="fa fa-trash btn btn-danger bg-white border border-white" type="button" onclick="memberrepdelete('<%=obj[0] %>');" ></button>
 															</td>
 														</tr>
 											 	<%	count++; 	} } %>
@@ -740,7 +629,7 @@ sp::before {
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalwidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">External Add
 							Member</h5>
@@ -754,17 +643,13 @@ sp::before {
 						<div class="row">
 
 							<div class="col-md-4">
-								
-									<label>Lab Name:<span class="mandatory"
-										style="color: red;">*</span></label>
-										
-									
+									<label>Lab Name:<span class="mandatory text-danger">*</span></label>
 								<div class="form-group">
 										
 										<select
-										class="form-control selectdee" id="labModal" name="labModal"
+										class="form-control selectdee fs-5px" id="labModal" name="labModal"
 										data-container="body" 
-										required="required" style="font-size: 5px;">
+										required="required">
 										<option value="" disabled="disabled" selected="selected"
 											hidden="true">--Select--</option>
 										<%
@@ -782,9 +667,8 @@ sp::before {
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Rank/Salutation</label><br> <select
-										class="form-control selectdee" id="title" name="title"
-										data-container="body" data-live-search="true"
-										style="font-size: 5px;">
+										class="form-control selectdee fs-5px" id="title" name="title"
+										data-container="body" data-live-search="true">
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Prof.">Prof.</option>
 										<option value="Lt.">Lt.</option>
@@ -796,9 +680,9 @@ sp::before {
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Title</label><br> <select
-										class="form-control selectdee" id="salutation"
+										class="form-control selectdee fs-5px" id="salutation"
 										name="salutation" data-container="body"
-										data-live-search="true" style="font-size: 5px;">
+										data-live-search="true">
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Mr.">Mr.</option>
 										<option value="Ms.">Ms.</option>
@@ -811,31 +695,30 @@ sp::before {
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Employee No:<span class="mandatory"
-										style="color: red;">*</span></label> <input
-										class="form-control form-control" type="text" id="EmpNo"
+									<label>Employee No:<span class="mandatory text-danger"
+										>*</span></label> <input
+										class="form-control form-control w-100 fs-15px employeeNoText" type="text" id="EmpNo"
 										name="EmpNo" required="required" maxlength="255"
-										style="font-size: 15px; width: 100%; text-transform: uppercase;">
+										>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Employee Name:<span class="mandatory"
-										style="color: red;">*</span></label> <input
-										class="form-control form-control" type="text" id="EmpName"
+									<label>Employee Name:<span class="mandatory text-danger"
+										>*</span></label> <input
+										class="form-control form-control w-100 fs-15px employeeNameText" type="text" id="EmpName"
 										name="EmpName" required="required" maxlength="255"
-										style="font-size: 15px; width: 100%; text-transform: capitalize;">
+										>
 								</div>
 							</div>
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Designation:<span class="mandatory"
-										style="color: red;">*</span></label> <select
-										class="form-control selectdee" id="Designation"
+									<label>Designation:<span class="mandatory text-danger"
+										>*</span></label> <select
+										class="form-control selectdee fs-5px" id="Designation"
 										name="Designation" data-container="body"
-										data-live-search="true" required="required"
-										style="font-size: 5px;">
+										data-live-search="true" required="required">
 										<option value="" disabled="disabled" selected="selected"
 											hidden="true">--Select--</option>
 										 <%  for ( Object[]  obj :DesignationList) {%>
@@ -862,7 +745,7 @@ sp::before {
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalwidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> Add  Expert
 							Member Details</h5>
@@ -876,11 +759,11 @@ sp::before {
 						<div class="row">
 	<div class="col-md-4">
 								<div class="form-group">
-									<label>Expert Name:<span class="mandatory"
-										style="color: red;">*</span></label> <input
-										class="form-control form-control" type="text" id="ExtEmpName"
+									<label>Expert Name:<span class="mandatory text-danger"
+										>*</span></label> <input
+										class="form-control form-control w-100 fs-15px employeeNameText" type="text" id="ExtEmpName"
 										name="EmpName" required="required" maxlength="255"
-										style="font-size: 15px; width: 100%; text-transform: capitalize;">
+										>
 								</div>
 							</div>
 							
@@ -890,9 +773,8 @@ sp::before {
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Rank/Salutation</label><br> <select
-										class="form-control selectdee" id="Exttitle" name="title"
-										data-container="body" data-live-search="true"
-										style="font-size: 5px;">
+										class="form-control selectdee fs-5px" id="Exttitle" name="title"
+										data-container="body" data-live-search="true">
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Prof.">Prof.</option>
 										<option value="Lt.">Lt.</option>
@@ -904,9 +786,9 @@ sp::before {
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Title</label><br> <select
-										class="form-control selectdee" id="Extsalutation"
+										class="form-control selectdee fs-5px" id="Extsalutation"
 										name="salutation" data-container="body"
-										data-live-search="true" style="font-size: 5px;">
+										data-live-search="true">
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Mr.">Mr.</option>
 										<option value="Ms.">Ms.</option>
@@ -922,12 +804,11 @@ sp::before {
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Designation:<span class="mandatory"
-										style="color: red;">*</span></label> <select
-										class="form-control selectdee" id="ExtDesignation"
+									<label>Designation:<span class="mandatory text-danger"
+										>*</span></label> <select
+										class="form-control selectdee fs-5px" id="ExtDesignation"
 										name="Designation" data-container="body"
-										data-live-search="true" required="required"
-										style="font-size: 5px;">
+										data-live-search="true" required="required">
 										<option value="" disabled="disabled" selected="selected"
 											hidden="true">--Select--</option>
 										 <%  for ( Object[]  obj :DesignationList) {%>
@@ -940,7 +821,7 @@ sp::before {
 							
 							<div class="col-md-4">
 									<div class="form-group">
-										<label class="control-label">Organization</label><span class="mandatory" style="color: red;">*</span>
+										<label class="control-label">Organization</label><span class="mandatory text-danger">*</span>
 										<input class="form-control" type="text" name="organization" id="organization" placeholder="Max 255 Characters" maxlength="255">
 									</div>
 								</div>
@@ -960,7 +841,7 @@ sp::before {
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalwidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> Add  Industry 
 							Partner Details</h5>
@@ -976,25 +857,25 @@ sp::before {
 						<div class="row">						
 							<div class="col-md-4">
 								<div class="form-group">
-									<label class="control-label">Industry Name</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label">Industry Name</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerName2" name="industryPartnerName2" maxlength="255" placeholder="Enter Industry Partner" required="">		
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label"> Address</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label"> Address</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerAddress2" name="industryPartnerAddress2" maxlength="1000" placeholder="Enter Street, village/ town" required="">	
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label"> City</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label"> City</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerCity2" name="industryPartnerCity2" maxlength="500" placeholder="Enter City" required="">	
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-group">
-									<label class="control-label"> Pin Code</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label"> Pin Code</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerPinCode2" name="industryPartnerPinCode2" maxlength="6" placeholder="Enter Pincode" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required="">	
 								</div>
 							
@@ -1021,7 +902,7 @@ sp::before {
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalwidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> Add  Industry 
 							Partner Employee Details</h5>
@@ -1037,28 +918,28 @@ sp::before {
 				
 			
 					<div class="row ml-1 mr-1" >
-						<table style="width:100% ; " id="repdetails">
-										<thead style="background-color: #055C9D; color: white;text-align: center;">
+						<table class="w-100" id="repdetails">
+										<thead class="text-white text-center repDetailsTHeadBgColor">
 											<tr>
-										    	<th style="padding: 5px 5px 5px 5px;">Name</th>
-										    	<th style="padding: 5px 5px 5px 5px;">Designation</th>
-										    	<th style="padding: 5px 5px 5px 5px;">Mobile No</th>
-										    	<th style="padding: 5px 5px 5px 5px;">Email</th>
+										    	<th class="thPadding">Name</th>
+										    	<th class="thPadding">Designation</th>
+										    	<th class="thPadding">Mobile No</th>
+										    	<th class="thPadding">Email</th>
 												
 											</tr>
 										</thead>
 								 		<tbody>
 									 		<tr class="tr_clone_repdetails">
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="trClonePadding">
 													<input class="form-control" type="text" id="repName" name="repName" maxlength="255" placeholder="Enter Rep Name" required="">
 												</td>	
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="trClonePadding">
 													<input class="form-control" type="text" id="repDesignation" name="repDesignation" placeholder="Enter Rep Designation" maxlength="255" required="">
 												</td>	
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="trClonePadding">
 													<input class="form-control" type="text" id="repMobileNo" maxlength="10" name="repMobileNo" placeholder="Enter Rep Mobile No" required="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 												</td>
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="trClonePadding">
 													<input class="form-control" type="email" id="repEmail" name="repEmail" maxlength="255" placeholder="Enter Rep Email" required="">
 												</td>
 																					

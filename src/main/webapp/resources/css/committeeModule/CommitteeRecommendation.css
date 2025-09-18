@@ -1,0 +1,81 @@
+.input-group-text {
+	font-weight: bold;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+hr {
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+.card b {
+	font-size: 20px;
+}
+
+.tdclass {
+	padding-top: 7px;
+	padding-bottom: 7px;
+}
+
+sp::before {
+	content: "\2022";
+	color: red;
+	font-weight: bold;
+	display: inline-block;
+	width: 1em;
+	margin-left: 1em;
+}
+
+.width-22per{
+	width: 22%;
+}
+
+.width-15per{
+	width: 15%;
+}
+
+.fs-90 {
+  font-size: 0.90rem !important;
+}
+
+.downLoadSubmitBtn{
+	background: none;
+}
+
+.mb-4px{
+	margin-bottom: 4px !important;
+}
+
+.returnBtnStyle{
+	font-weight: 800;
+	font-family: 'Montserrat', sans-serif;
+}
+
+.pt-10px{
+	padding-top: 10px;
+}
+
+.constituteByBg{
+	background: #B5EAEA;
+}
+
+.rec1Bg{
+	background: #C6B4CE;
+}
+
+.rec2Bg{
+	background: #E8E46E;
+}
+
+.rec3Bg{
+	background: #FBC7F7;
+}
+
+.aprBg{
+	background: #F4A261;
+}

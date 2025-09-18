@@ -9,41 +9,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
- 
-
+<spring:url value="/resources/css/committeeModule/MeetingSearch.css" var="MeetingSearch" />
+<link href="${MeetingSearch}" rel="stylesheet" />
 <title>Meeting Search</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-
-.table button{
-	
-	background-color: white !important;
-	border: 3px solid #17a2b8;
-	padding: .275rem .5rem !important;
-}
-
-.table button:hover {
-	color: black !important;
-	
-}
-#table tbody tr td {
-
-	    padding: 4px 3px !important;
-
-}
-
-</style>
 </head>
  
 <body>
@@ -86,14 +54,14 @@ h6{
 
 					<div class="row">
 						<h4 class="col-md-5">Meeting Id Search</h4>  
-							<div class="col-md-7" style="margin-top: -8px;">
+							<div class="col-md-7 mt-n8px">
 					   			<form method="post" action="MeetingSearch.htm" name="dateform" id="dateform">
-					   				<table style="float: right;" >
+					   				<table class="float-right">
 					   					<tr>
 					   						<td >
-					   							<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Meeting Id : </label>
+					   							<label class="control-label fs-17px mb-0rem">Meeting Id : </label>
 					   						</td>
-					   						<td style="max-width: 300px; padding-right: 50px">                      
+					   						<td class="tdStyleWidth">                      
 					   							<input type="text" class="form-control form-control" name="search" maxlength="20" required="required">				   		
 					   						</td>
 					   						<td>
@@ -156,16 +124,7 @@ h6{
 																		</td>
 																		<td><%=obj[3]!=null?sdf.format(obj[3]): " - " %> - <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
 																		<td> <%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%></td>
-																		<td><%if(obj[10]!=null){%> <%=StringEscapeUtils.escapeHtml4(obj[10].toString())%> <%}else{ %> &nbsp;&nbsp;&nbsp;&nbsp;- <%} %></td>																	
-																		<%-- <td>
-																			<%if("CS".equalsIgnoreCase(obj[6].toString())){ %> Member Secretary <%} %>
-																			<%if("CC".equalsIgnoreCase(obj[6].toString())){ %> Chairperson <%} %>
-																			<%if("P".equalsIgnoreCase(obj[6].toString())){ %> Presenter <%} %>
-																			<%if("C".equalsIgnoreCase(obj[6].toString())){ %> Committee Member <%} %>
-																			<%if("E".equalsIgnoreCase(obj[6].toString())){ %> External Member <%} %>
-																			<%if("I".equalsIgnoreCase(obj[6].toString())){ %> Internal Member<%} %>
-																		</td> --%>
-																					
+																		<td><%if(obj[10]!=null){%> <%=StringEscapeUtils.escapeHtml4(obj[10].toString())%> <%}else{ %> &nbsp;&nbsp;&nbsp;&nbsp;- <%} %></td>																				
 																	</tr>
 																<% count++;
 																	}									   					

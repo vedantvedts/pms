@@ -1,0 +1,44 @@
+label{
+font-weight: bold;
+  font-size: 13px;
+}
+body{
+background-color: #f2edfa;
+overflow-x:hidden !important; 
+}
+h6{
+	text-decoration: none !important;
+}
+.table button{
+	
+	background-color: white !important;
+	border: 3px solid #17a2b8;
+	padding: .275rem .5rem !important;
+}
+
+.table button:hover {
+	color: black !important;
+	
+}
+#table tbody tr td {
+
+	    padding: 4px 3px !important;
+
+}
+
+.mt-n12px{
+	margin-top: -12px;
+}
+
+.fs-17px{
+	font-size: 17px;
+}
+
+.mb-0rem{
+	margin-bottom: .0rem;
+}
+
+.tdStyle{
+	max-width: 300px;  
+	padding-right: 50px
+}

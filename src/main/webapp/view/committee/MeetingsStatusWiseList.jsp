@@ -9,40 +9,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
- 
-
+<spring:url value="/resources/css/committeeModule/MeetingsStatusWiseList.css" var="MeetingsStatusWiseList" />
+<link href="${MeetingsStatusWiseList}" rel="stylesheet" />
 <title>Assignee List</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-
-.table button{
-	
-	background-color: white !important;
-	border: 3px solid #17a2b8;
-	padding: .275rem .5rem !important;
-}
-
-.table button:hover {
-	color: black !important;
-	
-}
-#table tbody tr td {
-
-	    padding: 4px 3px !important;
-
-}
-</style>
 </head>
  
 <body>
@@ -65,12 +34,12 @@ h6{
 						<%if("UP".equalsIgnoreCase(statustype)){ %>Upcoming <%} %>
 						<%if("CO".equalsIgnoreCase(statustype)){ %>Completed <%} %>
 						<%if("CA".equalsIgnoreCase(statustype)){ %> Cancelled<%} %>	 Meetings </h3>  
-							<div class="col-md-1" style="float: right;">
+							<div class="col-md-1 float-right">
 								<form action="MeetingsStatusReports.htm" name="myfrm" id="myfrm" method="post">
 								<input type="hidden" name="projectid"  value="<%=projectid%>"/>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 								
-					   		  <button type="submit"  name="sub" value="back" class="btn btn-primary back"  style="margin-top:10px;padding: 0.375rem 17px;"> Back</button>
+					   		  <button type="submit"  name="sub" value="back" class="btn btn-primary back backBtnStyle"> Back</button>
 					   			</form>
 					   		</div>
 		   				</div>	   							

@@ -217,7 +217,7 @@ String committeeId = (String)request.getAttribute("committeeId");
 												    			<input type="hidden" name="divisionid" value="0">
 												    			<input type="hidden" name="initiationid" value="0">
 												    		<%} %>	
-												    		<textarea id="currentStatus<%=obj[0] %>" class="dis-non"><%=obj[34] %></textarea>
+												    		<textarea id="currentStatus<%=obj[0] %>" class="dis-non"><%=obj[34]!=null?StringEscapeUtils.escapeHtml4(obj[34].toString()):"" %></textarea>
 											    			<button type="button" class="editable-clicko" id="carsDetails" data-id="<%=obj[0] %>" data-carsno="<%=obj[2] %>" data-toggle="modal" data-target="#currentStatusModal" formnovalidate="formnovalidate">
 																<div class="cc-rockmenu">
 																	<div class="rolling">

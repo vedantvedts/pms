@@ -1747,6 +1747,11 @@ private boolean isValidFileType(MultipartFile file) {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + "Inside IndustryPartnerSubmit.htm " + UserId);
 		try {
+			
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ProgrammeName"))) {
+				return  redirectWithError(redir,"ProgrammeMaster.htm","ProgrammeName should not contain HTML elements !");
+			}
 			String action = req.getParameter("Action");
 			String industryPartnerId = req.getParameter("industryPartnerId");
 			industryPartnerId = industryPartnerId!=null?industryPartnerId : req.getParameter("industryPartnerId2");
@@ -1984,7 +1989,9 @@ private boolean isValidFileType(MultipartFile file) {
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside HolidayAddSubmit.htm "+UserId);		
 			try {
-				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("HoliName"))) {
+					return  redirectWithError(redir,"HolidayList.htm","Holiday Name should not contain HTML elements !");
+				}
 				HolidayMaster holiday= new HolidayMaster();
 
 				holiday.setHolidayName(req.getParameter("HoliName"));
@@ -2013,8 +2020,11 @@ private boolean isValidFileType(MultipartFile file) {
 		@RequestMapping(value = "HolidayEditSumit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 		public String HolidayEditSumit(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside HolidayAddSubmit.htm "+UserId);		
+			logger.info(new Date() +"Inside HolidayEditSubmit.htm "+UserId);		
 			try {
+				if(InputValidator.isContainsHTMLTags(req.getParameter("HoliName"))) {
+					return  redirectWithError(redir,"HolidayList.htm","Holiday Name should not contain HTML elements !");
+				}
 				HolidayMaster holiday= new HolidayMaster();
 				
 				String HolidayId=req.getParameter("HolidayId");
@@ -2418,6 +2428,14 @@ private boolean isValidFileType(MultipartFile file) {
 		String UserId = (String) session.getAttribute("Username");
 		logger.info(new Date() + "Inside ProgrammeMasterSubmit.htm" + UserId);
 		try {
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ProgrammeCode"))) {
+				return  redirectWithError(redir,"ProgrammeMaster.htm","ProgrammeCode should not contain HTML elements !");
+			}
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ProgrammeName"))) {
+				return  redirectWithError(redir,"ProgrammeMaster.htm","ProgrammeName should not contain HTML elements !");
+			}
+			
 			String action = req.getParameter("action");	
 			String programmeMasterId = req.getParameter("programmeMasterId");
 			String programmedirector = req.getParameter("programmedirector");

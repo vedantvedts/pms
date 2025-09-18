@@ -2026,6 +2026,15 @@ public class CommitteeController {
 			for(int i=0 ; i<AgendaItem.length ;i++) {
 				docids.add( req.getParameterValues("attachid_"+i));
 			}
+			
+			if (containsHTMLTags(AgendaItem)) {
+				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
+			    return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
+			} 
+			if (containsHTMLTags(Remarks)) {
+				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
+				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
+			}
 			List<CommitteeScheduleAgendaDto> scheduleagendadtos=new ArrayList<CommitteeScheduleAgendaDto>();
 			for(int i=0;i<AgendaItem.length;i++) 
 			{
@@ -2434,6 +2443,14 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeMinutesSubmit.htm "+UserId);
 		try
 		{
+			if(InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+				redir.addAttribute("specname", req.getParameter("specname"));
+				redir.addAttribute("membertype",req.getParameter("membertype"));
+				redir.addAttribute("formname", req.getParameter("formname"));
+				redir.addAttribute("unit1",req.getParameter("unit1"));				
+				return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
+			}
 			String ActionName=req.getParameter("NoteText");
 			String Remarks=req.getParameter("remarks");
 			
@@ -2572,6 +2589,14 @@ public class CommitteeController {
 			logger.info(new Date() +"Inside CommitteeMinutesEditSubmit.htm "+UserId);
 			try
 			{	
+				if(InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
+					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+					redir.addAttribute("specname", req.getParameter("specname"));
+					redir.addAttribute("membertype",req.getParameter("membertype"));
+					redir.addAttribute("formname", req.getParameter("formname"));
+					redir.addAttribute("unit1",req.getParameter("unit1"));				
+					return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
+				}
 				String ActionName=req.getParameter("NoteText");
 				String Remarks=req.getParameter("remarks");
 				
@@ -6792,10 +6817,10 @@ private boolean isValidFileType(MultipartFile file) {
 			String [] EmpNo = req.getParameterValues("EmpNo");
 			String [] LabCode = req.getParameterValues("LabCode");
 			
-//			if (containsHTMLTags(Role)) {
-//				redir.addAttribute("committeescheduleid", committeescheduleid);
-//			    return redirectWithError(redir, "CommitteeAttendance.htm", "'Role' should not contain HTML Tags.!");
-//			}
+			if (containsHTMLTags(Role)) {
+				redir.addAttribute("committeescheduleid", committeescheduleid);
+			    return redirectWithError(redir, "CommitteeAttendance.htm", "'Role' should not contain HTML Tags.!");
+			}
 			
 			
 			Set<String> s = new HashSet<String>(Arrays.asList(newslno));

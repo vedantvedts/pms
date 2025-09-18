@@ -3,55 +3,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/committeeModule/CommitteeInvitation.css" var="CommitteeInvitation" />
+<link href="${CommitteeInvitation}" rel="stylesheet" />
 <title>COMMITTEE INVITATION</title>
-<style type="text/css">
-.input-group-text {
-	font-weight: bold;
-}
-
-label {
-	font-weight: 800;
-	font-size: 16px;
-	color: #07689f;
-}
-
-hr {
-	margin-top: -2px;
-	margin-bottom: 10px;
-	padding-bottom: 5px;
-}
-
-.tdclass {
-	padding-top:7px;
-	padding-bottom: 7px;
-}
-
-
-b {
-	font-family: 'Lato', sans-serif;
-}
-
-h5,h6{
-	color:#145374;
-}
-
-.card-header{
-	background-color: #07689f;
-	color:white;
-}
-
-.card{
-	border-color: #07689f;
-}
-
-
-</style>
 </head>
 <body>
 	<%
@@ -101,8 +61,8 @@ h5,h6{
 							<div class="col-md-3" >
 					  			<h4><%=committeescheduledata[8] %> Invitations</h4>
 							 </div>
-							 <div class="col-md-9" align="right" style="margin-top: 3px;" >
-					 			<h5 style="color: white"  >(Meeting Id : <%=committeescheduledata[12]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[12].toString()): " - " %>) &nbsp;&nbsp; - &nbsp;&nbsp; (Meeting Date & Time : <%= committeescheduledata[2]!=null?sdf.format(sdf1.parse( StringEscapeUtils.escapeHtml4(committeescheduledata[2].toString()))):" - "%>  &&  <%=committeescheduledata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[3].toString()): " - " %>)</h5>
+							 <div class="col-md-9 meetingDivStyle" align="right">
+					 			<h5 class="h5MeetingColor">(Meeting Id : <%=committeescheduledata[12]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[12].toString()): " - " %>) &nbsp;&nbsp; - &nbsp;&nbsp; (Meeting Date & Time : <%= committeescheduledata[2]!=null?sdf.format(sdf1.parse( StringEscapeUtils.escapeHtml4(committeescheduledata[2].toString()))):" - "%>  &&  <%=committeescheduledata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[3].toString()): " - " %>)</h5>
 							 </div>
 					 	</div>
 					</div>

@@ -11,34 +11,10 @@
 <meta charset="ISO-8859-1">
 
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-
-<style>
-.card-body{
-	padding: 0px !important;
-}
-.control-label{
-	font-weight: bold !important;
-}
-
-
-.table thead th{
-	
-	vertical-align: middle !important;
-}
-
-.header{
-        position:sticky;
-        top: 0 ;
-        background-color: #346691;
-    }
-
-</style>
-
+<spring:url value="/resources/css/committeeModule/committeeDivisionMaster.css" var="committeeDivisionMaster" />
+<link href="${committeeDivisionMaster}" rel="stylesheet" />
 </head>
 <body>
-
-
 <%
 
 String divisionid=(String)request.getAttribute("divisionid");
@@ -76,7 +52,7 @@ String divisionname=null;
 			<div class="card shadow-nohover">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-6" style="margin-top: -8px;">	
+						<div class="col-md-6 mt-n8">
 							<form class="form-inline" method="post" action="DivisionCommitteeMaster.htm" id="myform">
 									<h4 class="control-label" > Division : </h4> &nbsp;&nbsp;&nbsp;
 									 <select class="form-control" id="divisionid" required="required"  name="divisionid" onchange='submitForm();' >
@@ -90,7 +66,7 @@ String divisionname=null;
 						<div class="col-md-6">	
 							<%if(CommitteedivisionAssigned  !=null && CommitteedivisionAssigned.size()>0){ %>						 	
 								<form method="post" action="DivCommitteeAutoSchedule.htm" id="form" >
-									<button type="submit"  class="btn btn-sm preview" style="float:right" >MEETING SCHEDULE</button>
+									<button type="submit"  class="btn btn-sm preview float-right">MEETING SCHEDULE</button>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									<input type="hidden" name="projectid" value="<%=projectid%>"/>	
 									<input type="hidden" name="divisionid" value="<%=divisionid%>"/>
@@ -111,22 +87,22 @@ String divisionname=null;
 							<!-- /////add Committees -->
 							
 							 <div class="col-sm-6">
-								<div class="card" style="margin: 5px">
+								<div class="card m-1">
 									<div class="card-header cardpad ">
-										<h5 style="margin-bottom: -2px">List of Division Committees</h5>
+										<h5>List of Division Committees</h5>
 
 									</div>
 	
-									<div style="margin: 5px">
+									<div class="m-1">
 							
 										<form name="myfrm" action="DivisionCommitteeAdd.htm" method="POST">
-										<div class="table-responsive-sm" style="height: 400px;overflow: auto;">
+										<div class="table-responsive-sm table-scroll">
 											<table	class=" scrolltable datatablex table table-bordered table-hover table-striped table-condensed table-sm ">
 												<thead>
-													<tr style="background-color: #346691; color: #fff;">
+													<tr class="text-white headerRowBgColor">
 														<th class="header" scope="col"> &nbsp;<input type="checkbox" id="selectall1">&nbsp; All </th>
-														<th class="header" scope="col" style="text-align: left;">Committee Name</th>
-														<th class="header" scope="col" style="text-align: left;">Duration</th>
+														<th class="header text-left" scope="col">Committee Name</th>
+														<th class="header text-left" scope="col">Duration</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -138,10 +114,10 @@ String divisionname=null;
 																	check.add(obj[4]);
 													%>
 													<tr>
-														<td style="text-align: center;"><input type="checkbox" class="checkboxall1" name="committeeid"
+														<td class="text-center"><input type="checkbox" class="checkboxall1" name="committeeid"
 															value=<%=obj[0]%>></td>
-														<td style="text-align: left;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>(<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
-														<td style="text-align: left;"><%if(obj[6].toString().equalsIgnoreCase("P")){ %><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %> day(s)<%} else{%>Non-Periodic<%} %> </td>
+														<td class="text-left"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>(<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
+														<td class="text-left"><%if(obj[6].toString().equalsIgnoreCase("P")){ %><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %> day(s)<%} else{%>Non-Periodic<%} %> </td>
 													</tr>
 													<%
 														}
@@ -153,7 +129,7 @@ String divisionname=null;
 														
 													<%} else{%>
 													<tr>
-														<td style="text-align: center;" colspan="4"><br><br> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;&nbsp; No Committees <br><br></td>
+														<td class="text-center" colspan="4"><br><br> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;&nbsp; No Committees <br><br></td>
 													
 													</tr>
 													<%} %>
@@ -162,7 +138,7 @@ String divisionname=null;
 											</div>
 											
 											<div align="center">
-												<input type="submit" class="btn btn-primary btn-sm add" onclick="return submitChecked()" value="ADD" style="margin-bottom: 2%"/>
+												<input type="submit" class="btn btn-primary btn-sm add mb-2p" onclick="return submitChecked()" value="ADD"/>
 											</div>
 											
 											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
@@ -178,23 +154,23 @@ String divisionname=null;
 
 					
 							<div class="col-sm-6">
-								<div class="card" style="margin: 5px">
+								<div class="card m-1">
 	
 									<div class="card-header cardpad ">
-										<h5 style="margin-bottom: -2px; ">Committees Added for <%=divisionname %></h5>
+										<h5 >Committees Added for <%=divisionname %></h5>
 									</div>
 	
-									<div style="margin: 5px">
+									<div class="m-1">
 	
 	
 										<form name="myfrm" action="DivisionCommitteeDelete.htm"	method="POST">
-										<div class="table-responsive-sm" style="height: 400px;overflow: auto;">
+										<div class="table-responsive-sm table-scroll">
 											<table
 												class="scrolltable datatablex table table-bordered table-hover table-striped table-condensed table-sm  ">
 												<thead>
-													<tr style="background-color: #346691; color: #fff;">
+													<tr class="text-white headerRowBgColor">
 														<th class="header" scope="col"> &nbsp;<input type="checkbox" id="selectall">&nbsp; All </th>
-														<th class="header" scope="col" style="text-align: left;">Committee Name</th>
+														<th class="header text-left" scope="col">Committee Name</th>
 														<th class="header" scope="col">Periodic Duration</th>
 														<th class="header" scope="col">Scheduled</th>
 														<th class="header" scope="col">Constitute</th>
@@ -205,7 +181,7 @@ String divisionname=null;
 														for (Object[] obj : CommitteedivisionAssigned) {
 													%>
 													<tr>
-														<td style="text-align: center;">
+														<td class="text-center">
 														
 														<% int checkcount=0;
 														 for(Object[] checklist : CommitteeFormationCheckList){															
@@ -227,15 +203,15 @@ String divisionname=null;
 														
 														
 														</td>
-														<td style="text-align: left;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%> (<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
-														<td style="text-align: left;"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> days<%} else{%>Non-Periodic<%} %> </td>
-														<td style="text-align: center;"><%if(obj[6].toString().equalsIgnoreCase("Y")) {%><img src="view/images/check.png"/><%}else{ %><img src="view/images/cancel.png"/><%} %></td>
+														<td class="text-left"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%> (<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
+														<td class="text-left"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> days<%} else{%>Non-Periodic<%} %> </td>
+														<td class="text-center"><%if(obj[6].toString().equalsIgnoreCase("Y")) {%><img src="view/images/check.png"/><%}else{ %><img src="view/images/cancel.png"/><%} %></td>
 															
 														<td>
 															<%if(checkcount>0){ %>
-																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" style="background-color: maroon !important; font-size: 12px;">Constitute</button>
+																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view ConstitutePendingColor">Constitute</button>
 															<%}else{ %>
-																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" style="background-color: green !important; font-size: 12px;" >Constitute</button>
+																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view ConstituteApproveColor">Constitute</button>
 															<%} %>
 														</td>
 													</tr>
@@ -256,7 +232,7 @@ String divisionname=null;
 											</div>
 										
 											<div align="center">
-												<button type="submit" value="remove" name="sub" class="btn btn-danger btn-sm delete" onclick="return deleteConfirm()" style="margin-bottom: 2%">Remove</button>
+												<button type="submit" value="remove" name="sub" class="btn btn-danger btn-sm delete mb-2p" onclick="return deleteConfirm()">Remove</button>
 											</div>
 																					
 											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
@@ -290,65 +266,63 @@ String divisionname=null;
 <br>
 
 	<div class="row m-1">
-		<div class="col-md-12"
-			style="text-align: center; width: 140px; height: 30px;color:green">
+		<div class="col-md-12 text-center committeeFlow">
 			<b>Committee Flow</b>
 		</div>
 	</div>
 	
-	<div class="row m-1"
-		style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
+	<div class="row m-1 text-center pt-10 pb-15">
 
-		<table align="center" style="border-spacing: 0 20px;">
+		<table align="center" class="formationBorder">
 			<tr>
-				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;" rowspan="2">
+				<td rowspan="2" class="trup height-20 flowBackGround" rowspan="2">
                   <b class="text-primary">Committee Formation</b>
                 </td>
-                <td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+                <td rowspan="2" class="trup height-20 width-10"></td>
                 <td rowspan="2"><b>---></b>
 				
 				</td>
-				<td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+				<td rowspan="2" class="trup height-20 width-10"></td>
 				
 				
-				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td rowspan="2" class="trup height-20 flowBackGround">
 					<b class="text-primary">Is PreApproved </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup height-20 width-10"></td>
 				<td ><b>---></b>
 				
 				</td>
 				
 				
 				
-				<td class="trup"style=" width: 40px; height: 5px; margin-left: 20px;">
+				<td class="trup yesFlow">
 					<b class="text-primary"> YES</b>
 				</td>
 				
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup height-20 width-10"></td>
 				
 				<td><b>---</b></td>			
-				<td class="trup" style="width: 10px; height: 20px;"><b>---------------</b></td>
+				<td class="trup height-20 width-10"><b>---------------</b></td>
 				
 				
 				
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup height-20 width-10"></td>
 				 <td  ><b>---></b>
 				
-				 </i></td> 
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				 </td> 
+				<td class="trup height-20 width-10"></td>
 				
 				
-				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td rowspan="2" class="trup height-20 flowBackGround">
 					<b class="text-primary">Committee Constitution</b>
 				</td>
-				<td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+				<td rowspan="2" class="trup height-20 width-10"></td>
 				<td rowspan="2" ><b>---></b>
 				
 				</td>
-				<td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+				<td rowspan="2" class="trup height-20 width-10"></td>
 				
-				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td rowspan="2" class="trup height-20 flowBackGround">
 					<b class="text-primary">Schedule </b>
 				</td>
 				
@@ -357,24 +331,24 @@ String divisionname=null;
 			</tr>
 			<tr >
 			
-			    <td class="trup" style="width: 10px; height: 20px;"></td>
+			    <td class="trup height-20 width-10"></td>
 				<td><b>---></b>
 				
 				</td>
 			
 
-				<td class="trup"style=" width: 40px; height: 5px; margin-left: 20px;">
+				<td class="trup yesFlow">
 					<b class="text-primary"> No</b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup height-20 width-10"></td>
 				<td><b>---></b>
 				
 				</td>
 				
-				<td class="trup"style=" background: #c4ced3; width: 100px; height: 5px; margin-left: 20px;">
+				<td class="trup approvalFlow">
 					<b class="text-primary">Approval</b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup height-20 width-10"></td>
 				<td><b>---></b>
 				
 				</td>

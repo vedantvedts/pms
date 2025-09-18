@@ -1,0 +1,142 @@
+#sidebarCollapse {
+	display: none;
+}
+
+#sidebar {
+	display: none;
+}
+
+.btn-status {
+	position: relative;
+	z-index: 1;
+}
+
+.btn-status:hover {
+	transform: scale(1.05);
+	z-index: 5;
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+.cardHeaderH3Style{
+	color:#055C9D;
+	margin-top:-5px;
+}
+
+.cardBodyNavPillBgStyle{
+	background-color: #E1E5E8;
+	padding:0px;
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+
+.mt-1per{
+	margin-top: 1%;
+}
+
+.committeeRecommendationDivStyle{
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.fs-90 {
+  font-size: 0.90rem !important;
+}
+
+.editStyleBgColor{
+	background: #E76F51;
+	border-color: #E76F51;
+}
+
+.enotePrintDivStyle{
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.fromToDateDivStyle{
+	align-items: center;
+	justify-content: end;
+}
+
+.fs-16px {
+	font-size: 16px;
+}
+
+.width-80px{
+	width: 80px;
+}
+
+.width-113px {
+	width: 113px;
+}
+
+.mt-n10px{
+	margin-top: -10px;
+}
+
+.width-20px{
+	width: 20px;
+}
+
+.width-5per{
+	width: 5%;
+}
+
+.width-10per{
+	width: 10%;
+}
+
+.width-196px{
+	width: 196px;
+}
+
+
+.C000000 {
+  color: #000000 !important;
+}
+
+.C2155CD {
+  color: #2155CD !important;
+}
+
+.CFF7F3F {
+  color: #FF7F3F !important;
+}
+
+.C1CD6CE {
+  color: #1CD6CE !important;
+}
+
+.CD61C4E {
+  color: #D61C4E !important;
+}
+
+.CE247E7 {
+  color: #E247E7 !important;
+}
+
+.C157ECD {
+  color: #157ECD !important;
+}
+
+.C9C27B0 {
+  color: #9C27B0 !important;
+}
+
+.C2B7A0B {
+  color: #2B7A0B !important;
+}
+
+.fw-600{
+	font-weight: 600;
+}

@@ -1518,13 +1518,16 @@ var editor_config = {
 			datatype:'json',
 			success :  function(result) {
 				
-				var ajaxresult = JSON.parse(result);
-				
-				 if(ajaxresult>0){
-				    	alert("Introduction added successfully !")
-				    	location.reload();
-				    }
-			}
+				if (result > 0) {
+	                alert("Introduction added successfully!");
+	                location.reload();
+	            } else {
+	                alert("Introduction should not contain HTML TAG");
+	            }
+	        },
+	        error: function () {
+	            alert("Server error. Please try again.");
+	        }
 		})
 		}else{
 			event.preventDefault();
