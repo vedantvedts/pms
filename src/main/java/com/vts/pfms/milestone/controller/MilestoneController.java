@@ -73,6 +73,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -2373,6 +2374,10 @@ public class MilestoneController {
 		logger.info(new Date() +"Inside FileRepMasterAdd.htm "+UserId);
 
 		try {
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("MasterName"))) {
+				return  redirectWithError(redir,"FileRepMaster.htm","Level Name should not contain HTML elements !");
+			}
 			FileRepMaster fileRepo=new FileRepMaster();
 			fileRepo.setLabCode(LabCode);
 			fileRepo.setLevelName(req.getParameter("MasterName").trim());
@@ -3067,7 +3072,9 @@ public class MilestoneController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside MileRemarkUpdate.htm "+UserId);		
 		try {
-
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))) {
+				return  redirectWithError(redir,"M-A-AssigneeList.htm","Remarks should not contain HTML elements !");
+			}
 			MilestoneActivityDto mainDto=new MilestoneActivityDto();
 			mainDto.setActivityId(req.getParameter("MileId"));
 			mainDto.setStatusRemarks(req.getParameter("Remarks"));
@@ -3755,7 +3762,7 @@ public class MilestoneController {
 	}
 	
 	@RequestMapping(value = "uploadFileData.htm", method = RequestMethod.POST)
-	public @ResponseBody String uploadFileData(HttpServletRequest req,HttpSession ses,
+	public @ResponseBody ResponseEntity<String> uploadFileData(HttpServletRequest req,HttpSession ses,
 			@RequestParam(name = "fileAttach", required = false) MultipartFile file,
 			@RequestParam("docName") String docName,
 			@RequestParam("fileRepId") String fileRepId,
@@ -3763,7 +3770,7 @@ public class MilestoneController {
 			@RequestParam("mainLevelId") String mainLevelId,
 			@RequestParam("subLevelId") String subLevelId,
 			@RequestParam("isnewversion") String isnewversion,
-        	@RequestParam("fileType") String fileType) throws Exception 
+        	@RequestParam("fileType") String fileType,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
@@ -3771,6 +3778,9 @@ public class MilestoneController {
 		long result = 0l;
 		Gson json = new Gson();
 		try {
+			if(InputValidator.isContainsHTMLTags(docName)) {
+				return new ResponseEntity<String>("200",HttpStatus.EXPECTATION_FAILED);	
+			}
 			
 			FileUploadDto upload = new FileUploadDto();
 			upload.setFileId(fileRepId);
@@ -3790,7 +3800,7 @@ public class MilestoneController {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside getOldFileDocNames"+UserId, e);
 		}
-		return json.toJson(result);	
+		return new ResponseEntity<String>("200",HttpStatus.CREATED);	
 	}
 	
 	@RequestMapping(value = "fileDownload.htm/{id}", method = RequestMethod.GET)
@@ -4487,7 +4497,7 @@ public class MilestoneController {
 	}
  	
 	@RequestMapping(value="PreProjectFileRepAdd.htm",method = RequestMethod.POST)
-	public @ResponseBody String addPreProjectFileRep(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	public @ResponseBody ResponseEntity<String> addPreProjectFileRep(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String) ses.getAttribute("labcode");
@@ -4495,6 +4505,9 @@ public class MilestoneController {
 		long count = 0l;
 		Gson json = new Gson();
 		try {
+			if(InputValidator.isContainsHTMLTags(req.getParameter("levelName"))) {
+				return new ResponseEntity<String>("200", HttpStatus.EXPECTATION_FAILED);	
+			}
 			FileRepMasterPreProject fileRepo=new FileRepMasterPreProject();
 			fileRepo.setLabCode(LabCode);
 			fileRepo.setLevelName(req.getParameter("levelName").trim());
@@ -4506,7 +4519,7 @@ public class MilestoneController {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside PreProjectFileRepAdd.htm "+UserId, e); 
 		}
-		return json.toJson(count);	
+		return new ResponseEntity<String>("200", HttpStatus.CREATED);	
 	}
 	
 	@RequestMapping(value="PreProjectFileRepMasterSubAdd.htm",method = RequestMethod.POST)
@@ -4518,6 +4531,10 @@ public class MilestoneController {
 		long count = 0l;
 		Gson json = new Gson();
 		try {
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("levelName"))) {
+				return  redirectWithError(redir,"FileRepMaster.htm","Sub-Level Name should not contain HTML elements !");
+			}
 			FileRepMasterPreProject fileRepo=new FileRepMasterPreProject();
 			fileRepo.setLabCode(LabCode);
 			fileRepo.setInitiationId(Long.parseLong(req.getParameter("initiationId")));
@@ -4575,7 +4592,7 @@ public class MilestoneController {
 	}
 	
 	@RequestMapping(value = "uploadPreProjectFile.htm", method = RequestMethod.POST)
-	public @ResponseBody String uploadPreProjectFile(HttpServletRequest req,HttpSession ses,
+	public @ResponseBody ResponseEntity<String> uploadPreProjectFile(HttpServletRequest req,HttpSession ses,
 			@RequestParam(name = "fileAttach", required = false) MultipartFile file,
 			@RequestParam("docName") String docName,
 			@RequestParam("fileRepId") String fileRepId,
@@ -4583,7 +4600,7 @@ public class MilestoneController {
 			@RequestParam("mainLevelId") String mainLevelId,
 			@RequestParam("subLevelId") String subLevelId,
 			@RequestParam("isnewversion") String isnewversion,
-        	@RequestParam("fileType") String fileType) throws Exception 
+        	@RequestParam("fileType") String fileType,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
@@ -4591,7 +4608,9 @@ public class MilestoneController {
 		long result = 0l;
 		Gson json = new Gson();
 		try {
-			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("docName"))) {
+				return new ResponseEntity<String>("200",HttpStatus.EXPECTATION_FAILED);
+			}
 			FileUploadDto upload = new FileUploadDto();
 			upload.setFileId(fileRepId);
 			upload.setFileRepMasterId(mainLevelId);
@@ -4610,7 +4629,7 @@ public class MilestoneController {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside uploadPreProjectFile"+UserId, e);
 		}
-		return json.toJson(result);	
+		return new ResponseEntity<String>("200",HttpStatus.CREATED);
 	}
 	
 	
@@ -4718,14 +4737,17 @@ public class MilestoneController {
 	}
 	
 	@RequestMapping(value="submitMilestoneFeedBack.htm")
-	public @ResponseBody String submitMilestoneFeedBack(HttpServletRequest req, HttpSession ses,HttpServletResponse res
-			)throws Exception 
+	public @ResponseBody String submitMilestoneFeedBack(HttpServletRequest req, HttpSession ses,HttpServletResponse res,RedirectAttributes redir)throws Exception 
 	{
 		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside removeFileAttachment.htm "+UserId);
 		try {
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("remarks"))) {
+				return  redirectWithError(redir,"M-A-AssigneeList.htm","Comments should not contain HTML elements !");
+			}
 			String activityId = req.getParameter("activityId");
 			String remarks = req.getParameter("remarks");
 			//long result = service.deleteMilsetone(activityId);

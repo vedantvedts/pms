@@ -3777,7 +3777,9 @@ public class CARSController {
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String currentStatus = req.getParameter("currentStatus");
-			
+//			if(InputValidator.isContainsHTMLTags(currentStatus)) {
+//				return  redirectWithError(redir,"CARSInitiationList.htm","Cars Status should not contain HTML elements !");
+//			}
 			int result = service.carsCurrentStatusUpdate(currentStatus, carsInitiationId);
 			
 			if (result > 0) {

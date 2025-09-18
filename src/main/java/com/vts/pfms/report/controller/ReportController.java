@@ -58,6 +58,7 @@ import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.report.model.LabReport;
 import com.vts.pfms.report.model.PfmsLabReportMilestone;
 import com.vts.pfms.report.service.ReportService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
@@ -269,14 +270,16 @@ private static final Logger logger = LogManager.getLogger(ReportController.class
 		String projectId=req.getParameter("Project");
 		
 		long result=0;
-		
+		if(InputValidator.isContainsHTMLTags(req.getParameter("introduction"))) {
+			return  redirectWithError(redir,"LabReports.htm","Introduction should not contain HTML elements !");
+		}
 		//count the prj in the table
 		List<Object[]> count=service.countPrjEntries(Long.parseLong(projectId));
 		LabReport labReportDetails = new LabReport();
 		if(count!=null &&count.size()>0) {
 		      
 		   labReportDetails=service.getLabReportDetails(count.get(0)[0].toString());
-		    
+		   
 		   labReportDetails.setIntroduction(req.getParameter("introduction"));
 		   labReportDetails.setModifiedBy(userName);
 		   labReportDetails.setModifiedDate(sdtf.format(new Date()));
@@ -826,4 +829,8 @@ XWPFParagraph reviewHeld = document.createParagraph();
 		}
 	}
 
+    private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
+	}
 }
