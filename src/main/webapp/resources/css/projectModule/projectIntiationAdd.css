@@ -1,0 +1,61 @@
+.input-group-text {
+	font-weight: bold;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+hr {
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+.form-group {
+	margin-top: 0.5rem;
+	margin-bottom: 1rem;
+}
+
+.mandatory {
+	font-weight: 800;
+}
+
+#initiatedproject .select2-container {
+	width: 38rem !important;
+}
+
+option:checked {
+	background-color: #337ab7;
+	color: #fff;
+}
+
+.multiselect {
+	padding: 4px 90px;
+	background-color: white;
+	border: 1px solid #ced4da;
+	height: calc(2.25rem + 2px);
+}
+
+.select2-container {
+	width: 100% !important;
+}
+
+.mt-n1p{
+	margin-top: -1%;
+}
+
+.cs-header{
+	background-color: #055C9D !important;
+}
+
+.cs-footer{
+	background: linear-gradient(to right, #334d50, #cbcaa5);
+	padding: 20px;
+}
+
+
+
+
+

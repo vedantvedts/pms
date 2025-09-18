@@ -16,201 +16,10 @@
 <spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
 <link href="${sweetalertCss}" rel="stylesheet" />
 <script src="${sweetalertJs}"></script>
+<spring:url value="/resources/css/milestone/mAAssigneeList.css" var="mAAssigneeList" />     
+<link href="${mAAssigneeList}" rel="stylesheet" />
 <title>Milestone Assignee List</title>
-<style type="text/css">
-label{
-	font-weight: bold;
-  font-size: 13px;
-}
-.table thead tr,tbody tr{
-    font-size: 14px;
-}
-body{
-	background-color: #f2edfa;
-	overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.multiselect-container>li>a>label {
-	padding: 4px 20px 3px 20px;
-}
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
 
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor:pointer;
-	width: 34px;
-	height: 30px;
-	text-align:left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-	width: 120px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-	float:left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.hover:hover{
-cursor: pointer;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:210px !important;
-}
-.bootstrap-select {
-	width: 400px !important;
-}
-
-.customTooltip {
-  position: fixed; /* Center the modal */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
-  z-index: 9999;
-
-  width: 60%;  /* Adjust modal width */
-  max-width: 600px;
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  font-size: 1.3rem;
-  color: #333;
-  transition: opacity 0.2s ease;
-}
-.customTooltip .closeModal {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  cursor: pointer;
-  font-size: 18px;
-  color: #888;
-}
-.customTooltip .closeModal:hover {
-  color: #333;
-}
-
-
-.chat-container {
-	max-width: 800px;
-	height: 600px;
-	margin: 30px auto;
-	background-color: #f8f9fa;
-	border: 1px solid #dee2e6;
-	border-radius: 10px;
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-}
-
-.chat-body {
-	flex-grow: 1;
-	overflow-y: auto;
-}
-
-.chat-message {
-	margin: 10px 0;
-	padding: 12px 16px;
-	border-radius: 20px;
-	max-width: 75%;
-	word-break: break-word;
-	font-size: 14px;
-}
-
-.user-msg {
-	background-color: #ffffff;
-	border: 1px solid #dee2e6;
-	align-self: flex-start;
-}
-
-.admin-msg {
-	background-color: #d1e7dd;
-	border: 1px solid #badbcc;
-	align-self: flex-end;
-	margin-left: auto;
-}
-
-.chat-message strong {
-	display: block;
-	font-size: 13px;
-	color: #343a40;
-	margin-bottom: 4px;
-}
-
-.timestamp {
-	font-size: 11px;
-	color: #6c757d;
-	text-align: right;
-	margin-top: 6px;
-	font-weight: bold;
-}
-
-.chat-input {
-	position: sticky;
-	bottom: 0;
-	z-index: 10;
-}
-
-.sender-name {
-	font-weight: bold;
-	display: block;
-	color: #343a40;
-}
-
-/* .btn.submit {
-    width: 150px;
-    border-radius: 25px;
-    padding: 8px 20px;
-    font-weight: 600;
-} */
-@media ( max-width : 768px) {
-	.chat-container {
-		height: auto;
-	}
-	.chat-message {
-		max-width: 90%;
-	}
-	.btn.submit {
-		width: 100%;
-	}
-}
-</style>
 </head>
 <body>
 <%
@@ -246,28 +55,28 @@ cursor: pointer;
 <% } %>
     
 	<form class="form-inline"  method="POST" action="M-A-AssigneeList.htm">
-  		<div class="row W-100" style="width: 100%;">
+  		<div class="row W-100 width-100" >
 
   			<div class="col-md-7">
    
 	  			<p>
-	  				<b style="color: #145374;"><span class="label label-primary"> &nbsp;&nbsp;&nbsp;&nbsp; Project &nbsp; </span> </b>
+	  				<b  class="colorLabel"><span class="label label-primary"> &nbsp;&nbsp;&nbsp;&nbsp; Project &nbsp; </span> </b>
 	  				<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
-					<b style="color: #145374;"><span class="label label-warning">&nbsp;Accept&nbsp;</span></b>
+					<b class="colorLabel"><span class="label label-warning">&nbsp;Accept&nbsp;</span></b>
 					<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
-					<b style="color: #145374;"><span class="label label-success">&nbsp;&nbsp;Update Progress&nbsp;&nbsp;</span></b>
+					<b class="colorLabel"><span class="label label-success">&nbsp;&nbsp;Update Progress&nbsp;&nbsp;</span></b>
       			</p>
 	                     
   			</div>
-			<div class="col-md-2" style="text-align: right;">
+			<div class="col-md-2 textRight" >
 			   <label class="control-label" >Project Name :  </label>
 			</div>
-			<div class="col-md-2" style="margin-top: -5px;">
+			<div class="col-md-2" >
      			<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId" onchange="this.form.submit()">
      				<option disabled="disabled"  selected value="">Choose...</option>
      				<% for (Object[] obj : ProjectList) {
-     					projectDirector = Long.parseLong(obj[23].toString());	String projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":""; %>
-	 					<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <%} %>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>  </option>
+     						String projectshortName=(obj[17]!=null)?" ("+obj[17].toString()+") ":""; %>
+	 					<option value="<%=obj[0]%>" <%if(obj[0].toString().equalsIgnoreCase(ProjectId)){ %>selected="selected" <% projectDirector = Long.parseLong(obj[23].toString());} %>><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%> <%=projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName): " - "%>  </option>
 	 				<%} %>
      			</select>
 			</div>
@@ -276,11 +85,11 @@ cursor: pointer;
 	</form>
 	
 	<br />
-	
+
 	<div class="container-fluid" >
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card shadow-nohover" style="margin-top: -20px;">
+				<div class="card shadow-nohover">
 					<div class="row card-header">
 			     		<div class="col-md-10">
 							<h5 >
@@ -292,26 +101,24 @@ cursor: pointer;
 					 			Milestone List
 					 		</h5>
 						</div>
-						<div class="col-md-2 justify-content-end" style="float: right;">
-				
-					 	</div>
+						
 					</div>
 					<div class="card-body">
                     	<div class="table-responsive"> 
-							<table class="table table-condensed table-striped table-hover table-bordered" id="myTable" style="width: 100%;">
+							<table class="table table-condensed table-striped table-hover table-bordered width-100" id="myTable">
 								<thead class="center">
 									<tr>
-										<th width="3%">SN</th>
-										<th width="2%">Main</th>
-									    <th width="9%">Sub</th>
-										<th width="22%">Milestone Activity</th>
-										<th width="8%">Start Date</th>
-										<th width="8%">End Date</th>	
-										<th width="15%">First OIC</th>
-										<th width="8%">Status</th>
-										<th width="5%">Weightage</th>	
-										<th width="10%">Progress</th>												
-									 	<th width="10%">Action</th>
+										<th class="width-3" width="3%">SN</th>
+										<th class="width-2"  width="2%">Main</th>
+									    <th class="width-9"  width="9%">Sub</th>
+										<th class="width-22"  width="22%">Milestone Activity</th>
+										<th class="width-8"  width="8%">Start Date</th>
+										<th class="width-8"  width="8%">End Date</th>	
+										<th class="width-15"  width="15%">First OIC</th>
+										<th class="width-8"  width="8%">Status</th>
+										<th class="width-5"  width="5%">Weightage</th>	
+										<th class="width-10"  width="10%">Progress</th>												
+									 	<th class="width-10"  width="10%">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -326,7 +133,7 @@ cursor: pointer;
 											</td>
 											<td class="center">M<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
 											<td class="center"></td>
-											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
+											<td class="details">
 												<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>
 											</td>
 											<td class="center"><%=sdf.format(obj[2])%></td>
@@ -336,7 +143,7 @@ cursor: pointer;
 											<td class="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%></td>	
 											<td>
 												<%if(!obj[12].toString().equalsIgnoreCase("0")){ %>
-													<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+													<div class="progress progressdiv" >
 														<div class="progress-bar progress-bar-striped
 															<%if(obj[14].toString().equalsIgnoreCase("2")){ %>
 																bg-success
@@ -346,14 +153,14 @@ cursor: pointer;
 																bg-danger
 															<%} else if(obj[14].toString().equalsIgnoreCase("5")){ %>
 																bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=obj[12] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%}  %> width-<%=obj[12] %>
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>
 														</div> 
 													</div> 
 												<%}else{ %>
-													<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress progressdiv" >
+														<div class="progress-bar NoProgress" role="progressbar"  >
 															Not Started
 														</div>
 													</div> 
@@ -366,7 +173,7 @@ cursor: pointer;
                         	                		 </button>
 												<%} %>
 												<%if("A".equalsIgnoreCase(obj[10].toString())&&((Long) session.getAttribute("EmpId")).toString().equals(obj[11].toString())){ %> 
-                                                	<form action="MilestoneActivityUpdate.htm" method="POST" name="myfrm"  style="display: inline">
+                                                	<form action="MilestoneActivityUpdate.htm" method="POST" name="myfrm"  >
                                                     	<button  class="editable-click" name="sub" value="Accept"  formaction="M-A-Assign-OIC.htm" onclick="return confirm('Are You Sure To Accept?')" >
 															<div class="cc-rockmenu">
 																<div class="rolling">	
@@ -382,7 +189,7 @@ cursor: pointer;
 															
 												    </form> 
 												    
-								                  	<form action="MilestoneActivityUpdate.htm" method="POST" name="myfrm"  style="display: inline">
+								                  	<form action="MilestoneActivityUpdate.htm" method="POST" name="myfrm"  >
 								                    	<button type="button"  class="editable-click" name="sub" value="Back"   data-toggle="modal" data-target="#exampleModal<%=obj[0]%>" data-whatever="@mdo" >
 															<div class="cc-rockmenu">
 																<div class="rolling">	
@@ -407,7 +214,7 @@ cursor: pointer;
 										                                     <div class="col-md-12">
 																				<div class="form-group">
 																					<label class="control-label">Remark</label> 
-																				    <textarea class="form-control" name="Remarks" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Send Back Remark here with max 255 characters"></textarea>
+																				    <textarea class="form-control heightClass" name="Remarks"  maxlength="255" required="required" placeholder="Enter Send Back Remark here with max 255 characters"></textarea>
 																				</div>
 																			</div>       
                                          								</div>
@@ -436,7 +243,7 @@ cursor: pointer;
 											<td class="center"><%=++slno %>. </td>
 											<td class="center"><%=levelsMapData[2]!=null?StringEscapeUtils.escapeHtml4(levelsMapData[2].toString()): " - " %></td>
 											<td class="center"><%=levelsMapData[1]!=null?StringEscapeUtils.escapeHtml4(levelsMapData[1].toString()): " - " %> </td>
-											<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;">
+											<td class="details">
 												<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>
 											</td>
 															
@@ -458,8 +265,8 @@ cursor: pointer;
 											<td class="center"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
 											<td>
 												<%if(!obj[5].toString().equalsIgnoreCase("0")){ %>
-													<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-														<div class="progress-bar progress-bar-striped
+													<div class="progress progressdiv" >
+														<div class="progress-bar progress-bar-striped width-<%=obj[5] %>
 															<%if(obj[9].toString().equalsIgnoreCase("2")){ %>
 																bg-success
 															<%} else if(obj[9].toString().equalsIgnoreCase("3")){ %>
@@ -469,20 +276,20 @@ cursor: pointer;
 															<%} else if(obj[9].toString().equalsIgnoreCase("5")){ %>
 																bg-warning
 															<%}  %>
-															" role="progressbar" style=" width: <%=obj[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %>
 														</div> 
 													</div> 
 												<%}else{ %>
-													<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-														<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+													<div class="progress progressdiv" >
+														<div class="progress-bar NoProgress" role="progressbar"   >
 															Not Started
 														</div>
 													</div> 
 												<%} %>
 											</td>
                                                       
-											<td style="display: flex;justify-content: space-around;">
+											<td class="tdFlex">
 												<%if(obj[22]!=null && Integer.parseInt(obj[22].toString())==0){
 													String activityType = "";
 													if(Integer.parseInt(obj[5].toString())<100) { 
@@ -503,7 +310,7 @@ cursor: pointer;
 																}
 																%>
 																 <%if(obj[24]!=null &&  !obj[24].toString().equalsIgnoreCase("0")  && obj[25].toString().equalsIgnoreCase("L")) { %>
-                                                         		<span class="hover text-primary" style="color:blue ; font-weight: bold" onmouseover="showContent('<%=obj[24].toString() %>',this)">Linked Milestone </span>
+                                                         		<span class="hover text-primary spanPromary"  onmouseover="showContent('<%=obj[24].toString() %>',this)">Linked Milestone </span>
 		                                                         			<div class="customTooltip" id="customTooltip<%=obj[24].toString() %>">
 		  																		<span class="closeModal" onclick="closeModal('<%=obj[24].toString() %>')">&times;</span>
 																			</div>
@@ -518,7 +325,7 @@ cursor: pointer;
                                                                   	<input type="hidden" name="ActivityType" value="<%=activityType %>" /> 
                                                                     <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
                                                         		</form>
-                                                        		  <button class="btn btn-primary" type="button" onclick="showModal('<%=obj[0].toString()%>','<%=levelsMapData[2] %>','<%=levelsMapData[1] %>','<%=obj[4].toString() %>')" data-toggle="tooltip" data-placement="top"  title="FeedBack"><i class="fa fa-comments" style="color:white" aria-hidden="true"></i></button>
+                                                        		  <button class="btn btn-primary" type="button" onclick="showModal('<%=obj[0].toString()%>','<%=levelsMapData[2] %>','<%=levelsMapData[1] %>','<%=obj[4].toString() %>')" data-toggle="tooltip" data-placement="top"  title="FeedBack"><i class="fa fa-comments text-light" aria-hidden="true"></i></button>
                                                         		<%} %> 
                                                         		
                                                         		
@@ -551,7 +358,7 @@ cursor: pointer;
 										
 									<%if(slno==0) {%>
 										<tr >
-											<td colspan="9" style="text-align: center" class="center">No List Found</td>
+											<td colspan="11"  class="center text-center">No List Found</td>
 										</tr>
 									<%} %>
 								</tbody>
@@ -564,67 +371,66 @@ cursor: pointer;
 	</div>	
 	
 		<div class="row m-1">
-		<div class="col-md-12"
-			style="text-align: center; width: 140px; height: 30px;color: green;">
+		<div class="col-md-12 milestoneFlow">
 			<b>Milestone Flow </b>
 		</div>
 	</div>
 	
-	<div class="row m-1"
-		style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
+	<div class="row m-1 row1"
+		>
 
-		<table align="center" style="border-spacing: 0 20px;">
+		<table align="center"  class="borderSpacing">
 		<tr>
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead" >
 				<b class="text-primary">Add Milestone Activity</b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" "></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead">
 					<b class="text-primary">Add Sub Milestone Activity </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead">
 					<b class="text-primary">Assign Weightage1 </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter"></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead">
 					<b class="text-primary">Assign Milestone Activity </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead">
 					<b class="text-primary">Set Baseline </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead">
 					<b class="text-primary">Assignee</b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead">
 					<b class="text-primary"> Acknowledge Milestone Activity </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead" >
 					<b class="text-primary">Update progress</b>
 				</td>
 			</tr>
@@ -654,9 +460,7 @@ cursor: pointer;
   	      			<form action="MileRemarkUpdate.htm" method="POST" autocomplete="off">
   	      				<div class="row">
   	      		    
-							<div class="col-md-12" style="display: none;">Financial Outlay : <br>
-								<input class="form-control" title="Enter Number" name="financialoutlay" id="financialoutlay" type="text"   maxlength="9" required="required" value="0">
-							</div>
+							
 					 		<br>
 							<div class="col-md-12"> Remarks :<br>
   	      		    			<textarea class="form-control" name="Remarks" id="remarks" required="required" maxlength="2000"> </textarea>
@@ -685,7 +489,7 @@ cursor: pointer;
 		<div class="modal fade" id="chatModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
-			<div class="modal-content" style="width: 200%; margin-left: -50%;">
+			<div class="modal-content modalContentWidth" >
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Feedbacks</h5>
 					<button type="button" class="close" data-dismiss="modal"
@@ -888,9 +692,9 @@ $('#chatModal').modal('show');
 					      /* tooltip.style.left = (e.pageX + 15) + "px";
 					        tooltip.style.top = (e.pageY + 10) + "px"; */
 					        tooltip.innerHTML =
-					        	"<span style='font-weight:bold'>Project Code </span>: "+arr[2]+"<br> <span style='font-weight:bold'>Milestone Name: <br></span>"
+					        	"<span class='font-weight-bold'>Project Code </span>: "+arr[2]+"<br> <span  class='font-weight-bold'>Milestone Name: <br></span>"
 					        	+arr[1] + "<br> ( " + arr[0] +" )<br>"
-					        	+ "<span class='text-danger' style='font-size:18px;font-weight:bold'>This milestone will progress based on the linked milestone !</span>"
+					        	+ "<span class='text-danger font-weight-bold '>This milestone will progress based on the linked milestone !</span>"
 					   }); 
 					
 					   ele.addEventListener("mouseleave", function () {

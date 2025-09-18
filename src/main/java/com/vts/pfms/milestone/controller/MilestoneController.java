@@ -50,6 +50,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -73,6 +74,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -980,7 +982,6 @@ public class MilestoneController {
 		
 		return null;
 	}
-	
 	@RequestMapping(value = "MilestoneActivityCompare.htm")
 	public String MilestoneActivityCompare(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
@@ -994,25 +995,40 @@ public class MilestoneController {
 			if(rev>1) {
 				rev2=rev-1;
 			}
+			
+			String FirstNo = req.getParameter("FirstNo");
+			
+			String SecondNo = req.getParameter("SecondNo");
+			
+			System.out.println(FirstNo+"####"+SecondNo);
+			
+			if(FirstNo==null) {
+				FirstNo= "1";	
+			}
+			if(SecondNo!=null) {
+				rev2 = Integer.parseInt(SecondNo);
+			}
+			
+			
 			int countA=1;
 			int count1A=1;
-			req.setAttribute("MilestoneActivity", service.ActivityCompareMAin(req.getParameter("MilestoneActivityId"),"1","1").get(0));
-			List<Object[]>  MilestoneActivityA=service.ActivityLevelCompare(req.getParameter("MilestoneActivityId"),"1","1","1");
+			req.setAttribute("MilestoneActivity", service.ActivityCompareMAin(req.getParameter("MilestoneActivityId"),FirstNo,"1").get(0));
+			List<Object[]>  MilestoneActivityA=service.ActivityLevelCompare(req.getParameter("MilestoneActivityId"),FirstNo,"1","1");
 			req.setAttribute("MilestoneActivityA", MilestoneActivityA);
 			for(Object[] obj:MilestoneActivityA) {
-				List<Object[]>  MilestoneActivityB=service.ActivityLevelCompare(obj[0].toString(),"1","1","2");
+				List<Object[]>  MilestoneActivityB=service.ActivityLevelCompare(obj[0].toString(),FirstNo,"1","2");
 				req.setAttribute("MilestoneActivityB"+countA, MilestoneActivityB);
 				int countB=1;
 				for(Object[] obj1:MilestoneActivityB) {
-					List<Object[]>  MilestoneActivityC=service.ActivityLevelCompare(obj1[0].toString(),"1","1","3");
+					List<Object[]>  MilestoneActivityC=service.ActivityLevelCompare(obj1[0].toString(),FirstNo,"1","3");
 					req.setAttribute("MilestoneActivityC"+countA+countB, MilestoneActivityC);
 					int countC=1;
 					for(Object[] obj2:MilestoneActivityC) {
-						List<Object[]>  MilestoneActivityD=service.ActivityLevelCompare(obj2[0].toString(),"1","1","4");
+						List<Object[]>  MilestoneActivityD=service.ActivityLevelCompare(obj2[0].toString(),FirstNo,"1","4");
 						req.setAttribute("MilestoneActivityD"+countA+countB+countC, MilestoneActivityD);
 						int countD=1;
 						for(Object[] obj3:MilestoneActivityD) {
-							List<Object[]>  MilestoneActivityE=service.ActivityLevelCompare(obj3[0].toString(),"1","1","5");
+							List<Object[]>  MilestoneActivityE=service.ActivityLevelCompare(obj3[0].toString(),FirstNo,"1","5");
 							req.setAttribute("MilestoneActivityE"+countA+countB+countC+countD, MilestoneActivityE);
 							countD++;
 						}
@@ -1022,7 +1038,6 @@ public class MilestoneController {
 				}
 				countA++;
 			}	
-
 			req.setAttribute("MilestoneActivity1", service.ActivityCompareMAin(req.getParameter("MilestoneActivityId"),String.valueOf(rev2),"1").get(0));
 			List<Object[]>  MilestoneActivity1A=service.ActivityLevelCompare(req.getParameter("MilestoneActivityId"),String.valueOf(rev2),"1","1");
 			req.setAttribute("MilestoneActivity1A", MilestoneActivity1A);
@@ -1064,6 +1079,7 @@ public class MilestoneController {
 		return "milestone/MilestoneActivityCompare";
 
 	}
+
 
 	@RequestMapping(value = "MilestoneActivityCompareSubmit.htm")
 	public String MilestoneActivityCompareSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
@@ -1253,6 +1269,56 @@ public class MilestoneController {
 		return "milestone/MileActivityUpdate";
 
 	}
+private boolean isValidFileType(MultipartFile file) {
+		
+		
+		
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
+		
+	    if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+
+	    
+	    
+	  
+	    if (contentType == null) {
+	        return false;
+	    }
+	    
+	 // Extract extension in lowercase
+	    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+	    
+	 // Check mapping between MIME type and extension
+	    switch (extension) {
+	        case "pdf":
+	            return contentType.equalsIgnoreCase("application/pdf");
+	        case "jpeg":
+	        case "jpg":
+	            return contentType.equalsIgnoreCase("image/jpeg");
+	        case "png":
+	            return contentType.equalsIgnoreCase("image/png");
+	        default:
+	            return false;
+	    }
+
+//	    // Allow only images and PDF
+//	 // Allowed MIME types
+//	    boolean validMime = contentType.equalsIgnoreCase("application/pdf")
+//	            || contentType.equalsIgnoreCase("image/jpeg")
+//	            || contentType.equalsIgnoreCase("image/png");
+//
+//	    // Allowed extensions
+//	    boolean validExtension = extension.equals("pdf")
+//	            || extension.equals("jpeg")
+//	            || extension.equals("jpg")
+//	            || extension.equals("png");
+//
+//	    return validMime && validExtension;
+	}
+
+
 
 
 	@RequestMapping(value = "M-A-UpdateSubmit.htm", method = RequestMethod.POST)   
@@ -1264,6 +1330,17 @@ public class MilestoneController {
 
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String remarks=req.getParameter("Remarks");
+			
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(FileAttach)  ) {
+
+	        	
+	        	return redirectWithError(redir, "MA-UpdateRedirect.htm",
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+			
+			
 			if(InputValidator.isContainsHTMLTags(remarks)) {
 				redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
 				redir.addAttribute("ActivityId", req.getParameter("ActivityId"));
@@ -1271,6 +1348,17 @@ public class MilestoneController {
 				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
 				return redirectWithError(redir, "M-A-Update.htm", "'Remarks' should not contain HTML Tags.!");
 			}
+			
+			  if (!isValidFileType(FileAttach)) {
+				    redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
+					redir.addAttribute("ActivityId", req.getParameter("ActivityId"));
+					redir.addAttribute("ActivityType", req.getParameter("ActivityType"));
+					redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
+		            return redirectWithError(redir, "M-A-Update.htm",
+		                    "Invalid file type. Only PDF or Image files are allowed!");
+		        }
+			
+			
 			redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
 			redir.addFlashAttribute("ActivityId", req.getParameter("ActivityId"));
 			redir.addFlashAttribute("ActivityType", req.getParameter("ActivityType"));
@@ -1743,6 +1831,24 @@ public class MilestoneController {
 			String ProjectId=req.getParameter("projectidvalue");
 			long release=Long.parseLong(req.getParameter("Rev"));
 			long version=Long.parseLong(req.getParameter("Ver"));
+			
+			
+			  if (!isValidFileType(FileAttach)) {
+				  redir.addFlashAttribute("MainSystemValue", req.getParameter("mainsystemval"));
+					redir.addFlashAttribute("s1", req.getParameter("s1"));
+					redir.addFlashAttribute("s2", req.getParameter("s2"));
+					redir.addFlashAttribute("s3", req.getParameter("s3"));
+					redir.addFlashAttribute("s4", req.getParameter("s4"));
+					redir.addFlashAttribute("sublevel", req.getParameter("sublevel"));
+					redir.addFlashAttribute("projectid", req.getParameter("projectidvalue"));
+					redir.addFlashAttribute("doclev1", req.getParameter("doclev1"));
+					redir.addFlashAttribute("doclev2", req.getParameter("doclev2"));
+					redir.addFlashAttribute("doclev3", req.getParameter("documenttitle"));
+					
+		            return redirectWithError(redir, "TestingFileRepo.htm",
+		                    "Invalid file type. Only PDF or Image files are allowed!");
+		        }
+			
 
 			if(req.getParameter("isnewver").equalsIgnoreCase("N")) 
 			{
@@ -1847,94 +1953,94 @@ public class MilestoneController {
 
 
 
-	@RequestMapping(value = "MilestoneSchedulesList.htm")
-	public String MilestoneSchedulesList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
-	{
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneSchedulesList.htm "+UserId);		
-		try {
-
-			List<Object[] > ProjectList= service.ProjectList();
-			String ProjectId=req.getParameter("ProjectId");
-
-			if(ProjectId==null) {
-				Object[] FirstProjectId=  ProjectList.get(0);
-				ProjectId= FirstProjectId[0].toString();
-
-			}
-
-			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
-			req.setAttribute("MilestoneScheduleList", service.MilestoneScheduleList(ProjectId));
-			req.setAttribute("ProjectList", ProjectList);
-			req.setAttribute("ProjectId", ProjectId);
-
-		}catch (Exception e) {
-			e.printStackTrace(); 
-			logger.error(new Date() +" Inside MilestoneSchedulesList.htm "+UserId, e); 
-			return "static/Error";
-		}
-
-		return "milestone/MilestoneScheduleList";
-	}
-
-	@RequestMapping(value = "MilestoneScheduleAdd.htm")
-	public String MilestoneScheduleAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
-	{
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneScheduleAdd.htm "+UserId);
-		try {
-			req.setAttribute("ActivityTypeList", service.ActivityTypeList());
-			req.setAttribute("ProjectDetails", service.ProjectDetails(req.getParameter("ProjectId")).get(0));
-			req.setAttribute("ProjectId", req.getParameter("ProjectId"));
-		}
-		catch (Exception e) {
-			e.printStackTrace();  
-			logger.error(new Date() +" Inside MilestoneScheduleAdd.htm "+UserId, e); 
-			return "static/Error";
-		}
-		return "milestone/MilestoneScheduleAdd";
-	}
-
-	@RequestMapping(value = "MilestoneScheduleAddSubmit.htm", method = RequestMethod.POST)
-	public String MilestoneScheduleAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
-	{			
-		String UserId = (String) ses.getAttribute("Username");
-		logger.info(new Date() +"Inside MilestoneScheduleAddSubmit.htm "+UserId);		
-		try {
-			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
-
-			MilestoneScheduleDto mainDto=new MilestoneScheduleDto();
-			mainDto.setProjectId(req.getParameter("ProjectId"));
-			mainDto.setMilestoneNo(req.getParameter("MilestoneNo"));
-			mainDto.setActivityType(req.getParameter("ActivityType"));
-			mainDto.setActivityName(req.getParameter("ActivityName"));
-			mainDto.setStartDate(req.getParameter("ValidFrom"));
-			mainDto.setEndDate(req.getParameter("ValidTo"));
-			mainDto.setCreatedBy(UserId);
-			long count =service.MilestoneScheduleInsert(mainDto);
-
-			if (count > 0)
-			{ 
-				redir.addAttribute("result", "Milestone Schedule Added Successfully");
-
-			} 
-			else {
-				redir.addAttribute("resultfail", "Milestone Schedule Add Unsuccessful");
-
-				return "redirect:/MilestoneSchedulesList.htm"; }
-
-		}
-
-		catch (Exception e) {
-			e.printStackTrace();  
-			logger.error(new Date() +" Inside MilestoneScheduleAddSubmit.htm "+UserId, e); 
-			return "static/Error";
-
-		}
-
-		return "redirect:/MilestoneSchedulesList.htm";
-
-	}
+//	@RequestMapping(value = "MilestoneSchedulesList.htm")
+//	public String MilestoneSchedulesList(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+//	{
+//		String UserId = (String) ses.getAttribute("Username");
+//		logger.info(new Date() +"Inside MilestoneSchedulesList.htm "+UserId);		
+//		try {
+//
+//			List<Object[] > ProjectList= service.ProjectList();
+//			String ProjectId=req.getParameter("ProjectId");
+//
+//			if(ProjectId==null) {
+//				Object[] FirstProjectId=  ProjectList.get(0);
+//				ProjectId= FirstProjectId[0].toString();
+//
+//			}
+//
+//			req.setAttribute("ProjectDetails", service.ProjectDetails(ProjectId).get(0));
+//			req.setAttribute("MilestoneScheduleList", service.MilestoneScheduleList(ProjectId));
+//			req.setAttribute("ProjectList", ProjectList);
+//			req.setAttribute("ProjectId", ProjectId);
+//
+//		}catch (Exception e) {
+//			e.printStackTrace(); 
+//			logger.error(new Date() +" Inside MilestoneSchedulesList.htm "+UserId, e); 
+//			return "static/Error";
+//		}
+//
+//		return "milestone/MilestoneScheduleList";
+//	}
+//
+//	@RequestMapping(value = "MilestoneScheduleAdd.htm")
+//	public String MilestoneScheduleAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+//	{
+//		String UserId = (String) ses.getAttribute("Username");
+//		logger.info(new Date() +"Inside MilestoneScheduleAdd.htm "+UserId);
+//		try {
+//			req.setAttribute("ActivityTypeList", service.ActivityTypeList());
+//			req.setAttribute("ProjectDetails", service.ProjectDetails(req.getParameter("ProjectId")).get(0));
+//			req.setAttribute("ProjectId", req.getParameter("ProjectId"));
+//		}
+//		catch (Exception e) {
+//			e.printStackTrace();  
+//			logger.error(new Date() +" Inside MilestoneScheduleAdd.htm "+UserId, e); 
+//			return "static/Error";
+//		}
+//		return "milestone/MilestoneScheduleAdd";
+//	}
+//
+//	@RequestMapping(value = "MilestoneScheduleAddSubmit.htm", method = RequestMethod.POST)
+//	public String MilestoneScheduleAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+//	{			
+//		String UserId = (String) ses.getAttribute("Username");
+//		logger.info(new Date() +"Inside MilestoneScheduleAddSubmit.htm "+UserId);		
+//		try {
+//			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+//
+//			MilestoneScheduleDto mainDto=new MilestoneScheduleDto();
+//			mainDto.setProjectId(req.getParameter("ProjectId"));
+//			mainDto.setMilestoneNo(req.getParameter("MilestoneNo"));
+//			mainDto.setActivityType(req.getParameter("ActivityType"));
+//			mainDto.setActivityName(req.getParameter("ActivityName"));
+//			mainDto.setStartDate(req.getParameter("ValidFrom"));
+//			mainDto.setEndDate(req.getParameter("ValidTo"));
+//			mainDto.setCreatedBy(UserId);
+//			long count =service.MilestoneScheduleInsert(mainDto);
+//
+//			if (count > 0)
+//			{ 
+//				redir.addAttribute("result", "Milestone Schedule Added Successfully");
+//
+//			} 
+//			else {
+//				redir.addAttribute("resultfail", "Milestone Schedule Add Unsuccessful");
+//
+//				return "redirect:/MilestoneSchedulesList.htm"; }
+//
+//		}
+//
+//		catch (Exception e) {
+//			e.printStackTrace();  
+//			logger.error(new Date() +" Inside MilestoneScheduleAddSubmit.htm "+UserId, e); 
+//			return "static/Error";
+//
+//		}
+//
+//		return "redirect:/MilestoneSchedulesList.htm";
+//
+//	}
 
 	@RequestMapping(value = "MilestoneExcelFile.htm", method = {RequestMethod.POST, RequestMethod.GET})
 	public void MilestoneExcelFile(HttpServletRequest req, HttpSession ses, HttpServletResponse res) throws Exception 
@@ -2359,6 +2465,10 @@ public class MilestoneController {
 		logger.info(new Date() +"Inside FileRepMasterAdd.htm "+UserId);
 
 		try {
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("MasterName"))) {
+				return  redirectWithError(redir,"FileRepMaster.htm","Level Name should not contain HTML elements !");
+			}
 			FileRepMaster fileRepo=new FileRepMaster();
 			fileRepo.setLabCode(LabCode);
 			fileRepo.setLevelName(req.getParameter("MasterName").trim());
@@ -2585,7 +2695,28 @@ public class MilestoneController {
 		String LabCode = (String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside AddDocAmendment.htm "+UserId);
 		try {
-			//								
+			//		
+			
+			  if (!isValidFileType(FileAttach)) {
+					redir.addFlashAttribute("MainSystemValue", req.getParameter("mainsystemval"));
+					redir.addFlashAttribute("s1", req.getParameter("s1"));
+					redir.addFlashAttribute("s2", req.getParameter("s2"));
+					redir.addFlashAttribute("s3", req.getParameter("s3"));
+					redir.addFlashAttribute("s4", req.getParameter("s4"));
+					redir.addFlashAttribute("sublevel", req.getParameter("sublevel"));
+					redir.addFlashAttribute("projectid", req.getParameter("projectidvalue"));
+					redir.addFlashAttribute("doclev1", req.getParameter("doclev1"));
+					redir.addFlashAttribute("doclev2", req.getParameter("doclev2"));
+					redir.addFlashAttribute("doclev3", req.getParameter("documenttitle"));
+					
+		            return redirectWithError(redir, "TestingFileRepo.htm",
+		                    "Invalid file type. Only PDF or Image files are allowed!");
+		        }
+			
+			
+			
+			
+			
 			FileDocAmendmentDto amenddoc=new FileDocAmendmentDto(); 
 			amenddoc.setFileRepUploadId(req.getParameter("uploaddocid"));
 			amenddoc.setFileName(FileAttach.getOriginalFilename());
@@ -3053,7 +3184,9 @@ public class MilestoneController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside MileRemarkUpdate.htm "+UserId);		
 		try {
-
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))) {
+				return  redirectWithError(redir,"M-A-AssigneeList.htm","Remarks should not contain HTML elements !");
+			}
 			MilestoneActivityDto mainDto=new MilestoneActivityDto();
 			mainDto.setActivityId(req.getParameter("MileId"));
 			mainDto.setStatusRemarks(req.getParameter("Remarks"));
@@ -3396,7 +3529,7 @@ public class MilestoneController {
 	/* ************************************************** MS Project End *************************************************************** */
 
 	@PostMapping(value = "DocFileUpload.htm")
-	public @ResponseBody String DocFileUploadAjax(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res,
+	public @ResponseBody ResponseEntity<String> DocFileUploadAjax(Model model,HttpServletRequest req, HttpSession ses,HttpServletResponse res,
 			@RequestParam(name = "file", required = false) MultipartFile file,
 			@RequestParam("fileRepId") String fileRepId,
 			@RequestParam("projectid") String projectid,
@@ -3411,7 +3544,11 @@ public class MilestoneController {
 		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside DocFileUpload.htm "+UserId);
 		try {
-
+			
+			  if (!isValidFileType(file)) {
+				  return new ResponseEntity<String>(HttpStatus.EXPECTATION_FAILED);
+		        }
+			
 			String agendaid = req.getParameter("agendaid");
 
 			FileUploadDto upload = new FileUploadDto();
@@ -3431,13 +3568,13 @@ public class MilestoneController {
 
 			long result = service.DocFileUploadAjax(upload);
 
-			Gson json = new Gson();
-			return json.toJson(result);
+			
+			return new ResponseEntity<String>("200",HttpStatus.OK);
 
 		} catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside DocFileUpload.htm "+UserId, e); 
-			return "static/Error";
+			  return new ResponseEntity<String>(HttpStatus.EXPECTATION_FAILED);
 		}
 	}
 
@@ -3741,7 +3878,7 @@ public class MilestoneController {
 	}
 	
 	@RequestMapping(value = "uploadFileData.htm", method = RequestMethod.POST)
-	public @ResponseBody String uploadFileData(HttpServletRequest req,HttpSession ses,
+	public @ResponseBody ResponseEntity<String> uploadFileData(HttpServletRequest req,HttpSession ses,
 			@RequestParam(name = "fileAttach", required = false) MultipartFile file,
 			@RequestParam("docName") String docName,
 			@RequestParam("fileRepId") String fileRepId,
@@ -3749,7 +3886,7 @@ public class MilestoneController {
 			@RequestParam("mainLevelId") String mainLevelId,
 			@RequestParam("subLevelId") String subLevelId,
 			@RequestParam("isnewversion") String isnewversion,
-        	@RequestParam("fileType") String fileType) throws Exception 
+        	@RequestParam("fileType") String fileType,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
@@ -3757,6 +3894,34 @@ public class MilestoneController {
 		long result = 0l;
 		Gson json = new Gson();
 		try {
+			if(InputValidator.isContainsHTMLTags(docName)) {
+				return new ResponseEntity<String>("200",HttpStatus.EXPECTATION_FAILED);	
+			}
+			
+			
+			 // 🔹 Check if file is missing
+	        if (file == null || file.isEmpty()) {
+	            return new ResponseEntity<String>(HttpStatus.EXPECTATION_FAILED);
+	        }
+	        
+	        String originalFilename = file.getOriginalFilename();
+	        
+	     // Extract extension in lowercase
+		    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+
+	        // 🔹 Validate: Only PDF allowed
+	        String contentType = file.getContentType();
+	        if (contentType == null || !contentType.equalsIgnoreCase("application/pdf")) {
+	        	 return new ResponseEntity<String>(HttpStatus.EXPECTATION_FAILED);
+	        }
+	        
+	        System.out.println("extension--"+extension);
+
+	        if (!extension.equalsIgnoreCase("pdf")) {
+	        	 return new ResponseEntity<String>(HttpStatus.EXPECTATION_FAILED);
+	        }
+
+			
 			
 			FileUploadDto upload = new FileUploadDto();
 			upload.setFileId(fileRepId);
@@ -3776,7 +3941,9 @@ public class MilestoneController {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside getOldFileDocNames"+UserId, e);
 		}
-		return json.toJson(result);	
+
+		return new ResponseEntity<String>("200", HttpStatus.OK);
+
 	}
 	
 	@RequestMapping(value = "fileDownload.htm/{id}", method = RequestMethod.GET)
@@ -3951,8 +4118,9 @@ public class MilestoneController {
 			String isMasterData = req.getParameter("isMasterData");
 			
 			MilestoneActivityLevel level1= service.getMilestoneActivityLevelById(milesMainId);
-			
-			System.out.println(level1.getLinkedMilestonId());
+			MilestoneActivityLevel level2= service.getMilestoneActivityLevelById(mileIdLink);
+
+			System.out.println(milesMainId+"-----"+mileIdLink+"%%%%%%%%"+isMasterData);
 			if (!level1.getLinkedMilestonId().toString().equalsIgnoreCase("0")  ) {
 				MilestoneActivityLevel level3= service.getMilestoneActivityLevelById(level1.getLinkedMilestonId().toString());
 				level3.setLinkedMilestonId(0l);
@@ -3961,13 +4129,17 @@ public class MilestoneController {
 			}
 			
 			level1.setLinkedMilestonId(Long.parseLong(mileIdLink));
-			level1.setIsMasterData(isMasterData);
-			
+			level1.setIsMasterData(isMasterData.equalsIgnoreCase("Y")?"Y":"L");
+			level1.setProgressStatus(isMasterData.equalsIgnoreCase("Y")?level1.getProgressStatus():level2.getProgressStatus());			
 			long count =service.MilestoneActivityLevelSave(level1);
 			
-			MilestoneActivityLevel level2= service.getMilestoneActivityLevelById(mileIdLink);
 			level2.setLinkedMilestonId(Long.parseLong(milesMainId));
-			level2.setIsMasterData(isMasterData.equalsIgnoreCase("Y")?"L":"Y");
+			level2.setIsMasterData(isMasterData.equalsIgnoreCase("N")?"Y":"L");
+			level2.setProgressStatus(isMasterData.equalsIgnoreCase("N")?level2.getProgressStatus():level1.getProgressStatus());			
+
+		
+			
+			long count1= service.MilestoneActivityLevelSave(level2);
 			
 			if(isMasterData.equalsIgnoreCase("Y")) {
 				updateMilestoneRemarks(milesMainId,mileIdLink,UserId);
@@ -3975,11 +4147,7 @@ public class MilestoneController {
 				updateMilestoneRemarks(mileIdLink,milesMainId,UserId);
 			}
 			
-			long count1= service.MilestoneActivityLevelSave(level2);
-			
-			
-			
-			return json.toJson(count+count1);
+			return json.toJson(5);
 			
 		} catch (Exception e) {
 			e.printStackTrace(); 
@@ -3988,6 +4156,7 @@ public class MilestoneController {
 		}
 	
 	}
+	
 	
 	// 18-08
 	@Async
@@ -4017,7 +4186,11 @@ public class MilestoneController {
 			
 				service.saveMilestoneSub(attach);
 			}
-			
+			String mainId = service.getMainLevelId(Long.parseLong(id2));
+			mainDto.setMilestoneActivityId(mainId);
+//			mainDto.setFlag("Y");
+			mainDto.setActivityId(id2);
+			service.updateMilestoneLevelProgress(mainDto);
 			
 		} catch (Exception e) {
 
@@ -4467,7 +4640,7 @@ public class MilestoneController {
 	}
  	
 	@RequestMapping(value="PreProjectFileRepAdd.htm",method = RequestMethod.POST)
-	public @ResponseBody String addPreProjectFileRep(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
+	public @ResponseBody ResponseEntity<String> addPreProjectFileRep(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String) ses.getAttribute("labcode");
@@ -4475,6 +4648,9 @@ public class MilestoneController {
 		long count = 0l;
 		Gson json = new Gson();
 		try {
+			if(InputValidator.isContainsHTMLTags(req.getParameter("levelName"))) {
+				return new ResponseEntity<String>("200", HttpStatus.EXPECTATION_FAILED);	
+			}
 			FileRepMasterPreProject fileRepo=new FileRepMasterPreProject();
 			fileRepo.setLabCode(LabCode);
 			fileRepo.setLevelName(req.getParameter("levelName").trim());
@@ -4486,7 +4662,7 @@ public class MilestoneController {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside PreProjectFileRepAdd.htm "+UserId, e); 
 		}
-		return json.toJson(count);	
+		return new ResponseEntity<String>("200", HttpStatus.CREATED);	
 	}
 	
 	@RequestMapping(value="PreProjectFileRepMasterSubAdd.htm",method = RequestMethod.POST)
@@ -4498,6 +4674,10 @@ public class MilestoneController {
 		long count = 0l;
 		Gson json = new Gson();
 		try {
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("levelName"))) {
+				return  redirectWithError(redir,"FileRepMaster.htm","Sub-Level Name should not contain HTML elements !");
+			}
 			FileRepMasterPreProject fileRepo=new FileRepMasterPreProject();
 			fileRepo.setLabCode(LabCode);
 			fileRepo.setInitiationId(Long.parseLong(req.getParameter("initiationId")));
@@ -4555,7 +4735,7 @@ public class MilestoneController {
 	}
 	
 	@RequestMapping(value = "uploadPreProjectFile.htm", method = RequestMethod.POST)
-	public @ResponseBody String uploadPreProjectFile(HttpServletRequest req,HttpSession ses,
+	public @ResponseBody ResponseEntity<String> uploadPreProjectFile(HttpServletRequest req,HttpSession ses,
 			@RequestParam(name = "fileAttach", required = false) MultipartFile file,
 			@RequestParam("docName") String docName,
 			@RequestParam("fileRepId") String fileRepId,
@@ -4563,7 +4743,7 @@ public class MilestoneController {
 			@RequestParam("mainLevelId") String mainLevelId,
 			@RequestParam("subLevelId") String subLevelId,
 			@RequestParam("isnewversion") String isnewversion,
-        	@RequestParam("fileType") String fileType) throws Exception 
+        	@RequestParam("fileType") String fileType,RedirectAttributes redir) throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
@@ -4571,7 +4751,21 @@ public class MilestoneController {
 		long result = 0l;
 		Gson json = new Gson();
 		try {
+
 			
+		
+			// 🔹 Validate file types
+	        if (!isValidFileType(file) ) {
+
+	        	return new ResponseEntity<String>("417",HttpStatus.EXPECTATION_FAILED);
+	        }
+			
+			
+
+			if(InputValidator.isContainsHTMLTags(req.getParameter("docName"))) {
+				return new ResponseEntity<String>("417",HttpStatus.EXPECTATION_FAILED);
+			}
+
 			FileUploadDto upload = new FileUploadDto();
 			upload.setFileId(fileRepId);
 			upload.setFileRepMasterId(mainLevelId);
@@ -4590,7 +4784,7 @@ public class MilestoneController {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside uploadPreProjectFile"+UserId, e);
 		}
-		return json.toJson(result);	
+		return new ResponseEntity<String>("200",HttpStatus.CREATED);
 	}
 	
 	
@@ -4698,14 +4892,17 @@ public class MilestoneController {
 	}
 	
 	@RequestMapping(value="submitMilestoneFeedBack.htm")
-	public @ResponseBody String submitMilestoneFeedBack(HttpServletRequest req, HttpSession ses,HttpServletResponse res
-			)throws Exception 
+	public @ResponseBody String submitMilestoneFeedBack(HttpServletRequest req, HttpSession ses,HttpServletResponse res,RedirectAttributes redir)throws Exception 
 	{
 		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside removeFileAttachment.htm "+UserId);
 		try {
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("remarks"))) {
+				return  redirectWithError(redir,"M-A-AssigneeList.htm","Comments should not contain HTML elements !");
+			}
 			String activityId = req.getParameter("activityId");
 			String remarks = req.getParameter("remarks");
 			//long result = service.deleteMilsetone(activityId);

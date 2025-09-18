@@ -3,6 +3,7 @@
 <%@page import="com.vts.pfms.NFormatConvertion"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,21 +11,9 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>OFFICER MASTER EDIT</title>
-<style type="text/css">
+<spring:url value="/resources/css/admin/DivisionMasterEdit.css" var="divisionMasterEdit" />
+<link href="${divisionMasterEdit}" rel="stylesheet" />
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-
-
-label{
-	font-size: 15px;
-}
-
-
-</style>
 </head>
 <body>
 
@@ -57,10 +46,9 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
     </div>
 <% } %>
 
-<div id="ajaxError" style="display: none;">
+<div id="ajaxError" class="dis-none">
     <div align="center">
-        <div class="alert-danger" id="ajaxErrorMessage" style="width: 65%; padding: 10px; margin: 5px 0; 
-              border-radius: 4px;">
+        <div class="alert-danger axios-err" id="ajaxErrorMessage" >
             <!-- Error message will appear here -->
         </div>
     </div>
@@ -75,9 +63,9 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 
 <div class="col-sm-2"></div> 
 	
- <div class="col-sm-8"  style="top: 10px;">
+ <div class="col-sm-8 mt-3" >
 <div class="card shadow-nohover"  >
-<div class="card-header" style=" background-color: #055C9D;margin-top: "> <b class="text-white">Division Master Edit</b></div>
+<div class="card-header bg-header"> <b class="text-white">Division Master Edit</b></div>
 <div class="card-body">
 
 
@@ -86,24 +74,24 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 
 <div class="col-3">
        <div  class="form-group">	
-				<label >Division Code: <span class="mandatory" style="color: red;">*</span></label>
-				<input  class="form-control alphanum-only" type="text" name="DivisionCode" required="required" maxlength="3" style="font-size: 18px;"  readonly	 value="<%=DivisionMasterEditData[1]!=null?StringEscapeUtils.escapeHtml4(DivisionMasterEditData[1].toString()): ""%>" >
+				<label >Division Code: <span class="mandatory">*</span></label>
+				<input  class="form-control alphanum-only input-font" type="text" name="DivisionCode" required="required" maxlength="3"  readonly	 value="<%=DivisionMasterEditData[1]!=null?StringEscapeUtils.escapeHtml4(DivisionMasterEditData[1].toString()): ""%>" >
        </div>
 </div>
 
 
 <div class="col-3">	
        <div class="form-group"> 
-				<label >Division Name:<span class="mandatory" style="color: red;">*</span></label>
-				<input  class="form-control form-control alphanum-no-leading-space"  type="text" name="DivisionName" required="required" maxlength="255" style="font-size: 18px;" value="<%=DivisionMasterEditData[2]!=null?StringEscapeUtils.escapeHtml4(DivisionMasterEditData[2].toString()): "" %>">
+				<label >Division Name:<span class="mandatory">*</span></label>
+				<input  class="form-control form-control alphanum-no-leading-space input-font"  type="text" name="DivisionName" required="required" maxlength="255" value="<%=DivisionMasterEditData[2]!=null?StringEscapeUtils.escapeHtml4(DivisionMasterEditData[2].toString()): "" %>">
 		</div>
 </div>
 
 
 <div class="col-3">
        <div  class="form-group">
-					<label >Group Name:<span class="mandatory" style="color: red;">*</span></label>
-					 <select class="custom-select" name="GroupId"  required="required" id="GroupId" style="font-size: 18px;">
+					<label >Group Name:<span class="mandatory" >*</span></label>
+					 <select class="custom-select input-font" name="GroupId"  required="required" id="GroupId" >
 									<option value="" disabled="true" selected="selected" hidden="true">--Select--</option>
 									
 									<% for (  Object[] obj : DivisionGroupList){ %>
@@ -117,8 +105,8 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 
 <div class="col-3">
        <div  class="form-group">	
-					<label >Division Head Name:<span class="mandatory" style="color: red;">*</span></label>
-					<select class="custom-select" name="DivisionHeadName"  required="required" id ="DivisionHeadName" style="font-size: 18px;">
+					<label >Division Head Name:<span class="mandatory" >*</span></label>
+					<select class="custom-select input-font" name="DivisionHeadName"  required="required" id ="DivisionHeadName" >
 						<option value="" disabled selected="selected">--Select--</option>
 									
 			<% for (  Object[] obj : DivisionHeadList){ %>							
@@ -130,8 +118,8 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 <div class="row">
 <div class="col-3">
        <div  class="form-group">		
-				<label >isActive:<span class="mandatory" style="color: red;">*</span></label>
-				<select  class="form-control selectpicker"  name="isActive" required="required" maxlength="255" style="font-size: 18px;" > 
+				<label >isActive:<span class="mandatory" >*</span></label>
+				<select  class="form-control selectpicker input-font"  name="isActive" required="required" maxlength="255" > 
 				                     <option value="1" <%if(DivisionMasterEditData[5].toString().equalsIgnoreCase("1")) {%> selected="selected" <%} %> >YES</option>                      
 									 <option value="0" <%if(DivisionMasterEditData[5].toString().equalsIgnoreCase("0")) {%> selected="selected" <%} %> >NO</option>                     
 				</select>                 
@@ -140,8 +128,8 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 <!-- srikant code start -->
 <div class="col-3">
         <div class="form-group"> 
-				<label >Division Short Name:<span class="mandatory" style="color: red;">*</span></label>
-				<input class="form-control alphanum-no-leading-space " type="text" name="DivisionShortName" id="DivisionShortName" required="required" maxlength="255" style="font-size: 18px;" 
+				<label >Division Short Name:<span class="mandatory" >*</span></label>
+				<input class="form-control alphanum-no-leading-space input-font" type="text" name="DivisionShortName" id="DivisionShortName" required="required" maxlength="255" 
        value="<%= DivisionMasterEditData[6] != null ? StringEscapeUtils.escapeHtml4(DivisionMasterEditData[6].toString()) : "" %>">
 
 
@@ -152,7 +140,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 
 
 <div align="center">
-		<button type="submit" class="btn btn-sm submit" style="align-self: center;" onclick="return confirm('Are you Sure To Submit ?');" >SUBMIT</button>&nbsp;&nbsp;
+		<button type="submit" class="btn btn-sm submit" onclick="return confirm('Are you Sure To Submit ?');" >SUBMIT</button>&nbsp;&nbsp;
 		<a class="btn  btn-sm  back"    href="DivisionMaster.htm">BACK</a>
 </div>
 

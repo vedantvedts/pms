@@ -1,26 +1,28 @@
 package com.vts.pfms.login;
 
 
-import java.io.IOException;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import javax.imageio.ImageIO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,6 +67,10 @@ import com.vts.pfms.model.IbasLabMaster;
 import com.vts.pfms.model.Notice;
 import com.vts.pfms.pfmsserv.feign.PFMSServeFeignClient;
 import com.vts.pfms.service.RfpMainService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 //import io.jsonwebtoken.Claims;
 //import io.jsonwebtoken.ExpiredJwtException;
@@ -192,9 +198,11 @@ public class LoginController {
 			req.setAttribute("versionint", Integer.parseInt(version.substring(0, version.indexOf('.'))));
 		}
 
+		System.out.println("Error-----"+error);
+		
 		logger.info(new Date() + "Inside login ");
 		if (error != null)
-			model.addAttribute("error", "Your username and password is invalid.");
+			model.addAttribute("error", (error.equalsIgnoreCase("Invalid Captcha")||  error.equalsIgnoreCase("Too Many Attempt, Try After One min"))? error: "Your username and password is invalid.");
 
 		if (logout != null)
 			model.addAttribute("message", "You have been logged out successfully.");
@@ -238,10 +246,69 @@ public class LoginController {
  		req.setAttribute("sessionKey", sessionKey);
  		req.setAttribute("sessionIv", sessionIv);
 
+ 		
+// 		String captcha = org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric(5);
+// 		req.getSession().setAttribute("LOGIN_CAPTCHA", captcha);
+// 		req.setAttribute("captcha", captcha);
+ 		
+// 		String captcha = org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric(5);
+// 		System.out.println(captcha+"----captcha");
+// 		
+// 		
+// 	    req.getSession().setAttribute("LOGIN_CAPTCHA", captcha);
+// 	    req.setAttribute("captcha", generateCaptchaImage(captcha)); 
+
  		req.setAttribute("expstatus", expstatus);
 		return "static/login";
 	}
     
+	
+	private String generateCaptchaImage(String captchaText) {
+	    try {
+	        int width = 150, height = 50;
+	        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+	        Graphics2D g = bufferedImage.createGraphics();
+	        g.setColor(Color.WHITE);
+	        g.fillRect(0, 0, width, height);
+
+	        g.setFont(new Font("Arial", Font.BOLD, 28));
+	        g.setColor(Color.BLACK);
+	        g.drawString(captchaText, 25, 35);
+
+	        // add some noise
+	        g.setColor(Color.GRAY);
+	        for (int i = 0; i < 15; i++) {
+	            int x = (int) (Math.random() * width);
+	            int y = (int) (Math.random() * height);
+	            g.drawOval(x, y, 2, 2);
+	        }
+
+	        g.dispose();
+
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        ImageIO.write(bufferedImage, "png", baos);
+	        return Base64.getEncoder().encodeToString(baos.toByteArray());
+	    } catch (Exception e) {
+	        throw new RuntimeException("Failed to generate captcha image", e);
+	    }
+	}
+	
+	
+	@GetMapping("/refresh-captcha")
+	@ResponseBody
+	public Map<String, String> refreshCaptcha(HttpServletRequest req) {
+	    // generate new captcha
+	    String captcha = org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric(5);
+	    req.getSession().setAttribute("LOGIN_CAPTCHA", captcha);
+	    // convert to image
+	    String base64Captcha = generateCaptchaImage(captcha);
+	    // return as JSON
+	    Map<String, String> result = new HashMap<>();
+	    result.put("captcha", base64Captcha);
+	    return result;
+	}
+	
 	@RequestMapping(value = "/wr", method = RequestMethod.GET)
 	public String loginWR(@RequestHeader(name = "User-Agent") String userAgent, Model model, 
 			@RequestParam(name = "error", required = false) String error,

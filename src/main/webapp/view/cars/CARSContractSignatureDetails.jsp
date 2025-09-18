@@ -25,252 +25,10 @@
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
 <link href="${projetdetailscss}" rel="stylesheet" />
-
-<style type="text/css">
-
-.tab-pane p{
-	text-align: justify;
-	
-}
-
-.card-body{
-	padding: 0rem !important;
-}
-.navigation_btn{
-	margin: 1%;
-}
-
- .b{
-	background-color: #ebecf1;	
-}
-.a{
-	background-color: #d6e0f0;
-}
-
-.nav-link{
-	text-align: left;
-}
-.nav-tabs>.nav-item>.nav-link{
-	padding: 11px 15px !important;
-}
-body { 
-   font-family : "Lato", Arial, sans-serif !important;
-   overflow-x: hidden;
-}
-
-input,select,table,div,label,span {
-font-family : "Lato", Arial, sans-serif !important;
-}
-.text-center{
-	text-align: left !imporatant;
-}
-
-.control-label,.mandatory{
-float: left;
-font-weight: bold;
-font-size: 1rem;
-}
-.control-label{
-color: purple;
-}
-</style>
-
-<style type="text/css">
-
-.panel-info {
-	border-color: #bce8f1;
-}
-.panel {
-	margin-bottom: 10px;
-	background-color: #fff;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
-.panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-	color: #1d5987;
-}
-.panel-title {
-	margin-top: 0;
-	margin-bottom: 0;
-	font-size: 13px;
-	color: inherit;
-	font-weight: bold;
-	display: contents;
-}
-.buttonEd {
-	float: right;
-	margin-top: -0.5rem;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-div {
-	display: block;
-}
+<spring:url value="/resources/css/cars/CARSContractSignatureDetails.css" var="carscontractSignatureDetails" />
+<link href="${carscontractSignatureDetails}" rel="stylesheet" />
 
 
-.olre-body .panel-info .panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-heading {
-	padding: 18px 15px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.p-5 {
-	padding: 5px;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-user agent stylesheet
-div {
-	display: block;
-}
-
-.panel-info {
-	border-color: #bce8f1;
-}
-
-.rsqr-column{
- float : left;
-}
-
-.scrollclass::-webkit-scrollbar {
-    width:7px;
-}
-.scrollclass::-webkit-scrollbar-track {
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3); 
-    border-radius:5px;
-}
-.scrollclass::-webkit-scrollbar-thumb {
-    border-radius:5px;
-  /*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
-}
-.scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
- 	transition: 0.5s;
-}
-
-
-.trup{
-	padding:6px 10px 6px 10px ;			
-	border-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-.trdown{
-	padding:0px 10px 5px 10px ;			
-	border-bottom-left-radius : 5px; 
-	border-bottom-right-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-
-
-
-p
-{
-	text-align: justify !important;
-  	text-justify: inter-word;
-}
-p,td,th
-{
-  word-wrap: break-word;
-  word-break: normal ;
-}
-
-.textunderline{
-	text-decoration: underline;
-}
-
-
-#alldocstable {
-	width : 70%;
-	/* border : 1px solid black; */
-	margin-top : 1.5rem;
-	font-size: 15px;
-	margin-left: 10rem;
-}
-#alldocstable th{
-	border : 1px solid black;
-	text-align: center;
-	padding : 5px;
-}
-#alldocstable td{
-	border : 1px solid black;
-	text-align: left;
-	padding : 3px;
-}
-#alldocstable td:first-child,#alldocstable td:nth-child(3){ 
-	text-align: center; 
-}
-
-</style>
-
-<style type="text/css">
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	/* font-weight: 800; */
-	font-size: 16px;
-	/* color:#07689f; */
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-.form-group {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.cssideheading{
-	font-size: 17px;
-}
-
-.cssideheadingdata{
-	font-size: 16px !important;
-	color: white;
-	font
-}
-
-</style>
 </head>
 <body>
 <%
@@ -330,16 +88,16 @@ String statuscode = carsIni.getCARSStatusCode();
    		<div class="col-md-12">
        		<div class="card slider">
        			<!-- This is for Slider Headers -->
-         		<div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 0%;">
+         		<div class="card-header slider_header p-0 f-12 h-0-p"  >
              		<h3 class="category">Contract Details - 
              			
-             			<button type="button" class="btn btn-sm btn-info" style="text-align: left;min-width: 80%;max-width: 80%;background: darkcyan;border: darkcyan;white-space: normal;">
+             			<button type="button" class="btn btn-sm btn-info btn-det" >
              				<div>
 					        	<div class="row">
 					        		<div class="col-md-1">
 					        			<span class="cssideheading">Title:</span>
 					                </div>
-					            	<div class="col-md-11" style="margin-left: -5%;">
+					            	<div class="col-md-11 ml-minus-5" >
 					                	<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()) %> <%} else{%>-<%} %></span>
 					                </div>
 					                
@@ -375,18 +133,17 @@ String statuscode = carsIni.getCARSStatusCode();
 					        </div>
              			</button>
              			
-             			<a class="btn btn-info btn-sm  shadow-nohover back"
+             			<a class="btn btn-info btn-sm  shadow-nohover back text-white f-right"
              			<%if(isApproval!=null && isApproval.equalsIgnoreCase("C") ) {%>
                				href="CARSRSQRApprovals.htm"
                			<%} else if(isApproval!=null && isApproval.equalsIgnoreCase("D") ) {%>
                				href="CARSRSQRApprovals.htm?val=app"
                			<%} else {%>
              			    href="CARSOtherDocsList.htm?carsInitiationId=<%=carsInitiationId %>"
-             			<%} %> 
-             			  style="color: white!important;float: right;">Back</a>
+             			<%} %> >Back</a>
              		</h3>
-             		<hr style="margin: -8px 0px !important;">
-             		<ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
+             		<hr class="mar-8">
+             		<ul class="nav nav-tabs justify-content-center pb-0" role="tablist" >
 
             			<li class="nav-item" id="nav-csdetails">
              				<%if(csDocsTabId!=null && csDocsTabId.equalsIgnoreCase("1")){ %> 
@@ -422,7 +179,7 @@ String statuscode = carsIni.getCARSStatusCode();
          		</div>
          		<!-- This is for Tab Panes -->
          		<div class="card">
-         			<div class="tab-content text-center" style="margin-top : 0.2rem;">
+         			<div class="tab-content text-center mt-1">
          				<!-- *********** Others Details ***********      --> 
                			<%if(csDocsTabId!=null && csDocsTabId.equalsIgnoreCase("1")){ %> 
          					<div class="tab-pane active" id="csdetails" role="tabpanel">
@@ -430,13 +187,13 @@ String statuscode = carsIni.getCARSStatusCode();
               				<div class="tab-pane " id="csdetails" role="tabpanel">
                			<%} %>
                					<div class="container">
-									<div class="row" style="width: 140%; margin-left: -15rem;">
+									<div class="row w-140"  >
 										<div class="col-md-12">
 											<div class="card shadow-nohover" >
-												<div class="card-header" style=" /* background: linear-gradient(to right, #334d50, #cbcaa5); */ /* background-color:rgba(6,103,200,1); */ background-color: #055C9D;text-align: left;">
-								                    <b class="text-white" style="">CARS Contract Signature Details: </b> 
+												<div class="card-header header-bg"  >
+								                    <b class="text-white" >CARS Contract Signature Details: </b> 
 								                    <hr>
-								                    <span class="text-white" style="float:right;font-weight: 600"> </span>
+								                    <span class="text-white f-right fw-600" > </span>
 							        			</div> 
 												<div class="card-body">
 								        		
@@ -445,9 +202,9 @@ String statuscode = carsIni.getCARSStatusCode();
 												    	<input type="hidden" name="carsInitiationId" value="<%=carsIni.getCARSInitiationId()%>">
 												    	<input type="hidden" name="otherDocDetailsId" value="<%if(csdetails!=null){%><%=csdetails.getOtherDocDetailsId() %><%}%>">
 												    	<input type="hidden" name="otherDocType" value="C">
-												    	<div class="row" style="margin-left: 2%;margin-right: 2%;">
+												    	<div class="row mlr-2" >
 												    		
-												        	<div class="col-md-3" style="">
+												        	<div class="col-md-3" >
 												        		<div class="form-group">
 												                	<label class="control-label">Date:</label><span class="mandatory">*</span>
 												                    <input  class="form-control form-control" type="text" name="csOtherDocDate" id="csOtherDocDate"
@@ -455,11 +212,11 @@ String statuscode = carsIni.getCARSStatusCode();
 												                </div>
 												            </div>
 												        	
-												        	<div class="col-md-3" style="">
+												        	<div class="col-md-3" >
 												        		<div class="form-group">
 												                	<label class="control-label">Flag-A</label><span class="mandatory">*</span>
 												                    <%if(csdetails!=null && csdetails.getAttachFlagA()!=null) {%>
-				                            					 		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-right: 15em;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+				                            					 		<button type="submit" class="btn btn-sm btn-sub-doc" name="filename" formmethod="post" formnovalidate="formnovalidate"
 				                            					 		  value="flagAFile" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 				                            					 			<i class="fa fa-download fa-lg"></i>
 				                            					 		</button>
@@ -467,11 +224,11 @@ String statuscode = carsIni.getCARSStatusCode();
                             		      							<input type="file" class="form-control modals" name="attatchFlagA" <%if(csdetails==null) {%>required<%} %> accept=".pdf">
 												                </div>
 												            </div>
-												        	<div class="col-md-3" style="">
+												        	<div class="col-md-3" >
 												        		<div class="form-group">
 												                	<label class="control-label">Flag-B</label><span class="mandatory">*</span>
 												                    <%if(csdetails!=null && csdetails.getAttachFlagB()!=null) {%>
-				                            					 		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-right: 15em;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+				                            					 		<button type="submit" class="btn btn-sm btn-sub-doc" name="filename" formmethod="post" formnovalidate="formnovalidate"
 				                            					 		  value="flagBFile" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 				                            					 			<i class="fa fa-download fa-lg"></i>
 				                            					 		</button>
@@ -479,11 +236,11 @@ String statuscode = carsIni.getCARSStatusCode();
                             		      							<input type="file" class="form-control modals" name="attatchFlagB" <%if(csdetails==null) {%>required<%} %> accept=".pdf">
 												                </div>
 												            </div>
-												        	<div class="col-md-3" style="">
+												        	<div class="col-md-3" >
 												        		<div class="form-group">
 												                	<label class="control-label">Flag-C</label><span class="mandatory">*</span>
 												                    <%if(csdetails!=null && csdetails.getAttachFlagC()!=null) {%>
-				                            					 		<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-right: 15em;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+				                            					 		<button type="submit" class="btn btn-sm btn-sub-doc" name="filename" formmethod="post" formnovalidate="formnovalidate"
 				                            					 		  value="flagCFile" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 				                            					 			<i class="fa fa-download fa-lg"></i>
 				                            					 		</button>
@@ -493,17 +250,17 @@ String statuscode = carsIni.getCARSStatusCode();
 												            </div>
 												        </div>
 												        
-												        <div class="row" style="margin-left: 2%;margin-right: 2%;">
+												        <div class="row mlr-2" >
 												        	<div class="col-md-2">
 												        		<div class="form-group">
-												        			<label class="control-label">Info <button type="button" id="csInfo" value="1" class="btn btn-info btn-sm" style="padding: 0px 5px 0px 5px;background: blueviolet;border-color: blueviolet;"><i class="fa fa-info-circle" aria-hidden="true"></i></button></label>
+												        			<label class="control-label">Info <button type="button" id="csInfo" value="1" class="btn btn-info btn-sm btn-in-fo" ><i class="fa fa-info-circle" aria-hidden="true"></i></button></label>
 												        		</div>
 												        	</div>
-												        	<div class="col-md-10" id="csInfoContent" style="text-align: left;margin-left: -10%;">
-												        		<div class="form-group" style="width: 110%;">
-												        			<span style="color: crimson;">Flag-A : </span> <span>SoC from for CARS collaboration with Institute/ University has been approved by CFA.</span> <br>
-												        			<span style="color: fuchsia;">Flag-B : </span> <span>The final RSQR, Milestones and payment terms are attached. </span> <br>
-												        			<span style="color: blue;">Flag-C : </span> <span>The contract signed by competent authority of the RSP is placed opposite for CFA's signature please.</span> 
+												        	<div class="col-md-10" id="csInfoContent" >
+												        		<div class="form-group w-110">
+												        			<span class="col-crimson">Flag-A : </span> <span>SoC from for CARS collaboration with Institute/ University has been approved by CFA.</span> <br>
+												        			<span class="col-fuchsia">Flag-B : </span> <span>The final RSQR, Milestones and payment terms are attached. </span> <br>
+												        			<span class="col-blue">Flag-C : </span> <span>The contract signed by competent authority of the RSP is placed opposite for CFA's signature please.</span> 
 												        		</div>
 												        	</div>
 												        </div>
@@ -523,8 +280,8 @@ String statuscode = carsIni.getCARSStatusCode();
 										</div>
 									</div>
 								</div>
-               					<div class="navigation_btn"  style="text-align: right;">
-            						<a class="btn btn-info btn-sm  shadow-nohover back" href="CARSOtherDocsList.htm?carsInitiationId=<%=carsInitiationId %>" style="color: white!important">Back</a>
+               					<div class="navigation_btn text-right" >
+            						<a class="btn btn-info btn-sm text-white shadow-nohover back" href="CARSOtherDocsList.htm?carsInitiationId=<%=carsInitiationId %>">Back</a>
 									<button class="btn btn-info btn-sm next">Next</button>
 								</div>
                			<%if(csDocsTabId!=null && csDocsTabId.equalsIgnoreCase("1")){ %> 
@@ -541,7 +298,7 @@ String statuscode = carsIni.getCARSStatusCode();
                			<%} %>
                					<%if(csdetails!=null) {%>
 		               				<div class="col-md-8 mt-1">
-               							<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%;max-height: 500px;overflow-y: auto;">
+               							<div class="card card-mg">
                								<div class="card-body mt-2 ml-4">
                									<form action="#">
                										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -549,9 +306,9 @@ String statuscode = carsIni.getCARSStatusCode();
 			               		   					<input type="hidden" name="otherDocDetailsId" value="<%if(csdetails!=null){%><%=csdetails.getOtherDocDetailsId() %><%}%>">
 			               		   					<input type="hidden" name="otherDocType" value="C">
 			               		   					<div class="mt-2" align="center">
-               											<h5 style="font-weight: bold;margin-top: 1.5rem;"><%=labcode %></h5>
+               											<h5 class="lab-code"><%=labcode %></h5>
                											
-               											<span style="font-size: larger; text-decoration: underline;">Directorate of Planning & Coordination</span>
+               											<span class="span-dir">Directorate of Planning & Coordination</span>
                										</div>
                										
                										<div class="row">
@@ -569,15 +326,15 @@ String statuscode = carsIni.getCARSStatusCode();
 			               		   					<hr>
 					               		   			<div class="row">
 					               		   				<div class="col-md-12 mt-2" align="center">
-		               										<h5 style="font-weight: bold;margin-top: 1.5rem;">CARS contract signature</h5>
+		               										<h5 class="lab-code">CARS contract signature</h5>
 		               											
-		               										<span style="font-size: large;"><%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %> </span>
+		               										<span class="span-font-l"><%=carsIni.getInitiationTitle()!=null?StringEscapeUtils.escapeHtml4(carsIni.getInitiationTitle()): " - " %> </span>
 		               									</div>
 					               		   			</div>
 			               		   					<br>
 					               		   			<div class="row">
 					               		   				<!-- <div class="col-md-1"></div> -->
-					               		   				<div class="col-md-12" style="text-align: left;">
+					               		   				<div class="col-md-12 text-left" >
 					               		   					<span>
 					               		   						1)	SoC from 
 					               		   						<%if(carsIni!=null && carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
@@ -589,7 +346,7 @@ String statuscode = carsIni.getCARSStatusCode();
 					               		   					</span>
 					               		   					<span>
 					               		   						<%if(csdetails!=null && csdetails.getAttachFlagA()!=null) {%>
-							                            			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-right: 15em;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+							                            			<button type="submit" class="btn btn-sm btn-sub-doc"  name="filename" formmethod="post" formnovalidate="formnovalidate"
 							                            				value="flagAFile" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 							                            				<i class="fa fa-download"></i>
 							                            			</button>
@@ -601,13 +358,13 @@ String statuscode = carsIni.getCARSStatusCode();
 					               		   			</div>
 					               		   			<div class="row">
 					               		   				<!-- <div class="col-md-1"></div> -->
-					               		   				<div class="col-md-12" style="text-align: left;">
+					               		   				<div class="col-md-12 text-left" >
 					               		   					<span>
 					               		   						2)	The final RSQR, Milestones and payment terms are attached. (Flag-B)
 					               		   					</span>
 					               		   					<span>
 					               		   						<%if(csdetails!=null && csdetails.getAttachFlagB()!=null) {%>
-							                            			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-right: 15em;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+							                            			<button type="submit" class="btn btn-sm btn-sub-doc" name="filename" formmethod="post" formnovalidate="formnovalidate"
 							                            				value="flagBFile" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 							                            				<i class="fa fa-download"></i>
 							                            			</button>
@@ -618,13 +375,13 @@ String statuscode = carsIni.getCARSStatusCode();
 					               		   			</div>
 					               		   			<div class="row">
 					               		   				<!-- <div class="col-md-1"></div> -->
-					               		   				<div class="col-md-12" style="text-align: left;">
+					               		   				<div class="col-md-12 text-left" >
 					               		   					<span>
 					               		   						3)	The contract signed by competent authority of the RSP is placed opposite for CFA's signature please.  (Flag-C) 
 					               		   					</span>
 					               		   					<span>
 					               		   						<%if(csdetails!=null && csdetails.getAttachFlagC()!=null) {%>
-							                            			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-right: 15em;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+							                            			<button type="submit" class="btn btn-sm btn-sub-doc" name="filename" formmethod="post" formnovalidate="formnovalidate"
 							                            				value="flagCFile" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 							                            				<i class="fa fa-download"></i>
 							                            			</button>
@@ -636,29 +393,29 @@ String statuscode = carsIni.getCARSStatusCode();
 			               		   					<br>
 			               		   					
 					               		   			<!-- Signatures and timestamps -->
-					               		   			<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 10px;margin-top: 30px;">
-				               							<div style="font-size: 15px;"> Signature of GD-DP&C</div>
+					               		   			<div class="tab-div">
+				               							<div class="input-font"> Signature of GD-DP&C</div>
 								               			<%for(Object[] apprInfo : othersCSApprovalEmpData){ %>
 								   			   				<%if(apprInfo[8].toString().equalsIgnoreCase("CFW")){ %>
-								   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=apprInfo[4]!=null?(fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) +" "+ StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
+								   								<label class="text-uppercase mt-3"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="text-uppercase"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="f-12">[Forwarded On:&nbsp; <%=apprInfo[4]!=null?(fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) +" "+ StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
 								   			    		<%break;}} %>  
 									            	</div>
 							            	
 									            	<%for(Object[] apprInfo : othersCSApprovalEmpData) {%>
-									            		<div style="width: 96%;text-align: left;margin-left: 10px;line-height: 10px;margin-top: 50px;">
+									            		<div class="div-tab">
 										            			 		
 										            		<%if(apprInfo[8].toString().equalsIgnoreCase("CFA")){ %>
-									            				<div style="font-size: 15px;"> Signature of AD-P&C</div>
-										   						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-										   						<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-										   						<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=apprInfo[4]!=null?(fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) +" "+ StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
+									            				<div class="input-font" > Signature of AD-P&C</div>
+										   						<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+										   						<label class="text-uppercase" ><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+										   						<label  class="f-12" >[Recommended On:&nbsp; <%=apprInfo[4]!=null?(fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) +" "+ StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
 										   					<%} else if(apprInfo[8].toString().equalsIgnoreCase("CAD")) {%> 
-									   			    			<div style="font-size: 15px;"> Signature of Director</div>
-									   			    			<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-										   						<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-										   						<label style="font-size: 12px; ">[Approved On:&nbsp; <%=apprInfo[4]!=null?(fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) +" "+ StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
+									   			    			<div class="input-font"> Signature of Director</div>
+									   			    			<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+										   						<label class="text-uppercase"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+										   						<label class="f-12">[Approved On:&nbsp; <%=apprInfo[4]!=null?(fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) +" "+ StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19)):" - " %>]</label>
 									   			    					
 									   			    		<%} %>
 									   			    	</div>
@@ -667,19 +424,19 @@ String statuscode = carsIni.getCARSStatusCode();
 									   			    <!-- Remarks -->
 					               		   			<div class="row mt-2">
 														<%if(othersCSRemarksHistory.size()>0){ %>
-															<div class="col-md-8" align="left" style="margin: 10px 0px 5px 25px; padding:0px;border: 1px solid black;border-radius: 5px;">
+															<div class="col-md-8 div-margin" align="left">
 																<%if(othersCSRemarksHistory.size()>0){ %>
-																	<table style="margin: 3px;padding: 0px">
+																	<table class="m-1 p-0">
 																		<tr>
-																			<td style="border:none;padding: 0px">
-																				<h6 style="text-decoration: underline;">Remarks :</h6> 
+																			<td class="bor-none p-0" >
+																				<h6 class="text-ul">Remarks :</h6> 
 																			</td>											
 																		</tr>
 																		<%for(Object[] obj : othersCSRemarksHistory){%>
 																			<tr>
-																				<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
+																				<td class="cs-td">
 																					<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>&nbsp; :
-																					<span style="border:none; color: blue;">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
+																					<span class="bor-none col-blue">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 																				</td>
 																			</tr>
 																		<%} %>
@@ -705,22 +462,18 @@ String statuscode = carsIni.getCARSStatusCode();
 									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
 								         						</div>
 								         						<%if(statuscode!=null && statuscode.equalsIgnoreCase("CFA")) {%>
-								         						<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="OthersCSApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
+								         						<button type="submit" class="btn btn-sm btn-success fw-600" id="finalSubmission" formaction="OthersCSApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');">
 										    						Approve	
 									      						</button>
-									      						
-									      						<!-- <button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="OthersCSApprovalSubmit.htm" name="Action" value="D" onclick="return disapprove();" style="font-weight: 600;">
-										   	 						Disapprove	
-									      						</button> -->
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="OthersCSApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+									      						<button type="submit" class="btn btn-sm btn-danger btn-bg-1 fw-600" id="finalSubmission" formaction="OthersCSApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();">
 										 							Return
 																</button>
 								         						<%} else{%>
-																<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="OthersCSApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" style="font-weight: 600;">
+																<button type="submit" class="btn btn-sm btn-success fw-600" id="finalSubmission" formaction="OthersCSApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" >
 										    						Recommend	
 									      						</button>
 									      						
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="OthersCSApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+									      						<button type="submit" class="btn btn-sm btn-danger fw-600 btn-bg-1" id="finalSubmission" formaction="OthersCSApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" >
 										 							Return
 																</button>
 															<%} }%>
@@ -731,22 +484,22 @@ String statuscode = carsIni.getCARSStatusCode();
 			               		   		</div>
 			               		   	</div>
 			               		<%} else{%>
-               						<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-               							<h4 style="font-weight: bold;color: red;">Please fill the Contract Signature Details..!</h4>
+               						<div class="mt-4 txt-cen">
+               							<h4 class="mandatory fw-bold">Please fill the Contract Signature Details..!</h4>
                						</div>
                					<%} %>   
 			               		
-			               		<div style="display: flex;justify-content: space-between;">
+			               		<div class="div-jc">
                						<div></div>
 		               				<div>
 		               					<%if(carsIni!=null && isApproval==null) {%>
 		               					<div class="row"  >
-				 		  					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For Contract Signature</b></div>
+				 		  					<div class="col-md-12 text-center"><b>Approval Flow For Contract Signature</b></div>
 				 	    				</div>
-				 	    				<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+				 	    				<div class="row text-center pt-2 pb-3"  >
 			              					<table align="center"  >
 			               						<tr>
-			               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+			               							<td class="trup trup-bg-1">
 			                							GD-DP&C - <%if(GDDPandC!=null) {%> <%=StringEscapeUtils.escapeHtml4(GDDPandC[1].toString()) %> <%} else {%> GD-DP&C <%} %>
 			                						</td>
 			                		
@@ -754,7 +507,7 @@ String statuscode = carsIni.getCARSStatusCode();
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+			                						<td class="trup trup-bg-2" >
 			                							AD-D&C - <%if(ADDPandC!=null) {%> <%=StringEscapeUtils.escapeHtml4(ADDPandC[1].toString()) %> <%} else {%> AD-P&C <%} %>
 			                	    				</td>
 			                	    				
@@ -762,7 +515,7 @@ String statuscode = carsIni.getCARSStatusCode();
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #09f21b 10%, transparent 115%);">
+			                						<td class="trup trup-bg-3" >
 			                							DIRECTOR - <%if(Director!=null) {%> <%=StringEscapeUtils.escapeHtml4(Director[1].toString()) %> <%} else {%> DIRECTOR <%} %>
 			                	    				</td>
 			               						</tr> 	
@@ -770,7 +523,7 @@ String statuscode = carsIni.getCARSStatusCode();
 					 					</div>
 					 					<%} %>
 		               				</div>
-		               				<div class="navigation_btn"  style="text-align: right;">
+		               				<div class="navigation_btn text-right"  >
 		            					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 										<button class="btn btn-info btn-sm next">Next</button>
 									</div>
@@ -790,7 +543,7 @@ String statuscode = carsIni.getCARSStatusCode();
                			<%} %>
                					<%if(csdetails!=null) {%>
 		               				<div class="col-md-8 mt-4">
-		               					<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%;">
+		               					<div class="card card-m-bg">
 		               						<div class="card-body mt-2 ml-4">
 			               						<form action="#">
 			               							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -800,9 +553,9 @@ String statuscode = carsIni.getCARSStatusCode();
 			               							<table id="alldocstable">
 			               								<thead>
 			               									<tr>
-			               										<th style="width: 10%;">SN</th>
+			               										<th class="w-10" >SN</th>
 			               										<th>Subject</th>
-			               										<th style="width: 10%;">Action</th>
+			               										<th class="w-10" >Action</th>
 			               									</tr>
 			               								</thead>
 			               								<tbody>
@@ -828,7 +581,7 @@ String statuscode = carsIni.getCARSStatusCode();
 			               										</td>
 			               										<td>
 			               											<%if(csdetails!=null && csdetails.getAttachFlagA()!=null) {%>
-							                            			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+							                            			<button type="submit" class="btn btn-sm btn-sum-doc-up"  name="filename" formmethod="post" formnovalidate="formnovalidate"
 							                            				value="flagAFile" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 							                            				<i class="fa fa-download fa-lg"></i>
 							                            			</button>
@@ -842,7 +595,7 @@ String statuscode = carsIni.getCARSStatusCode();
 			               										<td>The final RSQR, Milestones and payment terms are attached. (Flag-B)</td>
 			               										<td>
 			               											<%if(csdetails!=null && csdetails.getAttachFlagB()!=null) {%>
-								                            			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+								                            			<button type="submit" class="btn btn-sm btn-sum-doc-up" name="filename" formmethod="post" formnovalidate="formnovalidate"
 								                            				value="flagBFile" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 								                            				<i class="fa fa-download fa-lg"></i>
 								                            			</button>
@@ -854,7 +607,7 @@ String statuscode = carsIni.getCARSStatusCode();
 			               										<td>The contract signed by competent authority of the RSP is placed opposite for CFA's signature please. (Flag-C)</td>
 			               										<td>
 			               											<%if(csdetails!=null && csdetails.getAttachFlagC()!=null) {%>
-								                            			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+								                            			<button type="submit" class="btn btn-sm btn-sum-doc-up" name="filename" formmethod="post" formnovalidate="formnovalidate"
 								                            				value="flagCFile" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 								                            				<i class="fa fa-download fa-lg"></i>
 								                            			</button>
@@ -866,7 +619,7 @@ String statuscode = carsIni.getCARSStatusCode();
 			               										<td>Uploaded Contract Signature Approval form (After approval)</td>
 			               										<td>
 			               											<%if(csdetails!=null && csdetails.getUploadOtherDoc()!=null) {%>
-								                            			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+								                            			<button type="submit" class="btn btn-sm btn-sum-doc-up" name="filename" formmethod="post" formnovalidate="formnovalidate"
 								                            				value="fileOtherDoc" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Download">
 								                            				<i class="fa fa-download fa-lg"></i>
 								                            			</button>
@@ -890,12 +643,12 @@ String statuscode = carsIni.getCARSStatusCode();
 	               		   								<br>
                											<div class="row">
                												<div class="col-md-3"></div>
-						               			    		<div class="col-md-4" style="margin-left: 60px;">
+						               			    		<div class="col-md-4 ml-60">
 						               			     			<div class="row details">
-						                        					<div class="" style="width: 90%;border-top-left-radius: 5px;">
+						                        					<div class="div-lab">
 						                            					 <label class="control-label">Upload Contract Signature form</label><span class="mandatory">*</span> 
 						                            					 <%if(csdetails!=null && csdetails.getUploadOtherDoc()!=null) {%>
-						                            					 	<button type="submit" class="btn btn-sm" style="padding: 5px 8px;margin-left: -5rem;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+						                            					 	<button type="submit" class="btn btn-sm btn-sum-doc-up ml-minus-5rem" name="filename" formmethod="post" formnovalidate="formnovalidate"
 						                            					 	value="fileOtherDoc" formaction="CARSOtherDocAttachedFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="CARS Contract Signature Download">
 						                            					 		<i class="fa fa-download fa-lg"></i>
 						                            					 	</button>
@@ -905,7 +658,7 @@ String statuscode = carsIni.getCARSStatusCode();
 						                        				</div>
 						                        			</div>
 						                        			<div class="col-md-4">
-						                        				<div align="left" style="margin-top: 2.2rem;">
+						                        				<div align="left" class="mt-2-2rem">
 																	<button type="submit" class="btn btn-sm btn-success submit" formmethod="post" onclick="return confirm('Are you sure to Upload?')" >UPLOAD</button>
 																</div>
 						                        			</div>
@@ -917,7 +670,7 @@ String statuscode = carsIni.getCARSStatusCode();
 			               				</div>
 			               			</div>
 	               				<%} %>				
-               					<div class="navigation_btn"  style="text-align: right;">
+               					<div class="navigation_btn text-right">
 		            				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 									<button class="btn btn-info btn-sm next">Next</button>
 								</div>

@@ -1,0 +1,37 @@
+@charset "ISO-8859-1";
+
+.headerCard{
+	background-color: #055C9D;
+}
+
+#Division,#Designation{
+	font-size: 5px;width: 80%;
+}
+
+#InternetEmail,#DronaEmail,#mobilenumber{
+	font-size: 15px;width:100%
+}
+
+#Email,#ExtNo{
+	font-size: 15px;width: 80%;
+}
+
+#Empname{
+	font-size: 15px;text-transform: capitalize; width: 100%;
+}
+
+#EmpNo{
+	font-size: 15px;
+}
+
+#salutaionExt,#titleExt,#labId{
+	font-size: 5px;
+}
+
+.backbtn{
+	margin-left: 1rem;
+}
+
+.topDiv{
+	top: 10px;
+}

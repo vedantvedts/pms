@@ -1,0 +1,36 @@
+@charset "ISO-8859-1";
+
+#superiorOfficer,#Division,#Designation{
+	font-size: 5px;width: 80%;
+}
+
+#InternetEmail,#DronaEmail{
+	font-size: 15px;width:100%
+}
+
+#Email,#ExtNo{
+	font-size: 15px;width: 80%;
+}
+
+#EmpName{
+	font-size: 15px;text-transform: capitalize; width: 80%;
+}
+.topdiv{
+	top: 10px;
+}
+
+.headerCard{
+	background-color: #055C9D;
+}
+
+.backbtn{
+	margin-left: 1rem;
+}
+
+#salutation,#title{
+	font-size: 5px;
+}
+
+#EmpNo{
+	font-size: 15px;
+}

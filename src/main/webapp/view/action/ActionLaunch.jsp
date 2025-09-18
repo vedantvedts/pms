@@ -12,84 +12,12 @@
 		<link href="./resources/css/multiselect.css" rel="stylesheet"/>
 		<spring:url value="/resources/js/excel.js" var="excel" />
 		<script src="${excel}"></script>
+		<spring:url value="/resources/css/action/actionLaunch.css" var="actionLaunch" />
+		<link href="${actionLaunch}" rel="stylesheet" />
+		<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+		<link href="${actionCommon}" rel="stylesheet" />
 		<title>New Action</title>
-		<style type="text/css">
-	label{
-		font-weight: bold;
-	  font-size: 13px;
-	}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
 
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 29px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-.width1 {
-	width: 220px !important;
-}
-a:hover {
-	color: white;
-}
-.modal-xl{
-	max-width: 1400px;
-}
-		</style>
 	</head>
 	
 	<body>
@@ -134,15 +62,15 @@ a:hover {
 
 			<div class="container-fluid">
 
-				<div class="container" style="margin-bottom:20px;">
+				<div class="container margin-bottom">
 					
-					<div class="card" style=" ">
+					<div class="card">
 
-						<div class="card-header" style="background-color: #055C9D; height: 100px;">
+						<div class="card-header card-background" >
 							<div class="row"> 
 
 								<div class="col-sm-7" align="left"  >
-									<h3 style="color: white;font-weight: bold;font-size: 1.0rem !important " align="left">
+									<h3 class ="custom-h3" align="left">
 									<%if(ActionData!=null &&ActionData[2]!=null){%>
 									             <%=StringEscapeUtils.escapeHtml4(ActionData[2].toString())%>
 									<%}else{%>
@@ -154,11 +82,11 @@ a:hover {
 										<%}%>
 									</h3>
 								</div>     
-								<div class="col-sm-5" align="left" style="margin-top: -8px;">       
+								<div class="col-sm-5 div-search" align="left">       
 									<div class="input-group">
 										<input type="text" class="form-control" placeholder="Search Action Id to Link Old Action" name="ItemDescription" id="ItemDescriptionSearch">
 										<div class="input-group-append">
-											<button class="btn btn-secondary" type="button" style="font-size: 10px;" id="ItemDescriptionSearchBtn">
+											<button class="btn btn-secondary font-icon" type="button"  id="ItemDescriptionSearchBtn">
 												<i class="fa fa-search"></i>
 											</button>
 									</div>
@@ -173,15 +101,15 @@ a:hover {
 							<div class="row"> 
 								<div class="col-sm-6" align="left"  >
 									<div class="form-group">
-										<label  >Action Item: <span class="mandatory" style="color: red;" >*</span>
+										<label  >Action Item: <span class="mandatory text-danger"  >*</span>
 										</label><br>
-										<input class="form-control " type="text"name="Item" id="Item"  style="width:100% " maxlength="1000" required="required" placeholder="Enter Action Item" oninput="sanitizeInput(this)">
+										<input class="form-control width-full " type="text"name="Item" id="Item"   maxlength="1000" required="required" placeholder="Enter Action Item" oninput="sanitizeInput(this)">
 									</div>
 								</div>
 
 								<div class="col-sm-2" align="left"  >
 									<div class="form-group">
-										<label  >PDC: <span class="mandatory" style="color: red;">* </span>
+										<label  >PDC: <span class="mandatory text-danger" >* </span>
 										</label>
 										<input class="form-control " name="DateCompletion" id="DateCompletion" required="required" placeholder="" >
 									</div>
@@ -243,9 +171,9 @@ a:hover {
 								 <div class="col-sm-3" align="left" >
 									<div class="form-group" id="OldList">
 										<label > Old Action Id : </label><br>
-										<select class="form-control selectdee " name="OldActionNo" id="OldActionNoId" hidden="hidden" data-live-search="true"  style="width:100% " ></select>
+										<select class="form-control selectdee width-full " name="OldActionNo" id="OldActionNoId" hidden="hidden" data-live-search="true"  ></select>
 									</div>
-									<b id="Message" style="font-size:14px;color: maroon " ></b>
+									<b id="Message" class="custom-b" ></b>
 								</div> 
 							</div>
 							<div class="row" align="center">
@@ -255,17 +183,17 @@ a:hover {
 									        <input type="hidden"  id="ActionPraentId" <%if(ActionData!=null && ActionData[1]!=null){ %> value="<%=ActionData[1]%>" <%}%>>
 									        <input type="hidden"  id="Actiontype" <%if(ActionData!=null && ActionData[8]!=null){ %> value="<%=ActionData[8]%>" <%}%>>
 									        <input type="hidden" id="MainId" <%if(ActionData!=null && ActionData[7]!=null){ %> value="<%=ActionData[7]%>" <%}%>>
-									        <input type="button" id="Actionsubmit" class="btn  btn-sm submit" style="margin-top: 10px;" value="SUBMIT"/>
+									        <input type="button" id="Actionsubmit" class="btn  btn-sm submit margin-top10"  value="SUBMIT"/>
 									        <input type="hidden" id="Actionscheduleid" <%if(ActionData!=null && ActionData[9]!=null){ %> value="<%=ActionData[9]%>" <%}else{%> value="0" <%}%>>									
-										    <button  class="btn  btn-sm back" style="margin-top: 10px;" onclick="resetSubmit()" >Reset</button>
+										    <button  class="btn  btn-sm back margin-top10"  onclick="resetSubmit()" >Reset</button>
 										    <%if(flag==null){ %>
 										    <%if(Onboarding!=null && "Yes".equalsIgnoreCase(Onboarding)){%>
-													<a class="btn btn-info btn-sm  back" style="margin-top: 10px;"  href="OnBoarding.htm">Back</a>
+													<a class="btn btn-info btn-sm  back margin-top10"   href="OnBoarding.htm">Back</a>
 													<%}else{%>
-													<a class="btn btn-info btn-sm  back" style="margin-top: 10px;"  href="MainDashBoard.htm">Back</a>
+													<a class="btn btn-info btn-sm  back margin-top10"   href="MainDashBoard.htm">Back</a>
 										    <%}%>
 										    <%}else{ %>
-										         <a class="btn btn-info btn-sm  back" style="margin-top: 10px;"  href="MeettingAction.htm?projectid=<%=projectid%>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&Empid=<%=empId %>">Back</a>
+										         <a class="btn btn-info btn-sm  back margin-top10"   href="MeettingAction.htm?projectid=<%=projectid%>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&Empid=<%=empId %>">Back</a>
 										    <%} %>
 										    &nbsp;&nbsp;
 									        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>         				
@@ -295,7 +223,7 @@ a:hover {
 							<form action="ActionMainExcelUpload.htm" method="post" enctype="multipart/form-data">
 								  	<table>
 									  	<tr>
-											<td align="left"><h6>Download Excel : &nbsp;<button formaction="ActionMainExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button></h6></td>
+											<td align="left"><h6>Download Excel : &nbsp;<button formaction="ActionMainExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o text-success" aria-hidden="true" ></i></button></h6></td>
 											<td align="right"><h6>&nbsp;&nbsp;&nbsp;&nbsp;	Upload Excel :&nbsp;&nbsp;&nbsp;&nbsp;
 											<input type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></h6></td>							
 										 </tr>
@@ -310,7 +238,7 @@ a:hover {
 									          <span aria-hidden="true">&times;</span>
 									        </button>
 									      </div>
-									      <div class="modal-body"  style="max-height: 25rem; overflow-y:auto;">
+									      <div class="modal-body modal-maxheight"  overflow-y:auto;">
 									             <table class="table table-bordered table-hover table-striped table-condensed" id="myTable1"> </table>
 									      </div>
 									      <div class="modal-footer" align="center">
@@ -337,29 +265,17 @@ a:hover {
 
 											<div class="sparkline13-graph">
 												<div class="datatable-dashv1-list custom-datatable-overright">
-													<div id="toolbar">
-														<select class="form-control dt-tb">
-															<option value="">Export Basic</option>
-															<option value="all">Export All</option>
-															<option value="selected">Export Selected</option>
-														</select>
-													</div>
-													<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+													
+													<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
 													<thead>
 
 														<tr>
 															<th>SN</th>
-															<th style="text-align: left;">Action Item</th>
+															<th class="th-align-left">Action Item</th>
 															<th class="width-110px" >PDC</th>
 															<th class="width-110px">Assigned Date</th>									
 														 	<th>Assignee</th>	
-														 	<th style="width: 100.5312px"> Progress</th>
+														 	<th class="th-width"> Progress</th>
 														 	<th> Is Seen</th>
 														 	<th> Action</th>
 														</tr>
@@ -369,19 +285,19 @@ a:hover {
 														 	if(AssignedList!=null && AssignedList.size()>0){
 															for(Object[] obj: AssignedList){ %>
 															<tr>
-															<td style="width:1% !important; " class="center"><%=count %></td>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%= obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
+															<td  class="center td-width1"><%=count %></td>
+															<td class="td-modified"><%= obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
 															<td class="width-30px" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(sdf.format(obj[4])):" - " %></td>
-															<td style="width:8% !important; "><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(sdf.format(obj[3])):" - "%></td>
+															<td class="td-width8"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(sdf.format(obj[3])):" - "%></td>
 															<td ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
-															<td style="width:20% !important; "><%if(obj[7]!=null  && !obj[7].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[7]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<td class="td-width20"><%if(obj[7]!=null  && !obj[7].toString().equalsIgnoreCase("0")){ %>
+															<div class="progress div1" >
+															<div class="progress-bar progress-bar-striped width-<%=obj[7]%>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):"-"%>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress div-progress">
+															<div class="progress-bar div-progressbar" role="progressbar"   >
 																0
 															</div>
 															</div> <%} %>
@@ -389,14 +305,14 @@ a:hover {
 															<td class="talign" >
 														
 																	<%if(Integer.parseInt(obj[8].toString())==1){ %>
-																		<p style="color: green;">Seen</p>																		
+																		<p class="text-success">Seen</p>																		
 																	<%}else if(Integer.parseInt(obj[8].toString())==0){ %>
-																		<p style="color: red; font-weight: bold;">UnSeen</p>
+																		<p class="text-danger font-weight-bold">UnSeen</p>
 																	<%} %>
 														</td>
 															
 														<td class="left width1">		
-														 <form action="CloseAction.htm" method="POST" name="myfrm"  style="display: inline">
+														 <form action="CloseAction.htm" method="POST" name="myfrm"  class="d-inline">
 															<button  class="btn btn-sm editable-click" name="sub" value="C">  
 																<div class="cc-rockmenu">
 											                      <div class="rolling">
@@ -426,7 +342,7 @@ a:hover {
 													</tr>
 												<% count++; } }else{%>
 												<tr>
-													<td colspan="6" style="text-align: center">No List Found</td>
+													<td colspan="6" class="text-center">No List Found</td>
 												</tr>
 												<%}%>
 												</tbody>
@@ -455,17 +371,17 @@ a:hover {
 						</div>
 						<div class="modal-body" align="center">
 							<form action="ActionEditSubmit.htm" method="post" autocomplete="off" id="editform" >
-								<table style="width: 100% ; padding: 15px;">
+								<table class="table">
 									<tr>
-										<th style="padding: 10px 0px; width: 20% ;"> Action Item :</th>
-										<td style="padding: 10px 0px; "> 
+										<th class="th-padding"> Action Item :</th>
+										<td class="td-padding"> 
 											<textarea name="actionitem" class="form-control" id="modalactionitem" maxlength="500" required="required" rows="4" cols="60"></textarea>
 										</td>
 									</tr>
 									<tr>
 										<th>Lab  :</th>
 										<td>
-										<select class="form-control selectdee" name="modelAssigneeLabCode" id="modelAssigneelabcode" style=" width: 100% !important ;" onchange="AssigneeEmpListForEdit(0);" >
+										<select class="form-control selectdee" name="modelAssigneeLabCode" id="modelAssigneelabcode" class="custom-width" onchange="AssigneeEmpListForEdit(0);" >
 											 <%if(AllLabList!=null && AllLabList.size()>0){
 											    for(Object[] lab : AllLabList){
 											    	if(clusterid!=null && clusterid.equalsIgnoreCase(lab[1].toString())){
@@ -476,19 +392,16 @@ a:hover {
 										</select>
 										</td>
 									</tr>
-									<tr>
-										<th style="padding: 10px 0px; width: 20% ;" >Assignee  :</th>
-										<td style="padding: 10px 0px; width: 50% !important ;" >
-											<select class="form-control selectdee"  name="Assignee" style=" width: 100% !important ;" id="modalassignee" required="required"  data-live-search="true"   data-placeholder="Select Assignee" >
-												<%-- <%for(Object[] obj:EmpListmodal){ %>	
-												<option value="<%=obj[0]%>"><%=obj[1]%>, <%=obj[2]%></option>	
-												<%} %> --%>
+										<tr>
+										<th class="th-padding-width20" >Assignee  :</th>
+										<td class="td-padding-width" >
+											<select class="form-control selectdee"  name="Assignee" id="modalassignee" required="required"  data-live-search="true"   data-placeholder="Select Assignee" >
 											</select>
 										</td>
 									</tr>
 									<tr>
-										<th style="padding: 10px 0px; width: 20% ;"> PDC  :</th>
-										<td style="padding: 10px 0px;  width: 30% ; "  >
+										<th class="th-padding"> PDC  :</th>
+										<td class="th-padding-width30"  >
 											<input type="text" name="newPDC" value="" class="form-control" id="modalipdc1"  readonly required >
 											<input type="text" name="newPDC1" value="" class="form-control" id="modalipdc2"  readonly required onclick="alert('PDC Revision Limit Exceded !!');">
 										</td>
@@ -521,9 +434,9 @@ a:hover {
 				  				      
 			                          <div class="col-3">
 				                             <div class="form-group">
-				                                      <label> Lab : <span class="mandatory" style="color: red;">* </span></label>
+				                                      <label> Lab : <span class="mandatory text-danger" >* </span></label>
 				                                       <br>
-				                                       <select class=" form-control selectdee" style="width: 100%;" name="AssigneeLabCode" id="AssigneeLabCode" required="required" style="margin-top: -5px" onchange="AssigneeEmpList()" >
+				                                       <select class=" form-control selectdee width-full negative-marging5" name="AssigneeLabCode" id="AssigneeLabCode" required="required"  onchange="AssigneeEmpList()" >
 															<option disabled="disabled"  selected value="" >Choose...</option>
 															<%if(AllLabList!=null && AllLabList.size()>0){	
 																for (Object[] obj  : AllLabList) {
@@ -537,9 +450,9 @@ a:hover {
 			                         </div>
 			
 			                         <div class="col-6">
-			                               <div class="form-group">
+			                               <div class="form-group w-100">
 											    <label> Assignee : </label><br>
-												<select class="form-control selectdee" style="width: 100%;" name="Assignee" id="Assignee" required="required"  data-live-search="true"  data-placeholder="Select Assignee" multiple>
+												<select class="form-control selectdee "  name="Assignee" id="Assignee" required="required"  data-live-search="true"  data-placeholder="Select Assignee" multiple>
 												</select>
 											</div>
 									</div>
@@ -629,61 +542,6 @@ a:hover {
 
 				
 			</script>
-
-
-			<!-- <script type="text/javascript">
-
-
-				function changeempdd()
-				{
-					if (document.getElementById('allempcheckbox').checked) 
-					{
-						employeefetch('A');
-					} else {
-						
-						employeefetch($('#projectid').val());
-					}
-				}
-				
-				function employeefetch(ProID){
-					
-					
-					$.ajax({		
-						type : "GET",
-						url : "ProjectEmpListFetchAction.htm",
-						data : {
-							projectid : ProID
-						},
-						datatype : 'json',
-						success : function(result) {
-							
-							var result = JSON.parse(result);
-							
-							var values = Object.keys(result).map(function(e) {
-								return result[e]
-								
-							});
-							
-							var s = '';
-							s += '<option value="">'+"--Select--"+ '</option>';
-							for (i = 0; i < values.length; i++) {									
-								s += '<option value="'+values[i][0]+'">'
-								+values[i][1] + " (" +values[i][2]+")" 
-								+ '</option>';
-							} 
-							
-							$('#Assignee').html(s);
-							
-						}
-					});
-					
-					
-				}
-				
-			</script>-->
-			
-
-
 
 			<script>
 				
@@ -916,6 +774,15 @@ a:hover {
 			<!-- Excel Upload  -->>	
 				
 				 <script type="text/javascript">
+				 
+				 $(document).ready(function(){
+					  $("#myTable12").DataTable({
+					 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+					 "pagingType": "simple",
+					 "pageLength": 10
+			
+					});
+				});
 const excel_file = document.getElementById('excel_file');
 
 excel_file.addEventListener('change', (event) => {
@@ -960,7 +827,7 @@ excel_file.addEventListener('change', (event) => {
                 		if(sheet_data[row][cell].toString().length > 990){
                 			ActionItemLength.push(row-1);
                 		}
-                		table_output += '<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;">'+sheet_data[row][cell]+'</td>';
+                		table_output += '<td class="table-output">'+sheet_data[row][cell]+'</td>';
                 	}
                 	if(row>0 && cell==2){
                 		table_output += '<td>'+sheet_data[row][cell]+'</td>';
@@ -1140,6 +1007,7 @@ $(document).ready(function(){
 	 "pagingType": "simple"
 	});
 });
+
 
 
 function DateFormate(exceldate)

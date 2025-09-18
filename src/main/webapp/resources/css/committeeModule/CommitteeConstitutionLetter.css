@@ -1,0 +1,111 @@
+.break {
+	page-break-after: always;
+}
+
+p {
+	text-align: justify;
+	text-justify: inter-word;
+}
+
+.text-black {
+	font-weight: bold;
+}
+
+li {
+	text-align: left;
+}
+
+.refNoStyle{
+	float: left; 
+	font-size:13px;
+}
+
+.dateStyle{
+	float: right; 
+	font-size:13px;
+}
+
+.mb-2px{
+	margin-bottom: 2px;
+}
+
+.tblStyle{
+	margin-top: 10px; 
+	margin-bottom: 10px; 
+	margin-left: 15px; 
+	max-width: 650px; 
+	font-size: 16px; 
+	border-collapse:collapse;
+}
+
+.divDataStyle{
+	margin-bottom: 2px; 
+	max-width: 650px;
+	text-align: justify;
+	text-justify: inter-word;
+	text-align: justify;
+	text-justify: inter-word;
+}
+
+.membersTblStyle{
+	margin-bottom: 10px; 
+	margin-left: 15px; 
+	width: 650px; 
+	font-size: 13px; 
+	border-collapse:collapse;
+	border:1px solid black; 
+}
+
+.tdHeaderSnStyle{
+	max-width:40px;
+	text-align: center; 
+	padding: 5px 0px 5px 0px; 
+	border:1px solid black;
+}
+
+.tdHeaderNameStyle{
+	max-width: 300px;
+	text-align: left; 
+	padding: 5px 0px 5px 0px;
+	border:1px solid black;
+}
+
+.tdHeaderAgencyStyle{
+	max-width: 150px;
+	text-align: center; 
+	padding: 5px 0px 5px 0px; 
+	border:1px solid black;
+}
+
+.tdHeaderRoleStyle{
+	max-width: 200px;
+	text-align: left; 
+	padding: 5px 0px 5px 0px;
+	border:1px solid black;
+}
+
+.teamReferenceTblStyle{
+	margin-left: 15px; 
+	max-width: 650px; 
+	font-size: 16px; 
+	border-collapse:collapse;
+}
+
+.h3TeamReferenceStyle{
+	margin-bottom: 2px; 
+	width: 650px; 
+	text-align:left;
+}
+
+.pTagStyle{
+	margin-bottom: 2px; 
+	max-width: 650px;
+	text-align: justify;
+	text-justify: inter-word;
+	text-align: justify;
+	text-justify: inter-word;
+}
+
+.fs-13px{
+	font-size: 13px;
+}

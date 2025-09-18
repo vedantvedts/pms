@@ -1,0 +1,46 @@
+label {
+	font-weight: bold;
+	font-size: 13px;
+}
+
+body {
+	background-color: #f2edfa;
+}
+
+h6 {
+	text-decoration: none;
+}
+
+h6 span {
+	font-size: 16px;
+	color: white;
+}
+
+.custom-header{
+	background-color: #055C9D;
+}
+
+.custom-h6{
+	color: orange;
+	font-weight: bold;
+	font-size: 1.2rem !important;
+}
+
+.align-right{
+	float:right;
+}
+
+.custom-mettingId{
+	float:right;
+	margin: 5px 12px;
+}
+
+.custom-duration{
+	font-size: 15px;
+	color: blue; 
+	float: right;
+}
+
+.mt-30{
+	margin-top: 30px;
+}

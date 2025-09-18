@@ -167,6 +167,62 @@ public class ActionController {
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
+	
+	
+	
+
+private boolean isValidFileType(MultipartFile file) {
+		
+		
+		
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
+		
+	    if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+
+	    
+	    
+	  
+	    if (contentType == null) {
+	        return false;
+	    }
+	    
+	 // Extract extension in lowercase
+	    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+	    
+	 // Check mapping between MIME type and extension
+	    switch (extension) {
+	        case "pdf":
+	            return contentType.equalsIgnoreCase("application/pdf");
+	        case "jpeg":
+	        case "jpg":
+	            return contentType.equalsIgnoreCase("image/jpeg");
+	        case "png":
+	            return contentType.equalsIgnoreCase("image/png");
+	        default:
+	            return false;
+	    }
+
+//	    // Allow only images and PDF
+//	 // Allowed MIME types
+//	    boolean validMime = contentType.equalsIgnoreCase("application/pdf")
+//	            || contentType.equalsIgnoreCase("image/jpeg")
+//	            || contentType.equalsIgnoreCase("image/png");
+//
+//	    // Allowed extensions
+//	    boolean validExtension = extension.equals("pdf")
+//	            || extension.equals("jpeg")
+//	            || extension.equals("jpg")
+//	            || extension.equals("png");
+//
+//	    return validMime && validExtension;
+	}
+
+	
+	
+	
 	@RequestMapping(value = "ActionLaunch.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ActionLaunch(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
@@ -352,6 +408,14 @@ public class ActionController {
 			}
 			
 			
+			// 🔹 Validate file types
+	        if (!isValidFileType(file) ) {
+
+	            return redirectWithError(redir, "ActionLaunch.htm",
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+			
+			
 			ActionMainDto mainDto=new ActionMainDto();
 			
 			mainDto.setMainId(req.getParameter("MainActionId"));
@@ -506,8 +570,40 @@ public class ActionController {
 		logger.info(new Date() +"Inside SubSubmit.htm "+UserId);		
 		try {
 			
-			
 			String ccmActionFlag = req.getParameter("ccmActionFlag");
+			
+			
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(FileAttach)) {
+
+	        	if(ccmActionFlag!=null && ccmActionFlag.equalsIgnoreCase("Y")) {
+	        		
+	        		redir.addAttribute("committeeId", req.getParameter("committeeId"));
+					redir.addAttribute("tabName", req.getParameter("tabName"));
+					return redirectWithError(redir, "CCMPresentation.htm", "Invalid file type. Only PDF or Image files are allowed.");
+	        	}else {
+	        		
+	        		redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
+					redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
+					redir.addFlashAttribute("Empid", ((Long) ses.getAttribute("EmpId")).toString());
+					redir.addFlashAttribute("flag", req.getParameter("flag"));
+					redir.addFlashAttribute("projectid", req.getParameter("projectid"));
+	        		
+	        		return redirectWithError(
+	        			    redir,
+	        			   "ActionSubLaunchRedirect.htm",
+	        			    "Invalid file type. Only PDF or Image files are allowed."
+	        			);
+
+	        	}
+	        }
+			
+			
+			
+			
+			
+			
 			if(ccmActionFlag!=null && ccmActionFlag.equalsIgnoreCase("Y")) {
 				redir.addAttribute("committeeId", req.getParameter("committeeId"));
 				redir.addAttribute("tabName", req.getParameter("tabName"));
@@ -827,6 +923,9 @@ public class ActionController {
 			long count=0;
 			try { 
 				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))) {
+					return  redirectWithError(redir,"ActionForwardList.htm","Remarks should not contain HTML elements !");
+				}
 				 count =service.ActionSendBack(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
 	
 				if(back!=null && "Issue".equalsIgnoreCase(back)) {
@@ -896,7 +995,7 @@ public class ActionController {
 				String levelcount = req.getParameter("LevelCount");
 				long count = service.ActionClosed(req.getParameter("ActionMainId"),Remarks, UserId,req.getParameter("ActionAssignId") ,levelcount);
 				
-			 
+			  
 			if (count > 0) {
 				redir.addAttribute("result", "Action Closed Successfully");
 			} else {
@@ -910,7 +1009,9 @@ public class ActionController {
 					e.printStackTrace();
 					logger.error(new Date() +" Inside CloseSubmit.htm "+UserId, e);
 			}
-		
+			if("F".equalsIgnoreCase(req.getParameter("sub"))) {
+				redir.addAttribute("Type", "A");
+			}
 
 			return "redirect:/ActionForwardList.htm";
 		}
@@ -4687,6 +4788,10 @@ public class ActionController {
 				}
         		return null;
         	}
+        	
+
+        	
+        	
           	//worked
         	 @PostMapping(value="ActionProgressAjaxSubmit.htm")
       		public @ResponseBody String ActionProgressAjaxSubmit(HttpServletRequest req,
@@ -4709,6 +4814,16 @@ public class ActionController {
       			 
       					return "error:Remarks should not contain HTML Tags!";
       				}
+      				
+      				
+      				 // 🔹 Validate file type if present
+      		        if (file != null && !file.isEmpty() && !isValidFileType(file)) {
+      		            return "error:Invalid file type. Only PDF or Image files are allowed!";
+      		        }
+      				
+      				
+      				
+      				
       				ActionSubDto subDto=new ActionSubDto();
       				subDto.setLabCode(labCode);
       				subDto.setFileName(req.getParameter("FileName"));
@@ -5495,6 +5610,110 @@ public class ActionController {
 	   }
 
 	   
+	   @RequestMapping(value = "ActionReview.htm" , method={RequestMethod.POST,RequestMethod.GET})
+   	public String ActionReview(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+  	{
+  		String Logintype= (String)ses.getAttribute("LoginType");
+  		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+  		String labCode = (String)ses.getAttribute("labcode");
+  		try {
+  		List<Object[]>TotalActions= service.TotalActions();// get All the actions from List
+  		List<Object[]>FilteredTotalActions= new ArrayList<>();
+  		List<Object[]>projects= new ArrayList<>();
+    		String assignorid=req.getParameter("assignorid")!=null ?req.getParameter("assignorid"):"0";
+  		
+  		if(Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Z")) {
+  			
+  			if(assignorid.equalsIgnoreCase("0")) {
+  			FilteredTotalActions = TotalActions;
+  			}else {
+  				FilteredTotalActions = TotalActions.stream().filter(e->e[15].toString().equalsIgnoreCase(assignorid)).collect(Collectors.toList());
+  			}
+  			projects=service.ProjectList(); // get All the projects as login is admin or director
+  		}
+  		
+  		if(Logintype.equalsIgnoreCase("P")) {
+  			projects=service.getProjects(EmpId);// get All projects of that project director
+  			List<String>Projectids=new ArrayList<>();
+  			if(!projects.isEmpty()) {
+  				Projectids=projects.stream().map(i->i[0].toString()).collect(Collectors.toList());
+  			}
+  			List<String>temp=Projectids;
+  			if(!temp.isEmpty()) {
+  				FilteredTotalActions=TotalActions.stream().filter(i->temp.contains(i[14].toString())).collect(Collectors.toList());
+  			}
+  		}
+  		
+  		List<Object[]>	EmployeeList = service.LabEmployeeList(labCode);
+  		
+  		
+  		
+  		String projectid=req.getParameter("projectid");
+  		req.setAttribute("projects", projects);
+  		req.setAttribute("assignorid", assignorid);
+  		req.setAttribute("EmployeeList", EmployeeList);
+  		
+  		if(projectid!=null && !projectid.equalsIgnoreCase("A")) {
+  		FilteredTotalActions=FilteredTotalActions.stream().filter(i->i[14].toString().equalsIgnoreCase(projectid)).collect(Collectors.toList());//filtered the action items based on project
+  		
+  		req.setAttribute("projectid", projectid);
+  		}else {
+  		req.setAttribute("projectid", "A");
+  		}
+  		
+
+  		req.setAttribute("ForwardList", FilteredTotalActions);
+  		}
+  		catch (Exception e) {
+			e.printStackTrace();
+			}
+  		
+  		return "action/ActionReview";
+  	}
+	   
+	   	@RequestMapping(value = "ChangeAssignor.htm" , method={RequestMethod.POST,RequestMethod.GET})
+		public String ChangeAssignor(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception
+		{
+			String LabCode = (String) ses.getAttribute("labcode");
+			String UserId =(String)ses.getAttribute("Username");
+			logger.info(new Date() +"Inside ChangeAssignor.htm "+UserId);
+			try {
+		
+					int count=0;
+					
+					String projectid=req.getParameter("projectid");
+					String AssignorId=req.getParameter("AssignorId");
+					
+					String assignId = req.getParameter("assignId");
+					
+					String []assignIds = assignId.split(",");
+					
+					
+					for(int i=0;i<assignIds.length;i++) {
+					ActionAssign assign=new ActionAssign();
+					assign.setAssignor(Long.parseLong(AssignorId));
+					assign.setActionAssignId(Long.parseLong(assignIds[i]));
+					count = count+service.ActionAssignerEdit(assign);
+					}
+					
+					
+					if(count>0) {
+	    				redir.addAttribute("result","Action assignor changed successfully");
+	    			}else {
+	    				redir.addAttribute("result","Action assignor change unsuccessful");
+	    			}
+				
+				redir.addAttribute("projectid",projectid);
+				redir.addAttribute("assignorid",AssignorId);
+				redir.addAttribute("ActionPath",req.getParameter("ActionPath"));
+				return "redirect:/ActionReview.htm";
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+	
 		private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
 		    redir.addAttribute("resultfail", message);
 		    return "redirect:/"+redirURL;

@@ -1,0 +1,350 @@
+label{
+	font-weight: bold;
+  font-size: 13px;
+}
+.table thead tr,tbody tr{
+    font-size: 14px;
+}
+body{
+	background-color: #f2edfa;
+	overflow-x:hidden !important; 
+}
+h6{
+	text-decoration: none !important;
+}
+.multiselect-container>li>a>label {
+	padding: 4px 20px 3px 20px;
+}
+.cc-rockmenu {
+	color:fff;
+	padding:0px 5px;
+	font-family: 'Lato',sans-serif;
+}
+
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor:pointer;
+	width: 34px;
+	height: 30px;
+	text-align:left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+  
+}
+.cc-rockmenu .rolling:hover {
+	width: 120px;
+}
+.cc-rockmenu .rolling .rolling_icon {
+	float:left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.hover:hover{
+cursor: pointer;
+}
+
+.cc-rockmenu .rolling i.fa {
+    font-size: 20px;
+    padding: 6px;
+}
+.cc-rockmenu .rolling span {
+    display: block;
+    font-weight: bold;
+    padding: 2px 0;
+    font-size: 14px;
+    font-family: 'Muli',sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin:0;
+}
+
+.width{
+	width:210px !important;
+}
+.bootstrap-select {
+	width: 400px !important;
+}
+
+.customTooltip {
+  position: fixed; /* Center the modal */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  z-index: 9999;
+
+  width: 60%;  /* Adjust modal width */
+  max-width: 600px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-size: 1.3rem;
+  color: #333;
+  transition: opacity 0.2s ease;
+}
+.customTooltip .closeModal {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+}
+.customTooltip .closeModal:hover {
+  color: #333;
+}
+
+
+.chat-container {
+	max-width: 800px;
+	height: 600px;
+	margin: 30px auto;
+	background-color: #f8f9fa;
+	border: 1px solid #dee2e6;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.chat-body {
+	flex-grow: 1;
+	overflow-y: auto;
+}
+
+.chat-message {
+	margin: 10px 0;
+	padding: 12px 16px;
+	border-radius: 20px;
+	max-width: 75%;
+	word-break: break-word;
+	font-size: 14px;
+}
+
+.user-msg {
+	background-color: #ffffff;
+	border: 1px solid #dee2e6;
+	align-self: flex-start;
+}
+
+.admin-msg {
+	background-color: #d1e7dd;
+	border: 1px solid #badbcc;
+	align-self: flex-end;
+	margin-left: auto;
+}
+
+.chat-message strong {
+	display: block;
+	font-size: 13px;
+	color: #343a40;
+	margin-bottom: 4px;
+}
+
+.timestamp {
+	font-size: 11px;
+	color: #6c757d;
+	text-align: right;
+	margin-top: 6px;
+	font-weight: bold;
+}
+
+.chat-input {
+	position: sticky;
+	bottom: 0;
+	z-index: 10;
+}
+
+.sender-name {
+	font-weight: bold;
+	display: block;
+	color: #343a40;
+}
+
+/* .btn.submit {
+    width: 150px;
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-weight: 600;
+} */
+@media ( max-width : 768px) {
+	.chat-container {
+		height: auto;
+	}
+	.chat-message {
+		max-width: 90%;
+	}
+	.btn.submit {
+		width: 100%;
+	}
+}
+
+
+.width-0 { width: 0%; }
+.width-1 { width: 1%; }
+.width-2 { width: 2%; }
+.width-3 { width: 3%; }
+.width-4 { width: 4%; }
+.width-5 { width: 5%; }
+.width-6 { width: 6%; }
+.width-7 { width: 7%; }
+.width-8 { width: 8%; }
+.width-9 { width: 9%; }
+.width-10 { width: 10%; }
+.width-11 { width: 11%; }
+.width-12 { width: 12%; }
+.width-13 { width: 13%; }
+.width-14 { width: 14%; }
+.width-15 { width: 15%; }
+.width-16 { width: 16%; }
+.width-17 { width: 17%; }
+.width-18 { width: 18%; }
+.width-19 { width: 19%; }
+.width-20 { width: 20%; }
+.width-21 { width: 21%; }
+.width-22 { width: 22%; }
+.width-23 { width: 23%; }
+.width-24 { width: 24%; }
+.width-25 { width: 25%; }
+.width-26 { width: 26%; }
+.width-27 { width: 27%; }
+.width-28 { width: 28%; }
+.width-29 { width: 29%; }
+.width-30 { width: 30%; }
+.width-31 { width: 31%; }
+.width-32 { width: 32%; }
+.width-33 { width: 33%; }
+.width-34 { width: 34%; }
+.width-35 { width: 35%; }
+.width-36 { width: 36%; }
+.width-37 { width: 37%; }
+.width-38 { width: 38%; }
+.width-39 { width: 39%; }
+.width-40 { width: 40%; }
+.width-41 { width: 41%; }
+.width-42 { width: 42%; }
+.width-43 { width: 43%; }
+.width-44 { width: 44%; }
+.width-45 { width: 45%; }
+.width-46 { width: 46%; }
+.width-47 { width: 47%; }
+.width-48 { width: 48%; }
+.width-49 { width: 49%; }
+.width-50 { width: 50%; }
+.width-51 { width: 51%; }
+.width-52 { width: 52%; }
+.width-53 { width: 53%; }
+.width-54 { width: 54%; }
+.width-55 { width: 55%; }
+.width-56 { width: 56%; }
+.width-57 { width: 57%; }
+.width-58 { width: 58%; }
+.width-59 { width: 59%; }
+.width-60 { width: 60%; }
+.width-61 { width: 61%; }
+.width-62 { width: 62%; }
+.width-63 { width: 63%; }
+.width-64 { width: 64%; }
+.width-65 { width: 65%; }
+.width-66 { width: 66%; }
+.width-67 { width: 67%; }
+.width-68 { width: 68%; }
+.width-69 { width: 69%; }
+.width-70 { width: 70%; }
+.width-71 { width: 71%; }
+.width-72 { width: 72%; }
+.width-73 { width: 73%; }
+.width-74 { width: 74%; }
+.width-75 { width: 75%; }
+.width-76 { width: 76%; }
+.width-77 { width: 77%; }
+.width-78 { width: 78%; }
+.width-79 { width: 79%; }
+.width-80 { width: 80%; }
+.width-81 { width: 81%; }
+.width-82 { width: 82%; }
+.width-83 { width: 83%; }
+.width-84 { width: 84%; }
+.width-85 { width: 85%; }
+.width-86 { width: 86%; }
+.width-87 { width: 87%; }
+.width-88 { width: 88%; }
+.width-89 { width: 89%; }
+.width-90 { width: 90%; }
+.width-91 { width: 91%; }
+.width-92 { width: 92%; }
+.width-93 { width: 93%; }
+.width-94 { width: 94%; }
+.width-95 { width: 95%; }
+.width-96 { width: 96%; }
+.width-97 { width: 97%; }
+.width-98 { width: 98%; }
+.width-99 { width: 99%; }
+.width-100 { width: 100%; }
+
+
+.colorLabel{
+	color: #145374;
+}
+.textRight{
+	text-align: right;
+}
+
+.details{
+	overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;
+}
+.progressdiv{
+	background-color:#cdd0cb !important;height: 1.4rem !important;
+}
+
+.NoProgress{
+	width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;
+}
+
+.heightClass{
+	height: 9rem;
+}
+
+.tdFlex{
+	display: flex;justify-content: space-around;
+}
+
+.spanPromary{
+	color:blue ; font-weight: bold
+}
+
+.milestoneFlow{
+	text-align: center; width: 140px; height: 30px;color: green;
+}
+.row1{
+	text-align: center; padding-top: 10px; padding-bottom: 15px;
+}
+
+.borderSpacing{
+	border-spacing: 0 20px;
+}
+.trupHead{
+	background:#c4ced3 !important; width: 230px !important; height: 20px !important;
+}
+.trupFooter{
+	width: 30px; height: 20px;
+}
+.trupBody{
+	width: 10px; height: 20px;
+}
+
+.modalContentWidth{
+	width: 200%; margin-left: -50%;
+}

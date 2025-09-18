@@ -1,0 +1,30 @@
+.mt-n8px{
+	margin-top: -8px;
+}
+
+.ml-10rem{
+	margin-left: 10rem;
+}
+
+.fs-17px {
+	font-size: 17px;
+}
+
+.mb-0rem{
+	margin-bottom: .0rem;
+}
+
+.tdWidthStyle{
+	max-width: 300px; 
+	padding-right: 50px;
+}
+
+.colorWhite{
+	color : white;
+}
+
+.minutesViewBtnStyle{
+	background-color:#0e49b5;
+	color:white ;
+	font-size:12px;
+}

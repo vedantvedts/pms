@@ -9,82 +9,11 @@
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
- 
+   <spring:url value="/resources/css/fracasModule/fracasToReviewList.css" var="fracasToReviewList" />     
+<link href="${fracasToReviewList}" rel="stylesheet" />
 
 <title>Assignee List</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
 
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-a:hover {
-	color: white;
-}
-
-</style>
 </head>
  
 <body>
@@ -140,8 +69,8 @@ a:hover {
 															<th>FRACAS Item</th>
 															<th class="width-110px">PDC</th>
 															<th class="width-110px">Assigned Date</th>								
-														 	<th style="">Assigner</th>
-														 	<th style="">Progress</th>
+														 	<th >Assigner</th>
+														 	<th >Progress</th>
 														 	<th>Remarks</th>
 														 	
 														 	<th class="width-140px">Action</th>
@@ -158,16 +87,16 @@ a:hover {
 															<td><%=obj[3]!=null?sdf.format(obj[3]):" - " %></td>
 															<td><%=obj[6]!=null?sdf.format(obj[6]):" - " %></td>
 															<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%>, <%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%></td>
-															<td style="width:15%;">									
+															<td class="progresstd" >									
 																	<%if(obj[13]!=null){ %>
-															           <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[13]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															           <div class="progress progress-div" >
+																            <div class="progress-bar progress-bar-striped width<%=obj[13]%>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																	            <%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%>
 																	        </div> 
 																	   </div> 
 																	<%}else{ %>
-																	   <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																		   <div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																	   <div class="progress progress-Zero-div" >
+																		   <div class="progress-bar progress-bar-Zero" role="progressbar" >
 																	             Not Yet Started .
 																	   		</div>
 																	   </div> <%} %>
@@ -177,7 +106,7 @@ a:hover {
 																													
 															<td class="left width">		
 																
-															<form name="myForm1" id="myForm1" action="FracasToReviewDetails.htm" method="POST" style="display: inline">
+															<form name="myForm1" id="myForm1" action="FracasToReviewDetails.htm" method="POST"  class="detailsForm">
 																	<button class="editable-click" name="sub" value="Details" 	>
 																		<div class="cc-rockmenu">
 																			<div class="rolling">
@@ -201,7 +130,7 @@ a:hover {
 														</tr>
 												<% count++; } }else{%>
 												<tr>
-													<td colspan="8" style="text-align: center">No List Found</td>
+													<td colspan="8" class="no-List-tD" >No List Found</td>
 												</tr>
 												<%} %>
 												</tbody>

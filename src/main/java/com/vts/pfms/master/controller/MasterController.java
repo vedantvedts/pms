@@ -9,11 +9,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -154,8 +156,13 @@ public class MasterController {
 		{	 
 			List<Object[]> DisDesc = null;
 			String empno=req.getParameter("empno");	
+				if(empno.startsWith("<") ) {
+					return String.valueOf(-1);
+				}
 			DisDesc= service.extEmpNoCheckAjax(empno);
 			len=DisDesc.size();
+			
+			
 		}
 		catch (Exception e) {
 			e.printStackTrace(); 
@@ -1177,6 +1184,59 @@ public class MasterController {
 		return "master/FeedBack";
 
 	}
+	
+	
+	
+	
+private boolean isValidFileType(MultipartFile file) {
+		
+		
+		
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
+		
+	    if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+
+	    
+	    
+	  
+	    if (contentType == null) {
+	        return false;
+	    }
+	    
+	 // Extract extension in lowercase
+	    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+	    
+	 // Check mapping between MIME type and extension
+	    switch (extension) {
+	        case "pdf":
+	            return contentType.equalsIgnoreCase("application/pdf");
+	        case "jpeg":
+	        case "jpg":
+	            return contentType.equalsIgnoreCase("image/jpeg");
+	        case "png":
+	            return contentType.equalsIgnoreCase("image/png");
+	        default:
+	            return false;
+	    }
+
+//	    // Allow only images and PDF
+//	 // Allowed MIME types
+//	    boolean validMime = contentType.equalsIgnoreCase("application/pdf")
+//	            || contentType.equalsIgnoreCase("image/jpeg")
+//	            || contentType.equalsIgnoreCase("image/png");
+//
+//	    // Allowed extensions
+//	    boolean validExtension = extension.equals("pdf")
+//	            || extension.equals("jpeg")
+//	            || extension.equals("jpg")
+//	            || extension.equals("png");
+//
+//	    return validMime && validExtension;
+	}
+
 
 	@RequestMapping(value = "FeedBackAdd.htm", method = RequestMethod.POST)
 	public String FeedBackAdd(Model model,HttpServletRequest req, HttpSession ses,RedirectAttributes redir,
@@ -1189,9 +1249,26 @@ public class MasterController {
 			Long EmpId = (Long) ses.getAttribute("EmpId");
 			String Feedback=req.getParameter("Feedback");
 			String feedbacktype=req.getParameter("feedbacktype");
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(FileAttach) ) {
+
+	            return redirectWithError(redir, "FeedBack.htm",
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+			
+			
+			
+			
+			
+			
+			
 			if(!FileAttach.isEmpty()){
 
 			}
+			
+			
+			
 			if(Feedback ==null || Feedback.trim().equalsIgnoreCase("")) {			
 				redir.addAttribute("resultfail", "Feedback Field is Empty, Please Enter Feedback");
 				return "redirect:/FeedBack.htm";
@@ -1200,6 +1277,11 @@ public class MasterController {
 				redir.addAttribute("resultfail", "Please Select the FeedbackType");
 				return "redirect:/FeedBack.htm";
 			}
+			
+			
+			
+			
+			
 			PfmsFeedback feedback=new PfmsFeedback();
 			feedback.setEmpId(EmpId);
 			feedback.setStatus("O");
@@ -1665,6 +1747,11 @@ public class MasterController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() + "Inside IndustryPartnerSubmit.htm " + UserId);
 		try {
+			
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ProgrammeName"))) {
+				return  redirectWithError(redir,"ProgrammeMaster.htm","ProgrammeName should not contain HTML elements !");
+			}
 			String action = req.getParameter("Action");
 			String industryPartnerId = req.getParameter("industryPartnerId");
 			industryPartnerId = industryPartnerId!=null?industryPartnerId : req.getParameter("industryPartnerId2");
@@ -1902,7 +1989,9 @@ public class MasterController {
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside HolidayAddSubmit.htm "+UserId);		
 			try {
-				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("HoliName"))) {
+					return  redirectWithError(redir,"HolidayList.htm","Holiday Name should not contain HTML elements !");
+				}
 				HolidayMaster holiday= new HolidayMaster();
 
 				holiday.setHolidayName(req.getParameter("HoliName"));
@@ -1931,8 +2020,11 @@ public class MasterController {
 		@RequestMapping(value = "HolidayEditSumit.htm", method = {RequestMethod.GET,RequestMethod.POST})
 		public String HolidayEditSumit(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir) throws Exception {
 			String UserId = (String) ses.getAttribute("Username");
-			logger.info(new Date() +"Inside HolidayAddSubmit.htm "+UserId);		
+			logger.info(new Date() +"Inside HolidayEditSubmit.htm "+UserId);		
 			try {
+				if(InputValidator.isContainsHTMLTags(req.getParameter("HoliName"))) {
+					return  redirectWithError(redir,"HolidayList.htm","Holiday Name should not contain HTML elements !");
+				}
 				HolidayMaster holiday= new HolidayMaster();
 				
 				String HolidayId=req.getParameter("HolidayId");
@@ -2138,6 +2230,18 @@ public class MasterController {
 		}
 	}
 	
+	  public static boolean hasHtmlTags(HttpServletRequest req) {
+	        Enumeration<String> parameterNames = req.getParameterNames();
+	        while (parameterNames.hasMoreElements()) {
+	            String paramName = parameterNames.nextElement();
+	            String paramValue = req.getParameter(paramName);
+	            if (paramValue != null && paramValue.trim().matches(".*<[^>]+>.*")) {
+	                return true;
+	            }
+	        }
+	        return false;
+	    }
+	
 	@RequestMapping(value = "industryPartnerAdd.htm" , method = {RequestMethod.GET})
 	public @ResponseBody String industryPartnerAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
@@ -2145,6 +2249,10 @@ public class MasterController {
 		Gson json = new Gson();
 		IndustryPartner partner1 = new IndustryPartner();
 		try {
+			
+			 if (hasHtmlTags(req)) {
+		            return json.toJson(null); 
+		        }
 			
 			String industryPartnerName2 = req.getParameter("industryPartnerName2");
 			String industryPartnerAddress2 = req.getParameter("industryPartnerAddress2");
@@ -2179,6 +2287,10 @@ public class MasterController {
 		Gson json = new Gson();
 		try {
 			
+			 if (hasHtmlTags(req)) {
+		            return json.toJson(null); 
+		        }
+			
 			String repName = req.getParameter("repName");
 			String repDesignation = req.getParameter("repDesignation");
 			String repEmail = req.getParameter("repEmail");
@@ -2211,60 +2323,69 @@ public class MasterController {
 	}
 		
 	
-	@RequestMapping (value="OfficerExternalAjaxAdd.htm", method=RequestMethod.GET)
-	public @ResponseBody String  OfficerExternalAjaxAdd (HttpSession ses, HttpServletRequest  req, HttpServletResponse res, RedirectAttributes redir) throws Exception
-	{
-		String UserId= (String)ses.getAttribute("Username");
-		String labcode = (String)ses.getAttribute("labcode");
-		logger.info(new Date() +" Inside OfficerExternalAjaxAdd.htm "+UserId);
-		Gson json = new Gson();
-		try {
-			String EmpNo=req.getParameter("EmpNo");
-			
-			OfficerMasterAdd officermasteradd= new OfficerMasterAdd();
-			officermasteradd.setLabId(req.getParameter("labId"));
-			officermasteradd.setEmpNo(req.getParameter("EmpNo").toUpperCase());
-			String name=req.getParameter("EmpName");			
-			String words[]=name.split("\\s");  
-			String capitalizeWord="";  
-			for(String w:words){  
-				String first=w.substring(0,1);  
-				String afterfirst=w.substring(1);  
-				capitalizeWord+=first.toUpperCase()+afterfirst+" ";  
-			}	
-			name = name.substring(0,1).toUpperCase() + name.substring(1);
-			officermasteradd.setTitle(req.getParameter("title"));
-			officermasteradd.setSalutation(req.getParameter("salutation"));
-			officermasteradd.setEmpName(capitalizeWord);
-			officermasteradd.setDesignation(req.getParameter("Designation"));
-			officermasteradd.setExtNo("-");
-			officermasteradd.setEmail("-");
-			officermasteradd.setDivision("0");
-			officermasteradd.setDronaEmail("-");
-			officermasteradd.setInternalEmail("-");
-			officermasteradd.setMobileNo("0123456789");
-			officermasteradd.setSrNo("0");
-			officermasteradd.setLabCode(labcode);
-			long count=0;
-			
-			try {
-				count= service.OfficerExtInsert(officermasteradd, UserId);	
-				
-				return json.toJson(count);
-			}
-			catch(Exception e){
-				e.printStackTrace();
-				return json.toJson(0);
-			}
-			
-			
-		}
-		catch (Exception e){			
-			e.printStackTrace();
-			logger.error(new Date() +" Inside OfficerExternalAjaxAdd.htm "+UserId , e);
-			return json.toJson(0);
-		}
-		
+	@RequestMapping(value = "OfficerExternalAjaxAdd.htm", method = RequestMethod.GET)
+	public @ResponseBody String OfficerExternalAjaxAdd(HttpSession ses, HttpServletRequest req,
+	                                                  HttpServletResponse res, RedirectAttributes redir) throws Exception {
+	    String UserId = (String) ses.getAttribute("Username");
+	    String labcode = (String) ses.getAttribute("labcode");
+	    logger.info(new Date() + " Inside OfficerExternalAjaxAdd.htm " + UserId);
+	    Gson json = new Gson();
+
+	    try {
+	        // ✅ Step 1: Check all parameters for HTML tags
+	        Enumeration<String> parameterNames = req.getParameterNames();
+	        while (parameterNames.hasMoreElements()) {
+	            String paramName = parameterNames.nextElement();
+	            String paramValue = req.getParameter(paramName).trim();
+	            System.out.println(paramName+"-----");
+	            if (paramValue != null && paramValue.matches(".*<[^>]+>.*")) {
+	                // Contains HTML tag → return -1
+	                return json.toJson(-1);
+	            }
+	        }
+
+	        // ✅ Step 2: Proceed if no HTML tags
+	        String EmpNo = req.getParameter("EmpNo");
+
+	        OfficerMasterAdd officermasteradd = new OfficerMasterAdd();
+	        officermasteradd.setLabId(req.getParameter("labId"));
+	        officermasteradd.setEmpNo(EmpNo.toUpperCase());
+
+	        String name = req.getParameter("EmpName");
+	        String words[] = name.split("\\s");
+	        String capitalizeWord = "";
+	        for (String w : words) {
+	            String first = w.substring(0, 1);
+	            String afterfirst = w.substring(1);
+	            capitalizeWord += first.toUpperCase() + afterfirst + " ";
+	        }
+
+	        officermasteradd.setTitle(req.getParameter("title"));
+	        officermasteradd.setSalutation(req.getParameter("salutation"));
+	        officermasteradd.setEmpName(capitalizeWord.trim());
+	        officermasteradd.setDesignation(req.getParameter("Designation"));
+	        officermasteradd.setExtNo("-");
+	        officermasteradd.setEmail("-");
+	        officermasteradd.setDivision("0");
+	        officermasteradd.setDronaEmail("-");
+	        officermasteradd.setInternalEmail("-");
+	        officermasteradd.setMobileNo("0123456789");
+	        officermasteradd.setSrNo("0");
+	        officermasteradd.setLabCode(labcode);
+
+	        try {
+	            long count = service.OfficerExtInsert(officermasteradd, UserId);
+	            return json.toJson(count);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            return json.toJson(0);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        logger.error(new Date() + " Inside OfficerExternalAjaxAdd.htm " + UserId, e);
+	        return json.toJson(0);
+	    }
 	}
 	
 	/* **************************** Programme Master - Naveen R  - 16/07/2025 **************************************** */
@@ -2307,6 +2428,14 @@ public class MasterController {
 		String UserId = (String) session.getAttribute("Username");
 		logger.info(new Date() + "Inside ProgrammeMasterSubmit.htm" + UserId);
 		try {
+			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ProgrammeCode"))) {
+				return  redirectWithError(redir,"ProgrammeMaster.htm","ProgrammeCode should not contain HTML elements !");
+			}
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ProgrammeName"))) {
+				return  redirectWithError(redir,"ProgrammeMaster.htm","ProgrammeName should not contain HTML elements !");
+			}
+			
 			String action = req.getParameter("action");	
 			String programmeMasterId = req.getParameter("programmeMasterId");
 			String programmedirector = req.getParameter("programmedirector");

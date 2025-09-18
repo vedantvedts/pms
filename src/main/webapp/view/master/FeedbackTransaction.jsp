@@ -3,101 +3,17 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
-<style>
-
-.chat-container {
-    max-width: 800px;
-    height: 600px;
-    margin: 30px auto;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.chat-body {
-    flex-grow: 1;
-    overflow-y: auto;
-}
-
-.chat-message {
-    margin: 10px 0;
-    padding: 12px 16px;
-    border-radius: 20px;
-    max-width: 75%;
-    word-break: break-word;
-    font-size: 14px;
-}
-
-.user-msg {
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
-    align-self: flex-start;
-}
-
-.admin-msg {
-    background-color: #d1e7dd;
-    border: 1px solid #badbcc;
-    align-self: flex-end;
-    margin-left: auto;
-}
-
-.chat-message strong {
-    display: block;
-    font-size: 13px;
-    color: #343a40;
-    margin-bottom: 4px;
-}
-
-.timestamp {
-    font-size: 11px;
-    color: #6c757d;
-    text-align: right;
-    margin-top: 6px;
-}
-
-.chat-input {
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
-}
-
-.sender-name {
-    font-weight: bold;
-    display: block;
-    color: #343a40;
-}
+<spring:url value="/resources/css/master/feedBackTransaction.css" var="feedBackTransaction" />     
+<link href="${feedBackTransaction}" rel="stylesheet" />
 
 
-/* .btn.submit {
-    width: 150px;
-    border-radius: 25px;
-    padding: 8px 20px;
-    font-weight: 600;
-} */
-
-@media (max-width: 768px) {
-    .chat-container {
-        height: auto;
-    }
-
-    .chat-message {
-        max-width: 90%;
-    }
-
-    .btn.submit {
-        width: 100%;
-    }
-}
-</style>
 
 </head>
 <body>
@@ -136,7 +52,7 @@
 							<h4>Feedback Transaction</h4>
 						</div>
 						<div class="col-md-1 right">
-		 					<a class="btn btn-info btn-sm shadow-nohover back" style="position:relative;" href="FeedBack.htm">Back</a>
+		 					<a class="btn btn-info btn-sm shadow-nohover back backbtn"  href="FeedBack.htm">Back</a>
 	 					</div>
 					</div>
 				</div>

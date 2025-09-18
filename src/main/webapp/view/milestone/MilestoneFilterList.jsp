@@ -8,280 +8,24 @@
 <meta charset="ISO-8859-1">
 <link rel="shortcut icon" type="image/png" href="view/images/drdologo.png">
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+  <spring:url value="/resources/css/milestone/milestoneFilterList.css" var="milestoneFilterList" />     
+<link href="${milestoneFilterList}" rel="stylesheet" />
  <style type="text/css">
  
- p{
-  text-align: justify;
-  text-justify: inter-word;
-}
-                           
- th
- {
- 	border: 1px solid black;
- 	text-align: center;
- 	padding: 5px;
-	overflow-wrap: break-word;
- }
  
- td
- {
- 	border: 1px solid black;
- 	text-align: left;
- 	padding: 5px;
- 	overflow-wrap: break-word;
- }
- 
-  }
- .textcenter{
- 	
- 	text-align: center;
- }
- .border
- {
- 	border: 1px solid black;
- }
- .textleft{
- 	text-align: left;
- }
- 
- .containers {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.anychart-credits {
-   display: none;
-}
-
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-summary[role=button] {
-  background-color: white;
-  color: black;
-  border: 1px solid black ;
-  border-radius:5px;
-  padding: 0.5rem;
-  cursor: pointer;
-  
-}
-summary[role=button]:hover
- {
-color: white;
-border-radius:15px;
-background-color: #4a47a3;
-
-}
- summary[role=button]:focus
-{
-color: white;
-border-radius:5px;
-background-color: #4a47a3;
-border: 0px ;
-
-}
-summary::marker{
-	
-}
-details { 
-  margin-bottom: 5px;  
-}
-details  .content {
-background-color:white;
-padding: 0 1rem ;
-align: center;
-border: 1px solid black;
-}
-
-}
-
-.anchorlink{
-	cursor: pointer;
-	color: #C84B31;
-}
-.anchorlink:hover {
-    text-decoration: underline;
-}
-
 </style>
 
 
 <!-- --------------  tree   ------------------- -->
 <style>
-ul, #myUL {
-  list-style-type: none;
-}
 
-#myUL {
-  margin: 0;
-  padding: 0;
-}
-
-.caret {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-.caret::before {
-  content: "  \25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-down::before {
-  content: "\25B6  ";
-  -ms-transform: rotate(90deg); /* IE 9 */
-  -webkit-transform: rotate(90deg); /* Safari */'
-  transform: rotate(90deg);  
-}
-
-.caret-last {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-
-.caret-last::before {
-  content: "\25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-
-.nested {
-  display: none;
-}
-
-.active {
-  display: block;
-}
 </style>
 
 <!-- ---------------- tree ----------------- -->
 <!-- -------------- model  tree   ------------------- -->
 <style>
 
-.caret-1 {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-.caret-last-1 {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-
-.caret-last-1::before {
-  content: "\25B7" ;
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-1::before {
-  content: "\25B7" ;
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-down-1::before {
-  content: "\25B6";
-  -ms-transform: rotate(90deg); /* IE 9 */
-  -webkit-transform: rotate(90deg); /* Safari */'
-  transform: rotate(90deg);  
-}
-
-.nested-1 {
-  display: none;
-}
-
-.active-1 {
-  display: block;
-}
-
- .completed{
-	color: green;
-	font-weight: 700;
-}
-
-.briefactive{
-	color: blue;
-	font-weight: 700;
-}
-
-.inprogress{
-	color: #F66B0E;
-	font-weight: 700;
-}
-
-.assigned{
-	color: brown;
-	font-weight: 700;
-}
-
-.notyet{
-	color: purple;
-	font-weight: 700;
-}
-.notassign{
-	color:#AB0072;
-	font-weight: 700;
-}
-.ongoing{
-	color: #F66B0E;
-	font-weight: 700;
-}
-
-.completed{
-	color: green;
-	font-weight: 700;
-}
-
-.delay{
-	color: maroon;
-	font-weight: 700;
-}
-
-.completeddelay{
-	color:#BABD42;
-	font-weight: 700;
-}
-
-.inactive{
-	color: red;
-	font-weight: 700;
-}
-
-.select2-container{
-	float:right !important;
-	margin-top: 5px;
-	
-}
-
-.modal-xl{
-	max-width: 1400px;
-}
 </style>
 
 
@@ -305,7 +49,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 <div class="container-fluid">
 <div class="row">
 			<div class="col-md-12">
-				<div class="card shadow-nohover" style="margin-top: -0px;">
+				<div class="card shadow-nohover">
 				<div class="row card-header">
 			     <div class="col-md-9">
 					 <h5><%if(ProjectId!=null){
@@ -317,7 +61,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 					</div>
 					<div class="col-md-3">
 					<form method="post" action="FilterMilestone.htm" id="projectchange">
-											<select class="form-control items" name="milestoneactivity"  required="required" style="width:300px;" data-live-search="true" data-container="body" onchange="this.form.submit()">
+											<select class="form-control items width-300" name="milestoneactivity"  required="required"  data-live-search="true" data-container="body" onchange="this.form.submit()">
 												<option selected value="A" <%if(MilestoneActivity!=null && "A".equalsIgnoreCase(MilestoneActivity)){%> selected="selected" <%}%>>All</option>
 												<%if(milestoneactivitystatus!=null && milestoneactivitystatus.size()>0){ for(Object[] obj : milestoneactivitystatus){%>
 													<option value=<%=obj[0]%> <%if(MilestoneActivity!=null && obj[0].toString().equalsIgnoreCase(MilestoneActivity)){%> selected="selected" <%}%>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %> (<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %>)</option>
@@ -338,14 +82,14 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 
 														<tr>
 															<th>Expand</th>
-															<th style="text-align: left;max-width: 15px;">Mil-No</th>
+															<th class="td1">Mil-No</th>
 														<!-- 	<th style="text-align: left;">Project Name</th> -->
-															<th style="text-align: left;max-width: 200px;">Milestone Activity</th>
+															<th class="td2">Milestone Activity</th>
 															<th >Start Date</th>
 															<th >End Date</th>	
-															<th  style="text-align: left;max-width: 200px;">First OIC </th>
-															<th  style="text-align: center;max-width: 50px;">Weightage</th>	
-															<th  style="text-align: center;max-width: 80px;">Progress</th>												
+															<th  class="td3">First OIC </th>
+															<th  class="td4">Weightage</th>	
+															<th  class="td5" >Progress</th>												
 
 														</tr>
 													</thead>
@@ -359,24 +103,24 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															for(Object[] obj: MilestoneList){ 
 																 %>
 														<tr class="milestonemodalwhole" id="milestonemodal<%=obj[5] %>"  >
-															<td style="width:2% !important; " class="center">
+															<td  class="center width-2">
 																<span class="clickable collapsed" data-toggle="collapse" id="row<%=count %>" data-target=".row<%=count %>" onclick="ChangeButton('<%=count %>')">
 																	<button class="btn btn-sm btn-danger" id="btn<%=count %>"  >
 																		<i class="fa fa-minus"  id="fa<%=count%>"></i>
 																	 </button>
 																</span>
 															</td>
-															<td style="text-align: left;width: 7%;"> Mil-<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - "%></td>
+															<td class="width-7 text-left"> Mil-<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - "%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - " %></td>
+															<td class="tdDetails"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - " %></td>
 															
-															<td  style="width:8% !important; "><%=obj[2]!=null?sdf.format(obj[2]):" - "%></td>
-															<td style="width:8% !important; "><%=obj[3]!=null?sdf.format(obj[3]):" - "%></td>
-															<td  style="width:15% !important; "><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):" - "%></td>
-															<td  style="width:9% !important; " align="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()):" - "%></td>	
+															<td  class="width-8" ><%=obj[2]!=null?sdf.format(obj[2]):" - "%></td>
+															<td class="width-8" ><%=obj[3]!=null?sdf.format(obj[3]):" - "%></td>
+															<td  class="width-15" ><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):" - "%></td>
+															<td  class="width-9"  align="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()):" - "%></td>	
 															<td>
 															<%if(!obj[12].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress class3">
 															<div class="progress-bar progress-bar-striped
 															<%if(obj[14].toString().equalsIgnoreCase("2")){ %>
 															 bg-info
@@ -385,14 +129,14 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															<%} else if(obj[14].toString().equalsIgnoreCase("4")){ %>
 															  bg-danger
 															<%} else if(obj[14].toString().equalsIgnoreCase("5")){ %>
-															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=obj[12] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															  bg-warning 
+															<%}  %> width-<%=obj[12] %> %>
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()):" - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar noProgress" role="progressbar"   >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -400,7 +144,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 																
 		
 														</tr>
-														 <tr class=" collapse  row<%=count %> show" style="font-weight: bold;">
+														 <tr class=" collapse  row<%=count %> show font-weight-bold" >
                                                          <td></td>
                                                          <td>Sub</td>
                                                          <td>Activity</td>
@@ -419,12 +163,12 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 	                                                            if(MilestoneActivity==null || "A".equalsIgnoreCase(MilestoneActivity) || objA[9].toString().equalsIgnoreCase(MilestoneActivity)) {
 																%>
 														<tr class="  collapse row<%=count %> show">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> A-<%=countA%></td>
+															<td  class="center width-2"> </td>
+															<td class="width-5 text-left"> A-<%=countA%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objA[4] %></td>
+															<td class="tdDetails"><%=objA[4] %></td>
 															<td class="width-30px"><%=objA[2]!=null?sdf.format(objA[2]):" - "%></td>
-															<td style="width:8% !important; "><%=objA[3]!=null?sdf.format(objA[3]):" - "%></td>
+															<td class="width-8" ><%=objA[3]!=null?sdf.format(objA[3]):" - "%></td>
 															<td class="width-30px"><%if(objA[9].toString().equalsIgnoreCase("3")||objA[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objA[7]!=null){ %>   <%=sdf.format(objA[7]) %> <%}else{ %><%=objA[8]!=null?StringEscapeUtils.escapeHtml4(objA[8].toString()):" - " %> <%} %>
 														         <%}else{ %>
@@ -433,7 +177,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															 <td align="center"><%=objA[6]!=null?StringEscapeUtils.escapeHtml4(objA[6].toString()):" - " %></td>
 															<td>
 															<%if(!objA[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress class3" >
 															<div class="progress-bar progress-bar-striped
 															<%if(objA[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-info
@@ -443,13 +187,13 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															  bg-danger
 															<%} else if(objA[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=objA[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%}  %> width-<%=objA[5] %>
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objA[5]!=null?StringEscapeUtils.escapeHtml4(objA[5].toString()):" - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar noProgress" role="progressbar"  >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -464,13 +208,13 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 	                                                            if(MilestoneActivity==null || "A".equalsIgnoreCase(MilestoneActivity) || objB[9].toString().equalsIgnoreCase(MilestoneActivity)) {
 																%>
 														<tr class=" collapse row<%=count %> show">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
+															<td  class="center width-2"> </td>
+															<td class="width-5 text-left"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objB[4] %></td>
+															<td class="tdDetails"><%=objB[4] %></td>
 															
 															<td class="width-30px"><%=objB[2]!=null?sdf.format(objB[2]):" - "%></td>
-															<td style="width:8% !important; "><%=objB[3]!=null?sdf.format(objB[3]):" - "%></td>
+															<td class="width-8"><%=objB[3]!=null?sdf.format(objB[3]):" - "%></td>
 															
 															<td class="width-30px"><%if(objB[9].toString().equalsIgnoreCase("3")||objB[9].toString().equalsIgnoreCase("5")){ %>
 														      <%if(objB[7]!=null){ %>   <%=sdf.format(objB[7]) %> <%}else{ %><%=objB[8]!=null?StringEscapeUtils.escapeHtml4(objB[8].toString()):" - " %> <%} %>
@@ -480,7 +224,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															  <td align="center"><%=objB[6] %></td>
 															<td>
 															<%if(!objB[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress class3" >
 															<div class="progress-bar progress-bar-striped
 															<%if(objB[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-info
@@ -490,13 +234,13 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															  bg-danger
 															<%} else if(objB[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=objB[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%}  %> width-<%=objB[5]  %>
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objB[5] %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar noProgress" role="progressbar" >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -513,13 +257,13 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 													         if(MilestoneActivity==null || "A".equalsIgnoreCase(MilestoneActivity) || objC[9].toString().equalsIgnoreCase(MilestoneActivity)) {
 																%>
 														<tr class=" collapse  row<%=count %> show">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
+															<td class="center width-2"> </td>
+															<td class="width-5 text-left"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objC[4] %></td>
+															<td class="tdDetails"><%=objC[4] %></td>
 															
 															<td class="width-30px">objC[2]!=null?<%=sdf.format(objC[2])%>:" - "</td>
-															<td style="width:8% !important; "><%=objC[3]!=null?sdf.format(objC[3]):" - "%></td>
+															<td class="width-8"><%=objC[3]!=null?sdf.format(objC[3]):" - "%></td>
 															
 															<td class="width-30px"><%if(objC[9].toString().equalsIgnoreCase("3")||objC[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objC[7]!=null){ %>   <%=sdf.format(objC[7]) %> <%}else{ %><%=objC[8]!=null?StringEscapeUtils.escapeHtml4(objC[8].toString()):" - " %> <%} %>
@@ -529,7 +273,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															  <td align="center"><%=objC[6]!=null?StringEscapeUtils.escapeHtml4(objC[6].toString()):" - " %></td>
 															<td>
 															<%if(!objC[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress class3" >
 															<div class="progress-bar progress-bar-striped
 															<%if(objC[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-info
@@ -539,13 +283,13 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															  bg-danger
 															<%} else if(objC[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=objC[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%}  %> width-<%=objC[5] %>
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objC[5] %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar noProgress" role="progressbar"  >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -561,13 +305,13 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 	                                                            if(MilestoneActivity==null || "A".equalsIgnoreCase(MilestoneActivity) || objD[9].toString().equalsIgnoreCase(MilestoneActivity)) {
 																%>
 														<tr class=" collapse row<%=count %> show">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
+															<td  class="center width-2"> </td>
+															<td class="width-5 text-left"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objD[4] %></td>
+															<td class="tdDetails"><%=objD[4] %></td>
 															
 															<td class="width-30px"><%=objD[4]!=null?sdf.format(objB[2]):" - "%></td>
-															<td style="width:8% !important; "><%=objD[4]!=null?sdf.format(objB[3]):" - "%></td>
+															<td class="width-8"><%=objD[4]!=null?sdf.format(objB[3]):" - "%></td>
 															
 															<td class="width-30px"><%if(objD[9].toString().equalsIgnoreCase("3")||objD[9].toString().equalsIgnoreCase("5")){ %>
 														      <%if(objD[7]!=null){ %>   <%=sdf.format(objD[7]) %> <%}else{ %><%=objD[8]!=null?StringEscapeUtils.escapeHtml4(objD[8].toString()):" - " %> <%} %>
@@ -577,7 +321,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															  <td align="center"><%=objD[6]!=null?StringEscapeUtils.escapeHtml4(objD[6].toString()):" - " %></td>
 															<td>
 															<%if(!objD[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress class3" >
 															<div class="progress-bar progress-bar-striped
 															<%if(objD[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-info
@@ -587,13 +331,13 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															  bg-danger
 															<%} else if(objD[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=objD[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%}  %> width-<%=objD[5] %>
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objD[5] %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar noProgress" role="progressbar"   >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -608,13 +352,13 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 																 if(MilestoneActivity==null || "A".equalsIgnoreCase(MilestoneActivity) || objE[9].toString().equalsIgnoreCase(MilestoneActivity)) {
 																%>
 														<tr class=" collapse row<%=count %> show">
-															<td style="width:2% !important; " class="center"> </td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
+															<td  class="center width-2"> </td>
+															<td class="text-left width-5"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;"><%=objE[4] %></td>
+															<td class="tdDetails"><%=objE[4] %></td>
 															
 															<td class="width-30px"><%=objE[2]!=null?sdf.format(objE[2]):" - "%></td>
-															<td style="width:8% !important; "><%=objE[3]!=null?sdf.format(objE[3]):" - "%></td>
+															<td class="width-8"><%=objE[3]!=null?sdf.format(objE[3]):" - "%></td>
 															
 															<td class="width-30px"><%if(objE[9].toString().equalsIgnoreCase("3")||objE[9].toString().equalsIgnoreCase("5")){ %>
 														     <%if(objE[7]!=null){ %>   <%=sdf.format(objE[7]) %> <%}else{ %><%=objE[8]!=null?StringEscapeUtils.escapeHtml4(objE[8].toString()):" - " %> <%} %>
@@ -624,7 +368,7 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															  <td align="center"><%=objE[6]!=null?StringEscapeUtils.escapeHtml4(objE[6].toString()):" - " %></td>
 															<td>
 															<%if(!objE[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress class3" >
 															<div class="progress-bar progress-bar-striped
 															<%if(objC[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-info
@@ -634,13 +378,13 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 															  bg-danger
 															<%} else if(objE[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=objE[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%}  %> width-<%=objE[5] %>
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objE[5] %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress class3" >
+															<div class="progress-bar noProgress" role="progressbar" >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -655,12 +399,12 @@ String MilestoneActivity = (String)request.getAttribute("MilestoneActivity");
 												<% countB++;} }%>
 												<% countA++;} }else{%>
 												<tr class="collapse row<%=count %>">
-													<td colspan="9" style="text-align: center" class="center">No Sub List Found</td>
+													<td colspan="9"  class="center text-center">No Sub List Found</td>
 												</tr>
 												<%} %>
 												<% count++; }  }else{%>
 												<tr >
-													<td colspan="9" style="text-align: center" class="center">No List Found</td>
+													<td colspan="9"  class="center text-center">No List Found</td>
 												</tr>
 												<%} %>
 												</tbody>

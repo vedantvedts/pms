@@ -1,0 +1,60 @@
+@charset "ISO-8859-1";
+
+label{
+font-weight: bold;
+  font-size: 13px;
+}
+body{
+background-color: #f2edfa;
+overflow-x:hidden !important; 
+}
+h6{
+	text-decoration: none !important;
+}
+
+.table button{
+	
+	background-color: white !important;
+	border: 3px solid #17a2b8;
+	padding: .275rem .5rem !important;
+}
+
+.table button:hover {
+	color: black !important;
+	
+}
+#table tbody tr td {
+
+	    padding: 4px 3px !important;
+
+}
+
+.recomendationList{
+	margin-left: -13px;
+	width: 102%;
+}
+
+.recomendationHeading{
+	font-size: 1.65rem;
+}
+
+.prjDropdown{
+	margin-top: -8px;
+}
+
+#projectid,#desc,#committeeid{
+	width:200px;
+}
+
+.sn{
+	text-align: center;
+}
+
+.actualSoughttable{
+	border: 1px solid black;
+	 border-collapse: collapse;
+}
+
+.dropDownTable{
+	
+}

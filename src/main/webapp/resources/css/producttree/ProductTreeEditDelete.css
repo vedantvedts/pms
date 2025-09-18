@@ -1,0 +1,110 @@
+@charset "UTF-8";
+
+
+
+label{
+font-weight: bold;
+  font-size: 14px;
+}
+.table thead tr,tbody tr{
+    font-size: 14px;
+}
+body{
+background-color: #f2edfa;
+overflow-x:hidden !important; 
+}
+h6{
+	text-decoration: none !important;
+}
+.multiselect-container>li>a>label {
+  padding: 4px 20px 3px 20px;
+}
+.cc-rockmenu {
+	color:fff;
+	padding:0px 5px;
+	font-family: 'Lato',sans-serif;
+}
+
+.cc-rockmenu .rolling {
+  display: inline-block;
+  cursor:pointer;
+  width: 34px;
+  height: 30px;
+  text-align:left;
+  overflow: hidden;
+  transition: all 0.3s ease-out;
+  white-space: nowrap;
+  
+}
+.cc-rockmenu .rolling:hover {
+  width: 120px;
+}
+.cc-rockmenu .rolling .rolling_icon {
+  float:left;
+  z-index: 9;
+  display: inline-block;
+  width: 28px;
+  height: 52px;
+  box-sizing: border-box;
+  margin: 0 5px 0 0;
+}
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+  width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+    font-size: 20px;
+    padding: 6px;
+}
+.cc-rockmenu .rolling span {
+    display: block;
+    font-weight: bold;
+    padding: 2px 0;
+    font-size: 14px;
+    font-family: 'Muli',sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin:0;
+}
+
+.width{
+	width:210px !important;
+}
+.bootstrap-select {
+  width: 400px !important;
+}
+input[type=checkbox] {
+	accent-color: green;
+}
+
+.mx-w-200{
+	max-width: 200px;
+}
+
+.w-2{
+	width:2% !important;
+}
+.w-5{
+	width:5% !important;
+}
+
+.td-2{
+	overflow-wrap: break-word !important; 
+	word-break: break-all !important; 
+	white-space: normal !important;
+	max-width:20% !important;
+	min-width:20% !important;
+}
+
+.w-20{
+	width: 20%!important;
+}
+.w-30{
+	width: 30px!important;
+}
+
+.fw-bold{
+	font-weight: bold;
+}
+

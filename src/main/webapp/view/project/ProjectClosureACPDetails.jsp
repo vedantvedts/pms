@@ -21,7 +21,7 @@
 <%@page import="com.vts.pfms.project.model.ProjectMaster"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,288 +33,8 @@
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
 <link href="${projetdetailscss}" rel="stylesheet" />
-
-
-<style type="text/css">
-
-.tab-pane p{
-	text-align: justify;
-	
-}
-
-.card-body{
-	padding: 0rem !important;
-}
-.navigation_btn{
-	margin: 1%;
-}
-
- .b{
-	background-color: #ebecf1;	
-}
-.a{
-	background-color: #d6e0f0;
-}
-
-.nav-link{
-	text-align: left;
-}
-.nav-tabs>.nav-item>.nav-link{
-	padding: 11px 15px !important;
-}
-body { 
-   font-family : "Lato", Arial, sans-serif !important;
-   overflow-x: hidden;
-}
-
-input,select,table,div,label,span {
-font-family : "Lato", Arial, sans-serif !important;
-}
-.text-center{
-	text-align: left !imporatant;
-}
-
-.control-label,.mandatory{
-float: left;
-font-weight: bold;
-font-size: 1rem;
-}
-.control-label{
-color: purple;
-}
-</style>
-
-<style type="text/css">
-
-.panel-info {
-	border-color: #bce8f1;
-}
-.panel {
-	margin-bottom: 10px;
-	background-color: #fff;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
-.panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-	color: #1d5987;
-}
-.panel-title {
-	margin-top: 0;
-	margin-bottom: 0;
-	font-size: 13px;
-	color: inherit;
-	font-weight: bold;
-	display: contents;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-div {
-	display: block;
-}
-
-
-.olre-body .panel-info .panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-heading {
-	padding: 18px 15px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.p-5 {
-	padding: 5px;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-user agent stylesheet
-div {
-	display: block;
-}
-
-.panel-info {
-	border-color: #bce8f1;
-}
-
-.rsqr-column{
- float : left;
-}
-
-.scrollclass::-webkit-scrollbar {
-    width:7px;
-}
-.scrollclass::-webkit-scrollbar-track {
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3); 
-    border-radius:5px;
-}
-.scrollclass::-webkit-scrollbar-thumb {
-    border-radius:5px;
-  /*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
-}
-.scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
- 	transition: 0.5s;
-}
-
-
-.trup{
-	padding:6px 10px 6px 10px ;			
-	border-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-.trdown{
-	padding:0px 10px 5px 10px ;			
-	border-bottom-left-radius : 5px; 
-	border-bottom-right-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-
-
-
-p
-{
-	text-align: justify !important;
-  	text-justify: inter-word;
-}
-p,td,th
-{
-  word-wrap: break-word;
-  word-break: normal ;
-}
-
-.textunderline{
-	text-decoration: underline;
-}
-
-
-</style>
-
-<style type="text/css">
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	/* font-weight: 800; */
-	font-size: 16px;
-	/* color:#07689f; */
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-.form-group {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-</style>
-
-<style type="text/css">
-
-#tabledata{
- margin-left : 30px;
- border-collapse : collapse;
- /* border : 1px solid black; */
- width : 98.5%;
-}
-#tabledata th{
- text-align : center;
- font-size: 14px;
-}
-#tabledata td{
- text-align : left;
- vertical-align: top;
- word-wrap: break-word;
- word-break: normal;
-}
-#tabledata td,th{
- /* border : 1px solid black; */
- padding : 5px;
-}
-
-#projectdatatable{
- border-collapse : collapse;
- border : 1px solid #c9c7c7; 
-}
-#projectdatatable th{
- text-align : center;
- font-size: 14px;
- border : 1px solid #c9c7c7 !important; 
-}
-#projectdatatable td{
- text-align : left;
- vertical-align: top;
- white-space: normal;
- word-wrap: break-word;
- word-break: normal;
-}
-#projectdatatable td{
- border : 1px solid #c9c7c7 !important; 
- padding : 5px;
-}
-
-#projectdatatablep{
- border-collapse : collapse;
- border : 1px solid black; 
-}
-#projectdatatablep th{
- text-align : center;
- font-size: 14px;
-  border : 1px solid black; 
-  padding : 5px;
-}
-#projectdatatablep td{
- text-align : left;
- vertical-align: top;
- white-space: normal;
- word-wrap: break-word;
- word-break: normal;
- border : 1px solid black; 
- padding : 5px;
-}
-
-#select2-LabCode-container,#select2-approverEmpId-container{
-	text-align: left;
-}
-</style>
-
+<spring:url value="/resources/css/projectModule/projectClosureACPDetails.css" var="ExternalCSS" />     
+<link href="${ExternalCSS}" rel="stylesheet" />
 </head>
 <body>
 <%
@@ -398,10 +118,10 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
    		<div class="col-md-12">
        		<div class="card slider">
        			<!-- This is for Slider Headers -->
-         		<div class="card-header slider_header" style="padding:0px; font-size:12px!important; height: 0%;">
+         		<div class="card-header slider_header style1">
              		<h4 class="category">Administrative Closure - <%if(projectMaster!=null) {%><%=projectMaster.getProjectShortName()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectShortName()): " - "%> (<%=projectMaster.getProjectCode()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectCode()): " - "%>) <%} %>
 
-             			<a class="btn btn-info btn-sm  shadow-nohover back"
+             			<a class="btn btn-info btn-sm  shadow-nohover back style2"
              				<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y") ) {%>
                					href="ProjectClosureApprovals.htm"
                				<%} else if(isApproval!=null &&  isApproval.equalsIgnoreCase("N") ) {%>
@@ -410,10 +130,10 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
                					href="ProjectClosureList.htm"
                				<%} %>
              		
-             			  style="color: white!important;float: right;">Back</a>
+             			 >Back</a>
              		</h4>
-             		<hr style="margin: -8px 0px !important;">
-             		<ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
+             		<hr class="style3">
+             		<ul class="nav nav-tabs justify-content-center style4" role="tablist">
 
             			<li class="nav-item" id="nav-acpdetails">
              				<%if(acpTabId!=null && acpTabId.equalsIgnoreCase("1")){ %> 
@@ -441,7 +161,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
          		
          		<!-- This is for Tab Panes -->
          		<div class="card">
-         			<div class="tab-content text-center" style="margin-top : 0.2rem;">
+         			<div class="tab-content text-center style5">
          				<!-- *********** Administrative Closure Details ***********      --> 
                			<%if(acpTabId!=null && acpTabId.equalsIgnoreCase("1")){ %> 
          					<div class="tab-pane active" id="acpdetails" role="tabpanel">
@@ -524,120 +244,6 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                		
 						                		<!-- Side tab Details -->
 						                		<div class="tab-content" id="myTabContent3">
-						                		
-						                			<%-- <!-- Aim & Objectives Side bar Details  -->
-						                			<div class="tab-pane fade <%if(Details!=null&&Details.equalsIgnoreCase("aimobjectives")){ %> show active <%} %> <%if(Details==null){ %> show active <%} %> " id="aimobjectives-vertical" role="tabpanel" aria-labelledby="aimobjectives-vertical-tab">
-						                				
-						                				<!-- Aim & Objectives showing as Doc -->
-						                				<div id="aimobjectivesdiv">
-						                					<div class="row">
-							                            		<div class="col-md-10" align="left">
-							                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Aim & Objectives</b></h4>
-							                            		</div>
-			                            	
-								                   				<div class="col-md-2" style="margin-bottom: 5px">
-																	<button class="share-button" style="border: none;font-size:13px" onclick="AllowEdit('aimobjectives')" id="" value="EDIT" >
-														  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-														  				<input type="submit"  class="edit-btn" name="sub" value="EDIT">
-																	</button>
-																</div>       			  	
-				                            				</div>
-				                            				
-				                            				<hr>
-				                            				
-				                            				<div class="row">
-				                            					<div class="col-md-12" align="left">
- 																	<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 																		<b style="font-family: 'Lato',sans-serif;font-size: large;">Aim</b>
- 																	</label>
- 																</div>
-				                            				</div>
-				                            				<div class="row">
-				                            					<div class="col-md-12" align="left">
- 																	<p>
- 																		<%if(acp!=null && acp.getACPAim()!=null) {%>
- 																			<%=acp.getACPAim().replaceAll("\n", "<br>") %> 
- 																		<%} %>
- 																	</p>
- 																</div>
- 															</div>
-															
-															<hr>
-															
-															<div class="row">
-																<div class="col-md-12" align="left">
-																	<label style="margin-top:0px; margin-left:0px;font-weight: 800;margin-bottom:0px;font-size: 20px; color:#07689f;">
-																		<b style="font-family: 'Lato',sans-serif;font-size: large;">Objectives</b>
-																	</label>
-																</div>
-															</div>
-															
-															<div class="row">
-				                            					<div class="col-md-12" align="left">
- 																	<p><%if(acp!=null && acp.getACPObjectives()!=null) {%><%=acp.getACPObjectives() %> <%} %></p>
- 																</div>
- 															</div>				                
-															
-						                				</div>
-						                				
-						                				<!-- Aim & Objectives Add / Edit -->
-					                					<form action="ProjectClosureACPDetailsSubmit.htm" method="POST" name="myform1" id="myform1" >	
-															<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-															<input type="hidden" name="closureId" value="<%=closureId %>" />
-															<div class="row"> 
-																<div class="col-md-12"  >
-																	<div class="card" >
-																		<div class="card-body">
-																			<div class="row" style="margin-left: 2%;margin-right: 2%;">
-																	        	<div class="col-md-12" style="">
-																	        		<div class="form-group">
-																	                	<label class="control-label">Aim:</label><span class="mandatory">*</span>
-																	                    <textarea class="form-control form-control" name="acpAim" maxlength="5000" rows="2" cols="65" style="font-size: 15px;" 
-					                              		  								 placeholder="Enter maximum 5000 charecters" required><%if(acp!=null && acp.getACPAim()!=null){ %><%=acp.getACPAim() %><%} %></textarea> 
-																	                </div>
-																	            </div>
-											       	 						</div>
-																		</div>
-																		<div class="card-body">
-																	    	
-																	 		<div class="row"  style="margin-left: 3%;margin-right: 2%;">
-																	 			<label class="control-label">Objectives: </label><span class="mandatory">*</span>
-																				<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
-																					<div id="objectivesnote" class="center"> </div>
-																					<input type="hidden" id="objectiveshidden" value="<%if(acp!=null && acp.getACPObjectives()!=null) {%><%=acp.getACPObjectives() %><%}%>">
-																				</div>
-																	  			<textarea name="acpObjectives" style="display:none;"></textarea>
-																				<input type="hidden" name="details" value="aimobjectives"> 
-																	 			
-																	 		</div>  
-																	 		<div class="row"  style="margin-left: 3%;margin-right: 2%;text-align: left;">
-																	 			<div class="col-md-12">
-																	 				<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
-																	 			</div>
-																	 		</div>	
-																	 		
-																	 	</div>
-																	 		
-																	 	<div class="form-group" align="center" >
-																	 		<%if(acp!=null && acp.getACPAim()!=null && acp.getACPObjectives()!=null) {%>
-																				<button type="submit" class="btn btn-sm btn-warning btn-sm edit btn-acp" name="Action" value="Edit" onclick="return confirm('Are you sure to Update?');" >UPDATE</button>
-																				
-																				<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;" onclick="CloseEdit('aimobjectives')"
-																				 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
-																		  			<i class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
-																		  		</button>
-																				
-																			<%} else{%>
-																				<button type="submit" class="btn btn-sm btn-primary btn-sm submit btn-acp" name="Action" value="Add" onclick="return confirm('Are you sure to Submit?');" >SUBMIT</button>
-																			<%} %>
-																		</div>
-																	</div>
-																		
-																</div>
-															</div>
-														</form>
-						                				
-						                			</div> --%>
 						                			
 						                			<!-- Sub-Projects Side bar Details -->
 						                			<div class="tab-pane fade <%if((Details!=null&&Details.equalsIgnoreCase("subprojects")) || Details==null){ %> show active <%} %> " id="subprojects-vertical" role="tabpanel" aria-labelledby="subprojects-vertical-tab">
@@ -646,11 +252,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<div id="subprojectsdiv">
 						                					<div class="row">
 							                            		<div class="col-md-10" align="left">
-							                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>List of Sub-Projects</b></h4>
+							                            			<h4 class="style6"><b>List of Sub-Projects</b></h4>
 							                            		</div>
 			                            	
-								                   				<div class="col-md-2" style="margin-bottom: 5px">
-																	<button class="share-button" style="border: none;font-size:13px" onclick="AllowEdit('subprojects')" id="" value="EDIT" >
+								                   				<div class="col-md-2 style7">
+																	<button class="share-button style29" onclick="AllowEdit('subprojects')" id="" value="EDIT" >
 														  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 														  				<input type="submit"  class="edit-btn" name="sub" value="EDIT">
 																	</button>
@@ -659,16 +265,16 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				                            				
 				                            				<hr>
 				                            				
-				                            				<table id="projectdatatable" style="width:100%;" >
-																<thead style = "background-color: #055C9D; color: white;text-align: center;">
+				                            				<table id="projectdatatable" class="style8" >
+																<thead class="style9">
 																	<tr>
-																		<th style="width: 5%;">SN</th>
-																    	<th style="width: 20%;">Projects Name</th>
-																    	<th style="width: 10%;">Project No</th>
-																    	<th style="width: 15%;">Agency</th>
-																    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
-																    	<th style="width: 20%;">Status</th>
-																    	<th style="">Achievement</th>
+																		<th class="style10">SN</th>
+																    	<th class="style11">Projects Name</th>
+																    	<th class="style12">Project No</th>
+																    	<th class="style13">Agency</th>
+																    	<th class="style12">Cost in Cr (&#8377;)</th>
+																    	<th class="style11">Status</th>
+																    	<th>Achievement</th>
 																	</tr>
 																</thead>
 																<tbody>
@@ -676,13 +282,13 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		int subprojectslno = 0;
 																		for(ProjectClosureACPProjects sub :subprojects) {%>
 																		<tr>
-																			<td style="width: 5%;text-align: center;"><%=++subprojectslno %></td>
-																			<td style="width: 20%;"><%=sub.getACPProjectName()!=null?StringEscapeUtils.escapeHtml4(sub.getACPProjectName()): " - " %> </td>
-																			<td style="width: 10%;text-align: center;"><%=sub.getACPProjectNo()!=null?StringEscapeUtils.escapeHtml4(sub.getACPProjectNo()): " - " %> </td>
-																			<td style="width: 15%;"><%=sub.getProjectAgency()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectAgency()): " - " %> </td>
-																			<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(sub.getProjectCost())/10000000) %> </td>
-																			<td style="width: 20%;"><%=sub.getProjectStatus()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectStatus()): " - " %> </td>
-																			<td style=""><%=sub.getProjectAchivements()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectAchivements()): " - " %> </td>
+																			<td class="style14"><%=++subprojectslno %></td>
+																			<td class="style11"><%=sub.getACPProjectName()!=null?StringEscapeUtils.escapeHtml4(sub.getACPProjectName()): " - " %> </td>
+																			<td class="style15"><%=sub.getACPProjectNo()!=null?StringEscapeUtils.escapeHtml4(sub.getACPProjectNo()): " - " %> </td>
+																			<td class="style13"><%=sub.getProjectAgency()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectAgency()): " - " %> </td>
+																			<td class="style16"><%=df.format(Double.parseDouble(sub.getProjectCost())/10000000) %> </td>
+																			<td class="style11"><%=sub.getProjectStatus()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectStatus()): " - " %> </td>
+																			<td><%=sub.getProjectAchivements()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectAchivements()): " - " %> </td>
 																		</tr>
 																	<%} }%>	
 																</tbody>
@@ -694,27 +300,27 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<form action="ProjectClosureACPProjectDetailsSubmit.htm" method="POST" name="myform2" id="myform2">
 						                					<div class="row">
 							                					<div class="col-md-2" align="left">
-								                            		<h4 style="font-family: 'Lato',sans-serif;color: #005086">
+								                            		<h4 class="style17">
 								                            			<b>List of Sub-Projects : </b>
 								                            		</h4>
 								                            	</div>
 								                            	<div class="col-md-2">
-								                            		<div style="float: left;;margin-top: 0.5rem;margin-left: -2rem;transform: scale(1.5);">
+								                            		<div class="style18">
 								                            			<input type="checkbox" class="form-control" id="subprojectscheck" checked>
 								                            		</div>
 								                            	</div>
 								                            </div>
-						                					<table style="width:100%; " id="subprojectstable">
-																<thead style = "background-color: #055C9D; color: white;text-align: center;border: none !important;">
+						                					<table class="style8" id="subprojectstable">
+																<thead class="style19">
 																	<tr>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">Projects Name</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">Project No</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">Agency</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">Cost (&#8377;)</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">Status</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">Achievement</th>
-																		<td style="width: 5%;">
-																			<button type="button" class=" btn btn_add_subprojects "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																    	<th class="style20">Projects Name</th>
+																    	<th class="style20">Project No</th>
+																    	<th class="style20">Agency</th>
+																    	<th class="style20">Cost (&#8377;)</th>
+																    	<th class="style20">Status</th>
+																    	<th class="style20">Achievement</th>
+																		<td class="style10">
+																			<button type="button" class=" btn btn_add_subprojects "> <i class="btn btn-sm fa fa-plus style21"></i></button>
 																		</td>
 																	</tr>
 																</thead>
@@ -722,63 +328,63 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	<%if(subprojects!=null && subprojects.size()>0) {
 																		for(ProjectClosureACPProjects sub :subprojects) {%>
 																		<tr class="tr_clone_subprojects">
-																			<td style="width: ;padding: 10px 5px 0px 5px;" >
+																			<td class="style22" >
 																				<input type="text" class="form-control item" name="acpProjectName" value="<%if(sub.getACPProjectName()!=null) {%><%=StringEscapeUtils.escapeHtml4(sub.getACPProjectName()) %><%} %>" placeholder="Enter Sub-Project Name" maxlength="1000" required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style22">
 																				<input type="text" class="form-control item" name="acpProjectNo" value="<%if(sub.getACPProjectNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(sub.getACPProjectNo()) %><%} %>" placeholder="Enter Sub-Project No." maxlength="200" required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style22">
 																				<input type="text" class="form-control item" name="projectAgency" value="<%if(sub.getProjectAgency()!=null) {%><%=StringEscapeUtils.escapeHtml4(sub.getProjectAgency()) %><%} %>" placeholder="Enter Agency Details" maxlength="1000" required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style22">
 																				<input type="text" class="form-control item decimal-format" name="projectCost" value="<%if(sub.getProjectCost()!=null) {%><%=StringEscapeUtils.escapeHtml4(sub.getProjectCost()) %><%} %>" placeholder="Enter Project Cost" maxlength="15" required="required" step="0.01" >
 																			</td>
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style22">
 																				<input type="text" class="form-control item" name="projectStatus" value="<%if(sub.getProjectStatus()!=null) {%><%=StringEscapeUtils.escapeHtml4(sub.getProjectStatus()) %><%} %>" placeholder="Enter Project Status" maxlength="500" required="required" >
 																			</td>
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style22">
 																				<input type="text" class="form-control item" name="projectAchivements" value="<%if(sub.getProjectAchivements()!=null) {%><%=StringEscapeUtils.escapeHtml4(sub.getProjectAchivements()) %><%} %>" placeholder="Enter Achievement Details" maxlength="2000" required="required" >
 																			</td>
-																			<td style="width: 5% ; ">
-																				<button type="button" class=" btn btn_rem_subprojects" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																			<td class="style10">
+																				<button type="button" class=" btn btn_rem_subprojects" > <i class="btn btn-sm fa fa-minus style23"></i></button>
 																			</td>									
 																		</tr>
 																	<%} } else {%>
 																		<tr class="tr_clone_subprojects">
-																			<td style="width: ;padding: 10px 5px 0px 5px;" >
+																			<td class="style22" >
 																				<input type="text" class="form-control item" name="acpProjectName" maxlength="1000" placeholder="Enter Sub-Project Name" required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style22">
 																				<input type="text" class="form-control item" name="acpProjectNo" maxlength="200" placeholder="Enter Sub-Project No." required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style22">
 																				<input type="text" class="form-control item" name="projectAgency" maxlength="1000" placeholder="Enter Agency Details" required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style22">
 																				<input type="text" class="form-control item decimal-format" name="projectCost" maxlength="15" placeholder="Enter Project Cost" required="required" step="0.01" >
 																			</td>
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style22">
 																				<input type="text" class="form-control item" name="projectStatus" maxlength="500" placeholder="Enter Project Status" required="required" >
 																			</td>
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style22">
 																				<input type="text" class="form-control item" name="projectAchivements" maxlength="2000" placeholder="Enter Achievement Details" required="required" >
 																			</td>
-																			<td style="width: 5% ; ">
-																				<button type="button" class=" btn btn_rem_subprojects " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																			<td class="style10">
+																				<button type="button" class=" btn btn_rem_subprojects " > <i class="btn btn-sm fa fa-minus style23"></i></button>
 																			</td>	
 																		</tr>
 																	<%} %>
 																</tbody>
 															</table>
-															<div align="center" style="margin-top: 15px;">
+															<div align="center" class="style24">
 																
 																<%if(subprojects!=null && subprojects.size()>0) {%>
 																	<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-acp btn-subproject" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
 																	
-																	<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;margin-top: 0.5%;" onclick="CloseEdit('subprojects')"
+																	<button type="button" class="btn btn-sm style25" onclick="CloseEdit('subprojects')"
 																	 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
-																		<i class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
+																		<i class="fa fa-times fa-lg style26" aria-hidden="true"></i>
 																	</button>
 																	
 																<%} else{%> 
@@ -800,11 +406,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<div id="carscapsidiv">
 						                					<div class="row">
 							                            		<div class="col-md-10" align="left">
-							                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b> List of CARS / CAPSI</b></h4>
+							                            			<h4 class="style27"><b> List of CARS / CAPSI</b></h4>
 							                            		</div>
 			                            	
-								                   				<div class="col-md-2" style="margin-bottom: 5px">
-																	<button class="share-button" style="border: none;font-size:13px" onclick="AllowEdit('carscapsi')" id="" value="EDIT" >
+								                   				<div class="col-md-2 style28">
+																	<button class="share-button style29" onclick="AllowEdit('carscapsi')" id="" value="EDIT" >
 														  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 														  				<input type="submit"  class="edit-btn" name="sub" value="EDIT">
 																	</button>
@@ -813,17 +419,17 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				                            				
 				                            				<hr>
 				                            				
-				                            				<table id="projectdatatable" style="width:100%;" >
-																<thead style = "background-color: #055C9D; color: white;text-align: center;">
+				                            				<table id="projectdatatable" class="style30" >
+																<thead class="style31">
 																	<tr>
-																		<th style="width: 5%;">SN</th>
-																    	<th style="width: 5%;">CARS / CAPSI</th>
-																    	<th style="width: 20%;">Name</th>
-																    	<th style="width: 10%;">No</th>
-																    	<th style="width: 15%;">Agency</th>
-																    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
-																    	<th style="width: 15%;">Status</th>
-																    	<th style="">Achievement</th>
+																		<th class="style10">SN</th>
+																    	<th class="style10">CARS / CAPSI</th>
+																    	<th class="style11">Name</th>
+																    	<th class="style12">No</th>
+																    	<th class="style13">Agency</th>
+																    	<th class="style12">Cost in Cr (&#8377;)</th>
+																    	<th class="style13">Status</th>
+																    	<th>Achievement</th>
 																	</tr>
 																</thead>
 																<tbody>
@@ -831,20 +437,20 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		int carscapsiprojectslno = 0;
 																		for(ProjectClosureACPProjects carscapsi :carscapsiprojects) {%>
 																		<tr>
-																			<td style="width: 5%;text-align: center;"><%=++carscapsiprojectslno %></td>
-																			<td style="width: 5%;">
+																			<td class="style14"><%=++carscapsiprojectslno %></td>
+																			<td class="style10">
 																				<%if(carscapsi.getACPProjectType()!=null && carscapsi.getACPProjectType().equalsIgnoreCase("R")) {%>
 																					CARS
 																				<%} else{%>
 																					CAPSI
 																				<%} %>
 																			</td>
-																			<td style="width: 20%;"><%=carscapsi.getACPProjectName()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getACPProjectName()): " - " %> </td>
-																			<td style="width: 10%;text-align: center;"><%=carscapsi.getACPProjectNo()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getACPProjectNo()): " - " %> </td>
-																			<td style="width: 15%;"><%=carscapsi.getProjectAgency()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectAgency()): " - " %> </td>
-																			<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(carscapsi.getProjectCost()) / 10000000) %> </td>
-																			<td style="width: 20%;"><%=carscapsi.getProjectStatus()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectStatus()): " - " %> </td>
-																			<td style=""><%=carscapsi.getProjectAchivements()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectAchivements()): " - " %> </td>
+																			<td class="style11"><%=carscapsi.getACPProjectName()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getACPProjectName()): " - " %> </td>
+																			<td class="style15"><%=carscapsi.getACPProjectNo()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getACPProjectNo()): " - " %> </td>
+																			<td class="style13"><%=carscapsi.getProjectAgency()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectAgency()): " - " %> </td>
+																			<td class="style16"><%=df.format(Double.parseDouble(carscapsi.getProjectCost()) / 10000000) %> </td>
+																			<td class="style11"><%=carscapsi.getProjectStatus()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectStatus()): " - " %> </td>
+																			<td><%=carscapsi.getProjectAchivements()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectAchivements()): " - " %> </td>
 																		</tr>
 																	<%} }%>	
 																</tbody>
@@ -856,28 +462,28 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<form action="ProjectClosureACPProjectDetailsSubmit.htm" method="POST" name="myform3" id="myform3">
 						                					<div class="row">
 							                					<div class="col-md-2" align="left">
-								                            		<h4 style="font-family: 'Lato',sans-serif;color: #005086">
+								                            		<h4 class="style27">
 								                            			<b>List of CARS / CAPSI : </b>
 								                            		</h4>
 								                            	</div>
 								                            	<div class="col-md-2">
-								                            		<div style="float: left;;margin-top: 0.5rem;margin-left: -2rem;transform: scale(1.5);">
+								                            		<div class="style18">
 								                            			<input type="checkbox" class="form-control" id="carscapsicheck" checked>
 								                            		</div>
 								                            	</div>
 								                            </div>
-						                					<table style="width:100%; " id="carscapsitable">
-																<thead style = "background-color: #055C9D; color: white;text-align: center;">
+						                					<table class="style8" id="carscapsitable">
+																<thead class="style9">
 																	<tr>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">CARS / CAPSI</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">Name</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">No</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">Agency</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">Cost (&#8377;)</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">Status</th>
-																    	<th style="width: ;padding: 0px 5px 0px 5px;">Achievement</th>
-																		<td style="width: 5%;">
-																			<button type="button" class=" btn btn_add_carscapsi "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																    	<th class="style32">CARS / CAPSI</th>
+																    	<th class="style32">Name</th>
+																    	<th class="style32">No</th>
+																    	<th class="style32">Agency</th>
+																    	<th class="style32">Cost (&#8377;)</th>
+																    	<th class="style32">Status</th>
+																    	<th class="style32">Achievement</th>
+																		<td class="style10">
+																			<button type="button" class=" btn btn_add_carscapsi "> <i class="btn btn-sm fa fa-plus style21"></i></button>
 																		</td>
 																	</tr>
 																</thead>
@@ -885,75 +491,75 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	<%if(carscapsiprojects!=null && carscapsiprojects.size()>0) {
 																		for(ProjectClosureACPProjects carscapsi :carscapsiprojects) {%>
 																		<tr class="tr_clone_carscapsi">
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<select class="form-control" name="acpProjectType" required>
 																					<option value="R" <%if(carscapsi.getACPProjectType()!=null && carscapsi.getACPProjectType().equalsIgnoreCase("R")) {%>selected<%} %> >CARS</option>
 																					<option value="P" <%if(carscapsi.getACPProjectType()!=null && carscapsi.getACPProjectType().equalsIgnoreCase("P")) {%>selected<%} %> >CAPSI</option>
 																				</select>
 																			</td>
-																			<td style="width: ;padding: 10px 5px 0px 5px;" >
+																			<td class="style33" >
 																				<input type="text" class="form-control item" name="acpProjectName" value="<%if(carscapsi.getACPProjectName()!=null) {%><%=StringEscapeUtils.escapeHtml4(carscapsi.getACPProjectName()) %><%} %>" placeholder="Enter Project Name" maxlength="1000" required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<input type="text" class="form-control item" name="acpProjectNo" value="<%if(carscapsi.getACPProjectNo()!=null) {%><%=StringEscapeUtils.escapeHtml4(carscapsi.getACPProjectNo()) %><%} %>" placeholder="Enter Project No." maxlength="200" required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<input type="text" class="form-control item" name="projectAgency" value="<%if(carscapsi.getProjectAgency()!=null) {%><%=StringEscapeUtils.escapeHtml4(carscapsi.getProjectAgency()) %><%} %>" placeholder="Enter Agency Details" maxlength="1000" required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<input type="number" class="form-control item decimal-format" name="projectCost" value="<%if(carscapsi.getProjectCost()!=null) {%><%=StringEscapeUtils.escapeHtml4(carscapsi.getProjectCost()) %><%} %>" placeholder="Enter Project Cost" maxlength="15" required="required" step="0.01" >
 																			</td>
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<input type="text" class="form-control item" name="projectStatus" value="<%if(carscapsi.getProjectStatus()!=null) {%><%=StringEscapeUtils.escapeHtml4(carscapsi.getProjectStatus()) %><%} %>" placeholder="Enter Project Status" maxlength="500" required="required" >
 																			</td>
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<input type="text" class="form-control item" name="projectAchivements" value="<%if(carscapsi.getProjectAchivements()!=null) {%><%=StringEscapeUtils.escapeHtml4(carscapsi.getProjectAchivements()) %><%} %>" placeholder="Enter Achievement Details" maxlength="2000" required="required" >
 																			</td>
-																			<td style="width: 5% ; ">
-																				<button type="button" class=" btn btn_rem_carscapsi" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																			<td class="style10">
+																				<button type="button" class=" btn btn_rem_carscapsi" > <i class="btn btn-sm fa fa-minus style23"></i></button>
 																			</td>									
 																		</tr>
 																	<%} } else {%>
 																		<tr class="tr_clone_carscapsi">
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<select class="form-control" name="acpProjectType" required>
 																					<option value="R" >CARS</option>
 																					<option value="P" >CAPSI</option>
 																				</select>
 																			</td>
-																			<td style="width: ;padding: 10px 5px 0px 5px;" >
+																			<td class="style33" >
 																				<input type="text" class="form-control item" name="acpProjectName" maxlength="1000" placeholder="Enter Project Name" required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<input type="text" class="form-control item" name="acpProjectNo" maxlength="200" placeholder="Enter Project No." required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<input type="text" class="form-control item" name="projectAgency" maxlength="1000" placeholder="Enter Agency Details" required="required" >
 																			</td>	
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<input type="number" class="form-control item decimal-format" name="projectCost" maxlength="15" placeholder="Enter Project Cost" required="required" step="0.01" >
 																			</td>
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<input type="text" class="form-control item" name="projectStatus" maxlength="500" placeholder="Enter Project Status" required="required" >
 																			</td>
-																			<td style="width: ;padding: 10px 5px 0px 5px;">
+																			<td class="style33">
 																				<input type="text" class="form-control item" name="projectAchivements" maxlength="2000" placeholder="Enter Achievement Details" required="required" >
 																			</td>
-																			<td style="width: 5% ; ">
-																				<button type="button" class=" btn btn_rem_carscapsi " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																			<td class="style10">
+																				<button type="button" class=" btn btn_rem_carscapsi " > <i class="btn btn-sm fa fa-minus style23"></i></button>
 																			</td>	
 																		</tr>
 																	<%} %>
 																</tbody>
 															</table>
-															<div align="center" style="margin-top: 15px;">
+															<div align="center" class="style24">
 																
 																<%if(carscapsiprojects!=null && carscapsiprojects.size()>0) {%>
 																	<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-acp btn-carscapsi" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
 																	
-																	<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;margin-top: 0.5%;" onclick="CloseEdit('carscapsi')"
+																	<button type="button" class="btn btn-sm style25" onclick="CloseEdit('carscapsi')"
 																	 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
-																		<i class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
+																		<i class="fa fa-times fa-lg style26" aria-hidden="true"></i>
 																	</button>
 																	
 																<%} else{%> 
@@ -975,11 +581,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<div id="consultanciesdiv">
 						                					<div class="row">
 							                            		<div class="col-md-10" align="left">
-							                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b> List of Consultancies</b></h4>
+							                            			<h4 class="style27"><b> List of Consultancies</b></h4>
 							                            		</div>
 			                            	
-								                   				<div class="col-md-2" style="margin-bottom: 5px">
-																	<button class="share-button" style="border: none;font-size:13px" onclick="AllowEdit('consultancies')" id="" value="EDIT" >
+								                   				<div class="col-md-2" class="style28">
+																	<button class="share-button style29" onclick="AllowEdit('consultancies')" id="" value="EDIT" >
 														  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 														  				<input type="submit"  class="edit-btn" name="sub" value="EDIT">
 																	</button>
@@ -988,14 +594,14 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				                            				
 				                            				<hr>
 				                            				
-				                            				<table id="projectdatatable" style="width:100%;" >
-																<thead style = "background-color: #055C9D; color: white;text-align: center;">
+				                            				<table id="projectdatatable" class="style30" >
+																<thead class="style31">
 																	<tr>
-																		<th style="width: 5%;">SN</th>
-																    	<th style="width: 35%;">Aim</th>
-																    	<th style="width: 30%;">Agency</th>
-																    	<th style="width: 20%;">Amount in Cr(&#8377;)</th>
-																    	<th style="width: 10%;">Date</th>
+																		<th class="style10">SN</th>
+																    	<th class="style34">Aim</th>
+																    	<th class="style35">Agency</th>
+																    	<th class="style11">Amount in Cr(&#8377;)</th>
+																    	<th class="style12">Date</th>
 																	</tr>
 																</thead>
 																<tbody>
@@ -1003,11 +609,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		int consultancieslno = 0;
 																		for(ProjectClosureACPConsultancies consultancy :consultancies) {%>
 																		<tr>
-																			<td style="width: 5%;text-align: center;"><%=++consultancieslno %></td>
-																			<td style="width: 35%;"><%=consultancy.getConsultancyAim()!=null?StringEscapeUtils.escapeHtml4(consultancy.getConsultancyAim()): " - " %> </td>
-																			<td style="width: 30%;"><%=consultancy.getConsultancyAgency()!=null?StringEscapeUtils.escapeHtml4(consultancy.getConsultancyAgency()): " - " %> </td>
-																			<td style="width: 20%;text-align: right;"><%=df.format(Double.parseDouble(consultancy.getConsultancyCost()) / 10000000) %> </td>
-																			<td style="width: 10%;text-align: center;"><%=fc.SqlToRegularDate(consultancy.getConsultancyDate()) %> </td>
+																			<td class="style14"><%=++consultancieslno %></td>
+																			<td class="style34"><%=consultancy.getConsultancyAim()!=null?StringEscapeUtils.escapeHtml4(consultancy.getConsultancyAim()): " - " %> </td>
+																			<td class="style35"><%=consultancy.getConsultancyAgency()!=null?StringEscapeUtils.escapeHtml4(consultancy.getConsultancyAgency()): " - " %> </td>
+																			<td class="style36"><%=df.format(Double.parseDouble(consultancy.getConsultancyCost()) / 10000000) %> </td>
+																			<td class="style15"><%=fc.SqlToRegularDate(consultancy.getConsultancyDate()) %> </td>
 																		</tr>
 																	<%} }%>	
 																</tbody>
@@ -1019,25 +625,25 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<form action="ProjectClosureACPConsultancyDetailsSubmit.htm" method="POST" name="myform4" id="myform4">
 						                					<div class="row">
 							                					<div class="col-md-2" align="left">
-								                            		<h4 style="font-family: 'Lato',sans-serif;color: #005086">
+								                            		<h4 class="style27">
 								                            			<b>List of Consultancies : </b>
 								                            		</h4>
 								                            	</div>
 								                            	<div class="col-md-2">
-								                            		<div style="float: left;;margin-top: 0.5rem;margin-left: -2rem;transform: scale(1.5);">
+								                            		<div class="style37">
 								                            			<input type="checkbox" class="form-control" id="consultanciescheck" checked>
 								                            		</div>
 								                            	</div>
 								                            </div>
-						                					<table style="width:100%; " id="consultanciestable">
-																<thead style = "background-color: #055C9D; color: white;text-align: center;">
+						                					<table class="style30" id="consultanciestable">
+																<thead class="style31">
 																	<tr>
-																    	<th style="width: 40%;padding: 0px 5px 0px 5px;">Aim</th>
-																    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Agency</th>
-																    	<th style="width: 20%;padding: 0px 5px 0px 5px;">Amount (&#8377;)</th>
-																    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Date</th>
-																		<td style="width: 5%;">
-																			<button type="button" class=" btn btn_add_consultancies "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																    	<th class="style38">Aim</th>
+																    	<th class="style39">Agency</th>
+																    	<th class="style40">Amount (&#8377;)</th>
+																    	<th class="style41">Date</th>
+																		<td class="style10">
+																			<button type="button" class=" btn btn_add_consultancies "> <i class="btn btn-sm fa fa-plus style21"></i></button>
 																		</td>
 																	</tr>
 																</thead>
@@ -1045,51 +651,51 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	<%if(consultancies !=null && consultancies.size()>0) {
 																		for(ProjectClosureACPConsultancies consultancy :consultancies) {%>
 																		<tr class="tr_clone_consultancies">
-																			<td style="width: 40%;padding: 10px 5px 0px 5px;" >
+																			<td class="style42" >
 																				<input type="text" class="form-control item" name="consultancyAim" value="<%if(consultancy.getConsultancyAim()!=null) {%><%=StringEscapeUtils.escapeHtml4(consultancy.getConsultancyAim()) %><%} %>" placeholder="Enter Consultancy Aim" maxlength="3000" required="required" >
 																			</td>	
-																			<td style="width: 25%;padding: 10px 5px 0px 5px;">
+																			<td class="style43">
 																				<input type="text" class="form-control item" name="consultancyAgency" value="<%if(consultancy.getConsultancyAgency()!=null) {%><%=StringEscapeUtils.escapeHtml4(consultancy.getConsultancyAgency()) %><%} %>" placeholder="Enter Consultancy Agency" maxlength="2000" required="required" >
 																			</td>	
-																			<td style="width: 10%;padding: 10px 5px 0px 5px;">
+																			<td class="style44">
 																				<input type="number" class="form-control item decimal-format" name="consultancyCost" value="<%if(consultancy.getConsultancyCost()!=null) {%><%=StringEscapeUtils.escapeHtml4(consultancy.getConsultancyCost()) %><%} %>" placeholder="Enter Consultancy Amount" maxlength="15" required="required" step="0.01" >
 																			</td>
-																			<td style="width: 20%;padding: 10px 5px 0px 5px;">
+																			<td class="style45">
 																				<input type="text" class="form-control item" name="consultancyDate" id="consultancyDate" value="<%if(consultancy.getConsultancyDate()!=null) {%><%=StringEscapeUtils.escapeHtml4(consultancy.getConsultancyDate()) %><%} %>" required="required" >
 																			</td>	
-																			<td style="width: 5% ; ">
-																				<button type="button" class=" btn btn_rem_consultancies" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																			<td class="style10">
+																				<button type="button" class=" btn btn_rem_consultancies" > <i class="btn btn-sm fa fa-minus style23"></i></button>
 																			</td>									
 																		</tr>
 																	<%} } else {%>
 																		<tr class="tr_clone_consultancies">
-																			<td style="width: 40%;padding: 10px 5px 0px 5px;" >
+																			<td class="style42" >
 																				<input type="text" class="form-control item" name="consultancyAim" placeholder="Enter Consultancy Aim" maxlength="3000" required="required" >
 																			</td>	
-																			<td style="width: 25%;padding: 10px 5px 0px 5px;">
+																			<td class="style43">
 																				<input type="text" class="form-control item" name="consultancyAgency" placeholder="Enter Consultancy Agency" maxlength="2000" required="required" >
 																			</td>	
-																			<td style="width: 10%;padding: 10px 5px 0px 5px;">
+																			<td class="style44">
 																				<input type="number" class="form-control item decimal-format" name="consultancyCost" placeholder="Enter Consultancy Amount" maxlength="15" required="required" step="0.01" >
 																			</td>
-																			<td style="width: 20%;padding: 10px 5px 0px 5px;">
-																				<input type="text" class="form-control item" name="consultancyDate" id="consultancyDate" readonly="readonly" required="required" style="background: #fff;" >
+																			<td class="style45">
+																				<input type="text" class="form-control item style46" name="consultancyDate" id="consultancyDate" readonly="readonly" required="required" >
 																			</td>
-																			<td style="width: 5% ; ">
-																				<button type="button" class=" btn btn_rem_consultancies " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																			<td class="style10">
+																				<button type="button" class=" btn btn_rem_consultancies " > <i class="btn btn-sm fa fa-minus style23"></i></button>
 																			</td>	
 																		</tr>
 																	<%} %>
 																</tbody>
 															</table>
-															<div align="center" style="margin-top: 15px;">
+															<div align="center" class="style24">
 																
 																<%if(consultancies !=null && consultancies.size()>0) {%>
 																	<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-acp btn-consultancies" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
 																	
-																	<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;margin-top: 0.5%;" onclick="CloseEdit('consultancies')"
+																	<button type="button" class="btn btn-sm style25" onclick="CloseEdit('consultancies')"
 																	 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
-																		<i class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
+																		<i class="fa fa-times fa-lg style47" aria-hidden="true"></i>
 																	</button>
 																	
 																<%} else{%> 
@@ -1110,11 +716,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<div id="facilitiescreateddiv">
 						                					<div class="row">
 							                            		<div class="col-md-10" align="left">
-							                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Details of Facilities Created</b></h4>
+							                            			<h4 class="style27"><b>Details of Facilities Created</b></h4>
 							                            		</div>
 			                            	
-								                   				<div class="col-md-2" style="margin-bottom: 5px">
-																	<button class="share-button" style="border: none;font-size:13px" onclick="AllowEdit('facilitiescreated')" id="" value="EDIT" >
+								                   				<div class="col-md-2 style28">
+																	<button class="share-button style29" onclick="AllowEdit('facilitiescreated')" id="" value="EDIT" >
 														  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 														  				<input type="submit"  class="edit-btn" name="sub" value="EDIT">
 																	</button>
@@ -1125,8 +731,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 															
 															<div class="row">
 																<div class="col-md-12" align="left">
-																	<label style="margin-top:0px; margin-left:0px;font-weight: 800;margin-bottom:0px;font-size: 20px; color:#07689f;">
-																		<b style="font-family: 'Lato',sans-serif;font-size: large;">Facilities Created</b>
+																	<label class="style48">
+																		<b class="style49">Facilities Created</b>
 																	</label>
 																</div>
 															</div>
@@ -1149,19 +755,19 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		
 																		<div class="card-body">
 																	    	
-																	 		<div class="row"  style="margin-left: 3%;margin-right: 2%;">
+																	 		<div class="row style50" >
 																	 			<label class="control-label">Details of Facilities Created: </label><span class="mandatory">*</span>
-																				<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+																				<div class="col-md-12 style51"  align="left" >
 																					<div id="facilitiesnote" class="center"> </div>
 																					<input type="hidden" id="facilitiescreatedhidden" value="<%if(acp!=null && acp.getFacilitiesCreated()!=null) {%><%=acp.getFacilitiesCreated() %><%}%>">
 																				</div>
-																	  			<textarea name="facilitiesCreated" style="display:none;"></textarea>
+																	  			<textarea name="facilitiesCreated" class="style52"></textarea>
 																				<input type="hidden" name="details" value="facilitiescreated"> 
 																	 			
 																	 		</div>  
-																	 		<div class="row"  style="margin-left: 3%;margin-right: 2%;text-align: left;">
+																	 		<div class="row"  class="style53">
 																	 			<div class="col-md-12">
-																	 				<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+																	 				<span class="style47">Note:-  </span><b class="style54">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 																	 			</div>
 																	 		</div>	
 																	 		
@@ -1171,9 +777,9 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	 		<%if(acp!=null && acp.getFacilitiesCreated()!=null) {%>
 																				<button type="submit" class="btn btn-sm btn-warning btn-sm edit btn-acp" name="Action" value="Edit" onclick="return confirm('Are you sure to Update?');" >UPDATE</button>
 																				
-																				<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;" onclick="CloseEdit('facilitiescreated')"
+																				<button type="button" class="btn btn-sm style55" onclick="CloseEdit('facilitiescreated')"
 																				 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
-																					<i class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
+																					<i class="fa fa-times fa-lg style47" aria-hidden="true"></i>
 																				</button>
 																					
 																			<%} else{%>
@@ -1195,11 +801,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<div id="trialresultsdiv">
 						                					<div class="row">
 							                            		<div class="col-md-10" align="left">
-							                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Trial Results</b></h4>
+							                            			<h4 class="style27"><b>Trial Results</b></h4>
 							                            		</div>
 			                            	
-								                   				<div class="col-md-2" style="margin-bottom: 5px">
-																	<button class="share-button" style="border: none;font-size:13px" onclick="AllowEdit('trialresults')" id="" value="EDIT" >
+								                   				<div class="col-md-2 style28">
+																	<button class="share-button style29" onclick="AllowEdit('trialresults')" id="" value="EDIT" >
 														  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 														  				<input type="submit"  class="edit-btn" name="sub" value="EDIT">
 																	</button>
@@ -1210,8 +816,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				                            				
 				                            				<div class="row">
 				                            					<div class="col-md-12" align="left">
- 																	<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 																		<b style="font-family: 'Lato',sans-serif;font-size: large;">Brief</b>
+ 																	<label class="style56">
+ 																		<b class="style49">Brief</b>
  																	</label>
  																</div>
 				                            				</div>
@@ -1229,17 +835,17 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 															
 															<div class="row">
 				                            					<div class="col-md-12" align="left">
- 																	<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 																		<b style="font-family: 'Lato',sans-serif;font-size: large;">Attachments</b>
+ 																	<label class="style56">
+ 																		<b class="style49">Attachments</b>
  																	</label>
  																</div>
 				                            				</div>
-															<table id="projectdatatable" style="width:100%;" >
-																<thead style = "background-color: #055C9D; color: white;text-align: center;">
+															<table id="projectdatatable" class="style30" >
+																<thead class="style9">
 																	<tr>
-																		<th style="width: 5%;">SN</th>
-																    	<th style="width: 75%;">Description</th>
-																    	<th style="width: 20%;">Action</th>
+																		<th class="style10">SN</th>
+																    	<th class="style57">Description</th>
+																    	<th class="style11">Action</th>
 																	</tr>
 																</thead>
 																<tbody>
@@ -1247,12 +853,12 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		int trialresultsslno = 0;
 																		for(ProjectClosureACPTrialResults results :trialresults) {%>
 																		<tr>
-																			<td style="width: 5%;text-align: center;"><%=++trialresultsslno %></td>
+																			<td class="style14"><%=++trialresultsslno %></td>
 																			
-																			<td style="width: 75%;"><%=results.getDescription()!=null?StringEscapeUtils.escapeHtml4(results.getDescription()): " - " %> </td>
-																			<td style="width: 20%;text-align: center;">
+																			<td class="style57"><%=results.getDescription()!=null?StringEscapeUtils.escapeHtml4(results.getDescription()): " - " %> </td>
+																			<td class="style58">
 																				<%if(results.getAttachment()!=null && !results.getAttachment().isEmpty()) {%>
-																					<button type="submit" form="myform6" class="btn btn-sm" style="padding: 5px 8px;" id="attachedfile" name="attachmentfile" formmethod="post" formnovalidate="formnovalidate"
+																					<button type="submit" form="myform6" class="btn btn-sm style59"  id="attachedfile" name="attachmentfile" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 			 value="<%=results.getTrialResultsId() %>" formaction="ProjectClosureACPTrialResultsFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Attatchment Download">
                             					 										<i class="fa fa-download fa-lg"></i>
                             					 									</button>
@@ -1274,31 +880,31 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																<div class="col-md-12"  >
 																	<div class="card" >
 																		<div class="card-body">
-																			<div class="row" style="margin-left: 2%;margin-right: 2%;">
-																	        	<div class="col-md-12" style="">
+																			<div class="row style60">
+																	        	<div class="col-md-12">
 																	        		<div class="form-group">
 																	                	<label class="control-label">Brief:</label><span class="mandatory">*</span>
-																	                    <textarea class="form-control form-control" name="trialResults" maxlength="5000" rows="3" cols="65" style="font-size: 15px;" 
+																	                    <textarea class="form-control form-control style61" name="trialResults" maxlength="5000" rows="3" cols="65" 
 					                              		  								 placeholder="Enter maximum 5000 charecters" required><%if(acp!=null && acp.getTrialResults()!=null){ %><%=acp.getTrialResults()!=null?acp.getTrialResults(): " - " %><%} %></textarea> 
 																	                </div>
 																	            </div>
 											       	 						</div>
 																		</div>
 																		<div class="card-body">
-																	    	<div class="row"  style="margin-left: 3%;margin-right: 2%;">
+																	    	<div class="row style50">
 																	 			<label class="control-label">Attachments: </label>
 																	 		</div>
 																	 		
-																	 		<table style="width: 94%;margin-left: 3%;" id="trialresultstable">
-																				<thead style = "background-color: #055C9D; color: white;text-align: center;">
+																	 		<table class="style62" id="trialresultstable">
+																				<thead class="style31">
 																					<tr>
-																				    	<th style="width: 40%;padding: 0px 5px 0px 5px;">Description</th>
-																				    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Attachment</th>
+																				    	<th class="style38">Description</th>
+																				    	<th class="style39">Attachment</th>
 																				    	<%if(acp!=null && acp.getTrialResults()!=null) {%>
-																				    	<th style="width: 10%;padding: 0px 5px 0px 5px;">Action</th>
+																				    	<th class="style41">Action</th>
 																						<%} %>
-																						<td style="width: 5%;">
-																							<button type="button" class=" btn btn_add_trialresults "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																						<td class="style10">
+																							<button type="button" class=" btn btn_add_trialresults "> <i class="btn btn-sm fa fa-plus style21"></i></button>
 																						</td>
 																					</tr>
 																				</thead>
@@ -1306,35 +912,35 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																					<%if(trialresults !=null && trialresults.size()>0) {
 																						for(ProjectClosureACPTrialResults results :trialresults) {%>
 																						<tr class="tr_clone_trialresults">
-																							<td style="width: 40%;padding: 10px 5px 0px 5px;" >
+																							<td class="style42" >
 																								<input type="text" class="form-control item" name="description" value="<%if(results.getDescription()!=null) {%><%=StringEscapeUtils.escapeHtml4(results.getDescription()) %><%} %>" placeholder="Enter maximum 2000 charecters" maxlength="2000" >
 																							</td>	
-																							<td style="width: 25%;padding: 10px 5px 0px 5px;">
+																							<td class="style43">
 																								<input type="file" class="form-control item" name="attachment" accept=".pdf">
 																								<input type="hidden" name="attatchmentname" value="<%if(results.getAttachment()!=null && !results.getAttachment().isEmpty()) {%><%=results.getAttachment() %><%} %>">
 																							</td>
-																							<td style="width: 10%;padding: 10px 5px 0px 5px;" id="actiontd">
+																							<td class="style44" id="actiontd">
 																								<%if(results.getAttachment()!=null && !results.getAttachment().isEmpty()) {%>
-																									<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" id="attachedfile" name="attachmentfile" formmethod="post" formnovalidate="formnovalidate"
+																									<button type="submit" class="btn btn-sm style59" id="attachedfile" name="attachmentfile" formmethod="post" formnovalidate="formnovalidate"
                             					 		  				 							 value="<%=results.getTrialResultsId() %>" formaction="ProjectClosureACPTrialResultsFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Attatchment Download">
                             					 														<i class="fa fa-download fa-lg"></i>
                             					 													</button>
 																								<%} %>
 																							</td>	
-																							<td style="width: 5% ; ">
-																								<button type="button" class=" btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																							<td class="style10">
+																								<button type="button" class=" btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus style23"></i></button>
 																							</td>									
 																						</tr>
 																					<%} } else {%>
 																						<tr class="tr_clone_trialresults">
-																							<td style="width: 40%;padding: 10px 5px 0px 5px;" >
+																							<td class="style42" >
 																								<input type="text" class="form-control item" name="description" placeholder="Enter maximum 2000 charecters" maxlength="2000" >
 																							</td>	
-																							<td style="width: 25%;padding: 10px 5px 0px 5px;">
+																							<td class="style43">
 																								<input type="file" class="form-control item" name="attachment" accept=".pdf" >
 																							</td>	
-																							<td style="width: 5% ; ">
-																								<button type="button" class=" btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																							<td class="style10">
+																								<button type="button" class=" btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus style23"></i></button>
 																							</td>	
 																						</tr>
 																					<%} %>
@@ -1347,9 +953,9 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	 		<%if(acp!=null && acp.getTrialResults()!=null) {%>
 																				<button type="submit" class="btn btn-sm btn-warning btn-sm edit btn-acp" name="Action" value="Edit" onclick="return confirm('Are you sure to Update?');" >UPDATE</button>
 																				
-																				<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;" onclick="CloseEdit('trialresults')"
+																				<button type="button" class="btn btn-sm style55" onclick="CloseEdit('trialresults')"
 																				 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
-																					<i class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
+																					<i class="fa fa-times fa-lg style47" aria-hidden="true"></i>
 																				</button>
 																					
 																			<%} else{%>
@@ -1371,11 +977,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<div id="achievementsdiv">
 						                					<div class="row">
 							                            		<div class="col-md-10" align="left">
-							                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Achievements (based on Aim & Objectives)</b></h4>
+							                            			<h4 class="style27"><b>Achievements (based on Aim & Objectives)</b></h4>
 							                            		</div>
 			                            	
-								                   				<div class="col-md-2" style="margin-bottom: 5px">
-																	<button class="share-button" style="border: none;font-size:13px" onclick="AllowEdit('achievements')" id="" value="EDIT" >
+								                   				<div class="col-md-2 style28">
+																	<button class="share-button style29" onclick="AllowEdit('achievements')" id="" value="EDIT" >
 														  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 														  				<input type="submit"  class="edit-btn" name="sub" value="EDIT">
 																	</button>
@@ -1386,18 +992,18 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				                            				
 															<div class="row">
 				                            					<div class="col-md-12" align="left">
- 																	<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 																		<b style="font-family: 'Lato',sans-serif;font-size: large;">Achievements</b>
+ 																	<label class="style63">
+ 																		<b class="style49">Achievements</b>
  																	</label>
  																</div>
 				                            				</div>
-															<table id="projectdatatable" style="width:100%;" >
-																<thead style = "background-color: #055C9D; color: white;text-align: center;">
+															<table id="projectdatatable" class="style30" >
+																<thead class="style31">
 																	<tr>
-																		<th style="width: 5%;">SN</th>
-																    	<th style="width: 35%;">Targets as Envisaged</th>
-																    	<th style="width: 35%;">Targets as Achieved</th>
-																    	<th style="width: 25%;">Remarks</th>
+																		<th class="style10">SN</th>
+																    	<th class="style34">Targets as Envisaged</th>
+																    	<th class="style34">Targets as Achieved</th>
+																    	<th class="style64">Remarks</th>
 																	</tr>
 																</thead>
 																<tbody>
@@ -1405,10 +1011,10 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		int achievementsslno = 0;
 																		for(ProjectClosureACPAchievements achieve :achievements) {%>
 																		<tr>
-																			<td style="width: 5%;text-align: center;"><%=++achievementsslno %></td>
-																			<td style="width: 35%;"><%=achieve.getEnvisaged()!=null?StringEscapeUtils.escapeHtml4(achieve.getEnvisaged()): " - " %> </td>
-																			<td style="width: 35%;"><%=achieve.getAchieved()!=null?StringEscapeUtils.escapeHtml4(achieve.getAchieved()): " - " %> </td>
-																			<td style="width: 25%;"><%=achieve.getRemarks()!=null?StringEscapeUtils.escapeHtml4(achieve.getRemarks()): " - " %> </td>
+																			<td class="style14"><%=++achievementsslno %></td>
+																			<td class="style34"><%=achieve.getEnvisaged()!=null?StringEscapeUtils.escapeHtml4(achieve.getEnvisaged()): " - " %> </td>
+																			<td class="style34"><%=achieve.getAchieved()!=null?StringEscapeUtils.escapeHtml4(achieve.getAchieved()): " - " %> </td>
+																			<td class="style43"><%=achieve.getRemarks()!=null?StringEscapeUtils.escapeHtml4(achieve.getRemarks()): " - " %> </td>
 																		</tr>
 																	<%} }%>	
 																</tbody>
@@ -1418,14 +1024,14 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				
 						                				<!-- Achievements Add / Edit -->
 						                				<form action="ProjectClosureACPAchievementDetailsSubmit.htm" method="POST" name="myform7" id="myform7">
-						                					<table style="width:100%; " id="achievementstable">
-																<thead style = "background-color: #055C9D; color: white;text-align: center;">
+						                					<table class="style30" id="achievementstable">
+																<thead class="style31">
 																	<tr>
-																    	<th style="width: 35%;padding: 0px 5px 0px 5px;">Targets as Envisaged</th>
-																    	<th style="width: 35%;padding: 0px 5px 0px 5px;">Targets as Achieved</th>
-																    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Remarks</th>
-																		<td style="width: 5%;">
-																			<button type="button" class=" btn btn_add_achievements "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+																    	<th class="style65">Targets as Envisaged</th>
+																    	<th class="style65">Targets as Achieved</th>
+																    	<th class="style39">Remarks</th>
+																		<td class="style10">
+																			<button type="button" class=" btn btn_add_achievements "> <i class="btn btn-sm fa fa-plus style21"></i></button>
 																		</td>
 																	</tr>
 																</thead>
@@ -1433,45 +1039,45 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	<%if(achievements !=null && achievements.size()>0) {
 																		for(ProjectClosureACPAchievements achieve :achievements) {%>
 																		<tr class="tr_clone_achievements">
-																			<td style="width: 40%;padding: 10px 5px 0px 5px;" >
+																			<td class="style42" >
 																				<input type="text" class="form-control item" name="envisaged" value="<%if(achieve.getEnvisaged()!=null) {%><%=StringEscapeUtils.escapeHtml4(achieve.getEnvisaged()) %><%} %>" placeholder="Enter maximum 5000 characters" maxlength="5000" required="required" >
 																			</td>	
-																			<td style="width: 25%;padding: 10px 5px 0px 5px;">
+																			<td class="style43">
 																				<input type="text" class="form-control item" name="achieved" value="<%if(achieve.getAchieved()!=null) {%><%=StringEscapeUtils.escapeHtml4(achieve.getAchieved()) %><%} %>" placeholder="Enter maximum 5000 characters" maxlength="5000" required="required" >
 																			</td>	
-																			<td style="width: 20%;padding: 10px 5px 0px 5px;">
+																			<td class="style45">
 																				<input type="text" class="form-control item" name="remarks" value="<%if(achieve.getRemarks()!=null) {%><%=StringEscapeUtils.escapeHtml4(achieve.getRemarks()) %><%} %>" placeholder="Enter maximum 2000 characters" >
 																			</td>	
-																			<td style="width: 5% ; ">
-																				<button type="button" class=" btn btn_rem_achievements" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																			<td class="style10">
+																				<button type="button" class=" btn btn_rem_achievements" > <i class="btn btn-sm fa fa-minus style23"></i></button>
 																			</td>									
 																		</tr>
 																	<%} } else {%>
 																		<tr class="tr_clone_achievements">
-																			<td style="width: 40%;padding: 10px 5px 0px 5px;" >
+																			<td class="style42" >
 																				<input type="text" class="form-control item" name="envisaged" placeholder="Enter maximum 5000 characters" maxlength="5000" required="required" >
 																			</td>	
-																			<td style="width: 25%;padding: 10px 5px 0px 5px;">
+																			<td class="style43">
 																				<input type="text" class="form-control item" name="achieved" placeholder="Enter maximum 5000 characters" maxlength="5000" required="required" >
 																			</td>	
-																			<td style="width: 20%;padding: 10px 5px 0px 5px;">
+																			<td class="style45">
 																				<input type="text" class="form-control item" name="remarks" placeholder="Enter maximum 2000 characters">
 																			</td>
-																			<td style="width: 5% ; ">
-																				<button type="button" class=" btn btn_rem_achievements " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+																			<td class="style10">
+																				<button type="button" class=" btn btn_rem_achievements " > <i class="btn btn-sm fa fa-minus style23" ></i></button>
 																			</td>	
 																		</tr>
 																	<%} %>
 																</tbody>
 															</table>
-															<div align="center" style="margin-top: 15px;">
+															<div align="center" class="style24">
 																
 																<%if(achievements !=null && achievements.size()>0) {%>
 																	<button type="submit" class="btn btn-sm btn-warning edit mt-2 btn-acp" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')">UPDATE</button>
 																	
-																	<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;margin-top: 0.5%;" onclick="CloseEdit('achievements')"
+																	<button type="button" class="btn btn-sm style25" onclick="CloseEdit('achievements')"
 																	 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
-																		<i class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
+																		<i class="fa fa-times fa-lg style47" aria-hidden="true" ></i>
 																	</button>
 																	
 																<%} else{%> 
@@ -1493,11 +1099,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						                				<div id="recommendationsdiv">
 						                					<div class="row">
 							                            		<div class="col-md-10" align="left">
-							                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Recommendation of highest Monitoring Committee</b></h4>
+							                            			<h4 class="style27"><b>Recommendation of highest Monitoring Committee</b></h4>
 							                            		</div>
 			                            	
-								                   				<div class="col-md-2" style="margin-bottom: 5px">
-																	<button class="share-button" style="border: none;font-size:13px" onclick="AllowEdit('recommendations')" id="" value="EDIT" >
+								                   				<div class="col-md-2 style28">
+																	<button class="share-button style29" onclick="AllowEdit('recommendations')" id="" value="EDIT" >
 														  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 														  				<input type="submit"  class="edit-btn" name="sub" value="EDIT">
 																	</button>
@@ -1508,40 +1114,28 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				                            				
 															<div class="row">
 				                            					<div class="col-md-2" align="left">
- 																	<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 																		<b style="font-family: 'Lato',sans-serif;font-size: large;">Minutes of Meeting</b>
+ 																	<label class="style63">
+ 																		<b class="style49">Minutes of Meeting</b>
  																	</label>
  																	<form action="#">
  																		<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 																		<input type="hidden" name="closureId" value="<%=closureId %>" />
  																		<%if(acp!=null && acp.getMonitoringCommitteeAttach()!=null){ %>
-				                            					 			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+				                            					 			<button type="submit" class="btn btn-sm style59" name="filename" formmethod="post" formnovalidate="formnovalidate"
 				                            					 		  	 value="monitoringcommitteefile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
 				                            					 				<i class="fa fa-download fa-lg"></i>
 				                            					 			</button>
 		                            					 				<%} %>
  																	</form>
  																</div>
- 																<%-- <div class="col-md-6" align="left">
- 																	<form action="#">
- 																		<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-																		<input type="hidden" name="closureId" value="<%=closureId %>" />
- 																		<%if(acp!=null && acp.getMonitoringCommitteeAttach()!=null){ %>
-				                            					 			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-				                            					 		  	 value="monitoringcommitteefile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
-				                            					 				<i class="fa fa-download fa-lg"></i>
-				                            					 			</button>
-		                            					 				<%} %>
- 																	</form>
- 																</div> --%>
 				                            				</div>
 				                            				
 				                            				<hr>
 				                            				
 															<div class="row">
 				                            					<div class="col-md-12" align="left">
- 																	<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 																		<b style="font-family: 'Lato',sans-serif;font-size: large;">Recommendations</b>
+ 																	<label class="style63">
+ 																		<b class="style49">Recommendations</b>
  																	</label>
  																</div>
 				                            				</div>
@@ -1562,11 +1156,11 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	<div class="card" >
 																		
 																		<div class="card-body">
-																			<div class="row mt-2"  style="margin-left: 3%;margin-right: 2%;">
+																			<div class="row mt-2 style50" >
 																				<div class="col-md-4">
 																					<label class="control-label">Minutes of Meeting: </label><span class="mandatory">*</span>
 																					<%if(acp!=null && acp.getMonitoringCommitteeAttach()!=null){ %>
-				                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+				                            					 						<button type="submit" class="btn btn-sm style59" name="filename" formmethod="post" formnovalidate="formnovalidate"
 				                            					 		  				 	value="monitoringcommitteefile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
 				                            					 							<i class="fa fa-download fa-lg"></i>
 				                            					 						</button>
@@ -1578,19 +1172,19 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		<br>
 																		<div class="card-body">
 																	    	
-																	 		<div class="row"  style="margin-left: 3%;margin-right: 2%;">
-																	 			<label class="control-label" style="margin-left: 1%;">Recommendation of highest Monitoring Committee: </label><span class="mandatory">*</span>
-																				<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+																	 		<div class="row style50">
+																	 			<label class="control-label style66">Recommendation of highest Monitoring Committee: </label><span class="mandatory">*</span>
+																				<div class="col-md-12 style51"  align="left" >
 																					<div id="recommendationsnote" class="center"> </div>
 																					<input type="hidden" id="recommendationshidden" value="<%if(acp!=null && acp.getMonitoringCommittee()!=null) {%><%=acp.getMonitoringCommittee() %><%}%>">
 																				</div>
-																	  			<textarea name="monitoringCommittee" style="display:none;"></textarea>
+																	  			<textarea name="monitoringCommittee" class="style52"></textarea>
 																				<input type="hidden" name="details" value="recommendations"> 
 																	 			
 																	 		</div>  
-																	 		<div class="row"  style="margin-left: 3%;margin-right: 2%;text-align: left;">
+																	 		<div class="row style53">
 																	 			<div class="col-md-12">
-																	 				<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+																	 				<span class="style47">Note:-  </span><b class="style54">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 																	 			</div>
 																	 		</div>	
 																	 		
@@ -1600,9 +1194,9 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	 		<%if(acp!=null && acp.getMonitoringCommittee()!=null) {%>
 																				<button type="submit" class="btn btn-sm btn-warning btn-sm edit btn-acp" name="Action" value="Edit" onclick="return confirm('Are you sure to Update?');" >UPDATE</button>
 																				
-																				<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;" onclick="CloseEdit('recommendations')"
+																				<button type="button" class="btn btn-sm style55" onclick="CloseEdit('recommendations')"
 																				 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
-																					<i class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
+																					<i class="fa fa-times fa-lg style47" aria-hidden="true"></i>
 																				</button>
 																					
 																			<%} else{%>
@@ -1624,45 +1218,22 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 														<div id="othersdiv">
 						                					<div class="row">
 							                            		<div class="col-md-10" align="left">
-							                            			<h4 style="font-family: 'Lato',sans-serif;color: #005086"><b>Other Details</b></h4>
+							                            			<h4 class="style27"><b>Other Details</b></h4>
 							                            		</div>
 			                            	
-								                   				<div class="col-md-2" style="margin-bottom: 5px">
-																	<button class="share-button" style="border: none;font-size:13px" onclick="AllowEdit('others')" id="" value="EDIT" >
+								                   				<div class="col-md-2 style28">
+																	<button class="share-button style29" onclick="AllowEdit('others')" id="" value="EDIT" >
 														  				<span><i class="fa fa-pencil" aria-hidden="true"></i></span>
 														  				<input type="submit"  class="edit-btn" name="sub" value="EDIT">
 																	</button>
 																</div>       			  	
 				                            				</div>
-				                            				
-				                            				<%-- <hr>
-				                            				
-				                            				<div class="row">
-				                            					<div class="col-md-4" align="left">
-				                            						<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
-				                            							<b style="font-family: 'Lato',sans-serif;font-size: large;">Expenditure Details</b>
-				                            						</label>
-				                            					</div>
-				                            				</div>
-				                            				<div class="row">
-				                            					<!-- <div class="col-md-1"></div> -->
-				                            					<div class="col-md-2" align="left">
-				                            						As on: &emsp;<%if(acp!=null && acp.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(acp.getExpndAsOn()) %> <%} else{%>-<%} %> 
-				                            					</div>
-				                            					<div class="col-md-2" align="left">
-				                            						Total: &emsp;<%if(acp!=null && acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %><%} else{%>-<%} %>
-				                            					</div>
-				                            					<div class="col-md-2" align="left">
-				                            						Total FE: &emsp;<%if(acp!=null && acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %><%} else{%>-<%} %>
-				                            					</div>
-				                            				</div> --%>
-				                            				
 				                            				<hr>
 				                            				
 				                            				<div class="row">
 				                            					<div class="col-md-4" align="left">
-				                            						<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
-				                            							<b style="font-family: 'Lato',sans-serif;font-size: large;">Prototype Details</b>
+				                            						<label class="style63">
+				                            							<b class="style49">Prototype Details</b>
 				                            						</label>
 				                            					</div>
 				                            				</div>
@@ -1677,8 +1248,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				                            				
 															<div class="row">
 				                            					<div class="col-md-12" align="left">
- 																	<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 																		<b style="font-family: 'Lato',sans-serif;font-size: large;">Technical Report Details</b>
+ 																	<label class="style63">
+ 																		<b class="style49">Technical Report Details</b>
  																	</label>
  																</div>
 				                            				</div>
@@ -1692,14 +1263,14 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				                            				
 															<div class="row">
 				                            					<div class="col-md-4" align="left">
- 																	<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
- 																		<b style="font-family: 'Lato',sans-serif;font-size: large;">Certificate from Lab MMG/Store Section</b>
+ 																	<label class="style63">
+ 																		<b class="style49">Certificate from Lab MMG/Store Section</b>
  																	</label>
  																	<form action="#">
  																		<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 																		<input type="hidden" name="closureId" value="<%=closureId %>" />
  																		<%if(acp!=null && acp.getCertificateFromLab()!=null){ %>
-				                            					 			<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+				                            					 			<button type="submit" class="btn btn-sm style59" name="filename" formmethod="post" formnovalidate="formnovalidate"
 				                            					 		  	 value="certificatefromlabfile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Certificate from Lab MMG/Store Section Download">
 				                            					 				<i class="fa fa-download fa-lg"></i>
 				                            					 			</button>
@@ -1715,29 +1286,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 															<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 												    		<input type="hidden" name="closureId" value="<%=closureId%>">
 												    		<input type="hidden" name="details" value="others">
-												    		<div class="row" style="margin-left: 2%;margin-right: 2%;">
-												    				
-												    			<%-- <div class="col-md-2" style="">
-														        	<div class="form-group">
-														                <label class="control-label">Expenditure as on:</label><span class="mandatory">*</span>
-														                	<input  class="form-control form-control" type="text" name="expndAsOn" id="expndAsOn"
-														                     value="<%if(acp!=null && acp.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(acp.getExpndAsOn()) %><%} %>" readonly style="background: #fff;" > 
-														            </div>
-												            	</div>
-													        	<div class="col-md-2" style="">
-													        		<div class="form-group">
-													                	<label class="control-label">Total Expenditure (<span style="font-size: 14px;">&#x20B9;</span>):</label><span class="mandatory">*</span>
-													                    <input  class="form-control form-control" type="number" step="0.01" name="totalExpnd" placeholder="Enter Total Expenditure" maxlength="15"
-													                     value="<%if(acp!=null && acp.getTotalExpnd()!=null) {%><%=acp.getTotalExpnd() %><%} %>" required> 
-													                </div>
-													            </div>
-													        	<div class="col-md-2" style="">
-													        		<div class="form-group">
-													                	<label class="control-label">Total FE Expenditure (<span style="font-size: 14px;">&#x20B9;</span>):</label><span class="mandatory">*</span>
-													                    <input  class="form-control form-control" type="number" step="0.01" name="totalExpndFE" placeholder="Enter Total Expenditure FE" maxlength="15"
-													                     value="<%if(acp!=null && acp.getTotalExpndFE()!=null) {%><%=acp.getTotalExpndFE() %><%} %>" required> 
-													                </div>
-													            </div> --%>
+												    		<div class="row style60">
 													            <div class="col-md-2">
 													            	<div class="form-group">
 													                	<label class="control-label">No of Prototypes:</label><span class="mandatory">*</span>
@@ -1758,7 +1307,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 													            	<div class="form-group">
 											                			<label class="control-label">Certificate from Lab MMG / Store Section:</label><span class="mandatory">*</span>
 													                	<%if(acp!=null && acp.getCertificateFromLab()!=null){ %>
-	                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+	                            					 						<button type="submit" class="btn btn-sm style59" name="filename" formmethod="post" formnovalidate="formnovalidate"
 	                            					 		  				 	value="labcertificatefile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Certifciate from Lab Download">
 	                            					 							<i class="fa fa-download fa-lg"></i>
 	                            					 						</button>
@@ -1768,27 +1317,13 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 													            </div>
 													            
 												    		</div>
-											    			<%-- <div class="row" style="margin-left: 2%;margin-right: 2%;">
-											    				<div class="col-md-4">
-													            	<div class="form-group">
-											                			<label class="control-label">Certificate from Lab MMG / Store Section:</label><span class="mandatory">*</span>
-													                	<%if(acp!=null && acp.getCertificateFromLab()!=null){ %>
-	                            					 						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
-	                            					 		  				 	value="labcertificatefile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Certifciate from Lab Download">
-	                            					 							<i class="fa fa-download fa-lg"></i>
-	                            					 						</button>
-	                            					 					<%} %>
-                             		      								<input type="file" class="form-control modals" name="labCertificateAttach" <%if(acp==null || (acp!=null && acp.getCertificateFromLab()==null)) {%>required<%} %> accept=".pdf">
-											                		</div>
-													            </div>
-											    			</div> --%>
 											    			<div align="center">
 											    				<%if(acp!=null && acp.getTechReportNo()!=null){ %>
 																	<button type="submit" class="btn btn-sm btn-warning edit btn-acp" name="Action" value="Edit" onclick="return confirm('Are you sure to update?')" >UPDATE</button>
 																	
-																	<button type="button" class="btn btn-sm" style="border: none;font-size:13px;margin-left: 1%;padding: 7px 10px 7px 10px;" onclick="CloseEdit('others')"
+																	<button type="button" class="btn btn-sm style55" onclick="CloseEdit('others')"
 																	 formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Close">
-																		<i class="fa fa-times fa-lg" aria-hidden="true" style="color: red;"></i>
+																		<i class="fa fa-times fa-lg style47" aria-hidden="true"></i>
 																	</button>
 																<%}else{ %>
 																	<button type="submit" class="btn btn-sm btn-success submit btn-acp" name="Action" value="Add" onclick="return confirm('Are you sure to submit?')" >SUBMIT</button>
@@ -1802,13 +1337,12 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 						        		</div>
 						        	</div>
 						        </div>
-						        <div style="display: flex;justify-content: space-between;">
+						        <div class="style67">
                						<div></div>
-		               				<div class="navigation_btn"  style="text-align: center;">
+		               				<div class="navigation_btn style68">
 		               					<%if( (achievements!=null && achievements.size()>0) && (acp!=null && acp.getFacilitiesCreated()!=null && acp.getMonitoringCommittee()!=null && acp.getTechReportNo()!=null) ){ %>
 				               				<form action="#">
-				               					<button type="submit" class="btn btn-sm " formaction="ProjectClosureACPDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Administrative closure Download" 
-				               					 style="background-color: purple;border: none;color: white;font-weight: bold;">
+				               					<button type="submit" class="btn btn-sm style69" formaction="ProjectClosureACPDownload.htm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Administrative closure Download" >
 				               						Print Administrative Closure
 				               					</button>
 				               					<input type="hidden" name="closureId" value="<%=closureId%>">
@@ -1816,8 +1350,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 				               				</form>
 			               				<%} %>
 									</div>
-		               				<div class="navigation_btn"  style="text-align: right;">
-            							<a class="btn btn-info btn-sm  shadow-nohover back" href="ProjectClosureList.htm" style="color: white!important">Back</a>
+		               				<div class="navigation_btn style70" >
+            							<a class="btn btn-info btn-sm  shadow-nohover back style71" href="ProjectClosureList.htm">Back</a>
 										<button class="btn btn-info btn-sm next">Next</button>
 									</div>
                					</div>			
@@ -1837,66 +1371,66 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
                					<%if( (achievements!=null && achievements.size()>0) && (acp!=null && acp.getFacilitiesCreated()!=null && acp.getMonitoringCommittee()!=null && acp.getTechReportNo()!=null) ) {%>
                					
                						<div class="col-md-8 mt-2">
-               							<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%; <%if(isApproval==null) {%>max-height: 600px;<%} else{%>max-height: 700px;<%} %>  overflow-y: auto;">
+               							<div class="card style72  <%if(isApproval==null) {%>style73<%} else{%>style74<%} %>" >
                								<div class="card-body mt-2 ml-4">
                									<form action="#">
                										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                    									<input type="hidden" name="closureId" value="<%=closureId%>">
                    									<div class="mt-2" align="center">
-			               								<h5 style="font-weight: bold;margin-top: 1.5rem;">
+			               								<h5 class="style75">
 				               								AUDIT OF STATEMENT OF ACCOUNTS (EXPENDITURE) AND ADMINISTRATIVE CLOSURE OF  <%=projectMaster.getProjectShortName()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectShortName()): " - "%> (<%= projectMaster.getProjectCode()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectCode()): " - " %>)
 			               								 </h5>
-			               								 <h5 style="font-weight: bold;">Part - I</h5>
+			               								 <h5 class="style76">Part - I</h5>
 			               							</div>
 			               							<%int slno=0; %>
     												<table id="tabledata">
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">Name of Lab</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">Name of Lab</td>
 												    		<td>: <%=labMaster.getLabName()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabName()): " - "%> (<%= labMaster.getLabCode()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabCode()): " - " %>), <%= labMaster.getLabAddress()!=null?StringEscapeUtils.escapeHtml4(labMaster.getLabAddress()): " - "%> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">Title of the Project</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">Title of the Project</td>
 												    		<td>: <%=projectMaster.getProjectName()!=null?StringEscapeUtils.escapeHtml4(projectMaster.getProjectName()): " - " %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">Date of Sanction</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">Date of Sanction</td>
 												    		<td>: <%if(projectMaster!=null && projectMaster.getSanctionDate()!=null) {%><%=fc.SqlToRegularDate(projectMaster.getSanctionDate().toString()) %><%} else{%><%} %></td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">Category of Project</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">Category of Project</td>
 												    		<td>: <%if(potherdetails!=null && potherdetails[0]!=null) {%><%=StringEscapeUtils.escapeHtml4(potherdetails[0].toString()) %><%} %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td colspan="1" style="width: 40%;font-weight: 600;">Cost in Cr (original & revised)</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td colspan="1" class="style78">Cost in Cr (original & revised)</td>
 												    		<td>:</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"></td>
+												    		<td class="style77"></td>
 												    		<td colspan="">
-												    			<table id="projectdatatablep" style="width: 100%;/* margin-left: 2%; */" >
-																	<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
+												    			<table class="style30" id="projectdatatablep" >
+																	<thead class="style68">
 																		<tr>
-																	    	<th style="width: 20%;">Cost (&#8377;)</th>
-																	    	<th style="width: 40%;">Original</th>
-																	    	<th style="width: 40%;">Revised</th>
+																	    	<th class="style11">Cost (&#8377;)</th>
+																	    	<th class="style79">Original</th>
+																	    	<th class="style79">Revised</th>
 																		</tr>
 																	</thead>
 																	<tbody>
 																		<tr>
 																			<td>RE</td>
-																			<td style="text-align: right;">
+																			<td class="style70">
 																				<%if(potherdetails!=null && potherdetails[1]!=null) {%>
 																					<%=df.format(Double.parseDouble(potherdetails[1].toString())/10000000) %>
 																				<%} else{%>
 																					--
 																				<%} %>
 																			</td>
-																			<td style="text-align: right;">
+																			<td class="style70">
 																				<%if(potherdetails!=null && potherdetails[4]!=null) {%>
 																					<%=df.format(Double.parseDouble(potherdetails[4].toString())/10000000) %>
 																				<%} else{%>
@@ -1906,14 +1440,14 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		</tr>
 																		<tr>
 																			<td>FE</td>
-																			<td style="text-align: right;">
+																			<td class="style70">
 																				<%if(potherdetails!=null && potherdetails[2]!=null) {%>
 																					<%=df.format(Double.parseDouble(potherdetails[2].toString())/10000000) %>
 																				<%} else{%>
 																					--
 																				<%} %>
 																			</td>
-																			<td style="text-align: right;">
+																			<td class="style70">
 																				<%if(potherdetails!=null && potherdetails[5]!=null) {%>
 																					<%=df.format(Double.parseDouble(potherdetails[5].toString())/10000000) %>
 																				<%} else{%>
@@ -1923,14 +1457,14 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		</tr>
 																		<tr>
 																			<td>Total (FE)</td>
-																			<td style="text-align: right;">
+																			<td class="style70">
 																				<%if(potherdetails!=null && potherdetails[3]!=null) {%>
 																					<%=df.format(Double.parseDouble(potherdetails[3].toString())/10000000) %>
 																				<%} else{%>
 																					--
 																				<%} %>
 																			</td>
-																			<td style="text-align: right;">
+																			<td class="style70">
 																				<%if(potherdetails!=null && potherdetails[6]!=null) {%>
 																					<%=df.format(Double.parseDouble(potherdetails[6].toString())/10000000) %>
 																				<%} else{%>
@@ -1944,19 +1478,19 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		<td></td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">PDC of the Project</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">PDC of the Project</td>
 												    		<td>:</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"></td>
-												    		<td style="width: 40%;">
-												    			<table id="projectdatatablep" style="width: 100%;/* margin-left: 2%; */" >
-																	<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
+												    		<td class="style77"></td>
+												    		<td class="style79">
+												    			<table id="projectdatatablep" class="style30" >
+																	<thead class="style86">
 																		<tr>
-																	    	<th style="width: 30%;">Original</th>
-																	    	<th style="width: 30%;">Revised</th>
-																	    	<th style="width: 40%;">No of Revisions</th>
+																	    	<th class="style35">Original</th>
+																	    	<th class="style35">Revised</th>
+																	    	<th class="style79">No of Revisions</th>
 																		</tr>
 																	</thead>
 																	<tbody>
@@ -1969,7 +1503,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		<%for(int i=0; i<rowspan; i++) {%>
 																			<tr>
 																				<%if(i==0) { %>
-																					<td rowspan="<%=rowspan %>" style="text-align: center !important;vertical-align: middle;">
+																					<td rowspan="<%=rowspan %>" class="style80">
 																						<%if(potherdetails!=null && potherdetails[7]!=null) { 
 																							projectPDC = potherdetails[7].toString(); %>
 																							<%=fc.SqlToRegularDate(potherdetails[7].toString()) %>
@@ -1979,7 +1513,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																					</td>
 																				<%} %>
 																				
-																				<td style="text-align: center !important;">
+																				<td class="style81">
 																					<%if(projectMasterRevList!=null && projectMasterRevList.size()>0) {
 																						ProjectMasterRev rev = projectMasterRevList.get(i);
 																					%>
@@ -2004,7 +1538,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																				</td>
 																				
 																				<%if(i==0) { %>
-																					<td rowspan="<%=rowspan %>" style="text-align: center !important;vertical-align: middle;">
+																					<td rowspan="<%=rowspan %>" class="style80">
 																						<%if(potherdetails!=null && potherdetails[9]!=null) {%>
 																							<%=StringEscapeUtils.escapeHtml4(potherdetails[9].toString()) %>
 																						<%} %>
@@ -2018,17 +1552,17 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		<td></td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">Expenditure ( as on <%-- <%if(acp.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(acp.getExpndAsOn()) %> <%} else{%>-<%} %> --%> )</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">Expenditure ( as on <%-- <%if(acp.getExpndAsOn()!=null) {%><%=fc.SqlToRegularDate(acp.getExpndAsOn()) %> <%} else{%>-<%} %> --%> )</td>
 												    		<td>
-												    			: Total(<span style="font-size: 12px;">&#x20B9;</span>)
-												    				<span style="text-decoration: underline;">
+												    			: Total(<span class="style82">&#x20B9;</span>)
+												    				<span class="style83">
 												    					<%-- <%if(acp.getTotalExpnd()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpnd())) %> <%} %> --%>
 												    					<%if(expndDetails!=null && expndDetails[0]!=null) {%>
 												    						<%=df.format(Double.parseDouble(expndDetails[0].toString())/10000000 ) %> 
 												    					<%} %>
 												    				</span> Cr
-												    			 (FE<span style="text-decoration: underline;">
+												    			 (FE<span class="style83">
 												    					<%-- <%if(acp.getTotalExpndFE()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(acp.getTotalExpndFE())) %> <%} %> --%>
 												    					<%if(expndDetails!=null && expndDetails[1]!=null) {%>
 												    						<%=df.format(Double.parseDouble(expndDetails[1].toString())/10000000 ) %> 
@@ -2037,46 +1571,46 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">Aim & Objectives</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">Aim & Objectives</td>
 												    		<td>: <%if(projectMaster.getObjective()!=null) {%><%=StringEscapeUtils.escapeHtml4(projectMaster.getObjective()) %><%} %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">No of Prototypes (type approved/qualified) deliverables as brought out in Govt. Letter</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">No of Prototypes (type approved/qualified) deliverables as brought out in Govt. Letter</td>
 												    		<td>: <%=acp.getPrototyes() %> </td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">List of Sub-Projects</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">List of Sub-Projects</td>
 												    		<td>: <%if( (subprojects==null) || (subprojects!=null && subprojects.size()==0)) { %>Nil<%} %></td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="3">
 												    			<%if(subprojects!=null && subprojects.size()>0) {%>
-													    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
-																		<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
+													    			<table id="projectdatatablep" class="style84" >
+																		<thead class="style68">
 																			<tr>
-																				<th style="width: 5%;">SN</th>
-																		    	<th style="width: 15%;">Projects Name</th>
-																		    	<th style="width: 10%;">Project No</th>
-																		    	<th style="width: 15%;">Agency</th>
-																		    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
-																		    	<th style="width: 20%;">Status</th>
-																		    	<th style="">Achievement</th>
+																				<th class="style10">SN</th>
+																		    	<th class="style13">Projects Name</th>
+																		    	<th class="style12">Project No</th>
+																		    	<th class="style13">Agency</th>
+																		    	<th class="style12">Cost in Cr (&#8377;)</th>
+																		    	<th class="style11">Status</th>
+																		    	<th>Achievement</th>
 																			</tr>
 																		</thead>
 																		<tbody>
 																			<%  int subprojectslno = 0;
 																				for(ProjectClosureACPProjects sub :subprojects) {%>
 																				<tr>
-																					<td style="width: 5%;text-align: center;"><%=++subprojectslno %></td>
-																					<td style="width: 15%;"><%=sub.getACPProjectName()!=null?StringEscapeUtils.escapeHtml4(sub.getACPProjectName()): " - " %> </td>
-																					<td style="width: 10%;text-align: center;"><%=sub.getACPProjectNo()!=null?StringEscapeUtils.escapeHtml4(sub.getACPProjectNo()): " - " %> </td>
-																					<td style="width: 15%;"><%=sub.getProjectAgency()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectAgency()): " - " %> </td>
-																					<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(sub.getProjectCost())/10000000) %> </td>
-																					<td style="width: 20%;"><%=sub.getProjectStatus()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectStatus()): " - " %> </td>
-																					<td style=""><%=sub.getProjectAchivements()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectAchivements()): " - " %> </td>
+																					<td class="style14"><%=++subprojectslno %></td>
+																					<td class="style13"><%=sub.getACPProjectName()!=null?StringEscapeUtils.escapeHtml4(sub.getACPProjectName()): " - " %> </td>
+																					<td class="style15"><%=sub.getACPProjectNo()!=null?StringEscapeUtils.escapeHtml4(sub.getACPProjectNo()): " - " %> </td>
+																					<td class="style13"><%=sub.getProjectAgency()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectAgency()): " - " %> </td>
+																					<td class="style16"><%=df.format(Double.parseDouble(sub.getProjectCost())/10000000) %> </td>
+																					<td class="style11"><%=sub.getProjectStatus()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectStatus()): " - " %> </td>
+																					<td><%=sub.getProjectAchivements()!=null?StringEscapeUtils.escapeHtml4(sub.getProjectAchivements()): " - " %> </td>
 																				</tr>
 																			<%}%>	
 																		</tbody>
@@ -2085,44 +1619,44 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">List of CARS / CAPSI</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">List of CARS / CAPSI</td>
 												    		<td>: <%if( (carscapsiprojects==null) || (carscapsiprojects !=null && carscapsiprojects.size()==0)) { %>Nil<%} %></td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="3">
 												    			<%if(carscapsiprojects!=null && carscapsiprojects.size()>0) { %>
-													    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
-																		<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
+													    			<table id="projectdatatablep" class="style85" >
+																		<thead class="style86">
 																			<tr>
-																				<th style="width: 5%;">SN</th>
-																		    	<th style="width: 5%;">CARS / CAPSI</th>
-																		    	<th style="width: 15%;">Name</th>
-																		    	<th style="width: 10%;">No</th>
-																		    	<th style="width: 15%;">Agency</th>
-																		    	<th style="width: 10%;">Cost in Cr (&#8377;)</th>
-																		    	<th style="width: 15%;">Status</th>
-																		    	<th style="width: 15%;">Achievement</th>
+																				<th class="style10">SN</th>
+																		    	<th class="style10">CARS / CAPSI</th>
+																		    	<th class="style13">Name</th>
+																		    	<th class="style12">No</th>
+																		    	<th class="style13">Agency</th>
+																		    	<th class="style12">Cost in Cr (&#8377;)</th>
+																		    	<th class="style13">Status</th>
+																		    	<th class="style13">Achievement</th>
 																			</tr>
 																		</thead>
 																		<tbody>
 																			<%  int carscapsiprojectslno = 0;
 																				for(ProjectClosureACPProjects carscapsi :carscapsiprojects) {%>
 																				<tr>
-																					<td style="width: 5%;text-align: center;"><%=++carscapsiprojectslno %></td>
-																					<td style="width: 5%;">
+																					<td class="style14"><%=++carscapsiprojectslno %></td>
+																					<td class="style10">
 																						<%if(carscapsi.getACPProjectType()!=null && carscapsi.getACPProjectType().equalsIgnoreCase("R")) {%>
 																							CARS
 																						<%} else{%>
 																							CAPSI
 																						<%} %>
 																					</td>
-																					<td style="width: 15%;"><%=carscapsi.getACPProjectName()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getACPProjectName()): " - " %> </td>
-																					<td style="width: 10%;text-align: center;"><%=carscapsi.getACPProjectNo() !=null?StringEscapeUtils.escapeHtml4(carscapsi.getACPProjectNo()): " - "%> </td>
-																					<td style="width: 15%;"><%=carscapsi.getProjectAgency()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectAgency()): " - " %> </td>
-																					<td style="width: 10%;text-align: right;"><%=df.format(Double.parseDouble(carscapsi.getProjectCost())/10000000) %> </td>
-																					<td style="width: 20%;"><%=carscapsi.getProjectStatus()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectStatus()): " - "%> </td>
-																					<td style="width: 15%;"><%=carscapsi.getProjectAchivements()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectAchivements()): " - " %> </td>
+																					<td class="style13"><%=carscapsi.getACPProjectName()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getACPProjectName()): " - " %> </td>
+																					<td class="style15"><%=carscapsi.getACPProjectNo() !=null?StringEscapeUtils.escapeHtml4(carscapsi.getACPProjectNo()): " - "%> </td>
+																					<td class=""><%=carscapsi.getProjectAgency()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectAgency()): " - " %> </td>
+																					<td class="style16"><%=df.format(Double.parseDouble(carscapsi.getProjectCost())/10000000) %> </td>
+																					<td class="style11"><%=carscapsi.getProjectStatus()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectStatus()): " - "%> </td>
+																					<td class="style13"><%=carscapsi.getProjectAchivements()!=null?StringEscapeUtils.escapeHtml4(carscapsi.getProjectAchivements()): " - " %> </td>
 																				</tr>
 																			<%}%>	
 																		</tbody>
@@ -2131,32 +1665,32 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">List of Consultancies</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">List of Consultancies</td>
 												    		<td>: <%if( (consultancies==null) || (consultancies!=null && consultancies.size()==0)) { %>Nil<%} %></td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="3">
 												    			<%if( consultancies!=null && consultancies.size()>0) { %>
-													    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
-																		<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
+													    			<table id="projectdatatablep" class="style85" >
+																		<thead class="style86">
 																			<tr>
-																				<th style="width: 5%;">SN</th>
-																		    	<th style="width: 35%;">Aim</th>
-																		    	<th style="width: 25%;">Agency</th>
-																		    	<th style="width: 20%;">Amount in Cr (&#8377;)</th>
-																		    	<th style="width: 10%;">Date</th>
+																				<th class="style10">SN</th>
+																		    	<th class="style34">Aim</th>
+																		    	<th class="style64">Agency</th>
+																		    	<th class="style11">Amount in Cr (&#8377;)</th>
+																		    	<th class="style12">Date</th>
 																			</tr>
 																		</thead>
 																		<tbody>
 																			<%  int consultancieslno = 0;
 																				for(ProjectClosureACPConsultancies consultancy :consultancies) {%>
 																				<tr>
-																					<td style="width: 5%;text-align: center;"><%=++consultancieslno %></td>
-																					<td style="width: 35%;"><%=consultancy.getConsultancyAim()!=null?StringEscapeUtils.escapeHtml4(consultancy.getConsultancyAim()): " - " %> </td>
-																					<td style="width: 25%;"><%=consultancy.getConsultancyAgency()!=null?StringEscapeUtils.escapeHtml4(consultancy.getConsultancyAgency()): " - " %> </td>
-																					<td style="width: 20%;text-align: right;"><%=df.format(Double.parseDouble(consultancy.getConsultancyCost())/10000000) %> </td>
-																					<td style="width: 10%;text-align: center;"><%=fc.SqlToRegularDate(consultancy.getConsultancyDate()) %> </td>
+																					<td class="style14"><%=++consultancieslno %></td>
+																					<td class="style34"><%=consultancy.getConsultancyAim()!=null?StringEscapeUtils.escapeHtml4(consultancy.getConsultancyAim()): " - " %> </td>
+																					<td class="style64"><%=consultancy.getConsultancyAgency()!=null?StringEscapeUtils.escapeHtml4(consultancy.getConsultancyAgency()): " - " %> </td>
+																					<td class="style36"><%=df.format(Double.parseDouble(consultancy.getConsultancyCost())/10000000) %> </td>
+																					<td class="style15"><%=fc.SqlToRegularDate(consultancy.getConsultancyDate()) %> </td>
 																				</tr>
 																			<%} %>	
 																		</tbody>
@@ -2165,8 +1699,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">Details of Facilities created (as proposed in the programme) </td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">Details of Facilities created (as proposed in the programme) </td>
 												    		<td>: <span><%if(acp.getFacilitiesCreated()!=null) {%><%=StringEscapeUtils.escapeHtml4(acp.getFacilitiesCreated()) %><%} %></span></td>
 												    	</tr>
 												    	<%-- <tr>
@@ -2175,8 +1709,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		</td>
 												    	</tr> --%>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">Trial Results </td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">Trial Results </td>
 												    		<td>: </td>
 												    	</tr>
 												    	<tr>
@@ -2187,12 +1721,12 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    	</tr>
 												    	<tr>
 												    		<td colspan="3">
-												    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
-																	<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
+												    			<table id="projectdatatablep" class="style85" >
+																	<thead class="style86">
 																		<tr>
-																			<th style="width: 5%;">SN</th>
-																	    	<th style="width: 70%;">Description</th>
-																	    	<th style="width: 20%;">Action</th>
+																			<th class="style10">SN</th>
+																	    	<th class="style87">Description</th>
+																	    	<th class="style11">Action</th>
 																		</tr>
 																	</thead>
 																	<tbody>
@@ -2200,12 +1734,12 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																			int trialresultsslno = 0;
 																			for(ProjectClosureACPTrialResults results :trialresults) {%>
 																			<tr>
-																				<td style="width: 5%;text-align: center;"><%=++trialresultsslno %></td>
+																				<td class="style14"><%=++trialresultsslno %></td>
 																				
-																				<td style="width: 70%;"><%=results.getDescription()!=null?StringEscapeUtils.escapeHtml4(results.getDescription()): " - " %> </td>
-																				<td style="width: 20%;text-align: center;">
+																				<td class="style87"><%=results.getDescription()!=null?StringEscapeUtils.escapeHtml4(results.getDescription()): " - " %> </td>
+																				<td class="style58">
 																					<%if(results.getAttachment()!=null && !results.getAttachment().isEmpty()) {%>
-																						<button type="submit" form="myform6" class="btn btn-sm" style="padding: 5px 8px;" id="attachedfile" name="attachmentfile" formmethod="post" formnovalidate="formnovalidate"
+																						<button type="submit" form="myform6" class="btn btn-sm style59" id="attachedfile" name="attachmentfile" formmethod="post" formnovalidate="formnovalidate"
 	                            					 		  				 			 value="<%=results.getTrialResultsId() %>" formaction="ProjectClosureACPTrialResultsFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Attatchment Download">
 	                            					 										<i class="fa fa-download fa-lg"></i>
 	                            					 									</button>
@@ -2218,19 +1752,19 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td style="width: 40%;font-weight: 600;">Achievements</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td class="style78">Achievements</td>
 												    		<td>: </td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="3">
-												    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
-																	<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
+												    			<table id="projectdatatablep" class="style85" >
+																	<thead class="style86">
 																		<tr>
-																			<th style="width: 5%;">SN</th>
-																	    	<th style="width: 32.5%;">Targets as Envisaged</th>
-																	    	<th style="width: 32.5%;">Targets as Achieved</th>
-																	    	<th style="width: 25%;">Remarks</th>
+																			<th class="style10">SN</th>
+																	    	<th class="style88">Targets as Envisaged</th>
+																	    	<th class="style88">Targets as Achieved</th>
+																	    	<th class="style64">Remarks</th>
 																		</tr>
 																	</thead>
 																	<tbody>
@@ -2238,10 +1772,10 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																			int achievementsslno = 0;
 																			for(ProjectClosureACPAchievements achieve :achievements) {%>
 																			<tr>
-																				<td style="width: 5%;text-align: center;"><%=++achievementsslno %></td>
-																				<td style="width: 32.5%;"><%=achieve.getEnvisaged()!=null?StringEscapeUtils.escapeHtml4(achieve.getEnvisaged()): " - " %> </td>
-																				<td style="width: 32.5%;"><%=achieve.getAchieved()!=null?StringEscapeUtils.escapeHtml4(achieve.getAchieved()): " - "%> </td>
-																				<td style="width: 25%;"><%=achieve.getRemarks()!=null?StringEscapeUtils.escapeHtml4(achieve.getRemarks()): " - " %> </td>
+																				<td class="style14"><%=++achievementsslno %></td>
+																				<td class="style88"><%=achieve.getEnvisaged()!=null?StringEscapeUtils.escapeHtml4(achieve.getEnvisaged()): " - " %> </td>
+																				<td class="style88"><%=achieve.getAchieved()!=null?StringEscapeUtils.escapeHtml4(achieve.getAchieved()): " - "%> </td>
+																				<td class="style64"><%=achieve.getRemarks()!=null?StringEscapeUtils.escapeHtml4(achieve.getRemarks()): " - " %> </td>
 																			</tr>
 																		<%} }%>	
 																	</tbody>
@@ -2249,8 +1783,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td colspan="2" style="width: 40%;font-weight: 600;">Recommendation of highest Monitoring Committee Meeting for Administrative Closure of the Project</td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td colspan="2" class="style78">Recommendation of highest Monitoring Committee Meeting for Administrative Closure of the Project</td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="1"></td>
@@ -2258,7 +1792,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    			<span>
 												    				<%if(acp.getMonitoringCommittee()!=null) {%><%=acp.getMonitoringCommittee() %><%} %>
 												    				<%if(acp!=null && acp.getMonitoringCommitteeAttach()!=null){ %>
-					                            						<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+					                            						<button type="submit" class="btn btn-sm style59"  name="filename" formmethod="post" formnovalidate="formnovalidate"
 					                            					 	 value="monitoringcommitteefile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Monitoring Committee Recommendations Download">
 					                            					 		<i class="fa fa-download"></i>
 					                            					 	</button>
@@ -2267,14 +1801,14 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td colspan="2" style="width: 40%;font-weight: 600;">Certificate from Lab MMG/Store Section stating no outstanding commitment, no live supply order or contracts & warranty is enclosed. List of payments, to be made due to contractual obligation be enclosed. </td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td colspan="2" class="style78">Certificate from Lab MMG/Store Section stating no outstanding commitment, no live supply order or contracts & warranty is enclosed. List of payments, to be made due to contractual obligation be enclosed. </td>
 												    	</tr>
 												    	<tr>
 												    		<td colspan="1"></td>
 												    		<td colspan="2">
 												    			<%if(acp!=null && acp.getCertificateFromLab()!=null){ %>
-	                            					 				<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" name="filename" formmethod="post" formnovalidate="formnovalidate"
+	                            					 				<button type="submit" class="btn btn-sm style59" name="filename" formmethod="post" formnovalidate="formnovalidate"
 	                            					 		  		 value="labcertificatefile" formaction="ProjectClosureACPFileDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Certifciate from Lab Download">
 	                            					 					<i class="fa fa-download"></i>
 	                            					 				</button>
@@ -2282,8 +1816,8 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td  colspan="2" style="font-weight: 600;">Certified that objectives set for the project have been met as per Technical Report No. <span style="text-decoration: underline;font-weight: 500;"><%if(acp.getTechReportNo()!=null) {%><%= StringEscapeUtils.escapeHtml4(acp.getTechReportNo()) %><%} %></span></td>
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td  colspan="2" class="style89">Certified that objectives set for the project have been met as per Technical Report No. <span class="style93"><%if(acp.getTechReportNo()!=null) {%><%= StringEscapeUtils.escapeHtml4(acp.getTechReportNo()) %><%} %></span></td>
 												    	</tr>
 												    </table>
 												    
@@ -2291,54 +1825,54 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			               		   					
 			               		   					<!-- Signature and timestamp of PD -->
 			               		   					
-													<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 10px;margin-top: 30px;">
-		               								 	<div style="font-size: 15px;">Project Director</div>
+													<div class="style90">
+		               								 	<div class="style61">Project Director</div>
 						               					<%for(Object[] apprInfo : acpApprovalEmpData){ %>
 						   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("AFW")){ %>
-						   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-						   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-						   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
+						   								<label class="style91"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+						   								<label class="style92"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+						   								<label class="style82">[Forwarded On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
 						   			    				<%break;}} %>  
 							            			</div>
 							            			
 							            			<!-- Signature and timestamp of Recommending officers -->
 							            			<%for(Object[] apprInfo : acpApprovalEmpData) {%>
-							            			 	<div style="width: 96%;text-align: left;margin-left: 10px;line-height: 10px;margin-top: 50px;margin-left: 40px;">
+							            			 	<div class="style94">
 							            			 		<%if(apprInfo[8].toString().equalsIgnoreCase("AAG")){ %>
-							            			 			<div style="font-size: 15px;"> Signature of GD</div>
-								   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
+							            			 			<div class="style61"> Signature of GD</div>
+								   								<label class="style91"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="style92"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="style82">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("AAA")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of AD</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
+							   			    					<div class="style61"> Signature of AD</div>
+							   			    					<label class="style91"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="style92"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="style82">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("AAP")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of GD-DP&C</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
+							   			    					<div class="style61"> Signature of GD-DP&C</div>
+							   			    					<label class="style91"><%=apprInfo[2]%></label>,<!-- <br> -->
+								   								<label class="style92"><%=apprInfo[3]%></label><br>
+								   								<label class="style82">[Recommended On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19) %>]</label>
 							   			    				
 							   			    				<%} %>
 							            			 	</div>	
 							            			 <%} %>
 							            			
 							            			<br>
-							            			<hr style="height: 1px;background-color: black;">
+							            			<hr class="style95">
 							            			<br>
 							            			
 							            			<div class="" align="center">
-			               								 <h5 style="font-weight: bold;">Part - II</h5>
-			               								 <h5 style="font-weight: bold;">
+			               								 <h5 class="style76">Part - II</h5>
+			               								 <h5 class="style76">
 				               								Statement of Accounts (Expenditure)
 			               								 </h5>
 			               							</div>
 			               							
 			               							<table id="tabledata">
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td colspan="2" style="">
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td colspan="2">
 												    			It is certified that the project
 												    			<%if(projectMaster!=null) {%>
 												    				"<%if(projectMaster.getProjectName()!=null) {%><%=StringEscapeUtils.escapeHtml4(projectMaster.getProjectName()) %><%} %>
@@ -2358,7 +1892,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																 as per the enclosed Audited Statement of Expenditure.
 																<%} %>
 																<br><br>
-																<span style="margin-left: 5%;">All the stores/equipment undertaken in the project has been accounted for.</span>
+																<span class="style96">All the stores/equipment undertaken in the project has been accounted for.</span>
 												    			
 												    		</td>
 												    	</tr>
@@ -2367,26 +1901,26 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			               		   					
 			               		   					<!-- Signature and timestamp of Lab Accounts Officer -->
 			               		   					
-													<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 10px;margin-top: 30px;">
-		               								 	<div style="font-size: 15px;">
+													<div class="style90">
+		               								 	<div class="style61">
 		               								 		(Lab Accounts Officer or equivalent) <br><br>
 		               								 		<span>(Signature with name and office seal)</span>
 		               								 	</div>
 						               					<%for(Object[] apprInfo : acpApprovalEmpData){ %>
 						   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("AAL")){ %>
-						   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-						   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-						   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
+						   								<label class="style91"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+						   								<label class="style92"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+						   								<label class="style82">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
 						   			    				<%break;}} %>  
 							            			</div>
 							            			
 			               							<br>
-							            			<hr style="height: 1px;background-color: black;">
+							            			<hr class="style95">
 							            			<br>
 							            			
 							            			<div class="" align="center">
-			               								 <h5 style="font-weight: bold;">Part - III</h5>
-			               								 <h5 style="font-weight: bold;">
+			               								 <h5 class="style76">Part - III</h5>
+			               								 <h5 class="style76">
 				               								The Statement of Accounts (Expenditure) of the project has been audited and reconciled.
 			               								 </h5>
 			               							</div>
@@ -2399,32 +1933,32 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			               							</div>
 			               							
 			               							<br>
-							            			<hr style="height: 1px;background-color: black;">
+							            			<hr class="style95">
 							            			<br>
 							            			
 							            			<!-- Signature and timestamp of Approving officers -->
 							            			<%for(Object[] apprInfo : acpApprovalEmpData) {%>
-							            			 	<div style="width: 96%;text-align: left;margin-left: 40px;line-height: 10px;margin-top: 50px;">
+							            			 	<div class="style97">
 							            			 		<%if(apprInfo[8].toString().equalsIgnoreCase("AAD")){ %>
-							            			 			<div style="font-size: 15px;"> Signature of Director</div>
-								   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
+							            			 			<div class="style61"> Signature of Director</div>
+								   								<label class="style91"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="style92"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="style82">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10))  +" "+apprInfo[4]!=null?StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(11,19):" - " %>]</label>
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("AAO")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of O/o DG (ECS)</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) %>]</label>
+							   			    					<div class="style61"> Signature of O/o DG (ECS)</div>
+							   			    					<label class="style91"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="style92"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="style82">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) %>]</label>
 								   							<%} else if(apprInfo[8].toString().equalsIgnoreCase("AAN")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of DG (Nodal)</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) %>]</label>	
+							   			    					<div class="style61"> Signature of DG (Nodal)</div>
+							   			    					<label class="style91"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="style92"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="style82">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) %>]</label>	
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("AAC")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of CFA</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) %>]</label>
+							   			    					<div class="style61"> Signature of CFA</div>
+							   			    					<label class="style91"><%=apprInfo[2]!=null?StringEscapeUtils.escapeHtml4(apprInfo[2].toString()): " - "%></label>,<!-- <br> -->
+								   								<label class="style92"><%=apprInfo[3]!=null?StringEscapeUtils.escapeHtml4(apprInfo[3].toString()): " - "%></label><br>
+								   								<label class="style82">[Approved On:&nbsp; <%=fc.SqlToRegularDate(StringEscapeUtils.escapeHtml4(apprInfo[4].toString()).substring(0, 10)) %>]</label>
 							   			    				
 							   			    				<%} %>
 							            			 	</div>	
@@ -2434,31 +1968,25 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 							            			 
 							            			 <table id="tabledata">
 												    	<tr>
-												    		<td style="width: 4%;"><%=++slno %>.</td>
-												    		<td colspan="2" style="font-weight: 600;">
+												    		<td class="style77"><%=++slno %>.</td>
+												    		<td colspan="2" class="style89">
 												    			Expenditure Status in Cr
 												    		</td>
 												    	</tr>
 												    	<tr>
-												    		<!-- <td style="width: 4%;"></td> -->
 												    		<td colspan="3">
-												    			<%-- <%
-												    			if(projectidlist!=null && projectidlist.size()>0) {
-												    			for (int z = 0; z < projectidlist.size(); z++) { %> --%>
-												    			<table id="projectdatatablep" style="width: 95%;margin-left: 2%;" >
-																	<thead style = "/* background-color: #055C9D; color: white; */text-align: center;">
+												    			<table id="projectdatatablep" class="style85" >
+																	<thead class="style86">
 																		<tr>
-																			<th colspan="2" style="text-align: center; width: 200px !important;">Head </th>
-																			<th colspan="3" style="text-align: center; width: 120px !important;">Sanction </th>
-																			<th colspan="3" style="text-align: center; width: 120px !important;">Expenditure </th>
-																			<th colspan="3" style="text-align: center; width: 120px !important;">O/s Commitments </th>
-																			<th colspan="3" style="text-align: center; width: 120px !important;">Balance </th>
-																			<!-- <th colspan="2" style="text-align: center; width: 120px !important;">DIPL </th>
-																			<th colspan="2" style="text-align: center; width: 120px !important;">Notional Balance </th> -->
+																			<th colspan="2" class="style98">Head </th>
+																			<th colspan="3" class="style99">Sanction </th>
+																			<th colspan="3" class="style99">Expenditure </th>
+																			<th colspan="3" class="style99">O/s Commitments </th>
+																			<th colspan="3" class="style99">Balance </th>
 																		</tr>
 																		<tr>
-																			<th style="width: 30px !important; text-align: center;">SN</th>
-																			<th style="width: 180px !important;" width="10">Head</th>
+																			<th class="style100">SN</th>
+																			<th class="style101" width="10">Head</th>
 																			<th>IC</th>
 																			<th>FE</th>
 																			<th>Total</th>
@@ -2471,10 +1999,6 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																			<th>IC</th>
 																			<th>FE</th>
 																			<th>Total</th>
-																			<!-- <th>IC</th>
-																			<th>FE</th>
-																			<th>IC</th>
-																			<th>FE</th> -->
 																		</tr>
 																	</thead>
 																	<tbody>
@@ -2496,93 +2020,74 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																			for (ProjectFinancialDetails projectFinancialDetail : revenue) {
 																		%>
 																		<tr>
-																			<td align="center" style="max-width: 50px !important; text-align: center;"><%=count++%></td>
-																			<%-- <%if(i++==0) {%> 
-																				<td rowspan="<%=revenue.size()+1%>" style="transform : rotate(270deg); width : 4%; text-align: center;" >
-																			 		REVENUE
-																			 	</td>
-																			<%} %> --%>
-																			<td style=""><b><%=projectFinancialDetail.getBudgetHeadDescription()!=null?StringEscapeUtils.escapeHtml4(projectFinancialDetail.getBudgetHeadDescription()):" - "%></b></td>
+																			<td align="center" class="style102"><%=count++%></td>
+																			<td><b><%=projectFinancialDetail.getBudgetHeadDescription()!=null?StringEscapeUtils.escapeHtml4(projectFinancialDetail.getBudgetHeadDescription()):" - "%></b></td>
 																			<!-- Sanction Cost -->
 																			<!-- IC -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReSanction())%></td>
 																			<% totReSanctionCostRev += (projectFinancialDetail.getReSanction()); %>
 																			<!-- FE -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
 																			<% totFESanctionCostRev += (projectFinancialDetail.getFeSanction()); %>
 																			<!-- Total -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction() + projectFinancialDetail.getFeSanction()) %> </td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReSanction() + projectFinancialDetail.getFeSanction()) %> </td>
 																			<% totReFESantionCostRev +=projectFinancialDetail.getReSanction() + projectFinancialDetail.getFeSanction();%>
 																			
 																			<!-- Expenditure Cost -->
 																			<!-- IC -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReExpenditure())%></td>
 																			<% totREExpenditureRev += (projectFinancialDetail.getReExpenditure()); %>
 																			<!-- FE -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
 																			<% totFEExpenditureRev += (projectFinancialDetail.getFeExpenditure()); %>
 																			<!-- Total -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure() + projectFinancialDetail.getFeExpenditure())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReExpenditure() + projectFinancialDetail.getFeExpenditure())%></td>
 																			<% totReFEExpenditureRev += (projectFinancialDetail.getReExpenditure() + projectFinancialDetail.getFeExpenditure()); %>
 																			
 																			<!-- O/s Commitments Cost -->
 																			<!-- IC -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
 																			<% totRECommitmentRev += (projectFinancialDetail.getReOutCommitment()); %>
 																			<!-- FE -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment() )%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getFeOutCommitment() )%></td>
 																			<% totFECommitmentRev += (projectFinancialDetail.getFeOutCommitment() ); %>
 																			<!-- Total -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment() + projectFinancialDetail.getFeOutCommitment())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReOutCommitment() + projectFinancialDetail.getFeOutCommitment())%></td>
 																			<% totReFECommitmentRev += (projectFinancialDetail.getReOutCommitment() + projectFinancialDetail.getFeOutCommitment()); %>
 																			
 																			<!-- Balance Cost -->
 																			<!-- IC -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl())%></td>
 																			<% btotalReRev += (projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl()); %>
 																			<!-- FE -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl())%></td>
 																			<% btotalFeRev += (projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl()); %>
 																			<!-- Total -->
-																			<td align="right" style="text-align: right;"><%=df.format((projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl()) + (projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl()) )%></td>
+																			<td align="right" class="style70"><%=df.format((projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl()) + (projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl()) )%></td>
 																			<% totReFeBalanceRev += ((projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl()) + (projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl()) ); %>
-																			
-																			<%-- <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
-																			<% totalREDIPL += (projectFinancialDetail.getReDipl()); %>
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
-																			<% totalFEDIPL += (projectFinancialDetail.getFeDipl()); %>
-																			
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
-																			<% totReBalanceCap += (projectFinancialDetail.getReBalance()); %>
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
-																			<% totFeBalanceCap += (projectFinancialDetail.getFeBalance()); %> --%>
 																		</tr>
 																		<%}} %>
 																		</tbody>
 																		<tbody>
 																			<tr>
-																				<td colspan="2" style="text-align: right;"><b>Total (Revenue)</b></td>
+																				<td colspan="2" class="style70"><b>Total (Revenue)</b></td>
 																				<!-- Sanction Cost -->
-																				<td align="right" style="text-align: right;"><%=df.format(totReSanctionCostRev)%></td>
-																				<td align="right" style="text-align: right;"><%=df.format(totFESanctionCostRev)%></td>
-																				<td align="right" style="text-align: right;"><%=df.format(totReFESantionCostRev)%></td>
+																				<td align="right" class="style70"><%=df.format(totReSanctionCostRev)%></td>
+																				<td align="right" class="style70"><%=df.format(totFESanctionCostRev)%></td>
+																				<td align="right" class="style70"><%=df.format(totReFESantionCostRev)%></td>
 																				<!-- Expenditure Cost -->
-																				<td align="right" style="text-align: right;"><%=df.format(totREExpenditureRev)%></td>
-																				<td align="right" style="text-align: right;"><%=df.format(totFEExpenditureRev)%></td>
-																				<td align="right" style="text-align: right;"><%=df.format(totReFEExpenditureRev)%></td>
+																				<td align="right" class="style70"><%=df.format(totREExpenditureRev)%></td>
+																				<td align="right" class="style70"><%=df.format(totFEExpenditureRev)%></td>
+																				<td align="right" class="style70"><%=df.format(totReFEExpenditureRev)%></td>
 																				<!-- O/s Commitments Cost -->
-																				<td align="right" style="text-align: right;"><%=df.format(totRECommitmentRev)%></td>
-																				<td align="right" style="text-align: right;"><%=df.format(totFECommitmentRev)%></td>
-																				<td align="right" style="text-align: right;"><%=df.format(totReFECommitmentRev)%></td>
+																				<td align="right" class="style70"><%=df.format(totRECommitmentRev)%></td>
+																				<td align="right" class="style70"><%=df.format(totFECommitmentRev)%></td>
+																				<td align="right" class="style70"><%=df.format(totReFECommitmentRev)%></td>
 																				<!-- Balance Cost -->
-																				<td align="right" style="text-align: right;"><%=df.format(btotalReRev)%></td>
-																				<td align="right" style="text-align: right;"><%=df.format(btotalFeRev)%></td>
-																				<td align="right" style="text-align: right;"><%=df.format(totReFeBalanceRev)%></td>
+																				<td align="right" class="style70"><%=df.format(btotalReRev)%></td>
+																				<td align="right" class="style70"><%=df.format(btotalFeRev)%></td>
+																				<td align="right" class="style70"><%=df.format(totReFeBalanceRev)%></td>
 																				
-																				<%-- <td align="right" style="text-align: right;"><%=df.format(totalREDIPL)%></td>
-																				<td align="right" style="text-align: right;"><%=df.format(totalFEDIPL)%></td>
-																				<td align="right" style="text-align: right;"><%=df.format(totReBalanceCap)%></td>
-																				<td align="right" style="text-align: right;"><%=df.format(totFeBalanceCap)%></td> --%>
 																			</tr>
 
 																	</tbody>
@@ -2594,66 +2099,51 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																		%>
 																		
 																		<tr>
-																			<td align="center" style="max-width: 50px !important; text-align: center;"><%=count++%></td>
-																			<%-- <%if(j++==0) {%> 
-																				<td rowspan="<%=capital.size()+1%>" style="transform : rotate(270deg); width : 4%; text-align: center;" >
-																			 		CAPITAL
-																			 	</td>
-																			<%} %> --%>
+																			<td align="center" class="style102"><%=count++%></td>
 																			<td><b><%=projectFinancialDetail.getBudgetHeadDescription()!=null?StringEscapeUtils.escapeHtml4(projectFinancialDetail.getBudgetHeadDescription()):" - "%></b></td>
 																			<!-- Sanction Cost -->
 																			<!-- IC -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReSanction())%></td>
 																			<% totReSanctionCostCap += (projectFinancialDetail.getReSanction()); %>
 																			<!-- FE -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getFeSanction())%></td>
 																			<% totFESanctionCostCap += (projectFinancialDetail.getFeSanction()); %>
 																			<!-- Total -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReSanction() + projectFinancialDetail.getFeSanction()) %> </td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReSanction() + projectFinancialDetail.getFeSanction()) %> </td>
 																			<% totReFESantionCostCap +=projectFinancialDetail.getReSanction() + projectFinancialDetail.getFeSanction();%>
 																			
 																			<!-- Expenditure Cost -->
 																			<!-- IC -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReExpenditure())%></td>
 																			<% totREExpenditureCap += (projectFinancialDetail.getReExpenditure()); %>
 																			<!-- FE -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getFeExpenditure())%></td>
 																			<% totFEExpenditureCap += (projectFinancialDetail.getFeExpenditure()); %>
 																			<!-- Total -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReExpenditure() + projectFinancialDetail.getFeExpenditure())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReExpenditure() + projectFinancialDetail.getFeExpenditure())%></td>
 																			<% totReFEExpenditureCap += (projectFinancialDetail.getReExpenditure() + projectFinancialDetail.getFeExpenditure()); %>
 																			
 																			<!-- O/s Commitments Cost -->
 																			<!-- IC -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReOutCommitment())%></td>
 																			<% totRECommitmentCap += (projectFinancialDetail.getReOutCommitment()); %>
 																			<!-- FE -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeOutCommitment() )%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getFeOutCommitment() )%></td>
 																			<% totFECommitmentCap += (projectFinancialDetail.getFeOutCommitment() ); %>
 																			<!-- Total -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReOutCommitment() + projectFinancialDetail.getFeOutCommitment())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReOutCommitment() + projectFinancialDetail.getFeOutCommitment())%></td>
 																			<% totReFECommitmentCap += (projectFinancialDetail.getReOutCommitment() + projectFinancialDetail.getFeOutCommitment()); %>
 																			
 																			<!-- Balance Cost -->
 																			<!-- IC -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl())%></td>
 																			<% btotalReCap += (projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl()); %>
 																			<!-- FE -->
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl())%></td>
+																			<td align="right" class="style70"><%=df.format(projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl())%></td>
 																			<% btotalFeCap += (projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl()); %>
 																			<!-- Total -->
-																			<td align="right" style="text-align: right;"><%=df.format((projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl()) + (projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl()) )%></td>
+																			<td align="right" class="style70"><%=df.format((projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl()) + (projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl()) )%></td>
 																			<% totReFeBalanceCap += ((projectFinancialDetail.getReBalance() + projectFinancialDetail.getReDipl()) + (projectFinancialDetail.getFeBalance() + projectFinancialDetail.getFeDipl()) ); %>
-																			
-																			<%-- <td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReDipl())%></td>
-																			<% totalREDIPL += (projectFinancialDetail.getReDipl()); %>
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeDipl())%></td>
-																			<% totalFEDIPL += (projectFinancialDetail.getFeDipl()); %>
-																			
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getReBalance())%></td>
-																			<% totReBalanceCap += (projectFinancialDetail.getReBalance()); %>
-																			<td align="right" style="text-align: right;"><%=df.format(projectFinancialDetail.getFeBalance())%></td>
-																			<% totFeBalanceCap += (projectFinancialDetail.getFeBalance()); %> --%>
 																		</tr>
 																		<%}} %>
 																		
@@ -2661,57 +2151,43 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 																	</tbody>
 																	<tbody>
 																		<tr>
-																			<td colspan="2" style="text-align: right;"><b>Total (Capital)</b></td>
+																			<td colspan="2" class="style70"><b>Total (Capital)</b></td>
 																			<!-- Sanction Cost -->
-																			<td align="right" style="text-align: right;"><%=df.format(totReSanctionCostCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totFESanctionCostCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totReFESantionCostCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totReSanctionCostCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totFESanctionCostCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totReFESantionCostCap)%></td>
 																			<!-- Expenditure Cost -->
-																			<td align="right" style="text-align: right;"><%=df.format(totREExpenditureCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totFEExpenditureCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totReFEExpenditureCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totREExpenditureCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totFEExpenditureCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totReFEExpenditureCap)%></td>
 																			<!-- O/s Commitments Cost -->
-																			<td align="right" style="text-align: right;"><%=df.format(totRECommitmentCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totFECommitmentCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totReFECommitmentCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totRECommitmentCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totFECommitmentCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totReFECommitmentCap)%></td>
 																			<!-- Balance Cost -->
-																			<td align="right" style="text-align: right;"><%=df.format(btotalReCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(btotalFeCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totReFeBalanceCap)%></td>
-																			
-																			<%-- <td align="right" style="text-align: right;"><%=df.format(totalREDIPL)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totalFEDIPL)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totReBalanceCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totFeBalanceCap)%></td> --%>
+																			<td align="right" class="style70"><%=df.format(btotalReCap)%></td>
+																			<td align="right" class="style70"><%=df.format(btotalFeCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totReFeBalanceCap)%></td>
 																		</tr>
 																		<tr>
-																			<td colspan="2" style="text-align: right;"><b>GrandTotal (Rev + Cap) </b></td>
+																			<td colspan="2" class="style70"><b>GrandTotal (Rev + Cap) </b></td>
 																			<!-- Sanction Cost -->
-																			<td align="right" style="text-align: right;"><%=df.format(totReSanctionCostRev + totReSanctionCostCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totFESanctionCostRev + totFESanctionCostCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totReFESantionCostRev + totReFESantionCostCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totReSanctionCostRev + totReSanctionCostCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totFESanctionCostRev + totFESanctionCostCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totReFESantionCostRev + totReFESantionCostCap)%></td>
 																			<!-- Expenditure Cost -->
-																			<td align="right" style="text-align: right;"><%=df.format(totREExpenditureRev + totREExpenditureCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totFEExpenditureRev + totFEExpenditureCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totReFEExpenditureRev + totReFEExpenditureCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totREExpenditureRev + totREExpenditureCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totFEExpenditureRev + totFEExpenditureCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totReFEExpenditureRev + totReFEExpenditureCap)%></td>
 																			<!-- O/s Commitments Cost -->
-																			<td align="right" style="text-align: right;"><%=df.format(totRECommitmentRev + totRECommitmentCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totFECommitmentRev + totFECommitmentCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totReFECommitmentRev + totReFECommitmentCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totRECommitmentRev + totRECommitmentCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totFECommitmentRev + totFECommitmentCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totReFECommitmentRev + totReFECommitmentCap)%></td>
 																			<!-- Balance Cost -->
-																			<td align="right" style="text-align: right;"><%=df.format(btotalReRev + btotalReCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(btotalFeRev + btotalFeCap)%></td>
-																			<td align="right" style="text-align: right;"><%=df.format(totReFeBalanceRev + totReFeBalanceCap)%></td>
+																			<td align="right" class="style70"><%=df.format(btotalReRev + btotalReCap)%></td>
+																			<td align="right" class="style70"><%=df.format(btotalFeRev + btotalFeCap)%></td>
+																			<td align="right" class="style70"><%=df.format(totReFeBalanceRev + totReFeBalanceCap)%></td>
 																		</tr>
-																		<%-- <tr>
-																			<td colspan="2"><b>GrandTotal</b></td>
-																			<td colspan="3" align="right" style="text-align: right;"><b><%=df.format(totReSanctionCostCap + totFESanctionCostCap)%></b></td>
-																			<td colspan="3" align="right" style="text-align: right;"><b><%=df.format(totREExpenditureCap + totFEExpenditureCap)%></b></td>
-																			<td colspan="3" align="right" style="text-align: right;"><b><%=df.format(totRECommitmentCap + totFECommitmentCap)%></b></td>
-																			<td colspan="3" align="right" style="text-align: right;"><b><%=df.format(btotalReCap + btotalFeCap)%></b></td>
-																			<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totalREDIPL + totalFEDIPL)%></b></td>
-																			<td colspan="2" align="right" style="text-align: right;"><b><%=df.format(totReBalanceCap + totFeBalanceCap)%></b></td>
-																		</tr> --%>
 
 																	</tbody>
 																</table>
@@ -2723,21 +2199,21 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			               							
 			               							
 			               							<!-- Remarks History -->
-							            			 <div class="row mt-2" style="margin-left: 30px;">
+							            			 <div class="row mt-2 style103">
 														<%if(acpRemarksHistory.size()>0){ %>
-															<div class="col-md-8" align="left" style="margin: 10px 0px 5px 25px; padding:0px;border: 1px solid black;border-radius: 5px;">
+															<div class="col-md-8 style104" align="left">
 																<%if(acpRemarksHistory.size()>0){ %>
-																	<table style="margin: 3px;padding: 0px">
+																	<table class="style105">
 																		<tr>
-																			<td style="border:none;padding: 0px">
-																			<h6 style="text-decoration: underline;">Remarks :</h6> 
+																			<td class="style106">
+																			<h6 class="style83">Remarks :</h6> 
 																			</td>											
 																		</tr>
 																		<%for(Object[] obj : acpRemarksHistory){%>
 																		<tr>
-																			<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
+																			<td class="style107">
 																				<%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>&nbsp; :
-																				<span style="border:none; color: blue;">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
+																				<span class="style108">	<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></span>
 																			</td>
 																		</tr>
 																		<%} %>
@@ -2758,7 +2234,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 															<%} %>
 															<%if(isApproval!=null && isApproval.equalsIgnoreCase("Y")) {%>
 																<%if(statuscode!=null && ( statuscode.contains("AAD")  || statuscode.contains("AAO") || statuscode.contains("AAN") ) ) {%>
-																	<div class="row externalapproval" style="">
+																	<div class="row externalapproval">
 																		<div class="col-md-3">
 																			<label class="control-label">Lab</label><span class="mandatory">*</span>
 																			<select class="form-control selectdee" id="LabCode" name="LabCode" onchange="LabcodeSubmit()" data-live-search="true"  required="required">
@@ -2791,19 +2267,19 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea"></textarea>
 								         						</div>
 								         						<%if(statuscode!=null && acpapprove.contains(statuscode)) {%>
-								         						<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="ProjectClosureACPApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
+								         						<button type="submit" class="btn btn-sm btn-success style89" id="finalSubmission" formaction="ProjectClosureACPApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');">
 										    						Approve	
 									      						</button>
 									      						
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="ProjectClosureACPApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+									      						<button type="submit" class="btn btn-sm btn-danger style109" id="finalSubmission" formaction="ProjectClosureACPApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();">
 										 							Return
 																</button>
 								         						<%} else{%>
-																<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="ProjectClosureACPApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" style="font-weight: 600;">
+																<button type="submit" class="btn btn-sm btn-success style89" id="finalSubmission" formaction="ProjectClosureACPApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');">
 										    						Recommend	
 									      						</button>
 									      						
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="ProjectClosureACPApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+									      						<button type="submit" class="btn btn-sm btn-danger style109" id="finalSubmission" formaction="ProjectClosureACPApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();">
 										 							Return
 																</button>
 															<%} }%>
@@ -2815,57 +2291,57 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
                    						</div>
                    					</div>
                					<%} else{%>
-			               			<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-			               				<h4 style="font-weight: bold;color: red;">Please fill Administrative Closure Details..!</h4>
+			               			<div class="mt-4 style110">
+			               				<h4 class="style111">Please fill Administrative Closure Details..!</h4>
 			               			</div>
                					<%} %>
                					
-               					<div style="display: flex;justify-content: space-between;">
+               					<div class="style67">
 	               					<div></div>
 		               				<div>
 		               					<%if(isApproval==null) {%>
 		               					<div class="row"  >
-				 		  					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For Administrative Closure Approval</b></div>
+				 		  					<div class="col-md-12 style68"><b>Approval Flow For Administrative Closure Approval</b></div>
 				 	    				</div>
-				 	    				<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+				 	    				<div class="row style112" >
 			              					<table align="center"  >
 			               						<tr>
-			               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+			               							<td class="trup style113">
 			                							PD -  <%if(PDData!=null) {%><%=PDData[2]!=null?StringEscapeUtils.escapeHtml4(PDData[1].toString()): " - " %> <%} else{%>GD<%} %>
 			                						</td>
 			                		
 		                        					<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+			                						<td class="trup style114">
 			                							GD - <%if(GD!=null) {%><%=GD[1]!=null?StringEscapeUtils.escapeHtml4(GD[1].toString()): " - " %> <%} else{%>GD<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
+			                						<td class="trup style115">
 			                							AD - <%if(AD!=null) {%><%=AD[1]!=null?StringEscapeUtils.escapeHtml4(AD[1].toString()): " - " %> <%} else{%>AD<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #76ebcb 10%, transparent 115%);">
+			                						<td class="trup style116">
 			                							GD-DP&C - <%if(GDDPandC!=null) {%><%=GDDPandC[1]!=null?StringEscapeUtils.escapeHtml4(GDDPandC[1].toString()): " - " %> <%} else{%>GD-DP&C<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #f2a610 10%, transparent 115%);">
+			                						<td class="trup style117">
 			                							Lab Accounting Officer - <%if(LAO!=null) {%><%=LAO[1]!=null?StringEscapeUtils.escapeHtml4(LAO[1].toString()): " - " %> <%} else{%>LAO<%} %>
 			                	    				</td>
 			                	    				
 			                	    				<td rowspan="2">
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
-			                						<td class="trup" style="background: linear-gradient(to top, #13f816 10%, transparent 115%);">
+			                						<td class="trup style118">
 			                							Director - <%if(Director!=null) {%><%=Director[1]!=null?StringEscapeUtils.escapeHtml4(Director[1].toString()): " - " %> <%} else{%>Director<%} %>
 			                	    				</td>
 			                	    				
@@ -2878,7 +2354,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #96de1c 10%, transparent 115%);">
+			                						<td class="trup style119">
 			                							O/o DG(ECS) - O/o DG(ECS)
 			                	    				</td>
 			                	    				<%} %>
@@ -2888,7 +2364,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #ff7200 10%, transparent 115%);">
+			                						<td class="trup style120">
 			                							 DG(Nodal) - DG(Nodal)
 			                	    				</td>
 			                	    				<%} %>
@@ -2898,7 +2374,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #00c7e4 10%, transparent 115%);">
+			                						<td class="trup style121">
 			                							CFA - CFA
 			                	    				</td>
 			                	    				<%} %>
@@ -2907,7 +2383,7 @@ List<List<ProjectFinancialDetails>> projectFinancialDetails = (List<List<Project
 					 					</div>
 					 					<%} %>
 		               				</div>
-		               				<div class="navigation_btn"  style="text-align: right;">
+		               				<div class="navigation_btn style70">
 		            					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 										<button class="btn btn-info btn-sm next">Next</button>
 									</div>

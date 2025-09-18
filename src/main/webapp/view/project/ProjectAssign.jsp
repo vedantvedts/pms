@@ -5,42 +5,16 @@
 <%@page import="java.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/projectModule/projectAssign.css" var="projectAssign" />
+<link href="${projectAssign}" rel="stylesheet" />
 <title>PROJECT  ASSIGN</title>
-<style type="text/css">
 
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b{
-	font-family: 'Lato',sans-serif;
-}
-
-#myTable thead tr{
-	background-color: #055C9D;
-    color: white;
-}
-.select2-container{
-	width: 100% !important;
-}
-</style>
 </head>
 <body>
 	<%	SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -79,17 +53,17 @@ b{
 					<div class="row">
 						<div class="col-md-10"><h4>Project Team</h4></div>
 						<div class="col-md-2">		      
-							<a class="btn btn-info btn-sm  back"  style="margin-left: 4.2rem; margin-top: -5px;"   href="MainDashBoard.htm">Back</a>
+							<a class="btn btn-info btn-sm back cs-back" href="MainDashBoard.htm">Back</a>
 						</div>
 					</div>
 				</div>
-				<div class="" style="background-color: #f4f5f0;">
+				<div class="cs-div-color">
 					<form method="POST" action="ProjectProSubmit.htm">
 						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 						<div class="row">
 							<div class="col-md-3"></div>
 							<div class="col-md-2 right">
-								<label style="font-weight: 800">Project Code: <span class="mandatory" style="color: red;">*</span></label>
+								<label class="fw-800">Project Code: <span class="mandatory text-danger">*</span></label>
 							</div>
 							<div class="col-md-3">
 								<select class="form-control selectdee" name="ProjectId" id="ProjectId" onchange="this.form.submit()">
@@ -108,22 +82,22 @@ b{
 					</form>
 				</div>
 
-				<div class="row" style="margin-top: 10px;">
+				<div class="row mt-10">
       				<div class="col-md-6">
-						<div style="margin-top: 0px;">
+						<div class="mt-0">
 							<div class="card " >
 								<div class="card-body  shadow-nohover" >
 									<form action="#" method="POST" name="frm1" >
-										<div class="row" style="margin-top: 20px;">
+										<div class="row mt-20">
 											<div class="col-md-12">
 												<div class="table-responsive">
 													<table class="table table-bordered table-hover table-striped table-condensed" id="myTable"> 
-														<thead style=" text-align: center;">
-															<tr style="background-color: white;color: black">
+														<thead class="text-center">
+															<tr class="cs-tr">
 																<th colspan="5">List Of User Assigned for <%if(ProjectCode!=null){ %><%=StringEscapeUtils.escapeHtml4(ProjectCode[1].toString())%><%} %></th>
 															</tr>
 															<tr>
-	   															<th style="width:5%; ">Select</th>
+	   															<th class="w-5">Select</th>
 												   				<th >Lab</th>
 												   				<th >Employee Name</th>
 																<th>Division Code</th>
@@ -141,16 +115,16 @@ b{
 	  																		<input type="hidden" id="empId_<%=obj[0]%>" value="<%=obj[1] %>">
 	  																		<input type="hidden" id="roleMasterId_<%=obj[0]%>" value="<%=obj[8] %>">
 	  																	</td>
-																		<td style="text-align: left;"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):"-" %></td>
-																		<td style="text-align: left;"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>, <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
-																        <td style="text-align: left;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
-																        <td style="text-align: left;"><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()):"-" %></td>
+																		<td class="text-left"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()):"-" %></td>
+																		<td class="text-left"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %>, <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+																        <td class="text-left"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
+																        <td class="text-left"><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()):"-" %></td>
 																	</tr>
 															<%} }%>
 														</tbody>
 													</table>
 												</div>
-												<div style="text-align: center;">
+												<div class="text-center">
  													<button type="button" class="btn btn-sm edit" name="action" value="edit" formaction="ProjectProSubmit.htm" onclick="actionHandle('edit')">EDIT</button>&nbsp;&nbsp;
  													<button type="submit" class="btn btn-danger btn-sm delete" formaction="ProjectRevokeSubmit.htm" onclick="actionHandle('revoke')">REVOKE</button>&nbsp;&nbsp;
 												</div>
@@ -165,15 +139,15 @@ b{
 						</div>
 					</div>
 					<div class="col-md-6">
-						<div style="margin-top: 0px;">
+						<div class="mt-0">
 							<div class="card" >
 								<div class="card-body  shadow-nohover" >
 									<form action="ProjectAssignSubmit.htm" method="POST" name="frm1" >
-										<div class="row" style="margin-top: 20px;">
+										<div class="row mt-20">
 											<div class="col-md-12">
 												<div class="table-responsive">
-													<table class="table table-bordered table-hover table-striped table-condensed" style="width: 100%;" > 
-														<thead style = "background-color: #055C9D; color: white;">
+													<table class="table table-bordered table-hover table-striped table-condensed w-100"> 
+														<thead class="cs-thead">
 															<tr>
 	   															<th width="100%" colspan="3">Select Users  for <%if(ProjectCode!=null){ %><%=StringEscapeUtils.escapeHtml4(ProjectCode[1].toString())%><%} %></th>
 	  														</tr>
@@ -209,7 +183,7 @@ b{
 														</tbody>
 													</table>
 												</div>
-												<div style="text-align: center;">
+												<div class="text-center">
 													<button type="submit" class="btn btn-success btn-sm submit" name="action" value="Add">ASSIGN</button>&nbsp;&nbsp;
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 													<input type="hidden" name="ProjectId" id="ProjectId" value="<%=ProjectId%>"/>
@@ -229,10 +203,10 @@ b{
   	<!-- -------------------------------------------- Project Team Edit Modal ------------------------------------------------------------- -->
 	<div class="modal fade" id="projectTeamEditModal" tabindex="-1" role="dialog" aria-labelledby="projectTeamEditModal" aria-hidden="true">
 		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
-			<div class="modal-content" style="width:135%;margin-left:-20%;">
-				<div class="modal-header" style="background: #055C9D;color: white;">
+			<div class="modal-content cs-content">
+				<div class="modal-header cs-mcolor">
 		        	<h5 class="modal-title ">Project Team Edit</h5>
-			        <button type="button" class="close" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
+			        <button type="button" class="close cs-close" data-dismiss="modal" aria-label="Close">
 			          <span class="text-light" aria-hidden="true">&times;</span>
 			        </button>
 		      	</div>
@@ -265,7 +239,7 @@ b{
 											    <%}%>
 											</select>
 										</div>
-										<div class="col-md-2" style="margin-top: auto;">
+										<div class="col-md-2 mt-auto">
 											<button type="submit" class="btn btn-sm edit" name="action" value="Edit" onclick="return confirm('Are you sure to Update?')">UPDATE</button>
 										</div>
 									</div>
@@ -280,12 +254,12 @@ b{
 	<!-- -------------------------------------------- Project Team Edit Modal End ------------------------------------------------------------- -->		
 	
 	<!-- ----------------------------------------------- Add New Role Modal --------------------------------------------------------------- -->
-	<div class="modal fade bd-example-modal-lg center" id="addNewRoleModal" tabindex="-1" role="dialog" aria-labelledby="addNewRoleModal" aria-hidden="true" style="margin-top: 10%;">
+	<div class="modal fade bd-example-modal-lg center mt-10p" id="addNewRoleModal" tabindex="-1" role="dialog" aria-labelledby="addNewRoleModal" aria-hidden="true">
 		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
-			<div class="modal-content" style="width: 150%;margin-left: -27%;">
-				<div class="modal-header" style="background: #055C9D;color: white;">
+			<div class="modal-content cs-content1">
+				<div class="modal-header cs-mcolor">
 		        	<h5 class="modal-title ">Add New Role</h5>
-			        <button type="button" class="close roleclose" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
+			        <button type="button" class="close roleclose cs-close" data-dismiss="modal" aria-label="Close">
 			          <span class="text-light" aria-hidden="true">&times;</span>
 			        </button>
 		      	</div>
@@ -304,7 +278,7 @@ b{
 		       									<label class="form-label">Role Code <span class="mandatory">*</span></label>
 		       									<input type="text" class="form-control field" name="roleCode" id="roleCode" placeholder="Enter Role Code" maxlength="5" required>
 		       								</div>
-		       								<div class="col-md-2" style="margin-top: auto;">
+		       								<div class="col-md-2 mt-auto">
 		       									<button type="button"class="btn btn-sm submit" onclick="addNewRoleDetails()">SUBMIT</button>
 		       								</div>
 	                  				 	</div>

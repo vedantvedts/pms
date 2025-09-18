@@ -1,0 +1,158 @@
+@charset "UTF-8";
+
+
+.control-label{
+	font-weight: bold !important;
+}
+
+
+.table thead th{
+	
+	vertical-align: middle !important;
+}
+
+.header{
+        position:sticky;
+        top: 0 ;
+        background-color: #346691;
+    }
+    
+    .table button{
+    	background-color: background !important;
+    	font-size: 12px;
+    }
+    
+.col-form-label{
+	font-weight: 600!important;
+	
+}
+ 
+.title ul {
+    -moz-column-count: 3;
+    -moz-column-gap: 10px;
+    -webkit-column-count: 3;
+    -webkit-column-gap: 10px;
+    column-count: 3;
+    column-gap: 10px;
+}
+ 
+ .fa-upload{
+ 	color:#007bff;
+ }
+ 
+.documenttitle label{
+	font-size: 15px;
+	font-family: 'Lato',sans-serif;
+}
+
+.fa-file-text{
+	color:green;
+}
+
+.version{
+	color:#145374;
+	font-size: 14px;
+    font-weight: 600;
+    font-family: 'Muli';
+
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+ 
+/* <!-- --------------  tree   ------------------- --> */
+
+ul, #myUL {
+  list-style-type: none;
+}
+
+#myUL {
+  margin: 0;
+  padding: 0;
+}
+
+.caret {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+}
+
+.caret-last {
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
+}
+
+
+.caret-last::before {
+  content: "\25B7";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret::before {
+  content: "\25B7";
+  color: black;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.caret-down::before {
+  content: "\25B6  ";
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Safari */
+  transform: rotate(90deg);  
+}
+
+.nested {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+
+
+/* <!-- ---------------- tree ----------------- --> */
+
+body{
+	background-color: #e2ebf0!important;
+}
+
+.m-minus8{
+	margin-top: -8px;
+}
+
+.f-right{
+	float: right;
+}
+.min-height{
+	min-height: 31rem;
+}
+.cursor{
+	cursor: pointer;
+}
+.font-color{
+	font-weight: 700; 
+	color: black;
+}
+.btn-fileparentid{
+	color: red;
+	border:0px;
+	background-color:white;
+	font-size:16px;
+}

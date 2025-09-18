@@ -2,34 +2,15 @@
 <%@page import="java.time.LocalTime"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/committeeModule/CommitteeSubSchedule.css" var="CommitteeSubSchedule" />
+<link href="${CommitteeSubSchedule}" rel="stylesheet" />
 <title>COMMITTEE MAIN MODIFY</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-b{
-	font-family: 'Lato',sans-serif;
-}
-
-</style>
 </head>
 <body>
 <%
@@ -72,7 +53,7 @@ List<Object[]> subschedulelist=(List<Object[]>)request.getAttribute("subschedule
         
         	<div class="card shadow-nohover" >
         	
-				<div class="card-header" style="background-color: #055C9D;font-size: 20px ">
+				<div class="card-header cardHeaderStyle">
                     <b class="text-white">Sub Schedule</b>
                     
                     
@@ -121,7 +102,7 @@ List<Object[]> subschedulelist=(List<Object[]>)request.getAttribute("subschedule
   			 </div> <!-- card-body-end -->   
         
 
-			<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5); padding: 25px ">
+			<div class="card-footer footerStyle">
          		<b class="text-white"></b>
        
         	</div>

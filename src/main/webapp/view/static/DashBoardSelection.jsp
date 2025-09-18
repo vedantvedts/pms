@@ -13,11 +13,7 @@
 <head>
 <meta charset="ISO-8859-1">
 
-<style type="text/css">
-input[type=checkbox] {
-	accent-color: green;
-}
-</style>
+
 </head>
 
 <%
@@ -37,19 +33,19 @@ if(ProjectList!=null && ProjectList.size()>0){
 <!-- Modal -->
 
 <div class="modal fade bd-example-modal-lg" id="DashboardProjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document" style="max-width: 1440px;">
+  <div class="modal-dialog modal-lg clx-73" role="document" >
     <div class="modal-content">
       <div class="modal-header bg-primary text-light">
         <h5 class="modal-title" id="exampleModalLabel">Dashboard Projects</h5>
-        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" style="color:red;">&times;</span>
+        <button type="button" class="close"  data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="cl-6">&times;</span>
         </button>
       </div>
       <div class="modal-body">
       <hr>
       <div class="row ml-2 mt-2 mb-2"> 
       
-      <div class="col-md-2" style="font-size: 1.2 rem;">Favourites</div>
+      <div class="col-md-2 clx-74" >Favourites</div>
       <div class="col-md-3">
       <select class="form-control" id="favs" name="favs" >
       <option disabled="disabled" selected="selected">SELECT</option>
@@ -62,44 +58,44 @@ if(ProjectList!=null && ProjectList.size()>0){
       <option value="0">Add Favourites</option>
       </select>
       </div>
-      <div class="col-md-5" id="addFavDiv" style="display: none;">
-      Favourite Name : <input id="addFav" class="form-control" style="width:60%;display: inline" maxlength="200" placeholder="max 255 character">
+      <div class="col-md-5 dis-none" id="addFavDiv" >
+      Favourite Name : <input id="addFav" class="form-control clx-75"  maxlength="200" placeholder="max 255 character">
       </div>
       </div>
       
       <hr>
       <% if(MainProjectList!=null && MainProjectList.size()>0){ %>
       <div class="row ml-2 mb-3 mt-2" >
-      Main projects : <input id="mainProject" style="transform:scale(1.5)" type="checkbox"  > 
+      Main projects : <input id="mainProject " class="clx-76" type="checkbox"  > 
       </div>
       <%} %>
-      <div class="row" style="">
+      <div class="row" >
       <% 
       if(MainProjectList!=null && MainProjectList.size()>0){
       for(Object[]obj:MainProjectList) {%>
       <div class="col-md-2 ml-4 mt-3">
-      <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>"> <span ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()): " - " %></span>
+      <input class="mainProject clx-76" type="checkbox" name="projectId"  value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>"> <span ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()): " - " %></span>
       </div>
        <%}} %>
        </div> 
         <hr class="mt-2">
        <%if(subProjectList!=null && subProjectList.size()>0){ %>
       <div class="row ml-2 mb-3 mt-2" >
-     		 Sub projects :       <input id="subProject" style="transform:scale(1.5)" type="checkbox"  > 
+     		 Sub projects :       <input id="subProject" class="clx-76" type="checkbox"  > 
      		 
       </div>
       <%} %>
-      <div class="row" style="">
+      <div class="row" >
       <%if(subProjectList!=null && subProjectList.size()>0){
       for(Object[]obj:subProjectList) {%>
        <div class="col-md-2 ml-4 mt-3" >
-       <input class="subProject" style="transform:scale(1.5)" type="checkbox" name="projectId" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>"> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()): " - " %>
+       <input class="subProject clx-76"  type="checkbox" name="projectId" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): ""%>"> <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()): " - " %>
       </div>
       <%}} %>
       </div>
       
      
-          <div class="mt-3 mb-3" align="center" id="addDiv" style="display: none;">
+          <div class="mt-3 mb-3 dis-none" align="center" id="addDiv" >
         	<form action="DashboardFavAdd.htm" method="post">
         	<input type="hidden" name="addFav" id="addFavvalue">
         	<input type="hidden" name="projects" id="projects">
@@ -110,7 +106,7 @@ if(ProjectList!=null && ProjectList.size()>0){
         
       </div>
       
-      	<div class="mt-3 mb-3" align="center" id="updateDiv" style="display: none;">
+      	<div class="mt-3 mb-3 dis-none" align="center" id="updateDiv" >
         	<form action="UpdateDashboardFav.htm" method="post">
         	<input type="hidden" name="dashboardId" id="dashboardId" value="">
         	<input type="hidden" name="favProjects" id="favProjects" value="">

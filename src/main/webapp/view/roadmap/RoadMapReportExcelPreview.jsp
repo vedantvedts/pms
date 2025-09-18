@@ -9,73 +9,17 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Road Map Report</title>
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
-<style type="text/css">
-
-.table-wrapper {
-    max-height: 800px; /* Set the max height for the table wrapper */
-    overflow-y: auto; /* Enable vertical scrolling */
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1.2rem;
-	overflow-y: auto; 
-	overflow-x: auto; 
-	margin-left: 10px;
-	margin-right: 10px;
-}
-
-thead {
-    position: sticky;
-	top: 0; /* Keeps the header at the top */
-	z-index: 1000; /* Ensure the header stays on top of the body */
-	background-color: white; /* For visibility */
-}
-
-th, td {
-    padding: 8px;
-    border: 1px solid black;
-    text-align: left;
-}
-
-th {
-    background-color: #f1f1f1; /* Light gray background for headers */
-    text-align: center;
-}
+<spring:url value="/resources/css/roadMapModule/roadMapReportExcelPreview.css" var="roadMapReportExcelPreview" />
+<link href="${roadMapReportExcelPreview}" rel="stylesheet" />
 
 
-/* table {
-	border-collapse: collapse;
-	border: 1px solid black;
-	padding: 10px;
-	width: 100%;
-	margin-top: 1.2rem;
-	overflow-y: auto; 
-	overflow-x: auto; 
-	margin-left: 10px;
-	margin-right: 10px;
-}
-
-table td, th{
-	border: 1px solid black;
-	padding: 10px;
-}
-
-table th{
-	text-align: center;
-} */
-
-.center{
-	text-align: center;
-}
-</style>
 </head>
 <body>
 <%
@@ -100,8 +44,8 @@ preProjectList = preProjectList.stream().filter(e -> initiationIdSet.contains(e[
 
 %>
 
-	<div class="mt-2" style="margin-top: 2rem;">
-		<form action="RoadMapReportExcelDownload.htm" method="post" style="margin-top: 2rem;">
+	<div class="mt-4">
+		<form action="RoadMapReportExcelDownload.htm" method="post" class="mt-4">
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			<input type="hidden" name="startYear" value="<%=startYear%>">
 			<input type="hidden" name="endYear" value="<%=endYear%>">
@@ -117,16 +61,14 @@ preProjectList = preProjectList.stream().filter(e -> initiationIdSet.contains(e[
 			<%} }%>
 			
 			<div class="center">
-				<button type="submit" class="btn btn-sm" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Road Map Report Excel Download" style="background-color: purple;border: none;color: white;font-weight: 600;">
+				<button type="submit" class="btn btn-sm cs-generate" formtarget="_blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Road Map Report Excel Download">
 					GENERATE EXCEL
 				</button> 
 			</div>
 			
 		</form>
 		
-		<!-- <div class="center" style="margin-top: 1rem;padding: 20px;">
 			<h4>ROAD MAP REPORT</h4>
-		</div> -->
 		<div class="table-wrapper">
 			<table>
 				<thead class="center">

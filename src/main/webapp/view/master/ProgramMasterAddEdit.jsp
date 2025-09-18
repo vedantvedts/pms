@@ -7,18 +7,15 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1" %>
+	       <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<style type="text/css">
-.heading{
-	font-weight: 800;
-	font-size: 16px;
-	color: #07689f;
-}
-</style>
+<spring:url value="/resources/css/master/programMasterAddEdit.css" var="programMasterAddEdit" />     
+<link href="${programMasterAddEdit}" rel="stylesheet" />
+
 </head>
 <body>
 
@@ -55,7 +52,7 @@
 			<div class="col-md-2"></div>
 			<div class="col-md-8">
 				<div class="card shadow-nohover">
-					<div class="card-header" style="background-color: #055C9D;">
+					<div class="card-header cardHead" >
 						<b class="text-white">Programme Master <%if(programmeMaster==null){%>Add<%} else {%> Edit <% } %></b>
 					</div>
 					<div class="card-body">
@@ -63,17 +60,17 @@
 							<div class="row">
 								<div class="col-md-3">
 									<div class="form-group">
-										<label class="form-label"><b class="heading">Programme Code:</b><span class="mandatory" style="color:red;">*</span></label>
-										<input type="text" class="form-control" onchange="handleInputChange(this.value,0)" placeholder="Enter Programme Code" name="ProgrammeCode" id="ProgrammeCode" required="required"
+										<label class="form-label"><b class="heading">Programme Code:</b><span class="mandatory" >*</span></label>
+										<input type="text" class="form-control progrmMasterInput" onchange="handleInputChange(this.value,0)" placeholder="Enter Programme Code" name="ProgrammeCode" id="ProgrammeCode" required="required"
 										<%if(programmeMaster!=null){%>
 										 value="<%=programmeMaster.getPrgmCode()!=null?StringEscapeUtils.escapeHtml4(programmeMaster.getPrgmCode()):""%>" 
 										<% } %>
-										  style="font-size: 15px; text-transform: uppercase;"/> 
+										  /> 
 									</div>
 								</div>
 								<div class="col-md-4">
 									<div class="form-group">
-										<label class="form-label"><b class="heading">Programme Name:</b><span class="mandatory" style="color:red;">*</span></label>
+										<label class="form-label"><b class="heading">Programme Name:</b><span class="mandatory" >*</span></label>
 										<input type="text" class="form-control" placeholder="Enter Programme Name" name="ProgrammeName" id="ProgrammeName" required="required" 
 										<%if(programmeMaster!=null){%>
 										 value="<%=programmeMaster.getPrgmName()!=null?StringEscapeUtils.escapeHtml4(programmeMaster.getPrgmName()):""%>" 
@@ -84,7 +81,7 @@
 								<div class="col-md-4">
 									<div class="form-group">
 										<label class="form-label">
-											<b class="heading">Programme Director:</b><span class="mandatory" style="color:red;">*</span>
+											<b class="heading">Programme Director:</b><span class="mandatory" >*</span>
 										</label>
 										<select class="form-control selectdee" id="programmedirector" name="programmedirector" data-width="100%"	data-live-search="true" required="required">
 											<option disabled="disabled" selected="selected" value="">Choose.....</option>
@@ -98,7 +95,7 @@
 								</div>
 								<div class="col-md-3">
 									<div class="form-group">
-										<label class="form-label"><b class="heading">Sanctioned On:</b><span class="mandatory" style="color:red;">*</span></label>
+										<label class="form-label"><b class="heading">Sanctioned On:</b><span class="mandatory" >*</span></label>
 										<input type="text"  id="sanc-date" name="sanctionDate" class="form-control" required="required"
 										<%if(programmeMaster!=null && programmeMaster.getSanctionedOn()!=null){%>
 											value="<%=fc.sdfTordf(programmeMaster.getSanctionedOn()) %>"
@@ -108,7 +105,7 @@
 								<div class="col-md-9">
 									<div class="form-group">
 										<label class="for-label"><b class="heading">Projects:</b>
-											<!-- <span class="mandatory" style="color:red;">*</span> -->
+											
 										</label>
 										<select class="form-control selectdee" multiple="multiple"  name="prgmprojectids" id="prgmprojectids" data-placeholder="Choose..."	>
 											<% for (Object[] obj : projectsList){ %>
@@ -120,7 +117,7 @@
 									</div>
 								</div> 
 							</div>
-							<div align="center" style="margin-top:20px;">
+							<div align="center" class="submitdiv" >
 								<% if(programmeMaster==null){%>
 									<button type="submit" class="btn btn-sm submit" value="Add" name="action">SUBMIT</button>&nbsp;&nbsp;
 									<input type="hidden" name="programmeMasterId" value="0" />

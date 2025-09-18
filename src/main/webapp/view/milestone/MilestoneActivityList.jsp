@@ -12,93 +12,11 @@
 <spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
 	<link href="${sweetalertCss}" rel="stylesheet" />
 	<script src="${sweetalertJs}"></script>
- 
+ <spring:url value="/resources/css/milestone/milestoneActivityList.css" var="milestoneActivityList" />     
+<link href="${milestoneActivityList}" rel="stylesheet" />
 
 <title>Milestone List</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 14px;
-}
-.table thead tr,tbody tr{
-    font-size: 14px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.multiselect-container>li>a>label {
-  padding: 4px 20px 3px 20px;
-}
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
 
-/*  #swal2-title , #swal2-html-container{
-display:none !important;
-}
-
-.swal2-popup{
-background: none !important;
-}  */
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 120px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:210px !important;
-}
-.bootstrap-select {
-  width: 400px !important;
-}
-input[type=checkbox] {
-	accent-color: green;
-}
-</style>
 </head>
  
 <body>
@@ -121,17 +39,17 @@ input[type=checkbox] {
 
 
     <form class="form-inline"  method="POST" action="MilestoneActivityList.htm">
-  <div class="row W-100" style="width: 100%;">
+  <div class="row W-100 width-100" >
 
   <div class="col-md-7">
-  <h6 style="color: #145374;" >&nbsp; &nbsp; Project <i class="fa fa-long-arrow-right " aria-hidden="true"></i> Add Milestone <i class="fa fa-long-arrow-right " aria-hidden="true"></i> 
+  <h6 class="h6Color" >&nbsp; &nbsp; Project <i class="fa fa-long-arrow-right " aria-hidden="true"></i> Add Milestone <i class="fa fa-long-arrow-right " aria-hidden="true"></i> 
   							Add SubActivity <i class="fa fa-long-arrow-right " aria-hidden="true"></i> SubActivity <i class="fa fa-long-arrow-right " aria-hidden="true"></i> Weightage <i class="fa fa-long-arrow-right " aria-hidden="true"></i> Assignee</h6>
   </div>
 	
                                     <div class="col-md-2">
                             		<label class="control-label">Project Name :</label>
                             		</div>
-                            		<div class="col-md-2" style="margin-top: -7px;">
+                            		<div class="col-md-2" >
                               		<select class="form-control selectdee" id="ProjectId" required="required" name="ProjectId">
     									<option disabled="true"  selected value="">Choose...</option>
     										<% for (Object[] obj : ProjectList) {
@@ -173,7 +91,7 @@ input[type=checkbox] {
    <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card shadow-nohover" style="margin-top: -0px;">
+				<div class="card shadow-nohover" >
 				<div class="row card-header">
 			     <div class="col-md-10">
 					<h5 ><%if(ProjectId!=null){
@@ -183,21 +101,21 @@ input[type=checkbox] {
 					<%} %>
 					 Milestone List</h5>
 					</div>
-					<div class="col-md-2 justify-content-end" style="float: right;">
+					<div class="col-md-2 justify-content-end">
 					<%if(ProjectId!=null){ %>                              
 
 						 <%if(LoginType.equalsIgnoreCase("A") || projectDirector.toString().equalsIgnoreCase(empId+"") ){ %>								
 																
 					  <form class="  justify-content-end"  method="POST" action="MilestoneActivityAdd.htm">
 					  		<%if(MilestoneList.size()>0){ %>
-                               	<button  style="color: green;font: green;border : 1px solid #7F7C82" class="btn btn-sm" type="submit" name="sub" value="Accept" formaction="MilestoneExcelFile.htm"  formtarget="_blank">
+                               	<button   class="btn btn-sm excelBtn" type="submit" name="sub" value="Accept" formaction="MilestoneExcelFile.htm"  formtarget="_blank">
 									<i class="fa fa-file-excel-o" aria-hidden="true"></i>
 				                </button> 
 							<%} %>
                             	<input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
                              <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
                               <input type="hidden" name="projectDirector" value="<%=projectDirector%>">  
-                               <input type="submit"  value="Add Milestone" class="btn btn-sm add" style="float: right;">
+                               <input type="submit"  value="Add Milestone" class="btn btn-sm add">
                           
                      </form>
                           <%} %>
@@ -218,8 +136,8 @@ input[type=checkbox] {
 															<th>Milestone Activity</th>
 															<th >Start Date</th>
 															<th >End Date</th>	
-															<th style="padding: 0px !important">
-															<div style="border-bottom: 1px solid #dee2e6;">First OIC </div>
+															<th >
+															<div class="borderBottom">First OIC </div>
 															 Second OIC</th>
 															<th>Status</th>
 															<th>Weightage</th>	
@@ -236,7 +154,7 @@ input[type=checkbox] {
 														 	if(MilestoneList!=null&&MilestoneList.size()>0){
 															for(Object[] obj: MilestoneList){ %>
 														<tr>
-															<td style="width:2% !important; " class="center">
+															<td  class="center width-2">
 																<span class="clickable" data-toggle="collapse" id="row<%=obj[0] %>" data-target=".row<%=obj[0]  %>">
 																	<button class="btn btn-sm btn-success" id="btn<%=obj[0]  %>"  onclick="ChangeButton('<%=obj[0]  %>')">
 																		<i class="fa fa-plus"  id="fa<%=obj[0] %>"></i> 
@@ -245,25 +163,25 @@ input[type=checkbox] {
 																<input type="hidden" id="financialOutlay_<%=obj[0]%>" value="<%=obj[18]!=null?obj[18]:"-"%>">
 																<input type="hidden" id="statusRemarks_<%=obj[0]%>" value="<%=obj[11]!=null?obj[11].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", ""):"-"%>">
 															</td>
-															<td style="text-align: left;width: 5% !important;">
+															<td class="width-5 text-left" >
 																<input class="form-control" form="slnoupdateform" type="number" name="newslno" value="<%=obj[5]%>" min="1" max="<%=MilestoneList.size()%>">
 																<input type="hidden" form="slnoupdateform" name="milestoneActivityId" value="<%=obj[0]%>"/>
 															</td>
-															<td style="text-align: left;width: 5%;"> Mil-<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
+															<td class="width-5 text-left"> Mil-<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;" 
+															<td class="tdDetails"
 															onclick="showMilestoneStatusProgress('<%=obj[0]%>')">
-															<%=obj[4] %>
+															<%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %>
 															</td>
 															
-															<td style="width:8% !important; "><%=sdf.format(obj[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(obj[3])%></td>
-															<td  style="width:15% !important; "><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%> <br> <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> </td>
-															<td  style="width: 8% !important; ">-</td>
-															<td  style="width:7% !important; " align="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%></td>	
+															<td class="width-8"><%=sdf.format(obj[2])%></td>
+															<td class="width-8"><%=sdf.format(obj[3])%></td>
+															<td class="width-15"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%> <br> <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> </td>
+															<td class="width-8">-</td>
+															<td  class="width-7"  align="center"><%=obj[13]!=null?StringEscapeUtils.escapeHtml4(obj[13].toString()): " - "%></td>	
 															<td>
 																<%if(!obj[12].toString().equalsIgnoreCase("0")){ %>
-																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+																<div class="progress progressDiv" >
 																<div class="progress-bar progress-bar-striped
 																<%if(obj[14].toString().equalsIgnoreCase("2")){ %>
 																 bg-success
@@ -272,20 +190,20 @@ input[type=checkbox] {
 																<%} else if(obj[14].toString().equalsIgnoreCase("4")){ %>
 																  bg-danger
 																<%} else if(obj[14].toString().equalsIgnoreCase("5")){ %>
-																  bg-warning
-																<%}  %>
-																" role="progressbar" style=" width: <%=obj[12] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																  bg-warning 
+																<%}  %> width-<%=obj[12] %>
+																" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																<%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %>
 																</div> 
 																</div> <%}else{ %>
-																<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-																<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																<div class="progress progressDiv" >
+																<div class="progress-bar noProgress" role="progressbar"  >
 																Not Started
 																</div>
 																</div> <%} %>
 															</td>
-																<td  style="width:20% !important; text-align: center;">		
-																	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
+																<td  class="width-20 text-center"  >		
+																	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm" >
 																		<%if(Integer.parseInt(obj[12].toString())<100){ %>
 																			<button  class="editable-click" name="sub" value="B" id="detailsAddbtn<%=obj[0].toString() %>">  
 																				<div class="cc-rockmenu">
@@ -344,7 +262,7 @@ input[type=checkbox] {
 																	    <input type="hidden" name="projectDirector" value="<%=projectDirector %>" >
 																 </form> 
 																 
-																 	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  style="display: inline">
+																 	<form action="MilestoneActivityDetails.htm" method="POST" name="myfrm"  >
 															 
 		                                                            <%if("B".equalsIgnoreCase(obj[10].toString())){ %>
 		                                                              
@@ -374,7 +292,7 @@ input[type=checkbox] {
 										                                     <div class="col-md-12">
 																				<div class="form-group">
 																					<label class="control-label">Remark</label> 
-																				    <textarea class="form-control" readonly="readonly" name="Remarks" style="height: 9rem;" maxlength="255" required="required" placeholder="Enter Send Back Remark here with max 255 characters"> <%=obj[11]!=null?obj[11].toString():"" %>  </textarea>
+																				    <textarea class="form-control" readonly="readonly" name="Remarks" rows="5" maxlength="255" required="required" placeholder="Enter Send Back Remark here with max 255 characters"> <%=obj[11]!=null?obj[11].toString():"" %>  </textarea>
 																				</div>
 																			</div>       
 																
@@ -392,21 +310,21 @@ input[type=checkbox] {
 																		<%} %>	
 																	 </form> 
 																	 
-																	 <span class="btn btn-sm btn-info" id="spanMessage<%=obj[0].toString()%>" style="display: none;">Access Denied</span>
+																	 <span class="btn btn-sm btn-info accessbtnId" id="spanMessage<%=obj[0].toString()%>" >Access Denied</span>
 																</td>
 															<%-- <%} else {%>
 																<td class="center"> <span class="btn btn-sm btn-info">Access Denied</span> </td>
 															<%} %> --%>	
 														</tr>
-														 <tr class="collapse row<%=obj[0]%> trclass<%=obj[0]%>" style="font-weight: bold;" >
+														 <tr class="collapse row<%=obj[0]%> trclass<%=obj[0]%> font-weight-bold"  >
                                                          <td></td>
                                                          <td></td>
                                                          <td>Sub</td>
                                                          <td>Activity</td>
                                                          <td>Start Date</td>
                                                          <td>End Date</td>
-                                                         	<th style="padding: 0px !important;text-align: center;">
-															<div style="border-bottom: 1px solid #dee2e6;">First OIC </div>
+                                                         	<th >
+															<div class="borderBottom">First OIC </div>
 															 Second OIC</th>
                                                          <td>Date Of Completion</td>
                                                          <td>Sub Weightage</td>
@@ -435,7 +353,7 @@ input[type=checkbox] {
 																		
 														<tr class="collapse row<%=obj[0]  %> trclass<%=obj[0]%>"  >
 														
-															<td style="width:2% !important; " class="center">
+															<td class="width-2"  class="center">
 													
 															</td>
 															<td class="center"> 
@@ -449,15 +367,15 @@ input[type=checkbox] {
 													
  																<%} %>
 															</td>
-															<td style="text-align: left;width: 5%;"> A-<%=countA%></td>
+															<td  class="width-5 text-left" > A-<%=countA%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
+															<td class="tdDetails"
 															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objA[0]%>', '<%=ProjectId%>', 'A')">
 															<%=objA[4]!=null?StringEscapeUtils.escapeHtml4(objA[4].toString()): " - " %>
 															</td>
 															
 															<td class="width-30px"><%=sdf.format(objA[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objA[3])%></td>
+															<td class="width-8" ><%=sdf.format(objA[3])%></td>
 															<td><%=objA[14]%>
 															<br>
 																
@@ -475,7 +393,7 @@ input[type=checkbox] {
 															 <td align="center"><%=objA[6]!=null?StringEscapeUtils.escapeHtml4(objA[6].toString()): " - " %></td>
 															<td>
 															<%if(!objA[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress progressDiv" >
 															<div class="progress-bar progress-bar-striped
 															<%if(objA[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-success
@@ -485,13 +403,13 @@ input[type=checkbox] {
 															  bg-danger
 															<%} else if(objA[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=objA[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%}  %> width-<%=objA[5] %>
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objA[5]!=null?StringEscapeUtils.escapeHtml4(objA[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress progressDiv" >
+															<div class="progress-bar noProgress" role="progressbar"   >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -500,8 +418,8 @@ input[type=checkbox] {
 															<td>						
 							              <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objA[13].toString())==(empId)) { %>
 		                                                         
-			                                                         <div style="display: flex; justify-content: center;">
-			                                                         <div style="display: flex;width:80%">
+			                                                         <div class="maindivInput">
+			                                                         <div class="subdiv">
 			                                                		5<input type="checkbox" <%if(objA[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point5"  value="<%=objA[0]!=null?StringEscapeUtils.escapeHtml4(objA[0].toString()): " - "%> <%="/"%> <%=objA[19]!=null?StringEscapeUtils.escapeHtml4(objA[19].toString()): " - "%> <%="/point5"%>" onchange="updateBpPoints(this)">
 			                                                        6.a<input type="checkbox" <%if(objA[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point6"  value="<%=objA[0]!=null?StringEscapeUtils.escapeHtml4(objA[0].toString()): " - "%> <%="/"%> <%=objA[20]!=null?StringEscapeUtils.escapeHtml4(objA[20].toString()): " - "%> <%="/point6"%>" onchange="updateBpPoints(this)">
 			                                                        9<input type="checkbox" <%if(objA[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control point9"  value="<%=objA[0]!=null?StringEscapeUtils.escapeHtml4(objA[0].toString()): " - "%> <%="/"%> <%=objA[21]!=null?StringEscapeUtils.escapeHtml4(objA[21].toString()): " - "%> <%="/point9"%>" onchange="updateBpPoints(this)">
@@ -527,7 +445,7 @@ input[type=checkbox] {
 	
 																%>
 														<tr class="collapse row_<%=objA[0]  %> trclass<%=obj[0]%> trclass<%=objA[0]%>"  >
-															<td style="width:2% !important; " class="center">
+															<td sclass="center width-2">
 
 															
 															
@@ -543,15 +461,15 @@ input[type=checkbox] {
 																
 																<%}%>
 															</td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
+															<td class="width-5 text-left" > &nbsp;&nbsp;&nbsp;B-<%=countB%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
+															<td class="tdDetails"
 															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objB[0]%>', '<%=ProjectId%>', 'B')">
 																<%=objB[4]!=null?StringEscapeUtils.escapeHtml4(objB[4].toString()): " - " %>
 															</td>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
+															<td class="width-8" ><%=sdf.format(objB[3])%></td>
 															<td><%=objB[14]!=null?StringEscapeUtils.escapeHtml4(objB[14].toString()): " - "%>
 															<br>
 															<%=objB[27]!=null?StringEscapeUtils.escapeHtml4(objB[27].toString()): " - "%>
@@ -564,7 +482,7 @@ input[type=checkbox] {
 															  <td align="center"><%=objB[6]!=null?StringEscapeUtils.escapeHtml4(objB[6].toString()): " - " %></td>
 															<td>
 															<%if(!objB[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress progressDiv" >
 															<div class="progress-bar progress-bar-striped
 															<%if(objB[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-success
@@ -574,13 +492,13 @@ input[type=checkbox] {
 															  bg-danger
 															<%} else if(objB[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=objB[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%}  %> width-<%=objB[5] %>
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objB[5]!=null?StringEscapeUtils.escapeHtml4(objB[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress progressDiv">
+															<div class="progress-bar noProgress" role="progressbar"   >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -589,8 +507,8 @@ input[type=checkbox] {
 														 	                                                   <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objB[13].toString())==(empId)) { %>
 	                                                         	
 	                                                         
-			                                                        <div style="display: flex; justify-content: center;">
-			                                                         <div style="display: flex;width:80%">
+			                                                        <div class="maindivInput">
+			                                                         <div class="subdiv">
 			                                                        5 <input  type="checkbox" <%if(objB[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0]!=null?StringEscapeUtils.escapeHtml4(objB[0].toString()): " - "%> <%="/"%> <%=objB[19]!=null?StringEscapeUtils.escapeHtml4(objB[19].toString()): " - "%> <%="/point5"%>" onchange="updateBpPoints(this)">
 			                                                        6.a <input type="checkbox" <%if(objB[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0]!=null?StringEscapeUtils.escapeHtml4(objB[0].toString()): " - "%> <%="/"%> <%=objB[20]!=null?StringEscapeUtils.escapeHtml4(objB[20].toString()): " - "%> <%="/point6"%>" onchange="updateBpPoints(this)">
 			                                                         9<input type="checkbox" <%if(objB[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objB[0]!=null?StringEscapeUtils.escapeHtml4(objB[0].toString()): " - "%> <%="/"%> <%=objB[21]!=null?StringEscapeUtils.escapeHtml4(objB[21].toString()): " - "%> <%="/point9"%>" onchange="updateBpPoints(this)">
@@ -615,7 +533,7 @@ input[type=checkbox] {
 													         List<Object[]> MilestoneD=(List<Object[]>)request.getAttribute(count+"MilestoneActivityD"+countA+countB+countC);
 																%>
 														<tr class="collapse row_<%=objB[0] %> trclass<%=obj[0]%> trclass<%=objA[0]%> trclass<%=objB[0]%>" >
-															<td style="width:2% !important; " class="center">
+															<td  class="width-2"  class="center">
 
 															
 															 </td>
@@ -630,15 +548,15 @@ input[type=checkbox] {
 															
 															<% } %>
 															</td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
+															<td class="width-5 text-left" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;C-<%=countC%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
+															<td class="tdDetails"
 															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objC[0]%>', '<%=ProjectId%>', 'C')">
 															<%=objC[4]!=null?StringEscapeUtils.escapeHtml4(objC[4].toString()): " - " %>
 															</td>
 															
 															<td class="width-30px"><%=sdf.format(objC[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objC[3])%></td>
+															<td class="width-8" ><%=sdf.format(objC[3])%></td>
 															<td><%=objC[14]!=null?StringEscapeUtils.escapeHtml4(objC[14].toString()): " - "%>
 															<br>
 															<%=objC[27]!=null?StringEscapeUtils.escapeHtml4(objC[27].toString()): " - "%>
@@ -652,7 +570,7 @@ input[type=checkbox] {
 															  <td align="center"><%=objC[6]!=null?StringEscapeUtils.escapeHtml4(objC[6].toString()): " - " %></td>
 															<td>
 															<%if(!objC[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress progressDiv">
 																<div class="progress-bar progress-bar-striped
 																	<%if(objC[9].toString().equalsIgnoreCase("2")){ %>
 																	 bg-success
@@ -662,13 +580,13 @@ input[type=checkbox] {
 																	  bg-danger
 																	<%} else if(objC[9].toString().equalsIgnoreCase("5")){ %>
 																	  bg-warning
-																	<%}  %>
-																	" role="progressbar" style=" width: <%=objC[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																	<%}  %> width-<%=objC[5] %>
+																	" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																	<%=objC[5]!=null?StringEscapeUtils.escapeHtml4(objC[5].toString()): " - " %>
 																</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress progressDiv" >
+															<div class="progress-bar noProgress" role="progressbar" >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -677,8 +595,8 @@ input[type=checkbox] {
 														                                                   <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objC[13].toString())==(empId)) { %>
                                                          		
                                                          
-			                                                    	<div style="display: flex; justify-content: center;">
-			                                                         <div style="display: flex;width:80%">
+			                                                    	<div class="maindivInput">
+			                                                         <div class="subdiv">
 			                                                       5.  <input type="checkbox" <%if(objC[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0]!=null?StringEscapeUtils.escapeHtml4(objC[0].toString()): " - "%> <%="/"%> <%=objC[19]!=null?StringEscapeUtils.escapeHtml4(objC[19].toString()): " - "%> <%="/point5"%>" onchange="updateBpPoints(this)">
 			                                                       6.a  <input type="checkbox" <%if(objC[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0]!=null?StringEscapeUtils.escapeHtml4(objC[0].toString()): " - "%> <%="/"%> <%=objC[20]!=null?StringEscapeUtils.escapeHtml4(objC[20].toString()): " - "%> <%="/point6"%>" onchange="updateBpPoints(this)">
 			                                                        9. <input type="checkbox" <%if(objC[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objC[0]!=null?StringEscapeUtils.escapeHtml4(objC[0].toString()): " - "%> <%="/"%> <%=objC[21]!=null?StringEscapeUtils.escapeHtml4(objC[21].toString()): " - "%> <%="/point9"%>" onchange="updateBpPoints(this)">
@@ -704,7 +622,7 @@ input[type=checkbox] {
 	
 																%>
 														<tr class="collapse row_<%=objC[0] %> trclass<%=obj[0]%> trclass<%=objA[0]%> trclass<%=objB[0]%> trclass<%=objC[0]%>" >
-															<td style="width:2% !important; " class="center">
+															<td  class="center width-2">
 
 															
 															 </td>
@@ -720,15 +638,15 @@ input[type=checkbox] {
  																	<%} %>
 															
 															</td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
+															<td class="width-5 text-left" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;D-<%=countD%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
+															<td class="tdDetails"
 															 onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objD[0]%>', '<%=ProjectId%>', 'D')">
 															 <%=objD[4]!=null?StringEscapeUtils.escapeHtml4(objD[4].toString()): " - " %>
 															 </td>
 															
 															<td class="width-30px"><%=sdf.format(objB[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objB[3])%></td>
+															<td class="width-8" ><%=sdf.format(objB[3])%></td>
 															<td><%=objD[14]!=null?StringEscapeUtils.escapeHtml4(objD[14].toString()): " - "%>
 															<br>
 														<%=objD[27]!=null?StringEscapeUtils.escapeHtml4(objD[27].toString()): " - "%>
@@ -742,7 +660,7 @@ input[type=checkbox] {
 															  <td align="center"><%=objD[6]!=null?StringEscapeUtils.escapeHtml4(objD[6].toString()): " - " %></td>
 															<td>
 															<%if(!objD[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress progressDiv" >
 															<div class="progress-bar progress-bar-striped
 															<%if(objD[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-success
@@ -752,13 +670,13 @@ input[type=checkbox] {
 															  bg-danger
 															<%} else if(objD[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=objD[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%}  %> width-<%=objD[5] %>%
+															" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objD[5]!=null?StringEscapeUtils.escapeHtml4(objD[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress progressDiv" >
+															<div class="progress-bar noProgress" role="progressbar" >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -766,8 +684,8 @@ input[type=checkbox] {
 															<td>
 													      <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objD[13].toString())==(empId)) { %>											
                                                          		
-			                                                     <div style="display: flex; justify-content: center;">
-			                                                         <div style="display: flex;width:80%">
+			                                                     <div class="maindivInput">
+			                                                         <div class="subdiv">
 			                                                        5. <input type="checkbox" <%if(objD[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0]!=null?StringEscapeUtils.escapeHtml4(objD[0].toString()): " - "%> <%="/"%> <%=objD[19]!=null?StringEscapeUtils.escapeHtml4(objD[19].toString()): " - "%> <%="/point5"%>" onchange="updateBpPoints(this)">
 			                                                        6.a <input type="checkbox" <%if(objD[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0]!=null?StringEscapeUtils.escapeHtml4(objD[0].toString()): " - "%> <%="/"%> <%=objD[20]!=null?StringEscapeUtils.escapeHtml4(objD[20].toString()): " - "%> <%="/point6"%>" onchange="updateBpPoints(this)">
 			                                                        9. <input type="checkbox" <%if(objD[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objD[0]!=null?StringEscapeUtils.escapeHtml4(objD[0].toString()): " - "%> <%="/"%> <%=objD[21]!=null?StringEscapeUtils.escapeHtml4(objD[21].toString()): " - "%> <%="/point9"%>" onchange="updateBpPoints(this)">
@@ -790,8 +708,8 @@ input[type=checkbox] {
 																	}
 																
 																%>
-														<tr class="collapse row_<%=objD[0] %> trclass<%=obj[0]%> trclass<%=objA[0]%> trclass<%=objB[0]%> trclass<%=objC[0]%> trclass<%=objD[0]%>"  style="" >
-															<td style="width:2% !important; " class="center">
+														<tr class="collapse row_<%=objD[0] %> trclass<%=obj[0]%> trclass<%=objA[0]%> trclass<%=objB[0]%> trclass<%=objC[0]%> trclass<%=objD[0]%>"   >
+															<td   class="center width-2">
 												
 															
 															 </td>
@@ -800,15 +718,15 @@ input[type=checkbox] {
 														
  															<%} %>
  															</td>
-															<td style="text-align: left;width: 5%;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
+															<td class="width-5 text-left" > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-<%=countE%></td>
 															<%-- <td class="width-30px"><%=obj[1]%></td> --%>
-															<td style="overflow-wrap: break-word !important; word-break: break-all !important; white-space: normal !important;max-width:20% !important;min-width:20% !important;cursor: pointer;"
+															<td class="tdDetails"
 															onclick="showMilestoneProgress('<%=obj[0]%>', '<%=objE[0]%>', '<%=ProjectId%>', 'E')">
 															<%=objE[4]!=null?StringEscapeUtils.escapeHtml4(objE[4].toString()): " - " %>
 															</td>
 															
 															<td class="width-30px"><%=sdf.format(objE[2])%></td>
-															<td style="width:8% !important; "><%=sdf.format(objE[3])%></td>
+															<td  class="width-8"><%=sdf.format(objE[3])%></td>
 															<td><%=objE[14]!=null?StringEscapeUtils.escapeHtml4(objE[14].toString()): " - "%>
 															<br>
 															<%=objE[27]!=null?StringEscapeUtils.escapeHtml4(objE[27].toString()): " - "%>
@@ -821,7 +739,7 @@ input[type=checkbox] {
 															  <td align="center"><%=objE[6]!=null?StringEscapeUtils.escapeHtml4(objE[6].toString()): " - " %></td>
 															<td>
 															<%if(!objE[5].toString().equalsIgnoreCase("0")){ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+															<div class="progress progressDiv">
 															<div class="progress-bar progress-bar-striped
 															<%if(objC[9].toString().equalsIgnoreCase("2")){ %>
 															 bg-success
@@ -831,13 +749,13 @@ input[type=checkbox] {
 															  bg-danger
 															<%} else if(objE[9].toString().equalsIgnoreCase("5")){ %>
 															  bg-warning
-															<%}  %>
-															" role="progressbar" style=" width: <%=objE[5] %>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															<%}  %> width-<%=objE[5] %>
+															" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=objE[5]!=null?StringEscapeUtils.escapeHtml4(objE[5].toString()): " - " %>
 															</div> 
 															</div> <%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress progressDiv" >
+															<div class="progress-bar noProgress" role="progressbar"   >
 															Not Started
 															</div>
 															</div> <%} %>
@@ -845,8 +763,8 @@ input[type=checkbox] {
 															
 															      <td>                                             <%if("A".equalsIgnoreCase(LoginType) || projectDirector.equals(empId) || Long.parseLong(objE[13].toString())==(empId)) { %>
                                                          		
-			                                                         <div style="display: flex;justify-content: center;">
-			                                                         <div style="display: flex;width:80%;">
+			                                                         <div class="maindivInput">
+			                                                         <div class="subdiv" >
 			                                                        5. <input type="checkbox" <%if(objE[19].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0]!=null?StringEscapeUtils.escapeHtml4(objE[0].toString()): " - "%> <%="/"%> <%=objE[19]!=null?StringEscapeUtils.escapeHtml4(objE[19].toString()): " - "%> <%="/point5"%>" onchange="updateBpPoints(this)">
 			                                                        6.a <input type="checkbox" <%if(objE[20].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0]!=null?StringEscapeUtils.escapeHtml4(objE[0].toString()): " - "%> <%="/"%> <%=objE[20]!=null?StringEscapeUtils.escapeHtml4(objE[20].toString()): " - "%> <%="/point6"%>" onchange="updateBpPoints(this)">
 			                                                        9 <input type="checkbox" <%if(objE[21].toString().equalsIgnoreCase("Y")){ %>checked<%} %> class="form-control" value="<%=objE[0]!=null?StringEscapeUtils.escapeHtml4(objE[0].toString()): " - "%> <%="/"%> <%=objE[21]!=null?StringEscapeUtils.escapeHtml4(objE[21].toString()): " - "%> <%="/point9"%>" onchange="updateBpPoints(this)">
@@ -864,7 +782,7 @@ input[type=checkbox] {
 												<% countB++;} }%>
 												<% countA++;} }else{%>
 												<tr class="collapse row<%=count %>">
-													<td colspan="11" style="text-align: center" class="center">No Sub List Found</td>
+													<td colspan="11"  class="center text-center">No Sub List Found</td>
 												</tr>
 										       
 												<%} %>
@@ -902,7 +820,7 @@ input[type=checkbox] {
 												<%if(LoginType.equalsIgnoreCase("A") || projectDirector.toString().equalsIgnoreCase(""+empId)) { %>
 													<tr>
 														<td></td>
-														<td colspan=1 style="display: flex;justify-content: center;align-items: center">
+														<td colspan=1 class="tdDiv1" >
 															<form action="MilestoneActivityMilNoUpdate.htm" method="POST" name="slnoupdateform" id="slnoupdateform">
 							              						<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 							              						<input type="hidden" name="projectId" value="<%=ProjectId%>">
@@ -914,7 +832,7 @@ input[type=checkbox] {
 													<% } %>
 												<% }else{%>
 												<tr >
-													<td colspan="11" style="text-align: center" class="center">No List Found</td>
+													<td colspan="11"  class="center text-center">No List Found</td>
 												</tr>
 												<%} %>
 												</tbody>
@@ -938,69 +856,69 @@ input[type=checkbox] {
 		<br>
 
 	<div class="row m-2">
-		<div class="col-md-12"
-			style="text-align: center; width: 140px; height: 30px;">
+		<div class="col-md-12 milestoneFlow"
+			>
 			<b>Milestone Flow </b>
 		</div>
 	</div>
 	
-	<div class="row m-2"
-		style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
+	<div class="row m-2 class1"
+		>
 
-		<table align="center" style="border-spacing: 0 20px;">
+		<table align="center" >
 			<tr>
 				
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead">
 					<b class="text-primary">Add Milestone Activity </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody" ></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead" >
 					<b class="text-primary">Add Sub Milestone Activity </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody" ></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead">
 					<b class="text-primary">Assign Weightage </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody" ></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead" >
 					<b class="text-primary">Assign Milestone Activity </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody" ></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead"  >
 					<b class="text-primary">Set Baseline </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody" ></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead" >
 					<b class="text-primary">Assignee</b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody" ></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead" >
 					<b class="text-primary"> Acknowledge Milestone Activity </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup trupBody" ></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup trupFooter" ></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup trupHead" >
 					<b class="text-primary">Update progress</b>
 				</td>
 				
@@ -1029,13 +947,13 @@ input[type=checkbox] {
       </div>
       <div class="modal-body" align="center">
         <form action="MainMilestoneDOCUpdate.htm" method="post">
-        	<table style="width: 80%;">
+        	<table class="width-80" >
         		<tr>
-        			<th style="width: 40%;">Date of Completion : &nbsp; </th>
-        			<td style="width: 60%;"><input type="text" class="form-control" name="DateOfCompletion" id="MainDOCDate" value="" readonly="readonly"></td>
+        			<th class="width-40" >Date of Completion : &nbsp; </th>
+        			<td class="width-60" ><input type="text" class="form-control" name="DateOfCompletion" id="MainDOCDate" value="" readonly="readonly"></td>
         		</tr>
         		<tr>
-        			<td colspan="2" style="text-align: center;">
+        			<td colspan="2" >
         				<br>
         				<button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>Close</b></button>
         				<button class="btn btn-sm submit" onclick="return confirm('Are You Sure to Edit?');">SUBMIT</button>
@@ -1059,8 +977,8 @@ input[type=checkbox] {
 	<!-- -------------------------------------------- Milestone Progess Modal -------------------------------------------- -->
 	<div class="modal fade" id="milestoneProgressModal" tabindex="-1" role="dialog" aria-labelledby="milestoneProgressModal" aria-hidden="true">
   		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
-    		<div class="modal-content" style="width:135%;margin-left:-20%;">
-      			<div class="modal-header" id="ModalHeader" style="background: #055C9D ;color: white;">
+    		<div class="modal-content modalContentDiv" >
+      			<div class="modal-header modalHeaderDiv" id="ModalHeader" >
 			        <h5 class="modal-title" >Activity Updated Details</h5>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			          <span aria-hidden="true" class="text-light">&times;</span>
@@ -1070,15 +988,15 @@ input[type=checkbox] {
       			<div class="modal-body">
      				<div class="row mb-2">
 						<div class="col-md-12">
-							<table class="table table-bordered" id="myTables" style="width: 100%;">
-								<thead class="center" style="background: #055C9D ;color: white;">
+							<table class="table table-bordered width-100" id="myTables" >
+								<thead class="cente modalHeaderDiv" >
 									<tr>
-										<th width="5%">SN</th>
-										<th width="15%">As On Date</th>
-										<th width="15%">Progress</th>
-										<th width="25%">Remarks</th>
-										<th width="5%">Action</th>
-										<th width="30%">Progress By</th>
+										<th class="width-5" >SN</th>
+										<th class="width-15" >As On Date</th>
+										<th  class="width-15" >Progress</th>
+										<th class="width-25">Remarks</th>
+										<th class="width-5">Action</th>
+										<th class="width-35">Progress By</th>
 									</tr>
 								</thead>
 								<tbody id="milestoneprogesstbody">
@@ -1097,8 +1015,8 @@ input[type=checkbox] {
 	<!-- -------------------------------------------- Milestone Status Remarks Modal -------------------------------------------- -->
 	<div class="modal fade" id="milestoneStatusRemarksModal" tabindex="-1" role="dialog" aria-labelledby="milestoneStatusRemarksModal" aria-hidden="true">
   		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
-    		<div class="modal-content" style="width:135%;margin-left:-20%;">
-      			<div class="modal-header" id="ModalHeader" style="background: #055C9D ;color: white;">
+    		<div class="modal-content modalContentDiv" >
+      			<div class="modal-header modalHeaderDiv" id="ModalHeader">
 			        <h5 class="modal-title" >Status Remarks</h5>
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			          <span aria-hidden="true" class="text-light">&times;</span>

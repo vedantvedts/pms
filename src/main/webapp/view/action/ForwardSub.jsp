@@ -8,293 +8,15 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/action/forwardSub.css" var="forwardSub" />
+<link href="${forwardSub}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
  
 
 <title>Action Assignee</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x: hidden; 
-}
-h6{
-	text-decoration: none !important;
-}
 
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.multiselect-container>li>a>label {
-  padding: 4px 20px 3px 20px;
-}
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:150px !important;
-}
-
-
-/*----------------genealogy-tree----------*/
- .genealogy-body{
-    white-space: nowrap;
-    overflow-y: hidden;
-    padding: 50px;
-    min-height: 500px;
-    padding-top: 10px;
-    text-align: center;
-}
-.genealogy-tree{
-  display: inline-block;
-} 
-.genealogy-tree ul {
-    padding-top: 20px; 
-    position: relative;
-    padding-left: 0px;
-    display: flex;
-    justify-content: center;
-}
-.genealogy-tree li {
-    float: left; text-align: center;
-    list-style-type: none;
-    position: relative;
-    padding: 20px 5px 0 5px;
-}
-.genealogy-tree li::before, .genealogy-tree li::after{
-    content: '';
-    position: absolute; 
-  top: 0; 
-  right: 50%;
-    border-top: 2px solid #ccc;
-    width: 50%; 
-  height: 18px;
-}
-.genealogy-tree li::after{
-    right: auto; left: 50%;
-    border-left: 2px solid #ccc;
-}
-.genealogy-tree li:only-child::after, .genealogy-tree li:only-child::before {
-    display: none;
-}
-.genealogy-tree li:only-child{ 
-    padding-top: 0;
-}
-.genealogy-tree li:first-child::before, .genealogy-tree li:last-child::after{
-    border: 0 none;
-}
-.genealogy-tree li:last-child::before{
-    border-right: 2px solid #ccc;
-    border-radius: 0 5px 0 0;
-    -webkit-border-radius: 0 5px 0 0;
-    -moz-border-radius: 0 5px 0 0;
-}
-.genealogy-tree li:first-child::after{
-    border-radius: 5px 0 0 0;
-    -webkit-border-radius: 5px 0 0 0;
-    -moz-border-radius: 5px 0 0 0;
-}
-.genealogy-tree ul ul::before{
-    content: '';
-    position: absolute; top: 0; left: 50%;
-    border-left: 2px solid #ccc;
-    width: 0; height: 20px;
-}
-.genealogy-tree li .action-view-box{
-    text-decoration: none;
-    font-family: arial, verdana, tahoma;
-    font-size: 11px;
-    display: inline-block;
-    border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-}
-
-.genealogy-tree li a:hover+ul li::after, 
-.genealogy-tree li a:hover+ul li::before, 
-.genealogy-tree li a:hover+ul::before, 
-.genealogy-tree li a:hover+ul ul::before{
-    border-color:  #fbba00;
-}
-
-/*--------------memeber-card-design----------*/
-.member-view-box{
-    padding:0px 15px;
-    text-align: center;
-    border-radius: 4px;
-    position: relative;
-}
-.member-image{
-    width: 60px;
-    position: relative;
-}
-.member-image img{
-    width: 60px;
-    height: 60px;
-    border-radius: 6px;
-  background-color :#000;
-  z-index: 1;
-}
-
-.action-box
-{
-    width: fit-content ;
-    height: fit-content;
-    min-width:220px;
-    
-    border: 1px solid black;
-    border-radius: 10px;
-}
-
-.action-box-header
-{
-	border-top-right-radius : 10px;
-	border-top-left-radius: 10px;
- 	padding:5px;
- 	
-  	text-align: center;
-}
-
-.action-box-body
-{
-	padding:5px;
-	text-align: center;
-	background-color: #ffffff;
-	display: block;
-    flex-wrap: wrap;
-    border-bottom-right-radius : 10px;
-	border-bottom-left-radius: 10px;
-}
-
-.card-body-table
-{
-	width:100%;
-}
-
-.card-body-table  td
-{
-	border:0px;
-	text-align: left;
-}	
-	
-.card-body-table th
-{
-	border:0px;
-}
-
-.Q1
-{
-	background-color: #DC3535;
-	color: #FFFFFF;
-}
-
-.Q2
-{
-	background-color: #FF7000;
-	color: #FFFFFF;
-}
-
-.Q3
-{
-	background-color: #FED049;
-	color: #000000;
-}
-
-.Q4
-{
-	background-color: #5F8D4E;
-	color: #FFFFFF;
-}
-
-.Q5
-{
-	background-color: #3d3a32;
-	color: #FFFFFF;
-}
-
-th
-{
- 	text-align: left;
- 	overflow-wrap: break-word;
-}
-
-td
-{
- 	text-align: justify;
-  	text-justify: inter-word;
-    
-}
-
-
-
-.tabledata
-{
- 	white-space: -o-pre-wrap; 
-    word-wrap: break-word;
-    white-space: pre-wrap; 
-    white-space: -moz-pre-wrap; 
-    white-space: -pre-wrap; 
-}
-
-</style>
 </head>
  
 <body>
@@ -339,30 +61,30 @@ td
 
 <div class="container-fluid">
 
-	<div class="container" style="margin-bottom:20px;">
+	<div class="container container-margin">
 
 		
-    		<div class="card" style=" ">
+    		<div class="card">
     	
     	
     	
-	    		<div class="card-header" style="background-color: #055C9D;">
+	    		<div class="card-header card-header-bg">
 	    		<%if(Assignee!=null && Assignee[21]!=null && "I".equalsIgnoreCase( Assignee[21].toString())){%>
-      				<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Issue  Id : <%=Assignee[9]!=null?StringEscapeUtils.escapeHtml4(Assignee[9].toString()): " - " %>
+      				<h6 class="custom-h6" align="left"> Issue  Id : <%=Assignee[9]!=null?StringEscapeUtils.escapeHtml4(Assignee[9].toString()): " - " %>
 				<%}else{%>
-					<h6 style="color: white;font-weight: bold;font-size: 1.2rem !important " align="left"> Action  Id : <%=Assignee[9]!=null?StringEscapeUtils.escapeHtml4(Assignee[9].toString()): " - " %>
+					<h6 class="custom-h6" align="left"> Action  Id : <%=Assignee[9]!=null?StringEscapeUtils.escapeHtml4(Assignee[9].toString()): " - " %>
 				<%}%>	
-					<span style="float: right;font-size: 17px;margin-top: 5px">Assignee : <%=Assignee[11]!=null?StringEscapeUtils.escapeHtml4(Assignee[11].toString()): " - " %> &nbsp;(<%=Assignee[17]!=null?StringEscapeUtils.escapeHtml4(Assignee[17].toString()): " - " %>)</span>
+					<span class="custom-span">Assignee : <%=Assignee[11]!=null?StringEscapeUtils.escapeHtml4(Assignee[11].toString()): " - " %> &nbsp;(<%=Assignee[17]!=null?StringEscapeUtils.escapeHtml4(Assignee[17].toString()): " - " %>)</span>
       				 </h6>
       				
       				 
       				
       			</div>
       		
-      			<div style="background-color: #055C9D;">
+      			<div class="card-header-bg">
       			<%if(AttachmentList!=null){ %>
       				<form>
-      				 <h6 style="color: white;font-weight: bold;font-size: 1.1rem !important ; margin-left: 20px" align="left"> Attachment: 
+      				 <h6 class="custom-h6-copy" align="left"> Attachment: 
       				&nbsp;&nbsp;<button formaction="ActionMainAttachDownload.htm" formmethod="get" class="btn" type="submit" name="MainId" value="<%=Assignee[0]!=null?StringEscapeUtils.escapeHtml4(Assignee[0].toString()): "" %>"><i class="fa fa-download"></i></button>
       				</h6>
       				</form>
@@ -373,13 +95,13 @@ td
 	      			
 	        		<div class="row">
 	      					<div class="col-md-12">
-	      						<table style="width: 100%;">
+	      						<table class="w-100">
 	      							<tr>
-	      								<td style="width: 15%;">
+	      								<td class="width-15">
 		      								<%if(Assignee!=null && Assignee[21]!=null && "I".equalsIgnoreCase( Assignee[21].toString())){%>
-		      									<label style="font-size: medium; padding-top: 10px;  "> Issue Item  :</label>
+		      									<label class="table-label"> Issue Item  :</label>
 		      									<%}else{%>
-		      									<label style="font-size: medium; padding-top: 10px;  "> Action Item  :</label>
+		      									<label class="table-label"> Action Item  :</label>
 		      								<%}%>
 	      								</td>
 	      								<td ><span>
@@ -390,19 +112,19 @@ td
 	      						<table>
 	      							<tr>
 	      								<td>
-	      									<label style="font-size: medium; padding-top: 10px;  "> Assignee  :</label>
+	      									<label class="table-label"> Assignee  :</label>
 	      								</td>	      	
 	      								<td><span>
 	      									<%=Assignee[11]!=null?StringEscapeUtils.escapeHtml4(Assignee[11].toString()): " - " %>&nbsp;(<%=Assignee[17]!=null?StringEscapeUtils.escapeHtml4(Assignee[17].toString()): " - " %>)</span>
 	      								</td>
-	      								<td style="padding-left: 50px;" >
-	      									<label style="font-size: medium; padding-top: 10px;  "> Assigner :</label>
+	      								<td class="table-padding"" >
+	      									<label class="table-label"> Assigner :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
 	      									<%=Assignee[1]!=null?StringEscapeUtils.escapeHtml4(Assignee[1].toString()): " - "%> &nbsp;(<%=Assignee[16]!=null?StringEscapeUtils.escapeHtml4(Assignee[16].toString()): " - " %>)
 	      								</td>	
-	      								<td style="padding-left: 50px;" >
-	      									<label style="font-size: medium; padding-top: 10px;  "> PDC (Current) :</label>
+	      								<td class="table-padding" >
+	      									<label class="table-label"> PDC (Current) :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
 	      									<%=Assignee[4]!=null?sdf.format(Assignee[4]):" - "%>
@@ -410,7 +132,7 @@ td
 	      							</tr>
 	      							<tr>
 	      								<td>
-	      									<label style="font-size: medium; padding-top: 10px;  ">  Original PDC :</label>
+	      									<label class="table-label">  Original PDC :</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
 	      									<%=Assignee[13]!=null?sdf.format(Assignee[13]):" - "%>
@@ -421,8 +143,8 @@ td
 	      								revision=2;
 	      							}
 	      							for(int i=1;i<=revision;i++){ %>
-	      								<td style="padding-left: 50px;" >
-	      									<label style="font-size: medium; padding-top: 10px;  "> Revised - <%=i%> PDC:</label>
+	      								<td class="table-padding" >
+	      									<label class="table-label"> Revised - <%=i%> PDC:</label>
 	      								</td>	      	
 	      								<td>&nbsp;&nbsp;&nbsp;&nbsp;
 	      									<%=Assignee[14+i-1]!=null?sdf.format(Assignee[14+i-1]):" - "%>
@@ -449,7 +171,7 @@ td
 									
 								<div class="col-md-7">
 									
-									<textarea rows="2" style="display:block; margin-top: -15px;" class="form-control"  id="Remarks" name="Remarks"  placeholder="Enter Remarks..!!"  ></textarea>
+									<textarea rows="2"  class="form-control text-area"  id="Remarks" name="Remarks"  placeholder="Enter Remarks..!!"  ></textarea>
 									
 								</div>
 								
@@ -485,14 +207,14 @@ td
 								<div class="col-sm-6" >
 									<table>
 										<tr>
-											<td style="width: 10%">
-				                            	<label>Extend PDC <span class="mandatory" style="color: red;">* </span>:</label>
+											<td class="width-10">
+				                            	<label>Extend PDC <span class="mandatory">* </span>:</label>
 				                            </td>
-				                            <td style="width: 20%">
-				                            	<input class="form-control " name="ExtendPdc" id="DateCompletion" required="required"  value="<%=sdf.format(Assignee[4])%>" style=" margin-top: -4px; ">
+				                            <td class="width-20">
+				                            	<input class="form-control td-input " name="ExtendPdc" id="DateCompletion" required="required"  value="<%=sdf.format(Assignee[4])%>">
 				                           	</td>
-				                           	<td style="width: 20%; " >
-												<button type="submit" class="btn btn-danger btn-sm submit" style="margin-left: 20px;"  onclick="return confirm('Are You Sure To Submit ?')" > UPDATE</button>
+				                           	<td class="width-20" >
+												<button type="submit" class="btn btn-danger btn-sm submit td-btn"  onclick="return confirm('Are You Sure To Submit ?')" > UPDATE</button>
 												<input type="hidden" name="ActionMainId" value="<%=Assignee[0] %>" />	
 												<input type="hidden" name="ActionAssignId" value="<%=Assignee[18] %>" />
 												<input type="hidden" name="froward" value="Y" />
@@ -514,11 +236,11 @@ td
     		</div>
    	</div>   
    </div>  
- <div class="row" style="margin-top: 20px;">
+ <div class="row div-row" >
  
 	<div class="col-md-12">
     	
-    	<div class="card" style="">
+    	<div class="card" >
       		
       		<div class="card-body" >
       		
@@ -527,20 +249,20 @@ td
       		
 <div class="col-md-1"></div>
    
-   <div class="col-md-10" style="padding-left: 0px">
+   <div class="col-md-10 pl-0" >
     <% if(LinkList!=null && LinkList.size()>0){ %>  
    				<div class="table-responsive">
-    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
+    				<table class="table table-bordered table-hover table-striped table-condensed table-margin" id="myTable3">
 						<thead>
 							<tr>
-								<th colspan="7" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Old Action  Details </th>									
+								<th colspan="7" class="custom-th" >Old Action  Details </th>									
 							</tr>	
 							<tr>					
-								<th style="text-align: left;">As On Date</th>
-								<th style="">Progress %</th>
-								<th style="">Remarks</th>								
-							 	<th style="">Attachment</th>
-								<th style="">Action</th>
+								<th class="text-left">As On Date</th>
+								<th >Progress %</th>
+								<th >Remarks</th>								
+							 	<th >Attachment</th>
+								<th >Action</th>
 							</tr>
 						</thead>
 						<tbody>					
@@ -554,17 +276,17 @@ td
 								
 								<td width="6%">
 									
-									<div class="progress" style="background-color:#cdd0cb !important">
-  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></div>
+									<div class="progress div-progress">
+  										<div class="progress-bar progress-bar-striped width-<%=obj[2]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></div>
 									</div>
 				
 										</td>
 								
-								<td style="text-align: left; width: 10%;"> 
+								<td class="text-left width-10"> 
 									<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>
 								</td>
 								
-								<td style="text-align: left; width: 3%;">
+								<td class="text-left width-3">
 								
 							 <% 
 						        if(obj[5].toString().length()!=0 && obj[5]!=null){
@@ -585,7 +307,7 @@ td
 								</td>
 								
 														
-								<td style="text-align: left; width: 6%;">
+								<td class="text-left width-6">
 							     Old Action
 								</td>
 						
@@ -597,20 +319,20 @@ td
 				</div> 
 				<%} %>
    						<div class="table-responsive">
-    				<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
+    				<table class="table table-bordered table-hover table-striped table-condensed table-margin" id="myTable3" >
 						<thead>
 						<tr>
 							<%if(Assignee!=null && Assignee[21]!=null && "I".equalsIgnoreCase( Assignee[21].toString())){%>
-								<th colspan="4" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Issue Updated Details </th>									
+								<th colspan="4" class="custom-th" >Issue Updated Details </th>									
 							<%}else{%>
-								<th colspan="4" style="background-color: #346691; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Action Updated Details </th>
+								<th colspan="4" class="custom-th" >Action Updated Details </th>
 							<%}%>
 							</tr>	
 							<tr>					
-								<th style="text-align: left;">As On Date</th>
-								<th style="">Progress %</th>
-								<th style="">Remarks</th>								
-							 	<th style="">Attachment</th>
+								<th class="text-left">As On Date</th>
+								<th >Progress %</th>
+								<th >Remarks</th>								
+							 	<th >Attachment</th>
 							
 							</tr>
 						</thead>
@@ -630,17 +352,17 @@ td
 								
 								<td width="6%">
 								
-									<div class="progress" style="background-color:#cdd0cb !important">
-  										<div class="progress-bar progress-bar-striped" role="progressbar" style="width: <%=obj[2]%>%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></div>
+									<div class="progress div-progress">
+  										<div class="progress-bar progress-bar-striped width-<%=obj[2]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></div>
 									</div>
 				
 										</td>
 								
-								<td style="text-align: left; width: 10%;"> 
+								<td class="text-left width-10"> 
 									<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%>
 								</td>
 								
-								<td style="text-align: left; width: 3%;">
+								<td class="text-left; width-3">
 								
 							 <% 
 						        if(obj[5]!=null && obj[5].toString().length()!=0  ){
@@ -678,17 +400,17 @@ td
 %>	
 
 <div class="modal fade  bd-example-modal-lg" tabindex="-1" role="dialog" id="ActionAssignfilemodal">
-				<div class="modal-dialog "  role="document" style="max-width:80rem;overflow-x:auto;" >
+				<div class="modal-dialog div-document"  role="document">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h4 class="modal-title" > Action Tree </h4>
-							<div  style="margin-left: 390px;">
-										<div style="font-weight: bold; ">
-											<span style="margin:0px 0px 10px  10px;">0 - 25 % :&ensp; 	<span class="Q1" style="padding: 0px 15px;border-radius: 3px;"></span></span>
-											<span style="margin:0px 0px 10px  15px;">26 - 50 % :&ensp; 	<span class="Q2" style="padding: 0px 15px;border-radius: 3px;"></span></span>
-											<span style="margin:0px 0px 10px  15px;">51 - 75 % :&ensp; 	<span class="Q3" style="padding: 0px 15px;border-radius: 3px;"></span></span>
-											<span style="margin:0px 0px 10px  15px;">76 - 100 % :&ensp; <span class="Q4" style="padding: 0px 15px;border-radius: 3px;"></span></span>
-											<span style="margin:0px 0px 10px  15px;">Closed:&ensp; <span class="Q5" style="padding: 0px 15px;border-radius: 3px;"></span></span>
+							<div  class="margin-left390">
+										<div class="font-weight-bold">
+											<span class="div-span">0 - 25 % :&ensp; 	<span class="Q1" class="inspan"></span></span>
+											<span class="">26 - 50 % :&ensp; 	<span class="Q2" class="inspan"></span></span>
+											<span class="div-sapn15">51 - 75 % :&ensp; 	<span class="Q3" class="inspan"></span></span>
+											<span class="div-sapn15">76 - 100 % :&ensp; <span class="Q4"  class="inspan"></span></span>
+											<span class="div-sapn15">Closed:&ensp; <span class="Q5"  class="inspan"></span></span>
 										</div>
 								</div>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -703,7 +425,7 @@ td
 						} 
 						%>
 <form name="specadd" id="specadd" action="##" method="Get">
-<div class="modal-body" style="max-height: 38rem; overflow-y:auto;">
+<div class="modal-body div-modalbody">
 	<div align="center">
 	    <div class="genealogy-tree" >
 	    <ul>
@@ -729,7 +451,7 @@ td
 			                          		
 			                          	  >
 			                          		
-			                          		<span style="cursor:pointer;font-weight: 600;" 
+			                          		<span class="span-font" 
 			                          			onclick="ActionDetails(	'<%=action[10] %>',   <!-- assignid -->
 			                          									'<%=action[5].toString().trim() %>',   <!-- action item -->
 			                          									'<%=action[11] %>',   <!-- action No -->
@@ -745,29 +467,29 @@ td
 			                          		</span >           
 			                          		
 			                          	</div>
-			                          	<div class="action-box-body" align="center" style="cursor: pointer ;">
+			                          	<div class="action-box-body cursor-pointer" align="center">
 			                          		<table class="card-body-table">
 			                          			<tr>
-			                          				<th style="width: 40%;">Assignee :</th>
+			                          				<th class="width-40">Assignee :</th>
 			                          				<td  >&emsp;<%=action[23]!=null?StringEscapeUtils.escapeHtml4(action[23].toString()): " - " %></td>
 			                          			</tr>
 			                          			<tr>
-			                          				<th style="">PDC :</th>
+			                          				<th >PDC :</th>
 			                          				<td >&emsp;<%=action[24]!=null?sdf.format(action[24]):" - " %></td>
 			                          			</tr>
 			                          			<tr>
-			                          				<th style="">Progress (%) :</th>
-			                          				<td style="padding-left: 10px;">
+			                          				<th >Progress (%) :</th>
+			                          				<td class="td-padding10">
 			                          					
 			                          					<%if(action[25]!=null){ %>
-					                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+					                          				<div class="progress div-progress-copy" >
+																<div class="progress-bar progress-bar-striped width-<%=action[25]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																	<%=action[25]!=null?StringEscapeUtils.escapeHtml4(action[25].toString()): " - "%>
 																</div> 
 															</div> 
 														<%}else{ %>
-															<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															<div class="progress div-progress-copy" >
+																<div class="progress-bar progressbar" role="progressbar"  >
 																	Not Yet Started
 																</div>
 															</div> 
@@ -806,7 +528,7 @@ td
 						                          		
 						                          	  >
 													    
-													    <span style="cursor:pointer;font-weight: 600;" 
+													    <span class="span-font" 
 							                          			onclick="ActionDetails('<%=action_L1[10] %>',   <!-- assignid -->
 							                          									'<%=action_L1[5].toString().trim() %>',   <!-- action item -->
 							                          									'<%=action_L1[11] %>',   <!-- action No -->
@@ -822,29 +544,29 @@ td
 														<%=action_L1[11]!=null?StringEscapeUtils.escapeHtml4(action_L1[11].toString()): " - " %></span >    
 														       
 													</div>
-													<div class="action-box-body" align="center" style="cursor: pointer ;">
+													<div class="action-box-body cursor-pointer" align="center">
 														<table class="card-body-table">
 															<tr>
-						                          				<th style="width: 40%;">Assignee :</th>
+						                          				<th class="width-40">Assignee :</th>
 						                          				<td  >&emsp;<%=action_L1[23]!=null?StringEscapeUtils.escapeHtml4(action_L1[23].toString()): " - " %></td>
 						                          			</tr>
 						                          			<tr>
-						                          				<th style="">PDC :</th>
+						                          				<th >PDC :</th>
 						                          				<td >&emsp;<%=action_L1[23]!=null?sdf.format(action_L1[24]):" - " %></td>
 						                          			</tr>
 						                          			<tr>
-						                          				<th style="">Progress (%) :</th>
-						                          				<td style="padding-left: 10px;">
+						                          				<th >Progress (%) :</th>
+						                          				<td class="td-padding10">
 						                          					
 						                          					<%if(action_L1[25]!=null){ %>
-								                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																			<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L1[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+								                          				<div class="progress div-progress-copy">
+																			<div class="progress-bar progress-bar-striped width-<%=action_L1[25]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																				<%=action_L1[25]!=null?StringEscapeUtils.escapeHtml4(action_L1[25].toString()): " - "%>
 																			</div> 
 																		</div> 
 																	<%}else{ %>
-																		<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																			<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																		<div class="progress div-progress-copy" >
+																			<div class="progress-bar progressbar" role="progressbar" >
 																				Not Yet Started
 																			</div>
 																		</div> 
@@ -886,7 +608,7 @@ td
 									                          		
 									                          	  >
 																	
-																	<span style="cursor:pointer;font-weight: 600;" 
+																	<span class="span-font" 
 									                          			onclick="ActionDetails('<%=action_L2[10] %>',   <!-- assignid -->
 									                          									'<%=action_L2[5].toString().trim() %>',   <!-- action item -->
 									                          									'<%=action_L2[11] %>',   <!-- action No -->
@@ -902,29 +624,29 @@ td
 																	
 																	<%=action_L2[11]!=null?StringEscapeUtils.escapeHtml4(action_L2[11].toString()): " - " %></span >           
 																</div>
-																<div class="action-box-body" align="center" style="cursor: pointer ;" style="cursor: pointer ;">
+																<div class="action-box-body cursor-pointer" align="center">
 																	<table class="card-body-table">
 																		<tr>
-									                          				<th style="width: 40%;">Assignee :</th>
+									                          				<th class="width-40">Assignee :</th>
 									                          				<td  >&emsp;<%=action_L2[23]!=null?StringEscapeUtils.escapeHtml4(action_L2[23].toString()): " - " %></td>
 									                          			</tr>
 									                          			<tr>
-									                          				<th style="">PDC :</th>
+									                          				<th >PDC :</th>
 									                          				<td >&emsp;<%=action_L2[24]!=null?sdf.format(action_L2[24]):" - " %></td>
 									                          			</tr>
 									                          			<tr>
-									                          				<th style="">Progress (%) :</th>
-									                          				<td style="padding-left: 10px;">
+									                          				<th >Progress (%) :</th>
+									                          				<td class="td-padding10">
 									                          					
 									                          					<%if(action_L2[25]!=null){ %>
-											                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																						<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L2[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+											                          				<div class="progress div-progress-copy" >
+																						<div class="progress-bar progress-bar-striped width-<%=action_L2[25]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																							<%=action_L2[25]!=null?StringEscapeUtils.escapeHtml4(action_L2[25].toString()): " - "%>
 																						</div> 
 																					</div> 
 																				<%}else{ %>
-																					<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																						<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																					<div class="progress div-progress-copy">
+																						<div class="progress-bar progressbar" role="progressbar" >
 																							Not Yet Started
 																						</div>
 																					</div> 
@@ -963,7 +685,7 @@ td
 													                          		
 													                          	  >
 																				                          		
-																					<span style="cursor:pointer;font-weight: 600;" 
+																					<span class="span-font" 
 													                          			onclick="ActionDetails('<%=action_L3[10] %>',   <!-- assignid -->
 													                          									'<%=action_L3[5].toString().trim() %>',   <!-- action item -->
 													                          									'<%=action_L3[11] %>',   <!-- action No -->
@@ -979,29 +701,29 @@ td
 																					<%=action_L3[11]!=null?StringEscapeUtils.escapeHtml4(action_L3[11].toString()): " - " %></span >           
 																				      
 																				</div>
-																				<div class="action-box-body" align="center" style="cursor: pointer ;">
+																				<div class="action-box-body cursor-pointer" align="center" >
 																					<table class="card-body-table">
 																						<tr>
-													                          				<th style="width: 40%;">Assignee :</th>
+													                          				<th class="width-40">Assignee :</th>
 													                          				<td  >&emsp;<%=action_L3[23]!=null?StringEscapeUtils.escapeHtml4(action_L3[23].toString()): " - " %></td>
 													                          			</tr>
 													                          			<tr>
-													                          				<th style="">PDC :</th>
+													                          				<th >PDC :</th>
 													                          				<td >&emsp;<%=action_L3[24]!=null?sdf.format(action_L3[24]):" - " %></td>
 													                          			</tr>
 													                          			<tr>
-													                          				<th style="">Progress (%) :</th>
-													                          				<td style="padding-left: 10px;">
+													                          				<th >Progress (%) :</th>
+													                          				<td class="td-padding10">
 													                          					
 													                          					<%if(action_L3[25]!=null){ %>
-															                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																										<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L3[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+															                          				<div class="progress div-progress-copy">
+																										<div class="progress-bar progress-bar-striped width-<%=action_L3[25]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																											<%=action_L3[25]!=null?StringEscapeUtils.escapeHtml4(action_L3[25].toString()): " - "%>
 																										</div> 
 																									</div> 
 																								<%}else{ %>
-																									<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																										<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																									<div class="progress div-progress-copy" >
+																										<div class="progress-bar progressbar" role="progressbar" >
 																											Not Yet Started
 																										</div>
 																									</div> 
@@ -1040,7 +762,7 @@ td
 																		                          		<%} %>
 													                          						>
 																									                          		
-																										<span style="cursor:pointer;font-weight: 600;" 
+																										<span class="span-font" 
 																		                          			onclick="ActionDetails('<%=action_L4[10] %>',   <!-- assignid -->
 																		                          									'<%=action_L4[5].toString().trim() %>',   <!-- action item -->
 																		                          									'<%=action_L4[11] %>',   <!-- action No -->
@@ -1057,29 +779,29 @@ td
 																										<%=action_L4[11]!=null?StringEscapeUtils.escapeHtml4(action_L4[11].toString()): " - " %></span >           
 																									     
 																									</div>
-																									<div class="action-box-body"  style="cursor: pointer ;">
+																									<div class="action-box-body cursor-pointer" >
 																										<table class="card-body-table">
 																											<tr>
-																		                          				<th style="width: 40%;">Assignee :</th>
+																		                          				<th class="width-40">Assignee :</th>
 																		                          				<td  >&emsp;<%=action_L4[23]!=null?StringEscapeUtils.escapeHtml4(action_L4[23].toString()): " - " %></td>
 																		                          			</tr>
 																		                          			<tr>
-																		                          				<th style="">PDC :</th>
+																		                          				<th >PDC :</th>
 																		                          				<td >&emsp;<%=action_L4[24]!=null?sdf.format(action_L4[24]):" - " %></td>
 																		                          			</tr>
 																		                          			<tr>
-																		                          				<th style="">Progress (%) :</th>
-																		                          				<td style="padding-left: 10px;">
+																		                          				<th >Progress (%) :</th>
+																		                          				<td class="td-padding10">
 																		                          					
 																		                          					<%if(action_L4[25]!=null){ %>
-																				                          				<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important; ">
-																															<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=action_L4[25]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																				                          				<div class="progress div-progress-copy" >
+																															<div class="progress-bar progress-bar-striped width-<%=action_L4[25]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																																<%=action_L4[25]!=null?StringEscapeUtils.escapeHtml4(action_L4[25].toString()): " - "%>
 																															</div> 
 																														</div> 
 																													<%}else{ %>
-																														<div class="progress" style="background-color:#cdd0cb !important;height: 0.80rem !important;">
-																															<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																														<div class="progress div-progress-copy" >
+																															<div class="progress-bar progressbar" role="progressbar" >
 																																Not Yet Started
 																															</div>
 																														</div> 
@@ -1139,8 +861,8 @@ td
 </div>
 	<!-- model Footer -->
 		 <div class="modal-footer" >
-			 <div  style="margin-right: 650px;"> 
-			 		<h6><span style="color: red;">Note :</span> If you close this Action. All this Sub-Action will also Closed</h6>
+			 <div  class="div-margin"> 
+			 		<h6><span class="text-danger">Note :</span> If you close this Action. All this Sub-Action will also Closed</h6>
 			 </div>
 		 	<div >
 				<button type="submit" class="btn btn-danger btn-sm revoke"   onclick="return  closeAction1()" formmethod="post" formaction="CloseSubmit.htm"> Close Action</button>
@@ -1161,10 +883,10 @@ td
 	<div class=" modal bd-example-modal-lg" tabindex="-1" role="dialog" id="action_modal">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
-				<div class="modal-header" style="background-color: #FFE0AD; ">
+				<div class="modal-header div-bg" >
 					<div class="row w-100"  >
 						<div class="col-md-12" >
-							<h5 class="modal-title" id="modal_action_no" style="font-weight:700; color: #A30808;"></h5>
+							<h5 class="modal-title h5-styl" id="modal_action_no" ></h5>
 						</div>
 					</div>
 					
@@ -1174,42 +896,42 @@ td
 				</div>
 				<div class="modal-body" align="center">
 					<form action="#" method="post" autocomplete="off"  >
-						<table style="width: 100%;">
+						<table class="width-100">
 							<tr>
-								<th style="width:10%;padding: 5px;"> Action Item :</th>
-								<td class="tabledata" style="width:90%;padding: 5px;word-wrap:break-word;" colspan="3" id="modal_action_item"></td>
+								<th class="width-10"> Action Item :</th>
+								<td class="tabledata text-break width-90 padding5px" colspan="3" id="modal_action_item"></td>
 							</tr>
 							<tr>
-								<th style="padding: 5px;" >Assign Date :</th>
-								<td style="padding: 5px;" id="modal_action_date"></td>
-								<th style="padding: 5px;" >PDC :</th>
-								<td style="padding: 5px;" id="modal_action_PDC"></td>
+								<th class="padding5px" >Assign Date :</th>
+								<td class="padding5px" id="modal_action_date"></td>
+								<th class="padding5px" >PDC :</th>
+								<td class="padding5px;" id="modal_action_PDC"></td>
 							</tr>
 							<tr>
-								<th style="padding: 5px;" >Assignor :</th>
-								<td style="padding: 5px;" class="tabledata" id="modal_action_assignor"></td>
-								<th style="padding: 5px;" >Assignee :</th>
-								<td style="padding: 5px;" class="tabledata" id="modal_action_assignee"></td>
+								<th class="padding5px" >Assignor :</th>
+								<td class="padding5px" class="tabledata" id="modal_action_assignor"></td>
+								<th class="padding5px" >Assignee :</th>
+								<td class="padding5px" class="tabledata" id="modal_action_assignee"></td>
 							</tr>
 							<tr>
-								<th style="padding: 5px;" >Final Progress :</th>
-								<td style="padding: 5px;" id="modal_action_progress"></td>
-								<th style="padding: 5px;" > Type :</th>
-								<td style="padding: 5px;font-weight: bold;color:#A30808 " id="modal_action_type"></td>
+								<th class="padding5px" >Final Progress :</th>
+								<td class="padding5px" id="modal_action_progress"></td>
+								<th class="padding5px" > Type :</th>
+								<td class="padding5px-copy" id="modal_action_type"></td>
 							</tr>
 							
 						</table>
 						</form>
 						<hr>
 						<form action="#" method="get">
-							<table class="table table-bordered table-hover table-striped table-condensed " id="" style="width: 100%">
+							<table class="table table-bordered table-hover table-striped table-condensed width-100" id="" >
 								<thead> 
-									<tr style="background-color: #055C9D; color: white;">
-										<th style="text-align: center;width:5% !important;">SN</th>
-										<th style="text-align: center;width:10% !important;">Progress Date</th>
-										<th style="text-align: center;width:15% !important;"> Progress</th>
-										<th style="width:65% !important;">Remarks</th>
-										<th style="text-align: center;width:5% !important;">Download</th>
+									<tr class="tr-st">
+										<th class="th1">SN</th>
+										<th class="th2">Progress Date</th>
+										<th class="th3"> Progress</th>
+										<th class="th4">Remarks</th>
+										<th class="th5">Download</th>
 									</tr>
 								</thead>
 								<tbody id="modal_progress_table_body">
@@ -1301,16 +1023,16 @@ $(function () {
 				
 				if(InProgress.trim() === '0')
 				{
-					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height: 1.5rem !important;">'; 
-					progressBar += 		'<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >';
+					var progressBar ='<div class="progress div-prg">'; 
+					progressBar += 		'<div class="progress-bar prg-bar" role="progressbar"  >';
 					progressBar +=		'Not Started'
 					progressBar +=		'</div>'; 
 					progressBar += '</div>'; 
 				}
 				else
 				{
-					var progressBar ='<div class="progress" style="background-color:#cdd0cb !important;height:1.5rem !important; ">'; 
-					progressBar += 		'<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: '+InProgress+';  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >';
+					var progressBar ='<div class="progress div-prg" >'; 
+					progressBar += 		'<div class="progress-bar progress-bar-striped width-'+InProgress+'" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >';
 					progressBar +=		InProgress
 					progressBar +=		'</div>'; 
 					progressBar += '</div>'; 
@@ -1323,18 +1045,18 @@ $(function () {
 					{	
 						htmlStr += '<tr>';
 						
-						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ (v+1) + '</td>';
-						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ moment(new Date(result[v][3]) ).format('DD-MM-YYYY') + '</td>';
-						htmlStr += '<td class="tabledata" style="text-align: center;" >'+ result[v][2] + ' %</td>';
+						htmlStr += '<td class="tabledata text-center" >'+ (v+1) + '</td>';
+						htmlStr += '<td class="tabledata text-center" >'+ moment(new Date(result[v][3]) ).format('DD-MM-YYYY') + '</td>';
+						htmlStr += '<td class="tabledata text-center" >'+ result[v][2] + ' %</td>';
 						htmlStr += '<td class="tabledata" >'+ result[v][4] + '</td>';
 						
 						if(result[v][5]=== null)
 						{
-							htmlStr += '<td class="tabledata" style="text-align: center;">-</td>';
+							htmlStr += '<td class="tabledata text-center">-</td>';
 						}
 						else
 						{
-							htmlStr += '<td class="tabledata" style="text-align: center;"><button type="submit" class="btn btn-sm" name="ActionSubId" value="'+ result[v][5] + '" target="blank" formaction="ActionDataAttachDownload.htm" ><i class="fa fa-download"></i></button></td>';
+							htmlStr += '<td class="tabledata text-center" ><button type="submit" class="btn btn-sm" name="ActionSubId" value="'+ result[v][5] + '" target="blank" formaction="ActionDataAttachDownload.htm" ><i class="fa fa-download"></i></button></td>';
 						}
 						htmlStr += '</tr>';
 					}
@@ -1343,7 +1065,7 @@ $(function () {
 				{
 					htmlStr += '<tr>';
 					
-					htmlStr += '<td colspan="5" style="text-align: center;"> Progress Not Updated </td>';
+					htmlStr += '<td colspan="5" class="text-center" > Progress Not Updated </td>';
 					
 					htmlStr += '</tr>';
 				}

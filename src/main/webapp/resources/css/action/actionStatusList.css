@@ -1,0 +1,121 @@
+@charset "UTF-8";
+
+label {
+	font-weight: bold;
+	font-size: 13px;
+}
+
+body {
+	overflow-x: hidden !important;
+}
+
+h6 {
+	text-decoration: none !important;
+}
+
+.table button {
+	background-color: white !important;
+	border: 3px solid #17a2b8;
+	padding: .275rem .5rem !important;
+}
+
+.table button:hover {
+	color: black !important;
+}
+
+#table tbody tr td {
+	padding: 4px 3px !important;
+}
+
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
+
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 34px;
+	height: 30px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+
+.float-right {
+	float: right;
+	margin-top: -10px;
+}
+
+.label {
+	font-size: 17px;
+	margin-bottom: .0rem;
+}
+
+.tdwidth {
+	max-width: 200px;
+	padding-right: 50px
+}
+
+.label-font17 {
+	font-size: 17px;
+	margin-bottom: .0rem;
+}
+
+.width200 {
+	width: 200px;
+	padding-right: 50px
+}
+
+.td-width8 {
+	width: 7% !important;
+}
+
+.div-progress {
+	background-color: #cdd0cb !important;
+	height: 1.4rem !important;
+}
+
+.progressbar {
+	width: 100%;
+	background-color: #cdd0cb !important;
+	color: black;
+	font-weight: bold;
+}

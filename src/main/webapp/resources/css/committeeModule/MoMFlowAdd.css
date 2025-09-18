@@ -1,0 +1,128 @@
+.input-group-text {
+	font-weight: bold;
+}
+
+label {
+	font-weight: 800;
+	font-size: 16px;
+	color: #07689f;
+}
+
+hr {
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+
+.card b {
+	font-size: 20px;
+}
+
+.tdclass {
+	padding-top: 7px;
+	padding-bottom: 7px;
+}
+
+sp::before {
+	content: "\2022";
+	color: red;
+	font-weight: bold;
+	display: inline-block;
+	width: 1em;
+	margin-left: 1em;
+}
+
+.swal2-confirm {
+	background: green;
+}
+
+.mb-4px{
+	margin-bottom: 4px !important;
+}
+
+.fs-1rem{
+	font-size: 1.2 rem;
+}
+
+.attachmentDivDisplay{
+	display: none;
+}
+
+.mt-1per{
+	margin-top: 1%;
+}
+
+.ml-1per{
+	margin-left: 1%;
+}
+
+.editBtnStyle{
+	background: #088395;
+	border-color: #088395;
+}
+
+.faDownloadStyle{
+	font-size: 0.90rem;
+	color:white;
+}
+
+.initiatedByBg{
+	background: #B5EAEA;
+}
+
+.rec1Bg{
+	background: #C6B4CE;
+}
+
+.rec2Bg{
+	background: #E8E46E;
+}
+
+.rec3Bg{
+	background: #FBC7F7;
+}
+
+.aprBg{
+	background: #F4A261;
+}
+
+
+.C000000 {
+  color: #000000 !important;
+}
+
+.C2155CD {
+  color: #2155CD !important;
+}
+
+.CFF7F3F {
+  color: #FF7F3F !important;
+}
+
+.C1CD6CE {
+  color: #1CD6CE !important;
+}
+
+.CD61C4E {
+  color: #D61C4E !important;
+}
+
+.CE247E7 {
+  color: #E247E7 !important;
+}
+
+.C157ECD {
+  color: #157ECD !important;
+}
+
+.C9C27B0 {
+  color: #9C27B0 !important;
+}
+
+.C2B7A0B {
+  color: #2B7A0B !important;
+}
+
+.fw-600{
+	font-weight: 600;
+	display: contents;
+}

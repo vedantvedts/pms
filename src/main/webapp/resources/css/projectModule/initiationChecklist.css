@@ -1,0 +1,75 @@
+td {
+	padding: 5px 10px;
+}
+
+.toggle.btn {
+	min-height: 2.0rem !important;
+	font-size: 0.95rem !important;
+	padding: 0.35rem 0.75rem !important;
+}
+
+.fa {
+	font-size: 1rem;
+}
+
+.nav-item {
+	padding: 0px;
+	cursor: pointer;
+}
+
+.cs-back{
+	color: white!important; 
+	float: right;
+}
+
+.mt-n20{
+	margin-top: -20px;
+}
+
+.cs-nav{
+	border: 1px solid #CCD1E4;
+}
+
+.cs-btn{
+	float: right;
+	margin-top: -3px;
+}
+
+.cs-content{
+	overflow-y : auto; 
+	min-height:32rem ; 
+	max-height: 32rem;
+}
+
+.cs-table{
+	margin: auto;
+	width: 70%;
+    margin-top: 15px;
+}
+
+.cs-td{
+	width: 10%; 
+	text-align: right; 
+	padding-top: 0px;
+}
+
+.cs-col4{
+	 overflow-wrap: break-word; 
+	 width: 60%;
+}
+
+.w-20{
+	width: 20%;
+}
+
+.cs-table1{
+	margin: auto;
+	 width: 70%;
+}
+
+
+
+
+
+
+

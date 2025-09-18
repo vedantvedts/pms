@@ -15,23 +15,10 @@
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
 <spring:url value="/resources/css/LoginPage.css" var="loginPageCss" />
 <link href="${loginPageCss}" rel="stylesheet" />
+<spring:url value="/resources/css/header/loginPage.css" var="staticloginPageCss" />
+<link href="${staticloginPageCss}" rel="stylesheet" />
 
-<style>
 
-.fa-file-text{
-	color:rgba(255,222,0,1);
-}
-
-.scroll {
-    max-height: 390px;
-    overflow-y: auto;
-}
-
-.scrollpolicy{
- 	/* max-height: 515px; */
-    overflow-y: auto !important;
-}
-</style>
 
 
 </head>
@@ -45,7 +32,7 @@
 
 <%if(request.getAttribute("version").equals("yes")){ %>
  <!-- Button trigger modal -->
-<button type="button"  class="btn btn-primary" style="display:none;" data-toggle="modal" data-target="#staticBackdrop" id = "versionerror">
+<button type="button"  class="btn btn-primary"  data-toggle="modal" data-target="#staticBackdrop" id = "versionerror">
 </button>
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -72,7 +59,7 @@ const originalText = paragraphElement.textContent; // Store original text for ba
 // Choose the new word:
 const replacementWord = "<%= request.getAttribute("browser")%>";
 
-paragraphElement.innerHTML="<b>Your current Browser version is not supported.<br><br>Please ensure optimal viewing by using Internet Explorer (I.E) or Microsoft Edge 110+,<br> Mozilla 110+, or Google Chrome 110+.</b><br><br><b>Site Best viewed at a resolution of 1360 x 768.</b><br><br><b style=\"color: green;\">Thank You!</b>"
+paragraphElement.innerHTML="<b>Your current Browser version is not supported.<br><br>Please ensure optimal viewing by using Internet Explorer (I.E) or Microsoft Edge 110+,<br> Mozilla 110+, or Google Chrome 110+.</b><br><br><b>Site Best viewed at a resolution of 1360 x 768.</b><br><br><b>Thank You!</b>"
 console.log("browser name: "+replacementWord);
 console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint") %>");
 </script>
@@ -92,7 +79,7 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
         			</div>
       			</div>
      			<div class="logo">
-     				<a href="#" title="PMS"><span class="c"  style="margin-top: 2% !important;font-size: 113% !important;">PROJECT MANAGEMENT SYSTEM  (VER 1.7.0)</span></a>
+     				<a href="#" title="PMS"><span class="c projName"  >PROJECT MANAGEMENT SYSTEM  (VER 1.7.0)</span></a>
      			</div>
      		
      			
@@ -122,10 +109,10 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 <div class="tab-content">
 
 <!-- -----------------------------------Home--------------------------------------------- -->
-<div class="tab-pane active " id="tab-1" role="tabpanel" style=" max-height: 360px; ">
+<div class="tab-pane active tabHeight" id="tab-1" role="tabpanel" >
 <!-- Login Page Content -->
 
- <div class="container" style="margin-top: 20px; ">
+ <div class="container m20" >
 		<div class="row">
 			<div class="col-md-12">
 			
@@ -137,11 +124,11 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 								
 								<div>
 									<p class="quote">Lets simplify project management</p>
-								 	<h4 style="font-family: 'Lato', sans-serif;font-weight: 400" >Analytics  &nbsp;|&nbsp;  Insights  &nbsp;|&nbsp;  Empowerment</h4>
+								 	<h4 class="h4S" >Analytics  &nbsp;|&nbsp;  Insights  &nbsp;|&nbsp;  Empowerment</h4>
 								</div>
 								
-								<div class="product-banner-container" style="margin-top:35px">
-									<img class="img-fluid img-responsive" src="view/images/bg4.jpg" style="">
+								<div class="product-banner-container m35" >
+									<img class="img-fluid img-responsive" src="view/images/bg4.jpg" >
 								</div>
 								
 							</div>
@@ -150,16 +137,16 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 						
 						<div class="col-md-6">
 					
-							<div class="row justify-content-end login-main-container" style="margin-left:7rem;margin-top: 4rem" >
+							<div class="row justify-content-end login-main-container ml7mt4"  >
 	
 								<div class="col-md-12">
 								
-									<div align="center"><h5 style="color:maroon;font-family: 'Lato', sans-serif;display: block;" class="welcome">Welcome !</h5></div> 
+									<div align="center"><h5  class="welcome h5S">Welcome !</h5></div> 
 									
-									<div class="login-form-wrapper " style="padding-right: 43px;padding-left: 43px; padding-bottom: 43px; padding-top: 8px " >
+									<div class="login-form-wrapper p43"  >
 										
 										<div class="login-info-container">
-											<h4 style="font-family: 'Lato', sans-serif;font-weight: 800" >Login</h4><br>
+											<h4 class="h4st" >Login</h4><br>
 										</div>
 										
 										<div class="login-form-container">
@@ -170,30 +157,51 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 												<div class="form-row">
 													
 													<div class="form-group col-12 position-relative ${error != null ? 'has-error' : ''}">
-														<input type="text" name="username" placeholder="Username" class="form-control" autocomplete="current-username" required>
+														<input type="text" name="username" placeholder="Username" class="form-control"  required>
 														<i class="fa fa-user fa-lg position-absolute"></i>
 													</div>
 													
 													<div class="form-group col-12 position-relative">
-														<input name="password" type="password" placeholder="Password" id="password" class="form-control" autocomplete="current-password">
+														<input name="password" type="password" placeholder="Password" id="password" class="form-control" >
 														<i class="fa fa-lock fa-lg position-absolute"></i>	
 													</div>
 														
 													<%-- <span style="font-family: 'Lato', sans-serif;font-size: 15px;color:red;margin-bottom: 10px;" id="error-alert">${error}</span>
 													<span style="font-family: 'Lato', sans-serif;font-size: 15px;color:green;margin-bottom: 10px;" id="success-alert">${success}</span> --%>
 													
-															<span style="font-family: 'Lato', sans-serif;font-size: 15px;color:red;margin-bottom: 10px;" id="success-alert">${error}</span>
+															<span class="salert" id="success-alert">${error}</span>
 																		
 												</div>
-												
-											
-												
-												<div class="form-submit">
+
+														<%-- <div class="form-group">
+															<label for="captchaInput">Enter Captcha:</label>
+															<div style="display: flex; align-items: center;">
+																<input type="text" name="captchaInput" id="captchaInput"
+																	class="form-control" required
+																	style="max-width: 150px; margin-right: 10px;">
+																<span
+																	style="font-weight: bold; font-size: 20px; background: #f0f0f0; padding: 5px 10px; letter-spacing: 3px; user-select: none;">
+																	${captcha} </span>
+															</div>
+														</div> --%>
+																<div class="form-group w150" >
+																    <label for="captchaInput">Enter Captcha:</label>
+																    <div class="g2s">
+																        <input type="text" name="captchaInput" id="captchaInput"
+																               class="form-control" required
+																              >
+																        <img id="captchaImage" src="data:image/png;base64,${captcha}"
+																             alt="Captcha" >
+																        <button type="button" id="refreshCaptcha" class="btn btn-secondary">&#x21bb;</button>
+																    </div>
+																</div>
+
+														<div class="form-submit">
 													<div class="row align-items-center mb-5">
 														<div class="col-md-5">
 															<div class="form-submit-button">
 																<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-																<button type="submit" class="btn btn-block btn-success" style="font-family: 'Montserrat', sans-serif;" >Login</button>
+																<button type="submit" class="btn btn-block btn-success f2s"  >Login</button>
 																<!-- <button type="submit" class="btn btn-link" formaction="fpwd/ForgotPassword.htm" > Forgot Password?</button> -->
 															</div>
 														</div>
@@ -209,12 +217,12 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 											
 										</div>
 										
-										<div class="credentials-info-container" style="margin-top: -35px;margin-bottom: -6px">
+										<div class="credentials-info-container m-35" >
 											<div class="row">
 												<div class="col-md-12">
 													
 													<div class="info-container text-md-left">
-														<p class="text-secondary" style="font-family: 'Lato', sans-serif;font-size: 15px;">* Do not share credentials with anyone</p>
+														<p class="text-secondary e2s" >* Do not share credentials with anyone</p>
 													</div>
 													
 												</div>
@@ -235,11 +243,11 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 		</div>
 	</div>	
 	
-	<div class="credentials-info-container" style="margin-top: 50px;margin-bottom: -6px">
+	<div class="credentials-info-container d2s" >
     	<%
         	boolean expstatus = (boolean)request.getAttribute("expstatus");
        		if(!expstatus) {%>
-				<marquee  class="news-scroll" behavior="scroll" direction="left" scrollamount="7" onmouseover="this.stop();" onmouseout="this.start();" style="color: red;font-weight: bold;">Your License has been Expired..!</marquee>
+				<marquee  class="news-scroll c2s" behavior="scroll" direction="left" scrollamount="7" onmouseover="this.stop();" onmouseout="this.start();" >Your License has been Expired..!</marquee>
 		<%} %>
 		<!-- <marquee  class="news-scroll" behavior="scroll" direction="left" scrollamount="7" onmouseover="this.stop();" onmouseout="this.start();" style="color: red;font-weight: bold;">Please ensure the Work Register details for January 2025 are filled in by 10 February 2025. Kindly disregard if it has already been completed.</marquee> -->
 	</div>
@@ -251,10 +259,10 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
    <div id="footer">
 	<footer class="footer"  >
 	
-		<section id="fontSize" class="clearfix" style="font-size: 100%;margin-bottom: -1%;">
-		  <section id="page" class="body-wrapper clearfix" style="">
+		<section id="fontSize" class="clearfix f1s" >
+		  <section id="page" class="body-wrapper clearfix" >
 		    	<!-- Blue Border for Login Page -->  
-		    <div class="support-row clearfix" id="swapper-border" style="">
+		    <div class="support-row clearfix" id="swapper-border" >
 		      <div class="marquee-container" onmouseover="stopMarquee()" onmouseout="startMarquee()">
 <!--         <marquee behavior="scroll" direction="left" scrollamount="10" id="marquee">
             <p style="font-size: 20px; color: white; line-height: 1.5em;">SMS Abbreviation  :  PMS SMS will be sent every morning at 7:20 AM, 
@@ -293,6 +301,16 @@ $("#error-alert") .fadeTo(3000, 1000).slideUp(1000, function ( ) {
 
 <script>
     $(document).ready(function() {
+    	
+    	document.getElementById("refreshCaptcha").addEventListener("click", function() {
+    	    fetch("${contextPath}/refresh-captcha")
+    	        .then(response => response.json())
+    	        .then(data => {
+    	            document.getElementById("captchaImage").src = "data:image/png;base64," + data.captcha;
+    	        })
+    	        .catch(error => console.error("Error refreshing captcha:", error));
+    	});
+    	
         setInterval(function() {
             var docHeight = $(window).height();
             var footerHeight = $('#footer').height();
@@ -372,6 +390,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
   });
 });
+
+$(function () {
+
+    // Try to find the element
+    const refreshBtn = document.getElementById("refreshCaptcha");
+    if (refreshBtn) {
+        refreshBtn.addEventListener("click", function () {
+            loadCaptcha();
+        });
+    }
+
+    // Optionally load captcha immediately on page load
+    loadCaptcha();
+});
+
+// Common function
+function loadCaptcha() {
+    fetch("${contextPath}/refresh-captcha")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("captchaImage").src ="data:image/png;base64," + data.captcha;
+        })
+        .catch(error => console.error("Error refreshing captcha:", error));
+}
+
 </script>
 
 </body>

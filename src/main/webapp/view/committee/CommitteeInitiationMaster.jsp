@@ -11,29 +11,8 @@
 <meta charset="ISO-8859-1">
 
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-
-<style>
-.card-body{
-	padding: 0px !important;
-}
-.control-label{
-	font-weight: bold !important;
-}
-
-
-.table thead th{
-	
-	vertical-align: middle !important;
-}
-
-.header{
-        position:sticky;
-        top: 0 ;
-        background-color: #346691;
-    }
-</style>
-
+<spring:url value="/resources/css/committeeModule/CommitteeInitiationMaster.css" var="CommitteeInitiationMaster" />
+<link href="${CommitteeInitiationMaster}" rel="stylesheet" />
 </head>
 <body>
 
@@ -84,7 +63,7 @@ String initiationid=(String)request.getAttribute("initiationid");
 			<div class="card shadow-nohover">
 				<div class="card-header">
 					<div class="row">
-						<div class="col-md-6" style="margin-top:-0.5rem;">	
+						<div class="col-md-6 mt-n5">	
 						<!-- 	<h4>Initiation Committees</h4> -->
 						
 						<%if(initiationid!=null && Long.parseLong(initiationid)>0){ %>
@@ -104,22 +83,6 @@ String initiationid=(String)request.getAttribute("initiationid");
 							<%}%>
 						</div>
 							
-						<%-- <div class="col-md-6">	
-							<%if(projectmasterlist!=null&&projectmasterlist.size()>0){ %>
-								<%if(Long.parseLong(projectid)>0){ %>
-								<form method="post" action="CommitteeAutoSchedule.htm" id="form" >
-								<%}else if(Long.parseLong(initiationid)>0){ %>
-								<form name="myfrm" action="DivCommitteeAutoSchedule.htm" method="POST">
-								<%} %>
-									<button type="submit" class="btn btn-sm preview" style="float:right" >MEETING SCHEDULE</button>
-									<input type="hidden" name="divisionid" value="<%=divisionid%>"/>	
-									<input type="hidden" name="projectname" value="<%=Project %>"/>
-									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-									<input type="hidden" name="projectid" value="<%=projectid%>"/>
-									<input type="hidden" name="initiationid" value="<%=initiationid%>"/>		
-								</form>
-							<%} %>
-						</div>	 --%>
 					</div>
 				</div><!-- card header -->
 			<!-- checkboxes start -->	
@@ -127,12 +90,12 @@ String initiationid=(String)request.getAttribute("initiationid");
 					<div class="row">
 							<!-- /////add Committees -->
 							 <div class="col-sm-6">
-								<div class="card" style="margin: 5px">
+								<div class="card cardMargin">
 									<div class="card-header cardpad ">
 										<table>
 											<tr>
-												<td width="50%"><h5 style="margin-bottom: -2px">List of Project Committees</h5></td>
-												<td width="50%" align="right">
+												<td class="w-50"><h5 class="mb-n2px">List of Project Committees</h5></td>
+												<td class="w-50" align="right">
 													<%if(Long.parseLong(projectid)>0){ %>
 														<form method="post" action="CommitteeList.htm"  >
 															<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -145,19 +108,19 @@ String initiationid=(String)request.getAttribute("initiationid");
 										</table>
 									</div>
 	
-									<div style="margin: 5px">
+									<div class="cardMargin">
 										<%if(Long.parseLong(projectid)>0){ %>
 										<form name="myfrm" action="ProjectCommitteeAdd.htm" method="POST">
 										<%}else if(Long.parseLong(initiationid)>0){ %>
 										<form name="myfrm" action="InitiationCommitteeAdd.htm" method="POST">
 										<%} %>
-										<div class="table-responsive-sm" style="height: 400px;overflow: auto ;">
+										<div class="table-responsive-sm tblResponsiveStyle">
 											<table	class=" scrolltable datatablex table table-bordered table-hover table-striped table-condensed table-sm ">
 												<thead>
-													<tr style="background-color: #346691; color: #fff;">
+													<tr class="tblResponsiveTrStyle">
 														<th class="header" scope="col"> &nbsp;<input type="checkbox" id="selectall1">&nbsp; All </th>
-														<th class="header" scope="col" style="text-align: left;">Committee Name</th>
-														<th class="header" scope="col" style="text-align: left;">Duration</th>
+														<th class="header text-left" scope="col">Committee Name</th>
+														<th class="header text-left" scope="col">Duration</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -169,10 +132,10 @@ String initiationid=(String)request.getAttribute("initiationid");
 																	check.add(obj[4]);
 													%>
 													<tr>
-														<td style="text-align: center;"><input type="checkbox" class="checkboxall1" name="committeeid"
+														<td class="text-center"><input type="checkbox" class="checkboxall1" name="committeeid"
 															value=<%=obj[0]%>></td>
-														<td style="text-align: left;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>(<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
-														<td style="text-align: left;"><%if(obj[6].toString().equalsIgnoreCase("P")){ %><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): "" %> days<%} else{%>Non-Periodic<%} %> </td>
+														<td class="text-left"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>(<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
+														<td class="text-left"><%if(obj[6].toString().equalsIgnoreCase("P")){ %><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): "" %> days<%} else{%>Non-Periodic<%} %> </td>
 													</tr>
 													<%
 														}
@@ -184,7 +147,7 @@ String initiationid=(String)request.getAttribute("initiationid");
 														
 													<%} else{%>
 													<tr>
-														<td style="text-align: center;" colspan="4"><br><br> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;&nbsp; No Committees <br><br></td>
+														<td  class="text-center" colspan="4"><br><br> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;&nbsp; No Committees <br><br></td>
 													</tr>
 													<%} %>
 												</tbody>
@@ -193,7 +156,7 @@ String initiationid=(String)request.getAttribute("initiationid");
 											
 											<%if (committeelist.size()>0 && committeelist != null && check.size()>0 ) {%>
 											<div align="center">
-												<input type="submit" class="btn btn-primary btn-sm add" onclick="return submitChecked()" value="ADD" style="margin :15px; "/>
+												<input type="submit" class="btn btn-primary btn-sm add committeeAddSubmitStyle" onclick="return submitChecked()" value="ADD"/>
 											</div>
 											<%} %>
 											
@@ -209,14 +172,13 @@ String initiationid=(String)request.getAttribute("initiationid");
 
 					
 							<div class="col-sm-6">
-								<div class="card" style="margin: 5px">
+								<div class="card cardMargin">
 	
-									<div class="card-header cardpad ">
-										<%-- <h5 style="margin-bottom: -2px; ">Committees Added for <%=Project %></h5> --%>
-										<h5 style="margin-bottom: -2px; ">Committees Added for Initiation</h5>
+									<div class="card-header cardpad">
+										<h5 class="mb-n2px">Committees Added for Initiation</h5>
 									</div>
 	
-									<div style="margin: 5px">
+									<div class="cardMargin">
 	
 										<%if(Long.parseLong(projectid)>0){ %>
 										<form name="myfrm" action="ProjectCommitteeDelete.htm"	method="POST">
@@ -224,13 +186,13 @@ String initiationid=(String)request.getAttribute("initiationid");
 										<form name="myfrm" action="InitiationCommitteeDelete.htm" method="POST">
 										<%} %>
 										
-										<div class="table-responsive-sm" style="height: 400px;overflow: auto;">
+										<div class="table-responsive-sm tblResponsiveStyle">
 											<table
 												class="scrolltable datatablex table table-bordered table-hover table-striped table-condensed table-sm  ">
 												<thead>
-													<tr style="background-color: #346691; color: #fff;">
+													<tr class="tblResponsiveTrStyle">
 														<th class="header" scope="col"> &nbsp;<input type="checkbox" id="selectall">&nbsp; All </th>
-														<th class="header" scope="col" style="text-align: left;">Committee Name</th>
+														<th class="header text-left" scope="col">Committee Name</th>
 														<th class="header" scope="col">Periodic Duration</th>
 														<th class="header" scope="col">Scheduled</th>
 														<th class="header" scope="col">Constitute</th>
@@ -241,7 +203,7 @@ String initiationid=(String)request.getAttribute("initiationid");
 														for (Object[] obj : projectmasterlist) {
 													%>
 													<tr>
-														<td style="text-align: center;">
+														<td class="text-center">
 														
 														<% int checkcount=0;
 														for(Object[] checklist : ProjectFormationCheckList){															
@@ -263,14 +225,14 @@ String initiationid=(String)request.getAttribute("initiationid");
 														
 														
 														</td>
-														<td style="text-align: left;"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%> (<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
-														<td style="text-align: left;"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): "" %> days<%} else{%>Non-Periodic<%} %> </td>
-														<td style="text-align: center;"><%if(obj[6].toString().equalsIgnoreCase("Y")) {%><img src="view/images/check.png"/><%}else{ %><img src="view/images/cancel.png"/><%} %></td>
+														<td class="text-left"><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - "%> (<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>)</td>
+														<td class="text-left"><%if(obj[4].toString().equalsIgnoreCase("P")){ %><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): "" %> days<%} else{%>Non-Periodic<%} %> </td>
+														<td class="text-center"><%if(obj[6].toString().equalsIgnoreCase("Y")) {%><img src="view/images/check.png"/><%}else{ %><img src="view/images/cancel.png"/><%} %></td>
 														<td> 
 															<%if(checkcount>0){ %>
-																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" style="background-color: maroon !important; font-size: 12px;">Constitute</button>
+																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view constituteMaroon">Constitute</button>
 															<%}else{ %>
-																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view" style="background-color: green !important; font-size: 12px;" >Constitute</button>
+																<button type="submit" value="<%=obj[2] %>" name="sub" class="btn btn-sm view constituteGreen">Constitute</button>
 															<%} %>
 													
 														</td>															
@@ -292,7 +254,7 @@ String initiationid=(String)request.getAttribute("initiationid");
 											</div>
 										<% if(projectmasterlist!=null&&projectmasterlist.size()>0){%>
 											<div align="center">
-												<button type="submit" value="remove" name="sub" class="btn btn-danger btn-sm delete" onclick="return deleteConfirm()" style="margin-bottom: 2%">Remove</button>
+												<button type="submit" value="remove" name="sub" class="btn btn-danger btn-sm delete mb-2per" onclick="return deleteConfirm()">Remove</button>
 											</div>
 										<%}%>											
 											<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
@@ -328,65 +290,63 @@ String initiationid=(String)request.getAttribute("initiationid");
 <br>
 
 	<div class="row m-1">
-		<div class="col-md-12"
-			style="text-align: center; width: 140px; height: 30px;color:green">
+		<div class="col-md-12 text-center text-success width-140 height-30">
 			<b>Committee Flow</b>
 		</div>
 	</div>
 	
-	<div class="row m-1"
-		style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
+	<div class="row m-1 text-center pt-10px pb-15px">
 
-		<table align="center" style="border-spacing: 0 20px;">
+		<table align="center" class="tblBorderStyle">
 			<tr>
-				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;" rowspan="2">
+				<td rowspan="2" class="trup committeeFormationStyle" rowspan="2">
                   <b class="text-primary">Committee Formation</b>
                 </td>
-                <td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+                <td rowspan="2" class="trup width-10px height-20px"></td>
                 <td rowspan="2"><b>---></b>
 				
 				</td>
-				<td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-10px height-20px"></td>
 				
 				
-				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td rowspan="2" class="trup committeeFormationStyle">
 					<b class="text-primary">Is PreApproved </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><b>---></b>
 				
 				</td>
 				
 				
 				
-				<td class="trup"style=" width: 40px; height: 5px; margin-left: 20px;">
+				<td class="trup YesNoStyle">
 					<b class="text-primary"> YES</b>
 				</td>
 				
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				
 				<td><b>---</b></td>			
-				<td class="trup" style="width: 10px; height: 20px;"><b>---------------</b></td>
+				<td class="trup width-10px height-20px"><b>---------------</b></td>
 				
 				
 				
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				 <td  ><b>---></b>
 				
 				 </i></td> 
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				
 				
-				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td rowspan="2" class="trup committeeFormationStyle">
 					<b class="text-primary">Committee Constitution</b>
 				</td>
-				<td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-10px height-20px"></td>
 				<td rowspan="2" ><b>---></b>
 				
 				</td>
-				<td rowspan="2" class="trup" style="width: 10px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-10px height-20px"></td>
 				
-				<td rowspan="2" class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td rowspan="2" class="trup committeeFormationStyle">
 					<b class="text-primary">Schedule </b>
 				</td>
 				
@@ -395,24 +355,24 @@ String initiationid=(String)request.getAttribute("initiationid");
 			</tr>
 			<tr >
 			
-			    <td class="trup" style="width: 10px; height: 20px;"></td>
+			    <td class="trup width-10px height-20px"></td>
 				<td><b>---></b>
 				
 				</td>
 			
 
-				<td class="trup"style=" width: 40px; height: 5px; margin-left: 20px;">
+				<td class="trup YesNoStyle">
 					<b class="text-primary"> No</b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td><b>---></b>
 				
 				</td>
 				
-				<td class="trup"style=" background: #c4ced3; width: 100px; height: 5px; margin-left: 20px;">
+				<td class="trup committeeFormationApprovalStyle">
 					<b class="text-primary">Approval</b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td><b>---></b>
 				
 				</td>

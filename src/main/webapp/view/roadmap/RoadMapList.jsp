@@ -6,236 +6,14 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
-
-.card{
-
-box-shadow: rgba(0, 0, 0, 0.25) 0px 4px 14px;
-border-radius: 10px;
-border: 0px;
-}
-
-.table button {
-	background-color: Transparent !important;
-	background-repeat: no-repeat;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-	outline: none;
-	text-align: left !important;
-}
-
-.table td {
-	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa-long-arrow-right {
-	font-size: 2.20rem;
-	padding: 0px 5px;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.card-deck{
-display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.pagin{
-display: grid;
-float:left;
-  grid-template-columns: 1fr 1fr 1fr;
-}
-
-.table-project-n {
-	color: #005086;
-}
-
-#table thead tr th {
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td {
-	padding: 2px 3px !important;
-}
-
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-	height: 28px;
-}
-
-.col-xl{
-height: 28px;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 28px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 28px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.sameline{
-display: inline-block;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.editable-click{
-float: left;
-z-index: 9;
-white-space: nowrap;
-height: 28px;
-margin: 0 5px 0 0;
-box-sizing: border-box;
-display: inline-block;
-/* border: none;
-background: none; */
-}
-
-.editable-clicko{
-z-index: 9;
-white-space: nowrap;
-height: 28px;
-margin: 0 5px 0 0;
-box-sizing: border-box;
-display: inline-block;
-background: none;border-style: none;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-.label {
-	border-radius: 3px;
-	color: white;
-	padding: 1px 2px;
-}
-
-.label-primary {
-	background-color: #D62AD0; /* D62AD0 */
-}
-
-.label-warning {
-	background-color: #5C33F6;
-}
-
-.label-info {
-	background-color: #006400;
-}
-
-.label-success {
-	background-color: #4B0082;
-}
-
-.btn-status {
-  position: relative;
-  z-index: 1; 
-}
-
-.btn-status:hover {
-  transform: scale(1.05);
-  z-index: 5;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.trup{
-	padding:6px 10px 6px 10px ;			
-	border-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-.trdown{
-	padding:0px 10px 5px 10px ;			
-	border-bottom-left-radius : 5px; 
-	border-bottom-right-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-
-.modal-dialog-jump {
-  animation: jumpIn 1.5s ease;
-}
-
-@keyframes jumpIn {
-  0% {
-    transform: scale(0.1);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-</style>
+<spring:url value="/resources/css/roadMapModule/roadMapList.css" var="roadMapList" />
+<link href="${roadMapList}" rel="stylesheet" />
 </head>
 <body>
 <%
@@ -283,14 +61,14 @@ FormatConverter fc = new FormatConverter();
 				<div class="mt-3" align="center">
                 	<form action="#" id="myform" method="post">
                     	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                        <button  class="btn btn-sm add" type="submit" name="Action" value="Add" formaction="RoadMapDetails.htm" formnovalidate="formnovalidate" style="border: none;">Add</button>
-                 		<button type="button" class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Road Map Report Download" style="background-color: purple;border: none;color: white;font-weight: 600;" onclick="openModal()">
+                        <button  class="btn btn-sm add border-0" type="submit" name="Action" value="Add" formaction="RoadMapDetails.htm" formnovalidate="formnovalidate">Add</button>
+                 		<button type="button" class="btn btn-sm custom-report" data-toggle="tooltip" data-placement="top" title="Road Map Report Download" onclick="openModal()">
                  			GENERATE REPORT
                  		</button>
                  		<%if(roadMapList!=null && roadMapList.size()>0) {%>
-                 		<button type="submit" class="btn btn-sm" formaction="RoadMapDetailsMoveToASP.htm" data-toggle="tooltip" data-placement="top" title="Move to ASP" style="background-color: #157ecd;border: none;color: white;font-weight: 600;" onclick="moveToASPCheck()">
+                 		<button type="submit" class="btn btn-sm custom-asp" formaction="RoadMapDetailsMoveToASP.htm" data-toggle="tooltip" data-placement="top" title="Move to ASP" onclick="moveToASPCheck()">
                  			MOVE TO ASP 
-								<i class="fa fa-arrow-circle-right" style="padding: 0px;" aria-hidden="true"></i>
+								<i class="fa fa-arrow-circle-right p-0" aria-hidden="true"></i>
                  		</button>
                  		<%} %>
                  	</form>
@@ -298,7 +76,7 @@ FormatConverter fc = new FormatConverter();
 	            	
 				<%if(roadMapList!=null && roadMapList.size()>0) {%>
 				<!-- search box -->
-					<form method="get" class="form-inline my-2 my-lg-0 mt-2" style="display: flex; justify-content: center; padding-bottom:10px;margin-top: 1rem;">
+					<form method="get" class="form-inline my-2 my-lg-0 mt-2 cs-map-form">
 						<div class="mt-3">
 							<input name="search" id="search" required class="form-control mr-sm-2" placeholder="Search" aria-label="Search" type="Search" />
 							<input type="submit" class="btn btn-outline-success my-2 my-sm-0" name="clicked" value="Search" />
@@ -309,24 +87,22 @@ FormatConverter fc = new FormatConverter();
 				<!-- search ends -->
 					
 					<!-- card project visualizations -->
-					<div style="display: flex; justify-content: center;padding-bottom:10px;position: relative;">
-						<div class="card-deck" style="position: relative;">
+					<div class="custom-project">
+						<div class="card-deck position-relative">
 							<%
 							for(Object[] obj: roadMapList){ %>
 							
-								<div class="card" style="margin:10px; margin-left: 20px;margin-right: 20px;min-width:450px;">
+								<div class="card cs-maplist-card">
 									<div class="card-body">
-									
 										<div class="container">
 				  							<div class="row">
-				  								<div class="col-" style="margin-top: 0.5rem;">
+				  								<div class="col- mt-2">
 				  									<%if(obj[17]!=null && (obj[17].toString().equalsIgnoreCase("RAD") )) {%>
-														<input form="myform" type="checkbox" class="form-control" name="roadMapId" value="<%=obj[0] %>" style="transform: scale(1.5);">
+														<input form="myform" type="checkbox" class="form-control scale-15" name="roadMapId" value="<%=obj[0] %>">
 													<%} %>
 				  								</div>
 					  							<div class="col-lg">
 													<h4 class="card-title" >
-														
 														<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>
 													</h4>
 												</div>
@@ -347,7 +123,7 @@ FormatConverter fc = new FormatConverter();
 										</div>										
 										<div class="container">
 					  						<div class="row">
-					  							<div class="col-xl" style="text-align: left;">
+					  							<div class="col-xl text-left">
 													Duration : <%if(obj[10]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[10].toString()) %><%} else {%>0<%} %> Months
 												</div>
 												<div class="col-">
@@ -358,7 +134,7 @@ FormatConverter fc = new FormatConverter();
 										</div>
 										<div class="container">
 					  						<div class="row">
-					  							<div class="col-xl" style="text-align: left;">
+					  							<div class="col-xl text-left">
 													From : <%if(obj[8]!=null) {%><%=fc.SqlToRegularDate(obj[8].toString()) %><%} else {%>-<%} %>
 												</div>
 												<div class="col-">
@@ -368,17 +144,19 @@ FormatConverter fc = new FormatConverter();
 											</div>
 										</div>
 										
-										<div class="container" style="display: inline-flex;margin-top: 1%;">
+										<div class="container custom-container">
 											<div>Status :</div>
-					  						<div class="row" style="margin-top: -1%;margin-left: 1%;">
+					  						<div class="row custom-row">
 												<div class="col-xl">
 													 <%if(obj[15]!=null) {%>
 														<form action="#">
 				                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-				                                        	<%-- <input type="hidden" name="roadMapId" value="<%=obj[0] %>"> --%>
-				                                       	  	
-										    				<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=RoadMapTransStatus.htm value="<%=obj[0] %>" name="roadMapId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[16] %>; font-weight: 600;" formtarget="_blank">
-										    					<%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="margin-top: 0.3rem;"></i>
+				                                       	  	<%
+															   String colorCode = (String) obj[16];
+															   String className = "C" + colorCode.replace("#", "").toUpperCase();
+															%>
+										    				<button type="submit" class="btn btn-sm btn-link w-100 btn-status fw-600 <%=className%>" formaction=RoadMapTransStatus.htm value="<%=obj[0] %>" name="roadMapId"  data-toggle="tooltip" data-placement="top" title="Transaction History" formtarget="_blank">
+										    					<%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true"></i>
 										    				</button>
 											    			
 	                                        			</form>
@@ -388,9 +166,9 @@ FormatConverter fc = new FormatConverter();
 											</div>
 										</div> 
 										
-										<div style="bottom: 0px;margin-bottom: 15px;padding-top: 10px;">
+										<div class="cs-div-mb-pt">
 											<div class="container">
-						  						<div class="row" style="">
+						  						<div class="row">
 													<div class="col-xl">
 														<form action="#" method="post">
 		                                        			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -398,7 +176,7 @@ FormatConverter fc = new FormatConverter();
 																<div class="cc-rockmenu">
 																	<div class="rolling">
 																		<figure class="rolling_icon">
-																			<i class="fa fa-eye" style="padding: 0px;color: #67349e;font-size: 25px;" aria-hidden="true"></i>
+																			<i class="fa fa-eye custom-view" aria-hidden="true"></i>
 																		</figure>
 																		<span>Preview</span>
 																	</div>
@@ -410,7 +188,7 @@ FormatConverter fc = new FormatConverter();
 																		<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
-																					<i class="fa fa-lg fa-edit" style="padding: 0px;color: darkorange;font-size: 25px;" aria-hidden="true"></i>
+																					<i class="fa fa-lg fa-edit custom-edit" aria-hidden="true"></i>
 																				</figure>
 																				<span>Edit</span>
 																			</div>
@@ -420,7 +198,7 @@ FormatConverter fc = new FormatConverter();
 																		<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
-																					<i class="fa fa-lg fa-trash" style="padding: 0px;color: red;font-size: 25px;" aria-hidden="true"></i>
+																					<i class="fa fa-lg fa-trash custom-trash" aria-hidden="true"></i>
 																				</figure>
 																				<span>Delete</span>
 																			</div>
@@ -433,7 +211,7 @@ FormatConverter fc = new FormatConverter();
 																		<div class="cc-rockmenu">
 																			<div class="rolling">
 																				<figure class="rolling_icon">
-																					<i class="fa fa-undo" style="padding: 0px;color: #f00404;font-size: 25px;" aria-hidden="true"></i>
+																					<i class="fa fa-undo custom-undo" aria-hidden="true"></i>
 																				</figure>
 																				<span>Revoke</span>
 																			</div>
@@ -456,7 +234,7 @@ FormatConverter fc = new FormatConverter();
 					</div>
 					<!-- card project visualizations FINISH -->
 					
-					<div class="pagin" style="display: flex; justify-content: center;padding-bottom:10px;">
+					<div class="pagin custom-pagein">
 						<nav aria-label="Page navigation example" >
 							<div class="pagination" >
 								<% int pagin = Integer.parseInt(request.getAttribute("pagination").toString()) ; %>
@@ -486,46 +264,38 @@ FormatConverter fc = new FormatConverter();
 					</div>
 				<%} %>	
 				<div class="row">
-		 			<div class="col-md-12" style="text-align: center;"><b>Approval Flow For Road Map</b></div>
+		 			<div class="col-md-12 text-center"><b>Approval Flow For Road Map</b></div>
 		 	    </div>
-    			<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+    			<div class="row cs-pt-pb">
            			<table align="center"  >
         				<tr>
-        					<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+        					<td class="trup custom-trup">
          						Initiator - <%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %> 
          					</td>
              		
                     		<td rowspan="2">
-             					<i class="fa fa-long-arrow-right " aria-hidden="true" style="font-size: 20px;"></i>
+             					<i class="fa fa-long-arrow-right fs-20" aria-hidden="true"></i>
              				</td>
              						
-        					<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+        					<td class="trup custom-trup1">
         						Director - <%if(Director!=null) {%><%=StringEscapeUtils.escapeHtml4(Director[1].toString()) %> <%} else{%>DIRECTOR<%} %>
         	    			</td>
-             	    				
-                    		<!-- <td rowspan="2">
-             					<i class="fa fa-long-arrow-right " aria-hidden="true" style="font-size: 20px;"></i>
-             				</td>
-             						
-             				<td class="trup" style="background: linear-gradient(to top, #9b999a 10%, transparent 115%);">
-             					DG (ECS) - DG (ECS)
-             	    		</td> -->
             			</tr> 	
             	    </table>			             
 				</div>
 				
 				<form action="RoadMapReportExcelPreview.htm" method="post">
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-					<div class="modal fade bd-example-modal-xl" id="myModal" style="width: 100%" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-	  					<div class="modal-dialog modal-lg modal-dialog modal-dialog-jump modal-dialog-centered modal" style="max-width: 1800px" role="document">
+					<div class="modal fade bd-example-modal-xl" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+	  					<div class="modal-dialog modal-lg modal-dialog modal-dialog-jump modal-dialog-centered modal cs-excel-modal" role="document">
 	  
 	    					<div class="modal-content">
 	      						<div class="modal-header">
-	      							<div class="" style="margin-bottom: -1rem;">
+	      							<div class="mb-4">
 	      								<div class="form-group">
 		      								<div class="row">
 		      									<div class="col-md-12">
-		      										<h4 class="modal-title" style="width: 600px;text-align: left;" id="exampleModalLabel">
+		      										<h4 class="modal-title cs-excel-title" id="exampleModalLabel">
 		        										Select Projects for Road Map
 		        									</h4>
 		      									</div>
@@ -534,9 +304,9 @@ FormatConverter fc = new FormatConverter();
 		      							<div class="form-group">
 		      								<div class="row">
 		      									<div class="col-md-5">
-								        			<h5 style="text-align: left;">
+								        			<h5 class="text-left">
 								        			&emsp;Select All 
-								        			&emsp;<input type="checkbox" id="selectallprojects" style="transform: scale(1.5);">
+								        			&emsp;<input type="checkbox" id="selectallprojects" class="scale-15">
 								        			</h5>
 								        		</div>
 								        		<div class="col-md-7"></div>
@@ -551,17 +321,17 @@ FormatConverter fc = new FormatConverter();
 	       								<div class="col-md-4"></div>
       									<div class="col-md-4">
 						        			<h5>
-						        				Start Year : <input class="form-control date" id="startYear" name="startYear" required="required" readonly style="background: #fff;text-align: center;font-weight: 500;">
+						        				Start Year : <input class="form-control date custom-calender" id="startYear" name="startYear" required="required" readonly>
 						        			</h5>
 						      			</div>
 				        				<div class="col-md-4">
 				        					<h5>
-				        						End Year : <input class="form-control date" id="endYear" name="endYear" required="required" readonly style="background: #fff;text-align: center;font-weight: 500;">
+				        						End Year : <input class="form-control date custom-calender" id="endYear" name="endYear" required="required" readonly>
 				        					</h5>
 				      					</div>		
 	       							</div>
 	       							
-							        <button type="button" class="close" style="width: 2%; margin: 0 0 0 0;padding: 0 0 0 0 " data-dismiss="modal" aria-label="Close">
+							        <button type="button" class="close w-p2 p-0 m-0" data-dismiss="modal" aria-label="Close">
 							       		<span aria-hidden="true">&times;</span>
 							        </button>
 	      						</div>
@@ -572,7 +342,7 @@ FormatConverter fc = new FormatConverter();
 						    				<div class="col-md-12">
 										    	<div align="left">
 										        	<h5>
-										        		Sanctioned Projects&emsp;<input type="checkbox" id="selectexistingprojects" style="transform: scale(1.5);"> 
+										        		Sanctioned Projects&emsp;<input type="checkbox" id="selectexistingprojects" class="scale-15"> 
 										        	</h5> 
 										        </div>
 						       	 				<hr>
@@ -583,10 +353,10 @@ FormatConverter fc = new FormatConverter();
 								                       <div class="row">
 										                   <% } %>
 									                       <div class="col-3">
-									                           <div style="text-align: left;">
-									                               <input checked class="existingprojectlist" name="projectId" style="text-align: left;margin: 8px;transform: scale(1.5);" value="<%=obj[0]%>" type='checkbox'/>
+									                           <div class="text-left">
+									                               <input checked class="existingprojectlist custom-check" name="projectId" value="<%=obj[0]%>" type='checkbox'/>
 									                               <label for="<%=obj[0]%>">
-									                                   <span class="tableprojectname" style="color:black !important;font-size: 13px"> 
+									                                   <span class="tableprojectname cs-tablprj"> 
 									                                       <% if (obj[2] != null) { %><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><% } else { %>-<% } %>
 									                                       (<% if (obj[1] != null) { %><%=StringEscapeUtils.escapeHtml4(obj[1].toString())%><% } else { %>-<% } %>)
 									                                   </span> 	
@@ -604,11 +374,11 @@ FormatConverter fc = new FormatConverter();
 									</div>
 
 	        	
-							        <div class="row" style="margin-top: 1rem;">
+							        <div class="row mt-4">
 							        	<div class="col-md-12">
 						        			<div align="left">
 						        				<h5>
-						        					Initiation Projects&emsp;<input type="checkbox" id="selectpreprojects" style="transform: scale(1.5);">
+						        					Initiation Projects&emsp;<input type="checkbox" id="selectpreprojects" class="scale-15">
 						        				</h5>
 						        			</div>
 							        		<hr>
@@ -619,10 +389,10 @@ FormatConverter fc = new FormatConverter();
 									        			<div class="row">
 									        		<%} %>
 															<div class="col-3" >
-																<div style="text-align: left;">
-																	<input checked class="preprojectlist" name="initiationId" style="text-align: left;margin: 8px;transform: scale(1.5);" value="<%=obj[0]%>" type='checkbox'/>
+																<div class="text-left">
+																	<input checked class="preprojectlist custom-check" name="initiationId" value="<%=obj[0]%>" type='checkbox'/>
 																	<label for="<%=obj[0]%>">
-																		<span class="tableprojectname" style="color:black !important;font-size: 13px"> 
+																		<span class="tableprojectname cs-tablprj"> 
 																		  	<% if (obj[2] != null) { %><%= StringEscapeUtils.escapeHtml4(obj[2].toString()) %><% } else { %>-<% } %>
 																	  	</span> 	
 																	</label>
@@ -639,10 +409,10 @@ FormatConverter fc = new FormatConverter();
 	      					</div>
 	      				</div>
 						<div class="modal-footer ">
-				      		<div class="row" style="width: 100%">
+				      		<div class="row w-100">
 				      			<div class="col">
 						      		<div class="d-flex justify-content-start" >
-						      			<p style="text-align: left"><span style="color: red">Note</span>: Road Map (New) Projects are by default selected</p>
+						      			<p class="text-left"><span class="text-danger">Note</span>: Road Map (New) Projects are by default selected</p>
 						      		</div>
 				      			</div>
 				      			<div class="col d-flex justify-content-end" >

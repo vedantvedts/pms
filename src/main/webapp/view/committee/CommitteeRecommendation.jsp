@@ -6,54 +6,13 @@
 <%@page import="java.time.LocalTime"%>
 <%@page import="java.time.format.DateTimeFormatter"%>
 	<%@page import="com.vts.pfms.FormatConverter"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <jsp:include page="../static/header.jsp"></jsp:include>
-		<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-		
-		.tdclass {
-			padding-top:7px;
-			padding-bottom: 7px;
-		}
-		
-		/* tr_clone .select2{
-			width:600px !important;
-		}
-		
-		tr_clone1 .select2{
-			width:350px !important;
-		}
-		tr_clone2 select .select2{
-			width:350px !important;
-		} */
-		sp::before {
-		  content: "\2022";
-		  color: red;
-		  font-weight: bold;
-		  display: inline-block; 
-		  width: 1em;
-		  margin-left: 1em;
-		}		
-	</style>
+<spring:url value="/resources/css/committeeModule/CommitteeRecommendation.css" var="CommitteeRecommendation" />
+<link href="${CommitteeRecommendation}" rel="stylesheet" />
 </head>
 <body>
 <%
@@ -70,7 +29,7 @@ String type=(String)request.getAttribute("type");
 
 %>
 
-<div class="container-fluid" style=";">
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">	
 		   
@@ -93,9 +52,9 @@ String type=(String)request.getAttribute("type");
 					<table class="table table-bordered" >
 					<tbody>
 					<tr>
-					<td class="text-primary" style="width:22%"> Reference No. &nbsp;:</td>
+					<td class="text-primary width-22per"> Reference No. &nbsp;:</td>
 					<td><%=CommitteMainEnoteList[1]!=null?StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[1].toString()): " - " %></td>
-					<td class="text-primary" style="width:15%"> Reference Date.&nbsp; :</td>
+					<td class="text-primary width-15per"> Reference Date.&nbsp; :</td>
 					<td ><%=sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(CommitteMainEnoteList[2].toString())))%></td>
 					</tr>
 					
@@ -178,7 +137,7 @@ String type=(String)request.getAttribute("type");
 					<input type="hidden" name="scheduleid" value="<%=CommitteMainEnoteList[6].toString()%>">
 					<input type="hidden" name="type" value="<%=type%>">
 					<input type="hidden" name="EnoteId" value="<%=CommitteMainEnoteList!=null?CommitteMainEnoteList[0].toString():"0" %>">
-					<button type="submit" style="background: none;" data-toggle="tooltip" data-placement="top" title="Committee ENote Letter" formaction="CommitteeEnotePrint.htm" formmethod="post" formtarget="_blank" class="btn btn-sm"><i class="fa fa-download" style="   font-size: 0.90rem; "></i></button>
+					<button type="submit" data-toggle="tooltip" data-placement="top" title="Committee ENote Letter" formaction="CommitteeEnotePrint.htm" formmethod="post" formtarget="_blank" class="btn btn-sm downLoadSubmitBtn"><i class="fa fa-download fs-90"></i></button>
 			
 					
 					
@@ -186,7 +145,7 @@ String type=(String)request.getAttribute("type");
 					</tr>
 					<tr>
 					<td colspan="4">
-					<span class="text-primary" style="margin-bottom: 4px !important">Remarks :</span>
+					<span class="text-primary mt-4px">Remarks :</span>
 					
 					<textarea class="form-control" rows="2" cols="40" name="Remarks" id="Remarks"></textarea>
 					<div align="center" class="mt-2">
@@ -196,7 +155,7 @@ String type=(String)request.getAttribute("type");
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 					<button type="button" class="btn btn-sm submit" onclick="return formsubmit('A')"><%if(CommitteMainEnoteList[16].toString().equalsIgnoreCase("APR")){ %>Approve<%}else {%>Recommend <%} %></button>
 					<input type="hidden" name="EnoteId" value="<%=CommitteMainEnoteList!=null?CommitteMainEnoteList[0].toString():"0" %>">
-					<button type="button" class="btn btn-sm btn-danger" onclick="return formsubmit('R')" style="font-weight: 800;font-family: 'Montserrat', sans-serif;">RETURN</button>
+					<button type="button" class="btn btn-sm btn-danger returnBtnStyle" onclick="return formsubmit('R')">RETURN</button>
 					<%if(type.equalsIgnoreCase("C")){ %>
 					<a class="btn btn-sm back" type="button" href="CommitteeApprovalList.htm">BACK</a>
 					<%} else{%>
@@ -217,11 +176,11 @@ String type=(String)request.getAttribute("type");
 					</div>
 					</div>
 					
-						 	<div class="row mt-3"  style="text-align: center; padding-top: 10px;" >
+						 	<div class="row mt-3 pt-10px text-center">
 				                <table  align="center" >
 				                	<tr>
 				                	
-				                		<td class="trup" style="background: #B5EAEA;">
+				                		<td class="trup constituteByBg">
 				                		&nbsp;<%if(Arrays.asList("FWD","RC1","RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 				                		<img src="view/images/check.png">
 				                		<%} %><br>
@@ -234,7 +193,7 @@ String type=(String)request.getAttribute("type");
 				                			 <b>----------&gt;</b>
 				                		</td >
 				                		
-				                		<td class="trup" style="background: #C6B4CE;">
+				                		<td class="trup rec1Bg">
 				                			&nbsp;<%if(Arrays.asList("RC1","RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 				                		<img src="view/images/check.png">
 				                		<%} %><br>
@@ -250,7 +209,7 @@ String type=(String)request.getAttribute("type");
 				                			 <b>----------&gt;</b>
 				                		</td>
 				                		
-				                		<td class="trup" style="background: #E8E46E;">
+				                		<td class="trup rec2Bg">
 				                			&nbsp;<%if(Arrays.asList("RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 				                		<img src="view/images/check.png">
 				                		<%} %>
@@ -266,7 +225,7 @@ String type=(String)request.getAttribute("type");
 				                			 <b>----------&gt;</b>
 				                		</td>
 				                		
-				                		<td class="trup" style="background: #FBC7F7;" >
+				                		<td class="trup rec3Bg">
 				                			&nbsp;<%if(Arrays.asList("RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 				                		<img src="view/images/check.png">
 				                		<%} %>
@@ -282,7 +241,7 @@ String type=(String)request.getAttribute("type");
 				                			 <b>----------&gt;</b>
 				                		</td>
 				                		
-				                		<td class="trup" style="background: #F4A261;" >
+				                		<td class="trup aprBg">
 				                			Approving Officer
 				                			<br>
 				                			<%=NewApprovalList[7]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[7].toString()): " - " %>
@@ -296,11 +255,11 @@ String type=(String)request.getAttribute("type");
 				           <br><div class="col-md-12" >
 				                <%if(CommitteMainEnoteList[22]!=null && !CommitteMainEnoteList[22].toString().equalsIgnoreCase((String)session.getAttribute("labcode"))){ %>
 				                	<%if(NewApprovalList[5]!=null) {%>
-				                <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[5]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[5].toString()): " - " %>.</h6>
+				                <h6 class="text-danger">Note : This committee will be approved once it receives a recommendation from <%=NewApprovalList[5]!=null?StringEscapeUtils.escapeHtml4(NewApprovalList[5].toString()): " - " %>.</h6>
 				                <%}else if(NewApprovalList[3]!=null){ %>
-				             <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=StringEscapeUtils.escapeHtml4(NewApprovalList[3].toString()) %>.</h6>
+				             <h6 class="text-danger">Note : This committee will be approved once it receives a recommendation from <%=StringEscapeUtils.escapeHtml4(NewApprovalList[3].toString()) %>.</h6>
 				                <%}else if(NewApprovalList[1]!=null){ %>
-				             <h6 style="color:red">Note : This committee will be approved once it receives a recommendation from <%=StringEscapeUtils.escapeHtml4(NewApprovalList[1].toString()) %>.</h6>
+				             <h6 class="text-danger">Note : This committee will be approved once it receives a recommendation from <%=StringEscapeUtils.escapeHtml4(NewApprovalList[1].toString()) %>.</h6>
 				                <%}} %>
 				                </div>	
 				                	</div>

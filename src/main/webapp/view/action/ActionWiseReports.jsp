@@ -9,40 +9,14 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/action/actionWiseReports.css" var="actionWiseReports" />
+<link href="${actionWiseReports}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
  
 
 <title>Assignee List</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
 
-.table button{
-	
-	background-color: white !important;
-	border: 3px solid #17a2b8;
-	padding: .275rem .5rem !important;
-}
-
-.table button:hover {
-	color: black !important;
-	
-}
-#table tbody tr td {
-
-	    padding: 4px 3px !important;
-
-}
-</style>
 </head>
  
 <body>
@@ -69,12 +43,12 @@ h6{
 						<%if("Y".equalsIgnoreCase(ActionType)){ %>Completed   Wise <%} %>
 						<%if("P".equalsIgnoreCase(ActionType)){ %>Pending   Wise <%} %>
 						<%if("E".equalsIgnoreCase(ActionType)){ %>Delayed Wise <%} %> Action Reports</h3>  
-							<div class="col-md-1" style="float: right;">
+							<div class="col-md-1 float-right">
 								<form action="ActionPDReports.htm" name="myfrm" id="myfrm" method="post">
 								<input type="hidden" name="ProjectId"  value="<%=ProjectId%>"/>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 								
-					   		  <button type="submit"  name="sub" value="back" class="btn btn-primary back"  style="margin-top:10px;padding: 0.375rem 17px;"> Back</button>
+					   		  <button type="submit"  name="sub" value="back" class="btn btn-primary back back-btn"  > Back</button>
 					   			</form>
 					   		</div>
 		   				</div>	   							
@@ -126,14 +100,14 @@ h6{
 																		<td><%=obj[6]!=null?sdf.format(obj[6]):""%></td>																		
 																		<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
 																	  	<td>Ext: <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%>, Mob: <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
-																		<td style="width:8% !important; "><%if(obj[12]!=null){ %>
-															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															            <div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[12]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																		<td class="td-styl"><%if(obj[12]!=null){ %>
+															            <div class="progress div-progress">
+															            <div class="progress-bar progress-bar-striped width-<%=obj[12]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															            <%= StringEscapeUtils.escapeHtml4(obj[12].toString())%>
 															            </div> 
 															            </div> <%}else{ %>
-															            <div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
-															            <div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+															            <div class="progress div-progress">
+															            <div class="progress-bar progressbar" role="progressbar" >
 															             Not Yet Started .
 															            </div>
 															            </div> <%} %></td>				

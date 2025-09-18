@@ -1,0 +1,96 @@
+label {
+	font-weight: bold;
+	font-size: 13px;
+}
+
+body {
+	background-color: #f2edfa;
+	overflow-x: hidden;
+}
+
+h6 {
+	text-decoration: none !important;
+}
+
+.container-margin {
+	margin-bottom: 20px;
+	max-width: 100%;
+}
+
+.custom-card-header {
+	background-color: #055C9D;
+	padding: 10px;
+	box-sizing: border-box;
+	display: table;
+}
+
+.custom-h6 {
+	color: white;
+	font-weight: bold;
+	font-size: 1.1rem !important
+}
+
+.custom-span {
+	text-decoration: underline;
+	font-size: 13px;
+	color: greenyellow;
+	cursor: pointer;
+}
+
+.span-stl {
+	float: right;
+	font-size: 17px;
+	margin-top: 5px
+}
+
+.margin-top30 {
+	margin-top: 30px;
+}
+
+.margin-top20 {
+	margin-top: 20px;
+}
+
+.th-styl {
+	background-color: #346691;
+	color: white !important;
+	text-align: center;
+	font-size: 18px !important;
+	border-left: 0px solid;
+	text-transform: capitalize !important;
+}
+
+.progress-cp {
+	background-color: #cdd0cb !important
+}
+
+.btn-bg {
+	background-color: #D3D3D3;
+}
+
+.height50 {
+	height: 50px;
+}
+
+.md-content {
+	margin-left: -13%;
+	width: 37rem;
+}
+
+.custom-label {
+	font-family: 'Lato', sans-serif;
+	font-weight: 700;
+	font-size: 16px
+}
+
+.margin-leftN6 {
+	margin-left: -6%;
+}
+
+.progressVal {
+	width: 26rem;
+}
+
+.sapn-color {
+	color: #FF3D00;
+}

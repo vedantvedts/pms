@@ -20,10 +20,8 @@
 
 <title>COMMITTEE SCHEDULE MINUTES</title>
 
-
-<%-- <script src="${ckeditor}"></script>
-<script src="${richtexteditorjs}"></script>
-<script src="${allpluginsjs}"></script> --%>
+<spring:url value="/resources/css/projectModule/techClosure.css" var="techClosureCss"/>
+<link rel="stylesheet" type="text/css" href="${techClosureCss}">
 
  <script src="${SummernoteJs}"></script>
  <link href="${SummernoteCss}" rel="stylesheet" />
@@ -31,352 +29,6 @@
   <script src="${Summernotettf}"></script>
    <script src="${Summernoteeot}"></script>
 
-
- <%-- <link href="${contentCss}" rel="stylesheet" />
- <link href="${richtexteditorcss}" rel="stylesheet" /> --%>
-
-   <style>
-    .bs-example{
-        margin: 20px;
-    }
-    .accordion .fa{
-        margin-right: 0.5rem;
-    }
-</style>
-
-  	<style type="text/css">
-		
-
-label{
-  font-weight: bold;
-  font-size: 13px;
-}
- 
-.note-editable {
-  line-height: 1.0;
-}
-.panel-info {
-    border-color: #bce8f1;
-}
-.panel {
-    margin-bottom: 10px;
-    background-color: #fff;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
- .panel-heading {
-    background-color: #FFF !important;
-    border-color: #bce8f1 !important;
-    border-bottom: 2px solid #466BA2 !important;
-    color: #1d5987;
-}
-.panel-title {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 13px;
-    color: inherit;
-    font-weight: bold;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-div {
-    display: block;
-}
-
-element.style {
-}
-.olre-body .panel-info .panel-heading {
-    background-color: #FFF !important;
-    border-color: #bce8f1 !important;
-    border-bottom: 2px solid #466BA2 !important;
-   
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info>.panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.p-5 {
-    padding: 5px;
-}
-.panel-heading {
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-user agent stylesheet
-div {
-    display: block;
-}
-
-.panel-info {
-    border-color: #bce8f1;
-}
-
-.form-check{
-	margin:0px 2%;
-}
-
-.fa-thumbs-up {
-  font-family: FontAwesome, 'Quicksand', Quicksand, sans-serif;
-}
-
-.form-inline{
-
-display: inline-block;
-}
-
-
-.form-check-input:checked ~ .form-check-label::before {
-    color: #fff;
-    border-color: #7B1FA2;
-    background-color: red;
-}
-.inputx{
-width:50%;
-display:inline;
-}
-.fa-plus{
-color:green;
-}
-.fa-minus{
-color:red;
-}
-.fa-pencil{
-color:blue;
-}
-.fa-times{
-color:red;
-}
-input[type=checkbox] {
-	accent-color: green;
-}
-.spansub{
-    width: 49px;
-    height: 24px;
-    font-size: 10px;
-    font-weight: bold;
-    text-align: justify;
-    display: inline-block;
-}
-#ModalReq::after{
-  content: "Add Chapter";
-  display: none;
-  opacity:0;
-}
-#ModalReq:hover::after{
-display:inline-block;
-animation: fade-in 1s ease forwards;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px; 
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
-} 
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px;
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
-}
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-.modal-dialog-jump {
-  animation: jumpIn 1.5s ease;
-}
-
-@keyframes jumpIn {
-  0% {
-    transform: scale(0.2);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.editbtn
-{
-	background-color: green;
-	width:auto; 
-	height: 22px; 
-	font-size:10px;
-	font-weight: bold;
-	text-align: justify; 
-	margin-top : -9px;
-	padding: 0px 3px 1px 3px; 
-}
-
-
-.hiddeninput
-{
-	width:50%;
-	height: 25px;
-	
-	font-size: 1rem;
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
-	padding: 2px;
-	
-}
-
- .btnx
-{
-	width:22px; 
-	height: 22px;
-	border: 1px solid #ced4da;
-	border-radius: 0.25rem;
-	
-}
-
-.fa-lg
-{
-	margin-left: -5px;
-	vertical-align: 0%;
-	font-size: 1.4rem;
-} 
-
-.note-editing-area{
-
-   height:320px;
-} 
-	</style>
 </head>
 <body>
 
@@ -428,14 +80,14 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
                     
   
   	
-<nav class="navbar navbar-light bg-light justify-content-between" id="main1" style="margin-top: -1%">
+<nav class="navbar navbar-light bg-light justify-content-between mt-01per" id="main1">
 		<a class="navbar-brand">
-			<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f">Technical Closure Content </span></b>
+			<b class="heading-bar"><span class="heading-color">Technical Closure Content </span></b>
 	   </a>
 	
 		<form class="form-inline" method="GET" action=""  name="myfrm" id="myfrm"> 
 			<input type="hidden" name="closureId" value="<%=closureId%>" >
-			<button  class="btn  btn-sm back" formaction="TechClosureList.htm" style=" font-size:12px;" >BACK</button>
+			<button  class="btn  btn-sm back back-btn-font-size" formaction="TechClosureList.htm">BACK</button>
 		</form>
 </nav> 	
   
@@ -445,20 +97,20 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 <div class="container-fluid">          
  <div class="row"> 
    <div class="col-md-5" >
-	<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
-      <div class="card-body" id="scrollclass" style="height:500px;overflow-y:scroll " >
+	<div class="card card-content">
+      <div class="card-body card-body-content" id="scrollclass">
         <% int Sub0Count=1;
            if(ChapterList!=null && ChapterList.size()>0){
            for(Object[]obj:ChapterList) {
            if(obj[1].toString().equalsIgnoreCase("0")) {%>
           
-             <div class="panel panel-info" style="margin-top: 10px;" id="">
+             <div class="panel panel-info mt10">
 		       <div class="panel-heading ">
 		         <h4 class="panel-title">
-                      <span class="ml-2" style="font-size:14px"><%=Sub0Count+" . "+(obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " )%> </span>  
+                      <span class="ml-2 fs14"><%=Sub0Count+" . "+(obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " )%> </span>  
                 </h4>
-         	       <div style="float: right !important; margin-top:-32px; ;" id="tablediv" >
-		 		       <table style="text-align: right;" >
+         	       <div class="icon-align" id="tablediv" >
+		 		       <table class="text-right" >
      				       <thead>
 	             		      <tr>
 	                 		    <th ><input type="hidden" id="subspan" value=""></th>
@@ -474,7 +126,7 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 	                  </td>
 	                  
 	         		   <td>
-	         		       <button class="btn bg-transparent"  type="button" id="btnEditor<%=obj[0].toString()%>" onclick="showEditor('<%=obj[3].toString()%>',<%=obj[0].toString()%>)" ><i class="fa fa-file-text" aria-hidden="true" style="color:orange"></i></button>
+	         		       <button class="btn bg-transparent btn-org-color"  type="button" id="btnEditor<%=obj[0].toString()%>" onclick="showEditor('<%=obj[3].toString()%>',<%=obj[0].toString()%>)" ><i class="fa fa-file-text" aria-hidden="true"></i></button>
 	         		  </td> 
 	         		</tr>
 	         	</tbody>
@@ -492,17 +144,17 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 	  	    %>
 	        
 	         	<div class="row">  
-				   <div class="col-md-11"  align="left"  style="margin-left: 20px;">
+				   <div class="col-md-11 ml20"  align="left">
 	                   <div class="panel-heading">
 					        <h4 class="panel-title">
 					        	
 						           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %>" action="" method="post">
 						 
-										<span  style="font-size:14px" ><%=Sub0Count %>.<%=Sub1Count %></span>
-										<span  style="font-size:14px" id="span_<%=obj1[0]%>"><%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - " %>  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj1[0] %>')"></i> </span>	
-							          	<input type="text" name="ChapterName" class="hiddeninput" id="input_<%=obj1[0]%>" value="<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): ""  %>" style="display: none;" maxlength="255">
-							          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj1[0]%>" formaction="SubChapterEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Update ? ');">UPDATE</button>
-							          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj1[0] %>" onclick="moduleeditdisable('<%=obj1[0] %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
+										<span  class="fs14"><%=Sub0Count %>.<%=Sub1Count %></span>
+										<span  class="fs14" id="span_<%=obj1[0]%>"><%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): " - " %>  &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj1[0] %>')"></i> </span>	
+							          	<input type="text" name="ChapterName" class="hiddeninput dis-none" id="input_<%=obj1[0]%>" value="<%=obj1[3]!=null?StringEscapeUtils.escapeHtml4(obj1[3].toString()): ""  %>" maxlength="255">
+							          	<button type="submit" class="btn btn-sm btn-info editbtn dis-none" id="btn_<%=obj1[0]%>" formaction="SubChapterEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Update ? ');">UPDATE</button>
+							          	<button type="button" class="btnx cancel-btn" id="btnx_<%=obj1[0] %>" onclick="moduleeditdisable('<%=obj1[0] %>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
 							          	
 							          	<input type="hidden" name="ChapterId" value="<%=obj1[0]%>" >
 							          	<input type="hidden" name="ClosureId" value="<%=closureId%>">
@@ -511,9 +163,9 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 						          	</form>
 					       	  </h4>
 					       	  
-					       		<div style="float: right !important; margin-top:-24px; " > 
+					       		<div class="fr-mt24" > 
 					       			<a data-toggle="collapse" data-parent="#accordion" href="#collapse55B<%=Sub0Count %><%=Sub1Count %>"> <i class="fa fa-plus faplus " id="Clk<%=Sub0Count %><%=Sub1Count %>"></i></a>
-					       		    <button class="btn bg-transparent"  type="button" id="btnEditor<%=obj1[0].toString()%>" onclick="showEditor('<%=obj1[3].toString()%>',<%=obj1[0].toString()%>)" ><i class="fa fa-file-text" aria-hidden="true" style="color:orange"></i></button>
+					       		    <button class="btn bg-transparent btn-org-color"  type="button" id="btnEditor<%=obj1[0].toString()%>" onclick="showEditor('<%=obj1[3].toString()%>',<%=obj1[0].toString()%>)" ><i class="fa fa-file-text" aria-hidden="true"></i></button>
 					       			
 					       			
 					       		</div>
@@ -531,7 +183,7 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 					  			%>
 					  			
 					               <div class="row">  
-								    <div class="col-md-11"  align="left"  style="margin-left: 20px;">
+								    <div class="col-md-11 ml20"  align="left">
 							          <div class="panel panel-info">
 									     <div class="panel-heading">
 									        <h4 class="panel-title">
@@ -539,11 +191,11 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 									           <form  id="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>" action="" method="post">
 									 
 													
-									          		<span  style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %> </span>
-									          		<span  style="font-size:14px" id="span_<%=obj2[0]%>"> <%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj2[0] %>')"></i> </span>
-									          		<input type="text" name="ChapterName" class="hiddeninput" id="input_<%=obj2[0]%>" value="<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): ""  %>" style="display: none;" maxlength="255">
-										          	<button type="submit" class="btn btn-sm btn-info editbtn" style="display: none;" id="btn_<%=obj2[0]%>" formaction="SubChapterEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Update ? ');">UPDATE</button>
-										          	<button type="button" class="btnx" style="color: red;display: none;" id="btnx_<%=obj2[0] %>" onclick="moduleeditdisable('<%=obj2[0]%>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
+									          		<span  class="fs14"><%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %> </span>
+									          		<span  class="fs14" id="span_<%=obj2[0]%>"> <%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()): " - "  %> &nbsp;&nbsp;&nbsp;<i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" onclick="moduleeditenable('<%=obj2[0] %>')"></i> </span>
+									          		<input type="text" name="ChapterName" class="hiddeninput dis-none" id="input_<%=obj2[0]%>" value="<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): ""  %>" maxlength="255">
+										          	<button type="submit" class="btn btn-sm btn-info editbtn dis-none" id="btn_<%=obj2[0]%>" formaction="SubChapterEdit.htm" formmethod="post" onclick="return confirm('Are You Sure To Update ? ');">UPDATE</button>
+										          	<button type="button" class="btnx cancel-btn" id="btnx_<%=obj2[0] %>" onclick="moduleeditdisable('<%=obj2[0]%>')"><i class="fa fa-times fa-lg " aria-hidden="true"  ></i></button>
 										          	
 										          	 <input type="hidden" name="ChapterId" value="<%=obj2[0]%>" >
 							          	             <input type="hidden" name="ClosureId" value="<%=closureId%>">     
@@ -551,8 +203,8 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 									          		
 									          </form>
 					       		            </h4>
-									       		 <div style="float: right !important; margin-top:-28px; " > 
-									       		      <button class="btn bg-transparent"  type="button" id="btnEditor<%=obj2[0].toString()%>" onclick="showEditor('<%=obj2[3].toString()%>',<%=obj2[0].toString()%>)" ><i class="fa fa-file-text" aria-hidden="true" style="color:orange"></i></button>
+									       		 <div class="fr-mt28"> 
+									       		      <button class="btn bg-transparent btn-org-color"  type="button" id="btnEditor<%=obj2[0].toString()%>" onclick="showEditor('<%=obj2[3].toString()%>',<%=obj2[0].toString()%>)" ><i class="fa fa-file-text" aria-hidden="true"></i></button>
 									       		</div>
 									       		 
 									      </div>
@@ -565,7 +217,7 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 					     <%------------------------Level-2 Chapter Add ---------------------------------------%>
 					         
 			             <div class="row">  
-				             <div class="col-md-11"  align="left"  style="margin-left: 20px;">
+				             <div class="col-md-11 ml20"  align="left">
 				                  <div class="panel panel-info">
 								      <div class="panel-heading">
 								        <h4 class="panel-title">
@@ -578,14 +230,14 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 											   <input type="hidden" name="ClosureId" value="<%=closureId%>">
 						                       <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 						                       
-						                       <span  style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %></span>
+						                       <span  class="fs14"><%=Sub0Count %>.<%=Sub1Count %>.<%=Sub2Count %></span>
 						          		
-								          		<div style="margin-top:-20px; margin-left:35px;">
-								          		      <input class="form-control" type="text" name="ChapterName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
+								          		<div class="chapter-name">
+								          		      <input class="form-control chapter-name-iput" type="text" name="ChapterName"  required="required" maxlength="255"> 
 								          		</div>
 								          		
-								          		<div style="margin-top:-22px; margin-left: 200px;">
-								          		     <input type="submit" name="sub" class="btn btn-info btn-sm"  form="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>" value="ADD"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+								          		<div class="sub">
+								          		     <input type="submit" name="sub" class="btn btn-info btn-sm btn-pro"  form="myFormB<%=Sub0Count %><%=Sub1Count %><%=Sub2Count %>" value="ADD"/>
 								          		</div>
 						          	        </form>
 					       		          </h4>
@@ -606,7 +258,7 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 					      <%------------------------Level-1 Chapter Add ---------------------------------------%>
 					      
 					      <div class="row">  
-				             <div class="col-md-11"  align="left"  style="margin-left: 20px;">
+				             <div class="col-md-11 ml20"  align="left">
 				                   <div class="panel panel-info">
 								      <div class="panel-heading">
 								        <h4 class="panel-title">
@@ -618,14 +270,14 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 													<input type="hidden" name="ClosureId" value="<%=closureId%>">
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 													
-									          		<span style="font-size:14px"><%=Sub0Count %>.<%=Sub1Count %></span>
+									          		<span class="fs14"><%=Sub0Count %>.<%=Sub1Count %></span>
 									          		
-									          		<div style="margin-top:-20px; margin-left:55px;">
-									          		     <input class="form-control" type="text" name="ChapterName"  required="required" maxlength="255" style="width:150px; height:25px; "> 
+									          		<div class="mt20-ml55">
+									          		     <input class="form-control chapter-name-iput" type="text" name="ChapterName"  required="required" maxlength="255"> 
 									          		</div>
 									          		
-									          		<div style="margin-top:-22px; margin-left: 220px;">
-									          			<input type="submit" name="sub" class="btn btn-info btn-sm"  form="myFormB<%=Sub0Count %>" value="ADD"  style="width:42px; height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+									          		<div class="mt22-ml220">
+									          			<input type="submit" name="sub" class="btn btn-info btn-sm btn-pro"  form="myFormB<%=Sub0Count %>" value="ADD"/>
 									          		</div>
 									          		
 									          	</form>
@@ -645,7 +297,7 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 	    			
 			<br>
 			<%-------------------------  Add New Section Button ----------------------------------------------------%>
-	    	    <button type="button"  class="btn btn-sm  ml-2 font-weight-bold" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq" style="color:#31708f;"><i class="fa fa-arrow-right text-primary" aria-hidden="true"></i>&nbsp; </button>
+	    	    <button type="button"  class="btn btn-sm  ml-2 font-weight-bold add-section-btn" data-toggle="modal" data-target="#exampleModalLong" id="ModalReq"><i class="fa fa-arrow-right text-primary" aria-hidden="true"></i>&nbsp; </button>
           </div>
 	    </div>
 	 </div>
@@ -654,17 +306,16 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
                   
 	          <div class="col-md-7" id="summernoteeditor" >
 	         	<form action="SubChapterEdit.htm" method="POST" id="myfrm1">
-	      		 <div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
-	      			<h5 class="heading ml-4 mt-3" id="editorHeading" style="font-weight:500;color: #31708f;display:none;"></h5><hr>
-	      			<h5 class="heading ml-4 mt-3" id="editorHeading1" style="font-weight:500;color: #31708f;"><%if(ChapterList != null && ChapterList.size()>0){ %> <%=ChapterList.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(ChapterList.get(0)[3].toString()): " - "  %><%} %> </h5><hr>
-					  <div class="card-body" style="margin-top: -8px" >
+	      		 <div class="card sn-editor">
+	      			<h5 class="heading ml-4 mt-3 editor-heading" id="editorHeading"></h5><hr>
+	      			<h5 class="heading ml-4 mt-3 editor-heading1" id="editorHeading1"><%if(ChapterList != null && ChapterList.size()>0){ %> <%=ChapterList.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(ChapterList.get(0)[3].toString()): " - "  %><%} %> </h5><hr>
+					  <div class="card-body mt-08">
 					    <div class="row">	
-					        <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;">
-<!-- 					          <div id="summernote1" style="height: 500;"> </div> -->
-					          <div id="summernote" style="height: 500;"></div>
+					        <div class="col-md-12 ml0-w100" align="left">
+					          <div id="summernote" class="height500"></div>
 					         
 					         
-					         <textarea name="ChapterContent" id="" style="display:none;"></textarea>
+					         <textarea name="ChapterContent" id="" class="dis-none"></textarea>
 					          <div class="mt-2" align="center" id="detailsSubmit">
 					             <span id="EditorDetails"></span>
 				    
@@ -690,34 +341,34 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 		  
 		   <%-----------------------------------  Appendices Cloning -------------------------------------%> 
 		   
-		      <div class="col-md-7" id="DocumentTable" style="display:none;">
+		      <div class="col-md-7 dis-none" id="DocumentTable">
 	         	<form action="ProjectClosureAppendixDocSubmit.htm" method="POST"  enctype="multipart/form-data">
-	      		 <div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
-	      			<h5 class="heading ml-4 mt-3" id="" style="font-weight:500;color: #31708f;">Appendices</h5><hr>
+	      		 <div class="card appendices">
+	      			<h5 class="heading ml-4 mt-3 appendices-fw" id="">Appendices</h5><hr>
 	      			
-					  <div class="card-body" style="margin-top: -8px" >
+					  <div class="card-body mt-08">
 					    <div class="row">
-					       <div class="col-md-12 " align="left" style="margin-left: 0px; width: 100%;" >
+					       <div class="col-md-12 ml0-w100" align="left">
 					          <div class="row">
                       		    <div class="col-md-12" align="left">
-									<label style="margin-top:0px; margin-left:0px;font-weight: 800; margin-bottom:0px;	font-size: 20px; color:#07689f;">
-										     <b style="font-family: 'Lato',sans-serif;font-size: large;">Attachments</b>
+									<label class="attachment-label">
+										     <b class="attachments">Attachments</b>
 									</label>
 							    </div>
 				              </div>
-				             <table style="width: 94%;margin-left: 3%;" id="trialresultstable">
-								<thead style = "background-color: #055C9D; color: white;text-align: center;">
+				             <table class="w94-ml3" id="trialresultstable">
+								<thead class="trialResultsTbl">
 									<tr>
-									    <th style="width: 10%;padding: 0px 5px 0px 5px;">Appendix</th>
-								    	<th style="width: 40%;padding: 0px 5px 0px 5px;">Document Name</th>
-								    	<th style="width: 25%;padding: 0px 5px 0px 5px;">Attachment</th>
+									    <th class="appendix-label">Appendix</th>
+								    	<th class="documentName-label">Document Name</th>
+								    	<th class="attachment-label1">Attachment</th>
 								    	 <%if(AppendicesList!=null && AppendicesList.size()>0) {%>
 								    	 
-									    <th style="width: 10%;padding: 0px 5px 0px 5px;">Action</th>
+									    <th class="action-label">Action</th>
 									    	
 										<%} %>
-								    	<td style="width: 5%;">
-											<button type="button" class="btn btn_add_trialresults "> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+								    	<td class="width-5">
+											<button type="button" class="btn btn_add_trialresults green-color"> <i class="btn btn-sm fa fa-plus"></i></button>
 										</td>
 									</tr>
 								</thead>
@@ -726,39 +377,39 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 								 <%if(AppendicesList !=null && AppendicesList.size()>0) {
 									for(Object[] obj :AppendicesList) {%>
 									<tr class="tr_clone_trialresults">
-										<td style="width: 20%;padding: 10px 5px 0px 5px;" >
+										<td class="width20">
 										    <input type="text" class="form-control item" name="Appendix"  id="appendix" value="<%if(obj[1]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%} %>">
 										</td>	
 										
-										<td style="width: 40%;padding: 10px 5px 0px 5px;" >
+										<td class="width40">
 										     <input type="text" class="form-control item" name="DocumentName"  value="<%if(obj[2]!=null) {%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%} %>">
 										</td>
 										
-										<td style="width: 25%;padding: 10px 5px 0px 5px;">
+										<td class="width25">
 											<input type="file" class="form-control item" name="attachment" accept=".pdf">
 											<input type="hidden" name="attatchmentname" value="<%if(obj[3]!=null && !obj[3].toString().isEmpty()) {%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%} %>">
 										</td>
-										<td style="width: 10%;padding: 10px 5px 0px 5px;" id="actiontd">
+										<td class="width10" id="actiontd">
 											<%if(obj[3]!=null && !obj[3].toString().isEmpty()) {%>
-												<button type="submit" class="btn btn-sm" style="padding: 5px 8px;" id="attachedfile" name="attachmentfile" formmethod="post" formnovalidate="formnovalidate"
+												<button type="submit" class="btn btn-sm padding5px8px" id="attachedfile" name="attachmentfile" formmethod="post" formnovalidate="formnovalidate"
  		  				 							 value="<%=obj[0] %>" formaction="AppendicesDocumentDownload.htm" formtarget="_blank" data-toggle="tooltip" data-placement="top" title="Attatchment Download">
  														<i class="fa fa-download fa-lg"></i>
  											   </button>
 											<%} %>
 										</td>	
-										<td style="width: 5% ; ">
-											<button type="button" class="btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+										<td class="width5per">
+											<button type="button" class="btn btn_rem_trialresults" > <i class="btn btn-sm fa fa-minus red-color"></i></button>
 										</td>									
 									</tr>
 								<%} } else {%>
 								 
 									<tr class="tr_clone_trialresults">
 												
-									    <td style="width: 20%;padding: 10px 5px 0px 5px;" >
+									    <td class="width20">
 											  <input type="text" class="form-control item" name="Appendix" id="appendix" value="Appendix-A">
 										</td>
 													
-										   <td style="width: 40%;padding: 10px 5px 0px 5px;" >
+										   <td class="width40">
 												<select class="form-control" name="DocumentName">
 												    <option value="0"  selected disabled>Select</option>
 													    <%for(Object[] obj:AppndDocList){ %>
@@ -767,12 +418,12 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 												</select>
 											</td>
 												
-											<td style="width: 25%;padding: 10px 5px 0px 5px;">
+											<td class="width25">
 												  <input type="file" class="form-control item" name="attachment" accept=".pdf" required>
 											</td>
 												
-											<td style="width: 5% ; ">
-												 <button type="button" class=" btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+											<td class="width5per">
+												 <button type="button" class=" btn btn_rem_trialresults " > <i class="btn btn-sm fa fa-minus red-color"></i></button>
 											</td>
 										</tr>
 										<%} %>
@@ -810,29 +461,29 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
 <form>			
 	<div align="center">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-	    <button type="submit"  class="btn btn-sm " style="background-color: purple;border: none;color: white;font-weight: bold;" name="TechAndClosureId"  value="<%=closureId%>/<%=TechClosureId%>" formaction="TechnicalClosureReportDownload.htm" formtarget="_blank">Print Technical Closure Report</button>
+	    <button type="submit"  class="btn btn-sm print-tech-closure-btn" name="TechAndClosureId"  value="<%=closureId%>/<%=TechClosureId%>" formaction="TechnicalClosureReportDownload.htm" formtarget="_blank">Print Technical Closure Report</button>
 	</div>
 </form>	
 		
 <form action="ChapterAdd.htm" method="POST" id="myform2">          	  	
  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
    <div class="modal-dialog modal-dialog-jump" role="document">
-    <div class="modal-content mt-5" style="margin-left:-10%;">
-      <div class="modal-header p-1 pl-3" style="background: #C4DDFF">
-        <h5 class="modal-title font-weight-bold" id="exampleModalLongTitle" style="color: #31708f">Choose Chapter</h5>
+    <div class="modal-content mt-5 ml-10per">
+      <div class="modal-header p-1 pl-3 modal-header-choose-chapter">
+        <h5 class="modal-title font-weight-bold choose-chapter-color" id="exampleModalLongTitle">Choose Chapter</h5>
         <button type="button" class="close text-danger mr-2" data-dismiss="modal" aria-label="Close">
-          <span class="font-weight-bolder" aria-hidden="true" style="opacity:1;"><i class="fa fa-times" aria-hidden="true"></i></span>
+          <span class="font-weight-bolder opacity1" aria-hidden="true"><i class="fa fa-times" aria-hidden="true"></i></span>
         </button>
       </div>
         
      
-       <div class="modal-body" style="justify-content: center;align-items:center;">
-         <table class="table table-bordered table-hover table-striped table-condensed" style="border:1px solid black;">
+       <div class="modal-body justify-content-center">
+         <table class="table table-bordered table-hover table-striped table-condensed border1px">
             <thead> 
-	           <tr style="border:1px solid black;background-color:#055C9D;">
+	           <tr class="border1px-bgcolor1">
 	           
-		            <td align="center" style="border:1px solid black;width:10%;color:#FFFF">Select</td>
-		            <td align="center" style="border:1px solid black;width:80%;color:#FFFF">Chapter</td>
+		            <td align="center" class="border1px-bgcolor2">Select</td>
+		            <td align="center" class="border1px-bgcolor3">Chapter</td>
 	          </tr>
 	         
 	       </thead>
@@ -845,11 +496,11 @@ String TechClosureId=(String)request.getAttribute("TechClosureId");
      
    <br>
      
-        <div style="text-align:center;">
+        <div class="text-center">
                <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="AddNewSection" onclick="AddSection()">ADD NEW </button>
 		</div>
 		
-		<div align="center" style="display: none" id="SubmitButton">
+		<div align="center" class="dis-none" id="SubmitButton">
 		
 			  <input class="form-control" type="text" name="SectionName" placeholder="Enter New Chapter" >
 			  <br>
@@ -903,12 +554,11 @@ $(document).ready(function() {
                 for (var i = 0; i <existingData.length; i++) {
                     htmlStr += '<tr>';
                     if (existingData[i][3] === 'S') {
-                        htmlStr += '<td class="tabledata" style="text-align: center;"><button type="button" class="tick-btn" disabled style="color:#008000;font-size:20px;">&#10004;</button></td>';
+                        htmlStr += '<td class="tabledata text-center"><button type="button" class="tick-btn tick-btn-color" disabled>&#10004;</button></td>';
                     } else {
-                        htmlStr += '<td class="tabledata" style="text-align: center;"><input type="checkbox" name="SectionId" value="' + existingData[i][0] + '"></td>';
+                        htmlStr += '<td class="tabledata text-center"><input type="checkbox" name="SectionId" value="' + existingData[i][0] + '"></td>';
                     }
-                    //htmlStr += '<td class="tabledata" style="text-align: center;" ><input type="checkbox" name="SectionId"  value="' + existingData[i][0] + '" ></td>';
-                    htmlStr += '<td class="tabledata" style="text-align: left;" >' + existingData[i][2] + '</td>';
+                    htmlStr += '<td class="tabledata text-left">' + existingData[i][2] + '</td>';
                     htmlStr += '</tr>';
                     htmlStr += '</tr>';
                 }
@@ -951,8 +601,8 @@ function SectionSubmit(){
 			var lastResult = result[result.length - 1];
 			
 			htmlStr += '<tr>';
-			htmlStr += '<td class="tabledata" style="text-align: center;" ><input type="checkbox" class="" name="SectionId" value='+lastResult[0]+' ></td>';
-			htmlStr += '<td class="tabledata" style="text-align: left;" >'+ lastResult[2] + '</td>';
+			htmlStr += '<td class="tabledata text-center"><input type="checkbox" class="" name="SectionId" value='+lastResult[0]+' ></td>';
+			htmlStr += '<td class="tabledata text-left">'+ lastResult[2] + '</td>';
 		    htmlStr += '</tr>';
 		    
 			$('#modal_table_body').append(htmlStr);

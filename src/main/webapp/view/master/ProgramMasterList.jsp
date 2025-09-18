@@ -4,11 +4,17 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+        <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+
+<spring:url value="/resources/css/master/programMasterList.css" var="programMasterList" />     
+<link href="${programMasterList}" rel="stylesheet" />
+
+
 </head>
 <body>
 	<%
@@ -48,15 +54,15 @@
 				
 				<div class="card-body">
 					<form method="post" action="ProgrammeMaster.htm" name="programform">
-						<div class="table-responsive" style="width: 70%;margin-left: 18rem;">
-							<table class="table table-bordered table-hovered table-striped table-condensed datatable" id="myTable" style="width: 100%;">
+						<div class="table-responsive masterTableDiv"  >
+							<table class="table table-bordered table-hovered table-striped table-condensed datatable" id="myTable" >
 								<thead class="center">
 									<tr>
-										<td width="10%" >Select</td>
-										<td width="17%" >Programme Code</td>
-										<td width="28%" >Programme Name</td>
-										<td width="30%" >Programme Director</td>
-										<td width="15%" >Sanctioned On</td>
+										<td  class="selectTd">Select</td>
+										<td  class="programmeCodeTd" >Programme Code</td>
+										<td  class="programmeName" >Programme Name</td>
+										<td  class="programmeDirector" >Programme Director</td>
+										<td   class="sanctionedOn">Sanctioned On</td>
 									</tr>
 								</thead>
 								<tbody>

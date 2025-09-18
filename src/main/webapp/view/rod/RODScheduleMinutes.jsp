@@ -10,233 +10,12 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/contents.css" var="contentCss" />
-
+<spring:url value="/resources/css/rodModule/rodScheduleMinutes.css" var="rodScheduleMinutes" />
+<link href="${rodScheduleMinutes}" rel="stylesheet" />
 
  <script src="${ckeditor}"></script>
  <link href="${contentCss}" rel="stylesheet" />
 
-  <style>
-    .bs-example{
-        margin: 20px;
-    }
-    .accordion .fa{
-        margin-right: 0.5rem;
-    }
-</style>
-
-  	<style type="text/css">
-		
-
-label{
-  font-weight: bold;
-  font-size: 13px;
-}
- 
-.note-editable {
-  line-height: 1.0;
-}
-.panel-info {
-    border-color: #bce8f1;
-}
-.panel {
-    margin-bottom: 10px;
-    background-color: #fff;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
- .panel-heading {
-    background-color: #FFF !important;
-    border-color: #bce8f1 !important;
-    border-bottom: 2px solid #466BA2 !important;
-    color: #1d5987;
-}
-.panel-title {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 13px;
-    color: inherit;
-    font-weight: bold;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-div {
-    display: block;
-}
-
-element.style {
-}
-.olre-body .panel-info .panel-heading {
-    background-color: #FFF !important;
-    border-color: #bce8f1 !important;
-    border-bottom: 2px solid #466BA2 !important;
-   
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info>.panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.p-5 {
-    padding: 5px;
-}
-.panel-heading {
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-user agent stylesheet
-div {
-    display: block;
-}
-
-.panel-info {
-    border-color: #bce8f1;
-}
-
-.form-check{
-	margin:0px 2%;
-}
-
-.fa-thumbs-up {
-  font-family: FontAwesome, 'Quicksand', Quicksand, sans-serif;
-}
-
-.form-inline{
-
-display: inline-block;
-}
-
-
-.form-check-input:checked ~ .form-check-label::before {
-    color: #fff;
-    border-color: #7B1FA2;
-    background-color: red;
-}
-@keyframes blink {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-.blink {
-    animation: blink 1.5s infinite;
-}
- .spinner {
-    position: fixed;
-    top: 40%;
-    left: 20%;
-    margin-left: -50px; /* half width of the spinner gif */
-    margin-top: -50px; /* half height of the spinner gif */
-    text-align:center;
-    z-index:1234;
-    overflow: auto;
-    width: 1000px; /* width of the spinner gif */
-    height: 1020px; /*hight of the spinner gif +2px to fix IE8 issue */
-}
-
-	</style>
 </head>
 <body>
 
@@ -312,64 +91,46 @@ scheduleId=rodscheduleeditdata[6].toString();
            <%} %>         
                     
   
-<nav class="navbar navbar-light bg-light justify-content-between" id="main1" style="margin-top: -1%">
+<nav class="navbar navbar-light bg-light justify-content-between mt-n1p" id="main1">
 	<a class="navbar-brand">
 		
-		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f"><%=rodscheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(rodscheduleeditdata[7].toString()): " - "%> </span> <span style="color:#31708f;font-size: 15px"> (Meeting Date and Time : <%=sdf.format(sdf1.parse(rodscheduleeditdata[2].toString()))%> - <%=rodscheduleeditdata[3]!=null?StringEscapeUtils.escapeHtml4(rodscheduleeditdata[3].toString()): " - " %>)</span></b>
+		<b class="custom-bold">
+		  <span class="span-color"><%=rodscheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(rodscheduleeditdata[7].toString()): " - "%> </span> 
+		  <span class="span-color2"> (Meeting Date and Time : <%=sdf.format(sdf1.parse(rodscheduleeditdata[2].toString()))%> - <%=rodscheduleeditdata[3]!=null?StringEscapeUtils.escapeHtml4(rodscheduleeditdata[3].toString()): " - " %>)</span>
+		</b>
 
 	</a>
 	
 	<form class="form-inline" method="GET" action="RODMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
-					<%-- <button type="button" class="btn btn-sm prints my-2 my-sm-0" formaction=""  style="font-size:12px;" onclick="sendEmail(<%=rodscheduleeditdata[6]%>)">
-					<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> --%>
-		
-		<%-- <%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
-		    <!-- <input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> -->
-		<%if(rodscheduleeditdata[22].toString().equals("N")){%>	
-		<!-- <input type="submit" class="btn  btn-sm view" value="PROTECTED MINUTES" name="PROTECTED MINUTES" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#DF4646 ;color:white ;font-size:12px;" /> --> 
-			<button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" formaction=""  style="font-size:12px;font-family: 'Montserrat', sans-serif;font-weight: 800" onclick="sendEmail(<%=rodscheduleeditdata[6]%>)">
-			<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> 
-			<input type="submit" class="btn  btn-sm view" value="MINUTES" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
-			<button type="submit" class="btn btn-primary btn-sm"  name="sub" value="word"  id="wordDownloadBtn" formmethod="get" formtarget="_blank" formaction="CommitteeMinutesNewWordDownload.htm"  ><i class="fa fa-file-word-o" style="font-size:17px" title="Committee Minutes New Word Download"></i></button> 
-		<%} %>
-			<%if(rodscheduleeditdata[22].toString().equals("N")){%><button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" >FREEZE</button>
-			<%}else{ %>
-			<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to unfreeze Minutes 2021 ?')" style="font-size:12px;" >UNFREEZE</button>
-			<%} %>
-		<%} %> --%>
+
 		<input type="hidden" name="IsFrozen" value="<%=rodscheduleeditdata[22].toString()%>">
-		<%-- <%if(!SplCommitteeCodes.contains(committeecode.trim())) { %>
-		<button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" formaction=""  style="font-size:12px;font-size:12px;font-family: 'Montserrat', sans-serif;font-weight: 800" onclick="sendEmails(<%=rodscheduleeditdata[6]%>)">
-					<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> 
-		<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;">MINUTES</button>
-		<%} %> --%>
-		<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;">MINUTES</button>
+		<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank">MINUTES</button>
 		<input type="hidden" name="isFrozen" value="<%=rodscheduleeditdata[22]%>">
 		<input type="hidden" name="committeescheduleid" value="<%=rodscheduleeditdata[6]%>">
 		<input type="hidden" name="scheduleid" value="<%=rodscheduleeditdata[6]%>">
 		<input type="hidden" name="membertype" value="<%=membertype%>">
-		<button  class="btn  btn-sm back" formaction="RODScheduleView.htm" style=" font-size:12px;" >BACK</button>			
+		<button  class="btn  btn-sm back" formaction="RODScheduleView.htm">BACK</button>			
 	</form>
 	
 	
 </nav> 
- <div id="spinner" class="spinner" style="display:none;">
-                <img id="img-spinner" style="width: 200px;height: 200px;" src="view/images/spinner1.gif" alt="Loading"/>
+ <div id="spinner" class="spinner d-none">
+                <img id="img-spinner" class="custom-spinner" src="view/images/spinner1.gif" alt="Loading"/>
                 </div>
 <%if(rodscheduleeditdata[22].toString().equalsIgnoreCase("N")) {%>   
 <div class="container-fluid" id="main2">          
 <div class="row"> 
 <div class="col-md-5" >
-	<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
-    	<div class="card-body" style="margin-top: -8px" >
-         <div class="panel panel-info" style="margin-top: 10px;" >
+	<div class="card custom-card">
+    	<div class="card-body card-n1p">
+         <div class="panel panel-info">
       		<div class="panel-heading ">
         		<h4 class="panel-title">
-          			<span  style="font-size:14px">1. Introduction </span>  
+          			<span class="fs-14">1. Introduction </span>  
         		</h4>
-         	<div   style="float: right !important; margin-top:-23px; ">
+         	<div class="div-n1p">
 		 		
-		 		<table style="text-align: right;" >
+		 		<table class="text-right">
      				
      				<thead>
 	             		<tr>
@@ -387,7 +148,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 				       %>   
 	      				<tr>
 	
-				      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+				      		<td class="custom-td"> 
 				      			<form  id="myForm500" action="CommitteeMinutesSpecEdit.htm" method="post">
 				      			
 				      				<input type="hidden" name="specname" value="Introduction">
@@ -397,7 +158,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 				                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 				                     <input type="hidden" name="formname" value="myForm6542" />
 
-				         			<input class="btn btn-warning btn-sm" type="submit" 
+				         			<input class="btn btn-warning btn-sm cs-edit" type="submit" 
 				         			  
 				         			<%
 				      					if(formname!=null && formname.equalsIgnoreCase("myForm6542")){
@@ -408,7 +169,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 				         			id="GenAdd"
 				         			<%} %>
 				         			
-				         			onclick="FormNameEdit('myForm500')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+				         			onclick="FormNameEdit('myForm500')" value="EDIT"/>
  				       			
  				       				
  				       			
@@ -425,7 +186,7 @@ scheduleId=rodscheduleeditdata[6].toString();
        	</div>
       
       
-		<div   style="float: right !important; margin-top:-25px; ">  
+		<div class="div-n1p">  
 		
 			 <form name="myForm" id="myFormgen" action="ItemSpecAdd.htm" method="post" 
 
@@ -446,7 +207,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 			<input type="hidden" name="formname" value="myForm6542" /> 
 			
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-			<input type="submit" name="sub"  class="btn btn-info btn-sm"  id="GenAdd" onclick="FormName('myFormgen')" value="ADD"  style="width:40px; height: 24px; font-size:10px; font-weight: bold; text-align: justify; "/>
+			<input type="submit" name="sub"  class="btn btn-info btn-sm cs-add"  id="GenAdd" onclick="FormName('myFormgen')" value="ADD"/>
 			
 		
 			</form>
@@ -470,10 +231,10 @@ scheduleId=rodscheduleeditdata[6].toString();
   	<div class="panel panel-info">
     	<div class="panel-heading">
         	<h4 class="panel-title">
-         		<span  style="font-size:14px">2. Opening Remarks </span>
+         		<span  class="fs-14">2. Opening Remarks </span>
         	</h4>
-       	<div   style="float: right !important; margin-top:-23px; ">
-		 	<table style="text-align: center;" >
+       	<div class="div-n1p">
+		 	<table class="text-center">
      			<thead>
 	             	<tr>
 	                 	<th ></th>       
@@ -490,7 +251,7 @@ scheduleId=rodscheduleeditdata[6].toString();
       	
       				<tr>
 
-			      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+			      		<td class="custom-td"> 
 			      			<form  id="myForm1" action="MinutesSpecEdit.htm" method="post">
 			                	
 			                		<input type="hidden" name="specname" value="OpeningRemarks">
@@ -500,7 +261,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 				                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 			                    	<input type="hidden" name="formname" value="rmmyForm2" /> 
 
-			          			<input type="submit" class="btn btn-warning btn-sm"  id="rmmyForm2" onclick="FormNameEdit('myForm1')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+			          			<input type="submit" class="btn btn-warning btn-sm cs-edit"  id="rmmyForm2" onclick="FormNameEdit('myForm1')" value="EDIT"/>
 			          			
 			       			</form>
 			      		</td>
@@ -517,7 +278,7 @@ scheduleId=rodscheduleeditdata[6].toString();
        </div>
        
        
-       <div style="float: right !important; margin-top:-25px; " >
+       <div class="div-n1p">
 			
 			<form name="myForm" id="myForm2" action="ItemSpecAdd.htm" method="post" 
 
@@ -536,7 +297,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 				<input type="hidden" name="formname" value="rmmyForm2" /> 
 	
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-				<input type="submit" class="btn btn-info btn-sm" id="rmmyForm2" name="sub" onclick="FormName('myForm2')" value="ADD"  style="width:42px height: 24px; font-size:10px; font-weight: bold; text-align: justify; "/>
+				<input type="submit" class="btn btn-info btn-sm cs-add" id="rmmyForm2" name="sub" onclick="FormName('myForm2')" value="ADD"/>
 			
 			</form>
 			
@@ -559,10 +320,10 @@ scheduleId=rodscheduleeditdata[6].toString();
 	<div class="panel-heading">
 	
     	<h4 class="panel-title">
-           <span  style="font-size:14px">3. Agenda</span>
+           <span class="fs-14">3. Agenda</span>
         </h4>
         
-       	<div style="float: right !important; margin-top:-20px; " > 
+       	<div class="div-n1p"> 
        		<a data-toggle="collapse" data-parent="#accordion" href="#collapse5" > <i class="fa fa-plus" id="agendaclick"></i></a></div>
       	</div>
       
@@ -582,17 +343,17 @@ scheduleId=rodscheduleeditdata[6].toString();
    			
    			
 <div class="row">  
-	<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	<div class="col-md-11 mt-2"  align="left">
      	
      	<div class="panel panel-info">
       		<div class="panel-heading">
         		
         		<h4 class="panel-title">
-                	<span  style="font-size:14px">3.<%=unitcount %> <%=Unit!=null?StringEscapeUtils.escapeHtml4(Unit): " - " %></span> 
+                	<span class="fs-14">3.<%=unitcount %> <%=Unit!=null?StringEscapeUtils.escapeHtml4(Unit): " - " %></span> 
                 </h4>
        
-       			<div style="float: right !important; margin-top:-20px; " >
-        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=countloop %>" > <i class="fa fa-plus 5Pre<%=scheduleagendaid %> 5Dis<%=scheduleagendaid %> 5Out<%=scheduleagendaid %>" style="color:orange" id="5Out<%=scheduleagendaid %>" ></i></a></div>
+       			<div class="div-n1p">
+        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=countloop %>" > <i class="fa fa-plus plus-icon 5Pre<%=scheduleagendaid %> 5Dis<%=scheduleagendaid %> 5Out<%=scheduleagendaid %>" id="5Out<%=scheduleagendaid %>" ></i></a></div>
            		</div>
            		
   				<div id="collapse<%=countloop %>" class="panel-collapse in collapse ">
@@ -610,19 +371,19 @@ scheduleId=rodscheduleeditdata[6].toString();
 	
 	
 	<div class="row">  
-   			<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+   			<div class="col-md-11 ml-2"  align="left">
 		
 		<div class="panel panel-info">
 		
 		<div class="panel-heading">
 	    	
 	    	<h4 class="panel-title">
-	           <span  style="font-size:14px">3.<%=unitcount %>.1. Presentation </span>
+	           <span class="fs-14">3.<%=unitcount %>.1. Presentation </span>
 	        </h4>
 	        
-	       	<div style="float: right !important; margin-top:-20px; " > 
+	       	<div class="div-n1p"> 
 	       		<%int collapseP=481; %>
-	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapseP%><%=collapse%>" > <i class="fa fa-plus" style="color:green" id="5Pre<%=scheduleagendaid %>5"></i></a>
+	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapseP%><%=collapse%>" > <i class="fa fa-plus text-success" id="5Pre<%=scheduleagendaid %>5"></i></a>
 	       	</div>
 	       	
 	    </div>
@@ -630,9 +391,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 	  	<div id="<%=collapseP%><%= collapse %>" class="panel-collapse collapse in">
 	  
 	  <% int unitcount11=1; 	long unit11=1; String Unit11=null; int countloop11=100; int form11=1458;int collapse11=140;String temp11=null;int form20=5000; int Presentationcount=0; 
-	  
-	  /* int unitcount13=1;  long unit13=1; String Unit13=null; int countloop13=100; int form13=4455;int collapse13=140;String temp13=null;int form18=700; */
-	  
+	  	  
 	   if(!dis.isEmpty()){
 			for(Object[] hlod:dis){
 				 if("3".equalsIgnoreCase(hlod[0].toString()) &&  temp.equalsIgnoreCase(hlod[3].toString()) && "7".equalsIgnoreCase(hlod[4].toString()))
@@ -641,21 +400,21 @@ scheduleId=rodscheduleeditdata[6].toString();
 	   %>
 	   
 	  			<div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-2"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.1.<%=unit11 %>. 
+	          						<span class="fs-14">3.<%=unitcount %>.1.<%=unit11 %>. 
 	          						<!-- newly added by sankha 12-10-2023 -->
 	          						<%if(hlod[5].toString().length()>30){ %>
-									<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20)+"....": " - " %>	 <span style="font-size: 11px;color:crimson;cursor: pointer;]" onclick='showModal("<%=hlod[5].toString()%>")'>(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>         						
+									<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20)+"....": " - " %>	 <span class="span-fs" onclick='showModal("<%=hlod[5].toString()%>")'>(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>         						
 	          						<%}else{ %>
-	          						<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %><span style="font-size: 11px;color:crimson" >(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>
+	          						<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %><span class="span-fs">(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>
 	          						<%} %></span>
 	          						<!-- end -->
 	          						  </h4>
-		       						<div   style="float: right !important; margin-top:-23px; ">
-									 	<table style="text-align: center;" >
+		       						<div class="div-n1p">
+									 	<table class="text-center">
 							     			<thead>
 								             	<tr>
 								                 	<th ></th>       
@@ -663,7 +422,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 								         	 </thead>
 								         	<tbody>
 							      				<tr>
-										      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+										      		<td class="custom-td"> 
 										      			<form  id="myForm<%=temp %>P<%=form11 %>" action="MinutesSpecEdit.htm" method="post">
 										                	
 										                		<input type="hidden" name="specname" value="Agenda-Recommendation">
@@ -673,7 +432,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 											                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 										                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>P<%=form20 %>" />
 																<input class="form-control" type="hidden" name="unit1" value="#5Pre<%=scheduleagendaid %>" readonly="readonly">
-										          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>P<%=form20 %>" onclick="FormNameEditB('myForm<%=temp %>P<%=form11 %>' , '<%=hlod[9] %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+										          			<input type="submit" class="btn btn-warning btn-sm cs-edit"  id="rm<%=form7 %><%=temp %>P<%=form20 %>" onclick="FormNameEditB('myForm<%=temp %>P<%=form11 %>' , '<%=hlod[9] %>')" value="EDIT"/>
 										          			
 										       			</form>
 										      		</td>
@@ -695,19 +454,19 @@ scheduleId=rodscheduleeditdata[6].toString();
 				
 	<%unitcount11++;countloop++;form11++;form20++;unit11++;  Presentationcount++;}}}%>
 	   <div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-2"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	       						<form action="ScheduleMinutesUnitEdit.htm" method="post"  id="myForm<%=form6 %><%=temp %>P<%=form20 %>">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit11 %>.</span>  </h4>
-	          						<div style="margin-top:-22px; margin-left: 55px;">
+	          						<span class="fs-14">3.<%=unitcount %>.2.<%=unit11 %>.</span>  </h4>
+	          						<div class="cs-div">
 	          						
 	          						<input type="text" class=""  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Presentation "+ (++Presentationcount) %>">
 	          						
 	          						</div>
-	          						<div style="margin-top:-26px; float: right;">
-	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>D<%=form20 %>" value="ADD" onclick="FormNameB('myForm<%=form6 %><%=temp %>P<%=form20 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						<div class="div-mnp-26">
+	          						<input type="submit" class="btn btn-info btn-sm cs-add" name="sub"  id="rm<%=form7 %><%=temp %>D<%=form20 %>" value="ADD" onclick="FormNameB('myForm<%=form6 %><%=temp %>P<%=form20 %>')">
 	          						
 
 	        					    </div>
@@ -742,19 +501,19 @@ scheduleId=rodscheduleeditdata[6].toString();
 	
 	
 	 <div class="row">  
-   			<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+   			<div class="col-md-11 ml-2"  align="left">
 		
 		<div class="panel panel-info">
 			
 		<div class="panel-heading">
 	    	
 	    	<h4 class="panel-title">
-	           <span  style="font-size:14px">3.<%=unitcount %>.2. Discussions </span>
+	           <span class="fs-14">3.<%=unitcount %>.2. Discussions </span>
 	        </h4>
 	        
-	       	<div style="float: right !important; margin-top:-20px; " > 
+	       	<div class="div-n1p"> 
 	       		<%int collapseD=483; %>
-	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapseD%><%=collapse%>" > <i class="fa fa-plus" style="color:green" id="5Dis<%=scheduleagendaid %>5"></i></a>
+	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapseD%><%=collapse%>" > <i class="fa fa-plus text-success" id="5Dis<%=scheduleagendaid %>5"></i></a>
 	       	</div>
 	       	
 	    </div>
@@ -763,7 +522,6 @@ scheduleId=rodscheduleeditdata[6].toString();
 	  
 	  <%int unitcount12=1; long unit12=1; String Unit12=null; int countloop12=100; int form12=3455;int collapse12=140;String temp12=null;int form19=650; int discussionscount=0; 
 	  
-	  /* int unitcount13=1;  long unit13=1; String Unit13=null; int countloop13=100; int form13=4455;int collapse13=140;String temp13=null;int form18=700; */
 	  
 	   if(!dis.isEmpty()){
 			for(Object[] hlod:dis){
@@ -773,11 +531,11 @@ scheduleId=rodscheduleeditdata[6].toString();
 	   %>
 	   
 	  			<div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-2"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>. 
+	          						<span class="fs-14">3.<%=unitcount %>.2.<%=unit12 %>. 
 	          						<!-- newly added by sankha 12-10-2023 -->
 	          						<%if(hlod[5].toString().length()>30){ %>
 									<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20)+"....": " - " %>	          						
@@ -786,10 +544,10 @@ scheduleId=rodscheduleeditdata[6].toString();
 	          						<%} %>
 	          						<!-- end -->
 	          						</span>
-	          				<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString() %>')">(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>  </h4>
+	          				<span class="span-fs" onclick="showModal('<%=hlod[5].toString() %>')">(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>  </h4>
 	          				
-		       						<div   style="float: right !important; margin-top:-23px; ">
-									 	<table style="text-align: center;" >
+		       						<div class="div-n1p">
+									 	<table class="text-center">
 							     			<thead>
 								             	<tr>
 								                 	<th ></th>       
@@ -797,7 +555,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 								         	 </thead>
 								         	<tbody>
 							      				<tr>
-										      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+										      		<td class="custom-td"> 
 										      			<form  id="myForm<%=temp %>D<%=form12 %>" action="MinutesSpecEdit.htm" method="post">
 										                	
 										                		<input type="hidden" name="specname" value="Agenda-Recommendation">
@@ -807,7 +565,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 											                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 										                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>D<%=form19 %>" />
 																<input class="form-control" type="hidden" name="unit1" value="#5Dis<%=scheduleagendaid %>" readonly="readonly">
-										          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>D<%=form19 %>" onclick="FormNameEditB('myForm<%=temp %>D<%=form12 %>' , '<%=hlod[9] %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+										          			<input type="submit" class="btn btn-warning btn-sm cs-edit"  id="rm<%=form7 %><%=temp %>D<%=form19 %>" onclick="FormNameEditB('myForm<%=temp %>D<%=form12 %>' , '<%=hlod[9] %>')" value="EDIT"/>
 										          			
 										       			</form>
 										      		</td>
@@ -829,19 +587,19 @@ scheduleId=rodscheduleeditdata[6].toString();
 				
 	<%unitcount12++;countloop++;form12++;form19++;unit12++;  discussionscount++;}}}%>
 	   <div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-2"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	       						<form action="ScheduleMinutesUnitEdit.htm" method="post"  id="myForm<%=form6 %><%=temp %>D<%=form19 %>">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>.</span>  </h4>
-	          						<div style="margin-top:-22px; margin-left: 55px;">
+	          						<span class="fs-14">3.<%=unitcount %>.2.<%=unit12 %>.</span>  </h4>
+	          						<div class="cs-div">
 	          						
 	          						<input type="text" class=""  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Discussion "+ (++discussionscount) %>">
 	          						
 	          						</div>
-	          						<div style="margin-top:-26px; float: right;">
-	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>D<%=form19 %>" value="ADD" onclick="FormNameB('myForm<%=form6 %><%=temp %>D<%=form19 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						<div class="div-mnp-26">
+	          						<input type="submit" class="btn btn-info btn-sm cs-add" name="sub"  id="rm<%=form7 %><%=temp %>D<%=form19 %>" value="ADD" onclick="FormNameB('myForm<%=form6 %><%=temp %>D<%=form19 %>')"/>
 	          						
 
 	        					    </div>
@@ -882,19 +640,19 @@ scheduleId=rodscheduleeditdata[6].toString();
 	<!-- ******** sub row 3 start *****  -->
 	
 	 <div class="row">  
-   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+   				<div class="col-md-11 ml-2"  align="left">
 		
 		<div class="panel panel-info">
 		
 		<div class="panel-heading">
 	    	
 	    	<h4 class="panel-title">
-	           <span  style="font-size:14px">3.<%=unitcount %>.3. Outcomes </span>
+	           <span class="fs-14">3.<%=unitcount %>.3. Outcomes </span>
 	        </h4>
 	        
-	       	<div style="float: right !important; margin-top:-20px; " > 
+	       	<div class="div-n1p"> 
 	       		<%int collapse3=484; %>
-	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapse3%><%=collapse%>" > <i class="fa fa-plus" style="color:green" id="5Out<%=scheduleagendaid %>5"></i></a>
+	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapse3%><%=collapse%>" > <i class="fa fa-plus text-green" id="5Out<%=scheduleagendaid %>5"></i></a>
 	       	</div>
 	       	
 	    </div>
@@ -909,11 +667,11 @@ scheduleId=rodscheduleeditdata[6].toString();
 	   %>
 	   
 	  			<div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-2"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.3.<%=unit13 %>.
+	          						<span class="fs-14">3.<%=unitcount %>.3.<%=unit13 %>.
 	          						<!-- newly added by sankha  on 12/10 -->
 	          						<%if(hlod[5].toString().length()>30) {%>    
 										<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20) +"...": " - "%>
@@ -921,9 +679,9 @@ scheduleId=rodscheduleeditdata[6].toString();
 										    <%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %>
 									<%} %></span>
 									<!-- end -->      						
-	          						<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8]!=null?StringEscapeUtils.escapeHtml4(hlod[8].toString()): " - " %>)</span>  </h4>
-	       						<div   style="float: right !important; margin-top:-23px; ">
-								 	<table style="text-align: center;" >
+	          						<span class="span-fs" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8]!=null?StringEscapeUtils.escapeHtml4(hlod[8].toString()): " - " %>)</span>  </h4>
+	       						<div class="div-n1p">
+								 	<table class="text-center">
 						     			<thead>
 							             	<tr>
 							                 	<th ></th>       
@@ -936,7 +694,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 						      	
 						      				<tr>
 						
-									      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+									      		<td class="custom-td"> 
 									      			<form  id="myForm<%=temp %>R<%=form13 %>" action="MinutesSpecEdit.htm" method="post">
 									                	
 									                		<input type="hidden" name="specname" value="Agenda-Recommendation">
@@ -946,7 +704,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 										                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 									                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>R<%=form18 %>" />
 															<input class="form-control" type="hidden" name="unit1" value="#5Out<%=scheduleagendaid %>" readonly="readonly">				
-									          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" onclick="FormNameEditA('myForm<%=temp %>R<%=form13 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+									          			<input type="submit" class="btn btn-warning btn-sm cs-edit"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" onclick="FormNameEditA('myForm<%=temp %>R<%=form13 %>')" value="EDIT"/>
 									          			
 									       			</form>
 									      		</td>
@@ -967,14 +725,14 @@ scheduleId=rodscheduleeditdata[6].toString();
 				
 	<%unitcount13++;countloop++;form13++;form18++;unit13++;}}}%>
 	   			<div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-2"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	       						<form action="ScheduleMinutesUnitEdit.htm" method="post"  id="myForm<%=form6 %><%=temp %>R<%=form18 %>">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.3.<%=unit13 %>.</span>  </h4>
-	          						<div style="margin-top:-22px; margin-left: 55px;">
-	          							<select  name="OutComesId" id="OutComesId" required="required"  data-live-search="true"  style="width: 165px;"  >
+	          						<span class="fs-14">3.<%=unitcount %>.3.<%=unit13 %>.</span>  </h4>
+	          						<div class="cs-div">
+	          							<select  name="OutComesId" id="OutComesId" required="required"  data-live-search="true" class="select-165">
 	                                        <%for(Object[] obj:minutesoutcomelist){ %>	
 												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
@@ -984,8 +742,8 @@ scheduleId=rodscheduleeditdata[6].toString();
 	          						
 	          						
 	          						</div>
-	          						<div style="margin-top:-26px; margin-left: 240px;">
-	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" value="ADD" onclick="FormNameA('myForm<%=form6 %><%=temp %>R<%=form18 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						<div class="div-ml-240">
+	          						<input type="submit" class="btn btn-info btn-sm cs-add" name="sub"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" value="ADD" onclick="FormNameA('myForm<%=form6 %><%=temp %>R<%=form18 %>')"/>
 	          						
 
 	        					    </div>
@@ -1067,7 +825,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 	<div class="panel-heading">
     	
     	<h4 class="panel-title">
-           <span  style="font-size:14px">4. Other Discussion</span>
+           <span  class="fs-14">4. Other Discussion</span>
         </h4>
         
    
@@ -1078,8 +836,8 @@ scheduleId=rodscheduleeditdata[6].toString();
 	   %>
    
 
-       						<div   style="float: right !important; margin-top:-23px; ">
-							 	<table style="text-align: center;" >
+       						<div class="div-n1p">
+							 	<table class="text-center">
 					     			<thead>
 						             	<tr>
 						                 	<th ></th>       
@@ -1096,7 +854,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 					      	
 					      				<tr>
 					
-								      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+								      		<td class="custom-td"> 
 								      			<form  id="myForm<%=form46 %>" action="MinutesSpecEdit.htm" method="post">
 								                	
 								                		<input type="hidden" name="specname" value="Other Discussion">
@@ -1106,7 +864,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 									                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 								                    	<input type="hidden" name="formname" value="rm<%=form46 %>" />
 					
-								          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form46 %>" onclick="FormNameEdit('myForm<%=form46 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+								          			<input type="submit" class="btn btn-warning btn-sm cs-edit"  id="rm<%=form46 %>" onclick="FormNameEdit('myForm<%=form46 %>')" value="EDIT"/>
 								          			
 								       			</form>
 								      		</td>
@@ -1123,7 +881,7 @@ scheduleId=rodscheduleeditdata[6].toString();
        						</div>
        			
        						
-       					    <div style="float: right !important; margin-top:-25px; " >
+       					    <div class="div-mnp-26">
 			
 								<form name="myForm" id="myForm<%=form46 %>" action="ItemSpecAdd.htm" method="post" 
 		
@@ -1143,7 +901,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 									<input class="form-control" type="hidden" name="unit1id" value="#unitdiscussion" readonly="readonly">
 									<input type="hidden" name="formname" value="rm<%=form46 %>" />
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-									<input type="submit" class="btn btn-info btn-sm" name="sub" id="rm<%=form46 %><%=temp %>OD" onclick="FormName('myForm<%=form46 %>')" value="ADD"  style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+									<input type="submit" class="btn btn-info btn-sm cs-add" name="sub" id="rm<%=form46 %><%=temp %>OD" onclick="FormName('myForm<%=form46 %>')" value="ADD" />
 
 								
 								</form>
@@ -1173,10 +931,10 @@ scheduleId=rodscheduleeditdata[6].toString();
 	<div class="panel-heading">
     	
     	<h4 class="panel-title">
-           <span  style="font-size:14px">5. Other Outcomes</span>
+           <span class="fs-14">5. Other Outcomes</span>
         </h4>
         
-       	<div style="float: right !important; margin-top:-20px; " > 
+       	<div class="div-n1p"> 
        		<a data-toggle="collapse" data-parent="#accordion" href="#collapse58" > <i class="fa fa-plus" id="OutCome5"></i></a>
        	</div>
        	
@@ -1193,23 +951,23 @@ scheduleId=rodscheduleeditdata[6].toString();
 										 if("5".equalsIgnoreCase(hlo[0].toString())){
 										       %>
   			<div class="row">  
-   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+   				<div class="col-md-11 ml-2"  align="left">
      				<div class="panel panel-info">
       					<div class="panel-heading">
        						
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">5.<%=unitcount1 %> 
+	          						<span class="fs-14">5.<%=unitcount1 %> 
 	          						<!-- Newly added by sankha 12-10-2023 -->
 	          						<%if(hlo[5].toString().length()>40) {%>
-	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()).substring(0, 35)+"....": " - " %><span style="font-size: 11px;color:crimson;cursor: pointer;"onclick='showModal("<%=hlo[5].toString()%>")'>(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
+	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()).substring(0, 35)+"....": " - " %><span class="span-fs" onclick='showModal("<%=hlo[5].toString()%>")'>(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
 	          						<%}else{ %>
-	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()): " - "%>&nbsp;<span style="font-size: 11px;color:crimson;">(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
+	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()): " - "%>&nbsp;<span class="span-fs">(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
 	          						<%} %></span>
 	          						<!-- end  -->
 	          						  </h4>
 	          				
-       						<div   style="float: right !important; margin-top:-23px; ">
-							 	<table style="text-align: center;" >
+       						<div class="div-n1p">
+							 	<table class="text-center">
 					     			<thead>
 						             	<tr>
 						                 	<th ></th>       
@@ -1217,7 +975,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 						         	 </thead>
 						         	<tbody>
 					      				<tr>
-								      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+								      		<td class="custom-td"> 
 								      			<form  id="myForm<%=form1 %>" action="MinutesSpecEdit.htm" method="post">
 								                	 	
 								                		<input type="hidden" name="specname" value="Recommendation">
@@ -1227,7 +985,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 									                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 								                        <input type="hidden" name="formname" value="rm<%=form1 %>" /> 
 														<input class="form-control" type="hidden" name="unit1" value="5" readonly="readonly">
-								          			<input type="submit" class="btn btn-warning btn-sm" id="rm<%=form1 %>"   onclick="FormNameEditA('myForm<%=form1 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+								          			<input type="submit" class="btn btn-warning btn-sm cs-edit" id="rm<%=form1 %>"   onclick="FormNameEditA('myForm<%=form1 %>')" value="EDIT"/>
 								          			
 								       			</form>
 								      		</td>
@@ -1250,21 +1008,21 @@ scheduleId=rodscheduleeditdata[6].toString();
    
     
 		  <div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-2"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	       						<form action="ScheduleMinutesUnitEdit.htm" method="post" id="myForm<%=form1 %>">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">5.<%=unitcount1 %>.</span>  </h4>
-	          						<div style="margin-top:-22px; margin-left: 25px;">
-		          						<select  name="OutComesId" id="Assignee" required="required"  data-live-search="true"  style="width: 165px;"  >
+	          						<span class="fs-14">5.<%=unitcount1 %>.</span>  </h4>
+	          						<div class="cs-div">
+		          						<select  name="OutComesId" id="Assignee" required="required"  data-live-search="true" class="select-165">
 		                                    <%for(Object[] obj:minutesoutcomelist){ %>	
 												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
 										</select>
 	          						</div>
-	          						<div style="margin-top:-26px; margin-left: 200px;">
-	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form1 %>" value="ADD" onclick="FormNameA('myForm<%=form1 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						<div class="div-ml-240">
+	          						<input type="submit" class="btn btn-info btn-sm cs-add" name="sub"  id="rm<%=form1 %>" value="ADD" onclick="FormNameA('myForm<%=form1 %>')"/>
 	        					    </div>
 	        					       <input class="form-control" type="hidden" name="agendasubid" value="0" readonly="readonly">
 									    <input class="form-control" type="hidden" name="minutesid" value="5" readonly="readonly">
@@ -1311,7 +1069,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 	<div class="panel-heading">
     	
     	<h4 class="panel-title">
-           <span  style="font-size:14px">6. Conclusion</span>
+           <span class="fs-14">6. Conclusion</span>
         </h4>
         
      
@@ -1322,8 +1080,8 @@ scheduleId=rodscheduleeditdata[6].toString();
 	   		
 	   %>
 
-       						<div   style="float: right !important; margin-top:-23px; ">
-							 	<table style="text-align: center;" >
+       						<div class="div-n1p">
+							 	<table class="text-center">
 					     			<thead>
 						             	<tr>
 						                 	<th ></th>       
@@ -1341,7 +1099,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 					      	
 					      				<tr>
 					
-								      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+								      		<td class="custom-td"> 
 								      			<form  id="myForm<%=form2 %>" action="MinutesSpecEdit.htm" method="post">
 								                	
 								                		<input type="hidden" name="specname" value="Conclusion">
@@ -1352,7 +1110,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 								                    	<input type="hidden" name="formname" value="rm<%=form2 %>" />
 														<input class="form-control" type="hidden" name="unit1id" value="#unitconclusion" readonly="readonly">
 							
-								          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form2 %>" onclick="FormNameEdit('myForm<%=form2 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+								          			<input type="submit" class="btn btn-warning btn-sm cs-edit"  id="rm<%=form2 %>" onclick="FormNameEdit('myForm<%=form2 %>')" value="EDIT"/>
 								          			
 								       			</form>
 								      		</td>
@@ -1369,7 +1127,7 @@ scheduleId=rodscheduleeditdata[6].toString();
        						</div>
        			
        						
-       					    <div style="float: right !important; margin-top:-25px; " >
+       					    <div class="div-n1p">
 			
 								<form name="myForm" id="myForm<%=form2 %>" action="ItemSpecAdd.htm" method="post" 
 		
@@ -1391,7 +1149,7 @@ scheduleId=rodscheduleeditdata[6].toString();
 									
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 	
-									<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form2 %><%=temp %>CO" onclick="FormName('myForm<%=form2%>')" value="ADD"  style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+									<input type="submit" class="btn btn-info btn-sm cs-add" name="sub"  id="rm<%=form2 %><%=temp %>CO" onclick="FormName('myForm<%=form2%>')" value="ADD"/>
 								
 									
 								
@@ -1404,35 +1162,15 @@ scheduleId=rodscheduleeditdata[6].toString();
 <%unitcount2++;countloop++;form2++;%>
   
 
-     </div>   <!-- Agenda collapse end -->     
- </div><!-- Agenda Panel end --> 
+     </div>  
+     
+ </div>
 
-<%-- <%if(SplCommitteeCodes.contains(committeecode.trim())) { %>
-<div class="panel panel-info">
-	
-	<div class="panel-heading">
-    	
-    	<h4 class="panel-title">
-           <span  style="font-size:14px">7. Attachment</span>
-           <%if(MomAttachment!=null) {%>     
-                     <input type="button" class="btn btn-warning btn-sm" id="" onclick="showAttachmentModal()" value="EDIT" style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;float: right">
-        
-        <%}else{ %>
-          <input type="button" class="btn btn-info btn-sm" id="" onclick="showAttachmentModal()" value="ADD" style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;float: right">
-        <%} %>
-        </h4>
-        </div>
-        </div>
-
-<%} %> --%>
-<!--  New code end-->
-
-<!-- Modal for Attachment -->
 
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="attachmentModal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-   <div class="modal-header" style="background: #055C9D ;color:white;">
+   <div class="modal-header custom-header">
         <h5 class="modal-title" id="exampleModalLabel">Attachment</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -1492,7 +1230,7 @@ function showAttachmentModal(){
 		
 			<form class="" name="assignaction" id="assignaction" action="CommitteeAction.htm" method="post">
 	
-				<input type="submit" name="sub" class="btn btn-sm add fa-thumbs-up" style="background-color:#0e49b5 !important; " form="assignaction"  value="ASSIGN ACTION &nbsp;&nbsp;&#xf164;"  onclick=""/>
+				<input type="submit" name="sub" class="btn btn-sm add fa-thumbs-up btn-assign" form="assignaction"  value="ASSIGN ACTION &nbsp;&nbsp;&#xf164;"  onclick=""/>
 				<input type="hidden" name="ScheduleId" value="<%=rodscheduleeditdata[6] %>">	
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<input type="hidden" name="minutesback" value="minutesback"/>
@@ -1505,19 +1243,19 @@ function showAttachmentModal(){
 	<%} %>
 <div class="row">
 	<div class="col-md-12" >
-		<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
-    		<div class="card-body" style="margin-top: -8px" >       	
-				<b style="color: #346691; font-size: 20px;font-family: 'Lato',sans-serif; "></b> 
+		<div class="card cs-card">
+    		<div class="card-body cs-card-body">       	
+				<b class="cs-bold"></b> 
 				<hr><br>				
 					<%if(minutesattachmentlist.size()>0){ %>
-						<div class="card-body" style="margin-top: -8px" >       	
+						<div class="card-body cs-card-body">       	
 							<table class="table table-bordered table-hover table-striped table-condensed" >					
 									<tr>
 										<td><%=minutesattachmentlist.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(minutesattachmentlist.get(0)[2].toString()): " - " %></td>
 										<td><%if(minutesattachmentlist.get(0)[2].toString().endsWith(".pdf")) {%>
 											<div  align="center">
 												<a  href="MinutesAttachDownloadprotected.htm?attachmentid=<%=minutesattachmentlist.get(0)[0]%>"  data-toggle="tooltip" data-placement="top" title="Protected PDF"
-												  target="_blank" data-trigger="hover"  ><i class="fa fa-download" style="color:#DF4646;"></i></a>
+												  target="_blank" data-trigger="hover"  ><i class="fa fa-download text-success"></i></a>
 											</div>
 											<%} %>
 										</td>
@@ -1529,7 +1267,7 @@ function showAttachmentModal(){
 										</td>
 										<td>
 											<form method="post" action="MinutesAttachmentDelete.htm">
-												<button class="fa fa-trash btn  " type="submit" onclick="return confirm('Are You Sure To Delete this File?');" style="margin-right: -30px"></button>
+												<button class="fa fa-trash btn mnr-30" type="submit" onclick="return confirm('Are You Sure To Delete this File?');"></button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<input type="hidden" name="ScheduleId" value="<%=rodscheduleeditdata[6] %>">
 												<input type="hidden" name="attachmentid" value="<%=minutesattachmentlist.get(0)[0] %>">
@@ -1584,18 +1322,18 @@ function showAttachmentModal(){
 
 <div class="col-md-7">
 	
-	<div class="card" style="margin-top: 2%;">
+	<div class="card my-p2">
     	<div class="card-body">
             <form name="specadd" id="specadd" action="CommitteeMinutesSubmit.htm" method="post">
   
-   				<div class="row"  style="margin-bottom: 10px;">
+   				<div class="row mb-4">
    					
    					<div class="col-md-12"  align="left">
 						<label>
-						<b id="iditemspec" style="font-size:18px " ></b>
-						<b id="iditemsubspecofsub" style="font-size:18px " ></b>
-						<b id="iditemsubspec" style="font-size:18px " ></b>
-						<b id="iditemunit" style="font-size:18px " ></b>
+						<b id="iditemspec" class="fs-18"></b>
+						<b id="iditemsubspecofsub" class="fs-18"></b>
+						<b id="iditemsubspec" class="fs-18"></b>
+						<b id="iditemunit" class="fs-18"></b>
 
 							<input class="form-control" type="hidden" name="minutesid" id="minutesidadd" >
 							<input class="form-control" type="hidden" name="agendasubid" id="agendasubidadd" >
@@ -1614,25 +1352,25 @@ function showAttachmentModal(){
 						</label>
 					</div>
    					
-   					<div class="col-md-12"  align="left" style="margin-left: 0px;width:100%;margin-top: -25px ">
-						<label style="margin-left: 50px;"></label>
+   					<div class="col-md-12 mt-n25"  align="left">
+						<label class="ml-50"></label>
 						<div   id="summernote" class="center">
 						 
 						</div>
-						 <textarea  name="NoteText" id="editor1" style="display:none;"></textarea>
+						 <textarea name="NoteText" id="editor1" class="d-none"></textarea>
 					</div>
 
   					
   
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					
-		 			<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% ">
+		 			<div class="col-md-12"  align="left">
     					
-    					<div class="card"  style="margin-top: 15px;">
-            				<div class="card-body" style="background-color: #f7f7f7;">
+    					<div class="card mt-4">
+            				<div class="card-body cs-body-color">
   								
   								
-  								<div align="center" id="drcdiv"  style="margin-top: 10px;">
+  								<div align="center" id="drcdiv" class="mt-4">
   								
   									<div class="form-check form-check-inline">
 									  <input class="form-check-input" type="radio" name="darc" id="decision" value="D">
@@ -1652,11 +1390,11 @@ function showAttachmentModal(){
  
   								<div class="form-group">
   									<label class="">Remarks : </label>
-  									<input  class="form-control"  type="text" maxlength="255"  placeholder="Nil" name="remarks" id="remarks" style="width:80%">
+  									<input  class="form-control w-80"  type="text" maxlength="255"  placeholder="Nil" name="remarks" id="remarks">
   								
                         		</div>
   
-								<div align="center" style="margin-top: -25px;">
+								<div align="center" class="mt-n25">
 									<br>
 									
 									<br>
@@ -1681,15 +1419,15 @@ function showAttachmentModal(){
 	 		<!-- AIR -->
 	 		<form name="specadd" id="specair" action="CommitteeMinutesSubmit.htm" method="post">
   
-   				<div class="row"  style="margin-bottom: 10px;">
+   				<div class="row mt-4">
    					
    					<div class="col-md-12"  align="left">
 						<label>
-						<b id="iditemspecair" style="font-size:18px " ></b>
-						<b id="iditemsubspecofsubair" style="font-size:18px " ></b>
-						<b id="iditemsubspecair" style="font-size:18px " ></b>
-						<b id="iditemair" style="font-size:18px " ></b>
-						<b id="outcomeair" style="font-size:18px " ></b>
+						<b id="iditemspecair" class="fs-18"></b>
+						<b id="iditemsubspecofsubair" class="fs-18"></b>
+						<b id="iditemsubspecair" class="fs-18"></b>
+						<b id="iditemair" class="fs-18"></b>
+						<b id="outcomeair" class="fs-18"></b>
 
 							<input class="form-control" type="hidden" name="minutesid" id="minutesidair" >
 							<input class="form-control" type="hidden" name="agendasubid" id="agendasubidair" >
@@ -1707,25 +1445,24 @@ function showAttachmentModal(){
 						</label>
 					</div>
    					
-   					<div class="col-md-12"  align="left" style="margin-left: 0px;width:100%;">
+   					<div class="col-md-12 ml-0"  align="left">
 						<label >Action Name</label>
-
-						 <textarea class="form-control" required="required"  name="NoteText" id="editorair" style="width:100%;height: 140px;" maxlength="1000"></textarea>
+						 <textarea class="form-control custom-action" required="required"  name="NoteText" id="editorair" maxlength="1000"></textarea>
 					</div>
 
   					
   
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					
-		 			<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% ">
+		 			<div class="col-md-12"  align="left">
     					
-    					<div class="card"  style="margin-top: 15px;">
-            				<div class="card-body" style="background-color: #f7f7f7;">
+    					<div class="card mt-4">
+            				<div class="card-body cs-body-color">
                              <div class="row" >
                              <div class="col-md-8">
   								<div class="form-group">
   									<label class="">Remarks : </label>
-  									<input  class="form-control"  type="text" maxlength="255"  placeholder="Nil" name="remarks" id="remarksair" style="width:100%">
+  									<input  class="form-control"  type="text" maxlength="255"  placeholder="Nil" name="remarks" id="remarksair">
                         		</div>
                         		</div>
                         		  <div class="col-md-4" id="OutComeDiv">
@@ -1749,12 +1486,12 @@ function showAttachmentModal(){
 								</div>
 								
 								</div>							
-								<div align="center" style="margin-top: -25px;">
+								<div align="center" class="mt-n25">
 									<br>
 									<br>
  										<input type="submit" name="sub" class="btn  btn-sm submit" form="specair"  id="addingair" value="SUBMIT"  />
 								  		<input type="submit" name="sub" class="btn  btn-sm submit" form="specair" id="editingair"  value="SUBMIT" formaction="CommitteeMinutesEditSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
-								  		<input type="submit" name="sub" class="btn  btn-sm submit" style="background-color: #dc3545; border-color: #dc3545;" form="specair" id="deletingair"  value="DELETE" formaction="CommitteeMinutesDeleteSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
+								  		<input type="submit" name="sub" class="btn  btn-sm submit custom-delete" form="specair" id="deletingair"  value="DELETE" formaction="CommitteeMinutesDeleteSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
 										<input type="submit" name="sub" hidden="hidden" form="specadd" id="hiddensubmit">
 										<input type="hidden" name="scheduleid" value="<%=rodscheduleeditdata[6] %>">	
 										<input type="hidden" name="schedulesubid" value="1" readonly="readonly">
@@ -1778,20 +1515,13 @@ function showAttachmentModal(){
 
 </div>
 <%} else{%>
-	<div class="centered-card" style="  display: flex;justify-content: center;align-items: center;height: 70vh;">
+	<div class="centered-card cs-center-card">
 	<div class="card" >
-  	<div class="card-body" style="height:20vh;display: flex;align-items: center;justify-content: center;">
-  	<div style="font-size: 1.25rem;font-weight: 600; color: crimson; text-shadow: 2px 2px 2px skyblue">MOM already freezed. If you want to edit please unfreeze it. </div>
+  	<div class="card-body cs-center-body">
+  	<div class="cs-mom-text">MOM already freezed. If you want to edit please unfreeze it. </div>
   	</div>
   	<div class="mb-2" align="center">
   	<form class="form-inline" method="GET" action="RODMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
-	<%-- <%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
-	<!--<input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> -->
-	<button type="submit" class="btn  btn-sm view"  formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;">MINUTES
-	<i class="fa fa-download blink" aria-hidden="true" style="color:white;"></i>
-	</button>&nbsp;&nbsp;
-	
-	<%}%> --%>
 	<input type="hidden" name="isFrozen" value="<%=rodscheduleeditdata[22]%>">
 	<input type="hidden" name="committeescheduleid" value="<%=rodscheduleeditdata[6]%>">
 	<input type="hidden" name="scheduleid" value="<%=rodscheduleeditdata[6]%>">
@@ -1800,12 +1530,12 @@ function showAttachmentModal(){
 	</div> 
 	<div class="row">
 	<div class="col-md-12" >
-		<div class="card" style="margin-top: 2%;border:0px!important;" >
-    		<div class="card-body" style="margin-top: -8px" >       	
-				<b style="color: #346691; font-size: 14px;font-family: 'Lato',sans-serif; ">Upload Signed MOM :</b> 
+		<div class="card my-p2 border-0">
+    		<div class="card-body cs-card-body">       	
+				<b class="cs-uploadmom">Upload Signed MOM :</b> 
 				<br>				
 				<%if(minutesattachmentlist.size()>0){ %>
-						<div class="card-body" style="margin-top: -8px" >       	
+						<div class="card-body cs-card-body">       	
 							<table class="table table-bordered table-hover table-striped table-condensed" >					
 									<tr>
 										<td><%=minutesattachmentlist.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(minutesattachmentlist.get(0)[1].toString()): " - " %></td>
@@ -1818,7 +1548,7 @@ function showAttachmentModal(){
 										</td>
 										<td>
 											<form method="post" action="MinutesAttachmentDelete.htm">
-												<button class="fa fa-trash btn  " type="submit" onclick="return confirm('Are You Sure To Delete this File?');" style="margin-right: -30px"></button>
+												<button class="fa fa-trash btn mnr-30" type="submit" onclick="return confirm('Are You Sure To Delete this File?');"></button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<input type="hidden" name="ScheduleId" value="<%=rodscheduleeditdata[6] %>">
 												<input type="hidden" name="attachmentid" value="<%=minutesattachmentlist.get(0)[0] %>">

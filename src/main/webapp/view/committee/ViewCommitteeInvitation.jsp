@@ -6,64 +6,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/committeeModule/ViewCommitteeInvitation.css" var="ViewCommitteeInvitation" />
+<link href="${ViewCommitteeInvitation}" rel="stylesheet" />
 <title>COMMITTEE INVITATION</title>
-<style type="text/css">
-.input-group-text {
-	font-weight: bold;
-}
-
-label {
-	font-weight: 800;
-	font-size: 16px;
-	color: #07689f;
-}
-
-hr {
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b {
-	font-family: 'Lato', sans-serif;
-}
-
-h5,h6{
-	color:#145374;
-}
-.tdclass {
-	padding-top:5px;
-	padding-bottom: 5px;
-}
-
-.card-header{
-	background-color: #07689f;
-	color:white;
-}
-
-.card{
-	border-color: #07689f;
-}
-
-/* .external .select2{
-	width:500px !important;
-} */
-
-.externalwithin .select2{
-	width:300px !important;
-}
-
-
-		.select2-container{
-		width:100% !important;
-		}
-
-</style>
 </head>
 <body>
 
@@ -133,15 +84,14 @@ h5,h6{
 							<div class="col-md-3" >
 					  			<h4><%=committeescheduledata[8]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[8].toString()): " - " %> Invitations</h4>
 							 </div>
-							 <div class="col-md-9" align="right" style="margin-top: 3px;" >
-					 			<h5 style="color: white"  >(Meeting Id : <%=committeescheduledata[12]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[12].toString()): " - " %>) &nbsp;&nbsp; - &nbsp;&nbsp; (Meeting Date & Time : <%= sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4( committeescheduledata[2].toString())))%>  &  <%=committeescheduledata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[3].toString()): " - " %>)</h5>
+							 <div class="col-md-9 mt-3px" align="right">
+					 			<h5 class="colorWhite">(Meeting Id : <%=committeescheduledata[12]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[12].toString()): " - " %>) &nbsp;&nbsp; - &nbsp;&nbsp; (Meeting Date & Time : <%= sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4( committeescheduledata[2].toString())))%>  &  <%=committeescheduledata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduledata[3].toString()): " - " %>)</h5>
 							 </div>
 					 	</div>
 					</div>
 				
 					<div class="card-body">
 					
-					<!-- <h5 align="center" style="color:green"><b>Invited Members</b></h5><hr><br> -->
 <!-- -------------------------------------------------------------------------------------------------------------------------------------------------------------- -->					
 					<div class="row">
 						<div class="col-md-4">
@@ -156,8 +106,8 @@ h5,h6{
 											{ %>
 												<td><%=committeeinvited[6]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[6].toString()): " - "%>, <%= committeeinvited[7]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[7].toString()): " - "%> (<%= committeeinvited[11]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[11].toString()): " - "%>) </td>
 												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
-												<td style="padding-left: 10px">
-											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+												<td class="pl-10px">
+											 	<i class="fa fa-check text-success" aria-hidden="true"></i> 
 												</td>
 												
 												
@@ -181,8 +131,8 @@ h5,h6{
 											{%>
 												<td><%=committeeinvited[6]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[6].toString()): " - "%>, <%= committeeinvited[7]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[7].toString()): " - "%> (<%= committeeinvited[11]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[11].toString()): " - "%>) </td>
 												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
-											<td style="padding-left: 10px">
-											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+											<td class="pl-10px">
+											 	<i class="fa fa-check text-success" aria-hidden="true"></i> 
 												</td>
 												
 											<%} 
@@ -214,8 +164,8 @@ h5,h6{
 											{%>
 												<td><%=committeeinvited[6]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[6].toString()): " - "%>, <%= committeeinvited[7]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[7].toString()): " - "%> (<%= committeeinvited[11]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[11].toString()): " - "%>) </td>
 												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
-												<td style="padding-left: 10px">
-											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+												<td class="pl-10px">
+											 	<i class="fa fa-check text-success" aria-hidden="true"></i> 
 												</td>
 											<%} 
 											break;} 											
@@ -239,8 +189,8 @@ h5,h6{
 											{%>
 												<td><%=committeeinvited[6]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[6].toString()): " - "%>, <%= committeeinvited[7]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[7].toString()): " - "%> (<%= committeeinvited[11]!=null?StringEscapeUtils.escapeHtml4(committeeinvited[11].toString()): " - "%>) </td>
 												<%if( committeeinvited[9].toString().equalsIgnoreCase("Y")){ %>
-												<td style="padding-left: 10px">
-											 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+												<td class="pl-10px">
+											 	<i class="fa fa-check text-success" aria-hidden="true"></i> 
 												</td>
 												
 												
@@ -269,8 +219,8 @@ h5,h6{
 											<tr>			
 												<td class="tdclass"><%=memberscount%> )</td> <td> <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>, <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> (<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>)</td>
 												<%if( obj[9].toString().equalsIgnoreCase("Y")){ %>
-															<td style="padding-left: 10px">
-														 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+															<td class="pl-10px">
+														 	<i class="fa fa-check text-success" aria-hidden="true"></i> 
 															</td>
 														<%} %>			
 											</tr>
@@ -297,8 +247,8 @@ h5,h6{
 									<tr>			
 										<td class="tdclass"><%=externalcount%> )</td> <td> <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>, <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> (<%=obj[11] !=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - "%>)</td>
 									<%if( obj[9].toString().equalsIgnoreCase("Y")){ %>
-										<td style="padding-left: 10px">
-									 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+										<td class="pl-10px">
+									 	<i class="fa fa-check text-success" aria-hidden="true"></i> 
 										</td>
 									<%} %>
 			
@@ -327,8 +277,8 @@ h5,h6{
 									<tr>			
 										<td class="tdclass"><%=outsidemember%> )</td> <td> <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>, <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> (<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)</td>
 									<%if( obj[9].toString().equalsIgnoreCase("Y")){ %>
-										<td style="padding-left: 10px">
-									 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+										<td class="pl-10px">
+									 	<i class="fa fa-check text-success" aria-hidden="true"></i> 
 										</td>
 									<%} %>
 			
@@ -358,8 +308,8 @@ h5,h6{
 									<tr>			
 										<td class="tdclass"><%=outsidemember%> )</td> <td> <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>, <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%> (<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>)</td>
 									<%if( obj[9].toString().equalsIgnoreCase("Y")){ %>
-										<td style="padding-left: 10px">
-									 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+										<td class="pl-10px">
+									 	<i class="fa fa-check text-success" aria-hidden="true" ></i> 
 										</td>
 									<%} %>
 			
@@ -385,7 +335,7 @@ h5,h6{
 					<div  class="row">
 						<div  class="col-md-6">
 								<h5>Agenda Presenters</h5>
-								<hr style="padding-bottom: 10px; ">
+								<hr class="pb-10px">
 					
 							<table border='0'>
 								<tr>
@@ -413,7 +363,7 @@ h5,h6{
 									</td>
 									
 									
-										<td style="padding-left: 10px">	
+										<td class="pl-10px">	
 										<% int count=0;
  										for(int i=0;i<committeeinvitedlist.size();i++)
 										{ 	 
@@ -424,7 +374,7 @@ h5,h6{
 												
 												if( committeeinvitedlist.get(i)[9].toString().equalsIgnoreCase("Y")){ %>
 													
-													 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+													 	<i class="fa fa-check text-success" aria-hidden="true"></i> 
 													
 												<%} 
 												
@@ -441,7 +391,7 @@ h5,h6{
 										if(count==0){ %>
 										
 											<form  action="CommitteeInvitationCreate.htm" method="POST" name="myfrm1" id="myfrm1">
-												<button type="submit" class="btn" onclick="return confirm('Are you sure To Add this Member to Invitation List?')" data-toggle="tooltip" data-placement="top" title="Member Not Added to Invitation List (Click Here to Add)"> <i class="fa fa-plus-square" style="color: green;margin: 1px;" aria-hidden="true"></i> </button>											
+												<button type="submit" class="btn" onclick="return confirm('Are you sure To Add this Member to Invitation List?')" data-toggle="tooltip" data-placement="top" title="Member Not Added to Invitation List (Click Here to Add)"> <i class="fa fa-plus-square text-success margin-1px"aria-hidden="true"></i> </button>											
 												<input type="hidden" name="internalmember" value="<%=obj[9]%>,P,<%=obj[13]%>">
 												<input type="hidden" name="internallabcode" value="<%=obj[14] %>" />	
 												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">																						
@@ -475,7 +425,7 @@ h5,h6{
 									</td>
 									
 									
-										<td style="padding-left: 10px">	
+										<td class="pl-10px">	
 										<% int count=0;
  										for(int i=0;i<committeeinvitedlist.size();i++)
 										{ 	 
@@ -486,7 +436,7 @@ h5,h6{
 												
 												if( committeeinvitedlist.get(i)[9].toString().equalsIgnoreCase("Y")){ %>
 													
-													 	<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+													 	<i class="fa fa-check text-success" aria-hidden="true" ></i> 
 													
 												<%} 
 												
@@ -503,7 +453,7 @@ h5,h6{
 										if(count==0){ %>
 										
 											<form  action="CommitteeInvitationCreate.htm" method="POST" name="myfrm1" id="myfrm1">
-												<button type="submit" class="btn" onclick="return confirm('Are you sure To Add this Member to Invitation List?')" data-toggle="tooltip" data-placement="top" title="Member Not Added to Invitation List (Click Here to Add)"> <i class="fa fa-plus-square" style="color: green;margin: 1px;" aria-hidden="true"></i> </button>											
+												<button type="submit" class="btn" onclick="return confirm('Are you sure To Add this Member to Invitation List?')" data-toggle="tooltip" data-placement="top" title="Member Not Added to Invitation List (Click Here to Add)"> <i class="fa fa-plus-square text-success margin-1px" aria-hidden="true"></i> </button>											
 												<input type="hidden" name="internalmember" value="<%=obj[6]%>,P,<%=obj[10]%>">
 												<input type="hidden" name="internallabcode" value="<%=obj[5] %>" />	
 												<input type="hidden" name="committeescheduleid" value="<%=committeescheduleid%>">																						
@@ -522,7 +472,7 @@ h5,h6{
 						<div class="col-md-2">	</div>
 						<div class="col-md-4">
 							<h5>Representatives</h5>
-								<hr style="padding-bottom: 10px; ">
+								<hr class="pb-10px">
 					
 							<table >
 							<% int repcount=1;
@@ -537,7 +487,7 @@ h5,h6{
 										
 										<tr>
 										<td><%=repcount%> . <%=committeeinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[6].toString()): " - "%>, <%=committeeinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[7].toString()): " - "%> (<%=committeeinvitedlist.get(i)[11]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[11].toString()): " - "%>)(REP_<%=committeeinvitedlist.get(i)[3]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[3].toString()): " - "%>)</td> 
-										<td style="padding-left: 30px">
+										<td class="pl-30px">
 										
 										<%if(Long.parseLong(committeescheduledata[10].toString())<5 && Long.parseLong(committeescheduledata[10].toString())!=3 ){ %>
 											<form action="CommitteeInvitationDelete.htm" method="Post">
@@ -609,11 +559,11 @@ h5,h6{
 													<%=intcount%> . <%=committeeinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[6].toString()): " - "%>, <%=committeeinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[7].toString()): " - "%>
 												</td>
 												<%if( committeeinvitedlist.get(i)[9].toString().equalsIgnoreCase("Y")){ %>
-													<td style="padding-left: 10px">
-												 		<i class="fa fa-check" aria-hidden="true" style="color: green" ></i> 
+													<td class="pl-10px">
+												 		<i class="fa fa-check text-success" aria-hidden="true"></i> 
 													</td>
 												<%} %>
-												<td style="padding-left: 30px">
+												<td class="pl-30px">
 												
 													<%if(Long.parseLong(committeescheduledata[10].toString())<11 ){%>
 														<form action="CommitteeInvitationDelete.htm" method="post">
@@ -664,7 +614,7 @@ h5,h6{
 										
 										<tr>
 										<td><%=extcountwithin%> . <%=committeeinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[6].toString()): " - "%> (<%=committeeinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[7].toString()): " - "%>) (<%=committeeinvitedlist.get(i)[11]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[11].toString()): " - "%>)</td> 
-										<td style="padding-left: 30px">
+										<td class="pl-30px">
 										
 										<%if(Long.parseLong(committeescheduledata[10].toString())<11 ){ %>
 											<form action="CommitteeInvitationDelete.htm" method="Post">
@@ -730,7 +680,7 @@ h5,h6{
 										
 										<tr>
 										<td><%=extcount%> . <%=committeeinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[6].toString()): " - "%> (<%=committeeinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[7].toString()): " - "%>)(<%=committeeinvitedlist.get(i)[11]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[11].toString()): " - "%>)</td> 
-										<td style="padding-left: 30px">
+										<td class="pl-30px">
 										
 										<%if(Long.parseLong(committeescheduledata[10].toString())<11 ){ %>
 											<form action="CommitteeInvitationDelete.htm" method="Post">
@@ -797,7 +747,7 @@ h5,h6{
 										
 										<tr>
 										<td><%=extcount%> . <%=committeeinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[6].toString()): " - "%> (<%=committeeinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[7].toString()): " - "%>)(<%=committeeinvitedlist.get(i)[11]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[11].toString()): " - "%>)</td> 
-										<td style="padding-left: 30px">
+										<td class="pl-30px">
 										
 										<%if(Long.parseLong(committeescheduledata[10].toString())<11 ){ %>
 											<form action="CommitteeInvitationDelete.htm" method="Post">
@@ -870,7 +820,7 @@ h5,h6{
 										
 										<tr>
 										<td><%=indpartnercount%> . <%=committeeinvitedlist.get(i)[6]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[6].toString()): " - "%> (<%=committeeinvitedlist.get(i)[7]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[7].toString()): " - "%>) (<%=committeeinvitedlist.get(i)[11]!=null?StringEscapeUtils.escapeHtml4(committeeinvitedlist.get(i)[11].toString()): " - "%>)</td> 
-										<td style="padding-left: 30px">
+										<td class="pl-30px">
 										
 										<%if(Long.parseLong(committeescheduledata[10].toString())<11 ){ %>
 											<form action="CommitteeInvitationDelete.htm" method="Post">
@@ -962,12 +912,12 @@ h5,h6{
 	          				
 	          				
 				<div class=row>
-		       		<div class="col-md-12" id="addmemtitleid" style="display: none;">
-		       			<h5 style="color:#145374">Add Additional Members</h5>
+		       		<div class="col-md-12 addmemTitleIdDisplay" id="addmemtitleid">
+		       			<h5 class="addh5Color">Add Additional Members</h5>
 		       			<hr> 
 		          	</div>
-		          	<div class="col-md-12" id="reptitleid" style="display: none;">
-		       			<h5 style="color:#145374">Add Representative Members</h5>
+		          	<div class="col-md-12 addmemTitleIdDisplay" id="reptitleid">
+		       			<h5 class="addh5Color">Add Representative Members</h5>
 		       			<hr> 
 		          	</div>
 		          	
@@ -978,10 +928,10 @@ h5,h6{
 				<div class="row" id="repselect"  >						
 					<div class="col-md-6">	 
 						
-						<table  style="margin-top: 10px;width:100%">
+						<table class="mt-10px w-100">
 							<tr >			
 									
-								<td style="width: 100%;">	
+								<td class="w-100">	
 									<label>Representative Type</label>										
 									<select class="form-control selectdee " name="reptype" id="reptype"  data-live-search="true" onchange="setreptype();" >
 										<option selected value="0"  > Choose... </option>
@@ -1000,7 +950,7 @@ h5,h6{
 					<div class="row">	
 								
 						<div class="col-md-6">
-							<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
+							<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-10px w-100" id="">
 								<thead>  
 									<tr id="" >
 										<th> Internal Members</th>
@@ -1044,17 +994,17 @@ h5,h6{
 						
 						<div class="col-md-6">
 							
-							<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="table1" style="margin-top: 10px;">
+							<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-10px" id="table1">
 								<thead>  
 									<tr id="">
 										<th colspan="2"> External Members (Within DRDO)
-											<button class="btn bg-primary" type="button" id="externalAdd" style="float: right;color:White;">ADD NEW </button> </th>
+											<button class="btn bg-primary float-right colorWhite" type="button" id="externalAdd">ADD NEW </button> </th>
 									</tr>
 								</thead>
 								<tr class="tr_clone1">
-									<td style="width:30%">							
+									<td class="width-30per">							
 										<div class="input select">
-											<select class="form-control selectdee" name="externallabid" tabindex="-1"  style="" id="LabCode" onchange="employeename()" required>
+											<select class="form-control selectdee" name="externallabid" tabindex="-1" id="LabCode" onchange="employeename()" required>
 												<option disabled="true"  selected value="">Lab Name</option>
 													<% for (Object[] obj : clusterlablist) {
 													if(!labcode.equals(obj[3].toString())){%>
@@ -1070,7 +1020,7 @@ h5,h6{
 											<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>" />
 										<%} %>
 									</td>
-									<td style="width:70%">
+									<td class="width-70per">
 										<div class="input select ">
 											<select class="form-control selectdee" name="externalmember" id="ExternalMemberLab" data-live-search="true"   data-placeholder="Select Members" multiple>
 											</select>
@@ -1097,11 +1047,11 @@ h5,h6{
 						
 						<div class="col-md-6">
 							
-								<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
+								<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohove mt-10px w-100r" id="">
 								<thead>  
 									<tr id="">
 										<th> External Members (Outside DRDO)
-										<button class="btn bg-primary" type="button" id="expertAdd" style="float: right;color:White;">ADD EXPERT </button> </th>
+										<button class="btn bg-primary float-right colorWhite" type="button" id="expertAdd">ADD EXPERT </button> </th>
 									</tr>
 								</thead>
 								<tr class="tr_clone2">
@@ -1144,16 +1094,16 @@ h5,h6{
 						
 						<div class="col-md-6">
 							
-							<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="table1" style="margin-top: 10px;">
+							<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-10px" id="table1">
 								<thead>  
 									<tr id="">
 										<th colspan="2"> Industry Partner</th>
 									</tr>
 								</thead>
 								<tr class="tr_clone1">
-									<td style="width:30%">							
+									<td class="width-30per">							
 										<div class="input select">
-											<select class="form-control selectdee" name="industryPartnerId" tabindex="-1"  style="" id="industryPartnerId" onchange="industrypartnerrepname()" required>
+											<select class="form-control selectdee" name="industryPartnerId" tabindex="-1" id="industryPartnerId" onchange="industrypartnerrepname()" required>
 												<option disabled="true"  selected value="">Industry Partner</option>
 													<% for (IndustryPartner partner : industryPartnerList) {
 													%>
@@ -1173,7 +1123,7 @@ h5,h6{
 											<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>" />
 										<%} %>
 									</td>
-									<td style="width:70%">
+									<td class="width-70per">
 										<div class="input select ">
 											<select class="form-control selectdee" name="industryPartnerRep" id="industryPartnerRep" data-live-search="true"   data-placeholder="Select Members" multiple onchange ="addIndusRep()">
 											</select>
@@ -1200,19 +1150,19 @@ h5,h6{
 						
 						<div class="col-md-6">
 							
-							<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="deliverablesTable2" style="margin-top: 10px;">
+							<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-10px" id="deliverablesTable2">
 								<thead>  
 									<tr id="">
 									  <th colspan="2"> Special Member</th>
-									  <th style="">
-									  <button type="button" class=" btn btn_add_deliverables2 " style=""> <i class="btn btn-sm fa fa-plus" style="color: green; padding: 0px  0px  0px  0px;"></i></button>
+									  <th >
+									  <button type="button" class=" btn btn_add_deliverables2 "> <i class="btn btn-sm fa fa-plus text-success padding0pxStyle"></i></button>
 									  </th>
 									</tr>
 								</thead>
 								<tr class="tr_clone_deliverables2">
-									<td style="width:30%">							
+									<td class="width-30per">							
 										<div class="input select">
-											<select class="form-control specialselect specialLabCode" name="specialLabCode" id="sepcialLab_1" tabindex="-1"  style="width: 100%;" onchange="specialname(this)" required>
+											<select class="form-control specialselect specialLabCode w-100" name="specialLabCode" id="sepcialLab_1" tabindex="-1" onchange="specialname(this)" required>
 												<option disabled="true"  selected value="">Lab Name</option>
 													<% for (Object[] obj : clusterlablist) {%>
 												<option value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -1223,14 +1173,14 @@ h5,h6{
 										
 									
 									</td>
-									<td style="width:70%">
+									<td class="width-70per">
 										<div class="input select ">
-											<select class="form-control specialselect SpecialMember" name="SpecialMember" id="specialMembers_1" data-live-search="true"  style="width: 100%;" data-placeholder="Select Members">
+											<select class="form-control specialselect SpecialMember w-100" name="SpecialMember" id="specialMembers_1" data-live-search="true"  data-placeholder="Select Members">
 											</select>
 										</div>
 									</td>
-									<td style="width: 5% ; ">
-															<button type="button" class="btn btn_rem_deliverables2" > <i class="btn btn-sm fa fa-minus" style="color: red; padding: 0px  0px  0px  0px;"></i></button>
+									<td class="width-5per">
+															<button type="button" class="btn btn_rem_deliverables2" > <i class="btn btn-sm fa fa-minus text-danger padding0pxStyle"></i></button>
 														</td>						
 								</tr>
 							</table>				
@@ -1269,7 +1219,7 @@ h5,h6{
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalContentWidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">External Add
 							Member</h5>
@@ -1284,16 +1234,15 @@ h5,h6{
 
 							<div class="col-md-4">
 								
-									<label>Lab Name:<span class="mandatory"
-										style="color: red;">*</span></label>
+									<label>Lab Name:<span class="mandatory text-danger">*</span></label>
 										
 									
 								<div class="form-group">
 										
 										<select
-										class="form-control selectdee" id="labModal" name="labModal"
+										class="form-control selectdee fs-5px" id="labModal" name="labModal"
 										data-container="body" 
-										required="required" style="font-size: 5px;">
+										required="required">
 										<option value="" disabled="disabled" selected="selected"
 											hidden="true">--Select--</option>
 										<%
@@ -1311,9 +1260,9 @@ h5,h6{
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Rank/Salutation</label><br> <select
-										class="form-control selectdee" id="title" name="title"
+										class="form-control selectdee fs-5px" id="title" name="title"
 										data-container="body" data-live-search="true"
-										style="font-size: 5px;">
+										>
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Prof.">Prof.</option>
 										<option value="Lt.">Lt.</option>
@@ -1325,9 +1274,9 @@ h5,h6{
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Title</label><br> <select
-										class="form-control selectdee" id="salutation"
+										class="form-control selectdee fs-5px" id="salutation"
 										name="salutation" data-container="body"
-										data-live-search="true" style="font-size: 5px;">
+										data-live-search="true">
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Mr.">Mr.</option>
 										<option value="Ms.">Ms.</option>
@@ -1340,31 +1289,31 @@ h5,h6{
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Employee No:<span class="mandatory"
-										style="color: red;">*</span></label> <input
-										class="form-control form-control" type="text" id="EmpNo"
+									<label>Employee No:<span class="mandatory text-danger"
+										>*</span></label> <input
+										class="form-control form-control fs-15px w-100 textTransform" type="text" id="EmpNo"
 										name="EmpNo" required="required" maxlength="255"
-										style="font-size: 15px; width: 100%; text-transform: uppercase;">
+										>
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Employee Name:<span class="mandatory"
-										style="color: red;">*</span></label> <input
-										class="form-control form-control" type="text" id="EmpName"
+									<label>Employee Name:<span class="mandatory text-danger"
+										>*</span></label> <input
+										class="form-control form-control fs-15px w-100 textTransform" type="text" id="EmpName"
 										name="EmpName" required="required" maxlength="255"
-										style="font-size: 15px; width: 100%; text-transform: capitalize;">
+										>
 								</div>
 							</div>
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Designation:<span class="mandatory"
-										style="color: red;">*</span></label> <select
-										class="form-control selectdee" id="Designation"
+									<label>Designation:<span class="mandatory text-danger"
+										>*</span></label> <select
+										class="form-control selectdee fs-5px" id="Designation"
 										name="Designation" data-container="body"
 										data-live-search="true" required="required"
-										style="font-size: 5px;">
+										>
 										<option value="" disabled="disabled" selected="selected"
 											hidden="true">--Select--</option>
 										 <%  for ( Object[]  obj :DesignationList) {%>
@@ -1393,7 +1342,7 @@ h5,h6{
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalContentWidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> Add  Expert
 							Member Details</h5>
@@ -1407,11 +1356,11 @@ h5,h6{
 						<div class="row">
 	<div class="col-md-4">
 								<div class="form-group">
-									<label>Expert Name:<span class="mandatory"
-										style="color: red;">*</span></label> <input
-										class="form-control form-control" type="text" id="ExtEmpName"
+									<label>Expert Name:<span class="mandatory text-danger"
+										>*</span></label> <input
+										class="form-control form-control fs-15px w-100 textTransform" type="text" id="ExtEmpName"
 										name="EmpName" required="required" maxlength="255"
-										style="font-size: 15px; width: 100%; text-transform: capitalize;">
+										>
 								</div>
 							</div>
 							
@@ -1421,9 +1370,9 @@ h5,h6{
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Rank/Salutation</label><br> <select
-										class="form-control selectdee" id="Exttitle" name="title"
+										class="form-control selectdee fs-5px" id="Exttitle" name="title"
 										data-container="body" data-live-search="true"
-										style="font-size: 5px;">
+										>
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Prof.">Prof.</option>
 										<option value="Lt.">Lt.</option>
@@ -1435,9 +1384,9 @@ h5,h6{
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Title</label><br> <select
-										class="form-control selectdee" id="Extsalutation"
+										class="form-control selectdee fs-5px" id="Extsalutation"
 										name="salutation" data-container="body"
-										data-live-search="true" style="font-size: 5px;">
+										data-live-search="true" >
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Mr.">Mr.</option>
 										<option value="Ms.">Ms.</option>
@@ -1453,12 +1402,12 @@ h5,h6{
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Designation:<span class="mandatory"
-										style="color: red;">*</span></label> <select
-										class="form-control selectdee" id="ExtDesignation"
+									<label>Designation:<span class="mandatory text-danger"
+										>*</span></label> <select
+										class="form-control selectdee fs-5px" id="ExtDesignation"
 										name="Designation" data-container="body"
 										data-live-search="true" required="required"
-										style="font-size: 5px;">
+										>
 										<option value="" disabled="disabled" selected="selected"
 											hidden="true">--Select--</option>
 										 <%  for ( Object[]  obj :DesignationList) {%>
@@ -1471,7 +1420,7 @@ h5,h6{
 							
 							<div class="col-md-4">
 									<div class="form-group">
-										<label class="control-label">Organization</label><span class="mandatory" style="color: red;">*</span>
+										<label class="control-label">Organization</label><span class="mandatory text-danger">*</span>
 										<input class="form-control" type="text" name="organization" id="organization" placeholder="Max 255 Characters" maxlength="255">
 									</div>
 								</div>
@@ -1495,7 +1444,7 @@ h5,h6{
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalContentWidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> Add  Industry 
 							Partner Details</h5>
@@ -1511,25 +1460,25 @@ h5,h6{
 						<div class="row">						
 							<div class="col-md-4">
 								<div class="form-group">
-									<label class="control-label">Industry Name</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label">Industry Name</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerName2" name="industryPartnerName2" maxlength="255" placeholder="Enter Industry Partner" required="">		
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label"> Address</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label"> Address</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerAddress2" name="industryPartnerAddress2" maxlength="1000" placeholder="Enter Street, village/ town" required="">	
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label"> City</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label"> City</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerCity2" name="industryPartnerCity2" maxlength="500" placeholder="Enter City" required="">	
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-group">
-									<label class="control-label"> Pin Code</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label"> Pin Code</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerPinCode2" name="industryPartnerPinCode2" maxlength="6" placeholder="Enter Pincode" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required="">	
 								</div>
 							
@@ -1557,7 +1506,7 @@ h5,h6{
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalContentWidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> Add  Industry 
 							Partner Employee Details</h5>
@@ -1573,28 +1522,28 @@ h5,h6{
 				
 			
 					<div class="row ml-1 mr-1" >
-						<table style="width:100% ; " id="repdetails">
-										<thead style="background-color: #055C9D; color: white;text-align: center;">
+						<table class="w-100" id="repdetails">
+										<thead class="text-center theadBgColor">
 											<tr>
-										    	<th style="padding: 5px 5px 5px 5px;">Name</th>
-										    	<th style="padding: 5px 5px 5px 5px;">Designation</th>
-										    	<th style="padding: 5px 5px 5px 5px;">Mobile No</th>
-										    	<th style="padding: 5px 5px 5px 5px;">Email</th>
+										    	<th class="thPaddingStyle5px">Name</th>
+										    	<th class="thPaddingStyle5px">Designation</th>
+										    	<th class="thPaddingStyle5px">Mobile No</th>
+										    	<th class="thPaddingStyle5px">Email</th>
 												
 											</tr>
 										</thead>
 								 		<tbody>
 									 		<tr class="tr_clone_repdetails">
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="thClonePaddingStyle10px">
 													<input class="form-control" type="text" id="repName" name="repName" maxlength="255" placeholder="Enter Rep Name" required="">
 												</td>	
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="thClonePaddingStyle10px">
 													<input class="form-control" type="text" id="repDesignation" name="repDesignation" placeholder="Enter Rep Designation" maxlength="255" required="">
 												</td>	
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="thClonePaddingStyle10px">
 													<input class="form-control" type="text" id="repMobileNo" maxlength="10" name="repMobileNo" placeholder="Enter Rep Mobile No" required="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 												</td>
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="thClonePaddingStyle10px">
 													<input class="form-control" type="email" id="repEmail" name="repEmail" maxlength="255" placeholder="Enter Rep Email" required="">
 												</td>
 																					
@@ -1826,13 +1775,6 @@ $("#deliverablesTable2").on('click','.btn_add_deliverables2' ,function() {
 						document.getElementById('addmemtitleid').style.display = 'none';
 						document.getElementById('reptitleid').style.display = 'block';	
 						
-						/* $('#internalmember').val('').trigger("change");
-						$('#ExternalMemberLab').val('').trigger("change");
-						$('#expertmember').val('').trigger("change");
-						$('#LabCode').val('').trigger("change");  */
-						
-						//document.getElementById('additionalmemadd').style.visibility = 'visible';
-						//document.getElementById('repselect').style.visibility = 'visible';
 
 						$('#repselect').show();
 						$('#additionalmemadd').show();
@@ -1847,22 +1789,14 @@ $("#deliverablesTable2").on('click','.btn_add_deliverables2' ,function() {
 						document.getElementById('reptitleid').style.display = 'none';
 						document.getElementById('addmemtitleid').style.display = 'block';
 						
-					 	/* $('#internalmember').val('').trigger("change");
-						$('#ExternalMemberLab').val('').trigger("change");
-						$('#expertmember').val('').trigger("change");
-						$('#LabCode').val('').trigger("change");  */
-						
-						//document.getElementById('additionalmemadd').style.visibility = 'visible';
+					 	
 
 						$('#repselect').hide();
 						$('#additionalmemadd').show();
 						
 						$("#reptype").val("0").change();
 						
-						/* if($('#repselect').css('visibility')==='visible')
-						{
-							document.getElementById('repselect').style.visibility = 'collapse';
-						}  */
+					
 						
 						$('html, body').animate({
 					        scrollTop: $("#additionalmemadd").offset().top

@@ -4,121 +4,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"
 	import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+<spring:url value="/resources/css/admin/IndividualNoticeList.css" var="individualNoticeList" />
+<link href="${individualNoticeList}" rel="stylesheet" />
+
 <title>NOTICE LIST</title>
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
-
-.table button {
-	background-color: Transparent !important;
-	background-repeat: no-repeat;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-	outline: none;
-	text-align: left !important;
-}
-
-.table td {
-	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa {
-	font-size: 1.20rem;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.table-project-n {
-	color: #005086;
-}
-
-#table thead tr th {
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td {
-	padding: 2px 3px !important;
-}
-
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-</style>
 </head>
 <body>
 	<%
@@ -154,28 +49,25 @@ String Todate=(String)request.getAttribute("tdate");
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
 					<div class="card-header">
-						<div class=row>
+						<div class="row m-minus">
 							<h5>Notice List</h5>
 							<div class="col-lg-5"></div>
 							<form class="form-inline " method="POST"
 								action="${pageContext.request.contextPath}/IndividualNoticeList.htm">
 								<input type="hidden" name="${_csrf.parameterName}"
-									value="${_csrf.token}" /> <label
-									style="margin-left: 80px; margin-right: 20px; font-weight: 800">From
-									Date:</label> <input class="form-control form-control date"
+									value="${_csrf.token}" /> <label class="label">From
+									Date:</label> <input class="form-control form-control date w-120"
 									data-date-format="dd-mm-yyyy" id="datepicker1" name="fdate"
-									required="required" style="width: 120px;"
+									required="required"
 									<%if(Fromdate!=null){%> value="<%=StringEscapeUtils.escapeHtml4(Fromdate) %>" <%} %>>
 
 
-								<label
-									style="margin-left: 20px; margin-right: 20px; font-weight: 800">To
-									Date:</label> <input class="form-control" data-date-format="dd-mm-yyyy"
-									id="datepicker3" name="tdate" style="width: 120px;"
+								<label class="label-toDate">To
+									Date:</label> <input class="form-control w-120" data-date-format="dd-mm-yyyy"
+									id="datepicker3" name="tdate"
 									<%if(Todate!=null){%> value="<%=StringEscapeUtils.escapeHtml4(Todate) %>" <%} %>>
 
-								<button type="submit" class="btn btn-primary btn-sm submit"
-									style="margin-left: 12px;" id="submit">SUBMIT</button>
+								<button type="submit" class="btn btn-primary btn-sm submit ml-3" id="submit">SUBMIT</button>
 
 
 							</form>
@@ -188,8 +80,8 @@ String Todate=(String)request.getAttribute("tdate");
 							<thead>
 								<tr>
 									<th>Sr No.</th>
-									<th style="width: 9%;">From Date</th>
-									<th style="width: 9%;">To Date</th>
+									<th class="w-9">From Date</th>
+									<th class="w-9">To Date</th>
 									<th>Notice</th>
 									<th>Edit/Revoke</th>
 								</tr>
@@ -203,13 +95,12 @@ String Todate=(String)request.getAttribute("tdate");
 									<td><%=srno++%></td>
 									<td><%=notiec[2]!=null?sdf.format(notiec[2]):" - "%></td>
 									<td><%=notiec[3]!=null?sdf.format(notiec[3]):" - "%></td>
-									<td style="word-break: break-all;"><%=notiec[1]!=null?StringEscapeUtils.escapeHtml4(notiec[1].toString()): " - "%></td>
+									<td class="break" ><%=notiec[1]!=null?StringEscapeUtils.escapeHtml4(notiec[1].toString()): " - "%></td>
 
 									<td class="left width">
 
 
-										<form action="NoticeEditRevoke.htm" method="POST" name="myfrm"
-											style="display: inline">
+										<form action="NoticeEditRevoke.htm" method="POST" name="myfrm" class="d-inline">
 							<!-- 				onsubmit="return confirm('Do you really want to Edit or Revoke');"> -->
 											<button class="editable-click" name="sub" value="edit" >
 												<div class="cc-rockmenu">

@@ -1,0 +1,40 @@
+@charset "UTF-8";
+label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
+
+.form-group {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+.input-group-text{
+font-weight: bold;
+}
+.style1{
+	margin-top:0px;width: 70%;margin-left: 14%;
+}
+.style2{
+	width: 109%;
+}
+
+.style3{
+	color: #cd0a0a;
+}
+
+.style4{
+	margin-left: -10%;
+}
+
+.style5{
+	margin-left: -9%;
+}
+
+.style6{
+	width: 86%;
+}
+
+.style7{
+	margin-left: -11%;
+}

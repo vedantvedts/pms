@@ -23,65 +23,11 @@
 	<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
 	<script src="${htmltopdf}"></script>
 	
-<style type="text/css">
-
-.center {
-	text-align: center !important;
-}
-
-.right {
-	text-align: right !important;
-}
-
-.left {
-	text-align: left !important;
-}
-
-.customtable{
-	border-collapse: collapse;
-	width: 100%;
-	margin: 1.5rem 0.5rem 0.5rem 0.5rem;
-	overflow-y: auto; 
-	overflow-x: auto;  
-}
-.customtable th{
-	border: 1px solid #0000002b; 
-	padding: 10px;
-		background-color: #2883c0;
-}
-.customtable td{
-	border: 1px solid #0000002b; 
-	padding: 5px;
-}
-
-.customtable thead {
-	text-align: center;
-	color: white;
-	position: sticky;
-	top: 0; /* Keeps the header at the top */
-	z-index: 10; /* Ensure the header stays on top of the body */
-	/* background-color: white; */ /* For visibility */
-}
-
-.table-wrapper {
-    max-height: 680px; /* Set the max height for the table wrapper */
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: hidden; /* Enable vertical scrolling */
-}
-
-.btn-status {
-  position: relative;
-  z-index: 1; 
-}
-
-.btn-status:hover {
-  transform: scale(1.05);
-  z-index: 5;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-</style>   
-
+<spring:url value="/resources/css/cars/CARSAnnualLabReport.css" var="carsAnnualLabReport" />
+<link href="${carsAnnualLabReport}" rel="stylesheet" />
+<spring:url value="/resources/css/cars/carscommon.css" var="carscommon2" />
+<link href="${carscommon2}" rel="stylesheet" />
+	
 </head>
 <body>
 <%
@@ -117,19 +63,19 @@
 	            <div class="card-header">
 	            	<form action="#">
 	            		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		                <div class="row" style="display: flex; justify-content: space-between;">
+		                <div class="row dis-flex" >
 		                    <div class="col-md-8">
 		                        <h5 class="mb-0"><b>CARS Annual Report </b></h5> 
 		                    </div>  
 		                    <div class="col-md-1 right">
-	 	                       <label class="form-label" style="font-weight: bold;font-size: 16px;">Year:</label>
+	 	                       <label class="form-label fw-bold input-font">Year:</label>
 		                    </div>   
 		                    <div class="col-md-1">
-	 	                       <input class="form-control" type="text" id="annualYear" value="<%=annualYear %>" name="annualYear" onchange="this.form.submit()" style="margin-top: -0.5rem;" readonly>
+	 	                       <input class="form-control mt-minus-5" type="text" id="annualYear" value="<%=annualYear %>" name="annualYear" onchange="this.form.submit()" readonly>
 		                    </div>  
 		                    <div class="col-md-2 right">
-		                    	<button type="button" class="btn btn-sm submit" onclick="saveAndGenerateAnnualReportPdf()" formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Generate Report" style="margin-top: -0.5rem;">
-		                    		Generate Report <i style="color: #ffff" class="fa fa-download"></i>
+		                    	<button type="button" class="btn btn-sm submit mt-minus-5" onclick="saveAndGenerateAnnualReportPdf()" formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="Generate Report">
+		                    		Generate Report <i class="fa fa-download col-fff"></i>
 		                    	</button>
 		                    </div> 
 		                </div>
@@ -138,17 +84,17 @@
 	            <div class="card-body">
 	                <div class="col-md-12">
 	                    <div class="table-responsive table-wrapper"> 
-	                    	<input type="text" id="searchBar" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
+	                    	<input type="text" id="searchBar" class="search-bar form-control w-auto" placeholder="Search..."  />
         					<br>
 	                        <table class="customtable" id="dataTable">
 	                            <thead class="center">
 	                                <tr>
-	                                    <th style="width: 3%;">SN</th>
-	                                    <th style="width: 5%;">Select &nbsp;<input type="checkbox" class="selectAll" id="selectAll" ></th>
-	                                    <th style="width: 25%;">Title</th>
-	                                    <th style="width: 25%;">Institution / College</th>
-	                                    <th style="width: 15%;">PI</th>
-	                                    <th style="width: 17%;">Status</th>
+	                                    <th class="w-3" >SN</th>
+	                                    <th class="w-5" >Select &nbsp;<input type="checkbox" class="selectAll" id="selectAll" ></th>
+	                                    <th class="w-25" >Title</th>
+	                                    <th class="w-25" >Institution / College</th>
+	                                    <th class="w-15" >PI</th>
+	                                    <th class="w-17" >Status</th>
 	                                </tr>
 	                            </thead>
 	                            <tbody>    
@@ -181,8 +127,8 @@
 	                                   		<form action="#">
 	                                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 	                                        	<input type="hidden" name="carsInitiationId" value="<%=obj[0] %>">
-	                                       	  	<button type="submit" class="btn btn-sm btn-link w-100 btn-status" formaction=CARSTransStatus.htm value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" style=" color: <%=obj[11] %>; font-weight: 600;" formtarget="_blank">
-								    				<%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %> <i class="fa fa-telegram" aria-hidden="true" style="float: right;margin-top: 0.3rem;"></i>
+	                                       	  	<button type="submit" class="btn btn-sm btn-link-1 w-100 btn-status fw-600 color-<%=obj[11].toString().replace("#", "") %>" formaction=CARSTransStatus.htm value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %>" name="carsInitiationId"  data-toggle="tooltip" data-placement="top" title="Transaction History" formtarget="_blank">
+								    				<%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - " %> <i class="fa fa-telegram f-right mt-1" aria-hidden="true"></i>
 								    			</button>
                                       		</form>
 	                                   	</td>

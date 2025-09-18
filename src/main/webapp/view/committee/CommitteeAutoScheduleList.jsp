@@ -11,148 +11,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-
+<spring:url value="/resources/css/committeeModule/committeeAutoScheduleList.css" var="committeeAutoScheduleList" />
+<link href="${committeeAutoScheduleList}" rel="stylesheet" />
 <title>COMMITTEE AUTO SCHEDULE LIST </title>
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-body {
-	background-color: #f2edfa;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
-
-.table button {
-	background-color: Transparent !important;
-	background-repeat: no-repeat;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-	outline: none;
-	text-align: left !important;
-}
-
-.table td {
-	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa {
-	font-size: 1.20rem;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.fa-exclamation-triangle {
-	font-size: 2.5rem !important;
-}
-
-.table-project-n {
-	color: #005086;
-}
-
-.right {
-	text-align: right;
-}
-
-.center {
-	text-align: center;
-}
-
-#table thead tr th {
-	padding: 0px 0px !important;
-	text-align:center;
-}
-
-#table tbody tr td {
-	padding: 2px 3px !important;
-	text-align:center;
-}
-
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 157px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-
-
-.table .font{
-	  font-family:'Muli', sans-serif !important;
-	  font-style: normal;
-	  font-size: 13px;
-	  font-weight: 400 !important;
-	 
-}
-
-
-
-</style>
 </head>
 <body>
 
@@ -202,7 +63,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 						<h5 class="col-md-4"> Auto-Scheduled List for <%=projectname%></h5>
 						
 						
-						<div class="col-md-2"  style="margin-top: -8px;">							
+						<div class="col-md-2 mt-n8">							
 							<form class="form-inline" method="post" action="CommitteeAutoScheduleList.htm" id="myform">
 								
 									<h6 class="control-label" > Project : </h6> &nbsp;&nbsp;&nbsp;
@@ -222,7 +83,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 							</form>						
 						</div>	
 						
-						<div class="col-md-2"  style="margin-top: -8px;">							
+						<div class="col-md-2 mt-n8">							
 							<form class="form-inline" method="post" action="CommitteeAutoScheduleList.htm" id="myform2">
 								
 									<h6 class="control-label" > Committee : </h6> &nbsp;&nbsp;&nbsp;
@@ -242,7 +103,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 							</form>						
 						</div>	
 						
-						<div class="col-md-3"  style="padding-left: 80px; margin-top: -8px;">							
+						<div class="col-md-3 mt-n8 statusPaddingLeft">							
 							<form class="form-inline" method="post" action="CommitteeAutoScheduleList.htm" id="myform1">
 								
 									<h6 class="control-label" > Status :  </h6> &nbsp;
@@ -261,16 +122,16 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 							</form>						
 						</div>
-						<div class="col-md-1" style="margin-top: -8px;">
+						<div class="col-md-1 mt-n8">
 							<%if(divisionid !=null && divisionid.equalsIgnoreCase("D")){ %>
 							<form action="MainDashBoard.htm">
-								<button type="submit" class="btn btn-primary btn-sm back"  style="margin-bottom: 2%">BACK</button>
+								<button type="submit" class="btn btn-primary btn-sm back mb-p2">BACK</button>
 							</form>
 							
 							<%}else { %>
 							<%if(Long.parseLong(projectid)>0){ %>
 							<form action="ProjectMaster.htm" method="post">
-								<button type="submit" class="btn btn-primary btn-sm back"  style="margin-bottom: 2%">BACK</button>
+								<button type="submit" class="btn btn-primary btn-sm back mb-p2">BACK</button>
 								<input type="hidden" name="projectid"	value="<%=projectid%>" /> 
 								<input type="hidden" name="divisionid"	value="<%=divisionid%>" /> 
 								<input type="hidden" name="initiationid" value="<%=initiationid%>" /> 
@@ -278,7 +139,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 							</form>
 							<%}else if(Long.parseLong(divisionid)>0) {%>
 								<form action="DivisionCommitteeMaster.htm" method="post">
-								<button type="submit" class="btn btn-primary btn-sm back"  style="margin-bottom: 2%">BACK</button>
+								<button type="submit" class="btn btn-primary btn-sm back mb-p2">BACK</button>
 								<input type="hidden" name="projectid"	value="<%=projectid%>" /> 
 								<input type="hidden" name="divisionid"	value="<%=divisionid%>" /> 
 								<input type="hidden" name="initiationid" value="<%=initiationid%>" /> 
@@ -286,7 +147,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 							</form>
 							<%}else if(Long.parseLong(initiationid)>0) {%>
 								<form action="InitiationCommitteeMaster.htm" method="post">
-								<button type="submit" class="btn btn-primary btn-sm back"  style="margin-bottom: 2%">BACK</button>
+								<button type="submit" class="btn btn-primary btn-sm back mb-p2">BACK</button>
 								<input type="hidden" name="projectid"	value="<%=projectid%>" /> 
 								<input type="hidden" name="divisionid"	value="<%=divisionid%>" /> 
 								<input type="hidden" name="initiationid" value="<%=initiationid%>" /> 
@@ -343,24 +204,24 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 															<%} %>
 																<%String day=LocalDate.parse(obj[0].toString()).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);%>														
 															<td   >	
-																	<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> style="color: red" <%} %> > <%=StringEscapeUtils.escapeHtml4(day)%> </span>&nbsp; 
+																	<span<%if(day.equalsIgnoreCase("sunday") || day.equalsIgnoreCase("saturday")){ %> class="text-danger" <%} %> > <%=StringEscapeUtils.escapeHtml4(day)%> </span>&nbsp; 
 																	- &nbsp;<%=LocalDate.parse(obj[0].toString()).getMonth().getDisplayName(TextStyle.FULL, Locale.US)%> &nbsp; 
 																	- &nbsp; <%= sdf1.format(sdf.parse( obj[0].toString()))%>  
 															</td>
 															<td><%=obj[1] %></td>
 															<td class="editable-click"><%if(obj[6]!=null){%>
-																<a class="font" href="CommitteeScheduleView.htm?scheduleid=<%=obj[4]%>" target="_blank" 
+																<a href="CommitteeScheduleView.htm?scheduleid=<%=obj[4]%>" target="_blank" 
 																
-																<%if(obj[5].toString().equalsIgnoreCase("MSC") || obj[5].toString().equalsIgnoreCase("MAF") || obj[5].toString().equalsIgnoreCase("MMF") || obj[5].toString().equalsIgnoreCase("MKO")  ){ %> style="color:#007bff"<%} %>
-																<%if(obj[5].toString().equalsIgnoreCase("MAA") || obj[5].toString().equalsIgnoreCase("MKV") || obj[5].toString().equalsIgnoreCase("MMA") ){ %> style="color:green"<%} %>
-																<%if(obj[5].toString().equalsIgnoreCase("MAR") || obj[5].toString().equalsIgnoreCase("MMR") ){ %> style="color:red"<%} %>
-																<%if(obj[5].toString().equalsIgnoreCase("MAS") || obj[5].toString().equalsIgnoreCase("MMS") ){ %> style="color:orange"<%} %>
+																<%if(obj[5].toString().equalsIgnoreCase("MSC") || obj[5].toString().equalsIgnoreCase("MAF") || obj[5].toString().equalsIgnoreCase("MMF") || obj[5].toString().equalsIgnoreCase("MKO")  ){ %> class="font definedColor"<%} %>
+																<%if(obj[5].toString().equalsIgnoreCase("MAA") || obj[5].toString().equalsIgnoreCase("MKV") || obj[5].toString().equalsIgnoreCase("MMA") ){ %> class="font text-success"<%} %>
+																<%if(obj[5].toString().equalsIgnoreCase("MAR") || obj[5].toString().equalsIgnoreCase("MMR") ){ %> class="font text-danger"<%} %>
+																<%if(obj[5].toString().equalsIgnoreCase("MAS") || obj[5].toString().equalsIgnoreCase("MMS") ){ %> class="font text-warning"<%} %>
 																
 																 ><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %><%}else{ %>-<%} %></a>
 															</td>
 															<td class="left width" align="center" >
 																<%if(Long.parseLong(obj[7].toString())<7){ %>
-																		<form action="CommitteeAutoScheduleEdit.htm" method="post"  style="display: inline">
+																		<form class="d-inline" action="CommitteeAutoScheduleEdit.htm" method="post">
 		
 																			<button class="editable-click" name="sub"
 																				value="Modify">
@@ -380,8 +241,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 		
 																		</form> 		
 																	<%}else if(Long.parseLong(obj[7].toString())>=7){ %>
-																			<form class="form-inline" method="POST" action="CommitteeMinutesViewAll.htm" target="_blank" style="display: inline"> 
-																				<!-- <button type="submit" class="btn btn-sm" style="font-size:12px;color: purple; " >VIEW MINUTES</button> -->
+																			<form class="form-inline d-inline" method="POST" action="CommitteeMinutesViewAll.htm" target="_blank"> 
 																				<button class="editable-click" name="sub"
 																				value="Modify">
 																				<div class="cc-rockmenu">
@@ -397,26 +257,6 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 																				<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 																			</form>
 																	<%} %>
-																
-																<%-- <form action="CommitteeMainEdit.htm" method="post" name="myfrm"
-																	style="display: inline">
-
-																	<button class="editable-click" name="sub" value="Details" 	>
-																		<div class="cc-rockmenu">
-																			<div class="rolling">
-																				<figure class="rolling_icon">
-																					<img src="view/images/preview3.png">
-																				</figure>
-																				<span>View Committees</span>
-																			</div>
-																		</div>
-																	</button>
-
-																	<input type="hidden" name="committeeid"	value="<%=obj[0] %>" />
-																	
- 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-
-																</form>  --%>
 																	
 															</td>
 														</tr>

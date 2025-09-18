@@ -22,10 +22,10 @@ String pmsToIbasUri = ibasV3Uri+"/login";
 
 %>
 
-	<div  class="card " id="project-attributes" style="margin:0px 0px 5px 0px;background-color: rgba(0,0,0,0.1) !important;display: none;">
-		<div class="card-body" style="padding: 0px !important">
+	<div  class="card clx-53" id="project-attributes">
+		<div class="card-body p-0" >
 			<div class="col-md-12" align="left">
-				<table class="table" style="margin-bottom: -5px !important; margin-top: -5px !important;" >
+				<table class="table clx-54"  >
 					    <tr>
 					      <th>Project :</th>
 					      <td id="pro-attr-name"></td>
@@ -47,8 +47,8 @@ String pmsToIbasUri = ibasV3Uri+"/login";
 	</div>
 
 		
-	<div class="card  cashoutgo" style="margin: 5px 0px;background-color: rgba(0,0,0,0.1) !important;">
-		<div class="card-body row" style="padding: 3px !important">
+	<div class="card  cashoutgo clx-52">
+		<div class="card-body row clx-55">
 			<div class="col-md-12">
 				
 				<% 
@@ -96,258 +96,258 @@ String pmsToIbasUri = ibasV3Uri+"/login";
 				  <thead>
 				    <tr>
 				 
-                     <th style="width:10rem"><span class="btn btn-sm" 
-                    style="background-color: #f7f7f7;"><img src="view/images/rupee.png" /> &nbsp;
-                    Cash Out Go (<span style="color: green">&#8377;</span>Cr)</span> </th>
+                     <th class="clx-56"><span class="btn btn-sm clx-57" 
+                    ><img src="view/images/rupee.png" /> &nbsp;
+                    Cash Out Go (<span class="c-6">&#8377;</span>Cr)</span> </th>
 
 
 
 				   <!--  <th style="width:10rem"><img src="view/images/rupee.png" /> &nbsp;Cash Out Go (<span style="color: green">&#8377;</span>Cr)</th>  -->
-				      <th scope="col" style="width:10rem">Allot</th>
-				      <th scope="col" style="width:10rem">Exp</th>
-				      <th scope="col" style="width:10rem">Bal</th>
-				      <th scope="col" style="width:10rem">COG-Q1</th>
-				      <th scope="col" style="width:10rem">COG-Q2</th>
-				      <th scope="col" style="width:10rem">COG-Q3</th>
-				      <th scope="col" style="width:10rem">COG-Q4</th>
-				      <th scope="col" style="width:10rem">Addl(-)/Surr(+)</th>
+				      <th scope="col" class="clx-56">Allot</th>
+				      <th scope="col" class="clx-56"">Exp</th>
+				      <th scope="col" class="clx-56">Bal</th>
+				      <th scope="col" class="clx-56">COG-Q1</th>
+				      <th scope="col" class="clx-56">COG-Q2</th>
+				      <th scope="col" class="clx-56">COG-Q3</th>
+				      <th scope="col" class="clx-56">COG-Q4</th>
+				      <th scope="col" class="clx-56">Addl(-)/Surr(+)</th>
 				    </tr>
 				  </thead>
 				  <tbody>
 				  
 				    <tr>
-				      <th scope="row" style="text-align: left">
+				      <th scope="row" class="text-left">
 				      	<!-- <span class="shadow COGLegend" style="color:#5C192F" >&#x220E;</span>&nbsp;<span class="COGLegend">CAP</span>&nbsp;  -->
-				      	<span style="border-left: 2px solid darkgrey" id="COGProject">&nbsp;&nbsp; Project</span>
+				      	<span class="clx-58" id="COGProject">&nbsp;&nbsp; Project</span>
 				      </th>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="Allotment" id="ProAllotCap" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[3] %> Cr" ><%=CashOutGo.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[3].toString()): " - " %></div>												
+						  <div class="progress-bar primary width-33" role="Allotment" id="ProAllotCap"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[3] %> Cr" ><%=CashOutGo.get(0)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[3].toString()): " - " %></div>												
 						  <% AllotCap=AllotCap.add(new BigDecimal( CashOutGo.get(0)[3].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" id="ProAllotRev" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Revenue : <%=CashOutGo.get(1)[3] %> Cr"  ><%=CashOutGo.get(1)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[3].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar" id="ProAllotRev"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Revenue : <%=CashOutGo.get(1)[3] %> Cr"  ><%=CashOutGo.get(1)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[3].toString()): " - " %></div>
 						  <% AllotRev=AllotRev.add(new BigDecimal( CashOutGo.get(1)[3].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" id="ProAllotOth" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Others : <%=CashOutGo.get(2)[3] %> Cr"  ><%=CashOutGo.get(2)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[3].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar" id="ProAllotOth"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Others : <%=CashOutGo.get(2)[3] %> Cr"  ><%=CashOutGo.get(2)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[3].toString()): " - " %></div>
 						  <% AllotOth=AllotOth.add(new BigDecimal( CashOutGo.get(2)[3].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" id="ProExpCap" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Capital : <%=CashOutGo.get(0)[4] %> Cr"  ><%=CashOutGo.get(0)[4]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[4].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar" id="ProExpCap"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Capital : <%=CashOutGo.get(0)[4] %> Cr"  ><%=CashOutGo.get(0)[4]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[4].toString()): " - " %></div>
 						  <% ExpCap=ExpCap.add(new BigDecimal( CashOutGo.get(0)[4].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" id="ProExpRev" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Revenue : <%=CashOutGo.get(1)[4] %> Cr"  ><%=CashOutGo.get(1)[4]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[4].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar" id="ProExpRev"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Revenue : <%=CashOutGo.get(1)[4] %> Cr"  ><%=CashOutGo.get(1)[4]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[4].toString()): " - " %></div>
 						  <% ExpRev=ExpRev.add(new BigDecimal( CashOutGo.get(1)[4].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" id="ProExpOth" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Others : <%=CashOutGo.get(2)[4] %> Cr"  ><%=CashOutGo.get(2)[4]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[4].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar" id="ProExpOth" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Others : <%=CashOutGo.get(2)[4] %> Cr"  ><%=CashOutGo.get(2)[4]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[4].toString()): " - " %></div>
 						  <% ExpOth=ExpOth.add(new BigDecimal( CashOutGo.get(2)[4].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" id="ProBalCap" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[5] %> Cr"  ><%=CashOutGo.get(0)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[5].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar" id="ProBalCap"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[5] %> Cr"  ><%=CashOutGo.get(0)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[5].toString()): " - " %></div>
 						  <% BalCap=BalCap.add(new BigDecimal( CashOutGo.get(0)[5].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" id="ProBalRev" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Revenue : <%=CashOutGo.get(1)[5] %> Cr" ><%=CashOutGo.get(1)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[5].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar" id="ProBalRev"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Revenue : <%=CashOutGo.get(1)[5] %> Cr" ><%=CashOutGo.get(1)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[5].toString()): " - " %></div>
 						  <% BalRev=BalRev.add(new BigDecimal( CashOutGo.get(1)[5].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" id="ProBalOth" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[5] %> Cr" ><%=CashOutGo.get(2)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[5].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar" id="ProBalOth"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[5] %> Cr" ><%=CashOutGo.get(2)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[5].toString()): " - " %></div>
 						  <% BalOth=BalOth.add(new BigDecimal( CashOutGo.get(2)[5].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" id="ProQ1Cap" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  title="Project Capital : <%=CashOutGo.get(0)[6] %> Cr" ><%=CashOutGo.get(0)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[6].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar" id="ProQ1Cap"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"  title="Project Capital : <%=CashOutGo.get(0)[6] %> Cr" ><%=CashOutGo.get(0)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[6].toString()): " - " %></div>
 						  <% Q1Cap=Q1Cap.add(new BigDecimal( CashOutGo.get(0)[6].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" id="ProQ1Rev" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Revenue : <%=CashOutGo.get(1)[6] %> Cr" ><%=CashOutGo.get(1)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[6].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar" id="ProQ1Rev"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Revenue : <%=CashOutGo.get(1)[6] %> Cr" ><%=CashOutGo.get(1)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[6].toString()): " - " %></div>
 						  <% Q1Rev=Q1Rev.add(new BigDecimal( CashOutGo.get(1)[6].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" id="ProQ1Oth" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[6] %> Cr" ><%=CashOutGo.get(2)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[6].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34"  role="progressbar" id="ProQ1Oth"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[6] %> Cr" ><%=CashOutGo.get(2)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[6].toString()): " - " %></div>
 						  <% Q1Oth=Q1Oth.add(new BigDecimal( CashOutGo.get(2)[6].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" id="ProQ2Cap" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[7] %> Cr" ><%=CashOutGo.get(0)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[7].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar" id="ProQ2Cap"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[7] %> Cr" ><%=CashOutGo.get(0)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[7].toString()): " - " %></div>
 						  <% Q2Cap=Q2Cap.add(new BigDecimal( CashOutGo.get(0)[7].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" id="ProQ2Rev" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Revenue : <%=CashOutGo.get(1)[7] %> Cr" ><%=CashOutGo.get(1)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[7].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar" id="ProQ2Rev"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Revenue : <%=CashOutGo.get(1)[7] %> Cr" ><%=CashOutGo.get(1)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[7].toString()): " - " %></div>
 						  <% Q2Rev=Q2Rev.add(new BigDecimal( CashOutGo.get(1)[7].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" id="ProQ2Oth" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[7] %> Cr" ><%=CashOutGo.get(2)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[7].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar" id="ProQ2Oth"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[7] %> Cr" ><%=CashOutGo.get(2)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[7].toString()): " - " %></div>
 						  <% Q2Oth=Q2Oth.add(new BigDecimal( CashOutGo.get(2)[7].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" id="ProQ3Cap" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[8] %> Cr" ><%=CashOutGo.get(0)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[8].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar" id="ProQ3Cap"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[8] %> Cr" ><%=CashOutGo.get(0)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[8].toString()): " - " %></div>
 						  <% Q3Cap=Q3Cap.add(new BigDecimal( CashOutGo.get(0)[8].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" id="ProQ3Rev" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Revenue : <%=CashOutGo.get(1)[8] %> Cr"  ><%=CashOutGo.get(1)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[8].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar" id="ProQ3Rev"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Revenue : <%=CashOutGo.get(1)[8] %> Cr"  ><%=CashOutGo.get(1)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[8].toString()): " - " %></div>
 						  <% Q3Rev=Q3Rev.add(new BigDecimal( CashOutGo.get(1)[8].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" id="ProQ3Oth" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[8] %> Cr"  ><%=CashOutGo.get(2)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[8].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar" id="ProQ3Oth"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[8] %> Cr"  ><%=CashOutGo.get(2)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[8].toString()): " - " %></div>
 						  <% Q3Oth=Q3Oth.add(new BigDecimal( CashOutGo.get(2)[8].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" id="ProQ4Cap" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[9] %> Cr" ><%=CashOutGo.get(0)[9]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[9].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar" id="ProQ4Cap"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Project Capital : <%=CashOutGo.get(0)[9] %> Cr" ><%=CashOutGo.get(0)[9]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[9].toString()): " - " %></div>
 						  <% Q4Cap=Q4Cap.add(new BigDecimal( CashOutGo.get(0)[9].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" id="ProQ4Rev" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Revenue : <%=CashOutGo.get(1)[9] %> Cr" ><%=CashOutGo.get(1)[9]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[9].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar" id="ProQ4Rev"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Revenue : <%=CashOutGo.get(1)[9] %> Cr" ><%=CashOutGo.get(1)[9]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[9].toString()): " - " %></div>
 						  <% Q4Rev=Q4Rev.add(new BigDecimal( CashOutGo.get(1)[9].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" id="ProQ4Oth" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[9] %> Cr" ><%=CashOutGo.get(2)[9]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[9].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar" id="ProQ4Oth"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[9] %> Cr" ><%=CashOutGo.get(2)[9]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[9].toString()): " - " %></div>
 						  <% Q4Oth=Q4Oth.add(new BigDecimal( CashOutGo.get(2)[9].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" id="ProAddlCap" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Capital : <%=CashOutGo.get(0)[10] %> Cr"  ><%=CashOutGo.get(0)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[10].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar" id="ProAddlCap"   aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Capital : <%=CashOutGo.get(0)[10] %> Cr"  ><%=CashOutGo.get(0)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(0)[10].toString()): " - " %></div>
 						  <% AddlCap=AddlCap.add(new BigDecimal( CashOutGo.get(0)[10].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" id="ProAddlRev" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Revenue : <%=CashOutGo.get(1)[10] %> Cr" ><%=CashOutGo.get(1)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[10].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar" id="ProAddlRev"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Revenue : <%=CashOutGo.get(1)[10] %> Cr" ><%=CashOutGo.get(1)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(1)[10].toString()): " - " %></div>
 						  <% AddlRev=AddlRev.add(new BigDecimal( CashOutGo.get(1)[10].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" id="ProAddlOth" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[10] %> Cr" ><%=CashOutGo.get(2)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[10].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar" id="ProAddlOth"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Project Others : <%=CashOutGo.get(2)[10] %> Cr" ><%=CashOutGo.get(2)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(2)[10].toString()): " - " %></div>
 						  <% AddlOth=AddlOth.add(new BigDecimal( CashOutGo.get(2)[10].toString())); %>
 						</div>
 				      </td>
 				    </tr>
 				
 				    <tr id="COG-Buildup-row">
-				      <th scope="row" style="text-align: left">
+				      <th scope="row" class="text-left">
 					      <!-- <span class="shadow " style="color:#466136">&#x220E;</span>&nbsp;REV&nbsp;&nbsp; --> 
-					      <span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; BuildUp</span>
+					      <span class="clx-58">&nbsp;&nbsp; BuildUp</span>
 				      </th>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Capital : <%=CashOutGo.get(3)[3] %> Cr"  ><%=CashOutGo.get(3)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[3].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Capital : <%=CashOutGo.get(3)[3] %> Cr"  ><%=CashOutGo.get(3)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[3].toString()): " - " %></div>
 						  <% AllotCap = AllotCap.add(new BigDecimal( CashOutGo.get(3)[3].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Revenue : <%=CashOutGo.get(4)[3] %> Cr"  ><%=CashOutGo.get(4)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[3].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Revenue : <%=CashOutGo.get(4)[3] %> Cr"  ><%=CashOutGo.get(4)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[3].toString()): " - " %></div>
 						  <% AllotRev=AllotRev.add(new BigDecimal( CashOutGo.get(4)[3].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[3] %> Cr" ><%=CashOutGo.get(5)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[3].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[3] %> Cr" ><%=CashOutGo.get(5)[3]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[3].toString()): " - " %></div>
 						  <% AllotOth=AllotOth.add(new BigDecimal( CashOutGo.get(5)[3].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital : <%=CashOutGo.get(3)[4] %> Cr" ><%=CashOutGo.get(3)[4]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[4].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital : <%=CashOutGo.get(3)[4] %> Cr" ><%=CashOutGo.get(3)[4]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[4].toString()): " - " %></div>
 						  <% ExpCap=ExpCap.add(new BigDecimal( CashOutGo.get(3)[4].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Revenue : <%=CashOutGo.get(4)[4] %> Cr" ><%=CashOutGo.get(4)[4] !=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[4].toString()): " - "%></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Revenue : <%=CashOutGo.get(4)[4] %> Cr" ><%=CashOutGo.get(4)[4] !=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[4].toString()): " - "%></div>
 						  <% ExpRev=ExpRev.add(new BigDecimal( CashOutGo.get(4)[4].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Others : <%=CashOutGo.get(5)[4] %> Cr" ><%=CashOutGo.get(5)[4]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[4].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Others : <%=CashOutGo.get(5)[4] %> Cr" ><%=CashOutGo.get(5)[4]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[4].toString()): " - " %></div>
 						  <% ExpOth=ExpOth.add(new BigDecimal( CashOutGo.get(5)[4].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital :  <%=CashOutGo.get(3)[5] %> Cr" ><%=CashOutGo.get(3)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[5].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital :  <%=CashOutGo.get(3)[5] %> Cr" ><%=CashOutGo.get(3)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[5].toString()): " - " %></div>
 						  <% BalCap=BalCap.add(new BigDecimal( CashOutGo.get(3)[5].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Revenue : <%=CashOutGo.get(4)[5] %> Cr" ><%=CashOutGo.get(4)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[5].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Revenue : <%=CashOutGo.get(4)[5] %> Cr" ><%=CashOutGo.get(4)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[5].toString()): " - " %></div>
 						  <% BalRev=BalRev.add(new BigDecimal( CashOutGo.get(4)[5].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[5] %> Cr" ><%=CashOutGo.get(5)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[5].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[5] %> Cr" ><%=CashOutGo.get(5)[5]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[5].toString()): " - " %></div>
 						  <% BalOth=BalOth.add(new BigDecimal( CashOutGo.get(5)[5].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital :  <%=CashOutGo.get(3)[6] %> Cr" ><%=CashOutGo.get(3)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[6].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital :  <%=CashOutGo.get(3)[6] %> Cr" ><%=CashOutGo.get(3)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[6].toString()): " - " %></div>
 						  <% Q1Cap=Q1Cap.add(new BigDecimal( CashOutGo.get(3)[6].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Revenue : <%=CashOutGo.get(4)[6] %> Cr" ><%=CashOutGo.get(4)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[6].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Revenue : <%=CashOutGo.get(4)[6] %> Cr" ><%=CashOutGo.get(4)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[6].toString()): " - " %></div>
 						  <% Q1Rev=Q1Rev.add(new BigDecimal( CashOutGo.get(4)[6].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[6] %> Cr" ><%=CashOutGo.get(5)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[6].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[6] %> Cr" ><%=CashOutGo.get(5)[6]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[6].toString()): " - " %></div>
 						  <% Q1Oth=Q1Oth.add(new BigDecimal( CashOutGo.get(5)[6].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital : <%=CashOutGo.get(3)[7] %> Cr" ><%=CashOutGo.get(3)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[7].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital : <%=CashOutGo.get(3)[7] %> Cr" ><%=CashOutGo.get(3)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[7].toString()): " - " %></div>
 						  <% Q2Cap=Q2Cap.add(new BigDecimal( CashOutGo.get(3)[7].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Revenue : <%=CashOutGo.get(4)[7] %> Cr"  ><%=CashOutGo.get(4)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[7].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Revenue : <%=CashOutGo.get(4)[7] %> Cr"  ><%=CashOutGo.get(4)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[7].toString()): " - " %></div>
 						  <% Q2Rev=Q2Rev.add(new BigDecimal( CashOutGo.get(4)[7].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[7] %> Cr" ><%=CashOutGo.get(5)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[7].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[7] %> Cr" ><%=CashOutGo.get(5)[7]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[7].toString()): " - " %></div>
 						  <% Q2Oth=Q2Oth.add(new BigDecimal( CashOutGo.get(5)[7].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital : <%=CashOutGo.get(3)[8] %> Cr" ><%=CashOutGo.get(3)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[8].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital : <%=CashOutGo.get(3)[8] %> Cr" ><%=CashOutGo.get(3)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[8].toString()): " - " %></div>
 						  <% Q3Cap=Q3Cap.add(new BigDecimal( CashOutGo.get(3)[8].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Revenue : <%=CashOutGo.get(4)[8] %> Cr"  ><%=CashOutGo.get(4)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[8].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Revenue : <%=CashOutGo.get(4)[8] %> Cr"  ><%=CashOutGo.get(4)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[8].toString()): " - " %></div>
 						  <% Q3Rev=Q3Rev.add(new BigDecimal( CashOutGo.get(4)[8].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[8] %> Cr" ><%=CashOutGo.get(5)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[8].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[8] %> Cr" ><%=CashOutGo.get(5)[8]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[8].toString()): " - " %></div>
 						  <% Q3Oth=Q3Oth.add(new BigDecimal( CashOutGo.get(5)[8].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital : <%=CashOutGo.get(3)[9] %> Cr" ><%=CashOutGo.get(3)[9] !=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[9].toString()): " - "%></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital : <%=CashOutGo.get(3)[9] %> Cr" ><%=CashOutGo.get(3)[9] !=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[9].toString()): " - "%></div>
 						  <% Q4Cap=Q4Cap.add(new BigDecimal( CashOutGo.get(3)[9].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Revenue : <%=CashOutGo.get(4)[9] %> Cr"  ><%=CashOutGo.get(4)[9]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[9].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Revenue : <%=CashOutGo.get(4)[9] %> Cr"  ><%=CashOutGo.get(4)[9]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[9].toString()): " - " %></div>
 						  <% Q4Rev=Q4Rev.add(new BigDecimal( CashOutGo.get(4)[9].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[9] %> Cr" ><%=CashOutGo.get(5)[9] !=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[9].toString()): " - "%></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Others : <%=CashOutGo.get(5)[9] %> Cr" ><%=CashOutGo.get(5)[9] !=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[9].toString()): " - "%></div>
 						  <% Q4Oth=Q4Oth.add(new BigDecimal( CashOutGo.get(5)[9].toString())); %>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital : <%=CashOutGo.get(3)[10] %> Cr" ><%=CashOutGo.get(3)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[10].toString()): " - " %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Capital : <%=CashOutGo.get(3)[10] %> Cr" ><%=CashOutGo.get(3)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(3)[10].toString()): " - " %></div>
 						  <% AddlCap=AddlCap.add(new BigDecimal( CashOutGo.get(3)[10].toString())); %>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Revenue : <%=CashOutGo.get(4)[10] %> Cr"  ><%=CashOutGo.get(4)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[10].toString()): " - " %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="BuildUp Revenue : <%=CashOutGo.get(4)[10] %> Cr"  ><%=CashOutGo.get(4)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(4)[10].toString()): " - " %></div>
 						  <% AddlRev=AddlRev.add(new BigDecimal( CashOutGo.get(4)[10].toString())); %>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Others : <%=CashOutGo.get(5)[10] %> Cr"  ><%=CashOutGo.get(5)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[10].toString()): " - " %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="BuildUp Others : <%=CashOutGo.get(5)[10] %> Cr"  ><%=CashOutGo.get(5)[10]!=null?StringEscapeUtils.escapeHtml4(CashOutGo.get(5)[10].toString()): " - " %></div>
 						  <% AddlOth=AddlOth.add(new BigDecimal( CashOutGo.get(5)[10].toString())); %>
 						</div>
 				      </td>
 				    </tr>
 				  
 				    <tr id="COG-Total-row">
-				      <th scope="row" style="text-align: left">
+				      <th scope="row" class="clx-58">
 				      	<!-- <span class="shadow " style="color:#591A69 ">&#x220E;</span>&nbsp;OTH&nbsp;  -->
-				      	<span style="border-left: 2px solid darkgrey">&nbsp;&nbsp; Total</span>
+				      	<span class="clx-58">&nbsp;&nbsp; Total</span>
 				      </th>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=AllotCap %> Cr" ><%=AllotCap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=AllotRev %> Cr" ><%=AllotRev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=AllotOth %> Cr" ><%=AllotOth %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=AllotCap %> Cr" ><%=AllotCap %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=AllotRev %> Cr" ><%=AllotRev %></div>
+						  <div class="progress-bar bg-info width-33" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=AllotOth %> Cr" ><%=AllotOth %></div>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=ExpCap %> Cr" ><%=ExpCap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=ExpRev %> Cr" ><%=ExpRev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=ExpOth %> Cr" ><%=ExpOth %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=ExpCap %> Cr" ><%=ExpCap %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=ExpRev %> Cr" ><%=ExpRev %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=ExpOth %> Cr" ><%=ExpOth %></div>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital :  <%=BalCap %> Cr" ><%=BalCap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=BalRev %> Cr" ><%=BalRev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=BalOth %> Cr" ><%=BalOth %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital :  <%=BalCap %> Cr" ><%=BalCap %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=BalRev %> Cr" ><%=BalRev %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=BalOth %> Cr" ><%=BalOth %></div>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=Q1Cap %> Cr"><%=Q1Cap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=Q1Rev %> Cr" ><%=Q1Rev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=Q1Oth %> Cr" ><%=Q1Oth %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=Q1Cap %> Cr"><%=Q1Cap %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=Q1Rev %> Cr" ><%=Q1Rev %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=Q1Oth %> Cr" ><%=Q1Oth %></div>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=Q2Cap %> Cr"><%=Q2Cap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=Q2Rev%> Cr" ><%=Q2Rev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=Q2Oth %> Cr" ><%=Q2Oth %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=Q2Cap %> Cr"><%=Q2Cap %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=Q2Rev%> Cr" ><%=Q2Rev %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=Q2Oth %> Cr" ><%=Q2Oth %></div>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=Q3Cap %> Cr"><%=Q3Cap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=Q3Rev %> Cr" ><%=Q3Rev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=Q3Oth %> Cr" ><%=Q3Oth %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=Q3Cap %> Cr"><%=Q3Cap %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=Q3Rev %> Cr" ><%=Q3Rev %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=Q3Oth %> Cr" ><%=Q3Oth %></div>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=Q4Cap %> Cr" ><%=Q4Cap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="Total Revenue : <%=Q4Rev %> Cr"  ><%=Q4Rev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Total Others : <%=Q4Oth %> Cr" ><%=Q4Oth %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=Q4Cap %> Cr" ><%=Q4Cap %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" data-placement="top" title="Total Revenue : <%=Q4Rev %> Cr"  ><%=Q4Rev %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip"title="Total Others : <%=Q4Oth %> Cr" ><%=Q4Oth %></div>
 						</div>
 				      </td>
 				      <td>
 				      	<div class="progress cashoutgobar">
-						  <div class="progress-bar primary" role="progressbar" style="width: 33%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=AddlCap%>" ><%=AddlCap %></div>
-						  <div class="progress-bar bg-success" role="progressbar" style="width: 33%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=AddlRev%>"><%=AddlRev %></div>
-						  <div class="progress-bar bg-info" role="progressbar" style="width: 34%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=AddlOth%>"><%=AddlOth %></div>
+						  <div class="progress-bar primary width-33" role="progressbar"  aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Capital : <%=AddlCap%>" ><%=AddlCap %></div>
+						  <div class="progress-bar bg-success width-33" role="progressbar"  aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Revenue : <%=AddlRev%>"><%=AddlRev %></div>
+						  <div class="progress-bar bg-info width-34" role="progressbar"  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" data-toggle="tooltip" title="Total Others : <%=AddlOth%>"><%=AddlOth %></div>
 						</div>
 				      </td>
 				    </tr>

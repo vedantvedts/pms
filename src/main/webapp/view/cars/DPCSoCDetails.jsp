@@ -26,291 +26,13 @@
 <spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
 <script src="${SummernoteJs}"></script>
 <link href="${SummernoteCss}" rel="stylesheet" />
-<style type="text/css">
 
-.tab-pane p{
-	text-align: justify;
-	
-}
+<spring:url value="/resources/css/cars/DPCSoCDetails.css" var="dpcsoCDetails" />
+<link href="${dpcsoCDetails}" rel="stylesheet" />
 
-.card-body{
-	padding: 0rem !important;
-}
-.navigation_btn{
-	margin: 1%;
-}
+<spring:url value="/resources/css/cars/carscommon.css" var="carscommon10" />
+<link href="${carscommon10}" rel="stylesheet" />
 
- .b{
-	background-color: #ebecf1;	
-}
-.a{
-	background-color: #d6e0f0;
-}
-
-.nav-link{
-	text-align: left;
-}
-.nav-tabs>.nav-item>.nav-link{
-	padding: 11px 15px !important;
-}
-body { 
-   font-family : "Lato", Arial, sans-serif ;
-   overflow-x: hidden;
-}
-
-input,select,table,div,label,span {
-font-family : "Lato", Arial, sans-serif ;
-}
-.text-center{
-	text-align: left !imporatant;
-}
-
-.control-label,.mandatory{
-float: left;
-font-weight: bold;
-font-size: 1rem;
-}
-.control-label{
-color: purple;
-}
-</style>
-
-<style type="text/css">
-
-.panel-info {
-	border-color: #bce8f1;
-}
-.panel {
-	margin-bottom: 10px;
-	background-color: #fff;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
-.panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-	color: #1d5987;
-}
-.panel-title {
-	margin-top: 0;
-	margin-bottom: 0;
-	font-size: 13px;
-	color: inherit;
-	font-weight: bold;
-	display: contents;
-}
-.buttonEd {
-	float: right;
-	margin-top: -0.5rem;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-div {
-	display: block;
-}
-
-
-.olre-body .panel-info .panel-heading {
-	background-color: #FFF !important;
-	border-color: #bce8f1 !important;
-	border-bottom: 2px solid #466BA2 !important;
-}
-
-.panel-info>.panel-heading {
-	color: #31708f;
-	background-color: #d9edf7;
-	border-color: #bce8f1;
-}
-
-.panel-heading {
-	padding: 18px 15px;
-	border-bottom: 1px solid transparent;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.p-5 {
-	padding: 5px;
-}
-
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-user agent stylesheet
-div {
-	display: block;
-}
-
-.panel-info {
-	border-color: #bce8f1;
-}
-
-.rsqr-column{
- float : left;
-}
-
-.scrollclass::-webkit-scrollbar {
-    width:7px;
-}
-.scrollclass::-webkit-scrollbar-track {
-    -webkit-box-shadow:inset 0 0 6px rgba(0,0,0,0.3); 
-    border-radius:5px;
-}
-.scrollclass::-webkit-scrollbar-thumb {
-    border-radius:5px;
-  /*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: gray;
-}
-.scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
- 	transition: 0.5s;
-}
-
-
-.trup{
-	padding:6px 10px 6px 10px ;			
-	border-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-.trdown{
-	padding:0px 10px 5px 10px ;			
-	border-bottom-left-radius : 5px; 
-	border-bottom-right-radius: 5px;
-	font-size: 14px;
-	font-weight: 600;
-}
-
-#socforwardtable, #milestonestable, #desctable{
-	width : 98%;
-	/* border : 1px solid black; */
-	 margin-top : 1rem; 
-	font-size: 14px;
-}
-#socforwardtable td, #milestonestable td, #desctable td{
-	border : 1px solid black;
-	text-align: left;
-	padding : 3px;
-	vertical-align: top;
-}
-
-#socforwardtable th, #milestonestable th, #desctable th{
-	border : 1px solid black;
-	text-align: center;
-	padding : 3px;
-}
-
-#socforwardtable td:first-child {
-    text-align: center;
-    width: 5%;
-}
-
-#socforwardtable td:second-child {
-    width: 23%;
-}
-#socforwardtable td:third-child {
-    width: 70%;
-}
-
-#desctable td:first-child {
-    text-align: center;
-}
-
-.soccontainer{
-	text-align: left;
- 
-}
-.socheading{
-	font-weight: bold;
-	margin-top: 1rem;
-}
-.soccontent{
-	width: 96%;
-	margin-left: 20px;
-}
-
-p
-{
-	text-align: justify !important;
-  	text-justify: inter-word;
-}
-p,td,th
-{
-  word-wrap: break-word;
-  word-break: normal ;
-}
-
-.textunderline{
-	text-decoration: underline;
-}
-
-.externalapproval{
-border : 1px solid #ced4da;
-padding: 20px;
-border-radius : 0.25rem;
-width: 70%;
-margin-left: -30%;
-}
-
-#alldocstable {
-	width : 70%;
-	/* border : 1px solid black; */
-	margin-top : 1.5rem;
-	font-size: 15px;
-	margin-left: 10rem;
-}
-#alldocstable th{
-	border : 1px solid black;
-	text-align: center;
-	padding : 5px;
-}
-#alldocstable td{
-	border : 1px solid black;
-	text-align: left;
-	padding : 3px;
-	vertical-align: top;
-}
-#alldocstable td:first-child,#alldocstable td:nth-child(3){ 
-	text-align: center; 
-}
-
-.cssideheading{
-	font-size: 17px;
-}
-
-.cssideheadingdata{
-	font-size: 16px !important;
-	color: white;
-	font
-}
-
-#select2-LabCode-container,#select2-approverEmpId-container{
-	text-align: left;
-}
-
-/* Summer Note styles */
-.note-editor {
-	width: 95% !important;
-	margin: 1rem 2.5rem;
-}
-</style>
 </head>
 <body>
 <%
@@ -378,16 +100,16 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
    		<div class="col-md-12">
        		<div class="card slider">
        			<!-- This is for Slider Headers -->
-         		<div class="card-header slider_header" style="padding:0px; font-size: 12px!important; height: 0%;">
+         		<div class="card-header slider_header p-0 fs-12 hei-0" >
              		<h3 class="category">D-P&C SoC Details - 
              		
-             			<button type="button" class="btn btn-sm btn-info" style="text-align: left;min-width: 80%;max-width: 80%;background: darkcyan;border: darkcyan;white-space: normal;">
+             			<button type="button" class="btn btn-sm btn-info btn-bg-head">
              				<div>
 					        	<div class="row">
 					        		<div class="col-md-1">
 					        			<span class="cssideheading">Title:</span>
 					                </div>
-					            	<div class="col-md-11" style="margin-left: -5%;">
+					            	<div class="col-md-11 ml-minus-5">
 					                	<span class="cssideheadingdata"><%if(carsIni!=null && carsIni.getInitiationTitle()!=null) {%><%=carsIni.getInitiationTitle() %> <%} else{%>-<%} %></span>
 					                </div>
 					                
@@ -423,7 +145,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 					        </div>
              			</button>
              			
-             			<a class="btn btn-info btn-sm  shadow-nohover back"
+             			<a class="btn btn-info btn-sm  shadow-nohover back text-white f-right"
              			<%if(isApproval!=null && isApproval.equalsIgnoreCase("P") ) {%>
                				href="CARSRSQRApprovals.htm"
                			<%} else if(isApproval!=null && isApproval.equalsIgnoreCase("Q") ) {%>
@@ -431,10 +153,10 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
                			<%} else {%>
              			    href="CARSRSQRApprovedList.htm?AllListTabId=2"
              			<%} %> 
-             			  style="color: white!important;float: right;">Back</a>
+             			  >Back</a>
              		</h3>
-             		<hr style="margin: -8px 0px !important;">
-             		<ul class="nav nav-tabs justify-content-center" role="tablist" style="padding-bottom: 0px;" >
+             		<hr class="hr-m-minus">
+             		<ul class="nav nav-tabs justify-content-center pb-0" role="tablist">
             			<li class="nav-item" id="nav-socdetails">
              				<%if(dpcTabId!=null && dpcTabId.equalsIgnoreCase("1")){ %> 
              		    		<a class="nav-link active " data-toggle="tab" href="#socdetails" id="nav" role="tab">
@@ -469,7 +191,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
          		
          		<!-- This is for Tab Panes -->
          		<div class="card">
-         			<div class="tab-content text-center" style="margin-top : 0.2rem;">
+         			<div class="tab-content text-center mt-1">
          				<!-- *********** SoC Details ***********      --> 
                			<%if(dpcTabId!=null && dpcTabId.equalsIgnoreCase("1")){ %> 
          					<div class="tab-pane active" id="socdetails" role="tabpanel">
@@ -481,35 +203,32 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
                		 				<input type="hidden" name="carsSocId" value="<%=carsSoC.getCARSSoCId()%>">
                						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                						<div class="row">
-               			    			<div class="col-md-12" style="margin-left: 60px;margin-right: 60px;">
+               			    			<div class="col-md-12 mlr-60">
                			    				<!-- First row of SoC Details  -->
                			    				<div class="row details">
-               			    					<div class="column b" style="width: 94.5%;border-top-left-radius: 5px;border-top-right-radius: 5px;">
+               			    					<div class="column b column-b">
                			    						<label class="control-label">Introduction</label><span class="mandatory">*</span>
                			    					</div>
                			    				</div>
-               			     				<div class="row details" style="margin-top: -1%;">
+               			     				<div class="row details mt-minus-1p">
                        							
-                             						<%-- <textarea  class="form-control form-control" name="dpcIntroduction" id="dpcIntroduction" rows="4" cols="65" style="font-size: 15px;"
-                             		 				 placeholder="Enter SoC Introduction" required><%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=carsSoC.getDPCIntroduction()%><%} %></textarea> --%>
-                       								<div class="column b" style="width: 94.5%;">
-														<div id="dpcIntroductionnote" class="center"> </div>
-														<%-- <input type="hidden" id="dpcIntroductionhidden" value="<%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=carsSoC.getDPCIntroduction()%><%} %>"> --%>
-														<textarea id="dpcIntroductionhidden" style="display:none;"><%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=carsSoC.getDPCIntroduction()%><%} %></textarea>
-														<textarea name="dpcIntroduction" style="display:none;"></textarea>
+                       								<div class="column b w-94-5" >
+														<div id="dpcIntroductionnote" > </div>
+														<textarea id="dpcIntroductionhidden" class="dis-none" ><%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsSoC.getDPCIntroduction())%><%} %></textarea>
+														<textarea name="dpcIntroduction" class="dis-none" ></textarea>
                        							</div>
                         					</div>
                			    				<!-- Second row of SoC Details  -->
                			     				<div class="row details">
-                       							<div class="column b" style="width: 47.25%;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+                       							<div class="column b div-det">
                            							<label class="control-label">Expenditure Head</label><span class="mandatory">*</span>
-                             						<textarea  class="form-control form-control" name="dpcExpenditure" id="dpcExpenditure" rows="4" cols="65" style="font-size: 15px;" maxlength="2000"
-                             		 				 placeholder="Enter Expenditure Head" required><%if(carsSoC!=null && carsSoC.getDPCExpenditure()!=null){ %><%=carsSoC.getDPCExpenditure()%><%} %></textarea>
+                             						<textarea  class="form-control form-control input-font" name="dpcExpenditure" id="dpcExpenditure" rows="4" cols="65" maxlength="2000"
+                             		 				 placeholder="Enter Expenditure Head" required><%if(carsSoC!=null && carsSoC.getDPCExpenditure()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsSoC.getDPCExpenditure())%><%} %></textarea>
                        							</div>
-                       							<div class="column b" style="width: 47.25%;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
+                       							<div class="column b div-det" >
                            							<label class="control-label">Additional Points</label>
-                             						<textarea  class="form-control form-control" name="dpcAdditional" id="dpcAdditional" rows="4" cols="65" style="font-size: 15px;" maxlength="1000"
-                             		 				 placeholder="Enter Additional Points ( if any )" ><%if(carsSoC!=null && carsSoC.getDPCAdditional()!=null){ %><%=carsSoC.getDPCAdditional()%><%} %></textarea>
+                             						<textarea  class="form-control form-control input-font" name="dpcAdditional" id="dpcAdditional" rows="4" cols="65" maxlength="1000"
+                             		 				 placeholder="Enter Additional Points ( if any )" ><%if(carsSoC!=null && carsSoC.getDPCAdditional()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsSoC.getDPCAdditional())%><%} %></textarea>
                        							</div>
                         					</div>
                			    			</div>
@@ -524,8 +243,8 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 									</div>
                					</form>
                				
-               					<div class="navigation_btn"  style="text-align: right;">
-            						<a class="btn btn-info btn-sm  shadow-nohover back" href="CARSRSQRApprovedList.htm?AllListTabId=2" style="color: white!important">Back</a>
+               					<div class="navigation_btn text-right">
+            						<a class="btn btn-info btn-sm  shadow-nohover back text-white" href="CARSRSQRApprovedList.htm?AllListTabId=2">Back</a>
 									<button class="btn btn-info btn-sm next">Next</button>
 								</div>
                			<%if(dpcTabId!=null && dpcTabId.equalsIgnoreCase("1")){ %> 
@@ -542,34 +261,34 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 		               	<%} %>
 		               			<%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null) {%>
 		               				<div class="col-md-8 mt-1">
-               							<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%;max-height: 550px;overflow-y: auto;">
+               							<div class="card card-bor" >
                								<div class="card-body mt-2 ml-4">
                									<form action="#">
                										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			               		   					<input type="hidden" name="carsInitiationId" value="<%=carsIni.getCARSInitiationId()%>">
 			               		   					<input type="hidden" name="carsSocId" value="<%=carsSoC.getCARSSoCId()%>">
 			               		   					<div class="mt-2" align="center">
-               											<h5 style="font-weight: bold;margin-top: 1.5rem;">Statement of Case for availing CARS
+               											<h5 class="fw-bold mt-4" >Statement of Case for availing CARS
                											&emsp;<button type="submit" class="btn btn-sm" formaction="CARSDPCSoCDownload.htm" name="carsInitiationId" value="<%=carsIni.getCARSInitiationId() %>" formtarget="blank" formmethod="GET" data-toggle="tooltip" data-placement="top" title="Download">
 								  	 							<i class="fa fa-download" aria-hidden="true"></i>
 															  </button>
                											</h5>
                										</div>
 			               		   					<div class="soccontainer">
-			               		   						<div style="width: 97%;">
-			               		   							<h5 class="socheading"><span>1.</span> <span style="text-decoration: underline;">Introduction</span></h5>
+			               		   						<div class="width-97">
+			               		   							<h5 class="socheading"><span>1.</span> <span class="text-ul">Introduction</span></h5>
 				               		   						<div class="soccontent">
-				               		   							<p style="text-indent: 21px;font-size: 15px;"><%=carsSoC.getDPCIntroduction()!=null?carsSoC.getDPCIntroduction(): " - " %></p>
+				               		   							<p class="text-in input-font" ><%=carsSoC.getDPCIntroduction()!=null?carsSoC.getDPCIntroduction(): " - " %></p>
 				               		   						</div>
 			               		   						</div>
 			               		   						<div>
-			               		   							<h5 class="socheading"><span>2.</span> <span style="text-decoration: underline;">The Summary of the CARS is as under</span></h5>
+			               		   							<h5 class="socheading"><span>2.</span> <span class="text-ul">The Summary of the CARS is as under</span></h5>
 			               		   							<div class="soccontent">
 			               		   								<table id="socforwardtable">
 						               		   						<tr>
-						               		   							<th style="width: 5%;">SN</th>
-						               		   							<th style="width: 23%;">Subject</th>
-						               		   							<th style="width: 70%;">Details</th>
+						               		   							<th class="width-5">SN</th>
+						               		   							<th class="width-23">Subject</th>
+						               		   							<th class="width-70">Details</th>
 						               		   						</tr>
 						               		   						<tr>
 						               		   							<td>1.</td>
@@ -621,50 +340,50 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			               		   						</div>
 			               		   						
 			               		   						<div>
-			               		   							<h5 class="socheading"><span>3.</span> <span style="text-decoration: underline;">Description</span></h5>
+			               		   							<h5 class="socheading"><span>3.</span> <span class="text-ul">Description</span></h5>
 				               		   						<div class="soccontent">
-				               		   							<p style="font-size: 15px;">
+				               		   							<p class="input-font">
 				               		   								<%=carsIni.getRSPInstitute()!=null?carsIni.getRSPInstitute(): " - "%>, <%=carsIni.getRSPCity()!=null?carsIni.getRSPCity(): " - " %> has submitted the &#39;Summary of Offer&#39; for Rs <span class="textunderline"><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(amount)) %></span>
 				               		   								(inclusive of GST) for duration of <span class="textunderline"><%=carsSoC.getSoCDuration()!=null?carsSoC.getSoCDuration(): " - " %></span> months. Required schedule of payments is given below.
 				               		   							</p>
 				               		   							<table id="milestonestable">
 				               		   								<tr>
-				               		   								  <th style="width: 10%;">Milestone No.</th>
-				               		   								  <th style="width: 28%;">Task Description</th>
-				               		   								  <th style="width: 5%;">Months</th>
-				               		   								  <th style="width: 25%;">Deliverables</th>
-				               		   								  <th style="width: 5%;">Payment <br>( In % )</th>
-				               		   								  <th style="width: 10%;">Amount (&#8377;)</th>
-				               		   								  <th style="width: 15%;">Remarks</th>
+				               		   								  <th class="width-10">Milestone No.</th>
+				               		   								  <th class="width-28">Task Description</th>
+				               		   								  <th class="width-5">Months</th>
+				               		   								  <th class="width-25">Deliverables</th>
+				               		   								  <th class="width-5">Payment <br>( In % )</th>
+				               		   								  <th class="width-10">Amount (&#8377;)</th>
+				               		   								  <th class="width-15">Remarks</th>
 				               		   								</tr>
 				               		   								<%if(milestones!=null && milestones.size()>0) {
 				               		   									for(CARSSoCMilestones mil : milestones){
 				               		   						
 				               		   								%>
 					               		   								<tr>
-					               		   									<td style="width: 10%;text-align: center;"><%=mil.getMilestoneNo()!=null?mil.getMilestoneNo(): " - " %></td>
-					               		   									<td style="width: 28%;"><%=mil.getTaskDesc()!=null?mil.getTaskDesc(): " - " %></td>
-					               		   									<td style="width: 5%;text-align: center;"><%="T0 + "+(mil.getMonths()!=null?mil.getMonths(): " - ") %></td>
-					               		   									<td style="width: 25%;"><%=mil.getDeliverables()!=null?mil.getDeliverables(): " - " %></td>
-					               		   									<td style="width: 5%;text-align: center;"><%=mil.getPaymentPercentage()!=null?mil.getPaymentPercentage(): " - " %></td>
-					               		   									<td style="width: 10%;text-align: right;"><%if(mil.getActualAmount()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(mil.getActualAmount())) %><%} else{%>-<%} %></td>
-					               		   									<td style="width: 15%;"><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} else{%>-<%} %></td>
+					               		   									<td class="width-10 text-center" ><%=mil.getMilestoneNo()!=null?mil.getMilestoneNo(): " - " %></td>
+					               		   									<td class="width-28"><%=mil.getTaskDesc()!=null?mil.getTaskDesc(): " - " %></td>
+					               		   									<td class="width-5 text-center" ><%="T0 + "+(mil.getMonths()!=null?mil.getMonths(): " - ") %></td>
+					               		   									<td class="width-25" ><%=mil.getDeliverables()!=null?mil.getDeliverables(): " - " %></td>
+					               		   									<td class="width-5 text-center" ><%=mil.getPaymentPercentage()!=null?mil.getPaymentPercentage(): " - " %></td>
+					               		   									<td class="width-10 text-right"><%if(mil.getActualAmount()!=null) {%><%=IndianRupeeFormat.getRupeeFormat(Double.parseDouble(mil.getActualAmount())) %><%} else{%>-<%} %></td>
+					               		   									<td class="width-15" ><%if(mil.getPaymentTerms()!=null) {%><%=mil.getPaymentTerms() %><%} else{%>-<%} %></td>
 					               		   								</tr>
 				               		   								<%}} %>
 				               		   								
 				               		   							</table>
 				               		   							<br>
-				               		   							<p style="font-size: 15px;">
+				               		   							<p class="input-font">
 				               		   								The Contract for Acquisition of Professional Services to be placed on <%=carsIni.getRSPInstitute()!=null?carsIni.getRSPInstitute(): " - "+", "+carsIni.getRSPCity()!=null?carsIni.getRSPCity(): " - " %> (CARS) file is submitted with the following documents.
 				               		   							</p>
 				               		   							<table id="desctable">
 						               		   						<tr>
-						               		   							<th style="width: 5%;">SN</th>
-						               		   							<th style="width: 70%;">Description</th>
-						               		   							<th style="width: 23%;">Reference</th>
+						               		   							<th class="width-5" >SN</th>
+						               		   							<th class="width-70" >Description</th>
+						               		   							<th class="width-23" >Reference</th>
 						               		   						</tr>
 						               		   						<tr>
-						               		   							<td style="text-align: center;">1.</td>
+						               		   							<td class="text-center">1.</td>
 						               		   							<td>Statement of Case for availing CARS, Research Service Qualitative Requirement</td>
 						               		   							<td>Annexure A</td>
 						               		   						</tr>
@@ -693,13 +412,13 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 				               		   						
 			               		   						</div>
 			               		   						
-			               		   						<div style="width: 97%;">
-			               		   							<h5 class="socheading"><span>4.</span> <span style="text-decoration: underline;font">Approval Sought</span></h5>
+			               		   						<div class="width-97">
+			               		   							<h5 class="socheading"><span>4.</span> <span class="text-ul">Approval Sought</span></h5>
 				               		   						<div class="soccontent">
 				               		   							<%if(carsSoC!=null && carsSoC.getDPCApprovalSought()!=null && !carsSoC.getDPCApprovalSought().isEmpty() && ( GHDPandC!=null && EmpId.equalsIgnoreCase(GHDPandC[0].toString()) ) ) {%>
 				               		   								<textarea class="form-control" name="approvalSought" rows="4" required><%=carsSoC.getDPCApprovalSought() %></textarea>
 				               		   							<%} else if(carsSoC!=null && carsSoC.getDPCApprovalSought()!=null && !carsSoC.getDPCApprovalSought().isEmpty() && ( GHDPandC!=null && !EmpId.equalsIgnoreCase(GHDPandC[0].toString()) ) ){%>
-					               		   							<p style="text-indent: 21px;font-size: 15px;">
+					               		   							<p class="text-in input-font">
 																		<%=carsSoC.getDPCApprovalSought().replaceAll("\n", "<br>") %>
 																	</p>
 				               		   							<%} else{%>
@@ -713,143 +432,143 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			               		   					
 			               		   					<!-- Signatures and timestamps -->
 			               		   					
-													<div style="width: 96%;text-align: right;margin-right: 10px;line-height: 10px;margin-top: 30px;">
-		               								 	<div style="font-size: 15px;"> Signature of GH-DP&C</div>
+													<div class="div-tab">
+		               								 	<div class="input-font"> Signature of GH-DP&C</div>
 						               					<%for(Object[] apprInfo : dpcSoCApprovalEmpData){ %>
 						   			   					<%if(apprInfo[8].toString().equalsIgnoreCase("SFD")){ %>
-						   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-						   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-						   								<label style="font-size: 12px; ">[Forwarded On:&nbsp; <%= apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
+						   								<label class="text-uppercase mt-3"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+						   								<label class="text-uppercase"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+						   								<label class="fs-12">[Forwarded On:&nbsp; <%= apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
 						   			    				<%break;}} %>  
 							            			 </div>
 							            			 
 							            			 <%for(Object[] apprInfo : dpcSoCApprovalEmpData) {%>
-							            			 	<div style="width: 96%;text-align: left;margin-left: 10px;line-height: 10px;margin-top: 50px;">
+							            			 	<div class="tab-div">
 							            			 		
 							            			 		<%if(apprInfo[8].toString().equalsIgnoreCase("SGD")){ %>
-							            			 			<div style="font-size: 15px;"> Signature of GD-DP&C</div>
-								   								<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
+							            			 			<div class="input-font" > Signature of GD-DP&C</div>
+								   								<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   								<label class="text-uppercase "><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   								<label class="fs-12" >[Recommended On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SPD")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of PD</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
+							   			    					<div class="input-font" > Signature of PD</div>
+							   			    					<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   								<label class="text-uppercase " ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   								<label class="fs-12" >[Recommended On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SCR")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of Chairman RPB</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
+							   			    					<div class="input-font" > Signature of Chairman RPB</div>
+							   			    					<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   								<label class="text-uppercase" ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   								<label class="fs-12" >[Recommended On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SMA")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of MMFD AG</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
+							   			    					<div class="input-font" > Signature of MMFD AG</div>
+							   			    					<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   								<label class="text-uppercase" ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   								<label class="fs-12" >[Recommended On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
 							   			    				<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDF")) {%> 
-							   			    					<div style="font-size: 15px;"> Signature of GD DF&MM</div>
-							   			    					<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   								<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   								<label style="font-size: 12px; ">[Recommended On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
+							   			    					<div class="input-font" > Signature of GD DF&MM</div>
+							   			    					<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   								<label class="text-uppercase" ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   								<label class="fs-12" >[Recommended On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
 							   			    					
 							   			    				<%} %>
 							   			    				<%if(amount!=null && Double.parseDouble(amount)<=1000000) {%>
 							   			    					<% if(apprInfo[8].toString().equalsIgnoreCase("SAD")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of Director</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   									<label style="font-size: 12px; ">[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
+							   			    						<div class="input-font" > Signature of Director</div>
+							   			    						<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   									<label class="fs-12" >[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDD")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of Director</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   									<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
+							   			    						<div class="input-font" > Signature of Director</div>
+							   			    						<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   									<label class="fs-12" >[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
 							   			    					<%} %>
 							   			    				<%} else if(amount!=null && (Double.parseDouble(amount)>1000000 && Double.parseDouble(amount)<=5000000) ) {%>
 							   			    					<% if(apprInfo[8].toString().equalsIgnoreCase("SAI")) {%>
-							   			    						<div style="font-size: 15px;"> Signature of IFA, O/o DG (ECS)</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - " %> <%} %></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>IFA, O/o DG (ECS) <%} %></label><br>
-								   									<label style="font-size: 12px; ">[Approved On:&nbsp; <%=  apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "  %>]</label>
+							   			    						<div class="input-font" > Signature of IFA, O/o DG (ECS)</div>
+							   			    						<label class="text-uppercase mt-3" ><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - " %> <%} %></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>IFA, O/o DG (ECS) <%} %></label><br>
+								   									<label class="fs-12" >[Approved On:&nbsp; <%=  apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "  %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDI")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of IFA, O/o DG (ECS)</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - " %> <%} %></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>IFA, O/o DG (ECS) <%} %></label><br>
-								   									<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
+							   			    						<div class="input-font" > Signature of IFA, O/o DG (ECS)</div>
+							   			    						<label class="text-uppercase mt-3" ><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - " %> <%} %></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>IFA, O/o DG (ECS) <%} %></label><br>
+								   									<label class="fs-12" >[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAD")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of Director</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   									<label style="font-size: 12px; ">[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
+							   			    						<div class="input-font"  > Signature of Director</div>
+							   			    						<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   									<label class="fs-12" >[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDD")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of Director</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   									<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
+							   			    						<div class="input-font" > Signature of Director</div>
+							   			    						<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   									<label class="fs-12" >[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
 							   			    					<%} %>
 							   			    				<%} else if(amount!=null && (Double.parseDouble(amount)>5000000 && Double.parseDouble(amount)<=30000000)) {%>
 							   			    					<% if(apprInfo[8].toString().equalsIgnoreCase("SAD")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of Director</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   									<label style="font-size: 12px; ">[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
+							   			    						<div class="input-font" > Signature of Director</div>
+							   			    						<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   									<label class="fs-12" >[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDD")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of Director</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   									<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
+							   			    						<div class="input-font" > Signature of Director</div>
+							   			    						<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   									<label class="fs-12" >[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAI")) {%>
-							   			    						<div style="font-size: 15px;"> Signature of IFA, O/o DG (ECS)</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - " %> <%} %></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>IFA, O/o DG (ECS) <%} %></label><br>
-								   									<label style="font-size: 12px; ">[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
+							   			    						<div class="input-font" > Signature of IFA, O/o DG (ECS)</div>
+							   			    						<label class="text-uppercase mt-3" ><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - " %> <%} %></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>IFA, O/o DG (ECS) <%} %></label><br>
+								   									<label class="fs-12" >[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDI")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of IFA, O/o DG (ECS)</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - "  %> <%} %></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>IFA, O/o DG (ECS) <%} %></label><br>
-								   									<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "  %>]</label>
+							   			    						<div class="input-font" > Signature of IFA, O/o DG (ECS)</div>
+							   			    						<label class="text-uppercase mt-3" ><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - "  %> <%} %></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>IFA, O/o DG (ECS) <%} %></label><br>
+								   									<label class="fs-12" >[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "  %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("ADG")) {%>
-							   			    						<div style="font-size: 15px;"> Signature of DG (ECS)</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - "  %> <%} %></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>DG (ECS) <%} %></label><br>
-								   									<label style="font-size: 12px; ">[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "  %>]</label>
+							   			    						<div class="input-font" > Signature of DG (ECS)</div>
+							   			    						<label class="text-uppercase mt-3" ><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - "  %> <%} %></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>DG (ECS) <%} %></label><br>
+								   									<label class="fs-12" >[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "  %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("DDG")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of DG (ECS)</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - "  %> <%} %></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>DG (ECS) <%} %></label><br>
-								   									<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
+							   			    						<div class="input-font" > Signature of DG (ECS)</div>
+							   			    						<label class="text-uppercase mt-3" ><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - "  %> <%} %></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>DG (ECS) <%} %></label><br>
+								   									<label class="fs-12" >[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
 							   			    					<%} %>
 							   			    				<%} else if(amount!=null && (Double.parseDouble(amount)>30000000)) {%>	
 							   			    					<% if(apprInfo[8].toString().equalsIgnoreCase("SAD")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of Director</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   									<label style="font-size: 12px; ">[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
+							   			    						<div class="input-font" > Signature of Director</div>
+							   			    						<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   									<label class="fs-12" >[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10))  +" "+apprInfo[4].toString().substring(11,19): " - " %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDD")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of Director</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
-								   									<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
+							   			    						<div class="input-font" > Signature of Director</div>
+							   			    						<label class="text-uppercase mt-3" ><%=apprInfo[2]!=null?apprInfo[2].toString(): " - "%></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%=apprInfo[3]!=null?apprInfo[3].toString(): " - "%></label><br>
+								   									<label class="fs-12" >[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) +" "+apprInfo[4].toString().substring(11,19): " - "  %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAJ")) {%>
-							   			    						<div style="font-size: 15px;"> Signature of JSA</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10] !=null?apprInfo[10].toString(): " - " %> <%} %></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>JSA <%} %></label><br>
-								   									<label style="font-size: 12px; ">[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
+							   			    						<div class="input-font" > Signature of JSA</div>
+							   			    						<label class="text-uppercase mt-3" ><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10] !=null?apprInfo[10].toString(): " - " %> <%} %></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>JSA <%} %></label><br>
+								   									<label class="fs-12" >[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDJ")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of JSA</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10] !=null?apprInfo[10].toString(): " - " %> <%} %></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>JSA <%} %></label><br>
-								   									<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
+							   			    						<div class="input-font" > Signature of JSA</div>
+							   			    						<label class="text-uppercase mt-3" ><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10] !=null?apprInfo[10].toString(): " - " %> <%} %></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>JSA <%} %></label><br>
+								   									<label class="fs-12" >[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SAS")) {%>
-							   			    						<div style="font-size: 15px;"> Signature of SECY</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - "  %> <%} %></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>SECY <%} %></label><br>
-								   									<label style="font-size: 12px; ">[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
+							   			    						<div class="input-font" > Signature of SECY</div>
+							   			    						<label class="text-uppercase mt-3" ><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - "  %> <%} %></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>SECY <%} %></label><br>
+								   									<label class="fs-12" >[Approved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
 							   			    					<%} else if(apprInfo[8].toString().equalsIgnoreCase("SDS")) {%> 
-							   			    						<div style="font-size: 15px;"> Signature of SECY</div>
-							   			    						<label style="text-transform: capitalize;margin-top: 15px !important;"><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - "  %> <%} %></label>,<!-- <br> -->
-								   									<label style="text-transform: capitalize;"><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>SECY <%} %></label><br>
-								   									<label style="font-size: 12px; ">[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
+							   			    						<div class="input-font" > Signature of SECY</div>
+							   			    						<label class="text-uppercase mt-3" ><%if(apprInfo[2]!=null) {%> <%=apprInfo[2].toString()%> <%} else{%><%=apprInfo[10]!=null?apprInfo[10].toString(): " - "  %> <%} %></label>,<!-- <br> -->
+								   									<label class="text-uppercase" ><%if(apprInfo[3]!=null) {%> <%=apprInfo[3].toString()%> <%} else{%>SECY <%} %></label><br>
+								   									<label class="fs-12" >[Disapproved On:&nbsp; <%=apprInfo[4]!=null?fc.SqlToRegularDate(apprInfo[4].toString().substring(0, 10)) : " - "   %>]</label>
 							   			    					<%} %>
 							   			    				<%} %>
 							            			 	</div>	
@@ -858,19 +577,19 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			               		   					<!-- Remarks -->
 			               		   					<div class="row mt-2">
 														<%if(dpcSoCRemarksHistory.size()>0){ %>
-															<div class="col-md-8" align="left" style="margin: 10px 0px 5px 25px; padding:0px;border: 1px solid black;border-radius: 5px;">
+															<div class="col-md-8 remarks-div" align="left" >
 																<%if(dpcSoCRemarksHistory.size()>0){ %>
-																	<table style="margin: 3px;padding: 0px">
+																	<table class="m-1 p-0">
 																		<tr>
-																			<td style="border:none;padding: 0px">
-																			<h6 style="text-decoration: underline;">Remarks :</h6> 
+																			<td class="bor-none p-0">
+																			<h6 class="text-ul">Remarks :</h6> 
 																			</td>											
 																		</tr>
 																		<%for(Object[] obj : dpcSoCRemarksHistory){%>
 																		<tr>
-																			<td style="border:none;width: 80%;overflow-wrap: anywhere;padding: 0px">
+																			<td class="rem-soc">
 																				<%if(obj[3]!=null) {%> <%=obj[3].toString()%> <%} else{%><%=obj[5]!=null?obj[5].toString(): " - " %> <%} %> &nbsp; :
-																				<span style="border:none; color: blue;"><%=obj[1]!=null?obj[1].toString(): " - " %></span>
+																				<span class="bor-none col-blue"><%=obj[1]!=null?obj[1].toString(): " - " %></span>
 																			</td>
 																		</tr>
 																		<%} %>
@@ -891,7 +610,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 															<%} %>
 															<%if(isApproval!=null && isApproval.equalsIgnoreCase("P")) {%>
 																<%if(dpcsocexternalapprovestatus.contains(statuscodeNext) ) {%>
-																	<div class="row externalapproval" style="">
+																	<div class="row externalapproval" >
 																		<div class="col-md-3">
 																			<label class="control-label">Lab</label><span class="mandatory">*</span>
 																			<select class="form-control selectdee" id="LabCode" name="LabCode" onchange="LabcodeSubmit()" data-live-search="true"  required="required">
@@ -922,22 +641,18 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 									   								<textarea rows="3" cols="65" name="remarks" id="remarksarea" maxlength="1000"></textarea>
 								         						</div>
 								         						<%if(carsIni!=null && dpcsocapprovestatus.contains(statuscode)) {%>
-								         						<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="DPCSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" style="font-weight: 600;">
+								         						<button type="submit" class="btn btn-sm btn-success fw-600" id="finalSubmission" formaction="DPCSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Approve?');" >
 										    						Approve	
 									      						</button>
-									      						
-									      						<!-- <button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="DPCSoCApprovalSubmit.htm" name="Action" value="D" onclick="return disapprove();" style="font-weight: 600;">
-										   	 						Disapprove	
-									      						</button> -->
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="DPCSoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+									      						<button type="submit" class="btn btn-sm btn-danger fw-600 btn-bg-ret" id="finalSubmission" formaction="DPCSoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" >
 										 							Return
 																</button>
 								         						<%} else{%>
-																<button type="submit" class="btn btn-sm btn-success" id="finalSubmission" formaction="DPCSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" style="font-weight: 600;">
+																<button type="submit" class="btn btn-sm btn-success fw-600" id="finalSubmission" formaction="DPCSoCApprovalSubmit.htm" name="Action" value="A" onclick="return confirm('Are You Sure To Recommend?');" >
 										    						Recommend	
 									      						</button>
 									      						
-									      						<button type="submit" class="btn btn-sm btn-danger" id="finalSubmission" formaction="DPCSoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();" style="font-weight: 600;background-color: #ff2d00;">
+									      						<button type="submit" class="btn btn-sm btn-danger fw-600 btn-bg-ret" id="finalSubmission" formaction="DPCSoCApprovalSubmit.htm" name="Action" value="R" onclick="return validateTextBox();">
 										 							Return
 																</button>
 															<%} }%>
@@ -948,22 +663,22 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
                							</div>
                						</div>
 		               			<%} else{%>
-               						<div class="mt-4" style="display: flex;justify-content: center; align-items: center;">
-               							<h4 style="font-weight: bold;color: red;">Please fill the SoC Details..!</h4>
+               						<div class="mt-4 dis-cen" >
+               							<h4 class="fw-bold mandatory">Please fill the SoC Details..!</h4>
                						</div>
                					<%} %>
                					
-               					<div style="display: flex;justify-content: space-between;">
+               					<div class="js-c">
                						<div></div>
 		               				<div>
 		               					<%if(carsIni!=null && isApproval==null) {%>
 		               					<div class="row"  >
-				 		  					<div class="col-md-12" style="text-align: center;"><b>Approval Flow For DP&C SoC Forward</b></div>
+				 		  					<div class="col-md-12 text-center"><b>Approval Flow For DP&C SoC Forward</b></div>
 				 	    				</div>
-				 	    				<div class="row"  style="text-align: center; padding-top: 10px; padding-bottom: 15px; " >
+				 	    				<div class="row pt-2 pb-3 text-center"   >
 			              					<table align="center"  >
 			               						<tr>
-			               							<td class="trup" style="background: linear-gradient(to top, #3c96f7 10%, transparent 115%);">
+			               							<td class="trup trup-bg-1" >
 			                							GH-DP&C - <%if(GHDPandC!=null) {%><%=GHDPandC[1].toString() %> <%} else{%>GH-DP&C<%} %>
 			                						</td>
 			                		
@@ -971,7 +686,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #eb76c3 10%, transparent 115%);">
+			                						<td class="trup trup-bg-2">
 			                							GD-DP&C - <%if(GDDPandC!=null) {%><%=GDDPandC[1].toString() %> <%} else{%>GD-DP&C<%} %>
 			                	    				</td>
 			                	    				
@@ -979,7 +694,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #b9bcb3 10%, transparent 115%);">
+			                						<td class="trup trup-bg-3">
 			                							<%if(carsIni.getFundsFrom().equalsIgnoreCase("0")) {%>
 	                										Chairman RPB - <%if(ChairmanRPB!=null) {%><%=ChairmanRPB[1].toString() %> <%} else{%>Chairman RPB<%} %>
 	                									<%} else{%>
@@ -991,7 +706,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #857af4 10%, transparent 115%);">
+			                						<td class="trup trup-bg-4" >
 			                							MMFD AG - <%if(MMFDAG!=null) {%><%=MMFDAG[1].toString() %> <%} else{%>MMFD AG<%} %>
 			                	    				</td>
 			                	    				
@@ -999,7 +714,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                							<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                						</td>
 			                						
-			                						<td class="trup" style="background: linear-gradient(to top, #00c7e4 10%, transparent 115%);">
+			                						<td class="trup trup-bg-5">
 			                							GD DF&MM - <%if(GDDFandMM!=null) {%><%=GDDFandMM[1].toString() %> <%} else{%>GD DF&MM<%} %>
 			                	    				</td>
 			                	    				
@@ -1008,7 +723,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                							</td>
 			                						
-				                						<td class="trup" style="background: linear-gradient(to top, #09f21b 10%, transparent 115%);">
+				                						<td class="trup trup-bg-6">
 				                							DIRECTOR - <%if(Director!=null) {%><%=Director[1].toString() %> <%} else{%>DIRECTOR<%} %>
 				                	    				</td>
 			                	    					
@@ -1019,7 +734,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                							</td>
 			                						
-				                						<td class="trup" style="background: linear-gradient(to top, #f28309 10%, transparent 115%);">
+				                						<td class="trup trup-bg-7" >
 				                							IFA, O/o DG (ECS) - IFA, O/o DG (ECS)
 				                	    				</td>
 				                	    				
@@ -1027,7 +742,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                							</td>
 			                						
-				                						<td class="trup" style="background: linear-gradient(to top, #09f21b 10%, transparent 115%);">
+				                						<td class="trup trup-bg-8" >
 				                							DIRECTOR - <%if(Director!=null) {%><%=Director[1].toString() %> <%} else{%>DIRECTOR<%} %>
 				                	    				</td>
 			                	    				<%} %>
@@ -1038,7 +753,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                							</td>
 			                						
-				                						<td class="trup" style="background: linear-gradient(to top, #09f21b 10%, transparent 115%);">
+				                						<td class="trup trup-bg-9" >
 				                							DIRECTOR - <%if(Director!=null) {%><%=Director[1].toString() %> <%} else{%>DIRECTOR<%} %>
 				                	    				</td>
 				                	    				
@@ -1046,7 +761,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                							</td>
 			                						
-				                						<td class="trup" style="background: linear-gradient(to top, #f28309 10%, transparent 115%);">
+				                						<td class="trup trup-bg-10" >
 				                							IFA, O/o DG (ECS) - IFA, O/o DG (ECS)
 				                	    				</td>
 				                	    				
@@ -1054,7 +769,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                							</td>
 			                						
-				                						<td class="trup" style="background: linear-gradient(to top, #ef5efa 10%, transparent 115%);">
+				                						<td class="trup trup-bg-11" >
 				                							DG (ECS) - DG (ECS)
 				                	    				</td>
 			                	    				<%} %>
@@ -1065,7 +780,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                							</td>
 			                						
-				                						<td class="trup" style="background: linear-gradient(to top, #09f21b 10%, transparent 115%);">
+				                						<td class="trup trup-bg-12" >
 				                							DIRECTOR - <%if(Director!=null) {%><%=Director[1].toString() %> <%} else{%>DIRECTOR<%} %>
 				                	    				</td>
 				                	    				
@@ -1073,7 +788,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                							</td>
 			                						
-				                						<td class="trup" style="background: linear-gradient(to top, #f28309 10%, transparent 115%);">
+				                						<td class="trup trup-bg-13" >
 				                							JSA - JSA
 				                	    				</td>
 				                	    				
@@ -1081,7 +796,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			                								<i class="fa fa-long-arrow-right " aria-hidden="true"></i>
 			                							</td>
 			                						
-				                						<td class="trup" style="background: linear-gradient(to top, #ef5efa 10%, transparent 115%);">
+				                						<td class="trup trup-bg-14" >
 				                							SECY - SECY
 				                	    				</td>
 			                	    				<%} %>
@@ -1090,7 +805,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 					 					</div>
 					 					<%} %>
 		               				</div>
-		               				<div class="navigation_btn"  style="text-align: right;">
+		               				<div class="navigation_btn text-right" >
 		            					<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 										<button class="btn btn-info btn-sm next">Next</button>
 									</div>
@@ -1110,7 +825,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 		               	<%} %>
 		               			<%if(carsIni!=null) {%>
 		               				<div class="col-md-8 mt-4">
-		               					<div class="card" style="border: 1px solid rgba(0,0,0,.125);margin-left: 25%;">
+		               					<div class="card card-head-bg">
 		               						<div class="card-body mt-2 ml-4">
 			               						<form action="#">
 			               							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -1119,9 +834,9 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 			               							<table id="alldocstable">
 			               								<thead>
 			               									<tr>
-			               										<th style="width: 10%;">SN</th>
+			               										<th class="width-10">SN</th>
 			               										<th>Subject</th>
-			               										<th style="width: 10%;">Action</th>
+			               										<th class="width-10">Action</th>
 			               									</tr>
 			               								</thead>
 			               								<tbody>
@@ -1280,7 +995,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
 		               					</div>
 		               				</div>
 		               			<%} %>
-		               			<div class="navigation_btn"  style="text-align: right;">
+		               			<div class="navigation_btn text-right">
 		            				<a class="btn btn-info btn-sm  shadow-nohover previous" >Previous</a>
 									<button class="btn btn-info btn-sm next">Next</button>
 								</div>

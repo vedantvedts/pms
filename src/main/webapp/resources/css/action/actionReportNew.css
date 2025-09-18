@@ -1,0 +1,166 @@
+@charset "UTF-8";
+
+.control-label {
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.dropdownstable {
+	width: 100%;
+	float: right;
+	margin-top: -0.5rem;
+}
+
+.dropdownstable td {
+	padding: 3px;
+}
+
+.table thead {
+	text-align: center;
+	background-color: #2883c0;
+	color: white;
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}
+
+.table-wrapper {
+	max-height: 800px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.table .btn-outline-info {
+	background-color: white !important;
+	border: 3px solid #17a2b8;
+	padding: .275rem .5rem !important;
+}
+
+.table .btn-outline-info:hover {
+	color: black !important;
+}
+
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
+
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 34px;
+	height: 30px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+
+.dowload-color {
+	color: #cc0000
+}
+
+.div-progress {
+	background-color: #cdd0cb !important;
+	height: 1.4rem !important;
+}
+
+.div-progress-copy {
+	background-color: #cdd0cb !important;
+}
+
+.progressbar {
+	width: 100%;
+	background-color: #cdd0cb !important;
+	color: black;
+	font-weight: bold;
+}
+
+.display-none {
+	display: none;
+}
+
+.div-modal-content {
+	width: 135%;
+	margin-left: -20%;
+}
+
+.div-modal-header {
+	background: #055C9D;
+	color: white;
+}
+
+.modal-clo-btn {
+	text-shadow: none !important
+}
+
+.custom-span {
+	font-size: 17px;
+	font-weight: 500;
+	color: black;
+}
+
+.customh5 {
+	color: #346691;
+}
+
+.table-margin {
+	margin-top: 20px;
+}
+
+.table-th {
+	background-color: #055C9D;
+	color: white;
+	text-align: center;
+	font-size: 18px !important;
+	border-left: 0px solid;
+	text-transform: capitalize;
+}

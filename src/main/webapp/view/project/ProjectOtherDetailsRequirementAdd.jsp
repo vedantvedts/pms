@@ -1,14 +1,15 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
-        <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
 
-
+<spring:url value="/resources/css/projectModule/projectOtherDetailsRequirementAdd.css" var="projectOtherDetailsRequirementAdd" />
+<link href="${projectOtherDetailsRequirementAdd}" rel="stylesheet" />
 <spring:url value="/resources/ckeditor/ckeditor.js" var="ckeditor" />
 <spring:url value="/resources/ckeditor/content.css" var="contentCss" />
 
@@ -17,31 +18,7 @@
 
 
 <title>PROJECT OTHER  DETAILS REQUIREMENT ADD</title>
-<style type="text/css">
 
-small{
-	margin-top: 7px;
-    color: green;
-    font-weight: 500;
-}
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-.card{
-border:1px solid black;
-background-color: #e2ebf0;
-}
-
-.card-body{
-	background-color: #e2ebf0;
-	padding-left:30px;
-	padding-right:0px;
-	padding-top:0px;
-	padding-bottom:0px;
-}
-</style>
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -89,19 +66,19 @@ String Parameter=(String) request.getAttribute("details_param");
 											
 											<h3 class="card-header">
 												Objective
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+											<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
 									    		
 									 			<div class="row">
 													 <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ObjBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                                        <input type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="ObjBrief" maxlength="250" placeholder="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   				
@@ -109,21 +86,21 @@ String Parameter=(String) request.getAttribute("details_param");
 												</div>
 												<div class="card-body">
 												 <label class="control-label">Detailed: </label>
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									 			<div class="row cs-detail">
+													<div class="col-md-12 cs-col-12"  align="left">
 										
 														 <div  id="summernote" class="center">		</div> 
 												
 													</div>
 													
 									  
-									  				<textarea name="objective" style="display:none;"></textarea>
+									  				<textarea name="objective" class="disp-none"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
 													<input type="hidden" name="details" value="objective"> 
 									 			</div>  
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 			<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
 									 		<div class="form-group" align="center" >
@@ -151,19 +128,19 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Scope
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+											<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
 									    		
 									 		<div class="row">
 											   <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief"">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Brief" name="ScopeBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"  aria-describedby="inputGroup-sizing-sm" id="Brief" name="ScopeBrief" maxlength="250" placeholder="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   				
@@ -171,14 +148,14 @@ String Parameter=(String) request.getAttribute("details_param");
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									 			<div class="row cs-row">
+													<div class="col-md-12 cs-col-12"  align="left">
 										
 															<div  id="summernote" class="center">		</div>
 												
 													</div>
 									  
-									  				<textarea name="scope" style="display:none;"></textarea>
+									  				<textarea name="scope" class="disp-none"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
@@ -186,7 +163,7 @@ String Parameter=(String) request.getAttribute("details_param");
 									 			
 									 			</div>  
 									 			
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 			<span  class="text-danger">Note:-  </span><b  class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
 									 		<div class="form-group" align="center" >
@@ -213,19 +190,19 @@ String Parameter=(String) request.getAttribute("details_param");
 											
 											<h3 class="card-header">
 												Multi-Lab Work Share
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+											<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
 									    		
 									 				<div class="row">
 										   <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="MultiLabBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25" aria-describedby="inputGroup-sizing-sm" id="Brief" name="MultiLabBrief" maxlength="250" placeholder="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					 
@@ -233,14 +210,14 @@ String Parameter=(String) request.getAttribute("details_param");
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									 			<div class="row cs-row">
+													<div class="col-md-12 cs-col-12">
 										
 															<div  id="summernote" class="center">		</div>
 												
 													</div>
 									  
-									  				<textarea name="multilab" style="display:none;"></textarea>
+									  				<textarea name="multilab" class="disp-none"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
@@ -248,7 +225,7 @@ String Parameter=(String) request.getAttribute("details_param");
 									 			
 									 			</div>  
 									 			
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 			<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
 									 		<div class="form-group" align="center" >
@@ -275,7 +252,7 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Earlier Work
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+											<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 											
 										
@@ -283,12 +260,12 @@ String Parameter=(String) request.getAttribute("details_param");
 									    		
 									 			<div class="row">
 											   <div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="EarlierWorkBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25" aria-describedby="inputGroup-sizing-sm" id="Brief" name="EarlierWorkBrief" maxlength="250" placeholder="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					 
@@ -296,14 +273,14 @@ String Parameter=(String) request.getAttribute("details_param");
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									 			<div class="row cs-row">
+													<div class="col-md-12 cs-col-12"  align="left">
 										
 															<div  id="summernote" class="center">		</div>
 												
 													</div>
 									  
-									  				<textarea name="earlierwork" style="display:none;"></textarea>
+									  				<textarea name="earlierwork" class="disp-none"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
@@ -311,7 +288,7 @@ String Parameter=(String) request.getAttribute("details_param");
 									 			
 									 			</div>  
 									 			
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 			<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
 									 		<div class="form-group" align="center" >
@@ -338,19 +315,19 @@ String Parameter=(String) request.getAttribute("details_param");
 											
 											<h3 class="card-header">
 												Competency Established
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - "%>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+											<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - "%>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
 									    		
 									 <div class="row">
 											<div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="CompentencyBrief" maxlength="250"  placeholder="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25" aria-describedby="inputGroup-sizing-sm" id="Brief" name="CompentencyBrief" maxlength="250"  placeholder="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					
@@ -358,14 +335,14 @@ String Parameter=(String) request.getAttribute("details_param");
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									 			<div class="row cs-row">
+													<div class="col-md-12 cs-col-12"  align="left">
 										
 															<div  id="summernote" class="center">		</div>
 												
 													</div>
 									  
-									  				<textarea name="competency" style="display:none;"></textarea>
+									  				<textarea name="competency" class="disp-none"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
@@ -373,7 +350,7 @@ String Parameter=(String) request.getAttribute("details_param");
 									 			
 									 			</div>  
 									 			
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 			<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
 									 		<div class="form-group" align="center" >
@@ -400,7 +377,7 @@ String Parameter=(String) request.getAttribute("details_param");
 					
 								<h3 class="card-header">
 							Requirement
-						<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+						<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 						</h3>				
 											
 						<div class="card-body">
@@ -409,12 +386,12 @@ String Parameter=(String) request.getAttribute("details_param");
 									    		
 									    		<div class="row">
 												<div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Brief" name="ReqBrief" maxlength="250" placeholder="maximum 250 characters" >  
+		                                        <input type="text" class="form-control mt-25"  aria-describedby="inputGroup-sizing-sm" id="Brief" name="ReqBrief" maxlength="250" placeholder="maximum 250 characters" >  
 		                        			   </div>
 		                   					   </div> 
 		                   							</div>		
@@ -434,7 +411,7 @@ String Parameter=(String) request.getAttribute("details_param");
 							</div>
 							</div>  
 									 		
-							<div class="form-group" align="center"  style=" margin-top:10px;">
+							<div class="form-group mt-10" align="center">
 								<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 								<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 							</div>
@@ -462,19 +439,19 @@ String Parameter=(String) request.getAttribute("details_param");
 											
 											<h3 class="card-header">
 												Technology Challenges
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+											<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
 									    		
 									 			<div class="row">
 											<div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="TechnologyBrief" maxlength="250" placeholder="maximum 250 characters" >  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="TechnologyBrief" maxlength="250" placeholder="maximum 250 characters" >  
 		                        			   </div>
 		                   					   </div> 
 		                   					
@@ -482,21 +459,21 @@ String Parameter=(String) request.getAttribute("details_param");
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									 			<div class="row cs-row">
+													<div class="col-md-12 cs-col-12"  align="left">
 										
 															<div  id="summernote" class="center">		</div>
 												
 													</div>
 									  
-									  				<textarea name="technology" style="display:none;"></textarea>
+									  				<textarea name="technology" class="disp-none"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
 													<input type="hidden" name="details" value="technology"> 
 									 			
 									 			</div>  
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 			<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
 									 		<div class="form-group" align="center" >
@@ -523,18 +500,18 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Risk Mitigation
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+											<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
 									    			<div class="row">
 												<div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="RiskMitigationBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25" aria-describedby="inputGroup-sizing-sm" id="Brief" name="RiskMitigationBrief" maxlength="250" placeholder="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					  
@@ -542,14 +519,14 @@ String Parameter=(String) request.getAttribute("details_param");
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									 			<div class="row cs-row">
+													<div class="col-md-12 cs-col-12"  align="left">
 										
 															<div  id="summernote" class="center">		</div>
 												
 													</div>
 									  
-									  				<textarea name="riskmitigation" style="display:none;"></textarea>
+									  				<textarea name="riskmitigation" class="disp-none"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
@@ -557,7 +534,7 @@ String Parameter=(String) request.getAttribute("details_param");
 									 			
 									 			</div>  
 									 			
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 			<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
 									 		<div class="form-group" align="center" >
@@ -584,39 +561,39 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Proposal
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+											<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
 									    		<div class="row">
 													<div class="form-group">
-			                                     	  <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+			                                     	  <label class="cs-brief">Brief : </label>
 			                        			   </div>
 		                   					 
 												<div class="col-md-11">
 			                                        <div class="form-group">
-			                                       	 <input style="margin-top:25px;"  type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ProposalBrief" maxlength="250" placeholder="maximum 250 characters">  
+			                                       	 <input type="text" class="form-control mt-25" aria-describedby="inputGroup-sizing-sm" id="Brief" name="ProposalBrief" maxlength="250" placeholder="maximum 250 characters">  
 			                        			   </div>
 		                   					   </div> 
 		                   					</div>
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									 			<div class="row cs-row">
+													<div class="col-md-12 cs-col-12"  align="left">
 										
 															<div  id="summernote" class="center">		</div>
 												
 													</div>
 									  
-									  				<textarea name="proposal" style="display:none;"></textarea>
+									  				<textarea name="proposal" class="disp-none"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
 													<input type="hidden" name="details" value="proposal"> 
 									 			
 									 			</div>  
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 			<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
 									 		<div class="form-group" align="center" >
@@ -643,19 +620,19 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Realization Plan
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+											<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
 									    		
 									 			<div class="row">
 												<div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"  aria-describedby="inputGroup-sizing-sm" id="Brief" name="RealizationBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"  aria-describedby="inputGroup-sizing-sm" id="Brief" name="RealizationBrief" maxlength="250" placeholder="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   					  
@@ -663,21 +640,21 @@ String Parameter=(String) request.getAttribute("details_param");
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									 			<div class="row cs-row">
+													<div class="col-md-12 cs-col-12"  align="left">
 										
 															<div  id="summernote" class="center">		</div>
 												
 													</div>
 									  
-									  				<textarea name="realization" style="display:none;"></textarea>
+									  				<textarea name="realization" class="disp-none"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
 													<input type="hidden" name="details" value="realization"> 
 									 			
 									 			</div>  
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 			<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
 									 		<div class="form-group" align="center" >
@@ -705,19 +682,19 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												World Scenario
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+											<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
 									    		
 									 			<div class="row">
 												<div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="WorldScenarioBrief" maxlength="250"  placeholder="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="WorldScenarioBrief" maxlength="250"  placeholder="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 
 		                   				
@@ -725,14 +702,14 @@ String Parameter=(String) request.getAttribute("details_param");
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									 			<div class="row cs-row">
+													<div class="col-md-12 cs-col-12"  align="left">
 										
 															<div  id="summernote" class="center">		</div>
 												
 													</div>
 									  
-									  				<textarea name="worldscenario" style="display:none;"></textarea>
+									  				<textarea name="worldscenario" class="disp-none"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
@@ -740,7 +717,7 @@ String Parameter=(String) request.getAttribute("details_param");
 									 			
 									 			</div>  
 									 			
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 			<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
 									 		<div class="form-group" align="center" >
@@ -770,33 +747,33 @@ String Parameter=(String) request.getAttribute("details_param");
 										
 											<h3 class="card-header">
 												Need of Project
-											<small class="float-md-right" style="font-size: 18px;">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
+											<small class="float-md-right fs-18">Project Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)</small>
 											</h3>
 										
 											<div class="card-body">
 											
 											<div class="row">
 											<div class="form-group">
-		                                       <label  style="margin-top:25px; margin-left:15px;">Brief : </label>
+		                                       <label class="cs-brief">Brief : </label>
 		                        			   </div>
 		                   					 
 												<div class="col-md-11">
 		                                        <div class="form-group">
-		                                        <input style="margin-top:25px;"  type="text" class="form-control"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="NeedOfProjectBrief" maxlength="250" placeholder="maximum 250 characters">  
+		                                        <input type="text" class="form-control mt-25"   aria-describedby="inputGroup-sizing-sm" id="Brief" name="NeedOfProjectBrief" maxlength="250" placeholder="maximum 250 characters">  
 		                        			   </div>
 		                   					   </div> 		     
 		                   					   </div>
 												</div>
 												<div class="card-body">
 									    		<label class="control-label">Detailed: </label>
-									 			<div class="row"  style="margin-bottom: 10px;margin-top: -5px;">
-													<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% " >
+									 			<div class="row cs-row">
+													<div class="col-md-12 cs-col-12"  align="left">
 										
 															<div  id="summernote" class="center">		</div>
 												
 													</div>
 									  
-									  				<textarea name="needofproject" style="display:none;"></textarea>
+									  				<textarea name="needofproject" class="disp-none"></textarea>
 									  
 													<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
 													<input type="hidden" name="IntiationId" value="<%=IntiationId %>" />
@@ -804,10 +781,10 @@ String Parameter=(String) request.getAttribute("details_param");
 									 			
 									 			</div>  
 												
-									 			<span style="color: red;">Note:-  </span><b style="font-weight: normal;">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
+									 			<span class="text-danger">Note:-  </span><b class="font-weight-normal">Editor works like Ms-Word/Ms-Excel, Need to use shortcuts key ( E.g.-Next line in table cells- Shift+Enter ) </b>
 									 		</div>
 									 		
-									 		<div class="form-group" align="center" style=" margin-top:10px;" >
+									 		<div class="form-group mt-10" align="center">
 												<button type="submit" class="btn btn-primary btn-sm submit" value="SUBMIT"   name="sub">SUBMIT </button>
 												<input type="submit" class="btn btn-primary btn-sm submit back" formnovalidate="formnovalidate"  value="BACK"   name="sub" >
 											</div>

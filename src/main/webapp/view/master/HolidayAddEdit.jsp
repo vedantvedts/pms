@@ -3,34 +3,16 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+        <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <jsp:include page="../static/header.jsp"></jsp:include>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<style type="text/css">
 
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-.card b{
-	font-size: 20px;
-}
-
-
-</style>
+<spring:url value="/resources/css/master/holidayAddEdit.css" var="holidayAddEdit" />     
+<link href="${holidayAddEdit}" rel="stylesheet" />
 </head>
 <body>
 <%
@@ -57,12 +39,12 @@ SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 <% } %>
   
 <div class="container">
-	<div class="row" style="">
+	<div class="row" >
 
 		<div class="col-md-12">
 
  			<div class="card shadow-nohover" >
-			 <div class="card-header" style=" background-color: #055C9D;margin-top: ">
+			 <div class="card-header holidayHeader" >
                     <b class="text-white">Holiday <%if(action.equalsIgnoreCase("Add")){ %> Add <%}else{ %>Edit<% }%></b>
         		</div>
 				<div class="card-body" align="center" >	
@@ -77,17 +59,17 @@ SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 								<table	class="table table-bordered table-hover table-striped table-condensed ">																	         
 			
 										<tr>
-										<th><label>Holiday Name<span class="mandatory" style="color:red">*</span></label> </th>
+										<th><label>Holiday Name<span class="mandatory" >*</span></label> </th>
 										<td><input type="text" class="form-control form-control" placeholder="" id="" name="HoliName" value="<% if(holiday!=null && holiday.getHolidayName()!=null){ %><%=StringEscapeUtils.escapeHtml4(holiday.getHolidayName()) %><%} %>"  required="required"></td>
 										</tr>
 										
 										<tr>
-										<th><label>Holiday Date<span class="mandatory" style="color:red">*</span></label> </th>
+										<th><label>Holiday Date<span class="mandatory" >*</span></label> </th>
 										<td><input type="text" class="form-control form-control"  id="date" name="HoliDate" value=""  required="required" readonly="readonly"></td>
 										</tr>
 										
 										<tr>
-										    <th><label>Holiday Type<span class="mandatory" style="color:red">*</span></label></th>
+										    <th><label>Holiday Type<span class="mandatory">*</span></label></th>
 										    <td><select class="form control form-control " name="HoliType" required="required"> 
 										    
 										    <option value="" selected disabled>Select</option>
@@ -104,13 +86,13 @@ SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 									<input type="hidden" value="<%=holiday.getHolidayId() %>" name="HolidayId" >
 								
 									<button class="btn btn-primary btn-sm submit" name="" value=""  onclick="return confirm('Are You Sure To Update')"> <%if(action.equalsIgnoreCase("Edit")){%>Update <%}else{ %> SUBMIT <%} %></button>
-									<button type="submit" class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 1rem;" formaction="HolidayList.htm" formmethod="get" formnovalidate="formnovalidate"  >BACK</button>
+									<button type="submit" class="btn btn-info btn-sm shadow-nohover back backbtn" formaction="HolidayList.htm" formmethod="get" formnovalidate="formnovalidate"  >BACK</button>
 									<%}else{ 
 										
 										
 										%>
 									<button class="btn btn-primary btn-sm submit" name="" value=""  onclick="return confirm('Are You Sure To Submit')">Submit</button>
-									<button type="submit" class="btn btn-info btn-sm shadow-nohover back" style="margin-left: 1rem;" formaction="HolidayList.htm" formmethod="get" formnovalidate="formnovalidate"  >BACK</button>
+									<button type="submit" class="btn btn-info btn-sm shadow-nohover back BackBtn"  formaction="HolidayList.htm" formmethod="get" formnovalidate="formnovalidate"  >BACK</button>
 									<%} %>
 									
 									</div>

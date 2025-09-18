@@ -4,62 +4,16 @@
 <%@page import="com.vts.pfms.master.model.IndustryPartner"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 
 <head>
-	<meta charset="ISO-8859-1">
-	<jsp:include page="../static/header.jsp"></jsp:include>
-
-	<title> COMMITTEE MEMBERS </title>
-	<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-		
-		.tdclass {
-			padding-top:7px;
-			padding-bottom: 7px;
-		}
-		
-		tr_clone .select2{
-			width:600px !important;
-		}
-		
-		tr_clone1 .select2{
-			width:350px !important;
-		}
-		tr_clone2 select .select2{
-			width:350px !important;
-		}
-		sp::before {
-		  content: "\2022";
-		  color: red;
-		  font-weight: bold;
-		  display: inline-block; 
-		  width: 1em;
-		  margin-left: 1em;
-		}		
-		
-		.select2-container{
-		width:100% !important;
-		}
-	</style>
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/committeeModule/committeeMembers.css" var="committeeMembers" />
+<link href="${committeeMembers}" rel="stylesheet" />
+<title> COMMITTEE MEMBERS </title>
 </head>
 
 <body>
@@ -175,7 +129,7 @@ String logintype = (String)session.getAttribute("LoginType");
 
     <br />
    
-<div class="container-fluid" style="margin-top: -2%;">
+<div class="container-fluid mt-n2">
 	<div class="row">
 		<div class="col-md-12">	
 		   
@@ -183,9 +137,9 @@ String logintype = (String)session.getAttribute("LoginType");
 						
 					<div class="card-header">						
 						<div class="row">										
-							<div class="col-md-12"><h3 style="color:  #055C9D" ><%=committeedata[8]!=null?StringEscapeUtils.escapeHtml4(committeedata[8].toString()): " - " %>
+							<div class="col-md-12"><h3 class="headerName"><%=committeedata[8]!=null?StringEscapeUtils.escapeHtml4(committeedata[8].toString()): " - " %>
 							
-								<p style="float: right;">
+								<p class="float-right">
 									
 									<%if(Long.parseLong(projectid)>0){ %> 
 										Project: <%=projectdata[4]!=null?StringEscapeUtils.escapeHtml4(projectdata[4].toString()): " - "  %>
@@ -211,13 +165,13 @@ String logintype = (String)session.getAttribute("LoginType");
 					<div class="card-body">	
 						  <form action="CommitteeMainEditSubmit.htm" method="post" id="committeeeditfrm">				
 							 <div class="row">							
-								<div class="col-md-8" style="margin-top:5px; ">									 
-					                    	<label class="control-label" style="margin-bottom: 4px !important">Chairperson<span class="mandatory" style="color: red;">*</span></label>
-					                    	<table style="width:100%">
+								<div class="col-md-8 mt-p5">									 
+					                    	<label class="control-label chairPerson">Chairperson<span class="mandatory text-danger">*</span></label>
+					                    	<table class="w-100">
 					                        <tr >
-												<td style="width:25%; border:0:">
+												<td class="w-25 border-0">
 													 <div class="input select" id="cplab-col">
-														<select class="form-control selectdee" name="CpLabCode" tabindex="-1" required="required" style="width: 200px" id="CpLabCode" onchange="chairpersonfetch('1')">
+														<select class="form-control selectdee labNameWidth" name="CpLabCode" tabindex="-1" required="required" id="CpLabCode" onchange="chairpersonfetch('1')">
 															<option disabled="disabled"  selected value="">Lab Name</option>
 														    <% for (Object[] obj : AllLabList) {%>
 															    <option <%if(chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -227,7 +181,7 @@ String logintype = (String)session.getAttribute("LoginType");
 																
 													</div>
 												</td>										
-												<td style="border:0;">
+												<td class="border-0">
 												<div class="input select">
 														<select class="form-control selectdee" name="chairperson" id="chairperson" data-live-search="true" required="required"   data-placeholder="Select Chairperson" >
 												             
@@ -241,13 +195,13 @@ String logintype = (String)session.getAttribute("LoginType");
 							</div> 
 							<div class="row">
 			
-											<div class="col-md-8" style="margin-top:5px; ">									 
-					                    	<label class="control-label" style="margin-bottom: 4px !important">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
-					                    	<table style="width:100%">
+											<div class="col-md-8 mt-p5">									 
+					                    	<label class="control-label chairPerson">Member Secretary<span class="mandatory text-danger">*</span></label>
+					                    	<table class="w-100">
 					                        <tr >
-												<td style="width:25%; border:0:">
+												<td class="w-25 border-0">
 													 <div class="input select" id="cplab-col">
-														<select class="form-control selectdee" name="msLabCode" tabindex="-1" required="required" style="width: 200px" id="mSLabCode" onchange="msfetch('1')">
+														<select class="form-control selectdee labNameWidth" name="msLabCode" tabindex="-1" required="required" id="mSLabCode" onchange="msfetch('1')">
 															<option disabled="disabled"  selected value="">Lab Name</option>
 														    <% for (Object[] obj : AllLabList) {%>
 															    <option <%if(secretary!=null&& secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -257,7 +211,7 @@ String logintype = (String)session.getAttribute("LoginType");
 																
 													</div>
 												</td>										
-												<td style="border:0;">
+												<td class="border-0">
 												<div class="input select">
 														<select class="form-control selectdee" name="Secretary" id="secretary" data-live-search="true" required="required"   data-placeholder="Select Member secretary" >
 												             
@@ -274,7 +228,7 @@ String logintype = (String)session.getAttribute("LoginType");
 									<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Member Secretary (Proxy)</label>
-										<select class="form-control selectdee" id="proxysecretary" required="required" name="proxysecretary"style="margin-top: -5px">
+										<select class="form-control selectdee mt-n5" id="proxysecretary" required="required" name="proxysecretary">
 				    						<option value="0"  selected >None</option>
 				    						<% for (Object[] obj : EmployeeList1) {%>
 												<option value="<%=obj[0]%>" <%if(proxysecretary!=null && proxysecretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></option>
@@ -286,13 +240,13 @@ String logintype = (String)session.getAttribute("LoginType");
 									</div>
 								</div>
 								
-												<div class="col-md-8" style="margin-top:5px; ">									 
+												<div class="col-md-8 mt-p5">									 
 					                   <label class="control-label"> Co-Chairperson </label>
-					                    	<table style="width:100%">
+					                    	<table class="w-100">
 					                        <tr >
-												<td style="width:25%; border:0:">
+												<td class="w-25 border-0">
 													 <div class="input select" id="cplab-col">
-														<select class="form-control selectdee" name="ccplabocode" tabindex="-1"  style="width: 200px" id="ccplabocode" onchange="ccchairpersonfetch('1')">
+														<select class="form-control selectdee labNameWidth" name="ccplabocode" tabindex="-1" id="ccplabocode" onchange="ccchairpersonfetch('1')">
 															<option disabled="disabled"  selected value="">SELECT</option>
 														    <% for (Object[] obj : AllLabList) {%>
 															    <option <%if(co_chairperson!=null &&   co_chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -302,7 +256,7 @@ String logintype = (String)session.getAttribute("LoginType");
 																
 													</div>
 												</td>										
-												<td style="border:0;">
+												<td class="border-0">
 												<div class="input select">
 														<select class="form-control selectdee" name="co_chairperson" id="co_chairperson" data-live-search="true"    data-placeholder="Select co-chairPerson" >
 												             
@@ -315,20 +269,7 @@ String logintype = (String)session.getAttribute("LoginType");
 										</tr>
 										</table>
 								</div>
-							<%-- 	<div class="col-md-7">
-									<div class="form-group">
-										
-										<select class="form-control selectdee" id="co_chairperson" required="required" name="co_chairperson"style="margin-top: -5px">
-				    						<option selected value="0" >None</option>
-				    						<% for (Object[] obj : EmployeeList1) {%>
-												<option value="<%=obj[0]%>" <%if(co_chairperson !=null && co_chairperson[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]%>, <%=obj[3] %></option>
-											<%} %>
-				  						</select>
-				  						<%if(co_chairperson!=null){ %>
-				  						<input type="hidden" name="comemberid" value="<%=co_chairperson[0]%>">
-				  						<%} %>	
-									</div>
-								</div> --%>
+		
 							</div>
 						
 									<!-- prakarsh -->
@@ -378,7 +319,7 @@ String logintype = (String)session.getAttribute("LoginType");
  				%>
  
  <%if(tempcommitteemembersall.size()>0 ){ %>
- 					<hr  style="padding-top: 5px;padding-bottom: 5px;">
+ 					<hr class="hr-pt hr-pb">
  				<%} %>
  				 <%if(tempcommitteemembersall.size()>0 ){ %>
  		<div class="row">
@@ -389,7 +330,7 @@ String logintype = (String)session.getAttribute("LoginType");
 			            	<thead>
 			               		<tr>
 			               			
-			               			<th style="width:170px;text-align: center"> Sl No.</th>
+			               			<th class="text-center srNo"> Sl No.</th>
 			               			<th >Participants</th>			                    	
 			                    	<th>Member Type</th>
 			                   <%if(loginTypes.contains(logintype)) {%> 	<th>Action</th>  <%} %>
@@ -399,8 +340,8 @@ String logintype = (String)session.getAttribute("LoginType");
 			              	<%int count=0;
 			              	for(Object[]obj:tempcommitteemembersall){%>
 			              	<tr>
-			              	<td style="display: flex;justify-content: center;align-items: center;">
-			            <input type="number" class="form-control" name="newslno" value="<%=obj[11] %>" min="1" max="<%=tempcommitteemembersall.size()%>" style="width:50%"> 
+			              	<td class="d-flex justify-content-center align-items-center">
+			            <input type="number" class="form-control w-50" name="newslno" value="<%=obj[11] %>" min="1" max="<%=tempcommitteemembersall.size()%>"> 
 			              	<input type="hidden" name="memberId" value="<%=obj[0].toString() %>">
 			              	</td>
 			              	<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>,<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
@@ -429,7 +370,7 @@ String logintype = (String)session.getAttribute("LoginType");
 												        <input type="hidden" name="committeemainid" value="<%=committeemainid%>">
 												      <%--   <input type="hidden" name="committeememberid" value="<%=obj[0] %>" /> --%> 
 												        <%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-														<button class="fa fa-trash btn btn-danger " type="submit" style="background-color: white;border-color: white;"
+														<button class="fa fa-trash btn btn-danger bg-white border border-white" type="submit"
 															formaction="CommitteeMemberDelete.htm" formmethod="POST" name="committeememberid" value="<%=obj[0] %>"
 														  onclick="return confirm('Are You Sure To Delete this Member?');" ></button>
 														<%} %>
@@ -441,7 +382,7 @@ String logintype = (String)session.getAttribute("LoginType");
 			              	<%}%>
 			              	
 			              	<tr>
-			              	<td colspan=1 style="display: flex;justify-content: center;align-items: center">
+			              	<td colspan=1 class="d-flex justify-content-center align-items-center">
 			              	<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
 			              	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 			              	<button class="btn btn-sm edit" onclick="return slnocheck('serialnoupdate');">UPDATE</button>
@@ -456,161 +397,6 @@ String logintype = (String)session.getAttribute("LoginType");
  		</div>	
  				<%} %>
  				
-<%-- 				<div class="row">
-								<div  class="col-md-4">
-									<%if(committeemembersall.size()>0){ %>
-										<h5 style="color: #FF5733"> Internal Members</h5> 
-										<hr>									
-										<table border="0">
-											<tbody>
-											<%
-												int count = 1;
-												for (int i=0;i<committeemembersall.size();i++) {
-													Object[] obj=committeemembersall.get(i);
-													if(obj[9].toString().equalsIgnoreCase(LabCode)){
-											%>
-											
-											<tr>
-												<td class="tdclass"><%=count%> )</td> <td> <%=obj[2]%>, <%=obj[4]%></td>
-												<td>
-													<form action="CommitteeMemberDelete.htm" method="POST" id="commemdel">
-														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-												        <input type="hidden" name="committeemainid" value="<%=committeemainid%>">
-												        <input type="hidden" name="committeememberid" value="<%=obj[0] %>" /> 
-												        <%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-														<button class="fa fa-trash btn btn-danger " type="submit" style="background-color: white;border-color: white;"  onclick="return confirm('Are You Sure To Delete this Member?');" ></button>
-														<%} %>
-													</form>	
-												</td>																							
-											</tr>
-											<%	count++;
-												
-												}
-											}%>
-										</tbody>
-									</table>						
-									<br>	
-									<%} %>
-								</div>		 		 	
-					<%if(committeemembersall.size()>0){ %>
-					
-				 		<div  class="col-md-4">
-						
-							<h5 style="color: #FF5733">External Members (Within DRDO)</h5>
-								<hr>
-							
-							 <table border="0">
-	
-								<tbody>
-									<%int count = 1;
-										for (int i=0;i<committeemembersall.size();i++) {
-											Object[] obj=committeemembersall.get(i);
-											if(Long.parseLong(obj[7].toString())>0 && !obj[9].toString().equalsIgnoreCase(LabCode) ){
-									%>
-									
-									<tr>
-										<td class="tdclass"><%=count%> )</td><td><%=obj[2]%>, <%=obj[4]%> (<%=obj[9] %>)</td>
-										<td>
-										<form action="CommitteeMemberDelete.htm" method="POST" id="commemdel">
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-										        <input type="hidden" name="committeemainid" value="<%=committeemainid%>">	
-										        <input type="hidden" name="committeememberid" value="<%=obj[0] %>" />
-										        <%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-												<button class="fa fa-trash btn btn-danger " type="submit" style="background-color: white;border-color: white;"  onclick="return confirm('Are You Sure To Delete this Member?');" ></button>
-												<%} %>
-											</form>	
-										</td>
-									</tr>
-									<%	count++; 
-										
-										}
-									} %>
-								</tbody>
-							</table>						
-							<br>	
-							
-					</div> 
-					<%} %>
-					
-					<%if(committeemembersall.size()>0){ %>
-					
-					<div  class="col-md-4">
-						
-						<h5 style="color: #FF5733">Expert Members (Outside DRDO)</h5>
-							<hr>						
-						 <table border='0'>
-
-							<tbody>
-								<%int count = 1;
-										for (int i=0;i<committeemembersall.size();i++) {
-											Object[] obj=committeemembersall.get(i);
-											if(Long.parseLong(obj[7].toString())==0){
-									%>
-								<tr>
-									<td class="tdclass"> <%=count%> )</td> <td> <%=obj[2]%>, <%=obj[4]%></td>
-									<td>
-										<form action="CommitteeMemberDelete.htm" method="POST" id="commemdel">
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-									        <input type="hidden" name="committeememberid" value="<%=obj[0] %>" />
-									        <input type="hidden" name="committeemainid" value="<%=committeemainid%>">	
-									        <%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-											<button class="fa fa-trash btn btn-danger " type="submit"  style="background-color: white;border-color: white;" onclick="return confirm('Are You Sure To Delete this Member?');" ></button>
-											<%} %>
-										</form>	
-									</td>
-								</tr>
-								<%	count++; 
-										
-										}
-									} %>
-							</tbody>
-						</table>						
-						<br>	
-						
-					</div>
-					<%} %>
-					<!-- Prudhvi - 27/03/2024 start-->
-					<%if(committeemembersall.size()>0){ %>
-					
-					<div  class="col-md-4">
-						
-						<h5 style="color: #FF5733">Industry Partner</h5>
-							<hr>						
-						 <table border='0'>
-
-							<tbody>
-								<%int count = 1;
-										for (int i=0;i<committeemembersall.size();i++) {
-											Object[] obj=committeemembersall.get(i);
-											if(obj[9].toString().equalsIgnoreCase("@IP")){
-									%>
-								<tr>
-									<td class="tdclass"> <%=count%> )</td> <td> <%=obj[2]%>, <%=obj[4]%></td>
-									<td>
-										<form action="CommitteeMemberDelete.htm" method="POST" id="commemdel">
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-									        <input type="hidden" name="committeememberid" value="<%=obj[0] %>" />
-									        <input type="hidden" name="committeemainid" value="<%=committeemainid%>">	
-									        <%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-											<button class="fa fa-trash btn btn-danger " type="submit"  style="background-color: white;border-color: white;" onclick="return confirm('Are You Sure To Delete this Member?');" ></button>
-											<%} %>
-										</form>	
-									</td>
-								</tr>
-								<%	count++; 
-										
-										}
-									} %>
-							</tbody>
-						</table>						
-						<br>	
-						
-					</div>
-					<%} %>
-					<!-- end -->
-				</div>	 --%>	
-						
-			
 						
 	<!-- ---------------------------------------------------------------------committee main members ---------------------------------------------- -->
 
@@ -633,7 +419,7 @@ String logintype = (String)session.getAttribute("LoginType");
 									</td>
 									<td>
 										<form  method="post" action="CommitteeConstitutionLetterDownload.htm" target="_blank" >
-											<button  type="submit"  class="btn btn-sm edit"  ><i class="fa fa-download" style="   font-size: 0.90rem; " ></i></button>
+											<button  type="submit"  class="btn btn-sm edit"  ><i class="fa fa-download fs-90"></i></button>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />    												
 											<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
 										</form>
@@ -682,7 +468,7 @@ String logintype = (String)session.getAttribute("LoginType");
 								<%if(CommitteMainEnoteList!=null ) {%>
 								<td>
 									<form  method="post" action="CommitteeFlow.htm">
-												<button  type="submit" class="btn btn-sm submit" style="background: #E76F51;border-color: #E76F51"> Approval History </button>
+												<button  type="submit" class="btn btn-sm submit approvalHistoryButton"> Approval History </button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 												<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
 												<input type="hidden" name="projectid" value="<%=projectid %>" >	
@@ -711,32 +497,9 @@ String logintype = (String)session.getAttribute("LoginType");
 									
 			 						<td>				
 			 							<button class="btn btn-primary btn-sm back" type="button"  onclick="submitForm('backfrm');">BACK</button> 						
-			 						</td>
-			 						<!-- Hidden for new Flow  -->
-			 					<%-- 	<%if(!approvaldata[5].toString().equals("CCR") ){%>
+			 						</td>	
 			 						<td>
-			 							<form action="ComConstitutionApprovalHistory.htm" method="POST" id="commemdel" target="_blank">
-											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-										    <input type="hidden" name="committeemainid" value="<%=committeemainid%>">
-											<button class="btn  btn-sm "  style="background-color: #ff8400;color:white;font-weight:800 !important;font-family: 'Montserrat', sans-serif;"  type="submit"  >History</button>
-										</form>	
-									</td>
-									<%} %> --%>
-									
-			 						<td>
-									<%-- 	<%if(status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) { %>
-											<form  method="post" action="CommitteeMainApproval.htm">
-												<button  type="submit" class="btn btn-sm submit">Preview</button>
-												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
-												<input type="hidden" name="committeemainid" value="<%=proposedcommitteemainid[0]%>">
-												<input type="hidden" name="operation" value="approve">
-												<input type="hidden" name="approvalauthority" value="0"> 
-												<input type="hidden" name="redirect" value="1">
-											</form>		
-										<%} %>	 --%>
-										
 									<%
-									
 									if(status.equals("P") ) { %>
 									<form  method="post" action="CommitteeFlow.htm">
 												<button  type="submit" class="btn btn-sm submit">Preview</button>
@@ -763,7 +526,7 @@ String logintype = (String)session.getAttribute("LoginType");
 									
 									<td>
 									<form  method="post" action="CommitteeConstitutionLetterDownload.htm" target="_blank" >
-											<button  type="submit"  class="btn btn-sm edit"  ><i class="fa fa-download" style="   font-size: 0.90rem; " ></i></button>
+											<button  type="submit"  class="btn btn-sm edit"  ><i class="fa fa-download fs-90"></i></button>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />    												
 											<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
 										</form>
@@ -772,85 +535,15 @@ String logintype = (String)session.getAttribute("LoginType");
 							</table>	
 							
 								</div> 
-							<%--   <div class="row mt-3"  style="text-align: center; padding-top: 10px;" >
-				                <table  align="center" >
-				                	<tr>
-				                		<td class="trup" style="background: #B5EAEA;">
-				                			Constituted By
-				                		</td>
-				                		<td rowspan="2">
-				                			 <b>----------&gt;</b>
-				                		</td >
-				                		
-				                		<td class="trup" style="background: #C6B4CE;">
-				                			Group Head
-				                		</td>
-				                		<td rowspan="2">
-				                			 <b>----------&gt;</b>
-				                		</td>
-				                		
-				                		<td class="trup" style="background: #E8E46E;">
-				                			P&C DO
-				                		</td>
-				                		<td rowspan="2">
-				                			 <b>----------&gt;</b>
-				                		</td>
-				                		
-				                		<td class="trup" style="background: #FBC7F7;" >
-				                			Director
-				                		</td>
-				                			                		
-				                	</tr>			   
-				                	
-				                	<tr>
-				                		<td class="trdown" style=" background:#B5EAEA; " >	
-				                			<%if(constitutionapprovalflow.size()>0){ %>
-								                     <%for(Object[] obj : constitutionapprovalflow){ %>
-								                     	<%if(obj[3].toString().equals("Constituted By") ){ %>
-								                     		<%=obj[1] %>,<%=obj[2] %>
-								                     	<%} %>
-								                     <%} %>
-								               <%} %>
-				                		</td>
-				                		<td class="trdown"  style="background: #C6B4CE;" >	
-				                			 <%if(constitutionapprovalflow.size()>0){ %>
-								                     <%for(Object[] obj : constitutionapprovalflow){ %>
-								                     	<%if(obj[3].toString().equals("Group Head") ){ %>
-								                     		<%=obj[1] %>,<%=obj[2] %>
-								                     	<%} %>
-								                     <%} %>
-								               <%} %>   
-				                		</td>
-				                		<td class="trdown" style="background: #E8E46E;" >	
-				                			<%if(constitutionapprovalflow.size()>0){ %>
-								                     <%for(Object[] obj : constitutionapprovalflow){ %>
-								                     	<%if(obj[3].toString().equals("DO-RTMD") ){ %>
-								                     		<%=obj[1] %>,<%=obj[2] %>
-								                     	<%} %>
-								                     <%} %>
-								               <%} %>    
-				                		</td>
-				                		<td class="trdown" style="background: #FBC7F7;" >	
-				                			 <%if(constitutionapprovalflow.size()>0){ %>
-								                     <%for(Object[] obj : constitutionapprovalflow){ %>
-								                     	<%if(obj[3].toString().equals("Director") ){ %>
-								                     		<%=obj[1] %>,<%=obj[2] %>
-								                     	<%} %>
-								                     <%} %>
-								               <%} %>
-				                		</td>
-				                	</tr>             	
-				                </table>			             
-						 	</div>			
-									 --%>
+							
 						<%Object[]NewApprovalList = (Object[])request.getAttribute("NewApprovalList"); %>
 						
 									<%if(NewApprovalList!=null ){ %>
-							 	<div class="row"  style="text-align: center;" >
+							 	<div class="row text-center">
 				                <table  align="center" >
 				                	<tr>
 				                	
-				                		<td class="trup" style="background: #B5EAEA;">
+				                		<td class="trup checkPngConst">
 				                		&nbsp;<%if(Arrays.asList("FWD","RC1","RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 				                		<img src="view/images/check.png"><br>
 				                		<%} %>
@@ -863,7 +556,7 @@ String logintype = (String)session.getAttribute("LoginType");
 				                			 <b>----------&gt;</b>
 				                		</td >
 				                		
-				                		<td class="trup" style="background: #C6B4CE;">
+				                		<td class="trup checkPngRec1">
 				                			&nbsp;<%if(Arrays.asList("RC1","RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 				                		<img src="view/images/check.png"><br>
 				                		<%} %>
@@ -879,7 +572,7 @@ String logintype = (String)session.getAttribute("LoginType");
 				                			 <b>----------&gt;</b>
 				                		</td>
 				                		
-				                		<td class="trup" style="background: #E8E46E;">
+				                		<td class="trup checkPngRec2">
 				                			&nbsp;<%if(Arrays.asList("RC2","RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 				                		<img src="view/images/check.png"><br>
 				                		<%} %>
@@ -895,7 +588,7 @@ String logintype = (String)session.getAttribute("LoginType");
 				                			 <b>----------&gt;</b>
 				                		</td>
 				                		
-				                		<td class="trup" style="background: #FBC7F7;" >
+				                		<td class="trup checkPngRec3">
 				                			&nbsp;<%if(Arrays.asList("RC3","APR").contains(CommitteMainEnoteList[15].toString())) {%>
 				                		<img src="view/images/check.png">	<br>
 				                		<%} %>
@@ -911,7 +604,7 @@ String logintype = (String)session.getAttribute("LoginType");
 				                			 <b>----------&gt;</b>
 				                		</td>
 				                		
-				                		<td class="trup" style="background: #F4A261;" >
+				                		<td class="trup checkPngAppr">
 				                		&nbsp;<%if(Arrays.asList("APR").contains(CommitteMainEnoteList[15].toString())) {%>
 				                		<img src="view/images/check.png"><br>
 				                		<%} %>
@@ -935,15 +628,15 @@ String logintype = (String)session.getAttribute("LoginType");
 <!-- ------------------------------------- add new members ---------------------------------------------------------------- -->
 
 						<div class="row">
-							<div class="col-md-6" style="margin-left: 15px;">
-								<label  style="margin-bottom: 4px !important" for="repids"> Add More Members</label>
+							<div class="col-md-6 ml-3">
+								<label class="chairPerson" for="repids"> Add More Members</label>
 								<hr>
 <!-- -------------------------------------- Internal members -------------------------------------------- -->
 								<form action="CommitteeMainMembersSubmit.htm" method="post" name="editfrm" id="editfrm" >				
 										
 										<div class="row">				
 											<div class="col-md-9">
-												<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
+												<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover w-100 mt-10" id="">
 													<thead>  
 														<tr>
 															<th> Internal Members</th>
@@ -953,7 +646,7 @@ String logintype = (String)session.getAttribute("LoginType");
 														<tr class="tr_clone">
 															<td>
 																<div class="input select">
-																	<select class="form-control selectdee " name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple style="width:400px">
+																	<select class="form-control selectdee internalMembers" name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple>
 													                <%for(Object[] obj:EmployeeList){ %>																							
 																		<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>																				
 																	<%} %>
@@ -982,19 +675,19 @@ String logintype = (String)session.getAttribute("LoginType");
 							<form action="CommitteeMainMembersSubmit.htm" method="post" name="editfrm" id="editfrm" >							
 								<div class="row">				
 									<div class="col-md-9">
-										<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
+										<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover w-100 mt-10" id="">
 											<thead>  
 												<tr >
 													<th colspan="2" >External Members (Within DRDO) 
-													<button class="btn bg-primary" type="button" id="externalAdd" style="float: right;color:White;">ADD NEW </button> </th>
+													<button class="btn bg-primary float-right addExpertButtonColor" type="button" id="externalAdd">ADD NEW </button> </th>
 													
 												</tr>
 											</thead>								
 											<tbody>
 												<tr class="tr_clone1">
-													<td style="width:30%">
+													<td class="trCloneWidth">
 														 <div class="input select">
-															 <select class="form-control selectdee" name="Ext_LabCode" tabindex="-1" required style="" id="Ext_LabCode" onchange="employeename()">
+															 <select class="form-control selectdee" name="Ext_LabCode" tabindex="-1" required  id="Ext_LabCode" onchange="employeename()">
 																<option disabled="true"  selected value="">Lab Name</option>
 																    <% for (Object[] obj : AllLabList) {
 																    if(!LabCode.equals(obj[3].toString())){%>
@@ -1005,7 +698,7 @@ String logintype = (String)session.getAttribute("LoginType");
 															
 														</div>
 													</td>										
-													<td style="width:70%">
+													<td class="externalMemberIdWidth">
 														<div class="input select">
 															<select class="form-control selectdee" name="ExternalMemberIds" id="ExternalMember" data-live-search="true"   data-placeholder="Select Members" multiple>
 
@@ -1030,11 +723,11 @@ String logintype = (String)session.getAttribute("LoginType");
 							<form action="CommitteeMainMembersSubmit.htm" method="post"  >				
 								<div class="row">				
 									<div class="col-md-9">
-										<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="" style="margin-top: 10px;width:100%">
+										<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover w-100 mt-10" id="">
 											<thead>  
 												<tr>
 													<th>Expert Member (Outside DRDO)
-													<button class="btn bg-primary" type="button" id="expertAdd" style="float: right;color:White;">ADD EXPERT </button> </th>
+													<button class="btn bg-primary float-right addExpertButtonColor" type="button" id="expertAdd">ADD EXPERT </button> </th>
 											
 												</tr>
 											</thead>								
@@ -1042,7 +735,7 @@ String logintype = (String)session.getAttribute("LoginType");
 												<tr class="tr_clone2">
 													<td >
 														<div class="input select ">
-															<select class="selectdee" name="ExpertMemberIds" id="ExpertMemberIds"   data-live-search="true" style="width: 350px"  data-placeholder="Select Members" required multiple>
+															<select class="selectdee expertMemberIdWidth" name="ExpertMemberIds" id="ExpertMemberIds"   data-live-search="true" data-placeholder="Select Members" required multiple>
 												            	<%for(Object[] obj:expertlist){ %>																									
 																	<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>	
 																													
@@ -1069,16 +762,16 @@ String logintype = (String)session.getAttribute("LoginType");
 							<form action="CommitteeMainMembersSubmit.htm" method="post"  >				
 								<div class="row">				
 									<div class="col-md-9">
-										<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="table1" style="margin-top: 10px;">
+										<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-10" id="table1">
 								<thead>  
 									<tr id="">
 										<th colspan="2"> Industry Partner</th>
 									</tr>
 								</thead>
 								<tr class="tr_clone1">
-									<td style="width:30%">							
+									<td class="trCloneWidth">							
 										<div class="input select">
-											<select class="form-control selectdee" name="industryPartnerId" tabindex="-1"  style="" id="industryPartnerId" onchange="industrypartnerrepname()" required>
+											<select class="form-control selectdee" name="industryPartnerId" tabindex="-1"   id="industryPartnerId" onchange="industrypartnerrepname()" required>
 												<option disabled="true"  selected value="">Industry Partner</option>
 													<% for (IndustryPartner partner : industryPartnerList) {
 													%>
@@ -1094,7 +787,7 @@ String logintype = (String)session.getAttribute("LoginType");
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />	
 		 								<input type="hidden" name="rep" id="rep4" value="0" />
 									</td>
-									<td style="width:70%">
+									<td class="externalMemberIdWidth">
 										<div class="input select ">
 											<select class="form-control selectdee" name="industryPartnerRep" id="industryPartnerRep" data-live-search="true"   data-placeholder="Select Members" multiple onchange ="addIndusRep()">
 											</select>
@@ -1118,23 +811,23 @@ String logintype = (String)session.getAttribute("LoginType");
 				
 							<div class="col-md-5">
 								<div class="row">	
-									<div  class="col-md-12" style="margin-top: 20px; margin-left: 20px;">
+									<div  class="col-md-12 mt-t20 mt-l20">
 										<form action="CommitteeRepMemberAdd.htm" method="post">
-											<table style="width: 100%;">	
+											<table class="w-100">	
 												<tr>
 													<td colspan="2">
-										           		<label  style="margin-bottom: 4px !important" for="repids"> Add Representatives </label>
+										           		<label class="chairPerson" for="repids"> Add Representatives </label>
 										           	</td>
 									           	<tr>
-										           	<td style="width: 60%;">
-											  			<select class="form-control selectdee" id="repids" name="repids" style="" data-placeholder="Select Rep Types" multiple="multiple" >
+										           	<td class="width-60">
+											  			<select class="form-control selectdee" id="repids" name="repids" data-placeholder="Select Rep Types" multiple="multiple" >
 															<option  disabled="disabled" value="0">Choose...</option>
 															<%	for (Object[] obj  : committeerepnotaddedlist) {%>
 														     	<option value="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>  </option>
 															<% } %>
 														</select>
 													</td>
-													<td style="width: 20%;"> 		  					
+													<td class="width-20"> 		  					
 														<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
 										     	  		<button class="btn  btn-sm submit" type="submit"  onclick="return confirm('Are you Sure to Add this Representatives(s)');" >SUBMIT</button>
 										     	  		<%} %>
@@ -1148,8 +841,8 @@ String logintype = (String)session.getAttribute("LoginType");
 									</div>
 								</div>
 								<div class="row">	
-									<div  class="col-md-12" style="margin-top: 20px; margin-left: 20px;">
-											<h5 style="color: #FF5733">Representatives</h5>
+									<div  class="col-md-12 mt-t20 mt-l20">
+											<h5 class="representativeColor">Representatives</h5>
 											<hr>						
 											<table border='0'>
 					
@@ -1162,7 +855,7 @@ String logintype = (String)session.getAttribute("LoginType");
 														<td><sp> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> </sp></td>
 														<td>
 															<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-															<button class="fa fa-trash btn btn-danger " type="button"  style="background-color: white;border-color: white;" onclick="memberrepdelete('<%=obj[0] %>');" ></button>
+															<button class="fa fa-trash btn btn-danger bg-white border border-white" type="button" onclick="memberrepdelete('<%=obj[0] %>');" ></button>
 															<%} %>
 														</td>
 													</tr>
@@ -1215,7 +908,7 @@ String logintype = (String)session.getAttribute("LoginType");
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalwidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel">External Add
 							Member</h5>
@@ -1230,16 +923,15 @@ String logintype = (String)session.getAttribute("LoginType");
 
 							<div class="col-md-4">
 								
-									<label>Lab Name:<span class="mandatory"
-										style="color: red;">*</span></label>
+									<label>Lab Name:<span class="mandatory text-danger">*</span></label>
 										
 									
 								<div class="form-group">
 										
 										<select
-										class="form-control selectdee" id="labModal" name="labModal"
+										class="form-control selectdee fs-5px" id="labModal" name="labModal"
 										data-container="body" 
-										required="required" style="font-size: 5px;">
+										required="required">
 										<option value="" disabled="disabled" selected="selected"
 											hidden="true">--Select--</option>
 										<%
@@ -1257,9 +949,9 @@ String logintype = (String)session.getAttribute("LoginType");
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Rank/Salutation</label><br> <select
-										class="form-control selectdee" id="title" name="title"
+										class="form-control selectdee fs-5px" id="title" name="title"
 										data-container="body" data-live-search="true"
-										style="font-size: 5px;">
+										>
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Prof.">Prof.</option>
 										<option value="Lt.">Lt.</option>
@@ -1271,9 +963,9 @@ String logintype = (String)session.getAttribute("LoginType");
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Title</label><br> <select
-										class="form-control selectdee" id="salutation"
+										class="form-control selectdee fs-5px" id="salutation"
 										name="salutation" data-container="body"
-										data-live-search="true" style="font-size: 5px;">
+										data-live-search="true">
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Mr.">Mr.</option>
 										<option value="Ms.">Ms.</option>
@@ -1286,31 +978,28 @@ String logintype = (String)session.getAttribute("LoginType");
 						<div class="row">
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Employee No:<span class="mandatory"
-										style="color: red;">*</span></label> <input
-										class="form-control form-control" type="text" id="EmpNo"
-										name="EmpNo" required="required" maxlength="255"
-										style="font-size: 15px; width: 100%; text-transform: uppercase;">
+									<label>Employee No:<span class="mandatory text-danger"
+										>*</span></label> <input
+										class="form-control form-control fs-15px w-100 employeeNoText" type="text" id="EmpNo"
+										name="EmpNo" required="required" maxlength="255">
 								</div>
 							</div>
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Employee Name:<span class="mandatory"
-										style="color: red;">*</span></label> <input
-										class="form-control form-control" type="text" id="EmpName"
-										name="EmpName" required="required" maxlength="255"
-										style="font-size: 15px; width: 100%; text-transform: capitalize;">
+									<label>Employee Name:<span class="mandatory text-danger"
+										>*</span></label> <input
+										class="form-control form-control fs-15px w-100 employeeNameText" type="text" id="EmpName"
+										name="EmpName" required="required" maxlength="255">
 								</div>
 							</div>
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Designation:<span class="mandatory"
-										style="color: red;">*</span></label> <select
-										class="form-control selectdee" id="Designation"
+									<label>Designation:<span class="mandatory text-danger"
+										>*</span></label> <select
+										class="form-control selectdee fs-5px" id="Designation"
 										name="Designation" data-container="body"
-										data-live-search="true" required="required"
-										style="font-size: 5px;">
+										data-live-search="true" required="required">
 										<option value="" disabled="disabled" selected="selected"
 											hidden="true">--Select--</option>
 										 <%  for ( Object[]  obj :DesignationList) {%>
@@ -1337,7 +1026,7 @@ String logintype = (String)session.getAttribute("LoginType");
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalwidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> Add  Expert
 							Member Details</h5>
@@ -1351,11 +1040,9 @@ String logintype = (String)session.getAttribute("LoginType");
 						<div class="row">
 	<div class="col-md-4">
 								<div class="form-group">
-									<label>Expert Name:<span class="mandatory"
-										style="color: red;">*</span></label> <input
-										class="form-control form-control" type="text" id="ExtEmpName"
-										name="EmpName" required="required" maxlength="255"
-										style="font-size: 15px; width: 100%; text-transform: capitalize;">
+									<label>Expert Name:<span class="mandatory text-danger">*</span></label> <input
+										class="form-control form-control fs-15px w-100 employeeNameText" type="text" id="ExtEmpName"
+										name="EmpName" required="required" maxlength="255">
 								</div>
 							</div>
 							
@@ -1365,9 +1052,8 @@ String logintype = (String)session.getAttribute("LoginType");
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Rank/Salutation</label><br> <select
-										class="form-control selectdee" id="Exttitle" name="title"
-										data-container="body" data-live-search="true"
-										style="font-size: 5px;">
+										class="form-control selectdee fs-5px" id="Exttitle" name="title"
+										data-container="body" data-live-search="true">
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Prof.">Prof.</option>
 										<option value="Lt.">Lt.</option>
@@ -1379,9 +1065,9 @@ String logintype = (String)session.getAttribute("LoginType");
 							<div class="col-md-4">
 								<div class="form-group">
 									<label>Title</label><br> <select
-										class="form-control selectdee" id="Extsalutation"
+										class="form-control selectdee fs-5px" id="Extsalutation"
 										name="salutation" data-container="body"
-										data-live-search="true" style="font-size: 5px;">
+										data-live-search="true">
 										<option value="" selected="selected" hidden="true">--Select--</option>
 										<option value="Mr.">Mr.</option>
 										<option value="Ms.">Ms.</option>
@@ -1397,12 +1083,12 @@ String logintype = (String)session.getAttribute("LoginType");
 
 							<div class="col-md-4">
 								<div class="form-group">
-									<label>Designation:<span class="mandatory"
-										style="color: red;">*</span></label> <select
-										class="form-control selectdee" id="ExtDesignation"
+									<label>Designation:<span class="mandatory text-danger"
+										>*</span></label> <select
+										class="form-control selectdee fs-5px" id="ExtDesignation"
 										name="Designation" data-container="body"
 										data-live-search="true" required="required"
-										style="font-size: 5px;">
+										>
 										<option value="" disabled="disabled" selected="selected"
 											hidden="true">--Select--</option>
 										 <%  for ( Object[]  obj :DesignationList) {%>
@@ -1415,7 +1101,7 @@ String logintype = (String)session.getAttribute("LoginType");
 							
 							<div class="col-md-4">
 									<div class="form-group">
-										<label class="control-label">Organization</label><span class="mandatory" style="color: red;">*</span>
+										<label class="control-label">Organization</label><span class="mandatory text-danger">*</span>
 										<input class="form-control" type="text" name="organization" id="organization" placeholder="Max 255 Characters" maxlength="255">
 									</div>
 								</div>
@@ -1435,7 +1121,7 @@ String logintype = (String)session.getAttribute("LoginType");
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalwidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> Add  Industry 
 							Partner Details</h5>
@@ -1451,25 +1137,25 @@ String logintype = (String)session.getAttribute("LoginType");
 						<div class="row">						
 							<div class="col-md-4">
 								<div class="form-group">
-									<label class="control-label">Industry Name</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label">Industry Name</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerName2" name="industryPartnerName2" maxlength="255" placeholder="Enter Industry Partner" required="">		
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label"> Address</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label"> Address</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerAddress2" name="industryPartnerAddress2" maxlength="1000" placeholder="Enter Street, village/ town" required="">	
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
-									<label class="control-label"> City</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label"> City</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerCity2" name="industryPartnerCity2" maxlength="500" placeholder="Enter City" required="">	
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-group">
-									<label class="control-label"> Pin Code</label><span class="mandatory" style="color: red;">*</span>
+									<label class="control-label"> Pin Code</label><span class="mandatory text-danger">*</span>
 									<input class="form-control" type="text" id="industryPartnerPinCode2" name="industryPartnerPinCode2" maxlength="6" placeholder="Enter Pincode" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" required="">	
 								</div>
 							
@@ -1496,7 +1182,7 @@ String logintype = (String)session.getAttribute("LoginType");
 			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
 			aria-hidden="true">
 			<div class="modal-dialog modal-lg">
-				<div class="modal-content" style="width: 140%; margin-left: -15%;">
+				<div class="modal-content modalwidth">
 					<div class="modal-header">
 						<h5 class="modal-title" id="exampleModalLabel"> Add  Industry 
 							Partner Employee Details</h5>
@@ -1512,28 +1198,28 @@ String logintype = (String)session.getAttribute("LoginType");
 				
 			
 					<div class="row ml-1 mr-1" >
-						<table style="width:100% ; " id="repdetails">
-										<thead style="background-color: #055C9D; color: white;text-align: center;">
+						<table class="w-100" id="repdetails">
+										<thead class="text-white text-center repDetailsTHeadBgColor">
 											<tr>
-										    	<th style="padding: 5px 5px 5px 5px;">Name</th>
-										    	<th style="padding: 5px 5px 5px 5px;">Designation</th>
-										    	<th style="padding: 5px 5px 5px 5px;">Mobile No</th>
-										    	<th style="padding: 5px 5px 5px 5px;">Email</th>
+										    	<th class="thPadding">Name</th>
+										    	<th class="thPadding">Designation</th>
+										    	<th class="thPadding">Mobile No</th>
+										    	<th class="thPadding">Email</th>
 												
 											</tr>
 										</thead>
 								 		<tbody>
 									 		<tr class="tr_clone_repdetails">
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="trClonePadding">
 													<input class="form-control" type="text" id="repName" name="repName" maxlength="255" placeholder="Enter Rep Name" required="">
 												</td>	
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="trClonePadding">
 													<input class="form-control" type="text" id="repDesignation" name="repDesignation" placeholder="Enter Rep Designation" maxlength="255" required="">
 												</td>	
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="trClonePadding">
 													<input class="form-control" type="text" id="repMobileNo" maxlength="10" name="repMobileNo" placeholder="Enter Rep Mobile No" required="" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
 												</td>
-												<td style="padding: 10px 5px 0px 5px;">
+												<td class="trClonePadding">
 													<input class="form-control" type="email" id="repEmail" name="repEmail" maxlength="255" placeholder="Enter Rep Email" required="">
 												</td>
 																					

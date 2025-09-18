@@ -14,90 +14,10 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <spring:url value="/resources/js/excel.js" var="excel" />
 <script src="${excel}"></script>
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
+<spring:url value="/resources/css/projectModule/projectMainList.css" var="projectMainList" />
+<link href="${projectMainList}" rel="stylesheet" />
 <title>PROJECT INT  LIST</title>
-<style type="text/css">
 
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-
-
-
- .resubmitted{
-	color:green;
-}
-
-	.fa{
-		font-size: 1.20rem;
-	}
-	
-.datatable-dashv1-list table tbody tr td{
-	padding: 8px 10px !important;
-}
-
-
-
-
-/* icon styles */
-
-.cc-rockmenu {
-	color:fff;
-	padding:0px 5px;
-	font-family: 'Lato',sans-serif;
-}
-
-.cc-rockmenu .rolling {
-  display: inline-block;
-  cursor:pointer;
-  width: 34px;
-  height: 30px;
-  text-align:left;
-  overflow: hidden;
-  transition: all 0.3s ease-out;
-  white-space: nowrap;
-  
-}
-.cc-rockmenu .rolling:hover {
-  width: 108px;
-}
-.cc-rockmenu .rolling .rolling_icon {
-  float:left;
-  z-index: 9;
-  display: inline-block;
-  width: 28px;
-  height: 52px;
-  box-sizing: border-box;
-  margin: 0 5px 0 0;
-}
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-  width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-    font-size: 20px;
-    padding: 6px;
-}
-.cc-rockmenu .rolling span {
-    display: block;
-    font-weight: bold;
-    padding: 2px 0;
-    font-size: 14px;
-    font-family: 'Muli',sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin:0;
-}
-
-.width{
-	width:270px !important;
-}
-.modal-xl{
-	max-width: 1400px;
-}
-</style>
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -152,7 +72,7 @@ if(logintype.equalsIgnoreCase("P")){
 				   <form action="ProjectMasterExcelUpload.htm" method="post" enctype="multipart/form-data">
 					  		<table>
 						  		<tr>
-								  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="ProjectMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o" aria-hidden="true" style="color: green;"></i></button></h6></td>
+								  	<td align="left"><h6>Download Excel : &nbsp;<button formaction="ProjectMasterExcelUpload.htm" formmethod="post" formnovalidate="formnovalidate" name="Action" value="GenerateExcel"><i class="fa fa-file-excel-o text-success" aria-hidden="true"></i></button></h6></td>
 									<td align="right"><h6>&nbsp;&nbsp;&nbsp;&nbsp;	Upload Excel :&nbsp;&nbsp;&nbsp;&nbsp;
 									  <input type="file" id="excel_file" name="filename" required="required"  accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"></h6></td>						
 							  		
@@ -168,7 +88,7 @@ if(logintype.equalsIgnoreCase("P")){
 					          <span aria-hidden="true">&times;</span>
 					        </button>
 					      </div>
-					      <div class="modal-body"  style="max-height: 25rem; overflow-y:auto;">
+					      <div class="modal-body cs-modal">
 					             <table class="table table-bordered table-hover table-striped table-condensed" id="myTable1"> </table>
 					      </div>
 					      <div class="modal-footer" align="center">
@@ -186,20 +106,20 @@ if(logintype.equalsIgnoreCase("P")){
   </div>
 <div class="card-body"> 
     <form action="ProjectMainSubmit.htm" method="POST" name="frm1" >
-    <div class="row" style="margin-top: 20px;">
+    <div class="row mt-20">
       <div class="col-md-12">
  <div class="table-responsive">
 	   <table class="table table-bordered table-hover table-striped table-condensed " id="myTable"> 
-	   <thead style=" text-align: center;">
+	   <thead class="text-center">
 	   <tr>
-	   <th style="width: 5%;">Select</th>
+	   <th class="w-5">Select</th>
 			<th>SN</th>
 			<th class="text-nowrap">Project Type</th>
 			<th class="text-nowrap">Project Code</th>
-			<th width="25%" class="text-nowrap">Project Name</th>
-			<th style="width:10%" class="text-nowrap">Sanc Date</th>
-			<th style="width: 124.892px;"  >Sanc Cost(&#8377; Lakh)</th>
-			<th style="width:10%">PDC</th>
+			<th class="text-nowrap w-25">Project Name</th>
+			<th class="text-nowrap w-10">Sanc Date</th>
+			<th class="w-124" >Sanc Cost(&#8377; Lakh)</th>
+			<th class="w-10">PDC</th>
 			<th>RevNo</th>
 	  </tr>
 	   </thead> 
