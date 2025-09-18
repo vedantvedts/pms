@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -1655,6 +1656,10 @@ public class ProjectClosureController {
 			long result=0l;
 			if(action!=null && action.equalsIgnoreCase("Add")) {
 				
+				if( projectClosureCheckListFields(clist ) || projectClosureCheckListFields(dto)) {
+					return redirectWithError(redir, "ProjectClosureCheckList.htm", "HTML tags are not permitted.");
+				}
+				
 				clist.setCreatedBy(UserId);
 				clist.setCreatedDate(sdtf.format(new Date()));
 				clist.setIsActive(1);
@@ -1662,6 +1667,13 @@ public class ProjectClosureController {
 				result = service.addProjectClosureCheckList(clist,dto,EmpId,QARMilestoneAttach,QARCostBreakupAttach,QARNCItemsAttach,EquipProcuredAttach,EquipProcuredBeforePDCAttach,CommittmentRegister,BudgetDocument);
 				
 			}else if(action!=null && action.equalsIgnoreCase("Edit")) {
+				
+				if( projectClosureCheckListFields(clist ) || projectClosureCheckListFields(dto)) {
+					redir.addAttribute("closureId", closureId);
+					redir.addAttribute("chlistTabId","1");
+					return redirectWithError(redir, "ProjectClosureCheckList.htm", "HTML tags are not permitted.");
+				}
+				
 				clist.setModifiedBy(UserId);
 				clist.setModifiedDate(sdtf.format(new Date()));
 				
@@ -1694,6 +1706,28 @@ public class ProjectClosureController {
 			return "static/Error";
 		} 
 	}
+	
+	// this method is using to check ProjectClosureCheckList field values
+	public boolean projectClosureCheckListFields(Object obj) {
+	    try {
+	        Method[] methods = obj.getClass().getMethods();
+
+	        for (Method method : methods) {
+	            if (method.getName().startsWith("get") && !method.getName().equals("getClass")) {
+	                String strValue = String.valueOf(method.invoke(obj));
+
+	                if (InputValidator.isContainsHTMLTags(strValue)) {
+	                    return true; // stop at first invalid field
+	                }
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	    return false; 
+	}
+
 	
 	@RequestMapping(value = {"ProjectClosureChecklistFileDownload.htm"})
 	public void ProjectClosureChecklistFileDownload(HttpServletRequest req, HttpSession ses, HttpServletResponse res)throws Exception 
