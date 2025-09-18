@@ -3848,14 +3848,14 @@ public class MilestoneController {
 	public @ResponseBody String removeFileAttachment(HttpServletRequest req, HttpSession ses,HttpServletResponse res,
 			@RequestParam("techDataId") String techDataId,
 			@RequestParam("techAttachId") String techAttachId,
-			@RequestParam("projectId") String projectId)throws Exception 
+			@RequestParam("projectId") String projectId,
+			@RequestParam("relativePoints") String relativePoints)throws Exception 
 	{
 		String UserId = (String) ses.getAttribute("Username");
-		String LabCode =(String) ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside removeFileAttachment.htm "+UserId);
 		try {
 
-			long result = service.removeFileAttachment(projectId,techDataId,techAttachId,UserId);
+			long result = service.removeFileAttachment(projectId, techDataId, techAttachId, UserId, relativePoints);
 
 			Gson json = new Gson();
 			return json.toJson(result);
