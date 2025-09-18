@@ -827,6 +827,9 @@ public class ActionController {
 			long count=0;
 			try { 
 				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))) {
+					return  redirectWithError(redir,"ActionForwardList.htm","Remarks should not contain HTML elements !");
+				}
 				 count =service.ActionSendBack(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
 	
 				if(back!=null && "Issue".equalsIgnoreCase(back)) {

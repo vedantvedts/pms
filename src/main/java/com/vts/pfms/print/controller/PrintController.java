@@ -122,6 +122,7 @@ import com.vts.pfms.print.model.TechImages;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.project.dto.ProjectSlideDto;
 import com.vts.pfms.project.service.ProjectService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -4372,7 +4373,9 @@ public class PrintController {
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside AddProjectSlides.htm.htm "+UserId);	
 			try {
-				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("Brief"))) {
+					return  redirectWithError(redir,"PfmsProjectSlides.htm?projectid="+req.getParameter("projectid"),"Brief should not contain HTML elements !");
+				}
 				String LabCode = (String) ses.getAttribute("labcode");
 				String projectid = req.getParameter("projectid");
 				String status = req.getParameter("Status");
@@ -6443,6 +6446,11 @@ public class PrintController {
 	                && !LocalDate.parse(e[3].toString()).isBefore(from)
 	                && !LocalDate.parse(e[3].toString()).isAfter(to))
 	        .collect(Collectors.toList());
+	}
+	
+	private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+	    redir.addAttribute("resultfail", message);
+	    return "redirect:/"+redirURL;
 	}
 	
 }
