@@ -1329,6 +1329,17 @@ private boolean isValidFileType(MultipartFile file) {
 
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String remarks=req.getParameter("Remarks");
+			
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(FileAttach)  ) {
+
+	        	
+	        	return redirectWithError(redir, "MA-UpdateRedirect.htm",
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+			
+			
 			if(InputValidator.isContainsHTMLTags(remarks)) {
 				redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
 				redir.addAttribute("ActivityId", req.getParameter("ActivityId"));
@@ -3528,7 +3539,7 @@ private boolean isValidFileType(MultipartFile file) {
 		try {
 			
 			  if (!isValidFileType(file)) {
-				  return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+				  return new ResponseEntity<String>(HttpStatus.EXPECTATION_FAILED);
 		        }
 			
 			String agendaid = req.getParameter("agendaid");
@@ -3556,7 +3567,7 @@ private boolean isValidFileType(MultipartFile file) {
 		} catch (Exception e) {
 			e.printStackTrace(); 
 			logger.error(new Date() +" Inside DocFileUpload.htm "+UserId, e); 
-			return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+			  return new ResponseEntity<String>(HttpStatus.EXPECTATION_FAILED);
 		}
 	}
 
@@ -3880,7 +3891,7 @@ private boolean isValidFileType(MultipartFile file) {
 			
 			 // 🔹 Check if file is missing
 	        if (file == null || file.isEmpty()) {
-	            return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+	            return new ResponseEntity<String>(HttpStatus.EXPECTATION_FAILED);
 	        }
 	        
 	        String originalFilename = file.getOriginalFilename();
@@ -3891,13 +3902,13 @@ private boolean isValidFileType(MultipartFile file) {
 	        // 🔹 Validate: Only PDF allowed
 	        String contentType = file.getContentType();
 	        if (contentType == null || !contentType.equalsIgnoreCase("application/pdf")) {
-	        	 return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+	        	 return new ResponseEntity<String>(HttpStatus.EXPECTATION_FAILED);
 	        }
 	        
 	        System.out.println("extension--"+extension);
 
 	        if (!extension.equalsIgnoreCase("pdf")) {
-	        	 return new ResponseEntity<String>(HttpStatus.NOT_ACCEPTABLE);
+	        	 return new ResponseEntity<String>(HttpStatus.EXPECTATION_FAILED);
 	        }
 
 			

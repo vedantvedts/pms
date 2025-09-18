@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -1377,11 +1378,33 @@ public class AdminController {
 	        Long Auditpatchid=Long.parseLong(req.getParameter("auditId"));
 	        System.out.println(file.getOriginalFilename() + "$$$$$$$$");
 	        
-	        // Check if the file is not empty
 	        if (file != null && !file.isEmpty()) {
-	            // Read the file data directly without compression
+	            // ✅ Allowed extensions
+	            List<String> allowedExtensions = Arrays.asList("txt", "sql");
+	            // ✅ Allowed MIME types
+	            List<String> allowedContentTypes = Arrays.asList("text/plain", "application/sql");
+
+	            // Extract extension
+	            String fileName = file.getOriginalFilename();
+	            String extension = "";
+	            if (fileName != null && fileName.contains(".")) {
+	                extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+	            }
+
+	            // Extract content type
+	            String contentType = file.getContentType();
+	            logger.info("Uploaded file: " + fileName + ", Content-Type: " + contentType);
+
+	            // Validate extension + MIME type
+	            if (!allowedExtensions.contains(extension) || !allowedContentTypes.contains(contentType)) {
+	                redir.addAttribute("resultfail", "Only .txt and .sql files are allowed!");
+	                return "redirect:/AuditPatchesView.htm";
+	            }
+
+	            // ✅ Read file data
 	            fileData = file.getBytes();
 	        }
+
 
 	        // Create the AuditPatches object and set its fields
 	        AuditPatches dto = new AuditPatches();

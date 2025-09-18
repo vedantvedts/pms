@@ -4218,6 +4218,60 @@ public class CommitteeController {
 
 	}
 
+private boolean isValidFileType(MultipartFile file) {
+		
+		
+		
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
+		
+	    if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+
+	    
+	    
+	  
+	    if (contentType == null) {
+	        return false;
+	    }
+	    
+	 // Extract extension in lowercase
+	    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+	    
+	 // Check mapping between MIME type and extension
+	    switch (extension) {
+	        case "pdf":
+	            return contentType.equalsIgnoreCase("application/pdf");
+	        case "jpeg":
+	        case "jpg":
+	            return contentType.equalsIgnoreCase("image/jpeg");
+	        case "png":
+	            return contentType.equalsIgnoreCase("image/png");
+	        default:
+	            return false;
+	    }
+
+//	    // Allow only images and PDF
+//	 // Allowed MIME types
+//	    boolean validMime = contentType.equalsIgnoreCase("application/pdf")
+//	            || contentType.equalsIgnoreCase("image/jpeg")
+//	            || contentType.equalsIgnoreCase("image/png");
+//
+//	    // Allowed extensions
+//	    boolean validExtension = extension.equals("pdf")
+//	            || extension.equals("jpeg")
+//	            || extension.equals("jpg")
+//	            || extension.equals("png");
+//
+//	    return validMime && validExtension;
+	}
+
+	
+	
+	
+	
+	
 	@RequestMapping(value="MinutesAttachment.htm",method=RequestMethod.POST)
 	public String MinutesAttachment(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestPart("FileAttach") MultipartFile FileAttach) throws Exception{
 
@@ -4226,6 +4280,48 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside MinutesAttachment.htm "+UserId);
 		try
 		{			
+		
+			// 🔹 Validate file types
+	        if (!isValidFileType(FileAttach) ) {
+
+	        	redir.addFlashAttribute("committeescheduleid", req.getParameter("ScheduleId"));
+	    		redir.addFlashAttribute("specname", "Introduction");
+	    		redir.addFlashAttribute("unit1","unit1");
+	    		// Prudhvi - 06/03/2024
+	    		/* ------------------ start ----------------------- */
+	    		String redirpageflag = req.getParameter("redirpageflag");
+	    		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+	    			
+	    			return redirectWithError(redir, "RODScheduleMinutes.htm",
+		                    "Invalid file type. Only PDF or Image files are allowed.");
+	    			
+	    		}
+	    		/* ------------------ end ----------------------- */
+
+	    		// CCM Handling
+	    		String ccmFlag = req.getParameter("ccmFlag");
+	    		if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {
+	    			redir.addAttribute("ccmScheduleId", req.getParameter("ScheduleId"));
+	    			redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+	    			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+	    			redir.addAttribute("ccmFlag", ccmFlag);
+	    		}
+
+	    		// DMC Handling
+	    		String dmcFlag = req.getParameter("dmcFlag");
+	    		if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) {
+	    			redir.addAttribute("committeeId", req.getParameter("committeeId"));
+	    			redir.addAttribute("dmcFlag", dmcFlag);
+	    		}
+   
+	    		
+	        	
+	        	return redirectWithError(redir, "CommitteeScheduleMinutes.htm",
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	    		
+	        }
+			
+			
 			CommitteeMinutesAttachmentDto dto= new CommitteeMinutesAttachmentDto();
 			dto.setScheduleId(req.getParameter("ScheduleId"));
 			dto.setMinutesAttachment(FileAttach);
@@ -4285,6 +4381,33 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside MomAttachment.htm "+UserId);
 		try
 		{			
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(FileAttach) ) {
+
+//	     
+	        	
+	        	redir.addFlashAttribute("committeescheduleid", req.getParameter("ScheduleId"));
+	    		redir.addFlashAttribute("specname", "Introduction");
+	    		redir.addFlashAttribute("unit1","unit1");
+	    		// Prudhvi - 06/03/2024
+	    		/* ------------------ start ----------------------- */
+	    		String redirpageflag = req.getParameter("redirpageflag");
+	    		if(redirpageflag!=null && redirpageflag.equalsIgnoreCase("ROD")) {
+	    			
+	    			
+	    			 return redirectWithError(redir, "RODScheduleMinutes.htm",
+ 	                    "Invalid file type. Only PDF or Image files are allowed.");
+	    		}
+	    		/* ------------------ end ----------------------- */
+	    		
+	    		 return redirectWithError(redir, "CommitteeScheduleMinutes.htm",
+	 	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        	
+	        }
+			
+			
+			
 			CommitteeMomAttachment cm = new CommitteeMomAttachment();
 
 			cm.setScheduleId(Long.parseLong(req.getParameter("ScheduleId")));
@@ -10370,6 +10493,21 @@ public class CommitteeController {
 			String divisionid = req.getParameter("divisionid");
 			String committeeid = req.getParameter("committeeid");
 
+		
+			// 🔹 Validate file types
+	        if (!isValidFileType(letter) ) {
+	        	
+	        	redir.addFlashAttribute("projectid",projectid);
+				redir.addFlashAttribute("divisionid",divisionid);
+				redir.addFlashAttribute("initiationid",initiationid);	
+	        	
+
+	            return redirectWithError(redir, "ProjectMaster.htm",
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+			
+			
+			
 			CommitteeLetter committeeLetter=CommitteeLetter.builder()
 					.ProjectId(Long.parseLong(projectid))
 					.InitiationId(Long.parseLong(initiationid))
