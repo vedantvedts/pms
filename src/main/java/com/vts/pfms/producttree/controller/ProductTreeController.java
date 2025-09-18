@@ -632,11 +632,20 @@ public class ProductTreeController {
 			spt.setMainId(Long.parseLong(req.getParameter("Mainid")));
 			
 				if(Action!=null &&  Action.equalsIgnoreCase("TE")) {
+					
+					String LevelName=req.getParameter("LevelName");
+					String LevelCode = req.getParameter("LevelCode");
+					
+					if(InputValidator.isContainsHTMLTags(LevelName) || InputValidator.isContainsHTMLTags(LevelCode)){
+						return redirectWithError(redir,"SystemProductTree.htm","Field values should not contain HTML Tags.!");
+					}
 				
-					spt.setLevelName(req.getParameter("LevelName"));
-					spt.setLevelCode(req.getParameter("LevelCode"));
+					spt.setLevelName(LevelName);
+					spt.setLevelCode(LevelCode);
 					spt.setLevelType(req.getParameter("LevelType"));
 					spt.setModifiedBy(UserId);
+					
+					
 	
 					long update = service.systemLevelNameEdit(spt, Action);
 			 
@@ -675,8 +684,11 @@ public class ProductTreeController {
 				
 				
 				String LevelName=req.getParameter("LevelName");
+				String LevelCode = req.getParameter("LevelCode");
 				
-				
+				if(InputValidator.isContainsHTMLTags(LevelName) || InputValidator.isContainsHTMLTags(LevelCode)){
+					return redirectWithError(redir,"SystemProductTree.htm","Field values should not contain HTML Tags.!");
+				}
 				ProductTreeDto dto=new ProductTreeDto();
 				dto.setProjectId(Long.parseLong(sid));
 				dto.setParentLevelId(0l);
@@ -684,7 +696,7 @@ public class ProductTreeController {
 				dto.setLevelName(LevelName);
 				dto.setCreatedBy(UserId);
 				dto.setLevelType(req.getParameter("LevelType"));
-				dto.setLevelCode(req.getParameter("LevelCode"));
+				dto.setLevelCode(LevelCode);
 				
 				long result=service.AddSystemLevelName(dto);
 				
