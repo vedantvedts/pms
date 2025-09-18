@@ -5200,6 +5200,13 @@ public class ProjectController
 			String actionmainid=req.getParameter("actionmainid");			
 			String actionassignid=req.getParameter("actionassignid");
 
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Impact"))) {
+				return  redirectWithError(redir,"ProjectRiskData.htm","Impact should not contain HTML elements !");
+			}
+			if(InputValidator.isContainsHTMLTags(req.getParameter("mitigationplans"))) {
+				return  redirectWithError(redir,"ProjectRiskData.htm","Mitigationplans should not contain HTML elements !");
+			}
+			
 			Object[] riskdata=service.ProjectRiskData(actionassignid);
 			String projectid=riskdata[2].toString();
 
@@ -5246,6 +5253,9 @@ public class ProjectController
 			String actionassignid = req.getParameter("actionAssignId");
 			String riskId = req.getParameter("RiskId");
 			String remarks = req.getParameter("Remarks");
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))) {
+				return  redirectWithError(redir,"ProjectRiskData.htm","Remarks should not contain HTML elements !");
+			}
 			PfmsRiskDto dto=new PfmsRiskDto();
 			dto.setRiskId(riskId);
 			dto.setStatus("C");
@@ -5279,11 +5289,18 @@ public class ProjectController
 			String actionmainid=req.getParameter("actionmainid");			
 			String actionassignid=req.getParameter("actionassignid");
 
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Impact"))) {
+				return  redirectWithError(redir,"ProjectRiskData.htm","Impact should not contain HTML elements !");
+			}
+			if(InputValidator.isContainsHTMLTags(req.getParameter("mitigationplans"))) {
+				return  redirectWithError(redir,"ProjectRiskData.htm","Mitigationplans should not contain HTML elements !");
+			}
+
 			Object[] riskdata=service.ProjectRiskData(actionassignid);
 			String projectid=riskdata[2].toString();
 			String rev=req.getParameter("rev");
 			String revisionno=req.getParameter("revisionno");
-
+			
 			PfmsRiskDto dto=new PfmsRiskDto();
 			dto.setRiskId(req.getParameter("riskid"));
 			dto.setDescription(riskdata[1].toString());

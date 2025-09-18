@@ -2338,6 +2338,9 @@ public class MilestoneController {
 		logger.info(new Date() +"Inside FileMasterSubAdd.htm "+UserId);
 
 		try {
+			if(InputValidator.isContainsHTMLTags(req.getParameter("MasterSubName"))) {
+				return  redirectWithError(redir,"FileRepMaster.htm","Sub Level Name should not contain HTML elements !");
+			}
 			FileRepMaster fileRepo=new FileRepMaster();
 			fileRepo.setLabCode(LabCode);
 			fileRepo.setProjectId(Long.parseLong(req.getParameter("projectid")));

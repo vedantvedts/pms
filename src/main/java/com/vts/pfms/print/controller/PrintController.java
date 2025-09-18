@@ -4416,6 +4416,9 @@ public class PrintController {
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside EditProjectSlides.htm.htm "+UserId);	
 			try {
+				if(InputValidator.isContainsHTMLTags(req.getParameter("Brief"))) {
+					return  redirectWithError(redir,"PfmsProjectSlides.htm?projectid="+req.getParameter("projectid"),"Brief should not contain HTML elements !");
+				}
 				String projectid = (String)req.getParameter("ProjectId");
 				
 				String LabCode = (String) ses.getAttribute("labcode");
@@ -4640,6 +4643,9 @@ public class PrintController {
 			 String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside SlideFreezeSubmit.htm "+UserId);	
 			 try {
+				 if(InputValidator.isContainsHTMLTags(req.getParameter("review"))) {
+						return  redirectWithError(redir,"PfmsProjectSlides.htm?projectid="+req.getParameter("projectid"),"Review should not contain HTML elements !");
+					}
 				 String LabCode = (String) ses.getAttribute("labcode");
 				 
 				 Long EmpId = (Long) ses.getAttribute("EmpId");
