@@ -3757,7 +3757,29 @@ public class PrintController {
 		  String Labcode = (String) ses.getAttribute("labcode");
 			logger.info(new Date() +"Inside GanttChartUpload.htm "+UserId);	  
 		  try {
+          
+			  if (file == null || file.isEmpty()) {
+		            return redirectWithError(redir, "ProjectBriefingPaper.htm", "No file uploaded.");
+		        }
+
+		        // 🔹 Check Content-Type
+		        String contentType = file.getContentType();
+		        // 🔹 Check Extension
+		        String originalFilename = file.getOriginalFilename();
+		        String extension = (originalFilename != null) ? 
+		                            originalFilename.substring(originalFilename.lastIndexOf(".") + 1) : "";
+
+		        if (!"image/png".equalsIgnoreCase(contentType) || !"png".equalsIgnoreCase(extension)) {
+		            redir.addFlashAttribute("projectid", req.getParameter("ProjectId"));
+		            redir.addFlashAttribute("committeeid", req.getParameter("committeeid"));
+		            return redirectWithError(redir, "ProjectBriefingPaper.htm", "Invalid file type. Only PNG files are allowed.");
+		        }
+  
             int result=service.saveGranttChart(file,req.getParameter("ChartName"),env.getProperty("ApplicationFilesDrive"),Labcode);
+            
+            
+            
+            
             if(result>0) {  
               redir.addAttribute("result", "Grantt Chart Saved");
     		}else {
@@ -3785,6 +3807,21 @@ public class PrintController {
 				
 				System.out.println("osss  -----"+os);
 	    	try {
+	    		
+	    		// 🔹 Validate file types
+		        if (!isValidFileType(file)) {
+
+		        	redir.addFlashAttribute("projectid", req.getParameter("ProjectId"));
+					redir.addFlashAttribute("committeeid", req.getParameter("committeeid"));
+		        	
+		        	
+		        	return redirectWithError(redir, "ProjectBriefingPaper.htm",
+		                    "Invalid file type. Only  Image files are allowed.");
+		        }
+	    		
+	    		
+	    		
+	    		
             int result=service.saveTechImages(file,req.getParameter("ProjectId"),env.getProperty("ApplicationFilesDrive"),req.getUserPrincipal().getName(),LabCode);
             if(result>0) {  
               redir.addAttribute("result", "Tech Image Saved");
@@ -4046,6 +4083,63 @@ public class PrintController {
 			}
 		}
 	    
+//		private String redirectWithError(RedirectAttributes redir,String redirURL, String message) {
+//		    redir.addAttribute("resultfail", message);
+//		    return "redirect:/"+redirURL;
+//		}
+		
+		private boolean isValidFileType(MultipartFile file) {
+			
+			
+			
+		    String contentType = file.getContentType();
+		    String originalFilename = file.getOriginalFilename();
+			
+		    if (file == null || file.isEmpty()) {
+		        return true; // nothing uploaded, so it's valid
+		    }
+
+		    
+		    
+		  
+		    if (contentType == null) {
+		        return false;
+		    }
+		    
+		 // Extract extension in lowercase
+		    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+		    
+		 // Check mapping between MIME type and extension
+		    switch (extension) {
+		        case "pdf":
+		            return contentType.equalsIgnoreCase("application/pdf");
+		        case "jpeg":
+		        case "jpg":
+		            return contentType.equalsIgnoreCase("image/jpeg");
+		        case "png":
+		            return contentType.equalsIgnoreCase("image/png");
+		        default:
+		            return false;
+		    }
+
+//		    // Allow only images and PDF
+//		 // Allowed MIME types
+//		    boolean validMime = contentType.equalsIgnoreCase("application/pdf")
+//		            || contentType.equalsIgnoreCase("image/jpeg")
+//		            || contentType.equalsIgnoreCase("image/png");
+	//
+//		    // Allowed extensions
+//		    boolean validExtension = extension.equals("pdf")
+//		            || extension.equals("jpeg")
+//		            || extension.equals("jpg")
+//		            || extension.equals("png");
+	//
+//		    return validMime && validExtension;
+		}
+
+	    
+	    
+	    
 	    @RequestMapping(value="FrozenBriefingAdd.htm", method = {RequestMethod.GET,RequestMethod.POST})
 		public String FrozenBriefingAdd(Model model,HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res,@RequestParam(name = "briefingpaper")MultipartFile BPaper ,@RequestParam(name="briefingpresent")MultipartFile pname,@RequestParam(name="Momfile")MultipartFile mom)	throws Exception 
 		{
@@ -4058,6 +4152,25 @@ public class PrintController {
 		    	String committeecode=req.getParameter("committeecode");
 		    	
 		    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
+		    	
+		    	// 🔹 Validate file types
+		        if (!isValidFileType(BPaper) || !isValidFileType(pname)
+		                || !isValidFileType(mom) ) {
+
+		        	redir.addFlashAttribute("projectid",projectid);
+			    	redir.addFlashAttribute("committeecode",committeecode);
+		        	
+		        	
+		        	return redirectWithError(redir, "FroozenBriefingList.htm",
+		                    "Invalid file type. Only PDF or Image files are allowed.");
+		        }
+
+		    	
+		    	
+		    	
+		    	
+		    	
+		    	
 		    	CommitteeProjectBriefingFrozen briefing = CommitteeProjectBriefingFrozen.builder()
 						.ScheduleId(Long.parseLong(scheduleid))
 						.FreezeByEmpId(Long.parseLong(EmpId))
@@ -4111,13 +4224,33 @@ public class PrintController {
 	    	String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside FrozenBriefingUpdate.htm "+UserId);		
 	    	try {
-		    	String scheduleid = req.getParameter("scheduleid");
+	    		
+	    	  	String scheduleid = req.getParameter("scheduleid");
 		    	String projectid=req.getParameter("projectid");
 		    	String committeecode=req.getParameter("committeecode");
 		    	String BriefingPaperFrozen=req.getParameter("BriefingPaperFrozen");
 		    	String PresentationFrozen= req.getParameter("PresentationFrozen");
 		    	String MinutesFrozen =req.getParameter("MinutesFrozen");
 		    	String pendingEdit =req.getParameter("pendingEdit");
+	    		// 🔹 Validate file types
+		        if (!isValidFileType(BPaper) || !isValidFileType(pname)|| !isValidFileType(mom)
+		               ) {
+
+		        	redir.addFlashAttribute("projectid",projectid);
+			    	redir.addFlashAttribute("committeecode",committeecode);
+		        	return redirectWithError(redir, "FroozenBriefingList.htm",
+		                    "Invalid file type. Only PDF and Image is Allowed  files are allowed.");
+		        }
+	    		
+	    		
+	    		
+	    		
+	    		
+	    		
+	    		
+	    		
+	    		
+		  
 		    	if(!BPaper.isEmpty() && BriefingPaperFrozen.equalsIgnoreCase("N")) {
 		    		BriefingPaperFrozen="Y";
 		    	}
@@ -5873,6 +6006,28 @@ public class PrintController {
 			        }
 			    }
 			  
+			  
+			  
+				private boolean isValidExcelFile(String fileName, String contentType) {
+				    if (fileName == null || contentType == null) return false;
+
+				    String lowerFile = fileName.toLowerCase();
+
+				    if (lowerFile.endsWith(".xls") && contentType.equalsIgnoreCase("application/vnd.ms-excel")) {
+				        return true;
+				    }
+				    if (lowerFile.endsWith(".xlsx") && contentType.equalsIgnoreCase("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+				        return true;
+				    }
+				    return false;
+				}
+			  
+			  
+			  
+			  
+			  
+			  
+			  
 			  @RequestMapping(value="OverAllFinaceSubmit.htm" ,method = {RequestMethod.POST,RequestMethod.GET})
 				public String OverAllFinaceSubmit( RedirectAttributes redir,HttpServletRequest req ,HttpServletResponse res ,HttpSession ses)throws Exception
 				{
@@ -5887,8 +6042,22 @@ public class PrintController {
 					String projectCode=projectDetails[1].toString();
 				   try {
 					
+					 
 					   if (req.getContentType() != null && req.getContentType().startsWith("multipart/")) {
+						  
+						   
 						   Part filePart = req.getPart("filename");
+						   
+						   String fileName = filePart.getSubmittedFileName();
+				            String contentType = filePart.getContentType();
+						   
+						   if (!isValidExcelFile(fileName, contentType)) {
+				                redir.addAttribute("resultfail", "Only Excel files (.xls, .xlsx) are allowed");
+				                redir.addFlashAttribute("projectid",projectid);
+				    			redir.addFlashAttribute("committeeid",committeeid);
+				    			return "redirect:/ProjectBriefingPaper.htm";
+				                
+				            }
 							List<ProjectOverallFinance>list = new ArrayList<>();
 							InputStream fileData = filePart.getInputStream();
 							
