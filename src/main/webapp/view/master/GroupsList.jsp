@@ -116,8 +116,8 @@ String ses=(String)request.getParameter("result");
 	                                         <td><input type="radio" name="groupid" value=<%=obj[0]%>  ></td> 
 	                                         <td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-"%></td>
 	                                         <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%></td>
-	                                         <td  class="tdData"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%></td>
-	                                         <td  class="tdData"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%>, <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%><%}else{ %>-<%} %></td>
+	                                         <td  class="text-left"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%></td>
+	                                         <td  class="text-left"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%>, <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):""%><%}else{ %>-<%} %></td>
 	                                         <td ><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):"-"%></td>
 	                                     </tr>
 	                                 <%} %>

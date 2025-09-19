@@ -96,6 +96,7 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 											<i class="fa fa-eye"></i>
 										</span>
 									</div>
+									<small id="invalidCharAlert" class="text-danger"></small>
 								</div>
 								<small id="passwordHelp" class="form-text text-muted"></small>
 								<div id="strengthBar" >
@@ -121,7 +122,7 @@ String ForceResetPwd = (String)request.getAttribute("ForcePwd");
 								    <li id="rule-uppercase" class="text-danger">❌ At least 1 uppercase letter</li>
 								    <li id="rule-lowercase" class="text-danger">❌ At least 1 lowercase letter</li>
 								    <li id="rule-number" class="text-danger">❌ At least 1 number</li>
-								    <li id="rule-special" class="text-danger">❌ At least 1 special character</li>
+								    <li id="rule-special" class="text-danger">❌ At least 1 special character (@$!%*?&)</li>
 								  </ul>
 								</small>
 								<span id='message'></span>
@@ -151,15 +152,32 @@ $(document).ready(function () {
     var $message = $('#message');
     var $passwordHelp = $('#passwordHelp');
     var $strengthIndicator = $('#strengthIndicator');
-
+    var $invalidAlert = $('#invalidCharAlert');
+    
     var strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
+    var allowedCharsRegex = /^[A-Za-z\d@$!%*?&]*$/;
+    
     $submitBtn.prop('disabled', true);
 
+    function showInvalidAlert(msg) {
+        $invalidAlert.text(msg).fadeIn();
+        setTimeout(function () {
+            $invalidAlert.fadeOut();
+        }, 3000);
+    }
+    
     function validatePasswords() {
         var pwd = $password.val();
         var cpwd = $confirmPassword.val();
 
+     	// Check for invalid characters
+        if (!allowedCharsRegex.test(pwd)) {
+            showInvalidAlert("⚠ Invalid character detected! Use only letters, numbers, or @$!%*?&");
+            // Remove last invalid character
+            pwd = pwd.replace(/[^A-Za-z\d@$!%*?&]/g, '');
+            $password.val(pwd);
+        }
+     
         // Strength calculation
         var strength = 0;
         if (pwd.length >= 8) strength++;
@@ -227,7 +245,7 @@ function updateChecklist(password) {
 	$('#rule-number').css('color', rules.number ? 'green' : 'red')
 		.text((rules.number ? '✅ ' : '❌ ') + 'At least 1 number');
 	$('#rule-special').css('color', rules.special ? 'green' : 'red')
-		.text((rules.special ? '✅ ' : '❌ ') + 'At least 1 special character');
+		.text((rules.special ? '✅ ' : '❌ ') + 'At least 1 special character (@$!%*?&)');
 
 	return Object.values(rules).every(Boolean);
 }
@@ -259,9 +277,12 @@ function checkoldPassword(event) {
     }
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "NewPasswordChangeCheck.htm",
-        data: { oldpass: Opwd },
+        data: { 
+        	oldpass: encryptAES(Opwd), 
+        	${_csrf.parameterName}:	"${_csrf.token}", 
+        },
         datatype: 'json',
         success: function (result) {
             if (result === '1') {
@@ -298,22 +319,6 @@ function checkoldPassword(event) {
 	    const oldPwd = oldPwdField.value;
 	    const newPwd = newPwdField.value;
 
-	    var keyBase64 = (document.getElementById("sessionKey") || {}).value || "";
-	    var ivBase64  = (document.getElementById("sessionIv")  || {}).value || "";
-
-	    const key = CryptoJS.enc.Base64.parse(keyBase64);
-	    const iv  = CryptoJS.enc.Base64.parse(ivBase64);
-
-	    function encryptAES(plain) {
-	      if (!plain) return "";
-	      const encrypted = CryptoJS.AES.encrypt(
-	        CryptoJS.enc.Utf8.parse(plain),
-	        key,
-	        { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
-	      );
-	      return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
-	    }
-
 	    if (oldPwd) oldPwdField.value = encryptAES(oldPwd);
 	    if (newPwd){
 	    	newPwdField.value = encryptAES(newPwd);
@@ -322,6 +327,23 @@ function checkoldPassword(event) {
 	    
 	  });
 	});
+	
+	function encryptAES(plain) {
+    	
+    	var keyBase64 = (document.getElementById("sessionKey") || {}).value || "";
+	    var ivBase64  = (document.getElementById("sessionIv")  || {}).value || "";
+
+	    const key = CryptoJS.enc.Base64.parse(keyBase64);
+	    const iv  = CryptoJS.enc.Base64.parse(ivBase64);
+	    
+   		if (!plain) return "";
+  		const encrypted = CryptoJS.AES.encrypt(
+        	CryptoJS.enc.Utf8.parse(plain),
+        	key,
+        	{ iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }
+      	);
+      return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+    }
 </script>
 </body>
 </html>

@@ -13,15 +13,18 @@ hr {
 	margin-bottom: 12px;
 }
 
+
+
+
 b {
 	font-family: 'Lato', sans-serif;
 }
 
 .cs-table{
 	border: 1px solid black !important;
-	background-color:white;
+	background-color:white !important;
 	font-family: 'Montserrat', sans-serif; 
-	width: 50%;
+	width: 50% !important;
 }
 
 .w-30{

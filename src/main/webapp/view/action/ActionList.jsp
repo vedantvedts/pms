@@ -73,9 +73,9 @@
 													
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN</th>
-															<th class="text-left;">Committee Name</th>
+															<th class="text-left">Committee Name</th>
 															<th>Schedule Date</th>
 															<th>Time</th>									
 														 	<th>Action</th>	
@@ -89,7 +89,7 @@
 														<tr>
 															<td class="center"><%=count %></td>
 															<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - " %></td>
-															<td><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
+															<td class="text-center width-10"><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
 															<td><%=obj[5]!=null?sdf1.format(obj[5]):" - "%></td>
 															
 

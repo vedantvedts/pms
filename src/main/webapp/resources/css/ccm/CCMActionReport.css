@@ -1,84 +1,68 @@
 @charset "ISO-8859-1";
 
-.dwnbtn{
-	align: center;
-}
-
-
-
 
 label{
-font-weight: bold;
-  font-size: 13px;
+	font-weight: bold;
+	font-size: 13px;
 }
+
 body{
-background-color: #f2edfa;
-overflow-x: hidden; 
+	background-color: #f2edfa;
+	overflow-x:hidden !important; 
 }
+
 h6{
 	text-decoration: none !important;
 }
 
+.table button{
+	background-color: white !important;
+	border: 3px solid #17a2b8;
+	padding: .275rem .5rem !important;
+}
+
+.table button:hover {
+	color: black !important;
+}
+
 #table tbody tr td {
-	padding: 2px 3px !important;
-	text-align:center;
+	padding: 4px 3px !important;
 }
 
-.div-container{
-	margin-bottom:20px;
+
+.style1{
+	background-color: transparent;height: 3.8rem;
 }
 
-.div-card-header{
-	background-color: #055C9D;
-}
-
-.fracasActionHeadng{
-	color: white;
+.style2{
 	font-weight: bold;
-	font-size: 1.2rem !important  ;
-	align:left
 }
 
-.assigneeSpan{
+.style3{
+	font-size: 1rem;
+}
+
+
+.style4{
 	float: right;
-	font-size: 17px;
-	margin-top: 5px
 }
 
-.remarksTextArea{
-	display:block !important;
-	 margin-top: -15px;
-	 width: 100%;
+.style5{
+	font-size: 17px; margin-bottom: .0rem;
 }
 
-.div-col{
-	padding-left: 0px
+.style6{
+	width: 7.1%;
 }
 
-#myTable3{
-	margin-top: 20px;
+
+.style7{
+	text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder;
 }
 
-.thSubList{
-	background-color: #346691; 
-	color: white !important;
-	text-align: center;
-	font-size: 18px !important;
-	border-left: 0px solid;
-	text-transform: capitalize;
-}
 
-.thOnDate{
-	text-align: left;
-}
-
-.progressTd{
-	width:15%;
-}
-
-.progress-div{
-	background-color:#cdd0cb !important;
-	height: 1.4rem !important;
+.style8{
+	background-color:#cdd0cb !important;height: 1.4rem !important;width: 140px;
 }
 
 
@@ -184,14 +168,22 @@ h6{
 .width99 { width: 99%; }
 .width100 { width: 100%; }
 
-
-.progress-Zero-div{
-	background-color:#cdd0cb !important;
-	height: 1.4rem !important;
+.style9{
+	background-color:#cdd0cb !important;height: 1.4rem !important;width: 140px;
 }
 
-.progress-bar-zero{
-	width: 100%; 
-	background-color:#cdd0cb !important;
-	color:black;font-weight: bold; 
+.style10{
+	 width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;
+}
+
+.style11{
+	height:50px;
+}
+
+.style12{
+	color:red;
+}
+
+.style13{
+	width:8% !important; 
 }

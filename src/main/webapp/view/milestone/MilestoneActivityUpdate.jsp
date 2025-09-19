@@ -52,7 +52,7 @@ String projectid=(String)request.getAttribute("projectid");
 <div class="container-fluid">
 <div class="row" >
 <div class="col-md-12">
-<div  class="panel-group" ><h5 class="tester"><%=getMA!=null?getMA[1]:"-" %> Milestone Activity Details</h5>  
+<div  class="panel-group" ><h5 class="text-center bg-color text-white"><%=getMA!=null?getMA[1]:"-" %> Milestone Activity Details</h5>  
 <div class="row container-fluid" >
                            <div class="col-md-1 " ><br><label class="control-label">Type</label>  <br>  <b >Main</b>                    		
                         	</div>

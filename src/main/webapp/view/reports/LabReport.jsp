@@ -27,375 +27,8 @@
 <spring:url value="/resources/summernote-lite.css" var="SummernoteCss" />
 <script src="${SummernoteJs}"></script>
 <link href="${SummernoteCss}" rel="stylesheet" />
-<style type="text/css">
- p{
-  text-align: justify; 
-  text-justify: inter-word;
-}
-.form-check-input:checked ~ .form-check-label::before {
-    color: #fff;
-    border-color: #7B1FA2;
-    background-color: red;
-}
-.form-check-input:checked ~ .form-check-label::before {
-    color: #fff;
-    border-color: #7B1FA2;
-    background-color: red;
-}
- th
- {
- 	border: 1px solid black;
- 	text-align: center;
- 	padding: 5px;
-	overflow-wrap: break-word;
- }
- 
- td
- {
- 	border: 1px solid black;
- 	text-align: left;
- 	padding: 5px;
- 	overflow-wrap: break-word;
- }
- 
-  }
- .textcenter{
- 	
- 	text-align: center;
- }
- .border
- {
- 	border: 1px solid black;
- }
- .textleft{
- 	text-align: left;
- }
- 
- .containers {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-.anychart-credits {
-   display: none;
-}
-
-.flex-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-summary[role=button] {
-  background-color: white;
-  color: black;
-  border: 1px solid black ;
-  border-radius:5px;
-  padding: 0.5rem;
-  cursor: pointer;
-  
-}
-summary[role=button]:hover
- {
-color: white;
-border-radius:15px;
-background-color: #4a47a3;
-
-}
- summary[role=button]:focus
-{
-color: white;
-border-radius:5px;
-background-color: #4a47a3;
-border: 0px ;
-
-}
-summary::marker{
-	
-}
-details { 
-  margin-bottom: 5px;  
-}
-details  .content {
-background-color:white;
-padding: 0 1rem ;
-align: center;
-border: 1px solid black;
-}
-
-}
-
-.anchorlink{
-	cursor: pointer;
-	color: #C84B31;
-}
-.anchorlink:hover {
-    text-decoration: underline;
-}
-
-</style>
-
-
-<!-- --------------  tree   ------------------- -->
-<style>
-ul, #myUL {
-  list-style-type: none;
-}
-
-#myUL {
-  margin: 0;
-  padding: 0;
-}
-
-.caret {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-.caret::before {
-  content: "  \25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-down::before {
-  content: "\25B6  ";
-  -ms-transform: rotate(90deg); /* IE 9 */
-  -webkit-transform: rotate(90deg); /* Safari */'
-  transform: rotate(90deg);  
-}
-
-.caret-last {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-
-.caret-last::before {
-  content: "\25B7";
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-
-.nested {
-  display: none;
-}
-
-.active {
-  display: block;
-}
-</style>
-
-<!------------------- tree -------------------->
-<!----------------- model  tree   ---------------------->
-<style>
-
-.caret-1 {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-.caret-last-1 {
-  cursor: pointer;
-  -webkit-user-select: none; /* Safari 3.1+ */
-  -moz-user-select: none; /* Firefox 2+ */
-  -ms-user-select: none; /* IE 10+ */
-  user-select: none;
-}
-
-
-.caret-last-1::before {
-  content: "\25B7" ;
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-1::before {
-  content: "\25B7" ;
-  color: black;
-  display: inline-block;
-  margin-right: 6px;
-}
-
-.caret-down-1::before {
-  content: "\25B6";
-  -ms-transform: rotate(90deg); /* IE 9 */
-  -webkit-transform: rotate(90deg); /* Safari */'
-  transform: rotate(90deg);  
-}
-
-.nested-1 {
-  display: none;
-}
-
-.active-1 {
-  display: block;
-}
-
- .completed{
-	color: green;
-	font-weight: 700;
-}
-
-.briefactive{
-	color: blue;
-	font-weight: 700;
-}
-
-.inprogress{
-	color: #F66B0E;
-	font-weight: 700;
-}
-
-.assigned{
-	color: brown;
-	font-weight: 700;
-}
-
-.notyet{
-	color: purple;
-	font-weight: 700;
-}
-.notassign{
-	color:#AB0072;
-	font-weight: 700;
-}
-.ongoing{
-	color: #F66B0E;
-	font-weight: 700;
-}
-
-.completed{
-	color: green;
-	font-weight: 700;
-}
-
-.delay{
-	color: maroon;
-	font-weight: 700;
-}
-
-.completeddelay{
-	color:#BABD42;
-	font-weight: 700;
-}
-
-.inactive{
-	color: red;
-	font-weight: 700;
-}
-
-.delaydays
-{
-	color:#000000;
-	font-weight: 700;
-}
-
-.select2-container{
-	float:right !important;
-	margin-top: 5px;
-	
-}
-
-.modal-xl{
-	max-width: 1400px;
-}
-
-.sub-title{
-	font-size : 20px !important;
-	color: #145374 !important
-}
-
-.subtables{
-	width: 1100px !important;
-}
-
-.date-column{
-	max-width:60px !important;
-}
- 
-.status-column{
-	max-width:10px !important;
-} 
-
-.resp-column{
-	max-width:80px !important;
-} 
- 
-.currency{
-	color:#367E18 !important;
-	font-style: italic;
-} 
-
-
-.subtables th{
-	/* background-color: #001253 !important; 
-	color: white !important;
-	border-color: white; */
-	color: #001253 !important;
-	
-}
- 
-
- 
- 
-.projectattributetable th{
-	text-align: left !important;
-} 
- 
-.section {
-    margin-bottom: 30px;
-}
-
-.section-heading {
-    border-bottom: 2px solid #007bff; /* Blue border for the heading */
-    margin-bottom: 15px;
-}
-
-.section-heading h3 {
-    color: #007bff;
-    font-weight: bold;
-}
-
-.section-content {
-    background-color: #f8f9fa; /* Light gray background for content */
-    padding: 20px;
-    border-radius: 5px; /* Rounded corners for content area */
-    border: 1px solid #dee2e6; /* Light gray border for the content */
-}
-
-.table-bordered {
-    border: 1px solid #dee2e6;
-}
-
-.table-bordered td {
-    padding: 10px;
-}
-
-textarea.form-control {
-    width: 100%;
-    margin-top: 10px;
-}
-input[type=checkbox] {
-	accent-color: green;
-}
-
-</style>
+   <spring:url value="/resources/css/reports/labReports.css" var="labReports" />     
+<link href="${labReports}" rel="stylesheet" />
 
 </head>
 <body>
@@ -454,9 +87,9 @@ if(proList!=null && proList.size()>0){
 		<div class="row" id="main">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-					<div class="row card-header" style="height:auto;padding:4px;">
+					<div class="row card-header cheader" >
 			   			<div class="col-sm-12 col-md-5">
-							<h3 style="margin-bottom:0px;">Lab Report</h3>
+							<h3 class="heading" >Lab Report</h3>
 						</div>	 
 				<%if(session.getAttribute("LoginType").toString().equalsIgnoreCase("A")){ %>		
 					<div class="col-md-2">
@@ -470,13 +103,13 @@ if(proList!=null && proList.size()>0){
 			       </form>
 			       </div>
 					<%} %> 
-						<div class="col-sm-12 col-md-5" style="float: right;">
+						<div class="col-sm-12 col-md-5 labReportdiv"  >
 						   <form method="get" action="LabReports.htm" id="projectchange">
 							
-							<div class="row" style="justify-content: flex-end;">
-								<div class="form-inline" style="margin-bottom: 4px;">
-	                            		<label class="control-label"style="font-size: 17px"><b>Project Name :&nbsp;</b></label>
-										<select class="form-control  selectdee items" name="projectid"  required="required" style="width:200px;" data-live-search="true" data-container="body" onchange="this.form.submit();">
+							<div class="row end-row ">
+								<div class="form-inline form-dropdown" >
+	                            		<label class="control-label labelDropDown"><b>Project Name :&nbsp;</b></label>
+										<select class="form-control  selectdee items prjDropDown" name="projectid"  required="required"  data-live-search="true" data-container="body" onchange="this.form.submit();">
 											<option disabled="disabled"  selected value="">Choose...</option>
 											<%for(Object[] obj : proList){ 
 												String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";
@@ -486,14 +119,14 @@ if(proList!=null && proList.size()>0){
 											<%} %>
 										</select>
 							   </div>
-							   <button  type="submit" class="btn btn-sm " id="btn-export" style="border: 0 ; margin-left: 30px;size: 25px;background-color: transparent;" formmethod="GET" formaction="LabReportDownload.htm" formtarget="_blank">
+							   <button  type="submit" class="btn btn-sm wrdbtn " id="btn-export"  formmethod="GET" formaction="LabReportDownload.htm" formtarget="_blank">
 							      <!-- <i class="fa fa-file-word-o" aria-hidden="true"></i> -->
-							      <i class="fa fa-file-word-o" style="font-size:17px;color: blue;" title="Lab Report New Word Download"></i>
+							      <i class="fa fa-file-word-o icon-word"  title="Lab Report New Word Download"></i>
                               </button> 
                                     &nbsp;  &nbsp;  &nbsp;
                               <button data-toggle="tooltip" onclick="showDashboardProjectModal()" class="btn btn-sm bg-transparent faa-pulse animated faa-fast" 
                                style="cursor: pointer;" type="button" data-placement="top" title="" data-original-title="Select DashBoard Projects">
-                               <img src="view/images/dashboard.png" style="width: 25px;">
+                               <img src="view/images/dashboard.png"  class="dashboardpng">
                               </button>
 							   
 							</div>		
@@ -513,39 +146,39 @@ if(proList!=null && proList.size()>0){
     <!-- Section 1: Project Attributes -->
     <div class="section">
         <!-- Heading -->
-        <div class="section-heading" style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 15px;">
-            <h3 style="color: #007bff; font-weight: bold;">1. Project Attributes</h3>
+        <div class="section-heading prjAttributediv" style="">
+            <h3  class ="prjAttributeheading" >1. Project Attributes</h3>
         </div>
         
         <!-- Content Below Heading -->
       <!-- Content Below Heading -->
-        <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+        <div class="section-content p-3 maincontnent" >
             
             <!-- Project Name -->
             <div class="attribute">
-                <h5 style="font-weight: bold;">Project Name</h5>
-                <p style="color: black;"><%=ProjectEditData[2]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[2].toString()):"" %></p>
+                <h5 class="prjNameHeading" >Project Name</h5>
+                <p  class="prjNameData" ><%=ProjectEditData[2]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[2].toString()):"" %></p>
             </div>
             
             <div class="attribute">
-                <h5 style="font-weight: bold;">Image</h5>
-                <p style="color: black;"><%if(ProjectEditData[18]!=null){ %>
+                <h5  class="imgHeading">Image</h5>
+                <p  class="imgData"><%if(ProjectEditData[18]!=null){ %>
                
 											<%
 											Path techPath = Paths.get(filePath,projectLabCode,"ProjectSlide",ProjectEditData[18].toString());
 											
 											File tecfile = techPath.toFile();
 											if(tecfile.exists()){ %>
-											<img style="max-width:25cm;max-height:17cm;margin-bottom: 5px" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(tecfile))!=null?StringEscapeUtils.escapeHtml4(Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(tecfile))):""%>" > 											
+											<img  class="imgsize" src="data:image/*;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(tecfile))!=null?StringEscapeUtils.escapeHtml4(Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(tecfile))):""%>" > 											
 											<%} %>
 										
                 <%}else{ %>
-                  <p style="color: black;"><div style="color: red;font-weight: 600">To Upload it Please Enter in the Project Slide..</div> </p>
+                  <p class="imgdata2"><div class="imgdataDiv" >To Upload it Please Enter in the Project Slide..</div> </p>
                   <%} %>
             </div>
             <!-- Brief -->
              <div class="attribute">
-                <h5 style="font-weight: bold;">Introduction</h5>
+                <h5 class="Introclass" >Introduction</h5>
                <%--  <p style="color: black;"><%if(ProjectEditData[17]!=null){ %>
                 <p style="color: black;">  <%=ProjectEditData[17] %></p>
                 <%}else{ %>
@@ -561,61 +194,61 @@ if(proList!=null && proList.size()>0){
 
             <!-- Total Cost -->
             <div class="attribute mt-3">
-                <h5 style="font-weight: bold;">Total Cost</h5>
-                <p style="color: black;"><%if(ProjectEditData[6]!=null){ %>
-                <p style="color: black;">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[6].toString()) %><span style="font-weight: 800;color:black;">(in Lakhs)</span> </p>
+                <h5 class="costheading">Total Cost</h5>
+                <p class="costClass"><%if(ProjectEditData[6]!=null){ %>
+                <p class="costClass"><%=StringEscapeUtils.escapeHtml4(ProjectEditData[6].toString()) %><span style="font-weight: 800;color:black;">(in Lakhs)</span> </p>
                 <%}else{ %>
-                  <p style="color: black;"> - </p>
+                  <p class="costClass"> - </p>
                   <%} %></p>
             </div>
 
             <!-- Category -->
             <div class="attribute mt-3">
-                <h5 style="font-weight: bold;">Category</h5>
+                <h5 class="categoryHeading">Category</h5>
                 <%if(ProjectEditData[19]!=null){ %>
-                <p style="color: black;">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[19].toString()) %> </p>
+                <p class="categoryClass">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[19].toString()) %> </p>
                 <%}else{ %>
-                  <p style="color: black;"> - </p>
+                  <p class="categoryClass"> - </p>
                   <%} %>
             </div>
 
             <!-- Participating Lab -->
             <div class="attribute mt-3">
-            <h5 style="font-weight: bold;">Participating Lab</h5>
+            <h5 class="labParticipatingHeading">Participating Lab</h5>
             <%if(ProjectEditData[10]!=null){ %>
-            <p style="color: black;">  
+            <p class="labParticipatingClass">  
             <%=StringEscapeUtils.escapeHtml4(ProjectEditData[10].toString()) %> 
             </p>
             <%}else{ %>
-            <p style="color: black;"> - </p>
+            <p class="labParticipatingClass"> - </p>
             <%} %>
             </div>
 
             <!-- Scope -->
             <div class="attribute mt-3">
-                <h5 style="font-weight: bold;">Scope</h5>
+                <h5 class="labParticipatingHeading">Scope</h5>
                   <%if(ProjectEditData[11]!=null){ %>
-                <p style="color: black;">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[11].toString()) %> </p>
+                <p class="labParticipatingClass">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[11].toString()) %> </p>
                 <%}else{ %>
-                  <p style="color: black;"> - </p>
+                  <p class="labParticipatingClass"> - </p>
                   <%} %>
             </div>
 
             <!-- Objective -->
             <div class="attribute mt-3">
-                <h5 style="font-weight: bold;">Objective</h5>
-                <p style="color: black;">  <%if(ProjectEditData[9]!=null){ %>
-                <p style="color: black;">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[9].toString()) %> </p>
+                <h5 class="labParticipatingHeading">Objective</h5>
+                <p class="labParticipatingClass">  <%if(ProjectEditData[9]!=null){ %>
+                <p class="labParticipatingClass">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[9].toString()) %> </p>
                 <%}else{ %>
-                  <p style="color: black;"> - </p>
+                  <p class="labParticipatingClass"> - </p>
                   <%} %></p>
             </div>
 
             <!-- Details of Review held till YR -->
             <div class="attribute mt-3">
-                <h5 style="font-weight: bold;">Details of Review held till <%=PastYr%></h5>
-                <p style="color: black;"><b>EB:</b> <%=ProjectEditData[16]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[16].toString()):" - " %></p>
-                <p style="color: black;"><b>PMRC:</b> <%=ProjectEditData[15]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[15].toString()):" - " %></p>
+                <h5 class="labParticipatingHeading">Details of Review held till <%=PastYr%></h5>
+                <p class="labParticipatingClass"><b>EB:</b> <%=ProjectEditData[16]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[16].toString()):" - " %></p>
+                <p class="labParticipatingClass"><b>PMRC:</b> <%=ProjectEditData[15]!=null?StringEscapeUtils.escapeHtml4(ProjectEditData[15].toString()):" - " %></p>
               <%--   <table>
                 <tr><td><b>EB:</b> <%=ProjectEditData[16] %></td>
                 <td><b>PMRC:</b> <%=ProjectEditData[15] %></td>
@@ -624,11 +257,11 @@ if(proList!=null && proList.size()>0){
 
             <!-- Current Stage of Project -->
             <div class="attribute mt-3">
-                <h5 style="font-weight: bold;">Current Stage of Project</h5>
+                <h5 class="labParticipatingHeading">Current Stage of Project</h5>
                 <%if(ProjectEditData[14]!=null){ %>
-                <p style="color: black;">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[14].toString()) %> </p>
+                <p class="labParticipatingClass">  <%=StringEscapeUtils.escapeHtml4(ProjectEditData[14].toString()) %> </p>
                 <%}else{ %>
-                  <p style="color: black;"> - </p>
+                  <p class="labParticipatingClass"> - </p>
                   <%} %>
             </div>
         </div>
@@ -638,17 +271,17 @@ if(proList!=null && proList.size()>0){
     <!-- Section 2: Achievements -->
     <div class="section mt-5">
         <!-- Heading -->
-        <div class="section-heading" style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 15px;">
-            <h3 style="color: #007bff; font-weight: bold;">2. Achievements</h3>
+        <div class="section-heading achievement-div" >
+            <h3 class="achieve-heading" >2. Achievements</h3>
         </div>
         
         <!-- Content Below Heading -->
-        <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+        <div class="section-content p-3 maincontnent" >
             <h5>
             <b>Planned Activities in the Project for Next Year</b>
                <% 
              if(milestoneData!=null && milestoneData.size()>0){%>
-             <button class="btn btn-info" onclick="showModal('N')" style="float:right;">VIEW ALL</button>
+             <button class="btn btn-info milestoneModalButton" onclick="showModal('N')" >VIEW ALL</button>
              <%}else{ %>
              <span> - No Milestones specified for this Project !</span>
              <%} %>
@@ -660,10 +293,10 @@ if(proList!=null && proList.size()>0){
              int count1=0;%>
              <br>
              <table class="table table-bordered">
-  			 <thead style="border:2px solid #dee2e6">
+  			 <thead  class="theadmileStone">
   			 <tr>
-  				<th style="width:10%">SN</th>
-  				<th style="width:60%">Activity Name</th>
+  				<th  class="SN" >SN</th>
+  				<th  class="activityName">Activity Name</th>
   				</tr>
   				</thead>
   				<tbody>
@@ -673,8 +306,8 @@ if(proList!=null && proList.size()>0){
             			 activityidsNextYear.add(pm.getMilestoneActivityId()+"");
             		 %>
             	<tr>
-             	<td style="text-align: center;"><%=(++count1) %>.</td>
-             	<td style="text-align: justify ;"><%= pm.getActivityName()!=null?StringEscapeUtils.escapeHtml4(pm.getActivityName()):" - " %></td> 
+             	<td class="SNData"><%=(++count1) %>.</td>
+             	<td  class="activityNameData"><%= pm.getActivityName()!=null?StringEscapeUtils.escapeHtml4(pm.getActivityName()):" - " %></td> 
              	</tr>
              	<%}}} %>
       			 <%} %>
@@ -687,7 +320,7 @@ if(proList!=null && proList.size()>0){
             <h5><b>Major Achievement/Activities completed during this Year</b>
               <% 
              if(milestoneData!=null && milestoneData.size()>0){%>
-             <button class="btn btn-info" onclick="showModal()" style="float:right;">VIEW ALL</button>
+             <button class="btn btn-info" onclick="showModal()" class="milestoneModalButton">VIEW ALL</button>
              <%}else{ %>
              	<span> - No Milestones specified for this Project !</span>
              <%} %>
@@ -700,10 +333,10 @@ if(proList!=null && proList.size()>0){
         	  List<PfmsLabReportMilestone>presentYearData  = LabReportMilestoneData.stream().filter(e->e.getActivityFor()!=null &&  e.getActivityFor().equalsIgnoreCase("P")).collect(Collectors.toList());
              %>
   			 <table class="table table-bordered">
-  			 <thead style="border:2px solid #dee2e6">
+  			 <thead class="theadmileStone">
   			 <tr>
-  				<th style="width:10%">SN</th>
-  				<th style="width:60%">Activity Name</th>
+  				<th class="SN">SN</th>
+  				<th class="activityName">Activity Name</th>
   				</tr>
   				</thead>
             	 <% for (PfmsLabReportMilestone pm : presentYearData) {
@@ -711,8 +344,8 @@ if(proList!=null && proList.size()>0){
             		%>
             <tbody>
             <tr>
-           	<td style="text-align: center"><%=++sn %>.</td>
-           	<td style="text-align: left;"><%=pm.getActivityName()!=null?StringEscapeUtils.escapeHtml4(pm.getActivityName()):" - "%></td>
+           	<td class="SNData"><%=++sn %>.</td>
+           	<td class="activityNameData"><%=pm.getActivityName()!=null?StringEscapeUtils.escapeHtml4(pm.getActivityName()):" - "%></td>
             </tr>
             </tbody>
              <%}} %>
@@ -723,16 +356,16 @@ if(proList!=null && proList.size()>0){
    
      
        <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="largeModal1" data-backdrop="static">
-  <div class="modal-dialog modal-lg" style="max-width: 1440px;">
+  <div class="modal-dialog modal-lg"  class="mileStonedivModal">
     <div class="modal-content">
     
     <div class="modal-header bg-primary text-light">
         <h5 class="modal-title" id="exampleModalLabel">Project All Major Milestones</h5>
-        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" style="color:red;">×</span>
+        <button type="button" class="close closebutton"  data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true"  class="closeIcon">×</span>
         </button>
       </div>
-           <div class="modal-body" style="overflow: auto;height:600px">
+           <div class="modal-body modalbody" >
            <span class="text-danger mb-2 t">
            To chnage in Anything Activity Name please unchecked the checkbox 
            then update the data and make it checked again.Only the selected Activities will come in Lab Report
@@ -741,12 +374,12 @@ if(proList!=null && proList.size()>0){
              if(milestoneData!=null && milestoneData.size()>0){%>
             	
   				<table class="table table-bordered">
-  				<thead style="border:2px solid #dee2e6">
+  				<thead class="theadmileStone">
   				<tr>
   				<th></th>
-  				<th style="width:10%">SN</th>
-  				<th style="width:15%">Milestone No.</th>
-  				<th style="width:60%">Activity Name</th>
+  				<th class="SN">SN</th>
+  				<th class="mileStoneNo">Milestone No.</th>
+  				<th class="activityName">Activity Name</th>
   				<th>Progress</th>
   				</tr>
   				</thead>
@@ -755,16 +388,16 @@ if(proList!=null && proList.size()>0){
             		%>
             <tbody>
             <tr>
-            <td style="text-align: center;">
-            <input type="checkbox" class="" style="transform:scale(2)" name="ActivityIdS"  <%if(activityidsNextYear.contains(activity[9].toString())){ %> checked <%} %>   value="<%=activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):""%>" >
+            <td class="checkBoxData">
+            <input type="checkbox" class="checkBoxInput"  name="ActivityIdS"  <%if(activityidsNextYear.contains(activity[9].toString())){ %> checked <%} %>   value="<%=activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):""%>" >
             </td>
-            <td style="text-align: center;"> <%=++count1 %></td>
-            <td style="text-align: center;">Milestone - <%=activity[10]!=null?StringEscapeUtils.escapeHtml4(activity[10].toString()):" - "%></td>
+            <td class="SNData"> <%=++count1 %></td>
+            <td class="mileStoneNodATA">Milestone - <%=activity[10]!=null?StringEscapeUtils.escapeHtml4(activity[10].toString()):" - "%></td>
             <td> 
         	  <%--   <textarea class="form-control" id="text<%=activity[9].toString()%>" > <%=activity[1].toString() %></textarea> --%>
         
             <div class="Editor" ></div>
-			<textarea  name="description" style="display: none;" class="form-control" id="textNext<%=activity[9].toString()%>" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters">
+			<textarea  name="description"  class="form-control desc" id="textNext<%=activity[9].toString()%>" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters">
 			
 			<%if(NextYearMilestoneData!=null && NextYearMilestoneData.size()>0){ %>
 			<%=NextYearMilestoneData.get(0).getActivityName()!=null?NextYearMilestoneData.get(0).getActivityName():" - " %>
@@ -786,7 +419,7 @@ if(proList!=null && proList.size()>0){
             });
             </script>
              </td>
-            <td style="text-align: center;">
+            <td class="mileStoneNodATA">
         		<%=activity[11]!=null?StringEscapeUtils.escapeHtml4(activity[11].toString()):" - "%>
             </td>
             </tr>
@@ -805,16 +438,16 @@ if(proList!=null && proList.size()>0){
      
    <!-- For Present year  -->
   <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="largeModal" data-backdrop="static">
-  <div class="modal-dialog modal-lg" style="max-width: 1440px;">
+  <div class="modal-dialog modal-lg" class="mileStonedivModal">
     <div class="modal-content">
     
     <div class="modal-header bg-primary text-light">
         <h5 class="modal-title" id="exampleModalLabel">Project All Major Milestones</h5>
-        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" style="color:red;">×</span>
+        <button type="button" class="close closebutton"  data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="closeIcon">×</span>
         </button>
       </div>
-           <div class="modal-body" style="overflow: auto;height:600px">
+           <div class="modal-body modalbody" >
            <span class="text-danger mb-2 t">
            To chnage in Anything Activity Name please unchecked the checkbox 
            then update the data and make it checked again.Only the selected Activities will come in Lab Report
@@ -823,12 +456,12 @@ if(proList!=null && proList.size()>0){
              if(milestoneData!=null && milestoneData.size()>0){%>
             	
   				<table class="table table-bordered">
-  				<thead style="border:2px solid #dee2e6">
+  				<thead class="theadmileStone">
   				<tr>
   				<th></th>
-  				<th style="width:10%">SN</th>
-  				<th style="width:15%">Milestone No.</th>
-  				<th style="width:60%">Activity Name</th>
+  				<th class="SN">SN</th>
+  				<th class="mileStoneNo">Milestone No.</th>
+  				<th class="activityName">Activity Name</th>
   				<th>Progress</th>
   				</tr>
   				</thead>
@@ -837,16 +470,16 @@ if(proList!=null && proList.size()>0){
             		%>
             <tbody>
             <tr>
-            <td style="text-align: center;">
-            <input type="checkbox" class="" style="transform:scale(2)" name="ActivityId"  <%if(activityids.contains(activity[9].toString())){ %> checked <%} %>   value="<%=activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):" - "%>" >
+            <td class="checkBoxData">
+            <input type="checkbox" class="checkBoxInput"  name="ActivityId"  <%if(activityids.contains(activity[9].toString())){ %> checked <%} %>   value="<%=activity[9]!=null?StringEscapeUtils.escapeHtml4(activity[9].toString()):" - "%>" >
             </td>
-            <td style="text-align: center;"> <%=++count %></td>
-            <td style="text-align: center;">Milestone - <%=activity[10]!=null?StringEscapeUtils.escapeHtml4(activity[10].toString()):" - "%></td>
+            <td class="checkBoxData"> <%=++count %></td>
+            <td class="checkBoxData">Milestone - <%=activity[10]!=null?StringEscapeUtils.escapeHtml4(activity[10].toString()):" - "%></td>
             <td> 
         	  <%--   <textarea class="form-control" id="text<%=activity[9].toString()%>" > <%=activity[1].toString() %></textarea> --%>
         
             <div class="Editor" ></div>
-			<textarea  name="description" style="display: none;" class="form-control" id="text<%=activity[9].toString()%>" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters">
+			<textarea  name="description"  class="form-control desc" id="text<%=activity[9].toString()%>" maxlength="4000" rows="5" cols="53" placeholder="Maximum 4000 Chararcters">
 			
 			<%if(SubLabReportMilestoneData!=null && SubLabReportMilestoneData.size()>0){ %>
 			<%=SubLabReportMilestoneData.get(0).getActivityName()!=null?SubLabReportMilestoneData.get(0).getActivityName():" - " %>
@@ -868,7 +501,7 @@ if(proList!=null && proList.size()>0){
             });
             </script>
              </td>
-            <td style="text-align: center;">
+            <td class="checkBoxData">
         		<%=activity[11]!=null?StringEscapeUtils.escapeHtml4(activity[11].toString()):"-"%>
             </td>
             </tr>
@@ -876,7 +509,7 @@ if(proList!=null && proList.size()>0){
              <%}} %>
              	</table>
            </div>
-    		<div align="center" class="mt-2 mb-2"><button class="btn btn-warning" onclick="updateAll('P')">UPDATE</button></div>
+    		<div class="checkBoxData" class="mt-2 mb-2"><button class="btn btn-warning" onclick="updateAll('P')">UPDATE</button></div>
       
     </div>
   </div>
@@ -889,12 +522,12 @@ if(proList!=null && proList.size()>0){
     <!-- Section 3: Likely Spin-Off -->
     <div class="section mt-5">
         <!-- Heading -->
-        <div class="section-heading" style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 15px;">
-            <h3 style="color: #007bff; font-weight: bold;">3. Likely Spin-Off including application for Civil use (if any)</h3>
+        <div class="section-heading" >
+            <h3 >3. Likely Spin-Off including application for Civil use (if any)</h3>
         </div>
         
         <!-- Content Below Heading -->
-        <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+        <div class="section-content p-3" >
             <form action="LabReportDataAdd.htm" method="get">
                 <div class="form-group">
                     <textarea class="form-control" name="SpinOffData" id="ckeditor"  rows="5" cols="50" maxlength="5" placeholder="Enter Spin-Off details here..."><%if(editorData!=null && editorData[2]!=null){ %> <%=editorData[2].toString() %>  <%}%></textarea> 
@@ -910,12 +543,12 @@ if(proList!=null && proList.size()>0){
 
     <div class="section mt-5">
         <!-- Heading -->
-        <div class="section-heading" style="border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-bottom: 15px;">
-            <h3 style="color: #007bff; font-weight: bold;">4.Details of LSI/DCPP/PA (If Nominated)</h3>
+        <div class="section-heading" >
+            <h3 >4.Details of LSI/DCPP/PA (If Nominated)</h3>
         </div>
         
         <!-- Content Below Heading -->
-        <div class="section-content p-3" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+        <div class="section-content p-3" >
             <form action="LabReportDataAdd.htm" method="get">
                 <div class="form-group">
 
@@ -959,12 +592,12 @@ if(proList!=null && proList.size()>0){
 <!-- modal  -->
 
 <div class="modal fade bd-example-modal-lg" id="DashboardProjectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document" style="max-width: 1440px;">
+  <div class="modal-dialog modal-lg" role="document" class="mileStonedivModal">
     <div class="modal-content">
       <div class="modal-header bg-primary text-light">
         <h5 class="modal-title" id="exampleModalLabel">Lab Reports Projects</h5>
-        <button type="button" class="close" style="text-shadow: none!important" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true" style="color:red;">&times;</span>
+        <button type="button" class="close closebutton"  data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="closeIcon">&times;</span>
         </button>
       </div>
       <div class="modal-body">
@@ -1015,24 +648,24 @@ if(proList!=null && proList.size()>0){
         	</div> --%>
      
            <% if(MainProjectList!=null && MainProjectList.size()>0){ %>
-      <div class="row ml-2 mb-3 mt-2" style="font-weight: 800;">
-      Main projects : &nbsp;<input id="mainProject" style="transform:scale(1.5)" type="checkbox"  > 
+      <div class="row ml-2 mb-3 mt-2" class="subPrjDiv">
+      Main projects : &nbsp;<input id="mainProject"  type="checkbox"  > 
       </div>
       <%} %>
       <div class="row" style="">
       <% 
       if(MainProjectList!=null && MainProjectList.size()>0){
       for(Object[]obj:MainProjectList) {%>
-      <div class="col-md-2 ml-4 mt-3" style="font-weight: 800;">
-      <input class="mainProject" type="checkbox" name="projectId" style="transform:scale(1.5)" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>"> 
-         &nbsp;   <span style="font-weight: 700;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()):"-" %></span> 
+      <div class="col-md-2 ml-4 mt-3" class="subPrjDiv">
+      <input class="mainProject" type="checkbox" name="projectId"  value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>"> 
+         &nbsp;   <span class="subPrjCheckBox-span"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()):"-" %></span> 
       </div>
        <%}} %>
        </div> 
         <hr class="mt-2">
        <%if(subProjectList!=null && subProjectList.size()>0){ %>
-      <div class="row ml-2 mb-3 mt-2" style="font-weight: 800">
-     		 Sub projects :   &nbsp;    <input id="subProject" style="transform:scale(1.5)" type="checkbox"  > 
+      <div class="row ml-2 mb-3 mt-2" class="subPrjDiv">
+     		 Sub projects :   &nbsp;    <input id="subProject"  type="checkbox"  > 
      		 
       </div>
       <%} %>
@@ -1040,8 +673,8 @@ if(proList!=null && proList.size()>0){
       <%if(subProjectList!=null && subProjectList.size()>0){
       for(Object[]obj:subProjectList) {%>
        <div class="col-md-2 ml-4 mt-3" >
-       <input class="subProject" style="transform:scale(1.5)" type="checkbox" name="projectId" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>">
-       &nbsp;<span style="font-weight: 700;"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()):"-" %></span> 
+       <input class="subProject subPrjCheckBox"  type="checkbox" name="projectId" value="<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):""%>">
+       &nbsp;<span class="subPrjCheckBox-span"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):"-" %>&nbsp;/&nbsp;<%=obj[17]!=null?StringEscapeUtils.escapeHtml4(obj[17].toString()):"-" %></span> 
       </div>
       <%}} %>
       </div>
@@ -1518,16 +1151,13 @@ var editor_config = {
 			datatype:'json',
 			success :  function(result) {
 				
-				if (result > 0) {
-	                alert("Introduction added successfully!");
-	                location.reload();
-	            } else {
-	                alert("Introduction should not contain HTML TAG");
-	            }
-	        },
-	        error: function () {
-	            alert("Server error. Please try again.");
-	        }
+				var ajaxresult = JSON.parse(result);
+				
+				 if(ajaxresult>0){
+				    	alert("Introduction added successfully !")
+				    	location.reload();
+				    }
+			}
 		})
 		}else{
 			event.preventDefault();

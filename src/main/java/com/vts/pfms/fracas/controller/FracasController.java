@@ -119,14 +119,13 @@ private boolean isValidFileType(MultipartFile file) {
 		
 		
 		
-	    String contentType = file.getContentType();
-	    String originalFilename = file.getOriginalFilename();
 		
 	    if (file == null || file.isEmpty()) {
 	        return true; // nothing uploaded, so it's valid
 	    }
 
-	    
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
 	    
 	  
 	    if (contentType == null) {

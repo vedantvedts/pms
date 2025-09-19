@@ -66,7 +66,7 @@ Object[] tdsdata=(Object[])request.getAttribute("tdsdata");
  <div class="col-sm-8 topdiv"  >
 <div class="card shadow-nohover"  >
 <div class="card-header headerDiv" >
-                    <b class="text-white">TD Master Edit</b>
+                    <b class="text-white style-1">TD Master Edit</b>
         		</div>
 <div class="card-body">
 

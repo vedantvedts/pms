@@ -2104,6 +2104,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 									<th class="width20">MS</th>
 									<th class="width50">L</th>
 									<th class="width275">Action Plan </th>	
+									<th class="width110" >Start Date</th>	
 									<th class="width110" >PDC</th>	
 									
 									<%if(!session.getAttribute("labcode").toString().equalsIgnoreCase("ADE")) {%>
@@ -2188,6 +2189,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 													&nbsp;&nbsp;<%=obj[14] %>
 												<%} %>
 											</td>
+											<td class="text-center"><%=fc.sdfTordf(obj[7].toString()) %> </td>
 											<td  class="text-center">
 												
 												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[29].toString())) ){ %> 

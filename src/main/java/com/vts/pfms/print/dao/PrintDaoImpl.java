@@ -63,7 +63,7 @@ public class PrintDaoImpl implements PrintDao {
 //	private static final String MILESTONES="SELECT ma.milestoneactivityid,ma.projectid,ma.milestoneno,ma.activityname,ma.orgstartdate,ma.orgenddate,ma.startdate,ma.enddate, ma.activitytype AS 'activitytypeid' , mat.activitytype,ma.activitystatusid,mas.activityshort, ma.ProgressStatus,ma.StatusRemarks ,ma. dateofcompletion FROM milestone_activity ma, milestone_activity_type mat ,milestone_activity_status mas  WHERE ma.activitytype=mat.activitytypeid AND ma.activitystatusid=mas.activitystatusid AND ma.ProgressStatus>0 AND projectid=:projectid";
 	private static final String MILESTONES="CALL Pfms_Milestone_Level_Prior(:projectid,:committeeid)";
 	private static final String EBANDPMRCCOUNT="SELECT c.CommitteeShortName, COUNT(scheduleid) AS 'COUNT',MAX(scheduledate) AS scheduledate FROM committee_schedule a, committee_meeting_status b, committee c \r\n"
-			+ "WHERE a.CommitteeId = c.CommitteeId AND a.ScheduleFlag=b.MeetingStatus AND MeetingStatusId>6 AND scheduledate<CURDATE() AND c.IsBriefing='Y' AND a.IsActive=1\r\n"
+			+ "WHERE a.CommitteeId = c.CommitteeId AND a.ScheduleFlag=b.MeetingStatus AND MeetingStatusId>6 AND scheduledate<=CURDATE() AND c.IsBriefing='Y' AND a.IsActive=1\r\n"
 			+ "AND CASE WHEN a.ProjectId=0 THEN a.ProgrammeId IN (SELECT pp.programmeid FROM pfms_programme_projects pp WHERE pp.projectid =:projectid AND pp.IsActive=1) ELSE a.ProjectId =:projectid END\r\n"
 			+ "GROUP BY c.CommitteeShortName";
 	private static final String PROJECTATTRIBUTES="SELECT pm.projectcode, pm.projectname, pm.ProjectDescription, pm.sanctiondate, pm.objective, pm.deliverable, pm.pdc,   ROUND(pm.TotalSanctionCost/100000,2) AS 'TotalSanctionCost',   ROUND(pm.SanctionCostRE/100000,2) AS 'SanctionCostRE', ROUND(pm.SanctionCostFE/100000,2) AS 'SanctionCostFE', pm.WorkCenter, pm.projectcategory,pc.classification,  pm.projecttype AS 'projecttypeid',pt.projecttype ,pma.labparticipating,pm.EndUser,pm.Scope  FROM project_master pm, pfms_security_classification pc, project_type pt , project_main pma  WHERE pm.projectcategory=pc.classificationid AND pm.projecttype=pt.projecttypeid AND pm.projectmainid=pma.projectmainid AND projectid=:projectid";
@@ -219,8 +219,8 @@ public class PrintDaoImpl implements PrintDao {
 	}
 	
 	private static final String PROJECTCOMMITTEEMEETINGSCOUNT = "SELECT :CommitteeCode,COUNT(cs.scheduleid) AS 'COUNT' FROM committee_schedule cs , committee_meeting_status cms, committee c \r\n"
-			+ "WHERE  cs.scheduledate<CURDATE() AND cs.isactive=1 AND c.committeeShortname=:CommitteeCode AND cs.committeeid = c.committeeid AND cms.meetingstatus=cs.scheduleflag AND cms.meetingstatusid>6 \r\n"
-			+ "AND ( (cs.ProjectId =:ProjectId AND cs.Divisionid=:Divisionid AND cs.InitiationId=:InitiationId AND cs.CARSInitiationId=:CARSInitiationId AND cs.ProgrammeId=:ProgrammeId) OR (cs.ProgrammeId IN (SELECT pp.programmeid FROM pfms_programme_projects pp WHERE pp.ProjectId =2 AND pp.IsActive=1)) )";
+			+ "WHERE  cs.scheduledate<=CURDATE() AND cs.isactive=1 AND c.committeeShortname=:CommitteeCode AND cs.committeeid = c.committeeid AND cms.meetingstatus=cs.scheduleflag AND cms.meetingstatusid>6 \r\n"
+			+ "AND ( (cs.ProjectId =:ProjectId AND cs.Divisionid=:Divisionid AND cs.InitiationId=:InitiationId AND cs.CARSInitiationId=:CARSInitiationId AND cs.ProgrammeId=:ProgrammeId) OR (cs.ProgrammeId IN (SELECT pp.programmeid FROM pfms_programme_projects pp WHERE pp.ProjectId =:ProjectId AND pp.IsActive=1)) )";
 	@Override
 	public Object[] ProjectCommitteeMeetingsCount(String projectId, String divisionId, String initiationId, String carsInitiationId, String programmeId, String committeeCode) throws Exception 
 	{
@@ -448,7 +448,7 @@ public class PrintDaoImpl implements PrintDao {
 	
 	private static final String REVIEWMEETINGLIST ="SELECT cs.scheduleid, c.committeeshortname, c.committeename, cs.scheduledate, cs.meetingid\r\n"
 			+ "FROM committee_schedule cs JOIN committee c ON cs.committeeid = c.committeeid JOIN committee_meeting_status cms ON cs.scheduleflag = cms.meetingstatus\r\n"
-			+ "WHERE cms.meetingstatusid > 6 AND c.committeeShortName = :committeecode AND cs.scheduledate < CURDATE()\r\n"
+			+ "WHERE cms.meetingstatusid > 6 AND c.committeeShortName = :committeecode AND cs.scheduledate <= CURDATE()\r\n"
 			+ "    AND ( cs.projectid = :projectid OR cs.programmeid IN (SELECT pp.programmeid FROM pfms_programme_projects pp WHERE pp.projectid = :projectid AND pp.IsActive=1))\r\n"
 			+ "ORDER BY cs.scheduledate";
 	@Override
