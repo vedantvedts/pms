@@ -50,6 +50,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         audit.setLoginDate(LocalDate.now());
         audit.setLoginDateTime(LocalDateTime.now());
         audit.setIpAddress(ip);
+        audit.setIsactive(1);
 
         auditRepo.save(audit);
         

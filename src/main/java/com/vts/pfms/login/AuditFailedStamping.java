@@ -27,4 +27,6 @@ public class AuditFailedStamping {
 
     private String IpAddress;
     
+    private Integer isactive;
+    
 }

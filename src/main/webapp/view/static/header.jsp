@@ -751,6 +751,23 @@ function changed() {
 				
 				})
 				
+				
+				document.addEventListener("DOMContentLoaded", function () {
+    // Select all input fields
+    var inputs = document.querySelectorAll("input");
+
+    inputs.forEach(function(input) {
+        input.setAttribute("autocomplete", "off");
+    });
+});
+				
+				document.addEventListener("DOMContentLoaded", function () {
+				    var elements = document.querySelectorAll("input, textarea, select");
+
+				    elements.forEach(function(el) {
+				        el.setAttribute("autocomplete", "off");
+				    });
+				});
 
 </script>
 

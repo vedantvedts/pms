@@ -11,6 +11,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,12 +27,15 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 	
 	
 	 private final LoginAttemptService loginAttemptService;
+	 private final AuditFailedStampingRepository auditRepo;
 	    public LoginSuccessHandler(AuditFailedStampingRepository auditRepo,LoginAttemptService loginAttemptService) {
 	       
 	        this.loginAttemptService = loginAttemptService;
+	        this.auditRepo = auditRepo;
 	    }
 	
     @Override
+    @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request,   HttpServletResponse response, Authentication authentication ) throws IOException  {
 
 
@@ -69,6 +73,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             return;
         }
+        
+        auditRepo.deactivateByUserName(username);
         
         System.out.println(expiresAt);
         System.out.println(now);
