@@ -56,7 +56,7 @@ String seslabid=(String)session.getAttribute("labid");
  <div class="col-sm-8 topdiv"  >
 <div class="card shadow-nohover"  >
 <div class="card-header headerCard" >
-                    <b class="text-white">Officer Edit</b>
+                    <b class="text-white style1">Officer Edit</b>
         		</div>
 <div class="card-body">
 

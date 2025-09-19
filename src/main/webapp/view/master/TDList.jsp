@@ -76,8 +76,8 @@
 	                                         <td><input type="radio" name="tdid" value=<%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - "%>  ></td> 
 	                                        <td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):" - " %></td>
 	                                         <td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %></td>
-	                                         <td class="tData"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
-	                                         <td class="tData"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())+", "+StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else{ %>-<%} %></td>
+	                                         <td class="text-left"><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></td>
+	                                         <td class="text-left"> <%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())+", "+StringEscapeUtils.escapeHtml4(obj[5].toString())%><%}else{ %>-<%} %></td>
 	                                     </tr>
 	                                 <%} %>
 	                             </tbody>

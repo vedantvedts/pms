@@ -48,7 +48,7 @@
 			<div class="col-sm-12 mt-3" >
 				<div class="card shadow-nohover">
 					<div class="card-header bg-header">
-						<b class="text-white">Designation Add </b>
+						<b class="text-white style1">Designation Add </b>
 					</div>
 					<div class="card-body">
 

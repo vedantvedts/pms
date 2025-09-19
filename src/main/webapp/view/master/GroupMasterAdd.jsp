@@ -55,7 +55,7 @@ List<Object[]> tdaddlist=(List<Object[]>)request.getAttribute("tdaddlist");
  <div class="col-sm-8 main-div"  >
 <div class="card shadow-nohover"  >
 <div class="card-header headerdiv" >
-                    <h3 class="text-white">Group Add </h3>
+                    <h3 class="text-white style1">Group Add </h3>
         		</div>
         		
 		<div class="card-body">

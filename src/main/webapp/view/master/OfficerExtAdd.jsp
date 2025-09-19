@@ -55,7 +55,7 @@ List<Object[]> LabList=(List<Object[]>)request.getAttribute("LabList");
  <div class="col-sm-8"  >
 <div class="card shadow-nohover"  >
 <div class="card-header headerCard" >
-	<h4><b class="text-white">External Officer Add</b></h4>
+	<h4><b class="text-white style1">External Officer Add</b></h4>
 </div>
 <div class="card-body">
 

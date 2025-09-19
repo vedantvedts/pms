@@ -49,7 +49,7 @@ List<Object[]> desigList=(List<Object[]>)request.getAttribute("Designation");
 				<div class="card shadow-nohover">
 					<div class="card-header bg-header">
 
-						<h3 class="text-white">Add New Expert</h3>
+						<h3 class="text-white style1">Add New Expert</h3>
 
 					</div>
 					<form action="ExpertAddSubmit.htm" method="post" name="addcommitteefrm" id="addcommitteefrm" >

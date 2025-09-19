@@ -36,7 +36,12 @@ b {
 }
 
 .cs-header{
-	background-color: #055C9D;
+	background-color: #055C9D !important;
+	
+}
+
+.style1{
+	font-size: 20px;
 }
 
 
