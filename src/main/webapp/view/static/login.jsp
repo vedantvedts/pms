@@ -10,7 +10,9 @@
 <html>
 <head>
 <title>PMS Login</title>
-
+<%
+   String cspNonce = (String) request.getAttribute("cspNonce");
+%>
 
 <jsp:include page="../static/dependancy.jsp"></jsp:include>
 <spring:url value="/resources/css/LoginPage.css" var="loginPageCss" />
@@ -51,7 +53,7 @@
     </div>
   </div>
 </div>
-<script>
+<script nonce="<%= cspNonce %>">
 document.getElementById("versionerror").click();
 const paragraphElement = document.getElementById("version");
 const originalText = paragraphElement.textContent; // Store original text for backup
@@ -74,7 +76,7 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
       			<div class="header-right clearfix">
         			<div class="float-element">
         				<a class="" href="" target="_blank">
-        					<img  class ="drdologo" src="view/images/drdologo.png"alt="">
+        					<img  class ="drdologo" src="view/images/drdo-logo.png"alt="">
         				</a>
         			</div>
       			</div>
@@ -288,7 +290,7 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 	</div> 
 
 
-<script type="text/javascript">
+<script type="text/javascript" nonce="<%= cspNonce %>">
 $("#success-alert") .fadeTo(3000, 1000).slideUp(1000, function ( ) {
     $("#success-alert").slideUp(1000);
 });
@@ -299,7 +301,7 @@ $("#error-alert") .fadeTo(3000, 1000).slideUp(1000, function ( ) {
 
 </script>
 
-<script>
+<script nonce="<%= cspNonce %>">
     $(document).ready(function() {
     	
     	document.getElementById("refreshCaptcha").addEventListener("click", function() {
@@ -328,13 +330,13 @@ $("#error-alert") .fadeTo(3000, 1000).slideUp(1000, function ( ) {
     }); 
 </script>
 <% if( request.getAttribute("version").equals("no")){%>
-<script>
+<script nonce="<%= cspNonce %>">
 const replacementWord = "<%= request.getAttribute("browser")%>";
 console.log("browser name: "+replacementWord);
 console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint") %>");
 </script>
 <%}%>
-<script type="text/javascript">
+<script type="text/javascript" nonce="<%= cspNonce %>">
 
 $("#myTable1,#myTable2,#myTable3").DataTable({
     "lengthMenu": [10,20, 50, 75, 100],
@@ -357,7 +359,7 @@ $("#myTable1,#myTable2,#myTable3").DataTable({
 	}
 </script>
 
-<script>
+<script nonce="<%= cspNonce %>">
 document.addEventListener("DOMContentLoaded", function () {
   var form = document.getElementById("loginForm");
   if (!form) return;
