@@ -113,7 +113,7 @@ public interface MilestoneService {
 	public List<Object[]> FileRepDocsList(String projectId)throws Exception;
 	public Optional<FileRepUploadNew> getFileById(Long id)throws Exception;
 	public int getFileRepMasterNames(String projectId, String fileType, String fileId, String fileName) throws Exception;
-	public long removeFileAttachment(String projectId, String techDataId, String techAttachId, String userId) throws Exception;
+	public long removeFileAttachment(String projectId, String techDataId, String techAttachId, String userId, String relativePoints) throws Exception;
 	public MilestoneActivityLevel getMilestoneActivityLevelById(String milesMainId);
 	public long MilestoneActivityLevelSave(com.vts.pfms.milestone.model.MilestoneActivityLevel level1);
 	public String getMainLevelId(Long getActivityId)throws Exception;
