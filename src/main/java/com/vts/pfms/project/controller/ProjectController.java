@@ -5284,7 +5284,7 @@ public class ProjectController
 			req.setAttribute("projectid", projectid);
 			req.setAttribute("actionassignid", actionassignid);
 			req.setAttribute("projectlist", projectlist);
-
+			req.setAttribute("actionmainid", actionmainid);
 			return "project/ProjectRiskData";
 		}
 		catch (Exception e) {
@@ -5328,9 +5328,13 @@ public class ProjectController
 			String actionassignid=req.getParameter("actionassignid");
 
 			if(InputValidator.isContainsHTMLTags(req.getParameter("Impact"))) {
+				redir.addAttribute("actionmainid",req.getParameter("actionmainid"));
+				redir.addAttribute("actionassignid",req.getParameter("actionassignid"));
 				return  redirectWithError(redir,"ProjectRiskData.htm","Impact should not contain HTML elements !");
 			}
 			if(InputValidator.isContainsHTMLTags(req.getParameter("mitigationplans"))) {
+				redir.addAttribute("actionmainid",req.getParameter("actionmainid"));
+				redir.addAttribute("actionassignid",req.getParameter("actionassignid"));
 				return  redirectWithError(redir,"ProjectRiskData.htm","Mitigationplans should not contain HTML elements !");
 			}
 			
@@ -5381,6 +5385,9 @@ public class ProjectController
 			String riskId = req.getParameter("RiskId");
 			String remarks = req.getParameter("Remarks");
 			if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))) {
+				redir.addAttribute("actionmainid",req.getParameter("actionMainId"));
+				redir.addAttribute("actionassignid",req.getParameter("actionAssignId"));
+				redir.addAttribute("RiskId",req.getParameter("RiskId"));
 				return  redirectWithError(redir,"ProjectRiskData.htm","Remarks should not contain HTML elements !");
 			}
 			PfmsRiskDto dto=new PfmsRiskDto();
@@ -5417,9 +5424,13 @@ public class ProjectController
 			String actionassignid=req.getParameter("actionassignid");
 
 			if(InputValidator.isContainsHTMLTags(req.getParameter("Impact"))) {
+				redir.addAttribute("actionmainid",req.getParameter("actionmainid"));
+				redir.addAttribute("actionassignid",req.getParameter("actionassignid"));
 				return  redirectWithError(redir,"ProjectRiskData.htm","Impact should not contain HTML elements !");
 			}
 			if(InputValidator.isContainsHTMLTags(req.getParameter("mitigationplans"))) {
+				redir.addAttribute("actionmainid",req.getParameter("actionmainid"));
+				redir.addAttribute("actionassignid",req.getParameter("actionassignid"));
 				return  redirectWithError(redir,"ProjectRiskData.htm","Mitigationplans should not contain HTML elements !");
 			}
 
