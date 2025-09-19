@@ -157,7 +157,7 @@
 				            	<%}else{ %>
 	          					<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&Empid=<%=EmpId %>" >BACK</a>
 	          					<%} %>
-				            	<button type="reset" class="btn btn-sm reset tex-white"  onclick="formreset()"> RESET</button>
+				            	<button type="reset" class="btn btn-sm reset text-white"  onclick="formreset()"> RESET</button>
 	                           	<% if(SubList.size()>0 && (!EmpId.equalsIgnoreCase(Assignee[22].toString())||Assignee[22].toString().equalsIgnoreCase(Assignee[23].toString()))){ %>  
 	                      		<button type="button" class="btn btn-success btn-sm submit" onclick="backfrmsubmit('fwdfrm');"  title="To Review and Close">Action Forward</button>
 	                           	<%} %>

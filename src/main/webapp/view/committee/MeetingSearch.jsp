@@ -50,7 +50,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-					<div class="card-header ">  
+					<div class="card-header mb-3">  
 
 					<div class="row">
 						<h4 class="col-md-5">Meeting Id Search</h4>  
@@ -87,16 +87,11 @@
 												<div id="toolbar">
 													
 												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+												<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN </th>
 															<th>Meeting Id</th>
 															<th>Date & Time</th>
@@ -114,7 +109,7 @@
 												   					%>
 												   					
 																	<tr>
-																		<td><%=count %></td>
+																		<td class="text-center"><%=count %></td>
 																		<td>
 																			<form action="CommitteeMinutesViewAll.htm" method="post" >
 																				<button  type="submit" class="btn btn-outline-info" formtarget="_blank" ><%=obj[7] %></button>
@@ -122,8 +117,8 @@
 																				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																			</form>
 																		</td>
-																		<td><%=obj[3]!=null?sdf.format(obj[3]): " - " %> - <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
-																		<td> <%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%></td>
+																		<td class="text-center"><%=obj[3]!=null?sdf.format(obj[3]): " - " %> - <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
+																		<td class="text-center"> <%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%></td>
 																		<td><%if(obj[10]!=null){%> <%=StringEscapeUtils.escapeHtml4(obj[10].toString())%> <%}else{ %> &nbsp;&nbsp;&nbsp;&nbsp;- <%} %></td>																				
 																	</tr>
 																<% count++;
@@ -185,6 +180,16 @@ $('#tdate').daterangepicker({
 	locale : {
 		format : 'DD-MM-YYYY'
 	}
+});
+
+
+$(document).ready(function(){
+	  $("#myTable12").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 10
+
+	});
 });
 
 

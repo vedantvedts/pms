@@ -12,6 +12,8 @@
 
 <spring:url value="/resources/css/action/assigneeList.css" var="assigneeList" />
 <link href="${assigneeList}" rel="stylesheet" />
+<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
+<link href="${actionCommon}" rel="stylesheet" />
 
 
 <title>Assignee List</title>
@@ -106,14 +108,14 @@
 																<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - " %>
 															<%} %>
 															</td>
-															<td><span <%if(LocalDate.now().toString().equalsIgnoreCase(obj[4].toString())) {%>class="text-primary spans"<%} %>
+															<td class="text-center"><span <%if(LocalDate.now().toString().equalsIgnoreCase(obj[4].toString())) {%>class="text-primary spans"<%} %>
 															<%if(LocalDate.now().isAfter(LocalDate.parse(obj[4].toString()))){ %>class="text-danger spans"<%} %>
 															<%if(LocalDate.now().isBefore(LocalDate.parse(obj[4].toString()))){ %>class="text-success spans"<%} %>
 															>
 															<%=obj[4]!=null?sdf.format(obj[4]):""%></span>
 															</td>
-															<td><%=obj[3]!=null?sdf.format(obj[3]):""%></td>
-															<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
+															<td class="text-center"><%=obj[3]!=null?sdf.format(obj[3]):""%></td>
+															<td class="width-20"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
 															<td><%if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %><%}else{ %>-<%} %></td>
 															
 															

@@ -117,7 +117,7 @@
 						<div id="calendar" class="float-left calendarWidth"></div>
 						<div id="meetings" class="float-right meetingsWidth">
 						<div class="text-center text-white meetingsFont">Meetings</div>
-							<div class="mt-4" id="scrollclass scrollHeight">
+							<div class="mt-4 scrollHeight" id="scrollclass">
 								<%if(!committeeschedulelist.isEmpty()){
 									for(Object[]obj:committeeschedulelist){ %>
 				 						<a class="tag meetingsp committeeScheduleViewDecor" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6].toString()%>

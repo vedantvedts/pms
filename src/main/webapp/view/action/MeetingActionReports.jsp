@@ -121,7 +121,7 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN</th>
 															<th>Action Id</th>	
 															<th class="width-110px width-7">PDC</th>
@@ -155,7 +155,7 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 																			
 																			</form> 
 																		</td>
-																		<td><%=sdf1.format(obj[6])%></td>
+																		<td class="text-center"><%=sdf1.format(obj[6])%></td>
 																		<td>
 															               <%if(obj[7]!=null && obj[7].toString().length()>100){ %>
 															               <%=StringEscapeUtils.escapeHtml4(obj[7].toString()).substring(0, 100) %>

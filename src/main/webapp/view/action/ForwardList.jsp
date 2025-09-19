@@ -94,7 +94,7 @@
 													
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN</th>
 															<th>Action Id</th>
 															<th class="text-left">Action Item</th>
@@ -121,8 +121,8 @@
 															<%=StringEscapeUtils.escapeHtml4(obj[5].toString()).substring(0,75) %>&nbsp;&nbsp;<span class="custom-span" onclick="showAction('<%=obj[0].toString()%>','<%=obj[14].toString()%>')">show more</span>
 															<%} %>
 															</td>
-															<td><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
-															<td><%=obj[3]!=null?sdf.format(obj[3]):" - "%></td>
+															<td class="text-center"><%=obj[4]!=null?sdf.format(obj[4]):" - "%></td>
+															<td class="width-10 text-center"><%=obj[3]!=null?sdf.format(obj[3]):" - "%></td>
 															<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
 															<td><%if(obj[11]!=null){%>
 															<div class="progress div-progress">

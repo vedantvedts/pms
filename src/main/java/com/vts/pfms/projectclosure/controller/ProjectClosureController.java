@@ -272,14 +272,14 @@ private boolean isValidFileType(MultipartFile file) {
 		
 		
 		
-	    String contentType = file.getContentType();
-	    String originalFilename = file.getOriginalFilename();
+	
 		
 	    if (file == null || file.isEmpty()) {
 	        return true; // nothing uploaded, so it's valid
 	    }
 
-	    
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
 	    
 	  
 	    if (contentType == null) {
@@ -1631,27 +1631,35 @@ private boolean isValidFileType(MultipartFile file) {
 		
 		try {
 		
-			
-			// 🔹 Validate file types
-			if (!isValidFileType(QARMilestoneAttach) 
-			        || !isValidFileType(QARCostBreakupAttach) 
-			        || !isValidFileType(QARNCItemsAttach) 
-			        || !isValidFileType(EquipProcuredAttach) 
-			        || !isValidFileType(EquipProcuredBeforePDCAttach) 
-			        || !isValidFileType(CommittmentRegister) 
-			        || !isValidFileType(BudgetDocument) 
-			        || !isValidFileType(SPActualpositionAttach) 
-			        || !isValidFileType(SPGeneralSpecificAttach)) {
- 
-				
-				System.out.println("inside --------------------");
-			    return redirectWithError(
-			        redir, 
-			        "ProjectClosureCheckList.htm?closureId=" + req.getParameter("closureId") + "&chlistTabId=1",
-			        "Invalid file type. Only PDF  files are allowed."
-			    );
+
+			// Collect all attachments
+			List<MultipartFile> attachments = Arrays.asList(
+			    QARMilestoneAttach,
+			    QARCostBreakupAttach,
+			    QARNCItemsAttach,
+			    EquipProcuredAttach,
+			    EquipProcuredBeforePDCAttach,
+			    BudgetDocument,
+			    SPActualpositionAttach,
+			    CommittmentRegister,
+			    SPGeneralSpecificAttach
+			);
+
+			// Validate each attachment
+			for (MultipartFile file : attachments) {
+			    if (file != null && !file.isEmpty() && !isValidFileType(file)) {
+			        return redirectWithError(
+			            redir,
+			            "ProjectClosureCheckList.htm?closureId=" 
+						        + req.getParameter("closureId") + "&chlistTabId=1",
+			            "Invalid file type. Only PDF files are allowed."
+			        );
+			    }
 			}
 
+			
+			
+			
 			
 			
 			String closureId = req.getParameter("closureId");
@@ -1840,10 +1848,22 @@ private boolean isValidFileType(MultipartFile file) {
 
 	        for (Method method : methods) {
 	            if (method.getName().startsWith("get") && !method.getName().equals("getClass")) {
-	                String strValue = String.valueOf(method.invoke(obj));
+	                Object value = method.invoke(obj);
 
-	                if (InputValidator.isContainsHTMLTags(strValue)) {
-	                    return true; // stop at first invalid field
+	                if (value != null) {
+	                    Class<?> returnType = method.getReturnType();
+
+	                    if (returnType == String.class
+	                        || Number.class.isAssignableFrom(returnType)
+	                        || returnType == Boolean.class
+	                        || returnType.isPrimitive()) {
+
+	                        String strValue = String.valueOf(value);
+
+	                        if (InputValidator.isContainsHTMLTags(strValue)) {
+	                            return true;
+	                        }
+	                    }
 	                }
 	            }
 	        }
@@ -1851,7 +1871,7 @@ private boolean isValidFileType(MultipartFile file) {
 	        e.printStackTrace();
 	        return false;
 	    }
-	    return false; 
+	    return false;
 	}
 
 	
