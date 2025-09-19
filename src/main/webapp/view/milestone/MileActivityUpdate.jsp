@@ -71,7 +71,7 @@
 
 					<div class="card-header cardHeader"
 						>
-						<b class="text-white"> Activity Update: <%=EditData[3]!=null?StringEscapeUtils.escapeHtml4(EditData[3].toString()): " - " %></b><b
+						<b class="text-white fontsize20"> Activity Update: <%=EditData[3]!=null?StringEscapeUtils.escapeHtml4(EditData[3].toString()): " - " %></b><b
 							class="text-white" ><%=projectdetails[1]!=null?StringEscapeUtils.escapeHtml4(projectdetails[1].toString()): " - "%></b>
 					</div>
 
@@ -155,7 +155,7 @@
 
 					<div class="card-header cardHeader"
 						>
-						<b class="text-white"> Action Item: <%=EditData[3] %></b>
+						<b class="text-white fontsize20"> Action Item: <%=EditData[3] %></b>
 					</div>
 
 					<div class="card-body cardBody" >

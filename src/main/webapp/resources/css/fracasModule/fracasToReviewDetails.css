@@ -46,8 +46,9 @@ h6{
 }
 
 .remarksTextArea{
-	display:block;
+	display:block !important;
 	 margin-top: -15px;
+	 width: 100%;
 }
 
 .div-col{
@@ -60,7 +61,7 @@ h6{
 
 .thSubList{
 	background-color: #346691; 
-	color: white; 
+	color: white !important;
 	text-align: center;
 	font-size: 18px !important;
 	border-left: 0px solid;

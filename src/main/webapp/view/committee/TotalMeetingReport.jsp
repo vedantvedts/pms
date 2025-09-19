@@ -70,7 +70,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-					<div class="card-header ">  
+					<div class="card-header mb-3">  
 
 					<div class="row">
 						<h5 class="col-md-4">Meeting Reports</h5>
@@ -127,17 +127,12 @@
 											<div class="datatable-dashv1-list custom-datatable-overright">
 												<div id="toolbar">
 												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+												<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+
 													<thead>
-											         <tr>
+											         <tr class="text-center">
 															<th>SN </th>
-															<th>Meeting Id</th>
+															<th class="text-left">Meeting Id</th>
 															<th>Date & Time</th>
 															<th>Committee</th>																							
 														 	<th >Venue</th>	
@@ -165,8 +160,8 @@
 																				<input type="hidden" name="committeescheduleid" value="<%=obj[0] %>" />
 																			</form> 
 																		</td>
-																		<td><%=obj[2]!=null?sdf.format(obj[2]): " - " %> - <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>																		
-																		<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
+																		<td class="text-center"><%=obj[2]!=null?sdf.format(obj[2]): " - " %> - <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>																		
+																		<td class="text-center"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%></td>
 																	  	<td><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString())%><%}else{ %>-<%} %></td>
 																	  	<td><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{%>-<%} %></td>
 				
@@ -265,6 +260,15 @@ function submitForm1()
 { 
 	$("#committeeid").val("all").change();
 }
+
+$(document).ready(function(){
+	  $("#myTable12").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 10
+
+	});
+});
 
 </script>
 

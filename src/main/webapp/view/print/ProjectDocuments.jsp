@@ -37,121 +37,121 @@
                             <tbody class="text-center">
                                 <tr>
                                     <td>1</td>
-                                    <td class="table-left">Cost Estimate</td>
+                                    <td class="text-left">Cost Estimate</td>
                                     <td>SHEET_01</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
-                                    <td class="table-left">TRA AND PRI VERIFICATION / VETTING</td>
+                                    <td class="text-left">TRA AND PRI VERIFICATION / VETTING</td>
                                     <td>SHEET_02</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>3</td>
-                                    <td class="table-left">DMC Presentation</td>
+                                    <td class="text-left">DMC Presentation</td>
                                     <td>SHEET_03</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>4</td>
-                                    <td class="table-left">Project / Programme Proposal</td>
+                                    <td class="text-left">Project / Programme Proposal</td>
                                     <td>SHEET_04</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>5</td>
-                                    <td class="table-left">CCS NOTING</td>
+                                    <td class="text-left">CCS NOTING</td>
                                     <td>SHEET_05</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>6</td>
-                                    <td class="table-left">Project / Programme Sanction</td>
+                                    <td class="text-left">Project / Programme Sanction</td>
                                     <td>SHEET_06</td>
                                     <td><a href="ProjectSanctionPreview.htm"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>7</td>
-                                    <td class="table-left">Appointment of PD / Programme Director</td>
+                                    <td class="text-left">Appointment of PD / Programme Director</td>
                                     <td>SHEET_07</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>8</td>
-                                    <td class="table-left">Annual Audit Statement of Expenditure</td>
+                                    <td class="text-left">Annual Audit Statement of Expenditure</td>
                                     <td>SHEET_08</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>9</td>
-                                    <td class="table-left">Briefing Paper PMRC / EB / Apex / PJB / PMB</td>
+                                    <td class="text-left">Briefing Paper PMRC / EB / Apex / PJB / PMB</td>
                                     <td>SHEET_09</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>10</td>
-                                    <td class="table-left">Minutes of Meeting PMRC / EB / Apex / PJB / PMB</td>
+                                    <td class="text-left">Minutes of Meeting PMRC / EB / Apex / PJB / PMB</td>
                                     <td>SHEET_10</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>11</td>
-                                    <td class="table-left">SoC for PDC Extension</td>
+                                    <td class="text-left">SoC for PDC Extension</td>
                                     <td>SHEET_11</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>12</td>
-                                    <td class="table-left">SoC for Cost Revision / Re-allocation of Funds in Project</td>
+                                    <td class="text-left">SoC for Cost Revision / Re-allocation of Funds in Project</td>
                                     <td>SHEET_12</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>13</td>
-                                    <td class="table-left">SoC for Project Completed with Partial Success</td>
+                                    <td class="text-left">SoC for Project Completed with Partial Success</td>
                                     <td>SHEET_13</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>14</td>
-                                    <td class="table-left">Audit of Statement of Accounts (Expenditure) and Administrative Closure of Project / Programme</td>
+                                    <td class="text-left">Audit of Statement of Accounts (Expenditure) and Administrative Closure of Project / Programme</td>
                                     <td>SHEET_14</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>15</td>
-                                    <td class="table-left">Govt. Letter for PDC extension</td>
+                                    <td class="text-left">Govt. Letter for PDC extension</td>
                                     <td>SHEET_15</td>
                                     <td><a href="PdcExtention.htm"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>16</td>
-                                    <td class="table-left">Govt. Letter for Cost Revision / Re-allocation of Funds</td>
+                                    <td class="text-left">Govt. Letter for Cost Revision / Re-allocation of Funds</td>
                                     <td>SHEET_16</td>
                                     <td><a href="ReallocationReport.htm"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>17</td>
-                                    <td class="table-left">Govt. Letter for Project closure</td>
+                                    <td class="text-left">Govt. Letter for Project closure</td>
                                     <td>SHEET_17</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>18</td>
-                                    <td class="table-left">Change of Project Nodal Lab to New Lab</td>
+                                    <td class="text-left">Change of Project Nodal Lab to New Lab</td>
                                     <td>SHEET_18</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>19</td>
-                                    <td class="table-left">Change of Project Category During Project Currency</td>
+                                    <td class="text-left">Change of Project Category During Project Currency</td>
                                     <td>SHEET_19</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>
                                 <tr>
                                     <td>20</td>
-                                    <td class="table-left">Project proposal</td>
+                                    <td class="text-left">Project proposal</td>
                                     <td>SHEET_20</td>
                                     <td><a href="##"><i class="fa fa-eye" aria-hidden="true"></i></a></td>
                                 </tr>

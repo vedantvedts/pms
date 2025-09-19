@@ -121,7 +121,7 @@
 												
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN</th>
 															<th>Action Id</th>	
 															<th >PDC</th>																							
@@ -140,7 +140,7 @@
 												   					%>
 												   					
 																	<tr>
-																		<td><%=count %></td>
+																		<td class="text-center"><%=count %></td>
 																		<td>
 																		<form action="ActionDetails.htm" method="POST" >
 																				<button  type="submit" class="btn btn-outline-info"   ><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):" - " %></button>
@@ -154,7 +154,7 @@
 																			
 																			</form> 
                                                                         </td>
-																		<td><%= obj[6]!=null?sdf.format(obj[6]):""%></td>																		
+																		<td class="text-center"><%= obj[6]!=null?sdf.format(obj[6]):""%></td>																		
 																		<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
 																	  	<td>Ext: <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%>, Mob: <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
 																		<td class="td-st"><%if(obj[12]!=null && !obj[12].toString().equalsIgnoreCase("0")){ %>

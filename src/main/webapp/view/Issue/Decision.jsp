@@ -127,16 +127,9 @@ Map<String,List<List<Object[]>>> actualdecisionsought = (Map<String,List<List<Ob
 												<div id="toolbar">
 													
 												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+												
+												<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
 													
-													
-															
 															<%int count=0; if(!RecOrDecision.equalsIgnoreCase("S") && !RecOrDecision.equalsIgnoreCase("RS")){
 																%>
 													<thead>
@@ -246,14 +239,15 @@ function submitForm(frmid)
 
 $('.items').select2();
 
-
+ 
 $(document).ready(function(){
-	  $("#myTable").DataTable({
-	 "lengthMenu": [  10,25, 50, 75, 100 ],
-	 "pagingType": "simple"
-	
+	  $("#myTable12").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 10
+
 	});
- });
+});
   
 
 </script>

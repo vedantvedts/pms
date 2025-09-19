@@ -120,6 +120,10 @@ h6{
 	font-family: 'Lato',sans-serif;
 }
 
+.bg-color{
+	background-color:  #055C9D;
+}
+
 .cc-rockmenu .rolling {
   display: inline-block;
   cursor:pointer;
