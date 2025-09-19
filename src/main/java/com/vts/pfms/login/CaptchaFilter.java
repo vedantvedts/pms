@@ -26,10 +26,10 @@ public class CaptchaFilter extends OncePerRequestFilter {
             if (sessionCaptcha == null || !sessionCaptcha.equals(userCaptcha)) {
                 // captcha invalid → redirect back to login
                 response.sendRedirect(request.getContextPath() + "/login?error=Invalid Captcha");
-                return; // 🔴 must stop chain
+                return; 
             }
 
-            // valid captcha → consume it
+          
             request.getSession().removeAttribute("LOGIN_CAPTCHA");
         }
 
