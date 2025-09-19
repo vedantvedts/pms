@@ -136,7 +136,7 @@ th, td {
 }
 
 .btndiv{
-	text-align: center;
+	text-align: center !important;
 }
 
 .tableHead{
@@ -146,3 +146,6 @@ th, td {
 .footerbtn{
 	margin-left:50%
 }
+
+
+

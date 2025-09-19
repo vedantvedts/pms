@@ -1,0 +1,83 @@
+.card-body {
+	padding: 0px !important;
+}
+
+.control-label {
+	font-weight: bold !important;
+}
+
+.table thead th {
+	vertical-align: middle !important;
+}
+
+.header {
+	position: sticky;
+	top: 0;
+	background-color: #346691;
+}
+
+.mt-n8{
+	margin-top: -8px;
+}
+
+.table-scroll {
+  height: 400px;
+  overflow: auto;
+}
+
+.headerRowBgColor{
+	background-color: #346691;
+}
+
+.mb-2p {
+  margin-bottom: 2% !important;
+}
+
+.ConstitutePendingColor {
+	background-color: maroon !important;
+	font-size: 12px;
+}
+
+.ConstituteApproveColor {
+	background-color: green !important;
+	font-size: 12px;
+}
+
+.committeeFlow{
+	width: 140px;
+	height: 30px;
+	color:green;
+}
+
+.height-20{
+	height: 20px;
+}
+
+.width-10{
+	width: 10px;
+}
+
+.flowBackGround{
+	background: #c4ced3;
+	width: 230px;
+}
+
+.pt-10 { padding-top: 10px !important; }
+.pb-15 { padding-bottom: 15px !important; }
+
+.formationBorder{
+	border-spacing: 0 20px;
+}
+
+.yesFlow{
+	width: 40px; 
+	height: 5px; 
+	margin-left: 20px;
+}
+
+.approvalFlow{
+	background: #c4ced3; 
+	width: 100px; 
+	height: 5px; 
+	margin-left: 20px;
+}

@@ -55,7 +55,7 @@ List<Object[]> DivisionHeadListAdd=(List<Object[]>)request.getAttribute("Divisio
 	
 <div class="col-sm-8 mt-3"  >
 <div class="card shadow-nohover" >
-<div class="card-header bg-header" > <b class="text-white">Division Add </b></div>
+<div class="card-header bg-header" > <b class="text-white style1">Division Add </b></div>
 
 <div class="card-body">
 

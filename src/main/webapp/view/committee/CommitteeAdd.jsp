@@ -14,34 +14,11 @@
 	<jsp:include page="../static/header.jsp"></jsp:include>
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
-
-
-	<title> ADD COMMITTEE</title>
-	<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-	</style>
+<spring:url value="/resources/css/committeeModule/committeeAdd.css" var="committeeAdd" />
+<link href="${committeeAdd}" rel="stylesheet" />
+<title> ADD COMMITTEE</title>
 </head>
-
 <body>
-
-
 <%
 String projectid=(String)request.getAttribute("projectid");
 Object[] projectdetails=(Object[])request.getAttribute("projectdetails"); 
@@ -67,11 +44,11 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
     <br />
     
     
-	<div class="container" style="max-width: 100%;">
+	<div class="container mw-100">
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-					<div class="card-header" style=" background-color: #055C9D; ">
+					<div class="card-header headerColor">
 						<div class="row">
 							<div class="col-md-6">
 								<b class="text-white">ADD NEW COMMITTEE</b>
@@ -91,7 +68,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 									<div class="form-group">
 										<label class="control-label">
 											Committee Code
-											<span class="mandatory" style="color: red;">*</span>
+											<span class="mandatory text-danger" >*</span>
 										</label>
 										<input class="form-control" type="text" name="committeeshortname" id="committeeshortname" required maxlength="6">
 									</div>
@@ -100,7 +77,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							
 								<div class="col-md-4">
 									<div class="form-group">
-										<label class="control-label">Committee Name<span class="mandatory" style="color: red;">*</span></label>
+										<label class="control-label">Committee Name<span class="mandatory text-danger">*</span></label>
 										<input class="form-control" type="text" name="committeename" id="committeename" required maxlength="255">
 									</div>
 								</div>
@@ -108,8 +85,8 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							
 							<div class="col-md-4">
 								<div class="form-group">
-									<label class="control-label">Committee Type<span class="mandatory" style="color: red;">*</span></label>
-									<select class="custom-select" id="ctype" required="required" name="committeetype" style="margin-top: -5px">
+									<label class="control-label">Committee Type<span class="mandatory text-danger" >*</span></label>
+									<select class="custom-select mt-n5" id="ctype" required="required" name="committeetype">
 										<option disabled="true"  selected value="">Choose...</option>
 										<option  value="S">Standard</option>
 										<option  value="A">Adhoc</option>
@@ -123,8 +100,8 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 						<div class="row">
 						 <div class="col-md-2">
 								<div class="form-group">
-									<label class="control-label">Project Applicable<span class="mandatory" style="color: red;">*</span></label>
-									<select class="custom-select" id="proapplicable" required="required" name="projectapplicable" style="margin-top: -5px">
+									<label class="control-label">Project Applicable<span class="mandatory text-danger">*</span></label>
+									<select class="custom-select mt-n5" id="proapplicable" required="required" name="projectapplicable">
 										<option disabled="true"  selected value="">Choose...</option>
 										<%if(projectappliacble.equals("P")){ %>
 										<option selected value="P">Project</option>
@@ -139,8 +116,8 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							
 							<div class="col-md-2">
 								<div class="form-group">
-									<label class="control-label">Tech / Non-Tech<span class="mandatory" style="color: red;">*</span></label>
-									<select class="custom-select" id="technontech" required="required" name="technontech" style="margin-top: -5px">
+									<label class="control-label">Tech / Non-Tech<span class="mandatory text-danger">*</span></label>
+									<select class="custom-select mt-n5" id="technontech" required="required" name="technontech">
 										<option disabled="true"  selected value="">Choose...</option>
 										<option  value="T">Technical</option>
 										<option  value="N">Non-Technical</option>
@@ -150,8 +127,8 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							
 							<div class="col-md-2">
 								<div class="form-group">
-									<label class="control-label">Periodic / Non-Periodic<span class="mandatory" style="color: red;">*</span></label>
-									<select class="custom-select" id="periodic" required="required" name="periodic" style="margin-top: -5px" >
+									<label class="control-label">Periodic / Non-Periodic<span class="mandatory text-danger">*</span></label>
+									<select class="custom-select mt-n5" id="periodic" required="required" name="periodic">
 										<option disabled="true"  selected value="">Choose...</option>
 										<option  value="P">Periodic</option>
 										<option  value="N">Non-Periodic</option>
@@ -159,16 +136,16 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 								</div>
 							</div>
 													
-							<div class="col-md-2" style="display: none" id="periodicduration">
+							<div class="col-md-2 d-none" id="periodicduration">
 								<div class="form-group">
-									<label class="control-label" >Periodic Duration (Days)<span class="mandatory" style="color: red;">*</span></label>
-									<input class="form-control" type="number" min="1" name="periodicduration" id="periodicdurationfield" style="margin-top: -5px"  placeholder="Days">
+									<label class="control-label" >Periodic Duration (Days)<span class="mandatory text-danger">*</span></label>
+									<input class="form-control mt-n5" type="number" min="1" name="periodicduration" id="periodicdurationfield" placeholder="Days">
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-group">
-									<label class="control-label">Is Briefing<span class="mandatory" style="color: red;">*</span></label>
-									<select class="custom-select" id="IsBriefing" required="required" name=IsBriefing style="margin-top: -5px" >
+									<label class="control-label">Is Briefing<span class="mandatory text-danger">*</span></label>
+									<select class="custom-select mt-n5" id="IsBriefing" required="required" name=IsBriefing>
 										<option disabled  value="">Choose...</option>
 										<option  value="N" selected>No</option>
 										<option  value="Y">Yes</option>
@@ -182,31 +159,18 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							
 							<div class="col-md-12">								
 								<div class="form-group">
-									<label class="control-label">Guidelines<span class="mandatory" style="color: red;">*</span></label>
+									<label class="control-label">Guidelines<span class="mandatory text-danger">*</span></label>
 									<input class="form-control" type="text" name="guidelines" id="guidelines"  required maxlength="255">
 								</div>
 
 							</div>
 						</div>
 						
-						
-			<!-- 		<div class="row">
-					<div class="col-md-3">
-					<div class="form-group">
-					<label class="control-label">Reference No.<span class="mandatory" style="color: red;">*</span></label>
-					<input type="text" class="form-control" name="refno">
-					</div>
-					</div>
-					</div> -->
-						
-						
-						
 						<div class="row">
 							<div class="col-md-6">
 								
 								<div class="form-group">
-									<label class="control-label">Purpose<span class="mandatory" style="color: red;">*</span></label>
-									<!-- <textarea class="form-control"  id="description" name="description" required placeholder="Enter Description" rows="5" cols="50" maxlength="1000"></textarea> -->
+									<label class="control-label">Purpose<span class="mandatory text-danger">*</span></label>
 									<div id="Editordescription" class="center">
 															<textarea name="description"  id="description" ></textarea>
 														</div>
@@ -217,8 +181,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 							<div class="col-md-6">
 								
 								<div class="form-group">
-									<label class="control-label">Terms Of Reference <span class="mandatory" style="color: red;">*</span></label>
-									<!-- <textarea class="form-control" id="TOR"  name="TOR" required placeholder="Enter Terms Of Reference" rows="5" cols="50" maxlength="1000"></textarea> -->
+									<label class="control-label">Terms Of Reference <span class="mandatory text-danger">*</span></label>
 										<div id="EditorReference" class="center">
 															<textarea name="TOR"  id="TOR" ></textarea>
 														</div>
@@ -248,7 +211,7 @@ String projectappliacble=(String)request.getAttribute("projectappliacble");
 					</form>
 			
 					</div>
-					<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px ">
+					<div class="card-footer">
 					</div>
 				</div>
 			</div>

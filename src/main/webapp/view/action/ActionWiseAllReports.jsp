@@ -36,7 +36,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card shadow-nohover">
-					<div class="card-header ">  
+					<div class="card-header mb-2">  
 
 					<div class="row">
 						<h4 class="col-md-4">
@@ -134,18 +134,14 @@
 												<div id="toolbar">
 													
 												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+
+												<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+													
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN</th>
-															<th>Action No</th>	
+															<th class="text-left">Action No</th>	
 															<th >PDC</th>																							
 														 	<th >Assignee</th>					 	
 														 	<th >Mob No</th>
@@ -160,8 +156,8 @@
 												   					{ %>
 												   					
 																	<tr>
-																		<td><%=count %></td>
-																		<td>
+																		<td class="text-center"><%=count %></td>
+																		<td >
 																		<form action="ActionDetails.htm" method="POST" >
 																				<button  type="submit" class="btn btn-outline-info"  formtarget="_blank" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %></button>
 																			   <input type="hidden" name="ActionLinkId" value="<%=obj[13]%>"/>
@@ -173,7 +169,7 @@
 																			
 																			</form>  
                                                                         </td>
-																		<td><%=obj[8]!=null?sdf.format(obj[8]):" - "%></td>																		
+																		<td class="text-center"><%=obj[8]!=null?sdf.format(obj[8]):" - "%></td>																		
 																		<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%>, <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
 																	  	<td>Ext: <%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - "%>, Mob: <%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):" - "%></td>
 																		<td class="td-styl "><%if(obj[14]!=null){ %>
@@ -275,15 +271,17 @@ function Prints(myfrm){
 	 
 			
 	}
-
-/* $(document).ready(function(){
 	
-	$("#table").DataTable({
-		"pageLength": 10
-	})
-})
+$(document).ready(function(){
+	  $("#myTable12").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 10
 
- */
+	});
+});
+
+
 </script>
 <script type='text/javascript'> 
 function submitForm(frmid)

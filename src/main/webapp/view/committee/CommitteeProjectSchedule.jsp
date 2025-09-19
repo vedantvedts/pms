@@ -14,103 +14,11 @@
 <head>
 <meta charset="ISO-8859-1">
 <META HTTP-EQUIV="Refresh" CONTENT="60">
-
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-
-<style>
-.card-body{
-	padding: 0px !important;
-}
-.control-label{
-	font-weight: bold !important;
-}
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px; 
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-} 
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-#scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-#scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
-}
-
-#scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px;
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-}
-
-#scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-
-.meetingsp{
-  width:75%;
-  transition: background-color 3s ease;
-  background-image: linear-gradient(to right, green 50%, #f8f9fa 50%);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  transition: background-position 0.5s ease;
-  color:black;
-  padding:10px;
-  border-radius: 8px;
-  display: block;
-  font-weight: 600;
-  margin:1%;
-  margin-left:12%;
-}
-.meetingsp:hover{
- 	/*  background-color: green;
-	 background-image: linear-gradient(to right, green, blue); */
-	 color:white;
- background-position: 0 0;
- box-shadow: 3px 3px 3px gray;
-	/* background-color:red; */
-color:white;
-font-weight: 600;	
-}
-#span{
-background: blue;
-}
-#span1{
-font-size: 10px;
-margin-left:10px
-}
-
-#span2{
-float:right;
-font-size: 10px;
-margin-right:10px
-}
-
-</style>
-
+<spring:url value="/resources/css/committeeModule/CommitteeProjectSchedule.css" var="CommitteeProjectSchedule" />
+<link href="${CommitteeProjectSchedule}" rel="stylesheet" />
 </head>
 <body>
-
-
 <%
 SimpleDateFormat sdf1=new SimpleDateFormat("dd-MM-yyyy");
 SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
@@ -174,10 +82,10 @@ if(!Projectschedulelist.isEmpty()){
 					
 					<div class="row" >
 					
-					<div class="col" style="margin-top: -8px;">	
+					<div class="col mt-n8">	
 			
 						
-						<form class="form-inline " method="post" action="ProjectBasedSchedule.htm" id="myform" style="width: 108% !important">
+						<form class="form-inline width-108" method="post" action="ProjectBasedSchedule.htm" id="myform">
 						  
 						  <div class="form-group">    
 						    <label class="control-label">Project : </label>   
@@ -212,7 +120,7 @@ if(!Projectschedulelist.isEmpty()){
 						
 					</div>
 					
-					<div class="col" style="margin-top: -8px;">		
+					<div class="col mt-n8">		
 					
 					<%if(!committeeid.equals("all") && Long.parseLong(committeeid)>0 ){ %>
 					 <form class="form-check-inline" action="CommitteeScheduleAddSubmit.htm" method="POST" name="myfrm1" id="myfrm1" > 
@@ -223,11 +131,11 @@ if(!Projectschedulelist.isEmpty()){
 								<label class="control-label"> Date &nbsp;&nbsp; : </label>
 							</div>
 								
-							<div class="col" style="margin-left:-8%;">
-		                          <input style="width:135%"  class="form-control "  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required"   readonly>	
+							<div class="col ml-n8per">
+		                          <input class="form-control width-135"  data-date-format="dd/mm/yyyy" id="startdate" name="startdate"  required="required"   readonly>	
 		                    </div>
 		                    
-		                    <div class="col " style="text-align: right;">
+		                    <div class="col text-right">
 		                    	<label class="control-label"> Time &nbsp;&nbsp; : </label>
 		                    </div>
 		                 
@@ -242,7 +150,7 @@ if(!Projectschedulelist.isEmpty()){
 		                    	<input type="hidden" name="committeeid" value="<%=committeeid%>" /> 
 		                    	<input type="hidden" name="committeeMainId" value="<%=committeemainid%>" /> 
 		                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-		                    	<input type="button" class="btn  btn-sm add " style="float: right" onclick="Add1('myfrm1')" value="ADD SCHEDULE" > 	
+		                    	<input type="button" class="btn  btn-sm add float-right" onclick="Add1('myfrm1')" value="ADD SCHEDULE" > 	
 	                    	</div>                   	
                   		</form> <%} %>
 						
@@ -252,20 +160,18 @@ if(!Projectschedulelist.isEmpty()){
 					
 					
 					</div>
-					<div class="card-body" style="display: flex;justify-content: space-around;">
-						<div id="calendar" style="width:79%;float:left"></div>
-						<div id="meetings" style="background-color: #216583;;width:20%;margin:5px;">
-						<div  style="font-size: 22px;font-weight: 600;color: white;text-align: center;">
-						<!-- <span class="badge badge-info p-2 " id="span1" onclick="showPreviousMeetings();">Previous Meetings</span>
-						<span class="badge badge-info p-2 " id="span2" >Future Meetings</span> -->
+					<div class="card-body cardBodyStyle">
+						<div id="calendar" class="calendarStyle"></div>
+						<div id="meetings" class="meetingsStyle">
+						<div class="earlierMeetingStyle text-center">
 						Earlier Meetings
 						</div>
-						<div class="mt-2" id="scrollclass" style="height:520px;overflow: auto">
+						<div class="mt-2 scrollDivStyle" id="scrollclass">
 						<%if(!PreviousmeetingList.isEmpty()){
 							int i=0;
 							for(Object[]obj:PreviousmeetingList){
 							%>
-						 <a class="tag meetingsp" style="text-decoration: none;" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>
+						 <a class="tag meetingsp text-decoration-none" href="CommitteeScheduleView.htm?scheduleid=<%=obj[0].toString() %>&membertype=undefined"><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - "%>
 						&nbsp;&nbsp;Date: <%= obj[3]!=null?sdf2.format(sdf3.parse(StringEscapeUtils.escapeHtml4(obj[3].toString()))): " - "  %>
 							</a>
 						<%}}else{ %>
@@ -282,86 +188,85 @@ if(!Projectschedulelist.isEmpty()){
 <br>
 
 	<div class="row m-1">
-		<div class="col-md-12" style="text-align:center; width: 140px; height: 30px; color:green; text-decoration: underline;">
+		<div class="col-md-12 text-center text-success width-140px height-30 text-underline">
 			<b>Schedules Flow</b>
 		</div>
 	</div>
 
-	<div class="row m-1"
-		style="text-align: center; padding-top: 10px; padding-bottom: 15px;">
+	<div class="row m-1 text-center pt-10px pb-15px">
 
-		<table align="center" style="border-spacing: 0 20px;">
+		<table align="center" class="tblBorderStyle">
 			<tr>
 				
 				
-				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Add Schedule  </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true" ></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Add Agenda </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle" >
 					<b class="text-primary">Update Venue </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Invite Participants </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Agenda Approval </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Kick off Meeting </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Update Attendance </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Prepare Minutes  </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
-				<td class="trup" style="background: #c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary">Update Outcomes (A,I,R)  </b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				<td ><i class="fa fa-long-arrow-right "aria-hidden="true"></i></td>
-				<td rowspan="2" class="trup" style="width: 30px; height: 20px;"></td>
+				<td rowspan="2" class="trup width-30px height-20px"></td>
 				
 				
-				<td class="trup" style="background:#c4ced3; width: 230px; height: 20px;">
+				<td class="trup committeeFormationStyle">
 					<b class="text-primary"> Minutes Approval</b>
 				</td>
-				<td class="trup" style="width: 10px; height: 20px;"></td>
+				<td class="trup width-10px height-20px"></td>
 				
 			
 
@@ -381,7 +286,7 @@ if(!Projectschedulelist.isEmpty()){
 
 <div class="modal fade" id="meetingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <div class="modal-content" style="width: 210%;margin-left: -60%;">
+    <div class="modal-content modalContentWidth">
       <div class="modal-header">
         <h6 class="modal-title" id="exampleModalLabel">Meeting List, Committee Members are already Having meeting on  That Particular Day</h6>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">

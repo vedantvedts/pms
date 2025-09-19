@@ -17,175 +17,8 @@
 <spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
 <link href="${sweetalertCss}" rel="stylesheet" />
 <script src="${sweetalertJs}"></script>
-<style type="text/css">
-#sidebarCollapse {
-	display: none;
-}
-
-#sidebar {
-	display: none;
-}
-
-.btn-status {
-	position: relative;
-	z-index: 1;
-}
-
-.btn-status:hover {
-	transform: scale(1.05);
-	z-index: 5;
-	box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-label {
-	font-weight: 800;
-	font-size: 16px;
-	color: #07689f;
-}
-
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 33px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 120px;
-}
-
-.cc-rockmenu .viewcommittees:hover {
-	width: 157px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-.chat-container {
-	max-width: 800px;
-	height: 600px;
-	margin: 30px auto;
-	background-color: #f8f9fa;
-	border: 1px solid #dee2e6;
-	border-radius: 10px;
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-}
-
-.chat-body {
-	flex-grow: 1;
-	overflow-y: auto;
-}
-
-.chat-message {
-	margin: 10px 0;
-	padding: 12px 16px;
-	border-radius: 20px;
-	max-width: 75%;
-	word-break: break-word;
-	font-size: 14px;
-}
-
-.user-msg {
-	background-color: #ffffff;
-	border: 1px solid #dee2e6;
-	align-self: flex-start;
-}
-
-.admin-msg {
-	background-color: #d1e7dd;
-	border: 1px solid #badbcc;
-	align-self: flex-end;
-	margin-left: auto;
-}
-
-.chat-message strong {
-	display: block;
-	font-size: 13px;
-	color: #343a40;
-	margin-bottom: 4px;
-}
-
-.timestamp {
-	font-size: 11px;
-	color: #6c757d;
-	text-align: right;
-	margin-top: 6px;
-}
-
-.chat-input {
-	position: sticky;
-	bottom: 0;
-	z-index: 10;
-}
-
-.sender-name {
-	font-weight: bold;
-	display: block;
-	color: #343a40;
-}
-
-/* .btn.submit {
-    width: 150px;
-    border-radius: 25px;
-    padding: 8px 20px;
-    font-weight: 600;
-} */
-@media ( max-width : 768px) {
-	.chat-container {
-		height: auto;
-	}
-	.chat-message {
-		max-width: 90%;
-	}
-	.btn.submit {
-		width: 100%;
-	}
-}
-</style>
+<spring:url value="/resources/css/committeeModule/committeeDraftList.css" var="committeeDraftList" />
+<link href="${committeeDraftList}" rel="stylesheet" />
 </head>
 <body>
 
@@ -212,7 +45,7 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 					<div class="card-header">
 						<div class="row">
 							<div class="col-md-12">
-								<h3 style="color: #055C9D; margin-top: -5px;">MOM Draft
+								<h3 class="momDraftStyle">MOM Draft
 									List</h3>
 
 							</div>
@@ -222,23 +55,6 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 					</div>
 
 					<div class="card-body">
-						<!-- tabList  -->
-						<!-- 	<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="background-color: #E1E5E8;padding:0px;">
-		  <li class="nav-item" style="width: 50%;"  >
-		    <div class="nav-link active" style="text-align: center;" id="eNotePendingtab" data-toggle="pill" data-target="#pills-OPD" role="tab" aria-controls="pills-OPD" aria-selected="true">
-			   <span>   
-				 
-				</span> 
-		    </div>
-		  </li>
-		  <li class="nav-item"  style="width: 50%;">
-		    <div class="nav-link" style="text-align: center;" id="eNoteApprovedtab" data-toggle="pill" data-target="#pills-IPD" role="tab" aria-controls="pills-IPD" aria-selected="false">
-		 
-		    
-		    
-		    </div>
-		  </li>
-		</ul> -->
 						<div align="right">
 							<form action="CommitteeMomDraft.htm" method="get" id="form">
 								<span class="text-primary">Show</span> <select id="rowPerPage"
@@ -258,7 +74,7 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 									<option value="100" <%if(Integer.parseInt(pageSize)==100) {%>
 										selected <%} %>>100</option>
 
-								</select> <input type="submit" id="submit" style="display: none;">
+								</select> <input type="submit" id="submit" class="inputSubmitStyle">
 							</form>
 
 
@@ -270,14 +86,14 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 								role="tabpanel" aria-labelledby="eNotePendingtab">
 								<table
 									class="table table-bordered table-hover table-striped table-condensed "
-									id="myTable1" style="">
+									id="myTable1">
 									<thead>
-										<tr style="background: #055C9D; color: white;">
-											<th style="text-align: center;">SN</th>
-											<th style="text-align: center;">Committee</th>
-											<th style="text-align: center;">Meeting Id</th>
-											<th style="text-align: center;">MOM</th>
-											<th style="text-align: center;">Remarks</th>
+										<tr class="tblTrStyle">
+											<th class="text-center">SN</th>
+											<th class="text-center">Committee</th>
+											<th class="text-center">Meeting Id</th>
+											<th class="text-center">MOM</th>
+											<th class="text-center">Remarks</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -285,15 +101,14 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 							int snCount =0;
 							for(Object[]obj:draftMomList){ %>
 										<tr>
-											<td style="text-align: center;"><%=++snCount %>.</td>
+											<td class="text-center"><%=++snCount %>.</td>
 											<td><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()).split("/")[2]: " - " %></td>
 											<td><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></td>
-											<td style="text-align: center;">
+											<td class="text-center">
 												<%if(!obj[1].toString().equalsIgnoreCase("0")){ %>
 												<form action="CommitteeMinutesNewDownload.htm" method="get"
 													target="_blank">
-													<button class="btn btn-link"
-														style="padding: 0px; margin: 0px;"
+													<button class="btn btn-link previewBtnStyle"
 														name="committeescheduleid" value="<%=obj[6]%>"
 														data-toggle="tooltip" data-placement="top"
 														data-original-data="" title="VIEW MOM">
@@ -306,8 +121,7 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 												</form> <%}else{ %>
 												<form action="CommitteeMinutesViewAllDownload.htm"
 													method="get" target="_blank">
-													<button class="btn btn-link"
-														style="padding: 0px; margin: 0px;"
+													<button class="btn btn-link previewBtnStyle"
 														name="committeescheduleid" value="<%=obj[6]%>"
 														data-toggle="tooltip" data-placement="top"
 														data-original-data="" title="VIEW MOM">
@@ -319,7 +133,7 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 
 												</form> <%} %>
 											</td>
-											<td style="width: 20%;">
+											<td class="width-20">
 
 												<button class="editable-click" type="button"
 													onclick="showModal('<%=obj[6].toString()%>','<%=obj[0].toString()%>')">
@@ -328,7 +142,7 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 															<figure class="rolling_icon">
 																<i class="fa fa-comments" aria-hidden="true"></i>
 															</figure>
-															<span style="margin-top: 0.3rem;">Comments</span>
+															<span class="commentsMarginTop">Comments</span>
 														</div>
 													</div>
 												</button>
@@ -351,7 +165,7 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 	<div class="modal fade" id="chatModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
-			<div class="modal-content" style="width: 200%; margin-left: -50%;">
+			<div class="modal-content modalContentWidth">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
 					<button type="button" class="close" data-dismiss="modal"
@@ -379,9 +193,6 @@ String errorInPageSize=(String)request.getAttribute("errorInPageSize");
 								<input type="button" class="btn btn-primary btn-sm submit"
 									value="Submit" name="sub" onclick="submitRemarks()"> 
 									
-<!-- 								<input type="button" class="btn btn-danger btn-sm delete"
-									value="Close" name="sub"
-									onclick="return confirm('Are You Sure To Close?')"> -->
 							</div>
 
 

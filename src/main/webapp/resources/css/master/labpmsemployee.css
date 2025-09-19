@@ -152,7 +152,8 @@
 }
 
 .table1tr{
-	background-color: #fdffe9 !important;color:#034189;
+	background-color: #fdffe9 !important;
+	color:#034189 !important;
 }
 
 .labth{
@@ -172,7 +173,8 @@
 }
 
 .trTbl{
-	background-color:#edab33;color:#034189;
+	background-color:#edab33 !important;
+	color:#034189 !important;
 }
 
 .tblth{
@@ -219,9 +221,7 @@
 	background: #ffffff;border-left: none;border-top: none;border-bottom: none;
 }
 
-.labth{
-	text-align: center;
-}
+
 
 .emptyth1{
 	background: #ffffff;border-top: none;border-bottom: none;

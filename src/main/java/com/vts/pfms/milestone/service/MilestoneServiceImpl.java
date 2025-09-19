@@ -2033,30 +2033,27 @@ public class MilestoneServiceImpl implements MilestoneService {
 					
 		        long count2=dao.FileRepRevUpdate(uploadDto.getFileId(),upload.getReleaseDoc(),version);
 		        
-		        List<Object[]> count3=dao.getAttachmentId(uploadDto.getProjectId());
-		        ProjectTechnicalWorkData tdata = new ProjectTechnicalWorkData();
+		        List<Object[]> count3 = dao.getAttachmentId(uploadDto.getProjectId());
+		        Long techDataId = 0L;
+		        Long attachId = 0L;
+		        if(count3!=null && count3.size()>0) {
+		        	techDataId = count3.get(0)[0]!=null ? Long.parseLong(count3.get(0)[0].toString()) : 0L ;
+			        attachId = count3.get(0)[1]!=null ? Long.parseLong(count3.get(0)[1].toString()) : 0L;
+		        }
+		        ProjectTechnicalWorkData tdata = techDataId!=0 ? dao.getProjectTechnicalWorkDataById(techDataId) : new ProjectTechnicalWorkData();
 		        if(uploadDto.getAgendaId()==null) {
-			        if(count3!=null && count3.size()>0) {
-		        	    String techId=count3.get(0)[0].toString();
-				        String attachId=count3.get(0)[1].toString();
-				        if(techId!=null && Long.parseLong(attachId)>=0) {
-				        	tdata.setTechDataId(Long.parseLong(techId));
-				        	tdata.setAttachmentId(count);
-				        	tdata.setModifiedBy(uploadDto.getUserId());
-				        	tdata.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
-				        	tdata.setIsActive(1);
-				        	dao.submitCheckboxFile(tdata);
-				        }
-			        }
-			        else {
+		        	tdata.setAttachmentId(count);
+		        	tdata.setIsActive(1);
+		        	if(techDataId!=0 && attachId>=0) {
+		        		tdata.setModifiedBy(uploadDto.getUserId());
+		        		tdata.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
+		        	} else {
 			        	tdata.setProjectId(Long.parseLong(uploadDto.getProjectId()));
-			        	tdata.setAttachmentId(count);
 			        	tdata.setRelatedPoints(" ");
 			        	tdata.setCreatedBy(uploadDto.getUserId());
 			        	tdata.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
-			        	tdata.setIsActive(1);
-			        	projectDao.TechnicalWorkDataAdd(tdata);
 			        }
+		        	projectDao.TechnicalWorkDataAdd(tdata);
 		        }else {
 		          if(! uploadDto.getAgendaId().equalsIgnoreCase("0")) {
 		      	  CommitteeScheduleAgendaDocs docs = new CommitteeScheduleAgendaDocs();
@@ -2087,24 +2084,19 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public long submitCheckboxFile(String userId, String techDataId, String attachid, String projectid) throws Exception {
 		
-		ProjectTechnicalWorkData modal = new ProjectTechnicalWorkData();
+		ProjectTechnicalWorkData modal = techDataId!=null ? dao.getProjectTechnicalWorkDataById(Long.parseLong(techDataId)) : new ProjectTechnicalWorkData();
+		modal.setAttachmentId(Long.parseLong(attachid));
+		modal.setIsActive(1);
 		if(techDataId!=null) {
-			modal.setTechDataId(Long.parseLong(techDataId));
-			modal.setAttachmentId(Long.parseLong(attachid));
 			modal.setModifiedBy(userId);
 			modal.setModifiedDate(sdtf.format(new Date()));
-			modal.setIsActive(1);
-			dao.submitCheckboxFile(modal);
 		}else {
 			modal.setProjectId(Long.parseLong(projectid));
-			modal.setAttachmentId(Long.parseLong(attachid));
-			modal.setRelatedPoints(" ");
+			modal.setRelatedPoints("");
 			modal.setCreatedBy(userId);
 			modal.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
-			modal.setIsActive(1);
-        	projectDao.TechnicalWorkDataAdd(modal);
 		}
-		
+		projectDao.TechnicalWorkDataAdd(modal);
 		return 1;
 	}
 
@@ -2325,16 +2317,26 @@ public class MilestoneServiceImpl implements MilestoneService {
 	}
 	
 	@Override
-	public long removeFileAttachment(String projectId, String techDataId, String techAttachId, String userId) throws Exception {
+	public long removeFileAttachment(String projectId, String techDataId, String techAttachId, String userId, String relativePoints) throws Exception {
 		try {
-			ProjectTechnicalWorkData workData = new ProjectTechnicalWorkData();
-			workData.setProjectId(Long.parseLong(projectId));
-			workData.setTechDataId(Long.parseLong(techDataId));
-			workData.setAttachmentId(Long.parseLong(techAttachId));
+			// Unlink the Document
+			ProjectTechnicalWorkData workData = dao.getProjectTechnicalWorkDataById(Long.parseLong(techDataId));
 			workData.setModifiedBy(userId);
 			workData.setModifiedDate(sdtf.format(new Date()));
 			workData.setIsActive(0);
-			dao.submitCheckboxFile(workData);
+			projectDao.TechnicalWorkDataAdd(workData);
+			
+			// Add new row of data if Relative Points points are not empty
+			if(relativePoints!=null && !relativePoints.isEmpty()) {
+				ProjectTechnicalWorkData workData2 = new ProjectTechnicalWorkData();
+				workData2.setProjectId(Long.parseLong(projectId));
+				workData2.setRelatedPoints(relativePoints);
+				workData2.setAttachmentId(0L);
+				workData2.setCreatedBy(userId);
+				workData2.setCreatedDate(sdtf.format(new Date()));
+				workData2.setIsActive(1);
+				projectDao.TechnicalWorkDataAdd(workData2);
+			}
 			return 1;
 		}catch (Exception e) {
 			e.printStackTrace();

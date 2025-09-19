@@ -57,7 +57,7 @@ List<Object[]> tdheadlist=(List<Object[]>)request.getAttribute("tdheadlist");
  <div class="col-sm-8 topdiv"  >
 <div class="card shadow-nohover"  >
 <div class="card-header headerDiv" >
-                    <h3 class="text-white">TD Add </h3>
+                    <h3 class="text-white style-1">TD Add </h3>
         		</div>
         		
 		<div class="card-body">

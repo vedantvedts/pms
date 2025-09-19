@@ -6,652 +6,741 @@
 <%@page import="java.time.LocalDate"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-		pageEncoding="ISO-8859-1"
-		import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
-	<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-	
-	<!DOCTYPE html>
-	<html>
-	<head>
-	<meta charset="ISO-8859-1">
-	<jsp:include page="../static/header.jsp"></jsp:include>
-	
-	
-	<title>COMMITTEE SCHEDULE VIEW</title>
-	<style>
-	h6 {
-		color: black;
-		font-family: 'Lato', sans-serif;
-		font-weight: 800;
-	}
-	
-	.card-header {
-		background-color: #07689f;
-		color: white;
-	}
-	
-	.card {
-		/* border: 1px solid black; */
-		box-shadow: 2px 2px 2px gray;
-	}
-	
-	.input-group-text {
-		font-weight: bold;
-	}
-	
-	label {
-		font-weight: 800;
-		font-size: 16px;
-		color: #07689f;
-		/* padding-top: 10px;
-		padding-bottom:-5px;
-		padding-right: -50px; */
-	}
-	
-	hr {
-		margin-top: -2px;
-		margin-bottom: 12px;
-	}
-	
-	.form-group {
-		margin-top: 0.5rem;
-		margin-bottom: 1rem;
-	}
-	
-	.mandatory {
-		font-weight: 800;
-	}
-	
-	b{
-	font-family: 'Lato', sans-serif;
-	}
-	
-	.form-block form{
-		display: inline-block;
-	}
-	
-	.fa-input {
-  	font-family: FontAwesome, 'Lato', sans-serif;
-		}
-		td {
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-	
-	</style>
-	
-	</head>
-	<body>
+	pageEncoding="ISO-8859-1"
+	import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<%	
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/committeeModule/committeeScheduleView.css" var="committeeScheduleView" />
+<link href="${committeeScheduleView}" rel="stylesheet" />
 
-	String logintype=(String) request.getAttribute("logintype");
-	int useraccess=Integer.parseInt(request.getAttribute("useraccess").toString());
-	Object[] committeescheduleeditdata=(Object[])request.getAttribute("committeescheduleeditdata");
-	List<Object[]> committeeagendalist=(List<Object[]>)request.getAttribute("committeeagendalist");
-	List<Object[]> employeelist=(List<Object[]>)request.getAttribute("employeelist");
-	SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-	SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
-	List<Object[]> invitedlist= (List<Object[]>)request.getAttribute("committeeinvitedlist");
-	List<Object[]> returndata= (List<Object[]>)request.getAttribute("ReturnData");
-	List<Object[]> pfmscategorylist= (List<Object[]>)request.getAttribute("pfmscategorylist");
-	String userview=(String)request.getAttribute("userview");
-	String otp=(String)request.getAttribute("otp");
-	int committeecons=(Integer)request.getAttribute("committeecons");
-	List<Object[]> AgendaDocList=(List<Object[]>) request.getAttribute("AgendaDocList");
-	
-	String projectid= committeescheduleeditdata[9].toString();
-	String divisionid= committeescheduleeditdata[16].toString();
-	String initiationid= committeescheduleeditdata[17].toString();
+<title>COMMITTEE SCHEDULE VIEW</title>
+
+</head>
+<body>
+
+	<%
+	String logintype = (String) request.getAttribute("logintype");
+	int useraccess = Integer.parseInt(request.getAttribute("useraccess").toString());
+	Object[] committeescheduleeditdata = (Object[]) request.getAttribute("committeescheduleeditdata");
+	List<Object[]> committeeagendalist = (List<Object[]>) request.getAttribute("committeeagendalist");
+	List<Object[]> employeelist = (List<Object[]>) request.getAttribute("employeelist");
+	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+	List<Object[]> invitedlist = (List<Object[]>) request.getAttribute("committeeinvitedlist");
+	List<Object[]> returndata = (List<Object[]>) request.getAttribute("ReturnData");
+	List<Object[]> pfmscategorylist = (List<Object[]>) request.getAttribute("pfmscategorylist");
+	String userview = (String) request.getAttribute("userview");
+	String otp = (String) request.getAttribute("otp");
+	int committeecons = (Integer) request.getAttribute("committeecons");
+	List<Object[]> AgendaDocList = (List<Object[]>) request.getAttribute("AgendaDocList");
+
+	String projectid = committeescheduleeditdata[9].toString();
+	String divisionid = committeescheduleeditdata[16].toString();
+	String initiationid = committeescheduleeditdata[17].toString();
 	String carsInitiationId = committeescheduleeditdata[25].toString();
-	String programmeId = committeescheduleeditdata[26]!=null?committeescheduleeditdata[26].toString():"0";
-	Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
-	Object[] divisiondetails=(Object[])request.getAttribute("divisiondetails");
-	Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
-	CARSInitiation carsInitiationDetails=(CARSInitiation)request.getAttribute("carsInitiationDetails");
-	ProgrammeMaster prgmMasterDetails=(ProgrammeMaster)request.getAttribute("prgmMasterDetails");
-	
-	List<String> SplCommitteeCodes=(List<String>) request.getAttribute("SplCommitteeCodes");
-	
-%>
-	
+	String programmeId = committeescheduleeditdata[26] != null ? committeescheduleeditdata[26].toString() : "0";
+	Object[] projectdetails = (Object[]) request.getAttribute("projectdetails");
+	Object[] divisiondetails = (Object[]) request.getAttribute("divisiondetails");
+	Object[] initiationdetails = (Object[]) request.getAttribute("initiationdetails");
+	CARSInitiation carsInitiationDetails = (CARSInitiation) request.getAttribute("carsInitiationDetails");
+	ProgrammeMaster prgmMasterDetails = (ProgrammeMaster) request.getAttribute("prgmMasterDetails");
+
+	List<String> SplCommitteeCodes = (List<String>) request.getAttribute("SplCommitteeCodes");
+	%>
+
 	<% 
 	    String ses = (String) request.getParameter("result");
 	    String ses1 = (String) request.getParameter("resultfail");
 	    if (ses1 != null) { %>
-	    <div align="center">
-	        <div class="alert alert-danger" role="alert">
-	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
-	        </div>
-	    </div>
+	<div align="center">
+		<div class="alert alert-danger" role="alert">
+			<%=StringEscapeUtils.escapeHtml4(ses1) %>
+		</div>
+	</div>
 	<% }if (ses != null) { %>
-	    <div align="center">
-	        <div class="alert alert-success" role="alert">
-	            <%=StringEscapeUtils.escapeHtml4(ses) %>
-	        </div>
-	    </div>
+	<div align="center">
+		<div class="alert alert-success" role="alert">
+			<%=StringEscapeUtils.escapeHtml4(ses) %>
+		</div>
+	</div>
 	<% } %>
-		
+
 	<div class="container-fluid">
-			<div class="row" style="">
-			
-				<div class="col-md-12 ">
-				
-				<div class="card shadow-nohover" >
+		<div class="row">
+
+			<div class="col-md-12 ">
+
+				<div class="card shadow-nohover">
 					<div class="card-header">
-						 <div class="row" >
+						<div class="row">
 							<div class="col-md-8 ">
-							  <h4>
-							  		<%=committeescheduleeditdata[8]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[8].toString()): " - " %> Meeting 
-									<%if(Long.parseLong(projectid)>0){ %>							  
-										(Project : <%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - " %>)
+								<h4>
+									<%=committeescheduleeditdata[8]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[8].toString()): " - " %>
+									Meeting
+									<%if(Long.parseLong(projectid)>0){ %>
+									(Project :
+									<%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - " %>)
 									<%} %>
-									<%if(Long.parseLong(divisionid)>0){ %>							  
-									  (Division : <%=divisiondetails[1]!=null?StringEscapeUtils.escapeHtml4(divisiondetails[1].toString()): " - "  %>)
+									<%if(Long.parseLong(divisionid)>0){ %>
+									(Division :
+									<%=divisiondetails[1]!=null?StringEscapeUtils.escapeHtml4(divisiondetails[1].toString()): " - "  %>)
 									<%} %>
-									<%if(Long.parseLong(initiationid)>0){ %>							  
-									  (Initiated Project : <%=initiationdetails[1]!=null?StringEscapeUtils.escapeHtml4(initiationdetails[1].toString()): " - "  %>)
+									<%if(Long.parseLong(initiationid)>0){ %>
+									(Initiated Project :
+									<%=initiationdetails[1]!=null?StringEscapeUtils.escapeHtml4(initiationdetails[1].toString()): " - "  %>)
 									<%} %>
-									<%if(Long.parseLong(carsInitiationId)>0){ %>							  
-									  (CARS : <%=carsInitiationDetails.getCARSNo()!=null?StringEscapeUtils.escapeHtml4(carsInitiationDetails.getCARSNo()): " - "  %>)
+									<%if(Long.parseLong(carsInitiationId)>0){ %>
+									(CARS :
+									<%=carsInitiationDetails.getCARSNo()!=null?StringEscapeUtils.escapeHtml4(carsInitiationDetails.getCARSNo()): " - "  %>)
 									<%} %>
-									<%if(Long.parseLong(programmeId)>0){ %>							  
-									  (Programme : <%=prgmMasterDetails.getPrgmName()!=null?StringEscapeUtils.escapeHtml4(prgmMasterDetails.getPrgmName()): " - "  %> (<%=prgmMasterDetails.getPrgmCode()!=null?StringEscapeUtils.escapeHtml4(prgmMasterDetails.getPrgmCode()): " - "  %>) )
+									<%if(Long.parseLong(programmeId)>0){ %>
+									(Programme :
+									<%=prgmMasterDetails.getPrgmName()!=null?StringEscapeUtils.escapeHtml4(prgmMasterDetails.getPrgmName()): " - "  %>
+									(<%=prgmMasterDetails.getPrgmCode()!=null?StringEscapeUtils.escapeHtml4(prgmMasterDetails.getPrgmCode()): " - "  %>)
+									)
 									<%} %>
-							  </h4>
-							 </div>
-							 <div class="col-md-4">							 		
-							 		<% if(userview!=null){%>
-									<form action="MySchedules.htm" name="myfrm" method="post">
-									 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
-									 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-									 </form>
-							 
-									 <%}else if(Long.parseLong(projectid)>0 && userview==null ){%>
-									 <form action="ProjectBasedSchedule.htm" name="myfrm" method="post">
-									 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
-									 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-									 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-									 	<input type="hidden" name="projectid" value="<%=projectid %>">
-									 </form>
-									<%}else if(Long.parseLong(projectid)==0 && Long.parseLong(divisionid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0 && Long.parseLong(programmeId)==0 && userview==null){%>
-									<form action="CommitteeScheduleList.htm" name="myfrm" method="post">
-									 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
-									 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-									 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-									 	<input type="hidden" name="projectid" value="<%=projectid %>">	
-									 </form>
-									<%}else if( Long.parseLong(divisionid)>0){%>
-										<form action="DivisionBasedSchedule.htm" name="myfrm" method="post">
-										 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
-										 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-										 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-										 	<input type="hidden" name="divisionid" value="<%=divisionid %>">							 
-										</form>							
-									<%}else if( Long.parseLong(initiationid)>0){%>
-										<form action="InitiationBasedSchedule.htm" name="myfrm" method="post">
-										 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
-										 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-										 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-										 	<input type="hidden" name="initiationid" value="<%=initiationid %>">							 
-										</form>							
-									<%}else if( Long.parseLong(carsInitiationId)>0){%>
-										<form action="CARSSchedule.htm" name="myfrm" method="post">
-										 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
-										 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-										 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-										 	<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId %>">							 
-										</form>							
-									<%}else if( Long.parseLong(programmeId)>0){%>
-										<form action="PrgmSchedule.htm" name="myfrm" method="post">
-										 	<input type="submit" class="btn  btn-sm back" value="SCHEDULE LIST" style="margin-left: 50px; font-size:15px;font-weight: bold; margin-top:-2px;float: right">
-										 	<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-										 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-										 	<input type="hidden" name="programmeId" value="<%=programmeId %>">							 
-										</form>							
-									<%} %>
- 							 </div>
-						 </div>
-					 </div>
-					 
-					 <div class="card-body">					
-							
-					 <%if(useraccess>=1 && Integer.parseInt(committeescheduleeditdata[10].toString())<5){%>	 
-					 <form action="CommitteeScheduleDelete.htm"  method="post" ><%} %>
-			   			<h5 style="color:#07689f">Schedule (Meeting Id : <%=committeescheduleeditdata[11]%>)
-			   			<%if(useraccess>=1 && Integer.parseInt(committeescheduleeditdata[10].toString())<5){%>	 
-				   				<button class="fa fa-trash btn btn-danger" type="submit" style="background-color: white;border-color: white;"  onclick="return confirm('Are You Sure To Delete this Meeting?');" ></button>				   					   				
-				   				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-				   				<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
-				   		<%} %>	
-			   			</h5>
-			   		 <%if(useraccess>=1 && Integer.parseInt(committeescheduleeditdata[10].toString())<5){%>	 
-					 </form><%} %>
-			   		
-			   		
-			   			<hr>
-				
-			  			<form action="CommitteeScheduleUpdate.htm" id="editform" method="post">			  			
-				   														
-								<table style="margin-top: 10px">
-	                        		<tr>
-	                            		<td><label class="control-label">Meeting Date : &nbsp;</label></td>          						
-							   			<td>
-							   					<%LocalDate todaydate= LocalDate.now();
+								</h4>
+							</div>
+							<div class="col-md-4">
+								<% if(userview!=null){%>
+								<form action="MySchedules.htm" name="myfrm" method="post">
+									<input type="submit" class="btn  btn-sm back float-right scheduleListStyles"
+										value="SCHEDULE LIST">
+									<input type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" />
+								</form>
+
+								<%}else if(Long.parseLong(projectid)>0 && userview==null ){%>
+								<form action="ProjectBasedSchedule.htm" name="myfrm"
+									method="post">
+									<input type="submit" class="btn  btn-sm back float-right scheduleListStyles"
+										value="SCHEDULE LIST"
+										>
+									<input type="hidden" name="committeeid"
+										value="<%=committeescheduleeditdata[0]%>"> <input
+										type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" /> <input type="hidden"
+										name="projectid" value="<%=projectid %>">
+								</form>
+								<%}else if(Long.parseLong(projectid)==0 && Long.parseLong(divisionid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0 && Long.parseLong(programmeId)==0 && userview==null){%>
+								<form action="CommitteeScheduleList.htm" name="myfrm"
+									method="post">
+									<input type="submit" class="btn  btn-sm back float-right scheduleListStyles"
+										value="SCHEDULE LIST"
+										>
+									<input type="hidden" name="committeeid"
+										value="<%=committeescheduleeditdata[0]%>"> <input
+										type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" /> <input type="hidden"
+										name="projectid" value="<%=projectid %>">
+								</form>
+								<%}else if( Long.parseLong(divisionid)>0){%>
+								<form action="DivisionBasedSchedule.htm" name="myfrm"
+									method="post">
+									<input type="submit" class="btn  btn-sm back float-right scheduleListStyles"
+										value="SCHEDULE LIST"
+										>
+									<input type="hidden" name="committeeid"
+										value="<%=committeescheduleeditdata[0]%>"> <input
+										type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" /> <input type="hidden"
+										name="divisionid" value="<%=divisionid %>">
+								</form>
+								<%}else if( Long.parseLong(initiationid)>0){%>
+								<form action="InitiationBasedSchedule.htm" name="myfrm"
+									method="post">
+									<input type="submit" class="btn  btn-sm back float-right scheduleListStyles"
+										value="SCHEDULE LIST"
+										>
+									<input type="hidden" name="committeeid"
+										value="<%=committeescheduleeditdata[0]%>"> <input
+										type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" /> <input type="hidden"
+										name="initiationid" value="<%=initiationid %>">
+								</form>
+								<%}else if( Long.parseLong(carsInitiationId)>0){%>
+								<form action="CARSSchedule.htm" name="myfrm" method="post">
+									<input type="submit" class="btn  btn-sm back float-right scheduleListStyles"
+										value="SCHEDULE LIST"
+										>
+									<input type="hidden" name="committeeid"
+										value="<%=committeescheduleeditdata[0]%>"> <input
+										type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" /> <input type="hidden"
+										name="carsInitiationId" value="<%=carsInitiationId %>">
+								</form>
+								<%}else if( Long.parseLong(programmeId)>0){%>
+								<form action="PrgmSchedule.htm" name="myfrm" method="post">
+									<input type="submit" class="btn  btn-sm back float-right scheduleListStyles"
+										value="SCHEDULE LIST"
+										>
+									<input type="hidden" name="committeeid"
+										value="<%=committeescheduleeditdata[0]%>"> <input
+										type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" /> <input type="hidden"
+										name="programmeId" value="<%=programmeId %>">
+								</form>
+								<%} %>
+							</div>
+						</div>
+					</div>
+
+					<div class="card-body">
+
+						<%if(useraccess>=1 && Integer.parseInt(committeescheduleeditdata[10].toString())<5){%>
+						<form action="CommitteeScheduleDelete.htm" method="post">
+							<%} %>
+							<h5 class="scheduleMeetingColor">
+								Schedule (Meeting Id :
+								<%=committeescheduleeditdata[11]%>)
+								<%if(useraccess>=1 && Integer.parseInt(committeescheduleeditdata[10].toString())<5){%>
+								<button class="fa fa-trash btn btn-danger bg-white border border-white" type="submit"
+									onclick="return confirm('Are You Sure To Delete this Meeting?');"></button>
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" /> <input type="hidden"
+									name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
+								<%} %>
+							</h5>
+							<%if(useraccess>=1 && Integer.parseInt(committeescheduleeditdata[10].toString())<5){%>
+						</form>
+						<%} %>
+
+
+						<hr>
+
+						<form action="CommitteeScheduleUpdate.htm" id="editform"
+							method="post">
+
+							<table class="mt-10">
+								<tr>
+									<td><label class="control-label">Meeting Date :
+											&nbsp;</label></td>
+									<td>
+										<%LocalDate todaydate= LocalDate.now();
 					   					 		 LocalDate scheduledate=Date.valueOf(committeescheduleeditdata[2].toString()).toLocalDate();				   		
 					   							if(Integer.parseInt(committeescheduleeditdata[10].toString())<5)
-					   							{ %>	
-					   								<input  class="form-control"  data-date-format="dd/mm/yyyy" id="readonlystartdate" name="committeedate" readonly="readonly" required="required"   value=" <%= sdf.format(sdf1.parse( committeescheduleeditdata[2].toString()))%>">
-					   							<%}else{ %>				   									
-					   								<input  class="form-control"  data-date-format="dd/mm/yyyy" id="startdate" name="committeedate"  required="required" readonly="readonly"  value=" <%= sdf.format(sdf1.parse( committeescheduleeditdata[2].toString()))%>">
-					   							<%} %>
-					   						
-					   					</td>
-		                            	<td style="padding-left: 20px"><label class="control-label">Meeting Time : &nbsp;</label></td>
-		       							<td><input  class="form-control" type="text" id="starttime" name="committeetime"  readonly="readonly" required="required"  value="<%=committeescheduleeditdata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[3].toString()): "" %>"></td>
-		                        	
-										<th style="padding-left: 40px;">
-											 <%if(useraccess>=1){ %>
-									 			 <input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">							 	
-						   							<%					   		
+					   							{ %> <input class="form-control"
+										data-date-format="dd/mm/yyyy" id="readonlystartdate"
+										name="committeedate" readonly="readonly" required="required"
+										value=" <%= sdf.format(sdf1.parse( committeescheduleeditdata[2].toString()))%>">
+										<%}else{ %> <input class="form-control"
+										data-date-format="dd/mm/yyyy" id="startdate"
+										name="committeedate" required="required" readonly="readonly"
+										value=" <%= sdf.format(sdf1.parse( committeescheduleeditdata[2].toString()))%>">
+										<%} %>
+
+									</td>
+									<td class="pl-20"><label
+										class="control-label">Meeting Time : &nbsp;</label></td>
+									<td><input class="form-control" type="text" id="starttime"
+										name="committeetime" readonly="readonly" required="required"
+										value="<%=committeescheduleeditdata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[3].toString()): "" %>"></td>
+
+									<th class="pl-40">
+										<%if(useraccess>=1){ %> <input type="hidden" name="scheduleid"
+										value="<%=committeescheduleeditdata[6]%>"> <%					   		
 						   							if(Integer.parseInt(committeescheduleeditdata[10].toString())<6 && (userview==null || userview.equalsIgnoreCase("CS") || userview.equalsIgnoreCase("CC") )) { %>
-						   								<input type="submit" id="update"  class="btn  btn-sm submit"  value="SUBMIT" onclick="Add(myfrm)">	
-						   							<%}else{ %>
-						   									<script type="text/javascript">
+										<input type="submit" id="update" class="btn  btn-sm submit"
+										value="SUBMIT" onclick="Add(myfrm)"> <%}else{ %> <script
+											type="text/javascript">
 						   									$("#startdate").prop('disabled', true);
 						   									$("#starttime").prop('disabled', true);
-						   									</script>
-						   							<%} %>	
-						   						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 	
-						   					<%} %>			   			
-					   					</th>		 
-				   				</tr>
-				   			</table>						 	  
-						</form>				
-						<br>		
-						<hr>						
-							<form action="CommitteeVenueUpdate.htm" method="post" id="venuupdatefrm">
-									<table style="margin-top: 10px; width: 95%" >
-										<tr>
-											<td style="width:100px"> 	<label class="control-label" style="padding-right: 10px;">Venue : &nbsp;</label></td>
-											<td >	<input class="form-control" type="text" name="venue" id="venue" required="required"  placeholder="Enter the Venue" <%if(committeescheduleeditdata[12]!=null){ %> value="<%=StringEscapeUtils.escapeHtml4(committeescheduleeditdata[12].toString()) %>" <%} %> ></td>
-		       							 
-		             			
-				                       
-					                         <td style="padding-left: 20px; ">  <label class="control-label">Category :&nbsp;</label></td>
-					                         <td >			                            
-											    <select class="custom-select " id="isconfidential" required="required" name="isconfidential">
-													<option disabled="true"  selected value="">Choose...</option>
-													<% for (Object[] obj : pfmscategorylist) {%>
-														<option value="<%=obj[0]%>" <% if(committeescheduleeditdata[13].toString().equals(obj[0].toString())) {%>selected <%} %>  ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>													
-													<%} %>
-											  </select>
-					                        </td>
-		                  				</tr>
-		                  				<% if( Long.parseLong(programmeId)==0){%>
-			                  				<tr >  
-			                  					<td colspan="4" >
-			                  						<label style="margin-bottom:-20px">Briefing of the meeting : &nbsp;</label>
-			                  					</td>
-			                  				<tr>
-			                  					<td colspan="4" >
-							       					<textarea class="form-control" name="decisions" id="decisions" cols="50" rows="5"  placeholder="Decisions sought from Meeting" maxlength="1000"><%if(committeescheduleeditdata[18]!=null ){ %> <%=committeescheduleeditdata[18].toString() %> <%} %></textarea>
-							       				</td>
-			                  				</tr>
-			                  				<tr >  
-			                  					<td> <label style="margin-top: 25px;margin-bottom:-20px;  ">Reference : &nbsp;</label></td>
-							       				<td colspan="3"><input class="form-control" type="text" name="reference" id="reference"   placeholder="Reference for this Meeting" <%if(committeescheduleeditdata[14]!=null){ %> value="<%=StringEscapeUtils.escapeHtml4(committeescheduleeditdata[14].toString()) %>" <%} %> ></td>
-			                  				</tr>
-		                  				<%} %>
-		                  				<tr >
-		                  					<td colspan="4"  align="center"   >
-		                  					 <%if(useraccess>=1){ %>	
-							             			<%if(Integer.parseInt(committeescheduleeditdata[10].toString())<6) { %>
-							             			
-								             			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-								             			<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
-								             				             					
-								             			<button type="submit" class="btn  btn-sm edit" name="update" value="SUBMIT"  onclick="return VenueUpdate('venuupdatefrm');" >UPDATE</button>		             				
-								             			
-							             			<% }else{ %>
-							             			
-							             				<script type="text/javascript">
+						   									</script> <%} %> <input type="hidden"
+										name="${_csrf.parameterName}" value="${_csrf.token}" /> <%} %>
+									</th>
+								</tr>
+							</table>
+						</form>
+						<br>
+						<hr>
+						<form action="CommitteeVenueUpdate.htm" method="post"
+							id="venuupdatefrm">
+							<table class="mt-10 venueUpdateTblWidth">
+								<tr>
+									<td class="width-100px"><label class="control-label pr-10px">Venue : &nbsp;</label></td>
+									<td><input class="form-control" type="text" name="venue"
+										id="venue" required="required" placeholder="Enter the Venue"
+										<%if(committeescheduleeditdata[12]!=null){ %>
+										value="<%=StringEscapeUtils.escapeHtml4(committeescheduleeditdata[12].toString()) %>"
+										<%} %>></td>
+
+
+
+									<td class="pl-20"><label
+										class="control-label">Category :&nbsp;</label></td>
+									<td><select class="custom-select " id="isconfidential"
+										required="required" name="isconfidential">
+											<option disabled="true" selected value="">Choose...</option>
+											<% for (Object[] obj : pfmscategorylist) {%>
+											<option value="<%=obj[0]%>"
+												<% if(committeescheduleeditdata[13].toString().equals(obj[0].toString())) {%>
+												selected <%} %>><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>
+											<%} %>
+									</select></td>
+								</tr>
+								<% if( Long.parseLong(programmeId)==0){%>
+								<tr>
+									<td colspan="4"><label class="mb-n20">Briefing
+											of the meeting : &nbsp;</label></td>
+								<tr>
+									<td colspan="4"><textarea class="form-control"
+											name="decisions" id="decisions" cols="50" rows="5"
+											placeholder="Decisions sought from Meeting" maxlength="1000">
+											<%if(committeescheduleeditdata[18]!=null ){ %> <%=committeescheduleeditdata[18].toString() %> <%} %>
+										</textarea></td>
+								</tr>
+								<tr>
+									<td><label class="mt-25px mb-n20">Reference
+											: &nbsp;</label></td>
+									<td colspan="3"><input class="form-control" type="text"
+										name="reference" id="reference"
+										placeholder="Reference for this Meeting"
+										<%if(committeescheduleeditdata[14]!=null){ %>
+										value="<%=StringEscapeUtils.escapeHtml4(committeescheduleeditdata[14].toString()) %>"
+										<%} %>></td>
+								</tr>
+								<%} %>
+								<tr>
+									<td colspan="4" align="center">
+										<%if(useraccess>=1){ %> <%if(Integer.parseInt(committeescheduleeditdata[10].toString())<6) { %>
+
+										<input type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" /> <input type="hidden"
+										name="scheduleid" value="<%=committeescheduleeditdata[6]%>">
+
+										<button type="submit" class="btn  btn-sm edit" name="update"
+											value="SUBMIT" onclick="return VenueUpdate('venuupdatefrm');">UPDATE</button>
+
+										<% }else{ %> <script type="text/javascript">
 							             					$('#venue').prop('readonly','readonly');
 							             					$('#isconfidential').attr('disabled',true);
 							             					$('#reference').prop('readonly','readonly');
 							             					$('#decisions').prop('readonly','readonly');
-							             				</script>
-							             				
-							             			<%} %>	
-						             		<%}else{ %>
-						             			<script type="text/javascript">
+							             				</script> <%} %> <%}else{ %> <script type="text/javascript">
 						             				$('#venue').prop('readonly','readonly');
 						             				$('#isconfidential').attr('disabled',true);
 						             				$('#reference').prop('readonly','readonly');
 						             				$('#decisions').prop('readonly','readonly');
-						             			</script>
-						             		<%} %>
-						             			
-						             		</td>
-		             					</tr>
-	             					</table>
-	             			</form>	          
-						<hr>
-						<br>	             
-						<h5 style="color:#07689f">Agenda</h5>
-						<hr>				
-					 		<%if(!committeeagendalist.isEmpty()){ %>
-						
-			         	<table  class="table table-bordered table-hover table-striped table-condensed ">
-			            	<thead>
-			               		<tr>
-			                    	<th>SN</th>
-			                       	<th>Agenda Item</th> 
-			                       	<th>Reference</th>
-			                       	<th>Remarks</th>
-			                       	<th>Presenter</th>
-			                       	<th>Duration (Mins)</th>
-			                       	<th>Attachment</th>
-			                    </tr>
-			              	</thead> 
-			              		<%	int count=0;
-							for(Object[] 	obj:committeeagendalist){ count++;%>  
-							                     
-				    		<tbody>
-							
-							
-							
-								<tr>
-										
-									<td style="text-align: center;"><%=count%></td>
-									<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
-									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>  </td>									
-									<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>									
-									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%>, <%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>  </td>
-									<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %></td>
-									<td>
-								
-							 			<table>
-											<%for(Object[] doc : AgendaDocList) { 
-											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
-												<tr>
-													<td><%= doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " %> <%= " <span class='text-muted'> Ver " %> <%= doc[4]!=null?StringEscapeUtils.escapeHtml4(doc[4].toString()): " - " %> . <%= doc[5]!=null?StringEscapeUtils.escapeHtml4(doc[5].toString()): " - " %> <%="</span>" %></td>
-												     <%if(Long.parseLong(initiationid) > 0){ %>
-													   <td style="width:1% ;white-space: nowrap;" ><a href="PrePRojectAgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
-													 <%}else{ %>
-														<td style="width:1% ;white-space: nowrap;" ><a href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>" target="blank"><i class="fa fa-download" style="color: green;" aria-hidden="true"></i></a></td>
-												     <%} %>
-												   <tr>													
-											<%} }%>
-										</table>
-						
+						             			</script> <%} %>
+
 									</td>
-									
 								</tr>
-							</tbody>
-				    		<%} %>
-	
-			             </table>
-			
-						<% }else if(Integer.parseInt(committeescheduleeditdata[10].toString())<5 ){ %>
-							<br>
-							<h6 align="center" >Kindly Add Agenda ..!!</h6>
-						
-						<%} else{%>
-							<br>
-						 	<h6>No Agenda Defined ..!!</h6>
-						<%} %> 
-				
-			        	<div class="form-group" align="center" style="margin-top: 25px">		        			     		
-									<%	if(Integer.parseInt(committeescheduleeditdata[10].toString())<6 && (userview==null || userview.equalsIgnoreCase("CS") || userview.equalsIgnoreCase("CC") )) { %>
-					   					 <%if(!committeeagendalist.isEmpty()){%>
-												 <%if(useraccess>1){ %>		 
-													 <form <%if(programmeId.equals("0")) {%>action="CommitteeScheduleAgenda.htm"<%} else {%>action="PrgmScheduleAgenda.htm"<%} %> method="post">
-														<input type="hidden"  name="scheduleid" value="<%=committeescheduleeditdata[6] %>" >
-														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-														<button type="submit" class="btn  btn-sm  edit"  style="padding:2px 13px !important;margin-right: 5%" >EDIT</button>
-													</form>
-												<%} %>
-										
-											<%} else if(!committeescheduleeditdata[4].toString().equalsIgnoreCase("MAA") && useraccess>=1){%>											
-												<form <%if(programmeId.equals("0")) {%>action="CommitteeScheduleAgenda.htm"<%} else {%>action="PrgmScheduleAgenda.htm"<%} %> method="post">
-													<input type="hidden"  name="scheduleid" value="<%=committeescheduleeditdata[6] %>" >
-													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-													<button type="submit" class="btn  btn-sm  add"  style="padding:2px 13px !important" >ADD</button>
-												</form>
-											<%} %>
-									<%}%>	
-									
-														
-						</div>			
+							</table>
+						</form>
 						<hr>
 						<br>
-						
-						 <%if( committeescheduleeditdata[4].toString().equalsIgnoreCase("MAR") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR")  ){ %>
-						<h5 style="color:#07689f">Reason For Returning</h5>
-					   	<hr>
-						<%for(Object[] obj : returndata){ %>
-						
-						<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase(obj[2].toString())) {%>
-						
-							<b> &bull; <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></b>
-							
-						<%} %>	
+						<h5 class="scheduleMeetingColor">Agenda</h5>
+						<hr>
+						<%if(!committeeagendalist.isEmpty()){ %>
 
-						
-						<%} %>
-						<br><br>
-						<%} %>
-						
-			           <%if(useraccess>=1){ %>
-							<%if(committeecons==1  ){ %>	
-							<div><h5 style="color:#07689f"> Operations </h5>
-							
-								 <%if( committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR")  ){ %>
-								 
-									 <form method="POST" action="CommitteeMinutesViewAllDownload.htm" name="myfrm" id="myfrm" style="float: right"> 
-									 
-									 	<%if(committeescheduleeditdata[20]!=null){ %>
-									 	<a  class="btn  btn-sm view" href="MinutesAttachDownload.htm?attachmentid=<%=committeescheduleeditdata[20] %>" target="_blank" style="background-color:#009DAE ;color:white ;font-size:12px;" >ATTACHED MINUTES </a>
-									 	<%} %>
-									 	<%if(Long.parseLong(projectid)>0){ %>
-										<input type="submit" class="btn  btn-sm view" value="MINUTES 2021" formaction="CommitteeMinutesNewDownload.htm" formtarget="_blank" formmethod="get" style="background-color:#0e49b5 ;color:white ;font-size:12px;">
-										<%} %>
-										<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;" >VIEW MINUTES</button>
-										<button type="submit" class="btn  btn-sm view" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" >TABULAR MINUTES</button>
-										
-										<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">
-										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-									 </form>
-								 
-								 <%} %>
-								
-							 </div> 
-							 
-							<%}else{ %>
-								<div class="row">
-									
-									<h5> <span style="margin-left: 30px; font-size: 20px">Note : &nbsp;</span><span style="color: red"><%=committeescheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()): " - " %>  <%if(Integer.parseInt(projectid)>0){ %>							  
-									 		For  <%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - "  %> 
-									 	<%} %> is Not Constituted
-									</span></h5>
-								</div>
+						<table
+							class="table table-bordered table-hover table-striped table-condensed ">
+							<thead>
+								<tr>
+									<th>SN</th>
+									<th>Agenda Item</th>
+									<th>Reference</th>
+									<th>Remarks</th>
+									<th>Presenter</th>
+									<th>Duration (Mins)</th>
+									<th>Attachment</th>
+								</tr>
+							</thead>
+							<%	int count=0;
+							for(Object[] 	obj:committeeagendalist){ count++;%>
+
+							<tbody>
+
+
+
+								<tr>
+
+									<td class="text-center"><%=count%></td>
+									<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
+									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>
+									</td>
+									<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
+									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%>,
+										<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>
+									</td>
+									<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - " %></td>
+									<td>
+
+										<table>
+											<%for(Object[] doc : AgendaDocList) { 
+											if(obj[0].toString().equalsIgnoreCase(doc[1].toString())){%>
+											<tr>
+												<td><%= doc[3]!=null?StringEscapeUtils.escapeHtml4(doc[3].toString()): " - " %>
+													<%= " <span class='text-muted'> Ver " %> <%= doc[4]!=null?StringEscapeUtils.escapeHtml4(doc[4].toString()): " - " %>
+													. <%= doc[5]!=null?StringEscapeUtils.escapeHtml4(doc[5].toString()): " - " %>
+													<%="</span>" %></td>
+												<%if(Long.parseLong(initiationid) > 0){ %>
+												<td class="agendaTdWidth"><a
+													href="PrePRojectAgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>"
+													target="blank"><i class="fa fa-download text-primary"
+														 aria-hidden="true"></i></a></td>
+												<%}else{ %>
+												<td class="agendaTdWidth"><a
+													href="AgendaDocLinkDownload.htm?filerepid=<%=doc[2]%>"
+													target="blank"><i class="fa fa-download text-primary"
+														 aria-hidden="true"></i></a></td>
+												<%} %>
+											
+											<tr>
+												<%} }%>
+											
+										</table>
+
+									</td>
+
+								</tr>
+							</tbody>
 							<%} %>
-							   	
-								
-								<hr style="margin: 0.5rem 0rem !important;">
-								
-								<div class="form-block">
-								
-									<form action="CommitteeScheduleMinutes.htm" name="myfrm" id="myfrm" method="POST">
-										
-										
-														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MKO") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
-																	<button type="button"  class="btn  btn-sm submit"  style="background-color:green;color:white;margin: 5px 0px"> <i class="fa fa-check" aria-hidden="true" style="font-size: 1.0rem"></i> Agenda Approved </button>
-														<%} %>	
-															
-														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
-																<button type="button"  class="btn  btn-sm submit"  style="background-color:#81b214;color:white;border-color:#81b214 "> <i class="fa fa-check" aria-hidden="true" style="font-size: 1.0rem"></i> Meeting Kicked Off </button>
-														<%} %>	
-														
-														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA")){ %>
-																<button type="button"  class="btn  btn-sm submit"  style="background-color:#28a745;color:white;border-color:#28a745 "> <i class="fa fa-check" aria-hidden="true" style="font-size: 1.0rem"></i> Minutes Approved </button>
-														<%} %>
-														
-														
-															
-										
-														
-										
-														<%if( committeeagendalist.size()>0  ){
+
+						</table>
+
+						<% }else if(Integer.parseInt(committeescheduleeditdata[10].toString())<5 ){ %>
+						<br>
+						<h6 align="center">Kindly Add Agenda ..!!</h6>
+
+						<%} else{%>
+						<br>
+						<h6>No Agenda Defined ..!!</h6>
+						<%} %>
+
+						<div class="form-group mt-25px" align="center">
+							<%	if(Integer.parseInt(committeescheduleeditdata[10].toString())<6 && (userview==null || userview.equalsIgnoreCase("CS") || userview.equalsIgnoreCase("CC") )) { %>
+							<%if(!committeeagendalist.isEmpty()){%>
+							<%if(useraccess>1){ %>
+							<form <%if(programmeId.equals("0")) {%>
+								action="CommitteeScheduleAgenda.htm" <%} else {%>
+								action="PrgmScheduleAgenda.htm" <%} %> method="post">
+								<input type="hidden" name="scheduleid"
+									value="<%=committeescheduleeditdata[6] %>"> <input
+									type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+								<button type="submit" class="btn  btn-sm  edit editPadding mr-p5"
+									>EDIT</button>
+							</form>
+							<%} %>
+
+							<%} else if(!committeescheduleeditdata[4].toString().equalsIgnoreCase("MAA") && useraccess>=1){%>
+							<form <%if(programmeId.equals("0")) {%>
+								action="CommitteeScheduleAgenda.htm" <%} else {%>
+								action="PrgmScheduleAgenda.htm" <%} %> method="post">
+								<input type="hidden" name="scheduleid"
+									value="<%=committeescheduleeditdata[6] %>"> <input
+									type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+								<button type="submit" class="btn  btn-sm  add editPadding"
+									>ADD</button>
+							</form>
+							<%} %>
+							<%}%>
+
+
+						</div>
+						<hr>
+						<br>
+
+						<%if( committeescheduleeditdata[4].toString().equalsIgnoreCase("MAR") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR")  ){ %>
+						<h5 class="scheduleMeetingColor">Reason For Returning</h5>
+						<hr>
+						<%for(Object[] obj : returndata){ %>
+
+						<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase(obj[2].toString())) {%>
+
+						<b> &bull; <%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()): " - " %></b>
+
+						<%} %>
+
+
+						<%} %>
+						<br>
+						<br>
+						<%} %>
+
+						<%if(useraccess>=1){ %>
+						<%if(committeecons==1  ){ %>
+						<div>
+							<h5 class="operationsColor">Operations</h5>
+
+							<%if( committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR")  ){ %>
+
+							<form method="POST" action="CommitteeMinutesViewAllDownload.htm"
+								name="myfrm" id="myfrm" class="float-right">
+
+								<%if(committeescheduleeditdata[20]!=null){ %>
+								<a class="btn  btn-sm view text-white attachedMinutesBgColor fs-12px"
+									href="MinutesAttachDownload.htm?attachmentid=<%=committeescheduleeditdata[20] %>"
+									target="_blank"
+									>ATTACHED
+									MINUTES </a>
+								<%} %>
+								<%if(Long.parseLong(projectid)>0){ %>
+								<input type="submit" class="btn  btn-sm view text-white fs-12px committeeMinutesDownloadBgColor"
+									value="MINUTES 2021"
+									formaction="CommitteeMinutesNewDownload.htm"
+									formtarget="_blank" formmethod="get"
+									>
+								<%} %>
+								<button type="submit" class="btn btn-sm prints my-2 my-sm-0 fs-12px"
+									formtarget="_blank" >VIEW
+									MINUTES</button>
+								<button type="submit" class="btn  btn-sm view text-white fs-12px committeeMinutesDownloadBgColor"
+									formaction="MeetingTabularMinutesDownload.htm"
+									formtarget="_blank"
+									>TABULAR
+									MINUTES</button>
+
+								<input type="hidden" name="committeescheduleid"
+									value="<%=committeescheduleeditdata[6] %>"> <input
+									type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+							</form>
+
+							<%} %>
+
+						</div>
+
+						<%}else{ %>
+						<div class="row">
+
+							<h5>
+								<span class="ml-30px fs-20px">Note :
+									&nbsp;</span><span class="text-danger"><%=committeescheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()): " - " %>
+									<%if(Integer.parseInt(projectid)>0){ %> For <%=projectdetails[4]!=null?StringEscapeUtils.escapeHtml4(projectdetails[4].toString()): " - "  %>
+									<%} %> is Not Constituted </span>
+							</h5>
+						</div>
+						<%} %>
+
+
+						<hr class="lineMargin">
+
+						<div class="form-block">
+
+							<form action="CommitteeScheduleMinutes.htm" name="myfrm"
+								id="myfrm" method="POST">
+
+
+								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MKO") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
+								<button type="button" class="btn  btn-sm submit bg-success agendaApprovedMargin"
+									>
+									<i class="fa fa-check agendaApprovedIconFs" aria-hidden="true"
+										></i> Agenda Approved
+								</button>
+								<%} %>
+
+								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
+								<button type="button" class="btn  btn-sm submit meetingKickedOffStyle">
+									<i class="fa fa-check agendaApprovedIconFs" aria-hidden="true"></i> Meeting Kicked Off
+								</button>
+								<%} %>
+
+								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMA")){ %>
+								<button type="button" class="btn  btn-sm submit minutesApprovedStyle">
+									<i class="fa fa-check agendaApprovedIconFs" aria-hidden="true"></i> Minutes Approved
+								</button>
+								<%} %>
+
+
+
+
+
+
+								<%if( committeeagendalist.size()>0  ){
 														if(Integer.parseInt(committeescheduleeditdata[10].toString())<3 && invitedlist.size()>0)
 															{%>
-																<input type="submit" id="submit" class="btn  btn-sm back" value="Participants" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white" />
-															<%}
+								<input type="submit" id="submit" class="btn  btn-sm back backBgColor"
+									value="Participants" formaction="CommitteeInvitations.htm"/>
+								<%}
 															else if(invitedlist.size()>0 && Integer.parseInt(committeescheduleeditdata[10].toString())<8 ){ %>
-																<input type="submit" id="submit" class="btn  btn-sm submit" value="Participants" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white;border-color:#0e49b5 " />
-															<%}else if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MSC") && committeecons==1 ) { %>
-																<input type="submit" id="submit" class="btn  btn-sm submit" value="Invite" onclick="invite()" formaction="CommitteeInvitations.htm" style="background-color:#0e49b5 	;color:white" />
-																
-															<%}
+								<input type="submit" id="submit" class="btn  btn-sm submit backBgColor backBgBorder"
+									value="Participants" formaction="CommitteeInvitations.htm"/>
+								<%}else if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MSC") && committeecons==1 ) { %>
+								<input type="submit" id="submit" class="btn  btn-sm submit backBgColor"
+									value="Invite" onclick="invite()"
+									formaction="CommitteeInvitations.htm"/>
+
+								<%}
 														} %>
-														
-														
-														
-														
-														
-														
-														
-						
-														
-														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") ){ %>
-														
-															<input type="submit" id="submit" class="btn  btn-sm submit" value="Attendance" formaction="CommitteeAttendance.htm" style="background-color:#16697a ;color:white;border-color:#16697a " />
-															<input type="hidden" name="membertype" value="CC" />
-															
-															<%} %>
-															
-														<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
-															
-															<input type="submit" id="submit" class="btn  btn-sm submit" value="Minutes" style="background-color:#24a0ed;color:white;border-color:#24a0ed " />
-															
-					
-														<%} %>
-															
-														<%if(Integer.parseInt(committeescheduleeditdata[10].toString())>=7){ %>
-															
-															
-															<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Minutes Approval" formaction="MeetingMinutesApproval.htm"   style="background-color:#0e49b5 ;color:white" /> 
-					
-														<%} %>	
-														
-														<%-- <%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR")){ %>
-															<input type="submit" id="submit" class="btn  btn-sm view" name="sub" value="Re-Submit Minutes Approval" formaction="MeetingMinutesApproval.htm" onclick="return confirm('Are you sure to Re-submit the Minutes ?')" style="background-color:#0e49b5 	;color:white" /> 
-														<%} %> --%>
-															
-														
-															
-														<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">
-														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-														<input type="hidden" name="projectid" value="<%=projectid %>">	
-										
-							</form> 					
-									<form action="MeetingAgendaApproval.htm" name="myfrm1" id="myfrm1" method="post">
-									<%if(committeeagendalist.size()>0 && invitedlist.size()>0 ){ %>
-									
-											<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MSC") ) { %>
-												<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Agenda Approval"  onclick="checkagenda()" style="background-color:#0e49b5 	;color:white" /> 
-											<%} %>
-											<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAF")){ %>
-												<button type="button"  class="btn  btn-sm view"  style="background-color:#0e49b5;color:white"> <i class="fa fa-forward" aria-hidden="true" style="font-size: 1.0rem"></i> Agenda Forwarded </button>
-											<%} %>
-											<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAR")){ %>
-												<input type="submit" id="submit" name="sub" class="btn  btn-sm view" value="Re-Submit Agenda Approval"  onclick="checkagenda()" style="background-color:#0e49b5 	;color:white" /> 
-											<%} %>
-											<!-- Commented for New Flow  -->
-					<%-- 						<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MMF")){ %>
-												<button type="button"  class="btn  btn-sm view"  style="background-color:#0e49b5;color:white"> <i class="fa fa-forward" aria-hidden="true" style="font-size: 1.0rem"></i> Minutes Forwarded </button>
-											<%} %> --%>
-									
-									<%} %>
-									
-										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-										<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">
-										
-									</form>
-								
-									<form action="KickOffMeeting.htm" name="myfrm" id="myfrm" method="post">
-			
-										<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAA") && !todaydate.isBefore(scheduledate) ){ %>
-													
-											<input type="submit" id="submit" name="sub" class="btn  btn-sm submit fa-input" value=" &#xf017; &nbsp;&nbsp;Kick Off Meeting "  onclick="return kickoff()"   style="background-color:#06623b ;color:white"  /> 
-													
-										<%} %>
-										
-										<%if( committeescheduleeditdata[4].toString().equalsIgnoreCase("MKO") ){ %>
-														
-											<div style="margin-left:1%;display: -webkit-box;">
-												<span style="font-weight: 600">Enter OTP : </span>
-												<input  class="form-control" type="password" id="otp" name="otpvalue" maxlength="4" <%if(otp!=null){ %>value="<%=StringEscapeUtils.escapeHtml4(otp) %>" <%} %> required="required"  value="" style="padding: .15rem .75rem !important;margin: 0px 15px;width:40% !important">
-												<input type="submit" id="submit" name="sub"  class="btn  btn-sm submit" value="Validate"  onclick="" style="color:white" /> 
-												<input type="submit" id="submit" name="sub"  class="btn  btn-sm view" value="Resend OTP" onclick="resendotp()"   style="color:white;margin: 0px 5px" /> 
-												
-											</div>
-													
-										<%} %>
-											
-										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-										<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6] %>">	
-										<input type="hidden" name="committeemainid" value="<%=committeescheduleeditdata[1] %>">
-										<input type="hidden" name="committeeshortname" value="<%=committeescheduleeditdata[8] %>">
-										<input type="hidden" name="meetingdate" value="<%=committeescheduleeditdata[2] %>">
-										<input type="hidden" name="meetingtime" value="<%=committeescheduleeditdata[3] %>">
-										<input type="hidden" name="meetingid" value="<%=committeescheduleeditdata[11] %>">
-										<input type="hidden" name="projectid" value="<%=projectid %>">
-										<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-												
-									</form>
-							
-								<%} else{ %>
-										<h5> <span style="margin-left: 30px; font-size: 20px">Note : &nbsp;</span>
-										<span style="color: red">-</span></h5>
-								
-								<%} %>	
-								
-								
-								<hr style="margin: 0.5rem 0rem !important;">
-								
-								<form  action="#" method="post" id="myfrm" target="_blank">
-									<%if(Integer.parseInt(committeescheduleeditdata[10].toString())>=5) { %>
-										
-											<button type="submit" class="btn btn-sm " style="background-color: #96D500;" formaction="AgendaPresentation.htm"  formmethod="post" formtarget="_blank" title="Agenda Presentation" >
-												<img alt="" src="view/images/presentation.png" style="width:19px !important">
-											</button>
-									
-										<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
-										<input type="hidden" name="committeeid" value="<%=committeescheduleeditdata[0]%>">
-										<input type="hidden" name="projectid" value="<%=projectid %>">
-										<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />
-									<%} %>
-									<%if(!todaydate.isAfter(scheduledate)) {%>
-									<% if(committeescheduleeditdata[23].toString().equalsIgnoreCase("Y")){%>
-										<button type="submit" class="btn btn-sm back" formaction="MeetingBriefingPaper.htm" name="scheduleid" value="<%=committeescheduleeditdata[6] %>" formmethod="get" data-toggle="tooltip" data-placement="bottom" title="Briefing Paper" >
-											BRIEFING
-										</button>
-									<%}%>
-									<%} %>
-								</form>	
+
+
+
+
+
+
+
+
+
+								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") ){ %>
+
+								<input type="submit" id="submit" class="btn  btn-sm submit committeeAttendanceSubmitStyles"
+									value="Attendance" formaction="CommitteeAttendance.htm"/>
+								<input type="hidden" name="membertype" value="CC" />
+
+								<%} %>
+
+								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MKV") || committeescheduleeditdata[4].toString().equalsIgnoreCase("MMR") ){ %>
+
+								<input type="submit" id="submit" class="btn  btn-sm submit minutesSubmitStyle"
+									value="Minutes"/>
+
+
+								<%} %>
+
+								<%if(Integer.parseInt(committeescheduleeditdata[10].toString())>=7){ %>
+
+
+								<input type="submit" id="submit" name="sub"
+									class="btn  btn-sm view minutesApprovalSubmitStyles" value="Minutes Approval"
+									formaction="MeetingMinutesApproval.htm"/>
+
+								<%} %>
+
+
+								<input type="hidden" name="committeescheduleid"
+									value="<%=committeescheduleeditdata[6] %>"> <input
+									type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" /> <input type="hidden"
+									name="projectid" value="<%=projectid %>">
+
+							</form>
+							<form action="MeetingAgendaApproval.htm" name="myfrm1"
+								id="myfrm1" method="post">
+								<%if(committeeagendalist.size()>0 && invitedlist.size()>0 ){ %>
+
+								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MSC") ) { %>
+								<input type="submit" id="submit" name="sub"
+									class="btn  btn-sm view minutesApprovalSubmitStyles" value="Agenda Approval"
+									onclick="checkagenda()"/>
+								<%} %>
+								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAF")){ %>
+								<button type="button" class="btn  btn-sm view minutesApprovalSubmitStyles">
+									<i class="fa fa-forward agendaApprovedIconFs" aria-hidden="true"></i> Agenda Forwarded
+								</button>
+								<%} %>
+								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAR")){ %>
+								<input type="submit" id="submit" name="sub"
+									class="btn  btn-sm view minutesApprovalSubmitStyles" value="Re-Submit Agenda Approval"
+									onclick="checkagenda()"/>
+								<%} %>
+
+								<%} %>
+
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" /> <input type="hidden"
+									name="committeescheduleid"
+									value="<%=committeescheduleeditdata[6] %>">
+
+							</form>
+
+							<form action="KickOffMeeting.htm" name="myfrm" id="myfrm"
+								method="post">
+
+								<%if(committeescheduleeditdata[4].toString().equalsIgnoreCase("MAA") && !todaydate.isBefore(scheduledate) ){ %>
+
+								<input type="submit" id="submit" name="sub"
+									class="btn  btn-sm submit fa-input kickOffMeetingSubmitStyle"
+									value=" &#xf017; &nbsp;&nbsp;Kick Off Meeting "
+									onclick="return kickoff()"
+									/>
+
+								<%} %>
+
+								<%if( committeescheduleeditdata[4].toString().equalsIgnoreCase("MKO") ){ %>
+
+								<div class="otpDivStyle">
+									<span class="font-weight-600">Enter OTP : </span> <input
+										class="form-control otpInputStyle" type="password" id="otp" name="otpvalue"
+										maxlength="4" <%if(otp!=null){ %>
+										value="<%=StringEscapeUtils.escapeHtml4(otp) %>" <%} %>
+										required="required" value="">
+									<input type="submit" id="submit" name="sub"
+										class="btn  btn-sm submit validateInputStyle" value="Validate" onclick=""/> 
+										<input type="submit" id="submit"
+										name="sub" class="btn  btn-sm view" value="Resend OTP"
+										onclick="resendotp()"/>
+
+								</div>
+
+								<%} %>
+
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" /> <input type="hidden"
+									name="committeescheduleid"
+									value="<%=committeescheduleeditdata[6] %>"> <input
+									type="hidden" name="committeemainid"
+									value="<%=committeescheduleeditdata[1] %>"> <input
+									type="hidden" name="committeeshortname"
+									value="<%=committeescheduleeditdata[8] %>"> <input
+									type="hidden" name="meetingdate"
+									value="<%=committeescheduleeditdata[2] %>"> <input
+									type="hidden" name="meetingtime"
+									value="<%=committeescheduleeditdata[3] %>"> <input
+									type="hidden" name="meetingid"
+									value="<%=committeescheduleeditdata[11] %>"> <input
+									type="hidden" name="projectid" value="<%=projectid %>">
+								<input type="hidden" name="committeeid"
+									value="<%=committeescheduleeditdata[0]%>">
+
+							</form>
+
+							<%} else{ %>
+							<h5>
+								<span class="fs-20px ml-30px">Note :
+									&nbsp;</span> <span class="text-danger">-</span>
+							</h5>
+
+							<%} %>
+
+
+							<hr class="lineMargin">
+
+							<form action="#" method="post" id="myfrm" target="_blank">
+								<%if(Integer.parseInt(committeescheduleeditdata[10].toString())>=5) { %>
+
+								<button type="submit" class="btn btn-sm agendaPresentationSubmitStyle"
+									formaction="AgendaPresentation.htm" formmethod="post"
+									formtarget="_blank" title="Agenda Presentation">
+									<img class="presentationImgWidth" alt="" src="view/images/presentation.png">
+								</button>
+
+								<input type="hidden" name="scheduleid"
+									value="<%=committeescheduleeditdata[6] %>"> <input
+									type="hidden" name="committeeid"
+									value="<%=committeescheduleeditdata[0]%>"> <input
+									type="hidden" name="projectid" value="<%=projectid %>">
+								<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+								<%} %>
+								<%if(!todaydate.isAfter(scheduledate)) {%>
+								<% if(committeescheduleeditdata[23].toString().equalsIgnoreCase("Y")){%>
+								<button type="submit" class="btn btn-sm back"
+									formaction="MeetingBriefingPaper.htm" name="scheduleid"
+									value="<%=committeescheduleeditdata[6] %>" formmethod="get"
+									data-toggle="tooltip" data-placement="bottom"
+									title="Briefing Paper">BRIEFING</button>
+								<%}%>
+								<%} %>
+							</form>
 						</div>
 
 					</div>
-					 
-				 </div>
+
+				</div>
 			</div>
-		</div>	
+		</div>
 	</div>
 </body>
-	
-	
+
+
 <script type="text/javascript">
 function char_count(str, letter) 
 {
@@ -726,9 +815,9 @@ function char_count(str, letter)
 			}		
 	}	
 </script>
-	
-	
-	
+
+
+
 <script>
 
 $('#startdate').daterangepicker({
@@ -834,5 +923,6 @@ function resendotp(){
 }
  
 </script>
-<br><br>	
-</html>	
+<br>
+<br>
+</html>

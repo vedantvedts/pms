@@ -83,13 +83,13 @@
 													
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN</th>
-															<th class="text-left w-100;">Action Item</th>
-															<th class="width-110px">PDC</th>
-															<th class="width-110px">Assigned Date</th>									
+															<th class="text-left width-80">Action Item</th>
+															<th class="width110">PDC</th>
+															<th class="width110">Assigned Date</th>									
 														 	<th >Assignee</th>	
-														 	<th class="width-115px">Progress</th>
+														 	<th class="width115">Progress</th>
 														
 														 		
 														 	
@@ -111,10 +111,10 @@
 															<%}else{ %> -- <%} %>
 															</td>
 															
-															<td class="width-30px"><%=obj[4]!=null?sdf.format(obj[4]):""%></td>
-															<td class="td-width12 "><%=obj[4]!=null?sdf.format(obj[3]):""%></td>
-															<td class="td-width20"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
-															<td class="td-width8"><%if(obj[10]!=null){ %>
+															<td class="tdwidth8 text-center"><%=obj[4]!=null?sdf.format(obj[4]):""%></td>
+															<td class="width-10 text-center "><%=obj[4]!=null?sdf.format(obj[3]):""%></td>
+															<td class="width-15"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
+															<td class="width-15"><%if(obj[10]!=null){ %>
 															<div class="progress div-progress">
 															<div class="progress-bar progress-bar-striped width-<%=obj[10]%>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=StringEscapeUtils.escapeHtml4(obj[10].toString())%>

@@ -9,35 +9,14 @@
 <html>
 
 <head>
-	<meta charset="ISO-8859-1">
-	<jsp:include page="../static/header.jsp"></jsp:include>
+<meta charset="ISO-8859-1">
+<jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/committeeModule/CommitteeEdit.css" var="CommitteeEdit" />
+<link href="${CommitteeEdit}" rel="stylesheet" />
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
-
-
-	<title> COMMITTEE EDIT</title>
-	<style type="text/css">
-		.input-group-text {
-			font-weight: bold;
-		}
-
-		label {
-			font-weight: 800;
-			font-size: 16px;
-			color: #07689f;
-		}
-
-		hr {
-			margin-top: -2px;
-			margin-bottom: 12px;
-		}
-
-		.card b {
-			font-size: 20px;
-		}
-	</style>
+<title> COMMITTEE EDIT</title>	
 </head>
-
 <body>
 
 <%
@@ -65,11 +44,11 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
     <br />
     
     
-	<div class="container" style="max-width: 100%;">
+	<div class="container containerWidth">
 		<div class="row">
 			<div class="col-md-12">			
 				<div class="card shadow-nohover">
-					<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+					<div class="card-header cardHeaderStyle">
 						<div class="row">
 							<div class="col-md-6">
 								<b class="text-white">EDIT COMMITTEE</b>
@@ -105,7 +84,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 							<div class="col-md-4">
 								<div class="form-group">
 									<label class="control-label">Committee Type</label>
-									<select class="custom-select" id="secretary" required="required" name="committeetype" style="margin-top: -5px">
+									<select class="custom-select mt-n5" id="secretary" required="required" name="committeetype">
 									
 										<option <%if(committeedetails[3].toString().equalsIgnoreCase("S")){ %>selected <%} %> value="S">Standard</option>
 										<option <%if(committeedetails[3].toString().equalsIgnoreCase("A")){ %>selected <%} %>value="A">Adhoc</option>
@@ -121,7 +100,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 						 <div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Project Applicable</label>
-									<select class="custom-select" id="secretary" required="required" name="projectapplicable" style="margin-top: -5px">
+									<select class="custom-select mt-n5" id="secretary" required="required" name="projectapplicable">
 										<%if(committeedetails[4].toString().equalsIgnoreCase("P")){ %>
 										<option selected value="P">Project</option>
 										<option   value="N">Non-Project</option>
@@ -139,7 +118,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 							<div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Tech / Non-Tech</label>
-									<select class="custom-select" id="" required="required" name="technontech" style="margin-top: -5px">
+									<select class="custom-select mt-n5" id="" required="required" name="technontech">
 										
 										<option <%if(committeedetails[5].toString().equalsIgnoreCase("T")){ %>selected <%} %> value="T">Technical</option>
 										<option  <%if(committeedetails[5].toString().equalsIgnoreCase("N")){ %>selected <%} %> value="N">Non-Technical</option>
@@ -150,23 +129,23 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 							<div class="col-md-2">
 								<div class="form-group">
 									<label class="control-label">Periodic / Non-Periodic</label>
-									<select class="custom-select" id="periodic"  name="periodic" style="margin-top: -5px" >
+									<select class="custom-select mt-n5" id="periodic"  name="periodic">
 										
 										<option <%if(committeedetails[7].toString().equalsIgnoreCase("P")){ %>selected <%} %> value="P">Periodic</option>
 										<option <%if(committeedetails[7].toString().equalsIgnoreCase("N")){ %>selected <%} %> value="N">Non-Periodic</option>
 									</select>
 								</div>
 							</div>
-							<div class="col-md-2" <%if(!committeedetails[7].toString().equalsIgnoreCase("P")){ %> style="display: none" <%} %> id="periodicduration">
+							<div  <%if(!committeedetails[7].toString().equalsIgnoreCase("P")){ %> class="col-md-2 displayNone" <%}else{ %> class="col-md-2" <%} %>id="periodicduration">
 								<div class="form-group">
 									<label class="control-label">Periodic Duration (Days)</label>
-									<input class="form-control numeric-only" type="number" id="periodicdurationfield" name="periodicduration" required min="1" style="margin-top: -5px" placeholder="Days" <%if(committeedetails[7].toString().equalsIgnoreCase("P")){ %> value="<%=committeedetails[8]!=null?StringEscapeUtils.escapeHtml4(committeedetails[8].toString()): ""%>" <%} %>>
+									<input class="form-control numeric-only mt-n5" type="number" id="periodicdurationfield" name="periodicduration" required min="1" placeholder="Days" <%if(committeedetails[7].toString().equalsIgnoreCase("P")){ %> value="<%=committeedetails[8]!=null?StringEscapeUtils.escapeHtml4(committeedetails[8].toString()): ""%>" <%} %>>
 								</div>
 							</div>
 							<div class="col-md-2">
 								<div class="form-group">
-									<label class="control-label">Is Briefing<span class="mandatory" style="color: red;">*</span></label>
-									<select class="custom-select" id="IsBriefing" required="required" name="IsBriefing" style="margin-top: -5px" >
+									<label class="control-label">Is Briefing<span class="mandatory text-danger">*</span></label>
+									<select class="custom-select mt-n5" id="IsBriefing" required="required" name="IsBriefing" >
 										<option disabled value="">Choose...</option>
 										<option <%if(committeedetails[14].toString().equalsIgnoreCase("N")){ %>selected <%} %> value="N">No</option>
 										<option <%if(committeedetails[14].toString().equalsIgnoreCase("Y")){ %>selected <%} %> value="Y">Yes</option>
@@ -257,7 +236,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 				</div>					
 							
 			</div>
-			<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px ">
+			<div class="card-footer cardFooterStyle">
 			</div>
 		</div>
 	</div>

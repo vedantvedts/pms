@@ -1,36 +1,15 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-<%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
-
+<spring:url value="/resources/css/committeeModule/committeeDetailsAdd.css" var="committeeDetailsAdd" />
+<link href="${committeeDetailsAdd}" rel="stylesheet" />
 <title> CONSTITUTE COMMITTEE</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-.card b{
-	font-size: 20px;
-}
-
-</style>
 <%
 String ses=(String)request.getParameter("result"); 
 String ses1=(String)request.getParameter("resultfail");
@@ -80,10 +59,10 @@ String LabCode = (String)request.getAttribute("LabCode");
 
 
 <div class="container">
-	<div class="row" style="">
+	<div class="row">
 		<div class="col-md-12">
  			<div class="card shadow-nohover" >
-				<div class="card-header" style=" background-color: #055C9D;margin-top: ">
+				<div class="card-header headerBgColor">
 					<h3 class="text-white">Constitute Committee</h3>
 				</div>
         		<div class="card-body">
@@ -91,8 +70,8 @@ String LabCode = (String)request.getAttribute("LabCode");
                 	<div class="row">
 						<div class="col-md-4 ">
 	                        <div class="form-group">
-	                            <label class="control-label">Committee<span class="mandatory" style="color: red;">*</span></label>
-	                              <select class="custom-select selectdee" id="committeeid" required="required" name="committeeid" style="margin-top: -5px"> 
+	                            <label class="control-label">Committee<span class="mandatory text-danger">*</span></label>
+	                              <select class="custom-select selectdee mt-n5" id="committeeid" required="required" name="committeeid"> 
 									    	
 										<option  selected value="<%=committeedata[0]%>"><%=committeedata[2]!=null?StringEscapeUtils.escapeHtml4(committeedata[2].toString()): " - "%> (<%=committeedata[1]!=null?StringEscapeUtils.escapeHtml4(committeedata[1].toString()): " - " %>) </option>
 												
@@ -104,7 +83,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 	                    <%if(projectid!=null && Long.parseLong(projectid)>0){ %>
 		                    <div class="col-md-4">
 		                        <div class="form-group">
-		                            <label class="control-label">Project<span class="mandatory" style="color: red;">*</span></label>
+		                            <label class="control-label">Project<span class="mandatory text-danger">*</span></label>
 		                              <%if(Long.parseLong(projectid)>0){ %>
 									<select class="form-control selectdee" id="projectid" required="required" name="projectid" >							
 										<% for (Object[] obj : projectlist) {
@@ -122,7 +101,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 					<%}else if (divisionid!=null && Long.parseLong(divisionid)>0){ %>
 							 <div class="col-md-4">
 		                        <div class="form-group">
-		                            <label class="control-label">Division<span class="mandatory" style="color: red;">*</span></label>
+		                            <label class="control-label">Division<span class="mandatory text-danger">*</span></label>
 		                             
 									<select class="form-control selectdee" id="divisionid" required="required" name="divisionid"  >							
 										<% for (Object[] obj : divisionslist) {
@@ -138,7 +117,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 					<%} else if (initiationid!=null && Long.parseLong(initiationid)>0){ %>
 							 <div class="col-md-4">
 		                        <div class="form-group">
-		                            <label class="control-label">Initiated project<span class="mandatory" style="color: red;">*</span></label>
+		                            <label class="control-label">Initiated project<span class="mandatory text-danger">*</span></label>
 		                             
 									<select class="form-control selectdee" id="initiationid" required="required" name="initiationid"  >							
 											<option value="<%=initiationdata[0]%>" selected><%=initiationdata[2]!=null?StringEscapeUtils.escapeHtml4(initiationdata[2].toString()): " - "%> </option>
@@ -163,10 +142,10 @@ String LabCode = (String)request.getAttribute("LabCode");
 		            	<input type="hidden" name="carsInitiationId" value="<%=carsInitiationId %>"/>
 		            <%} %>
 <!-- 	 --------------------------------------------------------------------------------------------- -->
-						   <div class="col-md-4 " style="display:none;">
+						   <div class="col-md-4 d-none">
 	                        <div class="form-group">
-	                            <label class="control-label">From Date<span class="mandatory" style="color: red;">*</span></label>
-	       							<input  class="form-control form-control"  data-date-format="dd/mm/yyyy" id="startdate" name="Fromdate"  requ   style="margin-bottom: -10px; margin-top: -5px;" >
+	                            <label class="control-label">From Date<span class="mandatory text-danger">*</span></label>
+	       							<input  class="form-control form-control mt-n5 mt-n10"  data-date-format="dd/mm/yyyy" id="startdate" name="Fromdate">
 	                        </div>
 	                    </div>
 	                    
@@ -175,14 +154,14 @@ String LabCode = (String)request.getAttribute("LabCode");
 					
 					<div class="row">	
 	                    <div class="col-md-10 ">
-	                    	<table class="" style="width:100%">
+	                    	<table class="w-100">
 	                        <tr>
-								<td style="width:35%; border:0:" >
+								<td class="tdWidth">
 									<div id="cplab-col" >
-									<label class="control-label" style="margin-bottom: 4px !important">Lab<span class="mandatory" style="color: red;">*</span></label>
+									<label class="control-label chairPerson">Lab<span class="mandatory text-danger">*</span></label>
 									<div class="input select" >
 										 	
-										<select class=" form-control selectdee" name="CpLabCode" id="CpLabCode" required="required" style="margin-top: -5px" onchange="ChaippersonEmpList()" >
+										<select class=" form-control selectdee mt-n5" name="CpLabCode" id="CpLabCode" required="required" onchange="ChaippersonEmpList()" >
 											<option disabled="disabled"  selected value="" >Choose...</option>
 											<%	for (Object[] obj  : AllLabsList) {%>
 										     	<option value="<%=obj[3]%>" <%if(LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> </option>
@@ -193,9 +172,9 @@ String LabCode = (String)request.getAttribute("LabCode");
 									</div>
 								</td>
 								<td>&nbsp;</td>		<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>									
-								<td style="border:0;">
+								<td class="border-0">
 								<div class="input select">
-									<label class="control-label" style="margin-bottom: 4px !important">Chairperson<span class="mandatory" style="color: red;">*</span></label><br>
+									<label class="control-label chairPerson">Chairperson<span class="mandatory text-danger">*</span></label><br>
 										<select class="form-control selectdee" name="chairperson" id="chairperson" data-live-search="true"   data-placeholder="Select Member" required="required" >
 								             
 										</select>															
@@ -209,28 +188,16 @@ String LabCode = (String)request.getAttribute("LabCode");
 				        
 				     </div>
 				     <div class="row">
-				     
-	<%-- 			     	    <div class="col-md-4">
-				         	<div class="form-group">
-				            	<label class="control-label" style="margin-bottom: 4px !important">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
-				  				<select class=" form-control selectdee" id="secretary" name="Secretary" required="required" style="margin-top: -5px" >
-									<option disabled="true"  selected value="" >Choose...</option>
-									<%	for (Object[] obj  : EmployeeList) {%>
-								     	<option value="<%=obj[0]%>" ><%=obj[1]%> (<%=obj[2] %>) </option>
-									<% } %>
-								</select>			
-				        	</div>
-				     	</div>  --%>
 				     	
 				     	                  <div class="col-md-10 ">
-	                    	<table class="" style="width:100%">
+	                    	<table class="w-100">
 	                        <tr>
-								<td style="width:35%; border:0:" >
+								<td class="tdWidth border-0">
 									<div id="cplab-col" >
-									<label class="control-label" style="margin-bottom: 4px !important">Lab<span class="mandatory" style="color: red;">*</span></label>
+									<label class="control-label chairPerson">Lab<span class="mandatory text-danger">*</span></label>
 									<div class="input select" >
 										 	
-										<select class=" form-control selectdee" name="msLabCode" id="msLabCode" required="required" style="margin-top: -5px" onchange="msEmpList()" >
+										<select class=" form-control selectdee mt-n5" name="msLabCode" id="msLabCode" required="required" onchange="msEmpList()" >
 											<option disabled="disabled"  selected value="" >Choose...</option>
 											<%	for (Object[] obj  : AllLabsList) {%>
 										     	<option value="<%=obj[3]%>" <%if(LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> </option>
@@ -241,9 +208,9 @@ String LabCode = (String)request.getAttribute("LabCode");
 									</div>
 								</td>
 								<td>&nbsp;</td>		<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>									
-								<td style="border:0;">
+								<td class="border-0">
 								<div class="input select">
-									<label class="control-label" style="margin-bottom: 4px !important">Member Secretary<span class="mandatory" style="color: red;">*</span></label>
+									<label class="control-label chairPerson">Member Secretary<span class="mandatory text-danger">*</span></label>
 										<select class="form-control selectdee" name="Secretary" id="secretary" data-live-search="true"   data-placeholder="Select Member" required="required" >
 								             
 										</select>															
@@ -256,14 +223,14 @@ String LabCode = (String)request.getAttribute("LabCode");
 				     
 				     <div class="row">
 				                   <div class="col-md-10 ">
-	                    	<table class="" style="width:100%">
+	                    	<table class="w-100">
 	                        <tr>
-								<td style="width:35%; border:0:" >
+								<td class="tdWidth border-0">
 									<div id="cplab-col" >
-									<label class="control-label" style="margin-bottom: 4px !important">Lab</label>
+									<label class="control-label chairPerson">Lab</label>
 									<div class="input select" >
 										 	
-										<select class=" form-control selectdee" name="ccplabocode" id="ccplabocode"  style="margin-top: -5px" onchange="ccpEmpList()" >
+										<select class=" form-control selectdee mt-n5" name="ccplabocode" id="ccplabocode" onchange="ccpEmpList()" >
 											<option disabled="disabled"  selected value="" >Choose...</option>
 											<%	for (Object[] obj  : AllLabsList) {%>
 										     	<option value="<%=obj[3]%>" <%if(LabCode.equalsIgnoreCase(obj[3].toString())){ %>selected <%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %> </option>
@@ -274,9 +241,9 @@ String LabCode = (String)request.getAttribute("LabCode");
 									</div>
 								</td>
 								<td>&nbsp;</td>		<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>	<td>&nbsp;</td>									
-								<td style="border:0;">
+								<td class="border-0">
 								<div class="input select">
-									<label class="control-label" style="margin-bottom: 4px !important">Co-Chairperson</label>
+									<label class="control-label chairPerson">Co-Chairperson</label>
 										<select class="form-control selectdee" name="cochairperson" id="cochairperson" data-live-search="true"   data-placeholder="Select Member"  >
 								             
 										</select>															
@@ -289,24 +256,11 @@ String LabCode = (String)request.getAttribute("LabCode");
 				     
                        <div class="row"> 
                        
-                   <%--      <div class="col-md-4">
-				         	<div class="form-group">
-				            	<label class="control-label" style="margin-bottom: 4px !important">Co-Chairperson</label>
-
-									<select class=" form-control selectdee" id="cochairperson" name="cochairperson" required="required" style="margin-top: -5px" >
-										<option  selected value="0">Choose...</option>
-										<%	for (Object[] obj  : EmployeeList) {%>
-									     	<option value="<%=obj[0]%>" ><%=obj[1]%>, <%=obj[2] %> </option>
-										<% } %>
-									</select>			  			
-				        	</div>
-				     	</div> --%>
-                       
                          <div class="col-md-4">
 				         	<div class="form-group">
-				            	<label class="control-label" style="margin-bottom: 4px !important">Proxy Member Secretary</label>
+				            	<label class="control-label chairPerson">Proxy Member Secretary</label>
 				    				
-				  					<select class=" form-control selectdee" id="proxysecretary" name="proxysecretary" style="margin-top: -5px" >
+				  					<select class=" form-control selectdee mt-n5" id="proxysecretary" name="proxysecretary">
 										<option  selected value="0">Choose...</option>
 										<%	for (Object[] obj  : EmployeeList) {%>
 									     	<option value="<%=obj[0]%>" ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %> </option>
@@ -317,8 +271,8 @@ String LabCode = (String)request.getAttribute("LabCode");
 	                 
 	                 		<div class="col-md-4">
 				         	<div class="form-group">
-				            	<label class="control-label" style="margin-bottom: 4px !important">Formation Date</label>
-				  				<input  class="form-control"  data-date-format="dd/mm/yyyy" id="Formationdate" name="Formationdates"    style="margin-bottom: -10px; margin-top: -5px;" >
+				            	<label class="control-label chairPerson">Formation Date</label>
+				  				<input  class="form-control mb-n10 mt-n5"  data-date-format="dd/mm/yyyy" id="Formationdate" name="Formationdates">
 				        	</div>
 				        </div>
 	                 
@@ -329,9 +283,9 @@ String LabCode = (String)request.getAttribute("LabCode");
                 		
                 		 <div class="col-md-4">
 				         	<div class="form-group">
-				            	<label class="control-label" style="margin-bottom: 4px !important">Representatives </label>
+				            	<label class="control-label chairPerson">Representatives </label>
 				    				
-				  					<select class="form-control selectdee" id="repids" name="repids" style="margin-top: -5px" data-placeholder="Select Rep Types" multiple="multiple" >
+				  					<select class="form-control selectdee mt-n5" id="repids" name="repids" data-placeholder="Select Rep Types" multiple="multiple" >
 										<option  disabled="disabled" value="0">Choose...</option>
 										<%	for (Object[] obj  : committeereplist) {%>
 									     	<option value="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>  </option>
@@ -342,8 +296,8 @@ String LabCode = (String)request.getAttribute("LabCode");
                 		
                 		<div class="col-md-4">
 				         	<div class="form-group">
-				            	<label class="control-label" style="margin-bottom: 4px !important">Is Pre-Approved<span class="mandatory" style="color: red;">*</span></label>
-				  				<select class="form-control selectdee"  name="preApproved" style="margin-top: -5px" >
+				            	<label class="control-label chairPerson">Is Pre-Approved<span class="mandatory text-danger">*</span></label>
+				  				<select class="form-control selectdee mt-n5"  name="preApproved">
 									<option   value="Y" selected >Yes</option>
 									<option   value="N">No</option>
 								</select>			  					
@@ -351,7 +305,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 				        </div>
 				        <div class="col-md-4">
 				         	<div class="form-group">
-				            	<label class="control-label" style="margin-bottom: 4px !important">Reference No.</label>
+				            	<label class="control-label chairPerson">Reference No.</label>
 				  				 <input type="text" class="form-control" name="refNo">					
 				        	</div>
 				        </div>
@@ -402,7 +356,7 @@ String LabCode = (String)request.getAttribute("LabCode");
      		</div>   <!-- card-body end -->
         
 
-			<div class="card-footer" style=" background: linear-gradient(to right, #334d50, #cbcaa5);padding: 25px ">    	</div>
+			<div class="card-footer footerBg"></div>
 			
         	</div>
 		</div>

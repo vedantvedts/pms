@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,60 @@ public class FracasController {
 		}
 	}	
 	
+	
+private boolean isValidFileType(MultipartFile file) {
+		
+		
+		
+		
+	    if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
+	    
+	  
+	    if (contentType == null) {
+	        return false;
+	    }
+	    
+	 // Extract extension in lowercase
+	    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+	    
+	 // Check mapping between MIME type and extension
+	    switch (extension) {
+	        case "pdf":
+	            return contentType.equalsIgnoreCase("application/pdf");
+	        case "jpeg":
+	        case "jpg":
+	            return contentType.equalsIgnoreCase("image/jpeg");
+	        case "png":
+	            return contentType.equalsIgnoreCase("image/png");
+	        default:
+	            return false;
+	    }
+
+//	    // Allow only images and PDF
+//	 // Allowed MIME types
+//	    boolean validMime = contentType.equalsIgnoreCase("application/pdf")
+//	            || contentType.equalsIgnoreCase("image/jpeg")
+//	            || contentType.equalsIgnoreCase("image/png");
+//
+//	    // Allowed extensions
+//	    boolean validExtension = extension.equals("pdf")
+//	            || extension.equals("jpeg")
+//	            || extension.equals("jpg")
+//	            || extension.equals("png");
+//
+//	    return validMime && validExtension;
+	}
+
+
+	
+	
+	
+	
 	@RequestMapping(value = "FracasMainAddSubmit.htm")
 	public String FracasMainAddSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,@RequestPart("attachment") MultipartFile FileAttach) 
 	{
@@ -121,6 +176,15 @@ public class FracasController {
 		logger.info(new Date() +"Inside FracasMainAddSubmit.htm "+UserId);
 		try
 		{
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(FileAttach) ) {
+
+	            return redirectWithError(redir, "FracasMainItemsList.htm?projectid=" + req.getParameter("projectid"),
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+			
+			
 			if(InputValidator.isContainsHTMLTags(req.getParameter("fracasitem"))){
 				return redirectWithError(redir, "FracasMainItemsList.htm", "HTML tags are not permitted.");				
 			}
@@ -322,6 +386,16 @@ public class FracasController {
 				redir.addFlashAttribute("fracasassignid",fracasassignid);
 				return redirectWithError(redir, "FracasAssignDetails.htm", "HTML tags are not permitted.");				
 			}
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(FileAttach) ) {
+
+	            return redirectWithError(redir, "FracasAssignDetails.htm?fracasassignid=" + fracasassignid,
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+
+			
+			
 						
 			PfmsFracasSubDto dto=new PfmsFracasSubDto();
 			dto.setFracasAssignId(fracasassignid);
@@ -578,7 +652,18 @@ public class FracasController {
 			if(InputValidator.isContainsHTMLTags(req.getParameter("fracasitem"))){
 				return redirectWithError(redir, "FracasMainItemsList.htm", "HTML tags are not permitted.");				
 			}
+			
 			PfmsFracasMainDto dto=new PfmsFracasMainDto();
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(FileAttach) ) {
+
+	            return redirectWithError(redir, "FracasMainItemsList.htm?projectid=" + req.getParameter("projectid"),
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+			
+			
+			
 			
 			dto.setProjectId(req.getParameter("projectid"));
 			dto.setFracasTypeId(req.getParameter("fracastypeid"));

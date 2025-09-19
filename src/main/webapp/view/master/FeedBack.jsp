@@ -62,7 +62,7 @@
 												</select>
 											</td>
 											<th  class="fileLabel"> <label>File :</label> </th>
-											<td> <input type="file" name="FileAttach" class="fileAttach" > </td>
+											<td> <input type="file" name="FileAttach" class="fileAttach" accept="image/*,.pdf" > </td>
 										</tr>
 										<tr>
 											<th class="feedbackTypeTh"><label>Feedback: <span class="mandatory mandateClass" >*</span></label></th>

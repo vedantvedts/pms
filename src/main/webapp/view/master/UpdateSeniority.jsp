@@ -49,7 +49,7 @@ Object[] officerData=(Object[])request.getAttribute("officersDetalis");
 		<div class="col-md-12">
 			<div class="card shadow-nohover">
 				<div class="card-header seniorityHeader">
-					<b class="text-white">Update Seniority</b>
+					<b class="text-white style1">Update Seniority</b>
 				</div>
 				
 				<form action="UpdateSenioritySubmit" method="post">

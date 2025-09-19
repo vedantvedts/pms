@@ -269,14 +269,14 @@
 													<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN</th>
-															<th class="th-align-left">Action Item</th>
+															<th class="text-left">Action Item</th>
 															<th class="width-110px" >PDC</th>
 															<th class="width-110px">Assigned Date</th>									
 														 	<th>Assignee</th>	
 														 	<th class="th-width"> Progress</th>
-														 	<th> Is Seen</th>
+														 	<th class="width-110px"> Is Seen</th>
 														 	<th> Action</th>
 														</tr>
 													</thead>
@@ -287,10 +287,10 @@
 															<tr>
 															<td  class="center td-width1"><%=count %></td>
 															<td class="td-modified"><%= obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):"-" %></td>
-															<td class="width-30px" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(sdf.format(obj[4])):" - " %></td>
-															<td class="td-width8"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(sdf.format(obj[3])):" - "%></td>
+															<td class="width-10 text-center" ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(sdf.format(obj[4])):" - " %></td>
+															<td class="width-10 text-center"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(sdf.format(obj[3])):" - "%></td>
 															<td ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
-															<td class="td-width20"><%if(obj[7]!=null  && !obj[7].toString().equalsIgnoreCase("0")){ %>
+															<td class="width-10"><%if(obj[7]!=null  && !obj[7].toString().equalsIgnoreCase("0")){ %>
 															<div class="progress div1" >
 															<div class="progress-bar progress-bar-striped width-<%=obj[7]%>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 															<%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):"-"%>
@@ -464,7 +464,7 @@
 								<label >Attachment </label><br>
 								</div>
 								<div class="col-md-6">
-								<input class="form-control" type="file" id="actionAttachment" name="actionAttachment">
+								<input class="form-control" type="file" id="actionAttachment" name="actionAttachment" accept="application/pdf , image/* ">
 								</div>
 							</div>
 			 				<div  align="center">

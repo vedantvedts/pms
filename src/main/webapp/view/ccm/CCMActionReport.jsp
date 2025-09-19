@@ -4,41 +4,14 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+  <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-<style type="text/css">
-label{
-	font-weight: bold;
-	font-size: 13px;
-}
-
-body{
-	background-color: #f2edfa;
-	overflow-x:hidden !important; 
-}
-
-h6{
-	text-decoration: none !important;
-}
-
-.table button{
-	background-color: white !important;
-	border: 3px solid #17a2b8;
-	padding: .275rem .5rem !important;
-}
-
-.table button:hover {
-	color: black !important;
-}
-
-#table tbody tr td {
-	padding: 4px 3px !important;
-}
-</style>
+   <spring:url value="/resources/css/ccm/CCMActionReport.css" var="CCMActionReport" />     
+<link href="${CCMActionReport}" rel="stylesheet" />
 
 </head>
 <body>
@@ -56,23 +29,23 @@ h6{
 	%>
 	<div class="container-fluid mb-3">
 		<div class="card shadow-nohover">
- 			<div class="card-header" style="background-color: transparent;height: 3.8rem;">
+ 			<div class="card-header style1" >
  				<div class="row">
  					<div class="col-md-3">
- 						<h3 class="text-dark" style="font-weight: bold;">CCM Action Report
+ 						<h3 class="text-dark style2 " >CCM Action Report
  							<a class="btn btn-info btn-sm shadow-nohover back mb-2" href="CCMModules.htm">
-	 							<i class="fa fa-home" aria-hidden="true" style="font-size: 1rem;"></i> 
+	 							<i class="fa fa-home style3" aria-hidden="true" ></i> 
 	 							CCM
  							</a> 
  						</h3>
  					</div>
  					<div class="col-md-6"></div>
  					<div class="col-md-3">
- 						<form method="post" action="CCMActionReport.htm" name="dateform" id="myform" style="float: right;">
+ 						<form method="post" action="CCMActionReport.htm" name="dateform" id="myform" class="style4">
 					   		<table>
 					   			<tr>
 					   				<td>
-					   					<label class="control-label" style="font-size: 17px; margin-bottom: .0rem;">Meeting: </label>
+					   					<label class="control-label style5" >Meeting: </label>
 					   				</td>
 					   				<td>
                                     	<select class="form-control selectdee" id="scheduleId" required="required" name="scheduleId" onchange="this.form.submit()">
@@ -109,7 +82,7 @@ h6{
 												<tr>
 													<th>SN</th>
 													<th>Action Id</th>	
-													<th class="width-110px" style="width: 7.1%;">PDC</th>
+													<th class="width-110px style6" >PDC</th>
 													<th >Action Item</th>																								
 												 	<th >Assignee</th>					 	
 												 	<th >Assigner</th>
@@ -144,23 +117,23 @@ h6{
 												               <%if(obj[7]!=null && obj[7].toString().length()>100){ %>
 												               <%=StringEscapeUtils.escapeHtml4(obj[7].toString()).substring(0, 100) %>
 											                   <input type="hidden" value='"<%=obj[7].toString()%>"' id="td<%=obj[10].toString()%>">
-											                   <span style="text-decoration: underline;font-size:13px;color: #145374;cursor: pointer;font-weight: bolder" onclick="showAction('<%=obj[10].toString()%>','<%=obj[0].toString()%>')">show more..</span>
+											                   <span class="style7" onclick="showAction('<%=obj[10].toString()%>','<%=obj[0].toString()%>')">show more..</span>
 												               <%}else{ %>
 												               <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - "%>
 												               <%} %>
 												            </td>																				
 															<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>
 														  	<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%>, <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
-															<td style="width:8% !important; ">
+															<td  class="style13" >
 																<%if(obj[11]!=null){ %>
-																	<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;width: 140px;">
-																		<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[11]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+																	<div class="progress style8" >
+																		<div class="progress-bar progress-bar-striped width<%=obj[11] %>" role="progressbar"  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 																			<%=StringEscapeUtils.escapeHtml4(obj[11].toString())%>
 																		</div> 
 																	</div> 
 																<%}else{ %>
-																	<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;width: 140px;">
-																		<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
+																	<div class="progress style9" >
+																		<div class="progress-bar style10" role="progressbar"   >
 																			Not Yet Started .
 																		</div>
 																	</div> 
@@ -184,9 +157,9 @@ h6{
 	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   		<div class="modal-dialog modal-dialog-centered" role="document">
     		<div class="modal-content">
-      			<div class="modal-header" style="height:50px;">
+      			<div class="modal-header style11" >
         			<h5 class="modal-title" id="exampleModalLongTitle">Action</h5>
-        			<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:red;">
+        			<button type="button" class="close style12" data-dismiss="modal" aria-label="Close" >
           				<span aria-hidden="true">&times;</span>
         			</button>
       			</div>

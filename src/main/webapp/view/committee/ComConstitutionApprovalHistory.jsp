@@ -10,140 +10,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
-
+<spring:url value="/resources/css/committeeModule/ComConstitutionApprovalHistory.css" var="ComConstitutionApprovalHistory" />
+<link href="${ComConstitutionApprovalHistory}" rel="stylesheet" />
 <title>COMMITTEE MEETING AGENDA APPROVAL  LIST</title>
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-body {
-	background-color: #f2edfa;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
-
-.table button {
-	background-color: Transparent !important;
-	background-repeat: no-repeat;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-	outline: none;
-	text-align: left !important;
-}
-
-.table td {
-	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa {
-	font-size: 1.20rem;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.fa-exclamation-triangle {
-	font-size: 2.5rem !important;
-}
-
-.table-project-n {
-	color: #005086;
-}
-
-.right {
-	text-align: right;
-}
-
-.center {
-	text-align: center;
-}
-
-#table thead tr th {
-	padding: 0px 0px !important;
-}
-
-#table tbody tr td {
-	padding: 2px 3px !important;
-}
-
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 34px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 108px;
-}
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-a:hover {
-	color: white;
-}
-
-
-
-</style>
 </head>
 <body>
 
@@ -200,9 +69,9 @@ String committeemainid=committeedata[0].toString();
 					<div class="card-header">
 						<div class="row">
 							<div class="col-md-10">
-							<h3 style="color:  #055C9D" ><%=committeedata[8]!=null?StringEscapeUtils.escapeHtml4(committeedata[8].toString()): " - " %>
+							<h3 class="h3Color"><%=committeedata[8]!=null?StringEscapeUtils.escapeHtml4(committeedata[8].toString()): " - " %>
 							
-								<p style="float: right;">
+								<p class="float-right">
 									
 										<%if(Long.parseLong(projectid)>0){ %> Project : <%=projectdata[4]!=null?StringEscapeUtils.escapeHtml4(projectdata[4].toString()): " - " %><%}else if (Long.parseLong(divisionid)>0){ %>  Division : <%=divisiondata[1]!=null?StringEscapeUtils.escapeHtml4(divisiondata[1].toString()): " - " %> <%}else if(Long.parseLong(initiationid)>0){ %>Initiated Project : <%=initiationdata[1]!=null?StringEscapeUtils.escapeHtml4(initiationdata[1].toString()): " - "%> <%} %> (Approval Pending)
 									
@@ -213,7 +82,7 @@ String committeemainid=committeedata[0].toString();
 								<form action="CommitteeMainMembers.htm" method="post">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
-									<button class="btn btn-primary btn-sm back" type="submit" style="float: right;" >BACK</button>
+									<button class="btn btn-primary btn-sm back float-right" type="submit">BACK</button>
 								</form>
 							</div>
 						</div>
@@ -231,11 +100,11 @@ String committeemainid=committeedata[0].toString();
 												<table id="table" data-toggle="table" data-pagination="true">
 													<thead>
 														<tr>
-															<th style="width:10%" >SN</th>
-															<th  style="width:40%">Remarks</th>
-															<th  style="width:20%" >Action</th>
-															<th  style="width:20%" >ActionBy</th>
-															<th  style="width:10%">Date</th>
+															<th class="width-10">SN</th>
+															<th class="width-40">Remarks</th>
+															<th class="width-20">Action</th>
+															<th class="width-20">ActionBy</th>
+															<th class="width-10">Date</th>
 														</tr>
 													</thead>
 													<tbody>

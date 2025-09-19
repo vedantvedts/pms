@@ -1,0 +1,46 @@
+.input-group-text{
+font-weight: bold;
+}
+
+label{
+	font-weight: 800;
+	font-size: 16px;
+	color:#07689f;
+} 
+
+hr{
+	margin-top: -2px;
+	margin-bottom: 12px;
+}
+.card b{
+	font-size: 20px;
+}
+
+.headerBgColor{
+	background-color: #055C9D;
+}
+
+.mt-n5 {
+  margin-top: -5px;
+}
+
+.mt-n10 {
+  margin-top: -10px;
+}
+
+.tdWidth{
+	width: 35%;
+}
+
+.chairPerson{
+	margin-bottom: 4px !important;
+}
+
+.footerBg{
+	background: linear-gradient(to right, #334d50, #cbcaa5);
+	padding: 25px;
+}
+
+.mb-n10{
+	margin-bottom: -10px;
+}

@@ -167,6 +167,60 @@ public class ActionController {
 	private  SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 	SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy-MM-dd");
 	private static final Logger logger=LogManager.getLogger(ActionController.class);
+	
+	
+	
+
+private boolean isValidFileType(MultipartFile file) {
+		
+		
+		
+	    if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
+	    
+	  
+	    if (contentType == null) {
+	        return false;
+	    }
+	    
+	 // Extract extension in lowercase
+	    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+	    
+	 // Check mapping between MIME type and extension
+	    switch (extension) {
+	        case "pdf":
+	            return contentType.equalsIgnoreCase("application/pdf");
+	        case "jpeg":
+	        case "jpg":
+	            return contentType.equalsIgnoreCase("image/jpeg");
+	        case "png":
+	            return contentType.equalsIgnoreCase("image/png");
+	        default:
+	            return false;
+	    }
+
+//	    // Allow only images and PDF
+//	 // Allowed MIME types
+//	    boolean validMime = contentType.equalsIgnoreCase("application/pdf")
+//	            || contentType.equalsIgnoreCase("image/jpeg")
+//	            || contentType.equalsIgnoreCase("image/png");
+//
+//	    // Allowed extensions
+//	    boolean validExtension = extension.equals("pdf")
+//	            || extension.equals("jpeg")
+//	            || extension.equals("jpg")
+//	            || extension.equals("png");
+//
+//	    return validMime && validExtension;
+	}
+
+	
+	
+	
 	@RequestMapping(value = "ActionLaunch.htm", method = {RequestMethod.GET,RequestMethod.POST})
 	public String ActionLaunch(Model model, HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception 
 	{
@@ -352,6 +406,14 @@ public class ActionController {
 			}
 			
 			
+			// 🔹 Validate file types
+	        if (!isValidFileType(file) ) {
+
+	            return redirectWithError(redir, "ActionLaunch.htm",
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+			
+			
 			ActionMainDto mainDto=new ActionMainDto();
 			
 			mainDto.setMainId(req.getParameter("MainActionId"));
@@ -506,8 +568,40 @@ public class ActionController {
 		logger.info(new Date() +"Inside SubSubmit.htm "+UserId);		
 		try {
 			
-			
 			String ccmActionFlag = req.getParameter("ccmActionFlag");
+			
+			
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(FileAttach)) {
+
+	        	if(ccmActionFlag!=null && ccmActionFlag.equalsIgnoreCase("Y")) {
+	        		
+	        		redir.addAttribute("committeeId", req.getParameter("committeeId"));
+					redir.addAttribute("tabName", req.getParameter("tabName"));
+					return redirectWithError(redir, "CCMPresentation.htm", "Invalid file type. Only PDF or Image files are allowed.");
+	        	}else {
+	        		
+	        		redir.addFlashAttribute("ActionMainId", req.getParameter("ActionMainId"));
+					redir.addFlashAttribute("ActionAssignId", req.getParameter("ActionAssignId"));
+					redir.addFlashAttribute("Empid", ((Long) ses.getAttribute("EmpId")).toString());
+					redir.addFlashAttribute("flag", req.getParameter("flag"));
+					redir.addFlashAttribute("projectid", req.getParameter("projectid"));
+	        		
+	        		return redirectWithError(
+	        			    redir,
+	        			   "ActionSubLaunchRedirect.htm",
+	        			    "Invalid file type. Only PDF or Image files are allowed."
+	        			);
+
+	        	}
+	        }
+			
+			
+			
+			
+			
+			
 			if(ccmActionFlag!=null && ccmActionFlag.equalsIgnoreCase("Y")) {
 				redir.addAttribute("committeeId", req.getParameter("committeeId"));
 				redir.addAttribute("tabName", req.getParameter("tabName"));
@@ -827,6 +921,9 @@ public class ActionController {
 			long count=0;
 			try { 
 				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))) {
+					return  redirectWithError(redir,"ActionForwardList.htm","Remarks should not contain HTML elements !");
+				}
 				 count =service.ActionSendBack(req.getParameter("ActionMainId"),req.getParameter("Remarks"), UserId,req.getParameter("ActionAssignId"));
 	
 				if(back!=null && "Issue".equalsIgnoreCase(back)) {
@@ -4689,6 +4786,10 @@ public class ActionController {
 				}
         		return null;
         	}
+        	
+
+        	
+        	
           	//worked
         	 @PostMapping(value="ActionProgressAjaxSubmit.htm")
       		public @ResponseBody String ActionProgressAjaxSubmit(HttpServletRequest req,
@@ -4711,6 +4812,16 @@ public class ActionController {
       			 
       					return "error:Remarks should not contain HTML Tags!";
       				}
+      				
+      				
+      				 // 🔹 Validate file type if present
+      		        if (file != null && !file.isEmpty() && !isValidFileType(file)) {
+      		            return "error:Invalid file type. Only PDF or Image files are allowed!";
+      		        }
+      				
+      				
+      				
+      				
       				ActionSubDto subDto=new ActionSubDto();
       				subDto.setLabCode(labCode);
       				subDto.setFileName(req.getParameter("FileName"));

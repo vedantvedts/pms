@@ -9,39 +9,9 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
- 
-
+<spring:url value="/resources/css/committeeModule/MeetingReports.css" var="MeetingReports" />
+<link href="${MeetingReports}" rel="stylesheet" />
 <title>Meeting Reports</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-overflow-x:hidden !important; 
-}
-h6{
-	text-decoration: none !important;
-}
-.table button{
-	
-	background-color: white !important;
-	border: 3px solid #17a2b8;
-	padding: .275rem .5rem !important;
-}
-
-.table button:hover {
-	color: black !important;
-	
-}
-#table tbody tr td {
-	    padding: 4px 3px !important;
-}
-
-
-</style>
 </head>
  
 <body>
@@ -92,7 +62,7 @@ h6{
 
 					<div class="row">
 						<h4 class="col-md-3">Meeting Reports</h4>  
-							<div class="col-md-9" style="float: right;">
+							<div class="col-md-9 float-right">
 					   		
 		   					</div>
 		   				</div>	   							
@@ -104,7 +74,7 @@ h6{
 							
 		   					<div class="col-md-3" >
 		   					<form method="post" action="MeetingReports.htm"  id="fieldform">
-	   							<label class="control-label" style="font-size: 17px; ">Term: </label>
+	   							<label class="control-label fs-17px">Term: </label>
 			   						
 	                       	 	<select class="form-control items " name="term"  required="required" id="term" data-live-search="true"  onchange="changeterm()" >
 										<option value="T" <%if("T".equalsIgnoreCase(Term)){ %> selected="selected" <%} %>>Today</option>	
@@ -113,7 +83,7 @@ h6{
 								</select>
                           	</div>
                           	<div class="col-md-3" >
-					   			<label class="control-label" style="font-size: 17px; ">Type: </label>
+					   			<label class="control-label fs-17px">Type: </label>
 					   					
                                 <select class="form-control items" id="typeid" required="required" name="typeid" onchange="projectfieldchange();" >
 							   		<option value="A" <%if("A".equalsIgnoreCase(typeid)){ %> selected="selected" <%} %> >ALL</option>
@@ -131,13 +101,13 @@ h6{
 					  		
                             <div class="col-md-3">
                             		<%if(typeid.equals("P")){ %>
-		                            <div   id="projectdiv" style="display: block; width:100%;">
+		                            <div   id="projectdiv" class="width-100 projectDivBlock">
 		                            <%}else{ %>
-		                            <div   id="projectdiv" style="display: none; width:100%;">
+		                            <div   id="projectdiv" class="width-100 projectDivNone">
 		                            <%} %>
 			                            <form method="post" action="MeetingReports.htm"  id="proform">
-								   			<label class="control-label" style="font-size: 17px; ">Project: </label>
-			                                <select class="form-control items" id="projectid" style="width: 100%"  name="projectid" required="required"  onchange="submitForm('proform');">
+								   			<label class="control-label fs-17px">Project: </label>
+			                                <select class="form-control items width-100" id="projectid" name="projectid" required="required"  onchange="submitForm('proform');">
 												<option value="" disabled="disabled" selected >Choose...</option>
 												<option value="A" <%-- <%if(projectid.equalsIgnoreCase("A")){ %>selected<% }%> --%> >All</option>
 										   		<% for (Object[] obj : ProjectsList) {%>
@@ -153,14 +123,14 @@ h6{
 							  		</div>
 							  		
 							  		<%if(typeid.equals("D")){ %>
-		                            <div   id="divisiondiv" style="display: block; width:100%;">
+		                            <div   id="divisiondiv" class="width-100 projectDivBlock">
 		                            <%}else{ %>
-		                            <div   id="divisiondiv" style="display: none; width:100%;">
+		                            <div   id="divisiondiv" class="width-100 projectDivNone">
 		                            <%} %>
 							  			<form method="post" action="MeetingReports.htm"  id="divform" > 	
-								   			<label class="control-label" style="font-size: 17px;">Division: </label>
+								   			<label class="control-label fs-17px">Division: </label>
 								   						
-			                              	<select class="form-control items" id="divisionid" " style="width: 100%" name="divisionid" required="required"  onchange="submitForm('divform');">
+			                              	<select class="form-control items width-100" id="divisionid" name="divisionid" required="required"  onchange="submitForm('divform');">
 												<option value="" disabled="disabled" selected >Choose...</option>
 												<option value="A" <%-- <%if(divisionid.equalsIgnoreCase("A")){ %>selected<% }%> --%> >All</option>
 										   		<% for (Object[] obj : divisionlist) {%>
@@ -175,14 +145,14 @@ h6{
 								  		</form>
 							  		</div>
 							  		<%if(typeid.equals("I")){ %>
-		                            <div   id="initiationdiv" style="display: block; width:100%;">
+		                            <div   id="initiationdiv" class="width-100 projectDivBlock">
 		                            <%}else{ %>
-		                            <div   id="initiationdiv" style="display: none; width:100%;">
+		                            <div   id="initiationdiv" class="width-100 projectDivNone">
 		                            <%} %>
 							  			<form method="post" action="MeetingReports.htm"  id="initform">		
-								   			<label class="control-label" style="font-size: 17px; ">Initiation: </label>
+								   			<label class="control-label fs-17px">Initiation: </label>
 								   					
-			                               	<select class="form-control items"  id="initiationid" style="width: 100%"  name="initiationid" required="required"  onchange="submitForm('initform');" >
+			                               	<select class="form-control items width-100"  id="initiationid" name="initiationid" required="required"  onchange="submitForm('initform');" >
 												<option value="" disabled="disabled" selected >Choose...</option>
 												<option value="A" <%--  <%if(initiationid.equalsIgnoreCase("A")){ %>selected<% }%> --%> >All</option>
 										   		<% for (Object[] obj : initiationlist ) {%>
@@ -201,7 +171,7 @@ h6{
 					   	</div> 
 
 					
-    					<div class="data-table-area mg-b-15">
+    					<div class="data-table-area mg-b-15 mt-3">
 							<div class="container-fluid">
 								<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 									<div class="sparkline13-list">
@@ -210,18 +180,13 @@ h6{
 												<div id="toolbar">
 													
 												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true"
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+												<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN </th>
-															<th>Meeting Id</th>
+															<th class="text-left">Meeting Id</th>
 															<th>Date & Time</th>
 															<th>Committee</th>																							
 														 	<th >Venue</th>					 	
@@ -242,8 +207,8 @@ h6{
 																			<input type="hidden" name="committeescheduleid" value="<%=obj[0] %>" />
 																		</form>
 																	</td>
-																	<td><%=obj[1]!=null?sdf.format(obj[1]): " - " %> - <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>																		
-																	<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
+																	<td class="text-center"><%=obj[1]!=null?sdf.format(obj[1]): " - " %> - <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></td>																		
+																	<td class="text-center"><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - "%></td>
 																  	<td> <%if(obj[6]!=null){ %> <%=StringEscapeUtils.escapeHtml4(obj[6].toString())%><%}else{ %>-<%} %></td>
 																	<%-- <td>
 																		<%if("CS".equalsIgnoreCase(obj[6].toString())){ %> Member Secretary <%} %>
@@ -382,6 +347,16 @@ function Prints(myfrm){
 	 
 			
 	}
+	
+	
+$(document).ready(function(){
+	  $("#myTable12").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 10
+
+	});
+});
 </script>
 
 

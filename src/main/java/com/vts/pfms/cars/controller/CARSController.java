@@ -24,6 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,56 @@ public class CARSController {
 		this.printservice = printservice;
 		
 	}
+	
+	
+private boolean isValidFileType(MultipartFile file) {
+		
+		
+	    if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
+	    
+	  
+	    if (contentType == null) {
+	        return false;
+	    }
+	    
+	
+	    
+	    
+	 // Extract extension in lowercase
+	    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+	    
+	 // Check mapping between MIME type and extension
+	    switch (extension) {
+	        case "pdf":
+	            return contentType.equalsIgnoreCase("application/pdf");
+	      
+	        default:
+	            return false;
+	    }
+
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public String getLabLogoAsBase64() throws IOException {
 
@@ -1083,6 +1134,21 @@ public class CARSController {
 			String costReasonability=req.getParameter("costReasonability");
 			String rspSelection=req.getParameter("rspSelection");
 			String socCriterion=req.getParameter("socCriterion");
+			
+			
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(SoOFile) || !isValidFileType(FRFile)||!isValidFileType(ExecutionPlanFile)
+	               ) {
+
+	        	redir.addAttribute("carsInitiationId", carsInitiationId);
+				
+				redir.addAttribute("TabId","4");
+				
+	        	return redirectWithError(redir, "CARSInitiationDetails.htm",
+	                    "Invalid file type. Only PDF  files are allowed.");
+	        }
+			
 			if(InputValidator.isContainsHTMLTags(Alignment)) {
 				redir.addAttribute("carsInitiationId", carsInitiationId);
 				redir.addAttribute("TabId","4");
@@ -1227,7 +1293,19 @@ public class CARSController {
 		String Username = (String)ses.getAttribute("Username");
 		logger.info(new Date() +"Inside CARSSoCEdit.htm "+Username);
 		try {
+		
 			String carsInitiationId = req.getParameter("carsInitiationId");
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(SoOFile) || !isValidFileType(FRFile)||!isValidFileType(ExecutionPlanFile)) {
+
+	        	redir.addAttribute("carsInitiationId", carsInitiationId);
+				
+				redir.addAttribute("TabId","4");
+
+	        	return redirectWithError(redir, "CARSInitiationDetails.htm", "Invalid file type. Only PDF  files are allowed.");
+	        }
+			
 			String carsSocId = req.getParameter("carsSocId");
 			long carsiniid = Long.parseLong(carsInitiationId);
 			
@@ -2293,8 +2371,23 @@ public class CARSController {
 		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CARSSoCMoMUpload.htm "+Username);
 		try {
+			
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String carsSocId = req.getParameter("carsSocId");
+			
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(MoMFile)) {
+
+	        	redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("carsSoCId",carsSocId);
+				redir.addAttribute("TabId","8");
+	        	return redirectWithError(redir, "CARSInitiationDetails.htm",
+	                    "Invalid file type. Only PDF  files are allowed.");
+	        }
+			
+			
+			
 			String MoMFlag = req.getParameter("MoMFlag");
 		
 			long result = service.carsSoCUploadMoM(MoMFile, labcode, carsInitiationId, EmpId, Username, MoMFlag);
@@ -2613,6 +2706,17 @@ public class CARSController {
 			String Action = req.getParameter("Action");
 			String csOtherDocDate = req.getParameter("csOtherDocDate");
 			
+		
+			// 🔹 Validate file types
+	        if (!isValidFileType(attatchFlagA) || !isValidFileType(attatchFlagB)||!isValidFileType(attatchFlagC)) {
+
+	        	redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("csDocsTabId","2");
+	        	return redirectWithError(redir, "CARSContractSignatureDetails.htm",
+	                    "Invalid file type. Only PDF  files are allowed.");
+	        }
+			
+			
 			long carsiniid = Long.parseLong(carsInitiationId);
 			List<CARSOtherDocDetails> otherdocdetails = service.getCARSOtherDocDetailsByCARSInitiationId(carsiniid);
 			List<CARSOtherDocDetails> csdetailslist = otherdocdetails.stream().filter(e-> "C".equalsIgnoreCase(e.getOtherDocType())).collect(Collectors.toList());
@@ -2877,6 +2981,17 @@ public class CARSController {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String otherDocDetailsId = req.getParameter("otherDocDetailsId");
 		
+			// 🔹 Validate file types
+	        if (!isValidFileType(uploadOtherDoc)  ) {
+
+	        	redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("csDocsTabId","3");
+	        	return redirectWithError(redir, "CARSContractSignatureDetails.htm",
+	                    "Invalid file type. Only PDF  files are allowed.");
+	        }
+			
+			
+			
 			long result = service.carsCSDocUpload(uploadOtherDoc, otherDocDetailsId);
 			
 			if(result!=0) {
@@ -2968,11 +3083,32 @@ public class CARSController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		logger.info(new Date() + " Inside CARSMPDocDetailsSubmit.htm "+Username);
 		try {
+		
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String Action = req.getParameter("Action");
 			String mpOtherDocDate = req.getParameter("mpOtherDocDate");
 			String invoiceDate = req.getParameter("invoiceDate");
 			String MilestoneNo = req.getParameter("MilestoneNo");
+			
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(attatchFlagA) || !isValidFileType(attatchFlagB)||!isValidFileType(attatchFlagC) ) {
+
+	        	redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("MilestoneNo",MilestoneNo);
+				redir.addAttribute("mpDocsTabId","2");
+				
+	        	return redirectWithError(redir, "CARSMilestonePaymentDetails.htm","Invalid file type. Only PDF  files are allowed.");
+	        }
+			
+			
+			
+			
+			
+			
+			
+			
+	
 			
 			long carsiniid = Long.parseLong(carsInitiationId);
 			List<CARSOtherDocDetails> otherdocdetails = service.getCARSOtherDocDetailsByCARSInitiationId(carsiniid);
@@ -3212,6 +3348,17 @@ public class CARSController {
 			String otherDocDetailsId = req.getParameter("otherDocDetailsId");
 			String MilestoneNo = req.getParameter("MilestoneNo");
 		
+		
+			// 🔹 Validate file types
+	        if (!isValidFileType(uploadOtherDoc)  ) {
+
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("MilestoneNo", MilestoneNo);
+				redir.addAttribute("mpDocsTabId","3");
+	        	return redirectWithError(redir, "CARSMilestonePaymentDetails.htm",
+	                    "Invalid file type. Only PDF  files are allowed.");
+	        }
+			
 			long result = service.carsMPDocUpload(uploadOtherDoc, otherDocDetailsId);
 			
 			if(result!=0) {
@@ -3777,7 +3924,9 @@ public class CARSController {
 		try {
 			String carsInitiationId = req.getParameter("carsInitiationId");
 			String currentStatus = req.getParameter("currentStatus");
-			
+//			if(InputValidator.isContainsHTMLTags(currentStatus)) {
+//				return  redirectWithError(redir,"CARSInitiationList.htm","Cars Status should not contain HTML elements !");
+//			}
 			int result = service.carsCurrentStatusUpdate(currentStatus, carsInitiationId);
 			
 			if (result > 0) {

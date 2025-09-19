@@ -17,357 +17,11 @@
 <spring:url value="/resources/js/sweetalert2.min.js" var="sweetalertJs" />
 <link href="${sweetalertCss}" rel="stylesheet" />
 <script src="${sweetalertJs}"></script>
+<spring:url value="/resources/css/committeeModule/CommitteeScheduleMinutes.css" var="CommitteeScheduleMinutes" />
+<link href="${CommitteeScheduleMinutes}" rel="stylesheet" />
 <title>COMMITTEE SCHEDULE MINUTES</title>
-
- <script src="${ckeditor}"></script>
- <link href="${contentCss}" rel="stylesheet" />
-
-  <style>
-    .bs-example{
-        margin: 20px;
-    }
-    .accordion .fa{
-        margin-right: 0.5rem;
-    }
-</style>
-
-  	<style type="text/css">
-		
-
-label{
-  font-weight: bold;
-  font-size: 13px;
-}
- 
-.note-editable {
-  line-height: 1.0;
-}
-.panel-info {
-    border-color: #bce8f1;
-}
-.panel {
-    margin-bottom: 10px;
-    background-color: #fff;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-}
- .panel-heading {
-    background-color: #FFF !important;
-    border-color: #bce8f1 !important;
-    border-bottom: 2px solid #466BA2 !important;
-    color: #1d5987;
-}
-.panel-title {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 13px;
-    color: inherit;
-    font-weight: bold;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-div {
-    display: block;
-}
-
-element.style {
-}
-.olre-body .panel-info .panel-heading {
-    background-color: #FFF !important;
-    border-color: #bce8f1 !important;
-    border-bottom: 2px solid #466BA2 !important;
-   
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info > .panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-info>.panel-heading {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.panel-heading {
-    padding: 3px 10px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-.p-5 {
-    padding: 5px;
-}
-.panel-heading {
-    padding: 10px 15px;
-    border-bottom: 1px solid transparent;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-user agent stylesheet
-div {
-    display: block;
-}
-
-.panel-info {
-    border-color: #bce8f1;
-}
-
-.form-check{
-	margin:0px 2%;
-}
-
-.fa-thumbs-up {
-  font-family: FontAwesome, 'Quicksand', Quicksand, sans-serif;
-}
-
-.form-inline{
-
-display: inline-block;
-}
-
-
-.form-check-input:checked ~ .form-check-label::before {
-    color: #fff;
-    border-color: #7B1FA2;
-    background-color: red;
-}
-@keyframes blink {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-.blink {
-    animation: blink 1.5s infinite;
-}
- .spinner {
-    position: fixed;
-    top: 40%;
-    left: 20%;
-    margin-left: -50px; /* half width of the spinner gif */
-    margin-top: -50px; /* half height of the spinner gif */
-    text-align:center;
-    z-index:1234;
-    overflow: auto;
-    width: 1000px; /* width of the spinner gif */
-    height: 1020px; /*hight of the spinner gif +2px to fix IE8 issue */
-}
-.scrollclass::-webkit-scrollbar {
-	width: 5px;
-}
-.scrollclass:hover{
-cursor: pointer;
-}
-.scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0);
-	border-radius: 5px;
-}
-
-.scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px; 
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-} 
-
-.scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-.scrollclass::-webkit-scrollbar {
-	width: 7px;
-}
-
-.scrollclass::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	border-radius: 5px;
-}
-
-.scrollclass::-webkit-scrollbar-thumb {
-	border-radius: 5px;
-	/*   -webkit-box-shadow: inset 0 0 6px black;  */
-	background-color: #fff;
-}
-
-.scrollclass::-webkit-scrollbar-thumb:hover {
-	-webkit-box-shadow: inset 0 0 6px black;
-	transition: 0.5s;
-}
-
-
-.chat-container {
-	max-width: 800px;
-	height: 600px;
-	margin: 30px auto;
-	background-color: #f8f9fa;
-	border: 1px solid #dee2e6;
-	border-radius: 10px;
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-}
-
-.chat-body {
-	flex-grow: 1;
-	overflow-y: auto;
-}
-
-.chat-message {
-	margin: 10px 0;
-	padding: 12px 16px;
-	border-radius: 20px;
-	max-width: 75%;
-	word-break: break-word;
-	font-size: 14px;
-}
-
-.user-msg {
-	background-color: #ffffff;
-	border: 1px solid #dee2e6;
-	align-self: flex-start;
-}
-
-.admin-msg {
-	background-color: #d1e7dd;
-	border: 1px solid #badbcc;
-	align-self: flex-end;
-	margin-left: auto;
-}
-
-.chat-message strong {
-	display: block;
-	font-size: 13px;
-	color: #343a40;
-	margin-bottom: 4px;
-}
-
-.timestamp {
-	font-size: 11px;
-	color: #6c757d;
-	text-align: right;
-	margin-top: 6px;
-}
-
-.chat-input {
-	position: sticky;
-	bottom: 0;
-	z-index: 10;
-}
-
-.sender-name {
-	font-weight: bold;
-	display: block;
-	color: #343a40;
-}
-
-/* .btn.submit {
-    width: 150px;
-    border-radius: 25px;
-    padding: 8px 20px;
-    font-weight: 600;
-} */
-@media ( max-width : 768px) {
-	.chat-container {
-		height: auto;
-	}
-	.chat-message {
-		max-width: 90%;
-	}
-	.btn.submit {
-		width: 100%;
-	}
-}
-	</style>
+<script src="${ckeditor}"></script>
+<link href="${contentCss}" rel="stylesheet" />
 </head>
 <body>
 
@@ -455,10 +109,10 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 <%} %>
                     
   
-<nav class="navbar navbar-light bg-light justify-content-between" id="main1" style="margin-top: -1%">
+<nav class="navbar navbar-light bg-light justify-content-between mt-n1per" id="main1">
 	<a class="navbar-brand">
 		
-		<b style="color: #585858; font-size:19px;font-weight: bold;text-align: left; float:left" ><span style="color:#31708f"><%=committeescheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()): " - " %> </span> <span style="color:#31708f;font-size: 15px"> (Meeting Date and Time : <%=committeescheduleeditdata[2]!=null?sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(committeescheduleeditdata[2].toString()))):" - " %> - <%=committeescheduleeditdata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[3].toString()): " - " %>)</span></b>
+		<b class="bTagStyle"><span class="meetingIdStyle"><%=committeescheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()): " - " %> </span> <span class="meetingDateStyle"> (Meeting Date and Time : <%=committeescheduleeditdata[2]!=null?sdf.format(sdf1.parse(StringEscapeUtils.escapeHtml4(committeescheduleeditdata[2].toString()))):" - " %> - <%=committeescheduleeditdata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[3].toString()): " - " %>)</span></b>
 
 	</a>
 	<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) { %>
@@ -477,32 +131,26 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 		</form>
 	<%} %>
 	<form class="form-inline" method="GET" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
-					<%-- <button type="button" class="btn btn-sm prints my-2 my-sm-0" formaction=""  style="font-size:12px;" onclick="sendEmail(<%=committeescheduleeditdata[6]%>)">
-					<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> --%>
-		
 		<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
-		    <!-- <input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> -->
 		<%if(committeescheduleeditdata[22].toString().equals("N")){%>
-		<%-- 	<button type="button" class="btn btn-sm btn-primary my-2 my-sm-0" onclick="sendDraftMoM('<%=committeescheduleeditdata[6]%>')" style="font-size:12px;font-family: 'Montserrat', sans-serif;font-weight: 800"> SEND DRAFT</button>	 --%>
-			<button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" formaction=""  style="font-size:12px;font-family: 'Montserrat', sans-serif;font-weight: 800" onclick="sendEmail(<%=committeescheduleeditdata[6]%>)">
+			<button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0 emailBtnStyle" formaction="" onclick="sendEmail(<%=committeescheduleeditdata[6]%>)">
 			<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> 
-<!-- 					 <input type="submit" class="btn  btn-sm view" value="PROTECTED MINUTES" name="PROTECTED MINUTES" formaction="CommitteeMinutesNewProtected.htm" formmethod="get" formtarget="_blank" style="background-color:#DF4646 ;color:white ;font-size:12px;" /> 
- -->			<input type="submit" class="btn  btn-sm view" value="MINUTES" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />
-			<button type="submit" class="btn btn-primary btn-sm"  name="sub" value="word"  id="wordDownloadBtn" formmethod="get" formtarget="_blank" formaction="CommitteeMinutesNewWordDownload.htm"  ><i class="fa fa-file-word-o" style="font-size:17px" title="Committee Minutes New Word Download"></i></button> 
+			<input type="submit" class="btn  btn-sm view minutesBtnStyle" value="MINUTES" formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank"/>
+			<button type="submit" class="btn btn-primary btn-sm"  name="sub" value="word"  id="wordDownloadBtn" formmethod="get" formtarget="_blank" formaction="CommitteeMinutesNewWordDownload.htm"  ><i class="fa fa-file-word-o minutesIconStyle" title="Committee Minutes New Word Download"></i></button> 
 		<%} %>
-			<%if(committeescheduleeditdata[22].toString().equals("N")){%><button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')" style="font-size:12px;" >FREEZE</button>
+			<%if(committeescheduleeditdata[22].toString().equals("N")){%><button type="submit" class="btn btn-sm prints my-2 my-sm-0 fs-12px" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to Freeze Minutes 2021 ?')">FREEZE</button>
 			<%}else{ %>
-			<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to unfreeze Minutes 2021 ?')" style="font-size:12px;" >UNFREEZE</button>
+			<button type="submit" class="btn btn-sm prints my-2 my-sm-0 fs-12px" formaction="getMinutesFrozen.htm" onclick="return confirm('Are You Sure to unfreeze Minutes 2021 ?')">UNFREEZE</button>
 			<%} %>
 		<%} %>
 		<input type="hidden" name="IsFrozen" value="<%=committeescheduleeditdata[22].toString()%>">
 		<%if(!SplCommitteeCodes.contains(committeecode.trim())) { %>
-		<button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0" formaction=""  style="font-size:12px;font-size:12px;font-family: 'Montserrat', sans-serif;font-weight: 800" onclick="sendEmails(<%=committeescheduleeditdata[6]%>)">
+		<button type="button" class="btn btn-sm btn-secondary my-2 my-sm-0 emailBtnStyle" formaction="" onclick="sendEmails(<%=committeescheduleeditdata[6]%>)">
 					<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> 
-		<button type="submit" class="btn btn-sm prints my-2 my-sm-0" formtarget="_blank"  style="font-size:12px;">MINUTES</button>
+		<button type="submit" class="btn btn-sm prints my-2 my-sm-0 fs-12px" formtarget="_blank">MINUTES</button>
 		<%} %>
-		<input type="hidden" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> 
-		<input type="submit" class="btn  btn-sm view" value="TABULAR MINUTES" formaction="MOMTabularMinutesDownload.htm" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" />		
+		<input type="hidden" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank"/> 
+		<input type="submit" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES" formaction="MOMTabularMinutesDownload.htm" formtarget="_blank"/>		
 		<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
 		<input type="hidden" name="membertype" value="<%=membertype%>">
 		<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
@@ -514,44 +162,44 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 			<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
 			<input type="hidden" name="committeeId" value="<%=committeeId %>">
 			<input type="hidden" name="ccmFlag" value="<%=ccmFlag %>">
-			<button  class="btn  btn-sm back" formaction="CCMSchedule.htm" style=" font-size:12px;" >BACK</button>
+			<button  class="btn  btn-sm back fs-12px" formaction="CCMSchedule.htm">BACK</button>
 	          				
 		<%}%>
 		<%if(dmcFlag!=null && dmcFlag.equalsIgnoreCase("Y")) { %>
 			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 			<input type="hidden" name="committeeId" value="<%=committeeId %>">
 			<input type="hidden" name="tabName" value="DMC">
-			<button  class="btn  btn-sm back" formaction="CCMPresentation.htm" style=" font-size:12px;" >BACK</button>
+			<button  class="btn  btn-sm back fs-12px" formaction="CCMPresentation.htm">BACK</button>
 	          				
 	    <%}%>
 		<%if(ccmFlag==null && dmcFlag==null) {%>
 			<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 			<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">
-			<button  class="btn  btn-sm back" formaction="CommitteeScheduleView.htm" style=" font-size:12px;" >BACK</button>
+			<button  class="btn  btn-sm back fs-12px" formaction="CommitteeScheduleView.htm">BACK</button>
 
 		<%} %>	
 	</form>
 	
 	
 </nav> 
- <div id="spinner" class="spinner" style="display:none;">
-                <img id="img-spinner" style="width: 200px;height: 200px;" src="view/images/spinner1.gif" alt="Loading"/>
+ <div id="spinner" class="spinner spinnerDisplayNone">
+                <img id="img-spinner" class="width-200px height-200px" src="view/images/spinner1.gif" alt="Loading"/>
                 </div>
 <%if(committeescheduleeditdata[22].toString().equalsIgnoreCase("N")) {%>   
 <div class="container-fluid" id="main2">          
 <div class="row"> 
-<div class="col-md-5" >
-	<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
-    	<div class="card-body" style="margin-top: -8px" >
+<div class="col-md-5">
+	<div class="card cardBorderStyle">
+    	<div class="card-body mt-n8">
     	<%if(dmcFlag==null || (dmcFlag!=null && !dmcFlag.equalsIgnoreCase("Y"))) {%>
-         <div class="panel panel-info" style="margin-top: 10px;" >
+         <div class="panel panel-info mt-10px">
       		<div class="panel-heading ">
         		<h4 class="panel-title">
-          			<span  style="font-size:14px">1. Introduction </span>  
+          			<span class="fs-14px">1. Introduction </span>  
         		</h4>
-         	<div   style="float: right !important; margin-top:-23px; ">
+         	<div class="introductionDivStyle">
 		 		
-		 		<table style="text-align: right;" >
+		 		<table class="text-right">
      				
      				<thead>
 	             		<tr>
@@ -569,7 +217,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 				       %>   
 	      				<tr>
 	
-				      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+				      		<td class="tdMaxStyle"> 
 				      			<form  id="myForm500" action="CommitteeMinutesSpecEdit.htm" method="post">
 				      			
 				      				<input type="hidden" name="specname" value="Introduction">
@@ -579,7 +227,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 				                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 				                     <input type="hidden" name="formname" value="myForm6542" />
 
-				         			<input class="btn btn-warning btn-sm" type="submit" 
+				         			<input class="btn btn-warning btn-sm warningSubmitInputStyle" type="submit" 
 				         			  
 				         			<%
 				      					if(formname!=null && formname.equalsIgnoreCase("myForm6542")){
@@ -590,7 +238,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 				         			id="GenAdd"
 				         			<%} %>
 				         			
-				         			onclick="FormNameEdit('myForm500')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+				         			onclick="FormNameEdit('myForm500')" value="EDIT"/>
  				       			
  				       				
  				       			
@@ -607,7 +255,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
        	</div>
       
       
-		<div   style="float: right !important; margin-top:-25px; ">  
+		<div class="itemSpecAddStyle">  
 		
 			 <form name="myForm" id="myFormgen" action="ItemSpecAdd.htm" method="post" 
 
@@ -628,7 +276,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 			<input type="hidden" name="formname" value="myForm6542" /> 
 			
 			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-			<input type="submit" name="sub"  class="btn btn-info btn-sm"  id="GenAdd" onclick="FormName('myFormgen')" value="ADD"  style="width:40px; height: 24px; font-size:10px; font-weight: bold; text-align: justify; "/>
+			<input type="submit" name="sub"  class="btn btn-info btn-sm infoSubmitInputStyle"  id="GenAdd" onclick="FormName('myFormgen')" value="ADD"/>
 			
 		
 			</form>
@@ -652,10 +300,10 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
   	<div class="panel panel-info">
     	<div class="panel-heading">
         	<h4 class="panel-title">
-         		<span  style="font-size:14px">2. Opening Remarks </span>
+         		<span class="fs-14px">2. Opening Remarks </span>
         	</h4>
-       	<div   style="float: right !important; margin-top:-23px; ">
-		 	<table style="text-align: center;" >
+       	<div class="introductionDivStyle">
+		 	<table class="text-center">
      			<thead>
 	             	<tr>
 	                 	<th ></th>       
@@ -672,7 +320,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
       	
       				<tr>
 
-			      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+			      		<td class="tdMaxStyle"> 
 			      			<form  id="myForm1" action="MinutesSpecEdit.htm" method="post">
 			                	
 			                		<input type="hidden" name="specname" value="OpeningRemarks">
@@ -682,7 +330,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 				                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
 			                    	<input type="hidden" name="formname" value="rmmyForm2" /> 
 
-			          			<input type="submit" class="btn btn-warning btn-sm"  id="rmmyForm2" onclick="FormNameEdit('myForm1')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+			          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle"  id="rmmyForm2" onclick="FormNameEdit('myForm1')" value="EDIT"/>
 			          			
 			       			</form>
 			      		</td>
@@ -699,7 +347,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
        </div>
        
        
-       <div style="float: right !important; margin-top:-25px; " >
+       <div class="itemSpecAddStyle">
 			
 			<form name="myForm" id="myForm2" action="ItemSpecAdd.htm" method="post" 
 
@@ -718,7 +366,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 				<input type="hidden" name="formname" value="rmmyForm2" /> 
 	
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-				<input type="submit" class="btn btn-info btn-sm" id="rmmyForm2" name="sub" onclick="FormName('myForm2')" value="ADD"  style="width:42px height: 24px; font-size:10px; font-weight: bold; text-align: justify; "/>
+				<input type="submit" class="btn btn-info btn-sm infoSubmitInputStyle" id="rmmyForm2" name="sub" onclick="FormName('myForm2')" value="ADD"/>
 			
 			</form>
 			
@@ -741,10 +389,10 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	<div class="panel-heading">
 	
     	<h4 class="panel-title">
-           <span  style="font-size:14px">3. Agenda</span>
+           <span class="fs-14px">3. Agenda</span>
         </h4>
         
-       	<div style="float: right !important; margin-top:-20px; " > 
+       	<div class="agendaDivStyle"> 
        		<a data-toggle="collapse" data-parent="#accordion" href="#collapse5" > <i class="fa fa-plus" id="agendaclick"></i></a></div>
       	</div>
       
@@ -764,17 +412,17 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
    			
    			
 <div class="row">  
-	<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	<div class="col-md-11 ml-10px"  align="left">
      	
      	<div class="panel panel-info">
       		<div class="panel-heading">
         		
         		<h4 class="panel-title">
-                	<span  style="font-size:14px">3.<%=unitcount %> <%=StringEscapeUtils.escapeHtml4(Unit) %></span> 
+                	<span class="fs-14px">3.<%=unitcount %> <%=StringEscapeUtils.escapeHtml4(Unit) %></span> 
                 </h4>
        
-       			<div style="float: right !important; margin-top:-20px; " >
-        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=countloop %>" > <i class="fa fa-plus 5Pre<%=scheduleagendaid %> 5Dis<%=scheduleagendaid %> 5Out<%=scheduleagendaid %>" style="color:orange" id="5Out<%=scheduleagendaid %>" ></i></a></div>
+       			<div class="agendaDivStyle">
+        			<a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=countloop %>" > <i class="fa fa-plus 5Pre<%=scheduleagendaid %> 5Dis<%=scheduleagendaid %> 5Out<%=scheduleagendaid %> colorOrange" id="5Out<%=scheduleagendaid %>" ></i></a></div>
            		</div>
            		
   				<div id="collapse<%=countloop %>" class="panel-collapse in collapse ">
@@ -792,19 +440,19 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	
 	
 	<div class="row">  
-   			<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+   			<div class="col-md-11 ml-10px"  align="left">
 		
 		<div class="panel panel-info">
 		
 		<div class="panel-heading">
 	    	
 	    	<h4 class="panel-title">
-	           <span  style="font-size:14px">3.<%=unitcount %>.1. Presentation </span>
+	           <span class="fs-14px">3.<%=unitcount %>.1. Presentation </span>
 	        </h4>
 	        
-	       	<div style="float: right !important; margin-top:-20px; " > 
+	       	<div class="faPlusDivStyle"> 
 	       		<%int collapseP=481; %>
-	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapseP%><%=collapse%>" > <i class="fa fa-plus" style="color:green" id="5Pre<%=scheduleagendaid %>5"></i></a>
+	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapseP%><%=collapse%>" > <i class="fa fa-plus text-success" id="5Pre<%=scheduleagendaid %>5"></i></a>
 	       	</div>
 	       	
 	    </div>
@@ -823,21 +471,21 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	   %>
 	   
 	  			<div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-10px"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.1.<%=unit11 %>. 
+	          						<span class="fs-14px">3.<%=unitcount %>.1.<%=unit11 %>. 
 	          						<!-- newly added by sankha 12-10-2023 -->
 	          						<%if(hlod[5].toString().length()>30){ %>
-									<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20)+"....":" - " %>	 <span style="font-size: 11px;color:crimson;cursor: pointer;]" onclick='showModal("<%=hlod[5].toString()%>")'>(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>         						
+									<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20)+"....":" - " %>	 <span class="showModalStyle" onclick='showModal("<%=hlod[5].toString()%>")'>(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>         						
 	          						<%}else{ %>
-	          						<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %><span style="font-size: 11px;color:crimson" >(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>
+	          						<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %><span class="showModalStyle">(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>
 	          						<%} %></span>
 	          						<!-- end -->
 	          						  </h4>
-		       						<div   style="float: right !important; margin-top:-23px; ">
-									 	<table style="text-align: center;" >
+		       						<div class="introductionDivStyle">
+									 	<table class="text-center">
 							     			<thead>
 								             	<tr>
 								                 	<th ></th>       
@@ -845,7 +493,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 								         	 </thead>
 								         	<tbody>
 							      				<tr>
-										      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+										      		<td class="tdMaxStyle"> 
 										      			<form  id="myForm<%=temp %>P<%=form11 %>" action="MinutesSpecEdit.htm" method="post">
 										                	
 										                		<input type="hidden" name="specname" value="Agenda-Recommendation">
@@ -855,7 +503,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 											                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 										                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>P<%=form20 %>" />
 																<input class="form-control" type="hidden" name="unit1" value="#5Pre<%=scheduleagendaid %>" readonly="readonly">
-										          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>P<%=form20 %>" onclick="FormNameEditB('myForm<%=temp %>P<%=form11 %>' , '<%=hlod[9] %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+										          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle"  id="rm<%=form7 %><%=temp %>P<%=form20 %>" onclick="FormNameEditB('myForm<%=temp %>P<%=form11 %>' , '<%=hlod[9] %>')" value="EDIT"/>
 										          			
 										       			</form>
 										      		</td>
@@ -877,19 +525,19 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 				
 	<%unitcount11++;countloop++;form11++;form20++;unit11++;  Presentationcount++;}}}%>
 	   <div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-10px"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	       						<form action="ScheduleMinutesUnitEdit.htm" method="post"  id="myForm<%=form6 %><%=temp %>P<%=form20 %>">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit11 %>.</span>  </h4>
-	          						<div style="margin-top:-22px; margin-left: 55px;">
+	          						<span class="fs-14px">3.<%=unitcount %>.2.<%=unit11 %>.</span>  </h4>
+	          						<div class="mt-n22px ml-55px">
 	          						
 	          						<input type="text" class=""  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Presentation "+ (++Presentationcount) %>">
 	          						
 	          						</div>
-	          						<div style="margin-top:-26px; float: right;">
-	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>D<%=form20 %>" value="ADD" onclick="FormNameB('myForm<%=form6 %><%=temp %>P<%=form20 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						<div class="mt-n26px float-right">
+	          						<input type="submit" class="btn btn-info btn-sm outComeInfoSubmitStyle" name="sub"  id="rm<%=form7 %><%=temp %>D<%=form20 %>" value="ADD" onclick="FormNameB('myForm<%=form6 %><%=temp %>P<%=form20 %>')"/>
 	          						
 
 	        					    </div>
@@ -924,19 +572,19 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	
 	
 	 <div class="row">  
-   			<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+   			<div class="col-md-11 ml-10px"  align="left">
 		
 		<div class="panel panel-info">
 			
 		<div class="panel-heading">
 	    	
 	    	<h4 class="panel-title">
-	           <span  style="font-size:14px">3.<%=unitcount %>.2. Discussions </span>
+	           <span class="fs-14px">3.<%=unitcount %>.2. Discussions </span>
 	        </h4>
 	        
-	       	<div style="float: right !important; margin-top:-20px; " > 
+	       	<div class="faPlusDivStyle"> 
 	       		<%int collapseD=483; %>
-	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapseD%><%=collapse%>" > <i class="fa fa-plus" style="color:green" id="5Dis<%=scheduleagendaid %>5"></i></a>
+	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapseD%><%=collapse%>" > <i class="fa fa-plus text-success" id="5Dis<%=scheduleagendaid %>5"></i></a>
 	       	</div>
 	       	
 	    </div>
@@ -944,9 +592,6 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	  	<div id="<%=collapseD%><%= collapse %>" class="panel-collapse collapse in">
 	  
 	  <%int unitcount12=1; long unit12=1; String Unit12=null; int countloop12=100; int form12=3455;int collapse12=140;String temp12=null;int form19=650; int discussionscount=0; 
-	  
-	  /* int unitcount13=1;  long unit13=1; String Unit13=null; int countloop13=100; int form13=4455;int collapse13=140;String temp13=null;int form18=700; */
-	  
 	   if(!dis.isEmpty()){
 			for(Object[] hlod:dis){
 				 if("3".equalsIgnoreCase(hlod[0].toString()) &&  temp.equalsIgnoreCase(hlod[3].toString()) && "8".equalsIgnoreCase(hlod[4].toString()))
@@ -955,12 +600,11 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	   %>
 	   
 	  			<div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-10px"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>. 
-	          						<!-- newly added by sankha 12-10-2023 -->
+	          						<span class="fs-14px">3.<%=unitcount %>.2.<%=unit12 %>. 
 	          						<%if(hlod[5].toString().length()>30){ %>
 									<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20)+"....":" - " %>	          						
 	          						<%}else{ %>
@@ -968,10 +612,10 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<%} %>
 	          						<!-- end -->
 	          						</span>
-	          				<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString() %>')">(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>  </h4>
+	          				<span class="showModalStyle" onclick="showModal('<%=hlod[5].toString() %>')">(<%=hlod[9]!=null?StringEscapeUtils.escapeHtml4(hlod[9].toString()): " - " %>)</span>  </h4>
 	          				
-		       						<div   style="float: right !important; margin-top:-23px; ">
-									 	<table style="text-align: center;" >
+		       						<div class="introductionDivStyle">
+									 	<table class="text-center">
 							     			<thead>
 								             	<tr>
 								                 	<th ></th>       
@@ -979,7 +623,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 								         	 </thead>
 								         	<tbody>
 							      				<tr>
-										      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+										      		<td class="tdMaxStyle"> 
 										      			<form  id="myForm<%=temp %>D<%=form12 %>" action="MinutesSpecEdit.htm" method="post">
 										                	
 										                		<input type="hidden" name="specname" value="Agenda-Recommendation">
@@ -989,7 +633,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 											                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 										                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>D<%=form19 %>" />
 																<input class="form-control" type="hidden" name="unit1" value="#5Dis<%=scheduleagendaid %>" readonly="readonly">
-										          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>D<%=form19 %>" onclick="FormNameEditB('myForm<%=temp %>D<%=form12 %>' , '<%=hlod[9] %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+										          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle"  id="rm<%=form7 %><%=temp %>D<%=form19 %>" onclick="FormNameEditB('myForm<%=temp %>D<%=form12 %>' , '<%=hlod[9] %>')" value="EDIT" />
 										          			
 										       			</form>
 										      		</td>
@@ -1011,19 +655,19 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 				
 	<%unitcount12++;countloop++;form12++;form19++;unit12++;  discussionscount++;}}}%>
 	   <div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-10px"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	       						<form action="ScheduleMinutesUnitEdit.htm" method="post"  id="myForm<%=form6 %><%=temp %>D<%=form19 %>">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.2.<%=unit12 %>.</span>  </h4>
-	          						<div style="margin-top:-22px; margin-left: 55px;">
+	          						<span class="fs-14px">3.<%=unitcount %>.2.<%=unit12 %>.</span>  </h4>
+	          						<div class="mt-n22px ml-55px">
 	          						
 	          						<input type="text" class=""  name="OutComesId" id="OutComesId" maxlength="100" value="<%= "Discussion "+ (++discussionscount) %>">
 	          						
 	          						</div>
-	          						<div style="margin-top:-26px; float: right;">
-	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>D<%=form19 %>" value="ADD" onclick="FormNameB('myForm<%=form6 %><%=temp %>D<%=form19 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						<div class="mt-n26px float-right">
+	          						<input type="submit" class="btn btn-info btn-sm outComeInfoSubmitStyle"  name="sub"  id="rm<%=form7 %><%=temp %>D<%=form19 %>" value="ADD" onclick="FormNameB('myForm<%=form6 %><%=temp %>D<%=form19 %>')"/>
 	          						
 
 	        					    </div>
@@ -1064,25 +708,25 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	<!-- ******** sub row 3 start *****  -->
 	
 	 <div class="row">  
-   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+   				<div class="col-md-11 ml=10px"  align="left">
 		
 		<div class="panel panel-info">
 		
 		<div class="panel-heading">
 	    	
 	    	<h4 class="panel-title">
-	           <span  style="font-size:14px">3.<%=unitcount %>.3. Outcomes </span>
+	           <span class="fs-14px">3.<%=unitcount %>.3. Outcomes </span>
 	        </h4>
 	        
-	       	<div style="float: right !important; margin-top:-20px; " > 
+	       	<div class="faPlusDivStyle"> 
 	       		<%int collapse3=484; %>
-	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapse3%><%=collapse%>" > <i class="fa fa-plus" style="color:green" id="5Out<%=scheduleagendaid %>5"></i></a>
+	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapse3%><%=collapse%>" > <i class="fa fa-plus text-success" id="5Out<%=scheduleagendaid %>5"></i></a>
 	       	</div>
 	       	
 	    </div>
 	      
 	  	<div id="<%=collapse3%><%=collapse%>" class="panel-collapse collapse in">
-	  	<div class="scrollclass" style="height:200px;overflow-y: auto">
+	  	<div class="scrollclass ScrollDivStyle">
 	   <%int unitcount13=1;  long unit13=1; String Unit13=null; int countloop13=100; int form13=4455;int collapse13=140;String temp13=null;int form18=700;
 	   if(!dis.isEmpty()){
 			for(Object[] hlod:dis){
@@ -1090,12 +734,12 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 		
 	   %>
 	   
-	  			<div class="row" style="margin-right: 0px; margin-left: 0px;">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	  			<div class="row mr-0px ml-0px">  
+	   				<div class="col-md-11 ml-10px" align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.3.<%=unit13 %>.
+	          						<span class="fs-14px">3.<%=unitcount %>.3.<%=unit13 %>.
 	          						<!-- newly added by sankha  on 12/10 -->
 	          						<%if(hlod[5].toString().length()>30) {%>    
 										<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20) +"...":" - "%>
@@ -1103,9 +747,9 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 										    <%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %>
 									<%} %></span>
 									<!-- end -->      						
-	          						<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8]!=null?StringEscapeUtils.escapeHtml4(hlod[8].toString()): " - " %>)</span>  </h4>
-	       						<div   style="float: right !important; margin-top:-23px; ">
-								 	<table style="text-align: center;" >
+	          						<span class="showModalStyle" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8]!=null?StringEscapeUtils.escapeHtml4(hlod[8].toString()): " - " %>)</span>  </h4>
+	       						<div  class="introductionDivStyle">
+								 	<table class="text-center">
 						     			<thead>
 							             	<tr>
 							                 	<th ></th>       
@@ -1118,7 +762,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 						      	
 						      				<tr>
 						
-									      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+									      		<td class="tdMaxStyle"> 
 									      			<form  id="myForm<%=temp %>R<%=form13 %>" action="MinutesSpecEdit.htm" method="post">
 									                	
 									                		<input type="hidden" name="specname" value="Agenda-Recommendation">
@@ -1128,7 +772,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 										                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 									                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>R<%=form18 %>" />
 															<input class="form-control" type="hidden" name="unit1" value="#5Out<%=scheduleagendaid %>" readonly="readonly">				
-									          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" onclick="FormNameEditA('myForm<%=temp %>R<%=form13 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+									          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" onclick="FormNameEditA('myForm<%=temp %>R<%=form13 %>')" value="EDIT"/>
 									          			
 									       			</form>
 									      		</td>
@@ -1151,14 +795,14 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	</div>
 	
 	   			<div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-10px"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	       						<form action="ScheduleMinutesUnitEdit.htm" method="post"  id="myForm<%=form6 %><%=temp %>R<%=form18 %>">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">3.<%=unitcount %>.3.<%=unit13 %>.</span>  </h4>
-	          						<div style="margin-top:-22px; margin-left: 55px;">
-	          							<select  name="OutComesId" id="OutComesId" required="required"  data-live-search="true"  style="width: 165px;"  >
+	          						<span class="fs-14px">3.<%=unitcount %>.3.<%=unit13 %>.</span>  </h4>
+	          						<div class="mt-n22px ml-55px">
+	          							<select class="width-165px" name="OutComesId" id="OutComesId" required="required"  data-live-search="true">
 	                                        <%for(Object[] obj:minutesoutcomelist){ %>	
 												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
@@ -1168,8 +812,8 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						
 	          						
 	          						</div>
-	          						<div style="margin-top:-26px; margin-left: 240px;">
-	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" value="ADD" onclick="FormNameA('myForm<%=form6 %><%=temp %>R<%=form18 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						<div class="mt-n26px ml-240px">
+	          						<input type="submit" class="btn btn-info btn-sm outComeInfoSubmitStyle" name="sub"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" value="ADD" onclick="FormNameA('myForm<%=form6 %><%=temp %>R<%=form18 %>')"/>
 	          						
 
 	        					    </div>
@@ -1252,7 +896,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	<div class="panel-heading">
     	
     	<h4 class="panel-title">
-           <span  style="font-size:14px">4. Other Discussion</span>
+           <span class="fs-14px">4. Other Discussion</span>
         </h4>
         
    
@@ -1263,8 +907,8 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	   %>
    
 
-       						<div   style="float: right !important; margin-top:-23px; ">
-							 	<table style="text-align: center;" >
+       						<div  class="introductionDivStyle">
+							 	<table class="text-center">
 					     			<thead>
 						             	<tr>
 						                 	<th ></th>       
@@ -1281,7 +925,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 					      	
 					      				<tr>
 					
-								      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+								      		<td class="tdMaxStyle"> 
 								      			<form  id="myForm<%=form46 %>" action="MinutesSpecEdit.htm" method="post">
 								                	
 								                		<input type="hidden" name="specname" value="Other Discussion">
@@ -1291,7 +935,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 									                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 								                    	<input type="hidden" name="formname" value="rm<%=form46 %>" />
 					
-								          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form46 %>" onclick="FormNameEdit('myForm<%=form46 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+								          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle"  id="rm<%=form46 %>" onclick="FormNameEdit('myForm<%=form46 %>')" value="EDIT"/>
 								          			
 								       			</form>
 								      		</td>
@@ -1308,7 +952,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
        						</div>
        			
        						
-       					    <div style="float: right !important; margin-top:-25px; " >
+       					    <div class="itemSpecAddStyle">
 			
 								<form name="myForm" id="myForm<%=form46 %>" action="ItemSpecAdd.htm" method="post" 
 		
@@ -1328,7 +972,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 									<input class="form-control" type="hidden" name="unit1id" value="#unitdiscussion" readonly="readonly">
 									<input type="hidden" name="formname" value="rm<%=form46 %>" />
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
-									<input type="submit" class="btn btn-info btn-sm" name="sub" id="rm<%=form46 %><%=temp %>OD" onclick="FormName('myForm<%=form46 %>')" value="ADD"  style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+									<input type="submit" class="btn btn-info btn-sm outComeInfoSubmitStyle" name="sub" id="rm<%=form46 %><%=temp %>OD" onclick="FormName('myForm<%=form46 %>')" value="ADD"/>
 
 								
 								</form>
@@ -1358,17 +1002,17 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	<div class="panel-heading">
     	
     	<h4 class="panel-title">
-           <span  style="font-size:14px">5. Other Outcomes</span>
+           <span class="fs-14px">5. Other Outcomes</span>
         </h4>
         
-       	<div style="float: right !important; margin-top:-20px; " > 
+       	<div class="faPlusDivStyle"> 
        		<a data-toggle="collapse" data-parent="#accordion" href="#collapse58" > <i class="fa fa-plus" id="OutCome5"></i></a>
        	</div>
        	
     </div>
       
   	<div id="collapse58" class="panel-collapse collapse in">
-  	<div class="scrollclass" style="height:200px;overflow-y: auto">
+  	<div class="scrollclass ScrollDivStyle">
    <% int unitcount1=1;  long unit1=1; String Unit1=null; int countloop1=100; int form1=545;int collapse1=140;String temp1=null; %>
 	  
 	   
@@ -1377,24 +1021,24 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 									for(Object[] hlo:dis){
 										 if("5".equalsIgnoreCase(hlo[0].toString())){
 										       %>
-  			<div class="row" style="margin-right: 0px; margin-left: 0px;">  
-   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+  			<div class="row mr-0px ml-0px">  
+   				<div class="col-md-11 ml-10px"  align="left">
      				<div class="panel panel-info">
       					<div class="panel-heading">
        						
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">5.<%=unitcount1 %> 
+	          						<span class="fs-14px">5.<%=unitcount1 %> 
 	          						<!-- Newly added by sankha 12-10-2023 -->
 	          						<%if(hlo[5].toString().length()>40) {%>
-	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()).substring(0, 35)+"....":" - " %><span style="font-size: 11px;color:crimson;cursor: pointer;"onclick='showModal("<%=hlo[5].toString()%>")'>(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
+	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()).substring(0, 35)+"....":" - " %><span class="showModalStyle" onclick='showModal("<%=hlo[5].toString()%>")'>(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
 	          						<%}else{ %>
-	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()): " - "%>&nbsp;<span style="font-size: 11px;color:crimson;">(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
+	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()): " - "%>&nbsp;<span class="showModalStyle">(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
 	          						<%} %></span>
 	          						<!-- end  -->
 	          						  </h4>
 	          				
-       						<div   style="float: right !important; margin-top:-23px; ">
-							 	<table style="text-align: center;" >
+       						<div class="introductionDivStyle">
+							 	<table class="text-center">
 					     			<thead>
 						             	<tr>
 						                 	<th ></th>       
@@ -1402,7 +1046,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 						         	 </thead>
 						         	<tbody>
 					      				<tr>
-								      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+								      		<td class="tdMaxStyle"> 
 								      			<form  id="myForm<%=form1 %>" action="MinutesSpecEdit.htm" method="post">
 								                	 	
 								                		<input type="hidden" name="specname" value="Recommendation">
@@ -1412,7 +1056,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 									                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 								                        <input type="hidden" name="formname" value="rm<%=form1 %>" /> 
 														<input class="form-control" type="hidden" name="unit1" value="5" readonly="readonly">
-								          			<input type="submit" class="btn btn-warning btn-sm" id="rm<%=form1 %>"   onclick="FormNameEditA('myForm<%=form1 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+								          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle" id="rm<%=form1 %>"   onclick="FormNameEditA('myForm<%=form1 %>')" value="EDIT"/>
 								          			
 								       			</form>
 								      		</td>
@@ -1436,21 +1080,21 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
    
     
 		  <div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-10px"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	       						<form action="ScheduleMinutesUnitEdit.htm" method="post" id="myForm<%=form1 %>">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px">5.<%=unitcount1 %>.</span>  </h4>
-	          						<div style="margin-top:-22px; margin-left: 25px;">
-		          						<select  name="OutComesId" id="Assignee" required="required"  data-live-search="true"  style="width: 165px;"  >
+	          						<span class="fs-14px">5.<%=unitcount1 %>.</span>  </h4>
+	          						<div class="mt-n22px ml-25px">
+		          						<select class="width-165px" name="OutComesId" id="Assignee" required="required"  data-live-search="true">
 		                                    <%for(Object[] obj:minutesoutcomelist){ %>	
 												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
 										</select>
 	          						</div>
-	          						<div style="margin-top:-26px; margin-left: 200px;">
-	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form1 %>" value="ADD" onclick="FormNameA('myForm<%=form1 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						<div class="mt-n26px ml-200px">
+	          						<input type="submit" class="btn btn-info btn-sm outComeInfoSubmitStyle" name="sub"  id="rm<%=form1 %>" value="ADD" onclick="FormNameA('myForm<%=form1 %>')"/>
 	        					    </div>
 	        					       <input class="form-control" type="hidden" name="agendasubid" value="0" readonly="readonly">
 									    <input class="form-control" type="hidden" name="minutesid" value="5" readonly="readonly">
@@ -1497,7 +1141,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	<div class="panel-heading">
     	
     	<h4 class="panel-title">
-           <span  style="font-size:14px">6. Conclusion</span>
+           <span class="fs-14px">6. Conclusion</span>
         </h4>
         
      
@@ -1508,8 +1152,8 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	   		
 	   %>
 
-       						<div   style="float: right !important; margin-top:-23px; ">
-							 	<table style="text-align: center;" >
+       						<div class="introductionDivStyle">
+							 	<table class="text-center">
 					     			<thead>
 						             	<tr>
 						                 	<th ></th>       
@@ -1527,7 +1171,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 					      	
 					      				<tr>
 					
-								      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+								      		<td class="tdMaxStyle"> 
 								      			<form  id="myForm<%=form2 %>" action="MinutesSpecEdit.htm" method="post">
 								                	
 								                		<input type="hidden" name="specname" value="Conclusion">
@@ -1538,7 +1182,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 								                    	<input type="hidden" name="formname" value="rm<%=form2 %>" />
 														<input class="form-control" type="hidden" name="unit1id" value="#unitconclusion" readonly="readonly">
 							
-								          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form2 %>" onclick="FormNameEdit('myForm<%=form2 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+								          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle"  id="rm<%=form2 %>" onclick="FormNameEdit('myForm<%=form2 %>')" value="EDIT"/>
 								          			
 								       			</form>
 								      		</td>
@@ -1555,7 +1199,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
        						</div>
        			
        						
-       					    <div style="float: right !important; margin-top:-25px; " >
+       					    <div class="itemSpecAddStyle">
 			
 								<form name="myForm" id="myForm<%=form2 %>" action="ItemSpecAdd.htm" method="post" 
 		
@@ -1577,10 +1221,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 									
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 	
-									<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form2 %><%=temp %>CO" onclick="FormName('myForm<%=form2%>')" value="ADD"  style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
-								
-									
-								
+									<input type="submit" class="btn btn-info btn-sm outComeInfoSubmitStyle" name="sub"  id="rm<%=form2 %><%=temp %>CO" onclick="FormName('myForm<%=form2%>')" value="ADD"/>								
 								</form>
 			
    							</div>
@@ -1593,24 +1234,6 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
      </div>   <!-- Agenda collapse end -->     
  </div><!-- Agenda Panel end --> 
 
-<%-- <%if(SplCommitteeCodes.contains(committeecode.trim())) { %>
-<div class="panel panel-info">
-	
-	<div class="panel-heading">
-    	
-    	<h4 class="panel-title">
-           <span  style="font-size:14px">7. Attachment</span>
-           <%if(MomAttachment!=null) {%>     
-                     <input type="button" class="btn btn-warning btn-sm" id="" onclick="showAttachmentModal()" value="EDIT" style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;float: right">
-        
-        <%}else{ %>
-          <input type="button" class="btn btn-info btn-sm" id="" onclick="showAttachmentModal()" value="ADD" style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;float: right">
-        <%} %>
-        </h4>
-        </div>
-        </div>
-
-<%} %> --%>
 <!--  New code end-->
 
 <!-- CCM part MOM  -->
@@ -1626,18 +1249,18 @@ int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145
 		<div class="panel-heading">
 	    	
 	    	<h4 class="panel-title">
-	           <span  style="font-size:14px"> <%if(dmcFlag!=null) {%> 1<%} else{%> 3<%} %>. Discussion </span>
+	           <span class="fs-14px"> <%if(dmcFlag!=null) {%> 1<%} else{%> 3<%} %>. Discussion </span>
 	        </h4>
 	        
-	       	<div style="float: right !important; margin-top:-20px; " > 
+	       	<div class="faPlusDivStyle"> 
 	       		<%int collapse3=484; %>
-	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapse3%><%=collapse%>" > <i class="fa fa-plus" style="color:green" id="5Out<%=scheduleagendaid %>5"></i></a>
+	       		<a data-toggle="collapse" data-parent="#accordion" href="#<%=collapse3%><%=collapse%>" > <i class="fa fa-plus text-success" id="5Out<%=scheduleagendaid %>5"></i></a>
 	       	</div>
 	       	
 	    </div>
 	      
 	  	<div id="<%=collapse3%><%=collapse%>" class="panel-collapse collapse in">
-	  	<div class="scrollclass" style="height:200px;overflow-y: auto">
+	  	<div class="scrollclass ScrollDivStyle">
 	   <%int unitcount13=1;  long unit13=1; String Unit13=null; int countloop13=100; int form13=4455;int collapse13=140;String temp13=null;int form18=700;
 	   if(dis!=null && !dis.isEmpty()){
 			for(Object[] hlod:dis){
@@ -1645,12 +1268,12 @@ int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145
 		
 	   %>
 	   
-	  			<div class="row" style="margin-right: 0px; margin-left: 0px;">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	  			<div class="row mr-0px ml-0px">  
+	   				<div class="col-md-11 ml-10px"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px"><%if(dmcFlag!=null) {%> 1<%} else{%> 3<%} %>.<%=unit13 %>.
+	          						<span class="fs-14px"><%if(dmcFlag!=null) {%> 1<%} else{%> 3<%} %>.<%=unit13 %>.
 	          						<!-- newly added by sankha  on 12/10 -->
 	          						<%if(hlod[5].toString().length()>30) {%>    
 										<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20) +"...":" - "%>
@@ -1658,9 +1281,9 @@ int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145
 										    <%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %>
 									<%} %></span>
 									<!-- end -->      						
-	          						<span style="color:crimson;font-size:11px;" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8]!=null?StringEscapeUtils.escapeHtml4(hlod[8].toString()): " - " %>)</span>  </h4>
-	       						<div   style="float: right !important; margin-top:-23px; ">
-								 	<table style="text-align: center;" >
+	          						<span class="showModalStyle" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8]!=null?StringEscapeUtils.escapeHtml4(hlod[8].toString()): " - " %>)</span>  </h4>
+	       						<div class="introductionDivStyle">
+								 	<table class="text-center">
 						     			<thead>
 							             	<tr>
 							                 	<th ></th>       
@@ -1673,7 +1296,7 @@ int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145
 						      	
 						      				<tr>
 						
-									      		<td style="max-width:120px;  font-size:small; font-weight:bold; overflow: hidden; word-break: break-word !important; white-space: normal !important;"> 
+									      		<td class="tdMaxStyle"> 
 									      			<form  id="myForm<%=temp %>R<%=form13 %>" action="MinutesSpecEdit.htm" method="post">
 									                	
 									                		<input type="hidden" name="specname" value="Discussion">
@@ -1683,7 +1306,7 @@ int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145
 										                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 									                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>R<%=form18 %>" />
 															<input class="form-control" type="hidden" name="unit1" value="#5Out<%=scheduleagendaid %>" readonly="readonly">				
-									          			<input type="submit" class="btn btn-warning btn-sm"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" onclick="FormNameEditA('myForm<%=temp %>R<%=form13 %>')" value="EDIT"  style="width:44px; height: 24px; font-size:10px; font-weight: bold; text-align: justify;"   />
+									          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" onclick="FormNameEditA('myForm<%=temp %>R<%=form13 %>')" value="EDIT"/>
 									          			
 									       			</form>
 									      		</td>
@@ -1706,14 +1329,14 @@ int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145
 	</div>
 	
 	   			<div class="row">  
-	   				<div class="col-md-11"  align="left"  style="margin-left: 10px;">
+	   				<div class="col-md-11 ml-10px"  align="left">
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	       						<form action="ScheduleMinutesUnitEdit.htm" method="post"  id="myForm<%=form6 %><%=temp %>R<%=form18 %>">
 	        					<h4 class="panel-title">
-	          						<span  style="font-size:14px"><%if(dmcFlag!=null) {%> 1<%} else{%> 3<%} %>.<%=unit13 %>.</span>  </h4>
-	          						<div style="margin-top:-22px; margin-left: 55px;">
-	          							<select  name="OutComesId" id="OutComesId" required="required"  data-live-search="true"  style="width: 165px;"  >
+	          						<span class="fs-14px"><%if(dmcFlag!=null) {%> 1<%} else{%> 3<%} %>.<%=unit13 %>.</span>  </h4>
+	          						<div class="mt-n22px ml-55px">
+	          							<select class="width-165px" name="OutComesId" id="OutComesId" required="required"  data-live-search="true">
 	                                        <%for(Object[] obj:minutesoutcomelist){ %>	
 												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
@@ -1723,8 +1346,8 @@ int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145
 	          						
 	          						
 	          						</div>
-	          						<div style="margin-top:-26px; margin-left: 240px;">
-	          						<input type="submit" class="btn btn-info btn-sm" name="sub"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" value="ADD" onclick="FormNameA('myForm<%=form6 %><%=temp %>R<%=form18 %>')" style="width:42px ;height: 22px; font-size:10px; font-weight: bold; text-align: justify; "/>
+	          						<div class="mt-n26px ml-240px">
+	          						<input type="submit" class="btn btn-info btn-sm outComeInfoSubmitStyle" name="sub"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" value="ADD" onclick="FormNameA('myForm<%=form6 %><%=temp %>R<%=form18 %>')"/>
 	          						
 
 	        					    </div>
@@ -1762,7 +1385,7 @@ int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="attachmentModal">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-   <div class="modal-header" style="background: #055C9D ;color:white;">
+   <div class="modal-header modalHeaderStyle">
         <h5 class="modal-title" id="exampleModalLabel">Attachment</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -1820,7 +1443,7 @@ function showAttachmentModal(){
 		
 			<form class="" name="assignaction" id="assignaction" action="CommitteeAction.htm" method="post">
 	
-				<input type="submit" name="sub" class="btn btn-sm add fa-thumbs-up" style="background-color:#0e49b5 !important; " form="assignaction"  value="ASSIGN ACTION &nbsp;&nbsp;&#xf164;"  onclick=""/>
+				<input type="submit" name="sub" class="btn btn-sm add fa-thumbs-up thumbsUpBgColor" form="assignaction"  value="ASSIGN ACTION &nbsp;&nbsp;&#xf164;"  onclick=""/>
 				<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">	
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<input type="hidden" name="minutesback" value="minutesback"/>
@@ -1842,19 +1465,19 @@ function showAttachmentModal(){
 	<%} %>
 <div class="row">
 	<div class="col-md-12" >
-		<div class="card" style="border-color:#00DADA  ;margin-top: 2%;" >
-    		<div class="card-body" style="margin-top: -8px" >       	
-				<b style="color: #346691; font-size: 20px;font-family: 'Lato',sans-serif; "></b> 
+		<div class="card cardBorderStyle">
+    		<div class="card-body mt-n8">       	
+				<b class="minutesAttachListbTagStyle"></b> 
 				<hr><br>				
 					<%if(minutesattachmentlist.size()>0){ %>
-						<div class="card-body" style="margin-top: -8px" >       	
+						<div class="card-body mt-n8">       	
 							<table class="table table-bordered table-hover table-striped table-condensed" >					
 									<tr>
 										<td><%=minutesattachmentlist.get(0)[2] %></td>
 										<td><%if(minutesattachmentlist.get(0)[2].toString().endsWith(".pdf")) {%>
 											<div  align="center">
 												<a  href="MinutesAttachDownloadprotected.htm?attachmentid=<%=minutesattachmentlist.get(0)[0]%>"  data-toggle="tooltip" data-placement="top" title="Protected PDF"
-												  target="_blank" data-trigger="hover"  ><i class="fa fa-download" style="color:#DF4646;"></i></a>
+												  target="_blank" data-trigger="hover"  ><i class="fa fa-download faDownloadColor"></i></a>
 											</div>
 											<%} %>
 										</td>
@@ -1866,7 +1489,7 @@ function showAttachmentModal(){
 										</td>
 										<td>
 											<form method="post" action="MinutesAttachmentDelete.htm">
-												<button class="fa fa-trash btn  " type="submit" onclick="return confirm('Are You Sure To Delete this File?');" style="margin-right: -30px"></button>
+												<button class="fa fa-trash btn  mr-n30px" type="submit" onclick="return confirm('Are You Sure To Delete this File?');"></button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">
 												<input type="hidden" name="attachmentid" value="<%=minutesattachmentlist.get(0)[0] %>">
@@ -1939,19 +1562,19 @@ function showAttachmentModal(){
 
 <div class="col-md-7">
 	
-	<div class="card" style="margin-top: 2%;">
+	<div class="card mt-2per">
     	<div class="card-body">
     		<%if(dmcFlag==null) {%>
             <form name="specadd" id="specadd" action="CommitteeMinutesSubmit.htm" method="post">
   
-   				<div class="row"  style="margin-bottom: 10px;">
+   				<div class="row mb-10px">
    					
    					<div class="col-md-12"  align="left">
 						<label>
-						<b id="iditemspec" style="font-size:18px " ></b>
-						<b id="iditemsubspecofsub" style="font-size:18px " ></b>
-						<b id="iditemsubspec" style="font-size:18px " ></b>
-						<b id="iditemunit" style="font-size:18px " ></b>
+						<b id="iditemspec" class="fs-18px"></b>
+						<b id="iditemsubspecofsub" class="fs-18px"></b>
+						<b id="iditemsubspec" class="fs-18px"></b>
+						<b id="iditemunit" class="fs-18px"></b>
 
 							<input class="form-control" type="hidden" name="minutesid" id="minutesidadd" >
 							<input class="form-control" type="hidden" name="agendasubid" id="agendasubidadd" >
@@ -1970,25 +1593,25 @@ function showAttachmentModal(){
 						</label>
 					</div>
    					
-   					<div class="col-md-12"  align="left" style="margin-left: 0px;width:100%;margin-top: -25px ">
-						<label style="margin-left: 50px;"></label>
+   					<div class="col-md-12 ml-0px w-100 mt-n25px"  align="left">
+						<label class="ml-50px"></label>
 						<div   id="summernote" class="center">
 						 
 						</div>
-						 <textarea  name="NoteText" id="editor1" style="display:none;"></textarea>
+						 <textarea class="textAreaClass" name="NoteText" id="editor1"></textarea>
 					</div>
 
   					
   
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					
-		 			<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% ">
+		 			<div class="col-md-12 ml-0px w-100"  align="left">
     					
-    					<div class="card"  style="margin-top: 15px;">
-            				<div class="card-body" style="background-color: #f7f7f7;">
+    					<div class="card mt-15px">
+            				<div class="card-body cardBodyBgColor">
   								
   								
-  								<div align="center" id="drcdiv"  style="margin-top: 10px;">
+  								<div class="mt-10px" align="center" id="drcdiv">
   								
   									<div class="form-check form-check-inline">
 									  <input class="form-check-input" type="radio" name="darc" id="decision" value="D">
@@ -2008,11 +1631,11 @@ function showAttachmentModal(){
  
   								<div class="form-group">
   									<label class="">Remarks : </label>
-  									<input  class="form-control"  type="text" maxlength="255"  placeholder="Nil" name="remarks" id="remarks" style="width:80%">
+  									<input  class="form-control width-80Per"  type="text" maxlength="255"  placeholder="Nil" name="remarks" id="remarks">
   								
                         		</div>
   
-								<div align="center" style="margin-top: -25px;">
+								<div align="center" class="mt-n25px">
 									<br>
 									
 									<br>
@@ -2055,7 +1678,7 @@ function showAttachmentModal(){
 							<label class="">Schedule Date: </label>
 						</div>
 						<div class="col-md-3 ">
-							<input type="text" class="form-control" name="meetingDate" id="meetingDate" <%if(committeescheduleeditdata!=null) {%>value="<%=sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())) %>"<%} %> style="height: 32px;" readonly>
+							<input type="text" class="form-control height-32px" name="meetingDate" id="meetingDate" <%if(committeescheduleeditdata!=null) {%>value="<%=sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())) %>"<%} %> readonly>
 						</div>
 						
 						<div class="col-md-2 left">
@@ -2069,17 +1692,17 @@ function showAttachmentModal(){
 				</form>
 				<hr class="mb-2">
 	 		<%} %>
-	 		<form name="specadd" id="specair" action="CommitteeMinutesSubmit.htm" method="post" <%if(dmcFlag!=null) {%>style="display: none;"<%} %> >
+	 		<form name="specadd" id="specair" action="CommitteeMinutesSubmit.htm" method="post" <%if(dmcFlag!=null) {%>class="spinnerDisplayNone"<%} %> >
   
-   				<div class="row"  style="margin-bottom: 10px;">
+   				<div class="row mb-10px">
    					
    					<div class="col-md-12"  align="left">
 						<label>
-						<b id="iditemspecair" style="font-size:18px " ></b>
-						<b id="iditemsubspecofsubair" style="font-size:18px " ></b>
-						<b id="iditemsubspecair" style="font-size:18px " ></b>
-						<b id="iditemair" style="font-size:18px " ></b>
-						<b id="outcomeair" style="font-size:18px " ></b>
+						<b id="iditemspecair" class="fs-18px"></b>
+						<b id="iditemsubspecofsubair" class="fs-18px"></b>
+						<b id="iditemsubspecair" class="fs-18px"></b>
+						<b id="iditemair" class="fs-18px"></b>
+						<b id="outcomeair" class="fs-18px"></b>
 
 							<input class="form-control" type="hidden" name="minutesid" id="minutesidair" >
 							<input class="form-control" type="hidden" name="agendasubid" id="agendasubidair" >
@@ -2098,25 +1721,25 @@ function showAttachmentModal(){
 						</label>
 					</div>
    					
-   					<div class="col-md-12"  align="left" style="margin-left: 0px;width:100%;">
+   					<div class="col-md-12 ml-0px w-100"  align="left">
 						<label >Action Name</label>
 
-						 <textarea class="form-control" required="required"  name="NoteText" id="editorair" style="width:100%;height: 140px;" maxlength="5000"></textarea>
+						 <textarea class="form-control w-100 height-140px" required="required"  name="NoteText" id="editorair" maxlength="5000"></textarea>
 					</div>
 
   					
   
 					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 					
-		 			<div class="col-md-12"  align="left" style="margin-left: 0px;width:100% ">
+		 			<div class="col-md-12 ml-0px w-100"  align="left">
     					
-    					<div class="card"  style="margin-top: 15px;">
-            				<div class="card-body" style="background-color: #f7f7f7;">
+    					<div class="card mt-15px">
+            				<div class="card-body cardBodyBgColor">
                              <div class="row" >
                              <div class="col-md-8">
   								<div class="form-group">
   									<label class="">Remarks : </label>
-  									<input  class="form-control"  type="text" maxlength="255"  placeholder="Nil" name="remarks" id="remarksair" style="width:100%">
+  									<input  class="form-control w-100"  type="text" maxlength="255"  placeholder="Nil" name="remarks" id="remarksair">
                         		</div>
                         		</div>
                         		  <div class="col-md-4" id="OutComeDiv">
@@ -2140,12 +1763,12 @@ function showAttachmentModal(){
 								</div>
 								
 								</div>							
-								<div align="center" style="margin-top: -25px;">
+								<div align="center" class="mt-n25px">
 									<br>
 									<br>
  										<input type="submit" name="sub" class="btn  btn-sm submit" form="specair"  id="addingair" value="SUBMIT"  />
 								  		<input type="submit" name="sub" class="btn  btn-sm submit" form="specair" id="editingair"  value="SUBMIT" formaction="CommitteeMinutesEditSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
-								  		<input type="submit" name="sub" class="btn  btn-sm submit" style="background-color: #dc3545; border-color: #dc3545;" form="specair" id="deletingair"  value="DELETE" formaction="CommitteeMinutesDeleteSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
+								  		<input type="submit" name="sub" class="btn  btn-sm submit deleteBgBorderStyle" form="specair" id="deletingair"  value="DELETE" formaction="CommitteeMinutesDeleteSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
 										<input type="submit" name="sub" hidden="hidden" form="specadd" id="hiddensubmit">
 										<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
 										<input type="hidden" name="schedulesubid" value="1" readonly="readonly">
@@ -2180,17 +1803,16 @@ function showAttachmentModal(){
 
 </div>
 <%} else{%>
-	<div class="centered-card" style="  display: flex;justify-content: center;align-items: center;height: 70vh;">
+	<div class="centered-card centeredCardStyle">
 	<div class="card" >
-  	<div class="card-body" style="height:20vh;display: flex;align-items: center;justify-content: center;">
-  	<div style="font-size: 1.25rem;font-weight: 600; color: crimson; text-shadow: 2px 2px 2px skyblue">MOM already freezed. If you want to edit please unfreeze it. </div>
+  	<div class="card-body centeredCardBodyStyle">
+  	<div class="momFreezedStyle">MOM already freezed. If you want to edit please unfreeze it. </div>
   	</div>
   	<div class="mb-2" align="center">
   	<form class="form-inline" method="GET" action="CommitteeMinutesViewAllDownload.htm"  name="myfrm" id="myfrm"> 
 	<%if(SplCommitteeCodes.stream().anyMatch(x -> x.trim().equalsIgnoreCase(committeecode.trim())) && Long.parseLong(projectid)>0){ %>
-	<!--<input type="submit" class="btn  btn-sm view" value="DPFM L" formaction="CommitteeMinutesNewDfm.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;" /> -->
-	<button type="submit" class="btn  btn-sm view"  formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank" style="background-color:#0e49b5 ;color:white ;font-size:12px;">MINUTES
-	<i class="fa fa-download blink" aria-hidden="true" style="color:white;"></i>
+	<button type="submit" class="btn  btn-sm view minutesBtnStyle"  formaction="CommitteeMinutesNewDownload.htm" formmethod="get" formtarget="_blank">MINUTES
+	<i class="fa fa-download blink colorWhite" aria-hidden="true"></i>
 	</button>&nbsp;&nbsp;
 	
 	<%}%>
@@ -2202,12 +1824,12 @@ function showAttachmentModal(){
 	</div> 
 	<div class="row">
 	<div class="col-md-12" >
-		<div class="card" style="margin-top: 2%;border:0px!important;" >
-    		<div class="card-body" style="margin-top: -8px" >       	
-				<b style="color: #346691; font-size: 14px;font-family: 'Lato',sans-serif; ">Upload Signed MOM :</b> 
+		<div class="card mt-2per border-0px">
+    		<div class="card-body mt-n8">       	
+				<b class="uploadSignedMomStyle">Upload Signed MOM :</b> 
 				<br>				
 				<%if(minutesattachmentlist.size()>0){ %>
-						<div class="card-body" style="margin-top: -8px" >       	
+						<div class="card-body mt-n8">       	
 							<table class="table table-bordered table-hover table-striped table-condensed" >					
 									<tr>
 										<td><%=minutesattachmentlist.get(0)[2]!=null?StringEscapeUtils.escapeHtml4(minutesattachmentlist.get(0)[2].toString()): " - " %></td>
@@ -2220,7 +1842,7 @@ function showAttachmentModal(){
 										</td>
 										<td>
 											<form method="post" action="MinutesAttachmentDelete.htm">
-												<button class="fa fa-trash btn  " type="submit" onclick="return confirm('Are You Sure To Delete this File?');" style="margin-right: -30px"></button>
+												<button class="fa fa-trash btn mr-n30px" type="submit" onclick="return confirm('Are You Sure To Delete this File?');"></button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">
 												<input type="hidden" name="attachmentid" value="<%=minutesattachmentlist.get(0)[0] %>">
@@ -2279,7 +1901,7 @@ function showAttachmentModal(){
 	<div class="modal fade" id="chatModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
-			<div class="modal-content" style="width: 200%; margin-left: -50%;">
+			<div class="modal-content remarksModalContentWidth">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel"></h5>
 					<button type="button" class="close" data-dismiss="modal"

@@ -1307,6 +1307,31 @@ public class ProjectController
 			String projectshortName=req.getParameter("projectshortName");
 			PreprojectFileDto pfd=new PreprojectFileDto();
 			String versionvalue=req.getParameter("versionvalue");
+			
+			if (!isValidFileType(FileAttach)) {
+
+			        // add simple attributes to URL
+			        redir.addAttribute("stepdidno", req.getParameter("stepid"));
+			        redir.addAttribute("initiationid", req.getParameter("IntiationId"));
+			        redir.addAttribute("projectshortName", req.getParameter("projectshortName"));
+			        redir.addAttribute("filesize", file_size);
+
+			        // add complex objects as flash attributes
+			        redir.addFlashAttribute("stepsName", service.inititionSteps());
+			        redir.addFlashAttribute("ProjectIntiationList", service.ProjectIntiationList(EmpId, Logintype, LabCode));
+
+			        return redirectWithError(
+			            redir,
+			            "PreProjectFileUpload.htm",
+			            "Invalid file type. Only PDF or Image files are allowed."
+			        );
+			    }
+			
+
+			
+			
+			
+			
 			Double version;
 			if(versionvalue.equals("")) {
 				version=1.0;
@@ -2564,6 +2589,20 @@ public class ProjectController
 					redir.addFlashAttribute("TabId", "4");
 					return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "HTML tags are not permitted.");				
 				}
+				
+				
+				// 🔹 Validate file types
+		        if (!isValidFileType(FileAttach)) {
+
+		           
+		        	redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+					redir.addFlashAttribute("TabId", "4");
+					return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "Invalid file type. Only PDF or Image files are allowed.");			
+		        	
+		        
+		        }
+				
+				
 				PfmsInitiationAttachmentDto pfmsinitiationattachmentdto = new PfmsInitiationAttachmentDto();
 				PfmsInitiationAttachmentFileDto pfmsinitiationattachmentfiledto = new PfmsInitiationAttachmentFileDto();
 				pfmsinitiationattachmentdto.setFileName(req.getParameter("FileName"));
@@ -2773,8 +2812,22 @@ public class ProjectController
 				if(InputValidator.isContainsHTMLTags(letterno)){
 					redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
 					redir.addFlashAttribute("TabId", "5");
-					return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "HTML tags are not permitted.");				
+					return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm", "HTML tags are not permitted.");	
+					
+					
+					
+					
+			      
 				}
+				
+				  if (!isValidFileType(FileAttach) ) {
+
+			        	redir.addFlashAttribute("IntiationId", req.getParameter("IntiationId"));
+						redir.addFlashAttribute("TabId", "5");
+						return redirectWithError(redir, "ProjectIntiationDetailesLanding.htm",  "Invalid file type. Only PDF or Image files are allowed.");	
+			        	
+			        	
+			        }
 				
 
 				PfmsInitiationAuthorityDto pfmsinitiationauthoritydto = new PfmsInitiationAuthorityDto();
@@ -4774,6 +4827,54 @@ public class ProjectController
 		return "project/ProjectDataCollect";		
 	}
 
+	private boolean isValidFileType(MultipartFile file) {
+		
+		
+		
+	    String contentType = file.getContentType();
+	    String originalFilename = file.getOriginalFilename();
+		
+	    if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+
+	    
+	    
+	  
+	    if (contentType == null) {
+	        return false;
+	    }
+	    
+	 // Extract extension in lowercase
+	    String extension = FilenameUtils.getExtension(originalFilename).toLowerCase();
+	    
+	 // Check mapping between MIME type and extension
+	    switch (extension) {
+	        case "pdf":
+	            return contentType.equalsIgnoreCase("application/pdf");
+	        case "jpeg":
+	        case "jpg":
+	            return contentType.equalsIgnoreCase("image/jpeg");
+	        case "png":
+	            return contentType.equalsIgnoreCase("image/png");
+	        default:
+	            return false;
+	    }
+
+//	    // Allow only images and PDF
+//	 // Allowed MIME types
+//	    boolean validMime = contentType.equalsIgnoreCase("application/pdf")
+//	            || contentType.equalsIgnoreCase("image/jpeg")
+//	            || contentType.equalsIgnoreCase("image/png");
+//
+//	    // Allowed extensions
+//	    boolean validExtension = extension.equals("pdf")
+//	            || extension.equals("jpeg")
+//	            || extension.equals("jpg")
+//	            || extension.equals("png");
+//
+//	    return validMime && validExtension;
+	}
 
 
 	@RequestMapping(value = "ProjectDataSubmit.htm", method = RequestMethod.POST)
@@ -4786,8 +4887,25 @@ public class ProjectController
 		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProjectDataSubmit.htm "+Username);
 		try 
-		{								
+		{		
 			String projectid=req.getParameter("projectid");
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(systemconfigimg) || !isValidFileType(systemspecsfile)
+	                || !isValidFileType(producttreeimg) || !isValidFileType(pearlimg)) {
+
+	            return redirectWithError(redir, "ProjectData.htm?projectid=" + projectid,
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+
+			
+			
+	
+			
+			
+			
+			
+			
 			String proclimit = req.getParameter("proclimit");
 			String pmrcdate=req.getParameter("pmrcdate");
 			String ebdate=	req.getParameter("ebdate");
@@ -4964,6 +5082,15 @@ public class ProjectController
 			String revisionno=req.getParameter("revisionno");
 			String pmrcdate=req.getParameter("pmrcdate");
 			String ebdate=req.getParameter("ebdate");
+			
+			// 🔹 Validate file types
+	        if (!isValidFileType(systemconfigimg) || !isValidFileType(systemspecsfile)
+	                || !isValidFileType(producttreeimg) || !isValidFileType(pearlimg)) {
+
+	            return redirectWithError(redir, "ProjectData.htm?projectid=" + projectid,
+	                    "Invalid file type. Only PDF or Image files are allowed.");
+	        }
+			
 			PfmsProjectDataDto projectdatadto=new PfmsProjectDataDto();
 			projectdatadto.setProjectDataId(req.getParameter("projectdataid"));
 			projectdatadto.setProjectId(projectid);
@@ -5561,6 +5688,26 @@ public class ProjectController
 			String filenames[] = req.getParameterValues("filename");
 			String ProjectId = req.getParameter("ProjectId");			
 
+			
+	        // 🔹 Validate file types for multiple uploads
+	        if (FileAttach != null) {
+	            for (MultipartFile file : FileAttach) {
+	                if (file != null && !file.isEmpty()) {
+	                	 if (!isValidFileType(file)) {
+	                        
+	                        redir.addFlashAttribute("ProjectId", ProjectId);
+	                        return redirectWithError(
+	                            redir,
+	                            "ProjectMasterAttach.htm",
+	                            "Invalid file type. Only PDF or Image files are allowed."
+	                        );
+	                    }
+	                }
+	            }
+	        }
+			
+			
+			
 			ProjectMasterAttachDto dto= new ProjectMasterAttachDto();  
 
 			dto.setProjectId(ProjectId);
@@ -5571,6 +5718,8 @@ public class ProjectController
 
 
 			long count=service.ProjectMasterAttachAdd(dto);
+			
+			
 
 			if (count > 0) {
 				redir.addAttribute("result", "Project Attachment(s) Upload Successfully");
@@ -5679,10 +5828,10 @@ public class ProjectController
 			if (count > 0) {
 				redir.addAttribute("result", "Data Added Successfully");
 			} else {
-				redir.addAttribute("resultfail", "Data Adding  Unsuccessful");
+				redir.addAttribute("resultfail", "Data Adding Unsuccessful");
 			}
-			redir.addFlashAttribute("projectid", projectid);
-			redir.addFlashAttribute("committeeid", committeeid);
+			redir.addAttribute("projectid", projectid);
+			redir.addAttribute("committeeid", committeeid);
 			return "redirect:/ProjectBriefingPaper.htm";
 
 		}catch (Exception e) {

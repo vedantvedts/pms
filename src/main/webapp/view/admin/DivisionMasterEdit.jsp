@@ -65,7 +65,7 @@ Object[] DivisionMasterEditData=(Object[])request.getAttribute("DivisionMasterEd
 	
  <div class="col-sm-8 mt-3" >
 <div class="card shadow-nohover"  >
-<div class="card-header bg-header"> <b class="text-white">Division Master Edit</b></div>
+<div class="card-header bg-header"> <b class="text-white style1">Division Master Edit</b></div>
 <div class="card-body">
 
 

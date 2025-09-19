@@ -1,0 +1,138 @@
+.card-body {
+	padding: 0px !important;
+}
+
+.control-label {
+	font-weight: bold !important;
+}
+
+.table thead th {
+	vertical-align: middle !important;
+}
+
+.header {
+	position: sticky;
+	top: 0;
+	background-color: #346691;
+}
+
+.mt-n8{
+	margin-top: -8px;
+}
+
+.mt-n6{
+	margin-top: -6px;
+}
+
+.cardMargin{
+	margin: 5px;
+}
+
+.mb-n2{
+	margin-bottom: -2px;
+}
+
+.tblResponsiveStyle{
+	height: 400px;
+	overflow: auto;
+}
+
+.tblResponsiveTrStyle{
+	background-color: #346691;
+	color: #fff;
+}
+
+.committeeInitiationTblStyle{
+	height: 400px;
+	overflow: auto;
+}
+
+.constituteMaroon{
+	background-color: maroon !important;
+	font-size: 12px;
+}
+
+.constituteGreen{
+	background-color: green !important;
+	font-size: 12px;
+}
+
+.mb-2per{
+	margin-bottom: 2%;
+}
+
+.committeeAddSubmitStyle{
+	margin :15px;
+}
+
+.width-140{
+	width: 140px;
+}
+
+.height-30{
+	height: 30px;
+}
+
+.pt-10px{
+	padding-top: 10px;
+}
+
+.pb-15px{
+	padding-bottom: 15px;
+}
+
+.tblBorderStyle{
+	border-spacing: 0 20px;
+}
+
+.committeeFormationStyle{
+	background: #c4ced3; 
+	width: 230px; 
+	height: 20px;
+}
+
+.width-10px{
+	width: 10px;
+}
+
+.height-20px{
+	height: 20px;
+}
+
+.YesNoStyle{
+	 width: 40px; 
+	 height: 5px; 
+	 margin-left: 20px;
+}
+
+.committeeFormationApprovalStyle{
+	background: #c4ced3; 
+	width: 100px; 
+	height: 5px; 
+	margin-left: 20px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.modalContentWidth{
+	width:150%;
+	margin-left:-25%;
+}
+
+.mb-4px{
+	margin-bottom: 4px !important;
+}
+
+.mt-1per{
+	margin-top:1%;
+}
+
+.tdSnWidth{
+	width: 4.8889px;
+}
+
+.fs-90 {
+  font-size: 0.90rem !important;
+}

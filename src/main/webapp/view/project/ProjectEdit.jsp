@@ -47,7 +47,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 <div class="col-md-12">
 <div class="card shadow-nohover" >
   <div class="card-header cs-header">
-           <h3 class="text-white">Project Master Edit</h3>
+           <h3 class="text-white style1">Project Master Edit</h3>
 	</div>
 <div class="card-body"> 
 <div class="row">

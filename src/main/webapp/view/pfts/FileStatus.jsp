@@ -123,8 +123,8 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 						   <div class="form-inline style2">
 						  <table >
 					   					<tbody><tr>
-					   						<td>
-					   							<label class="control-label style4">Project : </label>
+					   						<td class="border-0">
+					   							<label class="control-label style4 ">Project : </label>
 					   						</td>
 									<td class="style3">
 								<%-- 		<form method="post" action="ProcurementStatus.htm" id="projectchange" >
@@ -550,7 +550,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 		                      <label class="control-label">Project</label>
 		                   </div>
 		                    <div class="col-md-4">
-			                      <select class="form-control selectdee style26" id="ProjectId" name="ProjectId">
+			                      <select class="form-control selectdee style26 " id="ProjectId" name="ProjectId">
 											<% for (Object[] obj : projectslist) {
 											String projectshortName=(obj[17]!=null)?" ( "+StringEscapeUtils.escapeHtml4(obj[17].toString())+" ) ":"";
 											%>

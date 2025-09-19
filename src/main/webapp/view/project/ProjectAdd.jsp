@@ -67,7 +67,7 @@ List<Object[]> PlatformList=(List<Object[]>) request.getAttribute("PlatformList"
 						<label class="mb-n1p"> Is Main Project </label>
 					</th>
 					 <td class="w-30">
-							<select class="w-60" required="required" id="ismaincheck" class="form-control"
+							<select  required="required" id="ismaincheck" class="form-control w-60"
 							   onchange="validateismaincheck()">
 								<option disabled="disabled" selected="selected" value="">Choose...</option>
 								<option  value="Y">Yes</option>

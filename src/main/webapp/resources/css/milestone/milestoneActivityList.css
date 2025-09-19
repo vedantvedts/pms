@@ -252,3 +252,7 @@ input[type=checkbox] {
 .accessbtnId{
 	display: none;
 }
+
+.mwidth{
+	margin-inline-start: 40%;
+}

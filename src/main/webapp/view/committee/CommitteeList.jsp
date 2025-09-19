@@ -1,3 +1,4 @@
+<%@page import="javax.swing.Spring"%>
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@page import="com.vts.pfms.NFormatConvertion"%>
@@ -10,152 +11,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
-
+<spring:url value="/resources/css/committeeModule/committeeList.css" var="committeeList" />
+<link href="${committeeList}" rel="stylesheet" />
 
 <title>COMMITTEELIST</title>
-<style type="text/css">
-label {
-	font-weight: bold;
-	font-size: 13px;
-}
-
-body {
-	background-color: #f2edfa;
-}
-
-.table .font {
-	font-family: 'Muli', sans-serif !important;
-	font-style: normal;
-	font-size: 13px;
-	font-weight: 400 !important;
-}
-
-.table button {
-	background-color: Transparent !important;
-	background-repeat: no-repeat;
-	border: none;
-	cursor: pointer;
-	overflow: hidden;
-	outline: none;
-	text-align: left !important;
-}
-
-.table td {
-	padding: 5px !important;
-}
-
-.resubmitted {
-	color: green;
-}
-
-.fa {
-	font-size: 1.20rem;
-}
-
-.datatable-dashv1-list table tbody tr td {
-	padding: 8px 10px !important;
-}
-
-.fa-exclamation-triangle {
-	font-size: 2.5rem !important;
-}
-
-.table-project-n {
-	color: #005086;
-}
-
-.right {
-	text-align: right;
-} 
- 
-.center {
-	text-align: center;
-}
-
-#table thead tr th {
-	padding: 0px 0px !important;
-	text-align:center;
-}
-
-#table tbody tr td {
-	padding: 2px 3px !important;
-	text-align:center;
-}
-
-.fullname{
-margin-left:3px!important;
-text-align:left!important;
-}
-/* icon styles */
-.cc-rockmenu {
-	color: fff;
-	padding: 0px 5px;
-	font-family: 'Lato', sans-serif;
-}
-
-.cc-rockmenu .rolling {
-	display: inline-block;
-	cursor: pointer;
-	width: 33px;
-	height: 30px;
-	text-align: left;
-	overflow: hidden;
-	transition: all 0.3s ease-out;
-	white-space: nowrap;
-}
-
-.cc-rockmenu .rolling:hover {
-	width: 120px;
-}
-
-.cc-rockmenu .viewcommittees:hover {
-	width: 157px;
-}
-
-
-
-.cc-rockmenu .rolling .rolling_icon {
-	float: left;
-	z-index: 9;
-	display: inline-block;
-	width: 28px;
-	height: 52px;
-	box-sizing: border-box;
-	margin: 0 5px 0 0;
-}
-
-.cc-rockmenu .rolling .rolling_icon:hover .rolling {
-	width: 312px;
-}
-
-.cc-rockmenu .rolling i.fa {
-	font-size: 20px;
-	padding: 6px;
-}
-
-.cc-rockmenu .rolling span {
-	display: block;
-	font-weight: bold;
-	padding: 2px 0;
-	font-size: 14px;
-	font-family: 'Muli', sans-serif;
-}
-
-.cc-rockmenu .rolling p {
-	margin: 0;
-}
-
-.width {
-	width: 270px !important;
-}
-
-a:hover {
-	color: white;
-}
-
-
-
-</style>
 </head>
 <body>
 
@@ -200,12 +59,12 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 						</h4>
 					</div>
 					<div class="col-md-6">
-						<table style="float:right; border: 0px">
+						<table class="float-right">
 							<tr>
 								<td>
 									<%if(Long.parseLong(projectid)==0){ %>
-									<span style=" font-size :20px">Type  :&nbsp;&nbsp;</span> 
-									<form method="post" action="CommitteeList.htm" id="selectfrm" style="float:right; margin-top: -10px;">
+									<span class="fs-20">Type  :&nbsp;&nbsp;</span> 
+									<form method="post" action="CommitteeList.htm" id="selectfrm" class="mt-n10 float-right">
 										<select class="form-control " name="projectappliacble" required="required" id="projectappliacble" onchange="return  projectselectsubmit('selectfrm');" >
 											<option <%if( projectappliacble.equalsIgnoreCase("N")){ %> selected <%} %> value="N">Non - Project</option>
 											<option <%if(projectappliacble.equalsIgnoreCase("P") ){ %> selected <%} %> value="P">Project</option>
@@ -215,7 +74,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 							  			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									</form>
 									<%}else{ %>
-									<form method="post" action="ProjectMaster.htm" id="selectfrm" style="float:right;">
+									<form method="post" action="ProjectMaster.htm" id="selectfrm" class="float-right">
 										<button type="submit" class="btn btn-sm back" >BACK</button>
 							  			<input type="hidden" name="projectid" id="projectid" value="<%=projectid %>"  />
 										<input type="hidden" name="projectappliacble" id="projectappliacble" value="<%=projectappliacble %>" />
@@ -223,10 +82,10 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 									</form>
 									<%} %>
 								</td>
-								<td style="padding-left: 30px;">
+								<td class="pl-4">
 									<form method="post" action="CommitteeAdd.htm" >
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-										<button type="submit"  style="margin-top: -10px; " name="projectid" value="<%=projectid %>" class="btn btn-sm add" >ADD COMMITTEE</button>											
+										<button type="submit" name="projectid" value="<%=projectid %>" class="btn btn-sm add mt-n10" >ADD COMMITTEE</button>											
 										<input type="hidden" name="projectappliacble" id="projectappliacble" value="<%=projectappliacble %>" />						
 									</form>
 								</td>					
@@ -248,18 +107,14 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 												<div id="toolbar">
 													
 												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" 
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+
+										<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+													
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN</th>
-															<th>Full Name</th>
+															<th class="text-left">Full Name</th>
 															<th>Code</th>
 															<th>Type</th>
 															<th>Project Applicable</th>
@@ -272,7 +127,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 										   	for (Object[] obj :committeelist) {
 										   		
 										   			   %>
-														<tr>
+														<tr class="text-center">
 															<td><%=count1 %></td>
 															<td class="fullname"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 															<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
@@ -283,9 +138,9 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 															<td class="left width">		
 															
 																<form action="CommitteeEdit.htm" method="post" name="myfrm"
-																	style="display: inline">
+																	class="d-inline">
 
-																	<button class="editable-click" name="sub"
+																	<button class="editable-clsick" name="sub"
 																		value="Modify">
 																		<div class="cc-rockmenu">
 																			<div class="rolling">
@@ -304,7 +159,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 															
 												
 																<%if(projectappliacble.equalsIgnoreCase("N") && !Arrays.asList("CCM","CARS").contains(obj[1].toString()) ){ %>												
-																	<form action="CommitteeMainMembers.htm" method="post" name="myfrm"	style="display: inline">
+																	<form action="CommitteeMainMembers.htm" method="post" name="myfrm"	class="d-inline">
 																		<button class="editable-click" name="sub" value="Details" 	>
 																			<div class="cc-rockmenu">
 																				<div class="rolling">
@@ -322,12 +177,12 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 																		<input type="hidden" name="initiationid" value="0" />
 	 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																	</form> 
-																	<form action="NonProjectCommitteeAutoSchedule.htm" method="post" name="myfrm"	style="display: inline">
+																	<form action="NonProjectCommitteeAutoSchedule.htm" method="post" name="myfrm" class="d-inline">
 																		<button class="editable-click" name="sub" value="Details" 	>
 																			<div class="cc-rockmenu">
 																				<div class="rolling">
 																					<figure class="rolling_icon">
-																						<i class="fa fa-calendar" aria-hidden="true" style="color:purple"></i>
+																						<i class="fa fa-calendar purpleColor" aria-hidden="true"></i>
 																					</figure>
 																					<span>Auto Schedule</span>
 																				</div>
@@ -341,30 +196,6 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 	 																	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 																	</form> 
 																<%} %>
-																	
-																<%-- <form action="CommitteeDelete.htm" method="GET" name="myfrm"
-																	style="display: inline">
-
-																	<button class="editable-click" name="sub" value="Modify" onclick="return confirm('Are you sure To Remove this Committee ?')">
-																		<div class="cc-rockmenu">
-																			<div class="rolling">
-																				<figure class="rolling_icon">
-																					<img src="view/images/delete.png">
-																				</figure>
-																				<span>Delete</span>
-																			</div>
-																		</div>
-																	</button>
-
-																	<input type="hidden" name="committeeid"
-																		value="<%=obj[0] %>" /> <input type="hidden"
-																		name="${_csrf.parameterName}" value="${_csrf.token}" />
-
-																</form>  --%>
-																
-																
-															
-																		
 															</td>
 														</tr>
 												<% count1++; } %>
@@ -407,6 +238,15 @@ function projectselectsubmit(frmid)
 {
 	$('#'+frmid).submit();
 }
+
+$(document).ready(function(){
+	  $("#myTable12").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 10
+
+	});
+});
 
 </script>
 

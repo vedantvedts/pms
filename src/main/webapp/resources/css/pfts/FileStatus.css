@@ -273,7 +273,7 @@ input[type=number] {
 }
 
 .style26{
-	width: 100%;
+	width: 100% !important;
 }
 
 .style27{
@@ -425,4 +425,12 @@ input[type=number] {
 
 .style64{
 	padding-left: 3px !important;
+}
+
+.select2-container--below {
+	width: 100% !important;
+}
+
+.select2-container--default {
+	width: 100% !important;
 }

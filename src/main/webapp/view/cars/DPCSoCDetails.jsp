@@ -214,7 +214,7 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
                        							
                        								<div class="column b w-94-5" >
 														<div id="dpcIntroductionnote" > </div>
-														<textarea id="dpcIntroductionhidden" class="dis-none" ><%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=carsSoC.getDPCIntroduction()%><%} %></textarea>
+														<textarea id="dpcIntroductionhidden" class="dis-none" ><%if(carsSoC!=null && carsSoC.getDPCIntroduction()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsSoC.getDPCIntroduction())%><%} %></textarea>
 														<textarea name="dpcIntroduction" class="dis-none" ></textarea>
                        							</div>
                         					</div>
@@ -223,12 +223,12 @@ List<Object[]> labList = (List<Object[]>)request.getAttribute("LabList");
                        							<div class="column b div-det">
                            							<label class="control-label">Expenditure Head</label><span class="mandatory">*</span>
                              						<textarea  class="form-control form-control input-font" name="dpcExpenditure" id="dpcExpenditure" rows="4" cols="65" maxlength="2000"
-                             		 				 placeholder="Enter Expenditure Head" required><%if(carsSoC!=null && carsSoC.getDPCExpenditure()!=null){ %><%=carsSoC.getDPCExpenditure()%><%} %></textarea>
+                             		 				 placeholder="Enter Expenditure Head" required><%if(carsSoC!=null && carsSoC.getDPCExpenditure()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsSoC.getDPCExpenditure())%><%} %></textarea>
                        							</div>
                        							<div class="column b div-det" >
                            							<label class="control-label">Additional Points</label>
                              						<textarea  class="form-control form-control input-font" name="dpcAdditional" id="dpcAdditional" rows="4" cols="65" maxlength="1000"
-                             		 				 placeholder="Enter Additional Points ( if any )" ><%if(carsSoC!=null && carsSoC.getDPCAdditional()!=null){ %><%=carsSoC.getDPCAdditional()%><%} %></textarea>
+                             		 				 placeholder="Enter Additional Points ( if any )" ><%if(carsSoC!=null && carsSoC.getDPCAdditional()!=null){ %><%=StringEscapeUtils.escapeHtml4(carsSoC.getDPCAdditional())%><%} %></textarea>
                        							</div>
                         					</div>
                			    			</div>

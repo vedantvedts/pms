@@ -8,30 +8,13 @@
 <head>
 <meta charset="ISO-8859-1">
 <jsp:include page="../static/header.jsp"></jsp:include>
+<spring:url value="/resources/css/committeeModule/CommitteePreviousAgendasAdd.css" var="CommitteePreviousAgendasAdd" />
+<link href="${CommitteePreviousAgendasAdd}" rel="stylesheet" />
 <title>COMMITTEE ADD AGENDA FROM OLD MEETING</title>
-<style type="text/css">
-label{
-font-weight: bold;
-  font-size: 13px;
-}
-body{
-background-color: #f2edfa;
-}
-h6{
-	text-decoration: none;
-}
-
-h6 span{
-	font-size: 16px;
-	color:white;
-}
-
-</style>
 </head>
- 
 <body>
   <%
-  
+
 
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
@@ -69,19 +52,18 @@ h6 span{
 
 
 <div class="container-fluid">
-	<!-- <div class="container" style="margin-bottom:20px;">  -->
-	<div style="margin-bottom:20px;"> 
+	<div class="mb-20px"> 
   
 		<div id="error"></div>
 		
-    		<div class="card" style=" ">
+    		<div class="card">
     	
     		<form action="CommitteeScheduleAgenda.htm" name="myfrm" id="myfrm" method="post">    	
-	    		<div class="card-header" style="background-color: #055C9D;">
-      				<h6 style="color: orange;font-weight: bold;font-size: 1.2rem !important " align="left"><%=committeescheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()): " - "  %> <span> (Meeting Date and Time :      				
+	    		<div class="card-header cardHeaderBgColor">
+      				<h6 class="header6Style" align="left"><%=committeescheduleeditdata[7]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[7].toString()): " - "  %> <span> (Meeting Date and Time :      				
 	      				 &nbsp;<%=committeescheduleeditdata[2]!=null?sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())): " - " %> - <%=committeescheduleeditdata[3]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[3].toString()): " - "  %>) </span> 					 
-	      				<input type="submit" class="btn  btn-sm back" value="BACK" style="float:right;" />
-	      				<span  style="float:right;margin: 5px 12px;" > (Meeting Id : <%=committeescheduleeditdata[11]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[11].toString()): " - "  %>) </span> 
+	      				<input type="submit" class="btn  btn-sm back float-right" value="BACK" />
+	      				<span class="float-right meetingIdMargin"> (Meeting Id : <%=committeescheduleeditdata[11]!=null?StringEscapeUtils.escapeHtml4(committeescheduleeditdata[11].toString()): " - "  %>) </span> 
 	      				<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">
 	      				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />      				
       				 </h6>  
@@ -95,7 +77,7 @@ h6 span{
 	      						<table>
 	      							<tr>
 	      								<td><input type="text" class="form-control item_name child" name="search" placeholder="Meeting Id" /></td>
-	      								<td><button type="submit" class="btn btn-sm submit" style="margin-left: 1rem;">SEARCH</button></td>
+	      								<td><button type="submit" class="btn btn-sm submit searchBtnMl">SEARCH</button></td>
 	      							</tr>
 	      						</table>
 	      						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"  />
@@ -148,7 +130,7 @@ h6 span{
 				<%} %>
 	    <!--  --------------------------------------------------------------------------------------------- -->   
 			<%if(committeescheduledata1!=null && (fromagendalist==null || fromagendalist.size()==0 ) ){ %>
-				 <div align="center" style="margin-top: 25px;"> <h6>No Agenda is Defined For This Meeting !</h6> </div>
+				 <div align="center" class="mt-25px"> <h6>No Agenda is Defined For This Meeting !</h6> </div>
 			<%} %>	    
 	    <!--  --------------------------------------------------------------------------------------------- -->
 	    
@@ -157,8 +139,8 @@ h6 span{
 				  	<h5>Select Agendas</h5>
 				</div>
 	      			<form method="post" action="CommitteePreviousAgendaAddSubmit.htm" enctype="multipart/form-data" id="addagendafrm" name="addagendafrm">	        
-	        			<div >	<span style="font-size: 15px ;color: blue ; float: right; ">Duration in Minutes</span></div>
-	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover" id="myTable20" style="margin-top: 30px;">
+	        			<div >	<span class="text-primary float-right fs-15px">Duration in Minutes</span></div>
+	          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover mt-30px" id="myTable20">
 								<thead>  
 									<tr id="">
 										<th align="center" width="25px">Select</th>
