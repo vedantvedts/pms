@@ -140,13 +140,17 @@ a:focus {
 .header-right .float-element a:focus {
 	outline: none;
 }
-.drdologo{
 
+/* .drdologo{
 	width:100%;
 	margin-right: -56%;
 	margin-top: -16%;
-	/* box-shadow: 2px 2px 8px rgb(0 0 0 / 70%);
-    border-radius: 50%; */
+} */
+
+.drdologo {
+    width: 125%;
+    margin-right: -56%;
+    margin-top: -29%;
 }
 
 /*Logo*/
