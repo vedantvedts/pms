@@ -67,6 +67,7 @@ import com.vts.pfms.model.IbasLabMaster;
 import com.vts.pfms.model.Notice;
 import com.vts.pfms.pfmsserv.feign.PFMSServeFeignClient;
 import com.vts.pfms.service.RfpMainService;
+import com.vts.pfms.utils.InputValidator;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -1105,7 +1106,9 @@ public class LoginController {
     	String LabCode =(String) ses.getAttribute("labcode");
     	
     	logger.info(new Date() +"Inside Notice Add Submit "+ UserId);
-    	
+    	if(InputValidator.isContainsHTMLTags(req.getParameter("noticeFiled"))) {
+			return  redirectWithError(redir,"MainDashBoard.htm","NoticeFiled should not contain HTML elements !");
+		}
     	Notice notice=new Notice();
     	notice.setNotice(req.getParameter("noticeFiled"));
     	notice.setNoticeBy(EmpId);
@@ -1128,8 +1131,10 @@ public class LoginController {
         	
       return "redirect:/MainDashBoard.htm";
     }
-    
-    @RequestMapping(value = {"SeeMoreNotice.htm"}, method = RequestMethod.GET)
+  
+
+
+	@RequestMapping(value = {"SeeMoreNotice.htm"}, method = RequestMethod.GET)
     public String noticeSeeMore(HttpServletRequest req,HttpSession ses ) throws Exception {
     	
     	String EmpId =  ses.getAttribute("EmpId").toString();
@@ -1173,7 +1178,10 @@ public class LoginController {
      public String noticeEditSubmit(HttpServletRequest req,HttpSession ses,RedirectAttributes redir) throws Exception {
     	String EmpId =  ses.getAttribute("EmpId").toString();
     	logger.info(new Date() +"NoticeEditSubmit.htm "+EmpId);
-    
+    	if(InputValidator.isContainsHTMLTags(req.getParameter("noticeFiled"))) {
+    		redir.addAttribute("noticeId", req.getParameter("noticeId"));
+			return  redirectWithError(redir,"IndividualNoticeList.htm","NoticeFiled should not contain HTML elements !");
+		}
     	Notice notice=new Notice();
     	notice.setNoticeId(Long.parseLong(req.getParameter("noticeId")));
     	notice.setNotice(req.getParameter("noticeFiled"));
@@ -1673,4 +1681,8 @@ public class LoginController {
         return "redirect:/" + originalLoginPage + "?sessionExpired";
     }
     
+    private String redirectWithError(RedirectAttributes redir, String redirecturl, String message) {
+		redir.addAttribute("resultfail", message);
+		return "redirect:/"+redirecturl;
+	}
 }

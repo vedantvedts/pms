@@ -2218,12 +2218,16 @@ public class ProjectController
 			String InitiationId = req.getParameter("IntiationId");
 			String Details = req.getParameter("details");
 			//		
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ReqBrief"))) {
+				redir.addAttribute("IntiationId", InitiationId);
+				redir.addAttribute("details", Details);
+				return  redirectWithError(redir,"ProjectInitiationDetailsEdit.htm","Brief should not contain HTML elements !");
+			}
 
 			String option = req.getParameter("sub");
 			if (option.equalsIgnoreCase("SUBMIT")) {
 
-
-
+				
 				String Alert = "";
 
 				PfmsInitiationDetailDto pfmsinitiationdetaildto = new PfmsInitiationDetailDto();
@@ -11402,6 +11406,10 @@ public class ProjectController
 			String flow =req.getParameter("flow");
 			String flag =req.getParameter("flag");
 			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("subject")) || InputValidator.isContainsHTMLTags(req.getParameter("Comment")) || InputValidator.isContainsHTMLTags(req.getParameter("Rec3_Role")) || InputValidator.isContainsHTMLTags(req.getParameter("Approving_Role")) || InputValidator.isContainsHTMLTags(req.getParameter("Rec2_Role")) || InputValidator.isContainsHTMLTags(req.getParameter("Rec1_Role"))) {
+				return  redirectWithError(redir,"MainDashBoard.htm","HTML Tags Are not Allowed !");
+			}
+			
 			redir.addAttribute("InitiationId",initiationid);
 			
 			PfmsInitiationApproval pe = 
@@ -11457,7 +11465,7 @@ public class ProjectController
 				redir.addAttribute("result","Approval Flow Data Updated successfully !");
 				
 			}else {
-				redir.addAttribute("resultfail","Approval Flow Data update unsuccessful !");
+				redir.addAttribute("resultfail","Approval Flow Data Update unsuccessful !");
 			}
 			return "redirect:/IntiationFlow.htm";
 			}

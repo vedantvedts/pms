@@ -414,6 +414,10 @@ $('#currentStatusModal').on('show.bs.modal', function (event) {
     var status = $('#currentStatus'+id).val();
     status = (status=='null' || status == null)?'':status;
 
+
+    // Escape script tags so they show as text
+    status = escapeScriptTags(status);
+    
     // Update the modal's content
     var modal = $(this);
     modal.find('.modal-title #carsnoheader').text(carsno);
@@ -423,6 +427,11 @@ $('#currentStatusModal').on('show.bs.modal', function (event) {
     //
     modal.find('.modal-body #Editor').summernote('code', status);
 });
+function escapeScriptTags(html) {
+    return html.replace(/<script/gi, '&lt;script')
+               .replace(/<\/script>/gi, '&lt;/script&gt;');
+}
+
 
 $('#myfrm').submit(function() {
 	 var data = $('#Editor').summernote('code');

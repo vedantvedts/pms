@@ -2099,13 +2099,13 @@ public class CommitteeController {
 			String PresLabCode=req.getParameter("PresLabCode");
 			
 			if (InputValidator.isContainsHTMLTags(agendaitem)) {
-				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
+				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
 				if(prgmflag1!=null && prgmflag1.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
 			    if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
 				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
 			} 
 			if (InputValidator.isContainsHTMLTags(remarks)) {
-				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
+				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
 				if(prgmflag1!=null && prgmflag1.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 				if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");

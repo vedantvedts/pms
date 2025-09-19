@@ -37,6 +37,7 @@ String projectid=(String)request.getAttribute("projectid");
 List<Object[]> risktypelist=(List<Object[]>)request.getAttribute("risktypelist");
 String logintype =(String)session.getAttribute("LoginType"); 
 String actionassignid =(String)request.getAttribute("actionassignid");
+String actionmainid= (String)request.getParameter("actionmainid");
 Object[] riskdata=(Object[] )request.getAttribute("riskdata");
 Object[] riskmatrixdata=(Object[])request.getAttribute("riskmatrixdata");
 List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("projectriskmatrixrevlist");
@@ -499,6 +500,7 @@ List<Object[]> projectriskmatrixrevlist=(List<Object[]>)request.getAttribute("pr
   	      		</div>
   	      		<input type="hidden" name="RiskId" id="RISKID">
   	      		<input type="hidden" name="ProjectId"  value="<%=projectid%>">
+  	      		<input type="hidden" name="actionMainId"  value="<%=actionmainid%>">
   	      		<input type="hidden" name="actionAssignId"  value="<%=actionassignid%>">
   	      		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
   	      	</form>

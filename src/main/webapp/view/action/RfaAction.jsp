@@ -749,11 +749,11 @@ function rfaRemarks(rfaId,RfaStatus) {
 		            var row = result[z];
 		            if(row[1]!==null){
 		            ReplyAttachTbody += '<tr>';
-		            ReplyAttachTbody += '<td id="remarksTd1">'+row[0]+' &nbsp; <span id="remarksDate"> '+fDate(row[2])+'</span>';
+		            ReplyAttachTbody += '<td id="remarksTd1">'+row[0].replaceAll("<","").replaceAll(">","").replaceAll("/","")+' &nbsp; <span id="remarksDate"> '+fDate(row[2])+'</span>';
 		            ReplyAttachTbody += '</td>';
 		            ReplyAttachTbody += '</tr>';
 		            ReplyAttachTbody += '<tr>';
-		            ReplyAttachTbody += '<td id="remarksTd2">  '+row[1]+'';
+		            ReplyAttachTbody += '<td id="remarksTd2">  '+row[1].replaceAll("<","").replaceAll(">","").replaceAll("/","")+'';
 		            ReplyAttachTbody += '</td>';
 		            ReplyAttachTbody += '</tr>';
 		        	}

@@ -103,7 +103,7 @@ String labcode = (String) session.getAttribute("labcode");
                         if(flag)break;
                     }
                 }
-            %>
+            %> 
 
             <h2 class="review-heading text-center">
                 <% if( reviewedby!="" ) { %> Review By Secretary DD(R&D) and Chairman DRDO <% } %>
@@ -627,7 +627,7 @@ String labcode = (String) session.getAttribute("labcode");
 																				 </p>
 																				<%if(projects.get(i)!=null && projects.get(i)[20]!=null && projects.get(i)[20].toString().length()>0) {%>
 																				<%-- 	<%=projects.get(i)[20].toString().substring(3,projects.get(i)[20].toString().length()-1 )%> --%>
-																				<div class="ml-3 text-left" ><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
+																				<div class="ml-3 text-left" ><%=projects.get(i)[20].toString()%></div>
 																				<%} else{%>-<%} %>
 																	</div>
 																
@@ -642,7 +642,7 @@ String labcode = (String) session.getAttribute("labcode");
 																			</span></p>
 																	<%-- 	<%=projects.get(i)[31].toString().substring(3,projects.get(i)[31].toString().length()-1 )%> --%>
 																		<div class="ml-3">
-																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[31].toString()) %>
+																				<%=projects.get(i)[31].toString() %>
 																				</div>
 																	</div>
 																		
@@ -837,7 +837,7 @@ String labcode = (String) session.getAttribute("labcode");
 														<%} %>
 																			<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
 																				<%-- <%=projects.get(i)[20].toString().substring(3, projects.get(i)[20].toString().length())%> --%>
-																					<div class="ml-3 text-left"><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
+																					<div class="ml-3 text-left"><%=projects.get(i)[20].toString()%></div>
 																			<%} else{%>-<%} %> 
 																		</div>
 																	</div>
@@ -847,7 +847,7 @@ String labcode = (String) session.getAttribute("labcode");
 																				<span class="clx-34">
 																					<u>Way Forward : </u></span> 
 																				<div class="ml-3">
-																				<%=StringEscapeUtils.escapeHtml4(projects.get(i)[31].toString()) %>
+																				<%=projects.get(i)[31].toString() %>
 																				</div>
 																			</div>
 																		</div>
@@ -1038,7 +1038,7 @@ String labcode = (String) session.getAttribute("labcode");
 															<div class="col">
 															
 																	<%if(projects.get(i)!=null && projects.get(i)[20]!=null) {%>
-																				<div class="ml-3 text-left" ><%=StringEscapeUtils.escapeHtml4(projects.get(i)[20].toString())%></div>
+																				<div class="ml-3 text-left" ><%=projects.get(i)[20].toString()%></div>
 																		<%} else{%>-<%} %> 
 						
 															</div>

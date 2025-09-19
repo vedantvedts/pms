@@ -22,6 +22,23 @@ Object[] EditObject = (Object[]) request.getAttribute("mailConfigEditList");
 String pass=(String)request.getAttribute("pass");
 %>
 
+<% 
+	    String ses = (String) request.getParameter("result");
+	    String ses1 = (String) request.getParameter("resultfail");
+	    if (ses1 != null) { %>
+	    <div align="center">
+	        <div class="alert alert-danger" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	        </div>
+	    </div>
+	<% }if (ses != null) { %>
+	    <div align="center">
+	        <div class="alert alert-success" role="alert">
+	            <%=StringEscapeUtils.escapeHtml4(ses) %>
+	        </div>
+	    </div>
+	<% } %>
+
 <div class="card-header page-top">
 		<div class="row">
 			<div class="col-md-3 heading-breadcrumb">

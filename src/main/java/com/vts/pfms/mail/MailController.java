@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vts.pfms.mail.ReversibleEncryptionAlg;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.admin.service.AdminService;
 import com.vts.pfms.committee.service.CommitteeService;
 
@@ -162,7 +163,9 @@ public class MailController {
 			String Host = (String)req.getParameter("Host");
 			//String MailType = (String)req.getParameter("MailTypeData");
 			
-			
+			if(InputValidator.isContainsHTMLTags(Username) || InputValidator.isContainsHTMLTags(Password) || InputValidator.isContainsHTMLTags(Host) || InputValidator.isContainsHTMLTags(port)) {
+				return  redirectWithError(redir,"MailConfigurationAdd.htm","Html Tags Should not be Entered");
+			}
 			result = adminService.AddMailConfiguration(Username,Password,HostType,req.getUserPrincipal().getName(),Host,port);
 			
 		}catch (Exception e) {
@@ -207,6 +210,11 @@ public class MailController {
 
 	}
 	
+	private String redirectWithError(RedirectAttributes redir, String redirecturl,String message) {
+		redir.addAttribute("resultfail", message);
+		return "redirect:/"+redirecturl;
+	}
+	
 	@RequestMapping(value = "MailConfigurationEditSubmit.htm", method = RequestMethod.POST)
 	public String MailConfigurationEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
 		logger.info(new Date() +" Inside MailConfigurationEditSubmit " );
@@ -218,7 +226,10 @@ public class MailController {
 			String HostType = (String)req.getParameter("HostTypeData");
 			String Host = (String)req.getParameter("Host");
 			String Port = (String)req.getParameter("Port");
-			
+			if(InputValidator.isContainsHTMLTags(Username) || InputValidator.isContainsHTMLTags(Password) || InputValidator.isContainsHTMLTags(Host) || InputValidator.isContainsHTMLTags(Port)) {
+				redir.addAttribute("Lid", MailConfigurationId);
+				return  redirectWithError(redir,"MailConfigurationEdit.htm","Html Tags Should not be Entered");
+			}
 			if(MailConfigurationId!=null) {
 			result = adminService.UpdateMailConfiguration(Long.parseLong(MailConfigurationId),Username,HostType,req.getUserPrincipal().getName(),Host,Port,Password);
 			}else {

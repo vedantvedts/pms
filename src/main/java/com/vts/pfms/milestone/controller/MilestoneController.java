@@ -777,7 +777,8 @@ public class MilestoneController {
 			String MainId=null;
 			Map md = model.asMap();
 			for (Object modelKey : md.keySet()) {
-				System.out.println(modelKey);
+				System.out.println(" =============================================="+md.get("MilestoneActivityId"));
+				System.out.println(modelKey+"==============================================");
 				MainId = (String) md.get(modelKey);
 
 			}
@@ -870,7 +871,7 @@ public class MilestoneController {
 		try {
 
 			if(InputValidator.isContainsHTMLTags(req.getParameter("ActivityName"))) {
-				redir.addAttribute("MilestoneActivityId", req.getAttribute("MilestoneActivityId"));
+				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
 				return  redirectWithError(redir,"MA-PreviewRedirect.htm","ActivityName should not contain HTML elements !");
 			}
 			
