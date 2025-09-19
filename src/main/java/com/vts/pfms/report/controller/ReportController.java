@@ -795,7 +795,7 @@ XWPFParagraph reviewHeld = document.createParagraph();
     }
 
     @RequestMapping(value="MilestoneActivityNameUpdate.htm")
-	public @ResponseBody String MilestoneActivityNameUpdate(HttpServletRequest req, HttpSession ses, HttpServletResponse res)	throws Exception{ 
+	public @ResponseBody String MilestoneActivityNameUpdate(HttpServletRequest req, HttpSession ses, HttpServletResponse res,RedirectAttributes redir)	throws Exception{ 
 	
 		
 		String UserId = (String) ses.getAttribute("Username");
@@ -810,6 +810,9 @@ XWPFParagraph reviewHeld = document.createParagraph();
 			String ProjectId =req.getParameter("ProjectId");
 			String ActivityFor =req.getParameter("ActivityFor");
 			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ActivityName"))) {
+				return  redirectWithError(redir,"LabReports.htm","Activity Name should not contain HTML elements !");
+			}
 			PfmsLabReportMilestone pm = new PfmsLabReportMilestone();
 			pm.setMilestoneActivityId(Long.parseLong(MilestoneActivityId));
 			pm.setActivityName(ActivityName);

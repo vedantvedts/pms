@@ -1393,7 +1393,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												         <div class="row ml2-mr2">      
 												         <div class="col-md-6" >
 												                 <div class="form-group">
-												                	<label class="control-label">Civil works are included in the estimated prepared before project sanction.</label><span class="mandatory">*</span> --%>												                    
+												                	<label class="control-label">Civil works are included in the estimated prepared before project sanction.</label><span class="mandatory">*</span> 												                    
 												                    <select class="form-control w-50" data-width="100%" data-live-search="true" name="CWIncluded" id="cwincluded">
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getCWIncluded() !=null && chlist.getCWIncluded().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>
@@ -1476,7 +1476,7 @@ List<Object[]> Rev = (List<Object[]>)request.getAttribute("ProjectClosureCheckLi
 												         
 												          <div class="col-md-7"  id="cwexpenditure">
 												                 <div class="form-group">
-												                	<label class="control-label">Expenditure is not incurred just for the sake of exhausting funds at the end of Project.</label><span class="mandatory">*</span> --%>												                    
+												                	<label class="control-label">Expenditure is not incurred just for the sake of exhausting funds at the end of Project.</label><span class="mandatory">*</span> 												                    
 												                     <select class="form-control w-50" data-width="100%" data-live-search="true" name="CWExpenditure" >
 	                                                                             <option value="0" selected disabled >--Select--</option>
 	                                                                             <option value="Yes" <% if(chlist!=null &&  chlist.getCWExpenditure() !=null && chlist.getCWExpenditure().toString().equalsIgnoreCase("Yes")){%> selected <%}%> >Yes</option>

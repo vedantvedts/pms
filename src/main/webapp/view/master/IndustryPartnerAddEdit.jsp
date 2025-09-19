@@ -326,7 +326,7 @@ function IndustryPartnerSub()
 							y+='<h5  class="existrep">Existing Representatives: <button type="button" id="existingRepInfo" value="1" class="btn btn-info btn-sm"  onclick="return existingRepInfoHandle()"><i class="fa fa-info-circle" aria-hidden="true"></i></button></h5> <hr class="hrRule" > ';
 						}
 						y+='<div class="existingRepInfoContent" >';
-						y+='<span  class="spanClass">'+(i+1)+'. '+result[i][2]+', '+result[i][3]+'</span>';
+						y+='<span  class="spanClass">'+(i+1)+'. '+result[i][2].replaceAll("<","").replaceAll(">","").replaceAll("/","")+', '+result[i][3].replaceAll("<","").replaceAll(">","").replaceAll("/","")+'</span>';
 						y+='</div>';
 						y+='</div>';
 					}

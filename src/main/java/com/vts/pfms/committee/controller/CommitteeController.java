@@ -2016,6 +2016,7 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeAgendaSubmit.htm "+UserId);
 		try
 		{
+			String statusflag = req.getParameter("redirpageflag");
 			String AgendaItem[]=req.getParameterValues("agendaitem");
 			String Duration[]=req.getParameterValues("duration");
 			String ProjectId[]=req.getParameterValues("projectid");
@@ -2029,10 +2030,12 @@ public class CommitteeController {
 			
 			if (containsHTMLTags(AgendaItem)) {
 				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
-			    return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
+			    if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
+				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
 			} 
 			if (containsHTMLTags(Remarks)) {
 				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
+			    if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 			}
 			List<CommitteeScheduleAgendaDto> scheduleagendadtos=new ArrayList<CommitteeScheduleAgendaDto>();
@@ -2086,13 +2089,28 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeScheduleAgendaEdit.htm "+UserId);
 		try
 		{
+			String statusflag = req.getParameter("redirpageflag");
+			String prgmflag1 = req.getParameter("prgmflag");
 			String agendaitem= req.getParameter("agendaitem");
 			String projectid=req.getParameter("projectid");
 			String remarks=req.getParameter("remarks");
 			String presentorid=req.getParameter("presenterid");
 			String duration=req.getParameter("duration");
 			String PresLabCode=req.getParameter("PresLabCode");
-
+			
+			if (InputValidator.isContainsHTMLTags(agendaitem)) {
+				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
+				if(prgmflag1!=null && prgmflag1.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
+			    if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
+				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
+			} 
+			if (InputValidator.isContainsHTMLTags(remarks)) {
+				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
+				if(prgmflag1!=null && prgmflag1.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
+				if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
+				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
+			}
+			
 			//			String docid=req.getParameter("editattachid");
 			CommitteeScheduleAgendaDto scheduleagendadto = new CommitteeScheduleAgendaDto();
 			scheduleagendadto.setPresentorLabCode(PresLabCode);
@@ -2443,16 +2461,20 @@ public class CommitteeController {
 		logger.info(new Date() +"Inside CommitteeMinutesSubmit.htm "+UserId);
 		try
 		{
-			if(InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
+			
+			String status = req.getParameter("redirpageflag");
+			String ActionName=req.getParameter("NoteText");
+			String Remarks=req.getParameter("remarks");
+			if(InputValidator.isContainsHTMLTags(ActionName)) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
 				redir.addAttribute("specname", req.getParameter("specname"));
 				redir.addAttribute("membertype",req.getParameter("membertype"));
 				redir.addAttribute("formname", req.getParameter("formname"));
-				redir.addAttribute("unit1",req.getParameter("unit1"));				
-				return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
+				redir.addAttribute("unit1",req.getParameter("unit1"));
+				System.out.println("======================================================="+status);
+			    if(status!=null && status.equalsIgnoreCase("ROD"))	return  redirectWithError(redir,"RODScheduleMinutes.htm","HTML elements should not be entered !");
+			    return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
 			}
-			String ActionName=req.getParameter("NoteText");
-			String Remarks=req.getParameter("remarks");
 			
 			if(InputValidator.isContainsHTMLTags(Remarks)) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
@@ -2460,7 +2482,9 @@ public class CommitteeController {
 				redir.addAttribute("membertype",req.getParameter("membertype"));
 				redir.addAttribute("formname", req.getParameter("formname"));
 				redir.addAttribute("unit1",req.getParameter("unit1"));
-				return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'Remarks' should not contain HTML Tags.!");
+				System.out.println("======================================================="+status);
+				if(status!=null && status.equalsIgnoreCase("ROD"))	return  redirectWithError(redir,"RODScheduleMinutes.htm","HTML elements should not be entered !");
+			    return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
 			}
 
 

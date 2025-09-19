@@ -358,7 +358,7 @@
 			 for(var i=0;i<ajaxresult.length;i++){
 		
 		
-				 html=html+"<li><span class='caret file' id='file"+ajaxresult[i][8]+"' onclick='showTable("+ajaxresult[i][8]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+")'>"+ajaxresult[i][4]+"(Ver -" +ajaxresult[i][6]+")"+"</span><button class='btn verupload' type='button' onclick='uploadshow("+ajaxresult[i][2]+","+ajaxresult[i][6]+","+JSON.stringify(ajaxresult[i][4])+","+ajaxresult[i][8]+")' ><i class='fa fa-upload icon-col' aria-hidden='true'></i></button><button type='submit' class='btn' id='download'  name='DocId'  formaction='ProjectRequirementAttachmentDownload.htm' formtarget='_blank' formmethod='GET' value='"+ajaxresult[i][8]+","+ajaxresult[i][6]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+"' ><i class='fa fa-download' ></i></button></li>"
+				 html=html+"<li><span class='caret file' id='file"+ajaxresult[i][8]+"' onclick='showTable("+ajaxresult[i][8]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+")'>"+ajaxresult[i][4].replaceAll("<","").replaceAll(">","").replaceAll("/","")+"(Ver -" +ajaxresult[i][6]+")"+"</span><button class='btn verupload' type='button' onclick='uploadshow("+ajaxresult[i][2]+","+ajaxresult[i][6]+","+JSON.stringify(ajaxresult[i][4])+","+ajaxresult[i][8]+")' ><i class='fa fa-upload icon-col' aria-hidden='true'></i></button><button type='submit' class='btn' id='download'  name='DocId'  formaction='ProjectRequirementAttachmentDownload.htm' formtarget='_blank' formmethod='GET' value='"+ajaxresult[i][8]+","+ajaxresult[i][6]+","+ajaxresult[i][1]+","+ajaxresult[i][2]+"' ><i class='fa fa-download' ></i></button></li>"
 			 }
 			 console.log(ajaxresult.length+"----")
 			 /*button for adding files in list  */

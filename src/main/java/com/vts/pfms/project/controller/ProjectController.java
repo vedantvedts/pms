@@ -2218,12 +2218,16 @@ public class ProjectController
 			String InitiationId = req.getParameter("IntiationId");
 			String Details = req.getParameter("details");
 			//		
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ReqBrief"))) {
+				redir.addAttribute("IntiationId", InitiationId);
+				redir.addAttribute("details", Details);
+				return  redirectWithError(redir,"ProjectInitiationDetailsEdit.htm","Brief should not contain HTML elements !");
+			}
 
 			String option = req.getParameter("sub");
 			if (option.equalsIgnoreCase("SUBMIT")) {
 
-
-
+				
 				String Alert = "";
 
 				PfmsInitiationDetailDto pfmsinitiationdetaildto = new PfmsInitiationDetailDto();
@@ -5284,7 +5288,7 @@ public class ProjectController
 			req.setAttribute("projectid", projectid);
 			req.setAttribute("actionassignid", actionassignid);
 			req.setAttribute("projectlist", projectlist);
-
+			req.setAttribute("actionmainid", actionmainid);
 			return "project/ProjectRiskData";
 		}
 		catch (Exception e) {
@@ -5327,6 +5331,17 @@ public class ProjectController
 			String actionmainid=req.getParameter("actionmainid");			
 			String actionassignid=req.getParameter("actionassignid");
 
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Impact"))) {
+				redir.addAttribute("actionmainid",req.getParameter("actionmainid"));
+				redir.addAttribute("actionassignid",req.getParameter("actionassignid"));
+				return  redirectWithError(redir,"ProjectRiskData.htm","Impact should not contain HTML elements !");
+			}
+			if(InputValidator.isContainsHTMLTags(req.getParameter("mitigationplans"))) {
+				redir.addAttribute("actionmainid",req.getParameter("actionmainid"));
+				redir.addAttribute("actionassignid",req.getParameter("actionassignid"));
+				return  redirectWithError(redir,"ProjectRiskData.htm","Mitigationplans should not contain HTML elements !");
+			}
+			
 			Object[] riskdata=service.ProjectRiskData(actionassignid);
 			String projectid=riskdata[2].toString();
 
@@ -5373,6 +5388,12 @@ public class ProjectController
 			String actionassignid = req.getParameter("actionAssignId");
 			String riskId = req.getParameter("RiskId");
 			String remarks = req.getParameter("Remarks");
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Remarks"))) {
+				redir.addAttribute("actionmainid",req.getParameter("actionMainId"));
+				redir.addAttribute("actionassignid",req.getParameter("actionAssignId"));
+				redir.addAttribute("RiskId",req.getParameter("RiskId"));
+				return  redirectWithError(redir,"ProjectRiskData.htm","Remarks should not contain HTML elements !");
+			}
 			PfmsRiskDto dto=new PfmsRiskDto();
 			dto.setRiskId(riskId);
 			dto.setStatus("C");
@@ -5406,11 +5427,22 @@ public class ProjectController
 			String actionmainid=req.getParameter("actionmainid");			
 			String actionassignid=req.getParameter("actionassignid");
 
+			if(InputValidator.isContainsHTMLTags(req.getParameter("Impact"))) {
+				redir.addAttribute("actionmainid",req.getParameter("actionmainid"));
+				redir.addAttribute("actionassignid",req.getParameter("actionassignid"));
+				return  redirectWithError(redir,"ProjectRiskData.htm","Impact should not contain HTML elements !");
+			}
+			if(InputValidator.isContainsHTMLTags(req.getParameter("mitigationplans"))) {
+				redir.addAttribute("actionmainid",req.getParameter("actionmainid"));
+				redir.addAttribute("actionassignid",req.getParameter("actionassignid"));
+				return  redirectWithError(redir,"ProjectRiskData.htm","Mitigationplans should not contain HTML elements !");
+			}
+
 			Object[] riskdata=service.ProjectRiskData(actionassignid);
 			String projectid=riskdata[2].toString();
 			String rev=req.getParameter("rev");
 			String revisionno=req.getParameter("revisionno");
-
+			
 			PfmsRiskDto dto=new PfmsRiskDto();
 			dto.setRiskId(req.getParameter("riskid"));
 			dto.setDescription(riskdata[1].toString());
@@ -11374,6 +11406,10 @@ public class ProjectController
 			String flow =req.getParameter("flow");
 			String flag =req.getParameter("flag");
 			
+			if(InputValidator.isContainsHTMLTags(req.getParameter("subject")) || InputValidator.isContainsHTMLTags(req.getParameter("Comment")) || InputValidator.isContainsHTMLTags(req.getParameter("Rec3_Role")) || InputValidator.isContainsHTMLTags(req.getParameter("Approving_Role")) || InputValidator.isContainsHTMLTags(req.getParameter("Rec2_Role")) || InputValidator.isContainsHTMLTags(req.getParameter("Rec1_Role"))) {
+				return  redirectWithError(redir,"MainDashBoard.htm","HTML Tags Are not Allowed !");
+			}
+			
 			redir.addAttribute("InitiationId",initiationid);
 			
 			PfmsInitiationApproval pe = 
@@ -11429,7 +11465,7 @@ public class ProjectController
 				redir.addAttribute("result","Approval Flow Data Updated successfully !");
 				
 			}else {
-				redir.addAttribute("resultfail","Approval Flow Data update unsuccessful !");
+				redir.addAttribute("resultfail","Approval Flow Data Update unsuccessful !");
 			}
 			return "redirect:/IntiationFlow.htm";
 			}

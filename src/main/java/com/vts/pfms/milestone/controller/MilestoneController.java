@@ -777,9 +777,13 @@ public class MilestoneController {
 			String MainId=null;
 			Map md = model.asMap();
 			for (Object modelKey : md.keySet()) {
+				System.out.println(" =============================================="+md.get("MilestoneActivityId"));
+				System.out.println(modelKey+"==============================================");
 				MainId = (String) md.get(modelKey);
 
 			}
+			
+			
 			if(MainId==null) {
 				redir.addAttribute("resultfail", "Refresh Not Allowed");
 				return "redirect:/MilestoneActivityList.htm";
@@ -866,6 +870,11 @@ public class MilestoneController {
 		logger.info(new Date() +"Inside MilestoneActivityEditSubmit.htm "+UserId);		
 		try {
 
+			if(InputValidator.isContainsHTMLTags(req.getParameter("ActivityName"))) {
+				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
+				return  redirectWithError(redir,"MA-PreviewRedirect.htm","ActivityName should not contain HTML elements !");
+			}
+			
 			System.out.println(req.getParameter("Weightage")+"------------");
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			redir.addFlashAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
@@ -1271,15 +1280,14 @@ public class MilestoneController {
 	}
 private boolean isValidFileType(MultipartFile file) {
 		
-		
+		if (file == null || file.isEmpty()) {
+	        return true; // nothing uploaded, so it's valid
+	    }
+    
 		
 	    String contentType = file.getContentType();
 	    String originalFilename = file.getOriginalFilename();
 		
-	    if (file == null || file.isEmpty()) {
-	        return true; // nothing uploaded, so it's valid
-	    }
-
 	    
 	    
 	  
@@ -1331,15 +1339,7 @@ private boolean isValidFileType(MultipartFile file) {
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			String remarks=req.getParameter("Remarks");
 			
-			
-			// 🔹 Validate file types
-	        if (!isValidFileType(FileAttach)  ) {
 
-	        	
-	        	return redirectWithError(redir, "MA-UpdateRedirect.htm",
-	                    "Invalid file type. Only PDF or Image files are allowed.");
-	        }
-			
 			
 			if(InputValidator.isContainsHTMLTags(remarks)) {
 				redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
@@ -1354,7 +1354,7 @@ private boolean isValidFileType(MultipartFile file) {
 					redir.addAttribute("ActivityId", req.getParameter("ActivityId"));
 					redir.addAttribute("ActivityType", req.getParameter("ActivityType"));
 					redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
-		            return redirectWithError(redir, "M-A-Update.htm",
+		            return redirectWithError(redir, "M-A-AssigneeList.htm",
 		                    "Invalid file type. Only PDF or Image files are allowed!");
 		        }
 			
@@ -2429,6 +2429,9 @@ private boolean isValidFileType(MultipartFile file) {
 		logger.info(new Date() +"Inside FileMasterSubAdd.htm "+UserId);
 
 		try {
+			if(InputValidator.isContainsHTMLTags(req.getParameter("MasterSubName"))) {
+				return  redirectWithError(redir,"FileRepMaster.htm","Sub Level Name should not contain HTML elements !");
+			}
 			FileRepMaster fileRepo=new FileRepMaster();
 			fileRepo.setLabCode(LabCode);
 			fileRepo.setProjectId(Long.parseLong(req.getParameter("projectid")));

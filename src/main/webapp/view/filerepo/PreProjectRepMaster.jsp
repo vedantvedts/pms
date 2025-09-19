@@ -487,7 +487,7 @@ function showSubfolders(pid,parentId) {
 		                                '<div class="file-icon-wrapper">'+
 		                                    '<i class="fa fa-file-pdf-o fileicon" aria-hidden="true"></i>'+
 		                                '</div>'+
-		                                '<span class="file-download-span" onclick="fileDownload(' + file[7] + ', \'mainLevel\')">' + file[6] + '</span><br/>'+
+		                                '<span class="file-download-span" onclick="fileDownload(' + file[7] + ', \'mainLevel\')">' + file[6].replaceAll("<","").replaceAll(">","").replaceAll("/","") + '</span><br/>'+
 		                                '<span class="text-muted">Ver '+file[4]+'.'+file[5]+' <i class="fa fa-info-circle cursor" aria-hidden="true"  onclick="showVersionModal(' + file[0] + ',\'' + file[6] + '\', \'mainLevel\')"></i></span>'+
 		                            '</div>';
                     container.append(pdfItem);
