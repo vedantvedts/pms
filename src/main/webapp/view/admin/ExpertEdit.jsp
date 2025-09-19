@@ -61,7 +61,7 @@ if(details!=null){
 				<div class="card shadow-nohover">
 					<div class="card-header bg-header">
 
-						<h3 class="text-white">Edit Expert</h3>
+						<h3 class="text-white style1">Edit Expert</h3>
 
 					</div>
 					<form action="ExpertEditSubmit.htm" method="post" name="addcommitteefrm" id="addcommitteefrm1"  >

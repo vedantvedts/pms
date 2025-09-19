@@ -63,7 +63,7 @@ Object[] groupsdata=(Object[])request.getAttribute("groupsdata");
  <div class="col-sm-8 coldiv"  >
 <div class="card shadow-nohover"  >
 <div class="card-header headDiv" >
-                    <b class="text-white">Group Master Edit</b>
+                    <b class="text-white style1">Group Master Edit</b>
         		</div>
 <div class="card-body">
 

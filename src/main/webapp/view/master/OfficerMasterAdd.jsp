@@ -53,7 +53,7 @@ List<Object[]> OfficerList = (List<Object[]>)request.getAttribute("OfficerList")
 	
  <div class="col-sm-8"  >
 <div class="card shadow-nohover"  >
-<div class="card-header headerCard" > <h4><b class="text-white">Officer Add</b></h4> </div>
+<div class="card-header headerCard" > <h4><b class="text-white style1">Officer Add</b></h4> </div>
 <div class="card-body">
 
 
