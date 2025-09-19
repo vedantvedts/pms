@@ -5845,10 +5845,10 @@ public class ProjectController
 			if (count > 0) {
 				redir.addAttribute("result", "Data Added Successfully");
 			} else {
-				redir.addAttribute("resultfail", "Data Adding  Unsuccessful");
+				redir.addAttribute("resultfail", "Data Adding Unsuccessful");
 			}
-			redir.addFlashAttribute("projectid", projectid);
-			redir.addFlashAttribute("committeeid", committeeid);
+			redir.addAttribute("projectid", projectid);
+			redir.addAttribute("committeeid", committeeid);
 			return "redirect:/ProjectBriefingPaper.htm";
 
 		}catch (Exception e) {

@@ -107,18 +107,14 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 												<div id="toolbar">
 													
 												</div>
-												<table id="table" data-toggle="table" data-pagination="true"
-													data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" 
-													data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true"
-													data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+
+										<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+													
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN</th>
-															<th>Full Name</th>
+															<th class="text-left">Full Name</th>
 															<th>Code</th>
 															<th>Type</th>
 															<th>Project Applicable</th>
@@ -131,7 +127,7 @@ Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
 										   	for (Object[] obj :committeelist) {
 										   		
 										   			   %>
-														<tr>
+														<tr class="text-center">
 															<td><%=count1 %></td>
 															<td class="fullname"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
 															<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></td>
@@ -242,6 +238,15 @@ function projectselectsubmit(frmid)
 {
 	$('#'+frmid).submit();
 }
+
+$(document).ready(function(){
+	  $("#myTable12").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 10
+
+	});
+});
 
 </script>
 

@@ -123,7 +123,7 @@ public interface MilestoneDao {
 	public int DocumentListNameEdit(String filerepmasterid, String levelname);
 	public List<Object[]> getMsprojectTaskList(String projectId)throws Exception;
 	public List<Object[]> getAttachmentId(String projectid)throws Exception;
-	public long submitCheckboxFile(ProjectTechnicalWorkData modal)throws Exception;
+	public ProjectTechnicalWorkData getProjectTechnicalWorkDataById(long techDataId)throws Exception;
 	public List<Object[]> getFileRepData(String projectId, String fileRepMasterId, String subL1, String docid)throws Exception;
 	public long FileRepUpdate(FileRepNew rep)throws Exception;
 	

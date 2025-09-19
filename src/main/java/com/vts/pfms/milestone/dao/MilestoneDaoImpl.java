@@ -1201,16 +1201,15 @@ public class MilestoneDaoImpl implements MilestoneDao {
 			return (List<Object[]>) query.getResultList();
 		}
 		
-		private static final String SUBMITCHECKFILE="UPDATE project_technical_work_data SET AttachmentId=:AttachmentId,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,IsActive=:IsActive WHERE TechDataId=:TechDataId";
+		//private static final String SUBMITCHECKFILE="UPDATE project_technical_work_data SET AttachmentId=:AttachmentId,ModifiedBy=:ModifiedBy,ModifiedDate=:ModifiedDate,IsActive=:IsActive WHERE TechDataId=:TechDataId";
 		@Override
-		public long submitCheckboxFile(ProjectTechnicalWorkData modal) throws Exception {
-			Query query = manager.createNativeQuery(SUBMITCHECKFILE);
-			query.setParameter("TechDataId", modal.getTechDataId());
-			query.setParameter("AttachmentId", modal.getAttachmentId());
-			query.setParameter("ModifiedBy", modal.getModifiedBy());
-			query.setParameter("ModifiedDate", modal.getModifiedDate());
-			query.setParameter("IsActive", modal.getIsActive());
-			return query.executeUpdate();
+		public ProjectTechnicalWorkData getProjectTechnicalWorkDataById(long techDataId) throws Exception {
+			try {
+				return manager.find(ProjectTechnicalWorkData.class, techDataId);
+			}catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 		
 		private static final String GETFILEREPCHECKDATA="SELECT FileRepId,ProjectId,FileRepMasterId,SubL1,VersionDoc,ReleaseDoc FROM file_rep_new WHERE ProjectId=:projectId AND FileRepMasterId=:fileRepMasterId AND SubL1=:subL1 AND DocumentName=:docName AND IsActive='1'";

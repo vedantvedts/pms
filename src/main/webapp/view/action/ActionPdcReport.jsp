@@ -139,7 +139,7 @@
 
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th> SN </th>
 															<th> Action Id </th>	
 															<th> PDC </th>																							
@@ -170,7 +170,7 @@
 																			
 																			</form> 
                                                                         </td>
-																		<td><%=obj[6]!=null?sdf.format(obj[6]):""%></td>																		
+																		<td class="text-center"><%=obj[6]!=null?sdf.format(obj[6]):""%></td>																		
 																		<td><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - "%></td>
 																	  	<td> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%>, <%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%></td>
 																		<td> 

@@ -6,22 +6,16 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +36,10 @@ import com.vts.pfms.login.LoginRepository;
 import com.vts.pfms.print.service.PrintService;
 import com.vts.pfms.service.RfpMainService;
 import com.vts.pfms.utils.InputValidator;
-import com.vts.pfms.utils.PMSLogoUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 @Controller
 public class HeaderController {
 
@@ -447,6 +444,15 @@ public class HeaderController {
 			    return redirectWithError(redir, "MainDashBoard.htm", "Password Should not contain HTML Tags");
 			}
 			
+			if((NewPassword!=null && OldPassword!=null) && OldPassword.equalsIgnoreCase(NewPassword)) {
+				redir.addAttribute("resultfail", "Your New Password Should Not Be Same as Your Old Password.");
+	            return "redirect:/PasswordChanges.htm";
+			}
+			if (!isStrongPassword(NewPassword)) {
+	            redir.addAttribute("resultfail", "New password does not meet security requirements.");
+	            return "redirect:/PasswordChanges.htm";
+	        }
+			
 			int count=service.PasswordChange(OldPassword, NewPassword, UserId, LoginId, EmpId);
 		
 			if (count > 0)  {
@@ -466,7 +472,15 @@ public class HeaderController {
 		
 	}
    
-	
+	private boolean isStrongPassword(String password) {
+	    if (password == null) {
+	        return false;
+	    }
+	    String pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+	    Pattern regex = Pattern.compile(pattern);
+	    Matcher matcher = regex.matcher(password);
+	    return matcher.matches();
+	}
 	
 	@RequestMapping (value="GanttChart.htm")
 	public String GanttChart(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
@@ -912,7 +926,7 @@ public class HeaderController {
 		return "admin/PasswordChange";
 	}
     
-    @RequestMapping(value = "NewPasswordChangeCheck.htm")
+    @RequestMapping(value = "NewPasswordChangeCheck.htm", method = {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody String NewPasswordChangeCheck(HttpServletRequest req, HttpServletResponse response, HttpSession ses)throws Exception 
 	{
 		String Username = (String) ses.getAttribute("Username");

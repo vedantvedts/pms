@@ -169,13 +169,11 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 										<div class="sparkline13-graph">
 											<div class="datatable-dashv1-list custom-datatable-overright">
 												
-												<table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true"
-													data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true"
-													data-resizable="true" data-cookie="true" data-cookie-id-table="saveId" data-show-export="true"
-													data-click-to-select="true" data-toolbar="#toolbar">
+												<table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+
 													<thead>
 
-														<tr>
+														<tr class="text-center">
 															<th>SN</th>		
 															<%if(committeeid.equals("all")){ %>
 																<th>Committee Short Name</th>															
@@ -194,7 +192,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 															int count1=CommitteeAutoScheduleList.size();
 										   					for (Object[] obj :CommitteeAutoScheduleList) {
 										   					%>
-														<tr>
+														<tr class="text-center">
 															<td><%=count %></td>
 															
 															<%if(committeeid.equals("all")){ %>
@@ -219,7 +217,7 @@ String projectstatus=(String) request.getAttribute("projectstatus");
 																
 																 ><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %><%}else{ %>-<%} %></a>
 															</td>
-															<td class="left width" align="center" >
+															<td class="" align="center" >
 																<%if(Long.parseLong(obj[7].toString())<7){ %>
 																		<form class="d-inline" action="CommitteeAutoScheduleEdit.htm" method="post">
 		
@@ -292,6 +290,14 @@ function submitForm(value)
   document.getElementById(value).submit(); 
 } 
 
+$(document).ready(function(){
+	  $("#myTable12").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 10
+
+	});
+});
 
 
 

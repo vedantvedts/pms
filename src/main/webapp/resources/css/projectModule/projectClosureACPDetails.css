@@ -310,7 +310,7 @@ hr{
 	width: 15%;
 }
 .style14{
-	width: 5%;text-align: center;
+	width: 5%;text-align: center !important;
 }
 .style15{
 	width: 10%;text-align: center;
@@ -442,7 +442,7 @@ hr{
 	width: 75%;
 }
 .style58{
-	width: 20%;text-align: center;
+	width: 20%;text-align: center !important;
 }
 .style59{
 	padding: 5px 8px;

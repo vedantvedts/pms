@@ -53,7 +53,7 @@
 			<div class="col-md-8">
 				<div class="card shadow-nohover">
 					<div class="card-header cardHead" >
-						<b class="text-white">Programme Master <%if(programmeMaster==null){%>Add<%} else {%> Edit <% } %></b>
+						<b class="text-white style1">Programme Master <%if(programmeMaster==null){%>Add<%} else {%> Edit <% } %></b>
 					</div>
 					<div class="card-body">
 						<form method="post" action="ProgrammeMasterSubmit.htm" id="programmeMasterForm" name="myform" onsubmit="return confirm('Are you sure you want to submit the form?')">

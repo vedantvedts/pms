@@ -12,7 +12,7 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 
 
-<spring:url value="/resources/css/master/MilestoneActivityType.css" var="MilestoneActivityType" />     
+<spring:url value="/resources/css/master/milestoneActivityType.css" var="MilestoneActivityType" />     
 <link href="${MilestoneActivityType}" rel="stylesheet" />
 
 </head>
@@ -47,7 +47,7 @@
 				<div class="card-header">
 					<div class="row">
 						<div class="col-md-10">
-							<h4>Activity Master</h4>
+							<h4 >Activity Master</h4>
 						</div>
 						<div class="col-md-2">
 							<a class="btn btn-info btn-sm  back"
@@ -171,7 +171,7 @@
 													</table>
 												</div>
 												<div class="btndiv" >
-													<button type="button" class="btn btn-success btn-sm add " name="sub" value="edit" onclick="return AddActivityCheck('addcheck');">ADD</button>
+													<button type="button" class="btn btn-success btn-sm add "  name="sub" value="edit" onclick="return AddActivityCheck('addcheck');">ADD</button>
 												</div>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											</div>

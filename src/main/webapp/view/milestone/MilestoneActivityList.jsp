@@ -115,7 +115,7 @@
                             	<input type="hidden" name="ProjectId"	value="<%=ProjectId %>" /> 
                              <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
                               <input type="hidden" name="projectDirector" value="<%=projectDirector%>">  
-                               <input type="submit"  value="Add Milestone" class="btn btn-sm add">
+                               <input type="submit"  value="Add Milestone" class="btn btn-sm add mwidth">
                           
                      </form>
                           <%} %>

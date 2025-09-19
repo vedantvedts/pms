@@ -1,6 +1,8 @@
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat"%>
+    <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,29 +10,8 @@
 <jsp:include page="../static/header.jsp"></jsp:include>
 <%-- <jsp:include page="../static/sidebar.jsp"></jsp:include> --%>
 <title>PROJECT COST  ADD</title>
-<style type="text/css">
-
-.input-group-text{
-font-weight: bold;
-}
-
-label{
-	font-weight: 800;
-	font-size: 16px;
-	color:#07689f;
-} 
-
-hr{
-	margin-top: -2px;
-	margin-bottom: 12px;
-}
-
-b{
-	font-family: 'Lato',sans-serif;
-}
-
-
-</style>
+<spring:url value="/resources/css/projectModule/projectLabAdd.css" var="projectLabAdd" />
+<link href="${projectLabAdd}" rel="stylesheet" />
 </head>
 <body>
 <%SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
@@ -74,7 +55,7 @@ Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
 
 
     <div class="container">
-<div class="row" style="">
+<div class="row" >
 
 <div class="col-md-12">
 
@@ -82,7 +63,7 @@ Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
   <div class="card-header">
  <div class="row" >
 <div class="col-md-12 ">
-  <b style="color: green;">Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LAB COUNT:&nbsp;<%if(ProjectDetailes[13]!=null) { %><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[13].toString())%><%}else{ %>0<%} %>
+  <b class="text-success">Title :&nbsp;<%=ProjectDetailes[7]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[7].toString()): " - " %>(<%=ProjectDetailes[6]!=null?StringEscapeUtils.escapeHtml4(ProjectDetailes[6].toString()): " - " %>)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; || &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LAB COUNT:&nbsp;<%if(ProjectDetailes[13]!=null) { %><%=StringEscapeUtils.escapeHtml4(ProjectDetailes[13].toString())%><%}else{ %>0<%} %>
   	
   	</b>
 
@@ -94,8 +75,8 @@ Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
         <div class="card-body">
         
           <form action="ProjectLabdeleteSubmit.htm" method="POST" name="myfrm4" id="myfrm4" >
-                        <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
-                                        data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                                    <table class="table table-bordered table-hover table-striped table-condensed" id="myTable12" >
+                                        
                                         <thead>
                                          
                                             <tr>
@@ -122,7 +103,7 @@ Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
         
                 <div class="form-group">
 
-<div align="center" style="margin-top: 10px">
+<div align="center" class="margingtop10">
  <button type="submit" class="btn btn-danger btn-sm delete"  value="DELETE"   name="sub" onclick=" Prints(myfrm4)">DELETE </button>
 </div>
 
@@ -142,8 +123,7 @@ Object[] ProjectDetailes=(Object[])request.getAttribute("ProjectDetailes");
         <form action="ProjectLabAddSubmit.htm" method="POST" name="myfrm" id="myfrm" >
       
 
-                    <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-show-columns="true" data-show-pagination-switch="true" data-show-refresh="true" data-key-events="true" data-show-toggle="true" data-resizable="true" data-cookie="true"
-                                        data-cookie-id-table="saveId" data-show-export="true" data-click-to-select="true" data-toolbar="#toolbar">
+                                      <table class="table table-bordered table-hover table-striped table-condensed" id="myTable123" >
                                         <thead>
                                          
                                             <tr>
@@ -222,15 +202,27 @@ function Prints(myfrm4){
 	return false;
 	}
 	 
-	
-	
-		 
-	
-		  return true;
-	 
+		  return true;	 
 			
 	}
 
+$(document).ready(function(){
+	  $("#myTable12").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 5
+
+	});
+});
+
+$(document).ready(function(){
+	  $("#myTable123").DataTable({
+	 "lengthMenu": [  5,10,25, 50, 75, 100 ],
+	 "pagingType": "simple",
+	 "pageLength": 10
+
+	});
+});
 
 
 
