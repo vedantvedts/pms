@@ -305,6 +305,7 @@ html, body {
 												<td class="center"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - "%></td>
 												<td class="center"><%=obj[9]!=null?StringEscapeUtils.escapeHtml4(obj[9].toString()): " - "%></td>
 												<td><%=obj[12]!=null?StringEscapeUtils.escapeHtml4(obj[12].toString()): " - "%></td>
+												<%-- <td><%=obj[19]!=null?StringEscapeUtils.escapeHtml4(obj[19].toString()) :"-" %> <%= obj[12]!=null?"("+StringEscapeUtils.escapeHtml4(obj[12].toString())+")": " - "%></td> --%>
 											</tr>
 											<%} %>
 										</tbody>

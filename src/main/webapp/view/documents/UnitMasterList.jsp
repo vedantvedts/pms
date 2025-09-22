@@ -13,7 +13,7 @@
 <body>
 		<%
 			List<Object[]> unitMasterList = (List<Object[]>) request.getAttribute("unitMasterList");
-		%>
+		%>	
 		<% 
 	    String ses = (String) request.getParameter("result");
 	    String ses1 = (String) request.getParameter("resultfail");
@@ -46,13 +46,13 @@
 
 				<form action="#" method="post" name="frm1">
 					<div class="card-body">
-						<div class="table-responsive" style="width: 40%;margin:auto;">
+						<div class="table-responsive" style="width: 55%;margin: 0 auto;">
 							<table class="table table-bordered table-hover table-striped table-condensed dataTable" id="myTable" >
 								<thead class="center">
 									<tr>
-										<th width="30%">Select</th>
-										<th width="70%">Unit</th>
-										<!-- <th width="40%">Unit Name</th> -->
+										<th width="15%">Select</th>
+										<th width="40%">Unit</th>
+										<th width="45%">Description</th> 
 									</tr>
 								</thead>
 								<tbody>
@@ -63,14 +63,14 @@
 										<td class="center">
 											<input type="radio" name="UnitMasterIdSelect" value="<%=obj[0]%>">
 											<input type="hidden" id="Unit_<%=obj[0]%>" value="<%=obj[1]%>"> 
-											<%-- <input type="hidden" id="unitName_<%=obj[0]%>" value="<%=obj[2] %>" /> --%>
+											<input type="hidden" id="UnitDescription_<%=obj[0]%>" value="<%=obj[2] %>" /> 
 										</td>
 										<td class="center">
 											<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):"-"%>
 										</td>
-										<%-- <td>
+										<td>
 											<%=obj[2]!=null? StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %>
-										</td> --%>
+										</td> 
 									</tr>
 									<% } %>
 								</tbody>
@@ -102,7 +102,7 @@
       			</div>
       			
       			<div class="modal-body">
-      				<div class="container-fluid mt-3" style="margin-left:22.5rem; margin-bottom:30px;" >
+      				<div class="container-fluid mt-3" style="margin-left:16%; margin-bottom:30px;" >
       					<form action="UnitMasterDetailsSubmit.htm" method="POST" id="myform">
       						<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		       				<div class="row" >
@@ -110,10 +110,10 @@
 									<label class="form-label">Unit<span class="mandatory">*</span></label> 
 									<input type="text" class="form-control field" name="Unit" id="Unit" placeholder="Enter Unit" required="required">
 								</div>
-								<!-- <div class="col-md-4">
-									<label class="form-label">Unit Name<span class="mandatory">*</span></label>
-									<input type="text" class="form-control field" name="unitName" id="unitName" placeholder="Enter Unit Name" required="required" />
-								</div> -->
+								<div class="col-md-4">
+									<label class="form-label">Description<span class="mandatory">*</span></label>
+									<input type="text" class="form-control field" name="UnitDescription" id="UnitDescription" placeholder="Enter Description" required="required" />
+								</div> 
 								<div class="col-md-1" style="margin-top: auto; margin-bottom: 5px;">
 									<button type="submit" class="btn btn-sm submit" name="action" id="action" value="Add" onclick="return confirm('Are you sure to Submit?')">SUBMIT</button>
 								</div>
@@ -163,7 +163,7 @@
 			
 			$('#Unit').val($('#Unit_'+rowId).val());
 			$('#UnitMasterId').val(rowId);
-			//$('#unitName').val($('#unitName_'+rowId).val());
+			$('#UnitDescription').val($('#UnitDescription_'+rowId).val());
 			
 			$('#action').removeClass('submit').addClass('edit');
 			$('#action').val('Edit');
@@ -173,10 +173,5 @@
 			$('#UnitMasterModal').modal('show');
 		}
 	</script>
-	
-	
-	
-	
-	
 </body>
 </html>

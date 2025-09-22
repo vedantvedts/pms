@@ -5497,10 +5497,12 @@ public class DocumentsController {
 			String unit = req.getParameter("Unit");
 			String unitMasterid = req.getParameter("UnitMasterId");
 			String action =req.getParameter("action");
+			String des = req.getParameter("UnitDescription");
 			
 			UnitMaster unitmaster = unitMasterid.equalsIgnoreCase("0") ? new UnitMaster() : service.getUnitMasterById(Long.parseLong(unitMasterid));
 			
 			unitmaster.setUnit(unit);
+			unitmaster.setUnitDescription(des);
 			if(unitMasterid.equalsIgnoreCase("0")) {
 				unitmaster.setCreatedBy(UserId);
 				unitmaster.setCreatedDate(sdtf.format(new Date()));

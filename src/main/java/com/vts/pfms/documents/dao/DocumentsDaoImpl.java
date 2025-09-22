@@ -771,7 +771,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String FIELDMASTER="SELECT a.FieldMasterId, a.FieldName, a.FieldShortName, a.FieldCode, a.FieldDesc, a.DataTypeMasterId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.Quantum, c.Unit, a.Remarks, b.DataTypePrefix, b.DataLength, b.AliasName, b.DataStandardName, (SELECT GROUP_CONCAT(c.FieldGroupId SEPARATOR ',') FROM pfms_field_group_linked c WHERE c.FieldMasterId = a.FieldMasterId AND c.IsActive=1) AS FieldGroupIds  FROM pfms_field_master a, pfms_data_type_master b, pfms_unit_master c WHERE a.IsActive = 1 AND a.DataTypeMasterId=b.DataTypeMasterId AND a.UnitMasterId = c.UnitMasterId ORDER BY a.FieldMasterId, a.FieldName ASC";
+	private static final String FIELDMASTER="SELECT a.FieldMasterId, a.FieldName, a.FieldShortName, a.FieldCode, a.FieldDesc, a.DataTypeMasterId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.Quantum, CONCAT(c.Unitdescription,' (',c.Unit,')') AS Unit, a.Remarks, b.DataTypePrefix, b.DataLength, b.AliasName, b.DataStandardName, (SELECT GROUP_CONCAT(c.FieldGroupId SEPARATOR ',') FROM pfms_field_group_linked c WHERE c.FieldMasterId = a.FieldMasterId AND c.IsActive=1) AS FieldGroupIds  , c.UnitDescription  FROM pfms_field_master a LEFT JOIN pfms_data_type_master b ON a.DataTypeMasterId=b.DataTypeMasterId LEFT JOIN pfms_unit_master c ON a.UnitMasterId = c.UnitMasterId WHERE a.IsActive = 1 ORDER BY a.FieldMasterId, a.FieldName ASC";
 	@Override
 	public List<Object[]> fieldMasterList() throws Exception {
 		try {

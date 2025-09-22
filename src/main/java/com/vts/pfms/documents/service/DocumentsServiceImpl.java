@@ -724,7 +724,7 @@ public class DocumentsServiceImpl implements DocumentsService{
 	@Override
 	public List<Object[]> fieldMasterList() throws Exception {
 		
-		return dao.fieldMasterList();
+		return dao.fieldMasterList();  
 	}
 	
 	@Override

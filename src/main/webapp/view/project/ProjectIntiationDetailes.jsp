@@ -813,7 +813,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<p><%if(obj[14]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
 											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
-											<div><p><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%}else{ %>-<%} %></p></div>
+											<div><p><%if(obj[1]!=null){%><%=obj[1].toString() %><%}else{ %>-<%} %></p></div>
 											
 										</div>
 										
@@ -855,7 +855,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<p><%if(obj[15]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[15].toString()) %><%}else{ %>-<%} %></p>
 											<hr>
 											<div class="col-md-1"  id="initiation"><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
-											<div><p><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></p></div>
+											<div><p><%if(obj[2]!=null){%><%=obj[2].toString() %><%}else{ %>-<%} %></p></div>
 
 										</div>
 										
@@ -897,7 +897,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<p><%if(obj[16]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[16].toString()) %><%}else{ %>-<%} %></p>
 											<hr>
 											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm" ><b>Detailed</b></h5></label></div>				                
-											<div><p><%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %>-<%} %></p></div>			                
+											<div><p><%if(obj[3]!=null){%><%=obj[3].toString() %><%}else{ %>-<%} %></p></div>			                
 										</div>
 										
 										
@@ -938,7 +938,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<p><%if(obj[17]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[17].toString()) %><%}else{ %>-<%} %></p>
 											<hr>
 											<div class="col-md-1" id="initiation" ><labelclass="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
-											<div><p><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %><%}else{ %>-<%} %></p></div>	
+											<div><p><%if(obj[4]!=null){%><%=obj[4].toString() %><%}else{ %>-<%} %></p></div>	
                                 			
                                 									                
 										</div>
@@ -981,7 +981,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<%if(obj[18]!=null){%><p><%=StringEscapeUtils.escapeHtml4(obj[18].toString()) %></p><%}else{ %>-<%} %>
 											<hr>
 											<div class="col-md-1" id="initiation"><label sclass="cs-label"><h5 class="cs-brief-fm" ><b>Detailed</b></h5></label></div>				                
-											<div><%if(obj[5]!=null){%><p><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %></p><%}else{ %>-<%} %></div>		                
+											<div><%if(obj[5]!=null){%><p><%=obj[5].toString() %></p><%}else{ %>-<%} %></div>		                
 										</div>
 										
 										
@@ -1020,7 +1020,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<p><%if(obj[19]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[19].toString()) %><%}else{ %>-<%} %></p>
 											<hr>
 											<div class="col-md-1" id="initiation"><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
-											<div><p><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString()) %><%}else{ %>-<%} %></p></div>	
+											<div><p><%if(obj[6]!=null){%><%=obj[6].toString() %><%}else{ %>-<%} %></p></div>	
                                 			
 										</div>
 										
@@ -1064,7 +1064,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<p><%if(obj[20]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[20].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
 											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm" ><b>Detailed</b></h5></label></div>				                
-											<div><p><%if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString()) %><%}else{ %>-<%} %></p></div>	
+											<div><p><%if(obj[7]!=null){%><%=obj[7].toString() %><%}else{ %>-<%} %></p></div>	
 										</div>
 										
 										
@@ -1105,7 +1105,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<p><%if(obj[21]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[21].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
 											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
-											<div><p><%if(obj[8]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[8].toString()) %><%}else{ %>-<%} %></p></div>						                
+											<div><p><%if(obj[8]!=null){%><%=obj[8].toString() %><%}else{ %>-<%} %></p></div>						                
 										</div>
 										
 										
@@ -1147,7 +1147,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<p><%if(obj[22]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[22].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
 											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
-											<div><p><%if(obj[9]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[9].toString()) %><%}else{ %>-<%} %></p></div>	
+											<div><p><%if(obj[9]!=null){%><%=obj[9].toString() %><%}else{ %>-<%} %></p></div>	
                                 						                
 										</div>
 										
@@ -1186,7 +1186,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<p><%if(obj[23]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[23].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
 											<div class="col-md-1" id="initiation" ><label class="cs-label"><h5 class="cs-brief-fm"><b>Detailed</b></h5></label></div>				                
-											<div><p><%if(obj[10]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[10].toString()) %><%}else{ %>-<%} %></p></div>	
+											<div><p><%if(obj[10]!=null){%><%=obj[10].toString() %><%}else{ %>-<%} %></p></div>	
                                	 				
 										</div>
 										
@@ -1225,7 +1225,7 @@ List<Object[]>DemandList=(List<Object[]>)request.getAttribute("DemandList");
 											<p><%if(obj[24]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[24].toString()) %><%}else{ %>-<%} %></p>	
 											<hr>
 											<div class="col-md-1" id="initiation"><label class="cs-label"><h5 class="cs-brief-fm" ><b>Detailed</b></h5></label></div>				                
-											<div><p><%if(obj[12]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[12].toString()) %><%}else{ %>-<%} %></p></div>						                
+											<div><p><%if(obj[12]!=null){%><%=obj[12].toString() %><%}else{ %>-<%} %></p></div>						                
 										</div>
 										
 										
