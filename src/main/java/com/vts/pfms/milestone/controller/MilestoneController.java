@@ -872,7 +872,9 @@ public class MilestoneController {
 
 			if(InputValidator.isContainsHTMLTags(req.getParameter("ActivityName"))) {
 				redir.addAttribute("ProjectId", req.getParameter("ProjectId"));
-				return  redirectWithError(redir,"MA-PreviewRedirect.htm","ActivityName should not contain HTML elements !");
+				redir.addAttribute("MilestoneActivityId", req.getParameter("MilestoneActivityId"));
+				redir.addAttribute("formname", req.getParameter("formname"));
+				return  redirectWithError(redir,"MilestoneActivityDetails.htm","ActivityName should not contain HTML elements !");
 			}
 			
 			System.out.println(req.getParameter("Weightage")+"------------");

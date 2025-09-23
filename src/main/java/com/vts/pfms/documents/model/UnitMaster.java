@@ -20,6 +20,7 @@ public class UnitMaster implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long UnitMasterId;
 	private String Unit;
+	private String UnitDescription;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

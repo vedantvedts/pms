@@ -55,7 +55,7 @@
 
 				<form action="#" method="post" name="frm1">
 					<div class="card-body">
-						<div class="table-responsive" style="width: 80%;margin-left: 11.5rem">
+						<div class="table-responsive" style="width: 80%;margin: 0 auto;">
 							<table class="table table-bordered table-hover table-striped table-condensed dataTable" id="myTable" >
 								<thead class="center">
 									<tr>
@@ -88,7 +88,8 @@
 											for(Object[] obj : unitMasterList){
 												if(con.getUnitMasterId()!=null && con.getUnitMasterId().equals(Long.parseLong(obj[0].toString()))){
 											%>
-												<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %>
+												<%-- <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %> --%>
+												<%= obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %><%= obj[1]!=null?" ("+StringEscapeUtils.escapeHtml4(obj[1].toString())+")":" - " %>
 											<%}	}}else{
 											%> - <%} %>
 										</td>
@@ -144,13 +145,14 @@
 								</div>
 								<div class="row" style="margin-top:15px;">
 									<div class="col-md-4">
-										<label class="form-label">Unit<span class="mandatory" style="color: red;">*</span></label>
+										<label class="form-label">Unit<span class="mandatory" >*</span></label>
 										<select class="form-control selectdee" style="width:100%;" name="unitMasterId" id="unitMasterId" required  >
 											<option disabled selected value="">Choose...</option>
 											 <%if(unitMasterList!=null &&  !unitMasterList.isEmpty()){
 												for(Object[] obj:unitMasterList){
 											%>
-												<option value="<%=obj[0]%>" ><%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %> </option>
+											<%-- <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %> --%>
+												<option value="<%=obj[0]%>" ><%= obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %><%= obj[1]!=null?" ("+StringEscapeUtils.escapeHtml4(obj[1].toString())+")":" - " %> </option>
 											<%}} %>
 										</select>
 									</div>

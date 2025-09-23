@@ -286,7 +286,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 											<hr>					                
 											<div>
 											<label class="cs-brief">Detailed</label>
-											<p><%if(obj[12]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[12].toString()) %><%}else{ %>-<%} %></p></div>
+											<p><%if(obj[12]!=null){%><%=obj[12].toString() %><%}else{ %>-<%} %></p></div>
 						                </div>
 						                <div class="tab-pane fade " id="req-vertical" role="tabpanel" aria-labelledby="req-vertical-tab">
 						                    <h3>Requirement</h3><hr>
@@ -300,7 +300,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 											<p><%if(obj[14]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div>
 											<label class="cs-brief">Detailed</label>
-											<p><%if(obj[1]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[1].toString()) %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[1]!=null){%><%=obj[1].toString() %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="scope-vertical" role="tabpanel" aria-labelledby="scope-vertical-tab">
 						                    <h3>Scope</h3><hr>
@@ -308,7 +308,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 											<p><%if(obj[15]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[15].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div>
 											<label class="cs-brief">Detailed</label>
-											<p><%if(obj[2]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[2].toString()) %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[2]!=null){%><%=obj[2].toString() %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="multilab-vertical" role="tabpanel" aria-labelledby="multilab-vertical-tab">
 						                    <h3>Multi Lab Work Share</h3><hr>
@@ -316,7 +316,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 											<p><%if(obj[16]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[16].toString()) %><%}else{ %>-<%} %></p><hr>				                
 											<div>
 											<label class="cs-brief">Detailed</label>
-											<p><%if(obj[3]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[3].toString()) %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[3]!=null){%><%=obj[3].toString()%><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="earlierwork-vertical" role="tabpanel" aria-labelledby="earlierwork-vertical-tab">
 						                    <h3>Earlier Work</h3><hr>
@@ -324,7 +324,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 											<p><%if(obj[17]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[17].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div>
 											<label class="cs-brief">Detailed</label>
-											<p><%if(obj[4]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[4].toString()) %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[4]!=null){%><%=obj[4].toString() %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="competency-vertical" role="tabpanel" aria-labelledby="competency-vertical-tab">
 						                    <h3>Competency Established</h3><hr>
@@ -332,7 +332,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 											<p><%if(obj[18]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[18].toString()) %><%}else{ %>-<%} %></p><hr>				                
 											<div >
 											<label class="cs-brief">Detailed</label>
-											<p><%if(obj[5]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %><%}else{ %>-<%} %></p></div>						                
+											<p><%if(obj[5]!=null){%><%=obj[5].toString() %><%}else{ %>-<%} %></p></div>						                
 										</div>
 						                <div class="tab-pane fade show active" id="needofprj-vertical" role="tabpanel" aria-labelledby="needofprj-vertical-tab">
 						                    <h3>Need Of Project</h3><hr>
@@ -340,7 +340,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 											<p><%if(obj[19]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[19].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div>
 											<label class="cs-brief">Detailed</label>
-											<p><%if(obj[6]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[6].toString()) %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[6]!=null){%><%=obj[6].toString() %><%}else{ %>-<%} %></p></div>					                
 											</div>
 						                <div class="tab-pane fade" id="technology-vertical" role="tabpanel" aria-labelledby="technology-vertical-tab">
 						                    <h3>Technology Challenges</h3><hr>
@@ -348,7 +348,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 											<p><%if(obj[20]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[20].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div>
 											<label class="cs-brief">Detailed</label>
-											<p><%if(obj[7]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[7].toString())%><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[7]!=null){%><%=obj[7].toString()%><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="risk-vertical" role="tabpanel" aria-labelledby="risk-vertical-tab">
 						                    <h3>Risk Mitigation</h3><hr>
@@ -356,7 +356,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 											<p><%if(obj[21]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[21].toString()) %><%}else{ %>-<%} %></p><hr>				                
 											<div>
 											<label class="cs-brief">Detailed</label>
-											<p><%if(obj[8]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[8].toString()) %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[8]!=null){%><%=obj[8].toString() %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="proposal-vertical" role="tabpanel" aria-labelledby="proposal-vertical-tab">
 						                    <h3>Proposal</h3><hr>
@@ -364,7 +364,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 											<p><%if(obj[22]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[22].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div>
 											<label  class="cs-brief">Detailed</label>
-											<p><%if(obj[9]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[9].toString()) %><%}else{ %>-<%} %></p></div>					                
+											<p><%if(obj[9]!=null){%><%=obj[9].toString() %><%}else{ %>-<%} %></p></div>					                
 										</div>
 						                <div class="tab-pane fade" id="realization-vertical" role="tabpanel" aria-labelledby="realization-vertical-tab">
 						                    <h3>Realization Plan</h3><hr>
@@ -372,7 +372,7 @@ List<Object[]>RequirementList=(List<Object[]>)request.getAttribute("RequirementL
 											<p><%if(obj[23]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[23].toString()) %><%}else{ %>-<%} %></p><hr>					                
 											<div>
 											<label class="cs-brief">Detailed</label>
-											<p><%if(obj[10]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[10].toString()) %><%}else{ %>-<%} %></p></div>						                
+											<p><%if(obj[10]!=null){%><%=obj[10].toString() %><%}else{ %>-<%} %></p></div>						                
 										</div>
 						            </div>
 						            

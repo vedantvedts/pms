@@ -107,7 +107,8 @@
 										<%
 											for(Object[] obj:unitMasterList){
 										%>
-											<option value="<%=obj[0] %>"  <%if(fieldMaster!=null && fieldMaster.getUnitMasterId()!=null && fieldMaster.getUnitMasterId()==Long.parseLong(obj[0].toString())) {%>selected<%} %>><%= obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %> </option>
+										<%-- <%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %> --%>
+											<option value="<%=obj[0] %>"  <%if(fieldMaster!=null && fieldMaster.getUnitMasterId()!=null && fieldMaster.getUnitMasterId()==Long.parseLong(obj[0].toString())) {%>selected<%} %>><%= obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %><%= obj[1]!=null?" ("+StringEscapeUtils.escapeHtml4(obj[1].toString())+")":" - " %> </option>
 										<%} %>
 									</select>
 								</div>
