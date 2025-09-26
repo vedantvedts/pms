@@ -71,6 +71,7 @@ import com.vts.pfms.documents.model.ICDConnectionConnectors;
 import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDConnectionSystems;
+import com.vts.pfms.documents.model.ICDConnectorMappedPins;
 import com.vts.pfms.documents.model.ICDConnectorPinMapping;
 import com.vts.pfms.documents.model.ICDConnectorPins;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
@@ -3503,6 +3504,7 @@ public class DocumentsController {
 			String[] interfaceId = req.getParameterValues("interfaceId");
 			String[] constraints = req.getParameterValues("constraints");
 			String[] description = req.getParameterValues("description");
+			String[] groupName = req.getParameterValues("groupName");
 			
 			for(int i=0; i<totalPins; i++) {
 				
@@ -3517,6 +3519,7 @@ public class DocumentsController {
 					pin.setPeriodicity(periodicity);
 					pin.setDescription(description[i]);
 				}
+				pin.setGroupName(groupName[i]);
 				pin.setCreatedBy(UserId);
 				pin.setCreatedDate(sdtf.format(new Date()));
 				pin.setIsActive(1);
@@ -3599,13 +3602,15 @@ public class DocumentsController {
 			String interfaceId = req.getParameter("interfaceId");
 			
 			ICDConnectorPins pin = service.getICDConnectorPinsById(connectorPinId);
-			pin.setInterfaceId(interfaceId!=null?Long.parseLong(interfaceId):0L);
-			pin.setConstraints(req.getParameter("constraints"));
-			pin.setPeriodicity(req.getParameter("periodicity"));
-			pin.setDescription(req.getParameter("description"));
-			pin.setCreatedBy(UserId);
-			pin.setCreatedDate(sdtf.format(new Date()));
-			pin.setIsActive(1);
+			if(endNo.equalsIgnoreCase("E1")) {
+				pin.setInterfaceId(interfaceId!=null?Long.parseLong(interfaceId):0L);
+				pin.setConstraints(req.getParameter("constraints"));
+				pin.setPeriodicity(req.getParameter("periodicity"));
+				pin.setDescription(req.getParameter("description"));
+			}
+			pin.setGroupName(req.getParameter("groupName"));
+			pin.setModifiedBy(UserId);
+			pin.setModifiedDate(sdtf.format(new Date()));
 			
 			long result = service.addICDConnectorPins(pin);
 			
@@ -3682,8 +3687,8 @@ public class DocumentsController {
 			
 			String[] pinFrom =  connectorPinIdFrom!=null?connectorPinIdFrom.split("/") : null;
 			String[] pinTo =  connectorPinIdTo!=null?connectorPinIdTo.split("/") : null;
-			pinMap.setConnectorPinIdFrom(pinFrom!=null?Long.parseLong(pinFrom[0]):0L);
-			pinMap.setConnectorPinIdTo(pinTo!=null?Long.parseLong(pinTo[0]):0L);
+//			pinMap.setConnectorPinIdFrom(pinFrom!=null?Long.parseLong(pinFrom[0]):0L);
+//			pinMap.setConnectorPinIdTo(pinTo!=null?Long.parseLong(pinTo[0]):0L);
 			pinMap.setInterfaceId(interfaceId!=null?Long.parseLong(interfaceId):0L);
 			if(interfaceCode==null || (interfaceCode!=null && interfaceCode.isEmpty())) {
 				if(pinMap.getInterfaceId()==-1) {
@@ -3706,10 +3711,20 @@ public class DocumentsController {
 			}else {
 				pinMap.setModifiedBy(UserId);
 				pinMap.setModifiedDate(sdtf.format(new Date()));
+				
+				// Delete Existing Connector Pin Ids
+				service.deleteICDConnectorMappedPinByConnectorPinMapId(Long.parseLong(connectorPinMapId));
 			}
 			
 			long result = service.addICDConnectorPinMapping(pinMap);
 
+			String[] connectorPinIdFroms =  pinFrom[0].split(",");
+			String[] connectorPinIdTos =  pinTo[0].split(",");
+			
+			// Add the Connector Pins of both sides
+			addICDConnectorMappedPins(connectorPinIdFroms, result, "A", UserId);
+			addICDConnectorMappedPins(connectorPinIdTos, result, "B", UserId);
+			
 			if (result!=0) {
 				redir.addAttribute("result", "Pin Map Details "+action+"ed Successfully");
 			}else {
@@ -3731,6 +3746,32 @@ public class DocumentsController {
 			return "static/Error";
 		}
 
+	}
+	
+	private int addICDConnectorMappedPins(String[] connectorPinIds, Long connectorPinMapId, String pinType, String userId) throws Exception {
+		try {
+			
+			if(connectorPinIds!=null && connectorPinIds.length>0) {
+				
+				for(int i=0; i<connectorPinIds.length; i++) {
+					
+					ICDConnectorMappedPins mappedPins = new ICDConnectorMappedPins();
+					mappedPins.setConnectorPinMapId(connectorPinMapId);
+					mappedPins.setConnectorPinType(pinType);
+					mappedPins.setConnectorPinId(connectorPinIds[i]!=null?Long.parseLong(connectorPinIds[i]):0L);
+					mappedPins.setCreatedBy(userId);
+					mappedPins.setCreatedDate(sdtf.format(new Date()));
+					mappedPins.setIsActive(1);
+					
+					service.addICDConnectorMappedPins(mappedPins);
+				}
+			}
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
 	}
 	
 	@RequestMapping(value="ICDSystemDrawingDetails.htm", method = { RequestMethod.POST, RequestMethod.GET })
@@ -4027,6 +4068,7 @@ public class DocumentsController {
 			req.setAttribute("irsSpecificationsList", service.getIRSDocumentSpecificationsList(irsDocId));
 			
 			req.setAttribute("igiDocumentIntroductionList", service.getIGIDocumentIntroductionList());
+			req.setAttribute("productTreeAllList", service.getProductTreeAllList(irsDocument.getProjectId()+"", irsDocument.getInitiationId()+""));
 
 			req.setAttribute("isPdf", req.getParameter("isPdf"));
 			
@@ -4057,7 +4099,7 @@ public class DocumentsController {
 			req.setAttribute("projectId", req.getParameter("projectId"));
 			req.setAttribute("logicalInterfaceList", service.getIGILogicalInterfaces());
 			req.setAttribute("irsDocument", irsDocument);
-			req.setAttribute("dataCarryingConnectionList", service.getDataCarryingConnectionList(icdDocId));
+			req.setAttribute("icdDocId", icdDocId);
 			req.setAttribute("irsSpecificationsList", service.getIRSDocumentSpecificationsList(docId));
 			req.setAttribute("irsSpecificationId", irsSpecificationId);
 			req.setAttribute("irsDocSpecifications", service.getIRSDocumentSpecificationsById(irsSpecificationId));
@@ -4715,6 +4757,25 @@ public class DocumentsController {
 		}
 	}
 	
+	@RequestMapping(value="GetDataCarryingConnectionList.htm",method= {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody String getDataCarryingConnectionList(HttpServletRequest req, HttpSession ses)throws Exception{
+		String Username=(String)ses.getAttribute("Username");
+		logger.info(new Date() + " Inside GetDataCarryingConnectionList.htm "+Username);
+		Gson json = new Gson();
+		List<Object[]> connectionList = new ArrayList<>();
+		try {
+			String icdDocId = req.getParameter("icdDocId");
+			String systemMainIdOne = req.getParameter("systemMainIdOne");
+			String systemMainIdTwo = req.getParameter("systemMainIdTwo");
+			connectionList = service.getDataCarryingConnectionList(icdDocId, systemMainIdOne, systemMainIdTwo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside GetDataCarryingConnectionList.htm "+Username, e);
+		}
+		return json.toJson(connectionList);
+
+	}
+	
 	/* ************************************************ IRS Document End ***************************************************** */
 	
 	/* ************************************************ IDD Document ***************************************************** */
@@ -4884,7 +4945,8 @@ public class DocumentsController {
 			req.setAttribute("fieldDescriptionList", service.getIRSFieldDescriptionList(irsDocId));
 			req.setAttribute("logicalInterfaceList", service.getIGILogicalInterfaces());
 			req.setAttribute("logicalChannelList", service.getIGILogicalChannelList());
-			
+			req.setAttribute("productTreeAllList", service.getProductTreeAllList(iddDocument.getProjectId()+"", iddDocument.getInitiationId()+""));
+
 			return "documents/IDDDocumentDetails";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5102,10 +5164,11 @@ public class DocumentsController {
 
 	    	String grpName = rep[23] != null ? rep[23].toString().toUpperCase() : "UnknownGroup";
 	    	String grpVariable = rep[26] != null ? rep[26].toString() : "unknownVar";
-	    	String arr = rep[21] != null ? "[" + rep[21] + "]" : "";
+	    	// Here lk represents constant values
+	    	String arr = rep[21] != null ? "[lk" + rep[21] + "]" : "";
 
 	    	String paddedName = String.format("%-" + (maxLength+6) + "s", "_S"+grpName);
-	    	sb.append("    ").append(paddedName).append("s").append(grpVariable.toLowerCase()).append(arr).append(";\n");
+	    	sb.append("    ").append(paddedName).append(rep[21] != null ?"a":"").append("s").append(grpVariable.toLowerCase()).append(arr).append(";\n");
 
 	    	// Calculate no of bytes
 	    	for (Object[] field : groupRows) {
@@ -5131,7 +5194,7 @@ public class DocumentsController {
             String arr = "";
          // Calculate no of bytes
             if(field[21] != null) {
-            	arr = "[" + field[21] + "]";
+            	arr = "[lk" + field[21] + "]";
             	int arrValue = Integer.parseInt(field[22].toString());
             	messageLength+=(lengthInBytes*arrValue);
             }else {
@@ -5139,11 +5202,14 @@ public class DocumentsController {
             }
             
             String paddedName = String.format("%-" + (maxLength+6) + "s", cType);
-            sb.append("    ").append(paddedName).append(field[11]+"").append(fieldName).append(arr).append(";\n");
+            sb.append("    ").append(paddedName).append(field[21] != null ?"a":"").append(field[11]+"").append(fieldName).append(arr).append(";\n");
 	    }
 
 	    sb.append("} _S").append(sanitizedMessageCode).append(";\n\n");
 
+	    sb.append("typedef _S").append(sanitizedMessageCode).append(" *_PS").append(sanitizedMessageCode).append(";\n");
+	    sb.append("typedef _S").append(sanitizedMessageCode).append(" **_PS").append(sanitizedMessageCode).append(";\n\n");
+	    
 	    sb.append("#endif       // __").append(sanitizedMessageCode).append("_H\n");
 
 	    String fullHeader = sb.toString();
@@ -5346,6 +5412,9 @@ public class DocumentsController {
 	        String grpNameUpper = grpName.toUpperCase();
 	        groupFileContent.append("#ifndef __").append(grpNameUpper).append("_H\n");
 	        groupFileContent.append("#define __").append(grpNameUpper).append("_H\n\n");
+	        groupFileContent.append("#include <stdio.h>\n");
+	        groupFileContent.append("#include <ltypes.h>\n");
+	        groupFileContent.append("#include <constants.h>\n\n");
 	        groupFileContent.append("typedef struct _TS").append(grpNameUpper).append(" {\n");
 
 	        for (Object[] desc : groupRows) {
@@ -5389,17 +5458,58 @@ public class DocumentsController {
 	        int dataLength = obj[2] != null ? Integer.parseInt(obj[2].toString()) : 0;
 	        double lengthInBytes = dataLength * 0.125;
 	        String paddedName = String.format("%-" + (maxLength + 8) + "s", standardName);
+	        String paddedObj3 = String.format("%-" + (maxLength + 8) + "s", obj[3]);
 
 	        if (lengthInBytes == 1.0 && !standardName.startsWith("signed")) {
 	            sbOneByte.append("typedef ").append(paddedName).append(obj[3]).append(";\n");
+	            // Pointers
+	            sbOneByte.append("typedef ").append(paddedObj3).append("*_P").append(obj[3].toString().substring(1)).append(";\n");
+	            sbOneByte.append("typedef ").append(paddedObj3).append("**_P").append(obj[3].toString().substring(1)).append(";\n");
+	            // References for C++
+	            sbOneByte.append("#ifdef __LTYPES_CPP\n");
+	            sbOneByte.append("typedef ").append(paddedObj3).append("&_R").append(obj[3].toString().substring(1)).append(";\n");
+	            sbOneByte.append("#endif       // __LTYPES_CPP\n\n");
+	        
 	        } else if (standardName.startsWith("signed")) {
 	            sbSigned.append("typedef ").append(paddedName).append(obj[3]).append(";\n");
+	            // Pointers
+	            sbSigned.append("typedef ").append(paddedObj3).append("*_P").append(obj[3].toString().substring(1)).append(";\n");
+	            sbSigned.append("typedef ").append(paddedObj3).append("**_P").append(obj[3].toString().substring(1)).append(";\n");
+	            // References for C++
+	            sbSigned.append("#ifdef __LTYPES_CPP\n");
+	            sbSigned.append("typedef ").append(paddedObj3).append("&_R").append(obj[3].toString().substring(1)).append(";\n");
+	            sbSigned.append("#endif       // __LTYPES_CPP\n\n");
+	            
 	        } else if (standardName.startsWith("unsigned")) {
 	            sbUnSigned.append("typedef ").append(paddedName).append(obj[3]).append(";\n");
+	            // Pointers
+	            sbUnSigned.append("typedef ").append(paddedObj3).append("*_P").append(obj[3].toString().substring(1)).append(";\n");
+	            sbUnSigned.append("typedef ").append(paddedObj3).append("**_P").append(obj[3].toString().substring(1)).append(";\n");
+	            // References for C++
+	            sbUnSigned.append("#ifdef __LTYPES_CPP\n");
+	            sbUnSigned.append("typedef ").append(paddedObj3).append("&_R").append(obj[3].toString().substring(1)).append(";\n");
+	            sbUnSigned.append("#endif       // __LTYPES_CPP\n\n");
+	            
 	        } else if (standardName.startsWith("_")) {
 	            sbOthers.append("typedef ").append(paddedName).append(obj[3]).append(";\n");
+	            // Pointers
+	            sbOthers.append("typedef ").append(paddedObj3).append("*_P").append(obj[3].toString().substring(1)).append(";\n");
+	            sbOthers.append("typedef ").append(paddedObj3).append("**_P").append(obj[3].toString().substring(1)).append(";\n");
+	            // References for C++
+	            sbOthers.append("#ifdef __LTYPES_CPP\n");
+	            sbOthers.append("typedef ").append(paddedObj3).append("&_R").append(obj[3].toString().substring(1)).append(";\n");
+	            sbOthers.append("#endif       // __LTYPES_CPP\n\n");
+	        
 	        } else {
 	            sbRealNumber.append("typedef ").append(paddedName).append(obj[3]).append(";\n");
+	            // Pointers
+	            sbRealNumber.append("typedef ").append(paddedObj3).append("*_P").append(obj[3].toString().substring(1)).append(";\n");
+	            sbRealNumber.append("typedef ").append(paddedObj3).append("**_P").append(obj[3].toString().substring(1)).append(";\n");
+	            // References for C++
+	            sbRealNumber.append("#ifdef __LTYPES_CPP\n");
+	            sbRealNumber.append("typedef ").append(paddedObj3).append("&_R").append(obj[3].toString().substring(1)).append(";\n");
+	            sbRealNumber.append("#endif       // __LTYPES_CPP\n\n");
+	        
 	        }
 	    }
 
@@ -5445,20 +5555,20 @@ public class DocumentsController {
 	    sb.append("#define __CONSTANTS_H\n\n");
 
 		// Step 1: Find the maximum length of the array names
-		int maxLength1 = arrayMasterList.stream().mapToInt(e -> e.getArrayName().length()).max().orElse(0);
-		int maxLength2 = igiConstantsMasterList.stream().mapToInt(e -> e.getConstantName().length()).max().orElse(0);
+		int maxLength1 = arrayMasterList.stream().mapToInt(e -> e.getArrayName().length()+2).max().orElse(0);
+		int maxLength2 = igiConstantsMasterList.stream().mapToInt(e -> ("lk" + e.getGroupName() +"_"+e.getConstantName()).length()).max().orElse(0);
 		int maxLength = Math.max(maxLength1, maxLength2) + 6;
 		
 		// Step 2: Generate the aligned output
 		for (IRSArrayMaster arr : arrayMasterList) {
-		    String paddedName = String.format("%-" + maxLength + "s", arr.getArrayName());
+		    String paddedName = String.format("%-" + maxLength + "s", ("lk" +arr.getArrayName()) );
 		    sb.append("#define ").append(paddedName).append(arr.getArrayValue()).append("\n");
 		}
 
 	    sb.append("\n");
 			
 		for (IGIConstants con : igiConstantsMasterList) {
-			String paddedName = String.format("%-" + maxLength + "s", con.getConstantName());
+			String paddedName = String.format(("%-" + maxLength + "s"), ("lk" + con.getGroupName() +"_"+ con.getConstantName().toUpperCase()) );
 			sb.append("#define ").append(paddedName).append(con.getConstantValue()).append("\n");
 		}
 		

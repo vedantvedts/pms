@@ -1,4 +1,5 @@
-<%@page import="org.apache.commons.text.StringEscapeUtils"%>
+<%@page import="java.util.StringJoiner"%>
+<%@page import="java.util.Map"%>
 <%@page import="java.util.stream.Stream"%>
 <%@page import="com.vts.pfms.documents.model.IGIConnector"%>
 <%@page import="com.vts.pfms.documents.dto.ICDPinMapDTO"%>
@@ -31,7 +32,7 @@
 .customtable{
 	border-collapse: collapse;
 	width: 100%;
-	margin: 1.5rem 0.5rem 0.5rem 0.5rem;
+	margin: 0.5rem 0.5rem 0.5rem 0.5rem;
 	overflow-y: auto; 
 	overflow-x: auto;  
 }
@@ -114,8 +115,17 @@
 		List<Object[]> icdConnectorListE2 = icdConnectorList.stream().filter(e -> e[3].toString().equalsIgnoreCase("B")).collect(Collectors.toList());
 
 		List<Object[]> icdConnectorPinList = (List<Object[]>)request.getAttribute("icdConnectorPinList"); 
+		Map<String, List<Object[]>> icdConnectorPinListMap = icdConnectorPinList.stream()
+														        .collect(Collectors.groupingBy(e -> {
+														            if (e[23] != null && !e[23].toString().isEmpty()) {
+														                return "23:" + e[23].toString();
+														            } else {
+														                return "6_8:" + e[6] + "_" + e[8];
+														            }
+														        }));
+
 		List<ICDPinMapDTO> icdConnectorPinMapList = (List<ICDPinMapDTO>)request.getAttribute("icdConnectorPinMapList"); 
-		
+
 		List<Object[]> pinListE1 = (List<Object[]>)request.getAttribute("pinListE1"); 
 		List<Object[]> pinListE2 = (List<Object[]>)request.getAttribute("pinListE2"); 
 
@@ -129,22 +139,21 @@
 		int tabNo = Integer.parseInt(tab);
 		
 	%>
-	<% 
-    String ses = (String) request.getParameter("result");
-    String ses1 = (String) request.getParameter("resultfail");
-    if (ses1 != null) { %>
-    <div align="center">
-        <div class="alert alert-danger" role="alert">
-            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	<% String ses = (String) request.getParameter("result"); 
+       String ses1 = (String) request.getParameter("resultfail");
+       if (ses1 != null) { %>
+        <div align="center">
+            <div class="alert alert-danger" role="alert">
+                <%= ses1 %>
+            </div>
         </div>
-    </div>
-<% }if (ses != null) { %>
-    <div align="center">
-        <div class="alert alert-success" role="alert">
-            <%=StringEscapeUtils.escapeHtml4(ses) %>
+    <% } if (ses != null) { %>
+        <div align="center">
+            <div class="alert alert-success" role="alert">
+                <%= ses %>
+            </div>
         </div>
-    </div>
-<% } %>
+    <% } %>
     
     <div class="container-fluid">
     	<div class="card shadow-nohover" style="margin-top: -0.6pc">
@@ -152,7 +161,7 @@
             	<div class="row">
                		<div class="col-md-5" class="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      Pin Details - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - " %>
+	                      Pin Details - <%=documentNo %>
 	                    </h5>
                 	</div>
                 	
@@ -210,7 +219,7 @@
 		        	<div class="card-body">
 		        	
        					<div class="row">
-       						<div class="ml-2 mr-2" style="width: 36%;">
+       						<div class="ml-2 mr-2" style="width: 33%;">
        							<div class="table-responsive" >
 		      						<table class="table table-bordered table-hover table-striped table-condensed dataTable" id="myTable1" >
 										<thead class="center" style="background: #055C9D;color: white;">
@@ -229,8 +238,8 @@
 				      						%>
 												<tr>
 										      		<td class="center"><%=++slno %></td>
-										      		<td class="center">J<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
-										      		<td class="center"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> (<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>)</td>
+										      		<td class="center">J<%=obj[2] %></td>
+										      		<td class="center"><%=obj[5] %> (<%=obj[6] %>)</td>
 										      		<td class="center">
 										      			 <form action="#" method="POST" id="inlinee1form<%=slno%>">
 													        <button type="submit" class="editable-clicko" formaction="ICDConnectionPinDetails.htm" formmethod="post" data-toggle="tooltip" title="Edit">
@@ -278,7 +287,7 @@
 		        			
        						<div class="ml-2 mr-2" style="width: 0.1%; border-left: 1px solid #000;"></div>
        			
-       						<div class="table-wrapper-2 ml-2 mr-2" style="width: 60%">
+       						<div class="table-wrapper-2 ml-2 mr-2" style="width: 63%">
 								<!-- <h4 class="mb-4 text-primary">Connector Pin Configuration</h4> -->
 								<!-- <div id="connectors"></div>
 								<button id="addConnectorBtn" type="button" class="btn btn-success mt-3" style="display: none;">+ Add Connector</button> -->
@@ -310,7 +319,7 @@
 														<div class=" d-flex align-items-center">
 														    <span class="fw-bold" style="margin-right: 4px;font-size: larger;">J</span>
 															<input type="number" class="form-control connectorNo" name="connectorNo" id="connectorNo_E1" min="1" oninput="generatePinDetails('E1')"
-															<%if(e1Data!=null && e1Data[2]!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(e1Data[2].toString())%>" readonly<%} %> required>
+															<%if(e1Data!=null && e1Data[2]!=null) {%>value="<%=e1Data[2]%>" readonly<%} %> required>
 														</div>
 													</div>
 													<div class="col-md-4">
@@ -320,7 +329,7 @@
 														    <option value="" disabled selected>Choose...</option>
 														    <% for(Object[] obj : productTreeS1List){ %>
 														      <option value="<%=obj[0] %>"  <%if(e1Data!=null && e1Data[4]!=null && e1Data[4].toString().equalsIgnoreCase(obj[0].toString())) {%>selected<%} %>>
-														        <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
+														        <%=obj[2]+" ("+obj[7]+")" %>
 														      </option>
 														    <% } %>
 														</select>
@@ -334,7 +343,7 @@
 														    	<option value="<%=con.getConnectorId() %>"
 														    	data-pincount="<%=con.getPinCount() %>"
 														    	<%if(e1Data!=null && e1Data[15]!=null && con.getConnectorId() == Long.parseLong(e1Data[15].toString())) {%>selected<%} %>>
-														      		<%=con.getPartNo()!=null?StringEscapeUtils.escapeHtml4(con.getPartNo()): " - " %> (<%=con.getConnectorMake()!=null?StringEscapeUtils.escapeHtml4(con.getConnectorMake()): " - " %>)
+														      		<%=con.getPartNo() %> (<%=con.getConnectorMake() %>)
 														    	</option>
 														    <% }%>
 														</select>
@@ -345,16 +354,23 @@
 														<%if(e1Data!=null && e1Data[22]!=null) { %>value="<%=e1Data[22]%>"<%} %> required readonly>
 													</div>
 												</div>
+												
+												<div class="mt-2 ml-2">
+													<span class="fw-bold">P</span> - Periodic &emsp;
+													<span class="fw-bold">N.P</span> - Non-Periodic &emsp;
+													<span class="fw-bold">D</span> - Descrete
+												</div>
 										      	<!-- <button type="button" class="btn btn-primary generate-pins mb-3">Generate Pins</button> -->
-												<div class="table-responsive table-wrapper mt-3">
+												<div class="table-responsive table-wrapper">
 													<table class="table table-bordered table-sm pinstable customtable" id="pinsTable_E1" style="width: 100%;">
 														<thead class=" center">
 															<tr>
-																<th width="7%">Pin No</th>
-																<th width="26%">Interface<span class="mandatory">*</span></th>
-																<th width="23%">Constraints</th>
-																<th width="20%">Periodicity<span class="mandatory">*</span></th>
-																<th width="23%">Description</th>
+																<th width="5%">Pin</th>
+																<th width="25%">Interface<span class="mandatory">*</span></th>
+																<th width="22%">Constraints</th>
+																<th width="15%">Periodicity<span class="mandatory">*</span></th>
+																<th width="22%">Description</th>
+																<th width="10%">Group</th>
 																<%if(e1Data!=null) {%>
 																	<th>Action</th>
 																<%} %>
@@ -378,7 +394,7 @@
    			        														<option value="0" <%if(0==Long.parseLong(obj[9].toString())) {%>selected<%} %>>Ground</option>
 															    			<% for(IGIInterface iface : igiInterfaceList){ %>
 															    				<option value="<%=iface.getInterfaceId() %>" <%if(iface.getInterfaceId()==Long.parseLong(obj[9].toString())) {%>selected<%} %> >
-															    					<%=iface.getInterfaceName()!=null?StringEscapeUtils.escapeHtml4(iface.getInterfaceName()): " - "%>
+															    					<%=iface.getInterfaceName()%>
 															    			    </option>
 															    			<% } %>
 															    		</select>
@@ -387,15 +403,18 @@
 																		<input type="text" class="form-control form-control-sm" name="constraints" id="constraints_E1_<%=slno %>" value="<%=obj[10] %>" >
 																	</td>
 																	<td>
-																		<input type="radio" name="periodicity_E1_<%=slno %>" id="periodicity_E1_<%=slno %>" value="Periodic" <%if(obj[11]!=null && obj[11].toString().equalsIgnoreCase("Periodic")) {%>checked<%} %>  required />Periodic &nbsp;&nbsp;
-											    					    <input type="radio" name="periodicity_E1_<%=slno %>" id="periodicity_E1_<%=slno %>" value="Non-Periodic" <%if(obj[11]!=null && obj[11].toString().equalsIgnoreCase("Non-Periodic")) {%>checked<%} %>  required />Non-Periodic
-											    					    <input type="radio" name="periodicity_E1_<%=slno %>" id="periodicity_E1_<%=slno %>" value="Descrete" <%if(obj[11]!=null && obj[11].toString().equalsIgnoreCase("Descrete")) {%>checked<%} %>  required />Descrete</td>
+																		<input type="radio" name="periodicity_E1_<%=slno %>" id="periodicity_E1_<%=slno %>" value="Periodic" <%if(obj[11]!=null && obj[11].toString().equalsIgnoreCase("Periodic")) {%>checked<%} %>  required />P &nbsp;&nbsp;
+											    					    <input type="radio" name="periodicity_E1_<%=slno %>" id="periodicity_E1_<%=slno %>" value="Non-Periodic" <%if(obj[11]!=null && obj[11].toString().equalsIgnoreCase("Non-Periodic")) {%>checked<%} %>  required />N.P
+											    					    <input type="radio" name="periodicity_E1_<%=slno %>" id="periodicity_E1_<%=slno %>" value="Descrete" <%if(obj[11]!=null && obj[11].toString().equalsIgnoreCase("Descrete")) {%>checked<%} %>  required />D</td>
 																	<td>
 																		<input type="text" class="form-control form-control-sm" name="description" id="description_E1_<%=slno %>" value="<%=obj[12] %>" >
 																	</td>
+																	<td>
+																		<input type="text" class="form-control form-control-sm" name="groupName" id="groupName_E1_<%=slno %>" <%if(obj[23]!=null){ %> value="<%=obj[23] %>" <%} %> >
+																	</td>
 																	<%if(e1Data!=null) {%>
 																		<td class="center">
-																			<button type="button" class="editable-clicko" name="action" value="Edit" formmethod="post" data-toggle="tooltip" title="Update" onclick="updatePinDetails('<%="E1_"+slno %>')">
+																			<button type="button" class="editable-clicko" name="action" value="Edit" formmethod="post" data-toggle="tooltip" title="Update" onclick="updatePinDetails('E1', '<%=slno %>', '1', 'A', '<%=icdConnectorIdE1!=null?icdConnectorIdE1:"0"%>')">
 																	            <i class="fa fa-lg fa-edit" style="padding: 0px;color: darkorange;font-size: 25px;" aria-hidden="true"></i>
 																	        </button>
 																		</td>
@@ -423,16 +442,17 @@
 												<input type="hidden" name="documentNo" value="<%=documentNo%>">
 												<input type="hidden" name="projectId" value="<%=projectId%>">
 												<input type="hidden" name="icdConnectionId" value="<%=icdConnectionId%>">
-												<input type="hidden" name="icdConnectorId" id="icdConnectorId_E1" value="<%=icdConnectorIdE1!=null?icdConnectorIdE1:"0"%>">
-												<input type="hidden" name="systemType" id="systemType_E1" value="A">
-												<input type="hidden" name="endNo" value="E1">
-												<input type="hidden" name="tab" value="1">
+												<input type="hidden" name="icdConnectorId" id="pinupdateIcdConnectorId">
+												<input type="hidden" name="systemType" id="pinupdateSystemType">
+												<input type="hidden" name="endNo" id="pinupdateEndNo">
+												<input type="hidden" name="tab" id="pinupdateTabNo">
 												<input type="hidden" name="connectorPinId" id="connectorPinId">
 												<input type="hidden" name="pinNo" id="pinNo">
 												<input type="hidden" name="interfaceId" id="interfaceId">
 												<input type="hidden" name="constraints" id="constraints">
 												<input type="hidden" name="periodicity" id="periodicity">
 												<input type="hidden" name="description" id="description">
+												<input type="hidden" name="groupName" id="groupName">
 											</form>
 										</div>
 									</div>
@@ -466,8 +486,8 @@
 				      						%>
 												<tr>
 										      		<td class="center"><%=++slno %></td>
-										      		<td class="center">J<%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
-										      		<td class="center"><%=obj[5] !=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%> (<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>)</td>
+										      		<td class="center">J<%=obj[2] %></td>
+										      		<td class="center"><%=obj[5] %> (<%=obj[6] %>)</td>
 										      		<td class="center">
 										      			 <form action="#" method="POST" id="inlinee2form<%=slno%>">
 													        <button type="submit" class="editable-clicko" formaction="ICDConnectionPinDetails.htm" formmethod="post" data-toggle="tooltip" title="Edit">
@@ -547,7 +567,7 @@
 														<div class="d-flex align-items-center">
 														    <span class="fw-bold" style="margin-right: 4px;font-size: larger;">J</span>
 														    <input type="number" class="form-control connectorNo" name="connectorNo" id="connectorNo_E2" min="1" oninput="generatePinDetails('E2')"
-														        <%if(e2Data!=null && e2Data[2]!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(e2Data[2].toString())%>" readonly<%} %> required>
+														        <%if(e2Data!=null && e2Data[2]!=null) {%>value="<%=e2Data[2]%>" readonly<%} %> required>
 														</div>
 													</div>	
 													<div class="col-md-4">
@@ -557,7 +577,7 @@
 														    <option value="" disabled selected>Choose...</option>
 														    <% for(Object[] obj : productTreeS2List){ %>
 														      <option value="<%=obj[0] %>"  <%if(e2Data!=null && e2Data[4]!=null && e2Data[4].toString().equalsIgnoreCase(obj[0].toString())) {%>selected<%} %>>
-														        <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%> <%=" ("+(obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - ")+")" %>
+														        <%=obj[2]+" ("+obj[7]+")" %>
 														      </option>
 														    <% } %>
 														</select>
@@ -571,7 +591,7 @@
 														    	<option value="<%=con.getConnectorId() %>"
 														    	data-pincount="<%=con.getPinCount() %>"
 														    	<%if(e2Data!=null && e2Data[15]!=null && con.getConnectorId() == Long.parseLong(e2Data[15].toString())) {%>selected<%} %>>
-														      		<%=con.getPartNo()!=null?StringEscapeUtils.escapeHtml4(con.getPartNo()): " - " %> (<%=con.getConnectorMake()!=null?StringEscapeUtils.escapeHtml4(con.getConnectorMake()): " - " %>)
+														      		<%=con.getPartNo() %> (<%=con.getConnectorMake() %>)
 														    	</option>
 														    <% }%>
 														</select>
@@ -579,7 +599,7 @@
 													<div class="col-md-2">
 														<label class="form-label">Pins<span class="mandatory">*</span></label>
 														<input type="number" class="form-control pinCount" name="pinCount" id="pinCount_E2" min="1" oninput="generatePinDetails('E2')" 
-														<%if(e2Data!=null && e2Data[22]!=null) { %>value="<%=StringEscapeUtils.escapeHtml4(e2Data[22].toString())%>"<%} %> required readonly>
+														<%if(e2Data!=null && e2Data[22]!=null) { %>value="<%=e2Data[22]%>"<%} %> required readonly>
 													</div>
 												</div>
 										      	<!-- <button type="button" class="btn btn-primary generate-pins mb-3">Generate Pins</button> -->
@@ -592,6 +612,10 @@
 																<th width="23%">Constraints<span class="mandatory">*</span></th>
 																<th width="20%">Periodicity<span class="mandatory">*</span></th>
 																<th width="23%">Description<span class="mandatory">*</span></th> -->
+																<th width="20%">Group</th>
+																<%if(e2Data!=null) {%>
+																	<th width="10%">Action</th>
+																<%} %>
 															</tr>
 														</thead>
 														<tbody>
@@ -602,8 +626,9 @@
 																%>
 																<tr>
 																	<td class="center">
-																		<span class="pinNoText_E2"><%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %></span>
+																		<span class="pinNoText_E2"><%=obj[8] %></span>
 																		<input type="hidden" class="pinNo_E2" id="pinNo_E2_<%=slno %>" name="pinNo" value="<%=obj[8] %>">
+																		<input type="hidden" class="connectorPinId_E2" id="connectorPinId_E2_<%=slno %>" name="connectorPinId" value="<%=obj[7] %>">
 																	</td>
 																	<%-- <td>
 																		<select class="form-control form-control-sm selectdee" name="interfaceId" id="interfaceId_E2_<%=slno %>" required>
@@ -625,6 +650,16 @@
 																	<td>
 																		<input type="text" class="form-control form-control-sm" name="description" id="description_E2_<%=slno %>" value="<%=obj[12] %>" required>
 																	</td> --%>
+																	<td>
+																		<input type="text" class="form-control form-control-sm" name="groupName" id="groupName_E2_<%=slno %>" <%if(obj[23]!=null){ %> value="<%=obj[23] %>" <%} %> >
+																	</td>
+																	<%if(e2Data!=null) {%>
+																		<td class="center">
+																			<button type="button" class="editable-clicko" name="action" value="Edit" formmethod="post" data-toggle="tooltip" title="Update" onclick="updatePinDetails('E2', '<%=slno %>', '2', 'B', '<%=icdConnectorIdE2!=null?icdConnectorIdE2:"0"%>')">
+																	            <i class="fa fa-lg fa-edit" style="padding: 0px;color: darkorange;font-size: 25px;" aria-hidden="true"></i>
+																	        </button>
+																		</td>
+																	<%} %>
 																</tr>
 															<%} }%>
 														</tbody>
@@ -666,19 +701,26 @@
 										<div class="col-md-2">
 											<label class="fw-bold">Function<span class="mandatory">*</span></label>
 											<input type="text" class="form-control" name="pinFunction" maxlength="255" placeholder="Enter Function" 
-											<%if(mapping!=null && mapping.getPinFunction()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getPinFunction())%>"<%} %> required>
+											<%if(mapping!=null && mapping.getPinFunction()!=null) {%>value="<%=mapping.getPinFunction()%>"<%} %> required>
 										</div>
 										<div class="col-md-2">
 											<label class="fw-bold">Signal Name<span class="mandatory">*</span></label>
 											<input type="text" class="form-control" name="signalName" maxlength="255" placeholder="Enter Signal Name"
-											<%if(mapping!=null && mapping.getSignalName()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getSignalName())%>"<%} %> required>
+											<%if(mapping!=null && mapping.getSignalName()!=null) {%>value="<%=mapping.getSignalName()%>"<%} %> required>
 										</div>
+										<%String concode = mapping!=null && mapping.getConnectionCode()!=null ? mapping.getConnectionCode(): null; 
+											String[] concodeSplit = concode!=null ? concode.split("-") : null;
+		    								String concodefromSystem = concodeSplit!=null ? concodeSplit[0].split("_")[0] : "";
+		    								String concodefromGrp = concodeSplit!=null ? concodeSplit[0].split("_")[1] : "";
+		    								String concodetoSystem = concodeSplit!=null ? concodeSplit[1].split("_")[0] : "";
+		    								String concodetoGrp = concodeSplit!=null ? concodeSplit[1].split("_")[1] : "";
+										%>
 										<div class="col-md-2">
 											<label class="fw-bold">From<span class="mandatory">*</span></label>
 											<select class="form-control selectdee connectorPinIdFrom" name="connectorPinIdFrom" id="connectorPinIdFrom" onchange="updateInterfaceNameText()"
 										    data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
 												<option value="" disabled selected>Choose...</option>
-											    <%for(Object[] obj : icdConnectorPinList){
+											    <%-- <%for(Object[] obj : icdConnectorPinList){
 											    	//if(obj[3].toString().equalsIgnoreCase("A")) { %>
 											    	<option value="<%=obj[7]+"/"+obj[6]+"/"+obj[8]+"/"+obj[13] %>" 
 											    	data-interfacename="<%=obj[14] %>"
@@ -687,7 +729,39 @@
 											    	data-systemtype="<%=obj[3] %>"
 											    	data-subsystemid="<%=obj[4] %>"
 											    	<%if(mapping!=null && mapping.getConnectorPinIdFrom()!=null && mapping.getConnectorPinIdFrom()== Long.parseLong(obj[7].toString())) {%>selected<%} %>>
-											      		<%=obj[5] !=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - "%> (<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>) - <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %>
+											      		<%=obj[5] %> (<%=obj[6] %>) - <%=obj[8] %>
+											    	</option>
+											    <% } //} %> --%>
+											    <%for(Map.Entry<String, List<Object[]>> entry : icdConnectorPinListMap.entrySet()){
+											    	String key = entry.getKey();
+											    	List<Object[]> valueList= entry.getValue();
+											    	Object[] obj = valueList.get(0);
+											    	
+											    	if(key.startsWith("23:")) {
+											    		key = obj[23].toString();
+											    	}else {
+											    		key = obj[8].toString();
+											    	}
+											    	
+											    	StringJoiner join7 = new StringJoiner(",");
+											    	StringJoiner join8 = new StringJoiner(", ");
+											    	for (Object[] value : valueList) {
+											    	    if (value[7] != null) join7.add(value[7].toString());
+											    	    if (value[8] != null) join8.add(value[8].toString());
+											    	}
+											    	
+											    	 %>
+											    	<option value="<%=join7+"/"+obj[6]+"/"+key+"/"+obj[13] %>"
+											    	data-interfacename="<%=obj[14] %>"
+											    	data-interfacecode="<%=obj[13] %>"
+											    	data-interfaceid="<%=obj[9] %>"
+											    	data-systemtype="<%=obj[3] %>"
+											    	data-subsystemid="<%=obj[4] %>"
+											    	<%if(concodefromGrp.equalsIgnoreCase(key) && concodefromSystem.equalsIgnoreCase(obj[6].toString()) ) {%>selected<%} %> >
+											      		<%=obj[5] %> (<%=obj[6] %>) - <%=key %>
+											      		<%if(valueList.size()>1 || entry.getKey().startsWith("23:")) {  %>
+											      			(<%=join8 %>)
+											      		<%} %>
 											    	</option>
 											    <% } //} %>
 											</select>
@@ -697,16 +771,38 @@
 											<select class="form-control selectdee connectorPinIdTo" name="connectorPinIdTo" id="connectorPinIdTo" onchange="updateInterfaceNameText()"
 										    data-placeholder="---------Select------------" data-live-search="true" data-container="body" required>
 												<option value="" disabled selected>Choose...</option>
-											    <%for(Object[] obj : icdConnectorPinList){
-											    	//if(obj[3].toString().equalsIgnoreCase("B")) {%>
-											    	<option value="<%=obj[7]+"/"+obj[6]+"/"+obj[8]+"/"+obj[13] %>"
+											    <%for(Map.Entry<String, List<Object[]>> entry : icdConnectorPinListMap.entrySet()){
+											    	String key = entry.getKey();
+											    	List<Object[]> valueList= entry.getValue();
+											    	Object[] obj = valueList.get(0);
+											    	
+											    	if(key.startsWith("23:")) {
+											    		key = obj[23].toString();
+											    	}else {
+											    		key = obj[8].toString();
+											    	}
+											    	
+											    	StringJoiner join7 = new StringJoiner(",");
+											    	StringJoiner join8 = new StringJoiner(", ");
+											    	for (Object[] value : valueList) {
+											    	    if (value[7] != null) join7.add(value[7].toString());
+											    	    if (value[8] != null) join8.add(value[8].toString());
+											    	}
+											    	
+											    	 %>
+											    	<option value="<%=join7+"/"+obj[6]+"/"+key+"/"+obj[13] %>"
 											    	data-interfacename="<%=obj[14] %>"
 											    	data-interfacecode="<%=obj[13] %>"
 											    	data-interfaceid="<%=obj[9] %>"
 											    	data-systemtype="<%=obj[3] %>"
 											    	data-subsystemid="<%=obj[4] %>"
-											    	<%if(mapping!=null && mapping.getConnectorPinIdTo()!=null && mapping.getConnectorPinIdTo()== Long.parseLong(obj[7].toString())) {%>selected<%} %>>
-											      		<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %> (<%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %>) - <%=obj[8]!=null?StringEscapeUtils.escapeHtml4(obj[8].toString()): " - " %>
+											    	<%if(concodetoGrp.equalsIgnoreCase(key) && concodetoSystem.equalsIgnoreCase(obj[6].toString()) ) {%>selected<%} %> >
+											      		<%=obj[5] %> (<%=obj[6] %>) - <%=key %>
+											      		<%if(valueList.size()>1) {  %>
+											      			(<%=join8 %>)
+											      		<% } else if(entry.getKey().startsWith("23:")) { %>
+											      			(<%=obj[8] %>)
+											      		<%} %>
 											    	</option>
 											    <% } //} %>
 											</select>
@@ -724,25 +820,25 @@
 										<div class="col-md-2">
 	       									<label class="fw-bold">Cable Max Length (In Meters)<span class="mandatory">*</span></label>
 	       									<input type="number" step="1" class="form-control " name="cableMaxLength" id="cableMaxLengthAdd" placeholder="Enter Maximum Length of Cable" min="0"
-	       									<%if(mapping!=null && mapping.getCableMaxLength()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getCableMaxLength().toString())%>"<%} %> required>
+	       									<%if(mapping!=null && mapping.getCableMaxLength()!=null) {%>value="<%=mapping.getCableMaxLength()%>"<%} %> required>
 	       									<span class="mandatory" id="cablelengthwarning"></span>
 	       								</div>
 	       								<div class="col-md-2">
 	       									<label class="fw-bold">Interface Loss per Meter<span class="mandatory">*</span></label>
 	       									<input type="number" step="1" class="form-control " name="interfaceLoss" id="interfaceLossAdd" placeholder="Enter Interface Loss per Meter" min="0" 
-	       									<%if(mapping!=null && mapping.getInterfaceLoss()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getInterfaceLoss().toString())%>"<%} %> required>
+	       									<%if(mapping!=null && mapping.getInterfaceLoss()!=null) {%>value="<%=mapping.getInterfaceLoss()%>"<%} %> required>
 	       									<span class="mandatory" id="interfacelosswarning"></span>
 	       								</div>
 	       								<div class="col-md-2">
 	       									<label class="fw-bold">Cable Bending Radius<span class="mandatory">*</span></label>
 	       									<input type="number" step="any" class="form-control " name="cableBendingRadius" id="cableBendingRadiusAdd" placeholder="Enter Cable Bending Radius" min="0" 
-	       									<%if(mapping!=null && mapping.getCableBendingRadius()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getCableBendingRadius().toString())%>"<%} %> required>
+	       									<%if(mapping!=null && mapping.getCableBendingRadius()!=null) {%>value="<%=mapping.getCableBendingRadius()%>"<%} %> required>
 	       									<span class="mandatory" id="cableradiuswarning"></span>
 	       								</div>
 										<div class="col-md-2">
 											<label class="fw-bold">Remarks</label>
 											<input type="text" class="form-control " name="remarks" maxlength="255" placeholder="Enter Remarks"
-											<%if(mapping!=null && mapping.getRemarks()!=null) {%>value="<%=StringEscapeUtils.escapeHtml4(mapping.getRemarks())%>"<%} %>>
+											<%if(mapping!=null && mapping.getRemarks()!=null) {%>value="<%=mapping.getRemarks()%>"<%} %>>
 										</div>
 										<div class="col-md-1 left" style="margin-top: auto;">
 											<%if(mapping!=null) {%>
@@ -760,40 +856,45 @@
       						<table class="table table-bordered table-hover table-striped table-condensed dataTable" id="myTable3"  style="width: 100%;">
 								<thead class="center" style="background: #055C9D;color: white;">
 						      		<tr>
-						     	 		<th style="width: 4% !important;">SN</th>
-						      			<th style="width: 15% !important;">Connection Code</th>
-						      			<th style="width: 10% !important;">Function</th>
-						      			<th style="width: 10% !important;">Signal Name</th>
-						      			<th style="width: 10% !important;">Type</th>
-						      			<th style="width: 10% !important;">Cable Length</th>
-						      			<th style="width: 13% !important;">From</th>
-						      			<th style="width: 13% !important;">To</th>
-						      			<th style="width: 10% !important;">Remarks</th>
-						      			<th style="width: 5% !important;">Action</th>
+						     	 		<th width="3%">SN</th>
+						      			<th width="15%">Connection Code</th>
+						      			<th width="10%">Function</th>
+						      			<th width="10%">Signal Name</th>
+						      			<th width="10%">Type</th>
+						      			<th width="8%">Cable Length</th>
+						      			<th width="15%">From</th>
+						      			<th width="15%">To</th>
+						      			<th width="10%">Remarks</th>
+						      			<th width="4%">Action</th>
 						      		</tr>
 						      	</thead>
 		      					<tbody>
 		      						<%if(icdConnectorPinMapList!=null && icdConnectorPinMapList.size()>0) {
 		      							int slno=0;
 		    							for(ICDPinMapDTO map : icdConnectorPinMapList){
+		    								String[] codeSplit = map.getConnectionCode().split("-");
+		    								String fromGrp =  codeSplit[0].split("_")[1];
+		    								String toGrp =  codeSplit[1].split("_")[1];
+		    								boolean isValidFromGrp = fromGrp.startsWith("J") && fromGrp.length() > 1 && Character.isDigit(fromGrp.charAt(1)) && fromGrp.contains(".");
+		    								boolean isValidToGrp = toGrp.startsWith("J") && toGrp.length() > 1 && Character.isDigit(toGrp.charAt(1)) && toGrp.contains(".");
 		      						%>
 										<tr>
 								      		<td class="center"><%=++slno %></td>
-								      		<td class="center"><%=map.getConnectionCode()!=null?StringEscapeUtils.escapeHtml4(map.getConnectionCode()): " - " %></td>
-								      		<td><%=map.getPinFunction()!=null?StringEscapeUtils.escapeHtml4(map.getPinFunction()): " - " %></td>
-								      		<td><%=map.getSignalName()!=null?StringEscapeUtils.escapeHtml4(map.getSignalName()): " - " %></td>
+								      		<td class="center"><%=map.getConnectionCode() %></td>
+								      		<td><%=map.getPinFunction() %></td>
+								      		<td><%=map.getSignalName() %></td>
 								      		<td>
 								      			<%if(map.getInterfaceId()==-1) { %> 
 								      				Not Connected
 								      			<%} else if(map.getInterfaceId()==0){ %>
 								      				Ground
 								      			<%} else{ %>
-								      				<%=map.getInterfaceContent()!=null?StringEscapeUtils.escapeHtml4(map.getInterfaceContent()): " - " %>
+								      				<%=map.getInterfaceContent()!=null?map.getInterfaceContent():"-" %>
 								      			<%} %>
 								      		</td>
-								      		<td class="center"><%=map.getCableMaxLength()!=null?StringEscapeUtils.escapeHtml4(map.getCableMaxLength().toString()): " - " %> Meters</td>
-								      		<td ><%=map.getLevelNameE1()!=null?StringEscapeUtils.escapeHtml4(map.getLevelNameE1()): " - " %> (<%=map.getLevelCodeE1()!=null?StringEscapeUtils.escapeHtml4(map.getLevelCodeE1()): " - " %>) - <%=map.getPinNoE1()!=null?StringEscapeUtils.escapeHtml4(map.getPinNoE1()): " - " %></td>
-								      		<td ><%=map.getLevelNameE2()!=null?StringEscapeUtils.escapeHtml4(map.getLevelNameE2()): " - " %> (<%=map.getLevelCodeE2()!=null?StringEscapeUtils.escapeHtml4(map.getLevelCodeE2()): " - " %>) - <%=map.getPinNoE2()!=null?StringEscapeUtils.escapeHtml4(map.getPinNoE2()): " - " %></td>
+								      		<td class="center"><%=map.getCableMaxLength() %>m</td>
+								      		<td ><%=map.getLevelNameE1() %> (<%=map.getLevelCodeE1() %>) - <%=!isValidFromGrp ? fromGrp+" (" : "" %><%=map.getPinNoE1s() %><%=!isValidFromGrp ?")" : "" %></td>
+								      		<td ><%=map.getLevelNameE2() %> (<%=map.getLevelCodeE2() %>) - <%=!isValidToGrp ? toGrp+" (" : "" %><%=map.getPinNoE2s() %><%=!isValidToGrp ?")" : "" %></td>
 								      		<td class="center"><%=map.getRemarks()!=null && !map.getRemarks().isEmpty()?map.getRemarks():"-" %></td>
 								      		<td class="center">
 								      			 <form action="ICDConnectionPinDetails.htm" method="POST" id="inlinemapform<%=slno%>">
@@ -924,12 +1025,13 @@ function generatePinDetails(endNo) {
     					    if(endNo=='E1') {
     					    	row+='<td>' + selectHTML + '</td>' +
         						'<td><input type="text" class="form-control form-control-sm" name="constraints" id="constraints_' + endNo +'_' + i + '" /></td>' +
-        					    '<td><input type="radio" name="periodicity_' + endNo +'_' + i + '" id="periodicity_' + endNo +'_' + i + '" value="Periodic" required checked/>Periodic &nbsp;&nbsp;' +
-        					    '<input type="radio" name="periodicity_' + endNo +'_' + i + '" id="periodicity_' + endNo +'_' + i + '" value="Non-Periodic" required/>Non-Periodic &nbsp;&nbsp;' +
-        					    '<input type="radio" name="periodicity_' + endNo +'_' + i + '" id="periodicity_' + endNo +'_' + i + '" value="Descrete" required/>Descrete</td>' +
+        					    '<td><input type="radio" name="periodicity_' + endNo +'_' + i + '" id="periodicity_' + endNo +'_' + i + '" value="Periodic" required checked/>P &nbsp;&nbsp;' +
+        					    '<input type="radio" name="periodicity_' + endNo +'_' + i + '" id="periodicity_' + endNo +'_' + i + '" value="Non-Periodic" required/>N.P &nbsp;&nbsp;' +
+        					    '<input type="radio" name="periodicity_' + endNo +'_' + i + '" id="periodicity_' + endNo +'_' + i + '" value="Descrete" required/>D</td>' +
         					    '<td><input type="text" class="form-control form-control-sm" name="description" id="description_' + endNo +'_' + i + '" /></td>';
+        					    
     					    }
-    					
+    					row+='<td><input type="text" class="form-control form-control-sm" name="groupName" id="groupName_' + endNo +'_' + i + '" /></td>';
     					row+='</tr>';
     					$tbody.append(row);
     					
@@ -964,7 +1066,7 @@ function updateInterfaceNameText() {
     
     var selectedPinTo = $('#connectorPinIdTo option:selected');
     var interfaceNameTo = selectedPinTo.data('interfacename');
-    var interfaceCodeTo = selectedPinFrom.data('interfacecode');
+    var interfaceCodeTo = selectedPinTo.data('interfacecode');
     var interfaceIdTo = selectedPinTo.data('interfaceid');
     var systemTypeTo = selectedPinTo.data('systemtype');
     
@@ -991,13 +1093,18 @@ function updateInterfaceNameText() {
     
 }
 
-function updatePinDetails(slno) {
-	$('#connectorPinId').val($('#connectorPinId_' + slno).val());
-	$('#pinNo').val($('#pinNo_' + slno).val());
-	$('#interfaceId').val($('#interfaceId_' + slno).val());
-	$('#constraints').val($('#constraints_' + slno).val());
-	$('#periodicity').val($('input[name="periodicity_' + slno + '"]:checked').val());
-	$('#description').val($('#description_' + slno).val());
+function updatePinDetails(endNo, slno, tabNo, systemType, connectorId) {
+	$('#connectorPinId').val($('#connectorPinId_' + endNo + "_" + slno).val());
+	$('#pinNo').val($('#pinNo_' + endNo + "_" + slno).val());
+	$('#interfaceId').val($('#interfaceId_' + endNo + "_" + slno).val());
+	$('#constraints').val($('#constraints_' + endNo + "_" + slno).val());
+	$('#periodicity').val($('input[name="periodicity_' + endNo + "_" + slno + '"]:checked').val());
+	$('#description').val($('#description_' + endNo + "_" + slno).val());
+	$('#groupName').val($('#groupName_' + endNo + "_" + slno).val());
+	$('#pinupdateEndNo').val(endNo);
+	$('#pinupdateTabNo').val(tabNo);
+	$('#pinupdateSystemType').val(systemType);
+	$('#pinupdateIcdConnectorId').val(connectorId);
 	
 	event.preventDefault(); 
 	if (confirm("Are you sure you want to update?")) {

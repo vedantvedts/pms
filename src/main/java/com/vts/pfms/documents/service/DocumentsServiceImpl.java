@@ -39,6 +39,7 @@ import com.vts.pfms.documents.model.ICDConnectionConnectors;
 import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDConnectionSystems;
+import com.vts.pfms.documents.model.ICDConnectorMappedPins;
 import com.vts.pfms.documents.model.ICDConnectorPinMapping;
 import com.vts.pfms.documents.model.ICDConnectorPins;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
@@ -1316,6 +1317,18 @@ public class DocumentsServiceImpl implements DocumentsService{
 		
 	}
 	
+	@Override
+	public long addICDConnectorMappedPins(ICDConnectorMappedPins mappedPins) {
+		
+		return dao.addICDConnectorMappedPins(mappedPins);
+	}
+	
+	@Override
+	public int deleteICDConnectorMappedPinByConnectorPinMapId(Long connectorPinMapId) throws Exception {
+		
+		return dao.deleteICDConnectorMappedPinByConnectorPinMapId(connectorPinMapId);
+	}
+	
 	/* ************************************************ ICD Document End***************************************************** */
 	
 	/* ************************************************ IRS Document ***************************************************** */
@@ -1476,9 +1489,9 @@ public class DocumentsServiceImpl implements DocumentsService{
 	}
 	
 	@Override
-	public List<Object[]> getDataCarryingConnectionList(String icdDocId) throws Exception {
+	public List<Object[]> getDataCarryingConnectionList(String icdDocId, String systemMainIdOne, String systemMainIdTwo) throws Exception {
 		
-		return dao.getDataCarryingConnectionList(icdDocId);
+		return dao.getDataCarryingConnectionList(icdDocId, systemMainIdOne, systemMainIdTwo);
 	}
 	
 	@Override

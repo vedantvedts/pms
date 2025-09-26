@@ -18,6 +18,7 @@ import com.vts.pfms.documents.model.ICDConnectionConnectors;
 import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDConnectionSystems;
+import com.vts.pfms.documents.model.ICDConnectorMappedPins;
 import com.vts.pfms.documents.model.ICDConnectorPinMapping;
 import com.vts.pfms.documents.model.ICDConnectorPins;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
@@ -212,7 +213,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	private static final String IGIDOCUMENTMEMBERLIST = "SELECT a.empid, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName',b.Designation,a.LabCode,b.DesigId,c.IGIMemeberId FROM employee a,employee_desig b,pfms_igi_document_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.EmpId = c.EmpId AND c.DocId =:DocId AND c.DocType=:DocType AND c.IsActive =1 ORDER BY b.DesigId";
+	private static final String IGIDOCUMENTMEMBERLIST = "SELECT a.empid, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.EmpName) AS 'EmpName',b.Designation,a.LabCode,b.DesigId,c.IGIMemeberId FROM employee a,employee_desig b,pfms_igi_document_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.EmpId = c.EmpId AND c.DocId =:DocId AND c.DocType=:DocType AND c.IsActive =1 ORDER BY a.SrNo=0, a.SrNo";
 	@Override
 	public List<Object[]> getDocumentMemberList(String docId, String docType) throws Exception {
 		try {
@@ -771,7 +772,8 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String FIELDMASTER="SELECT a.FieldMasterId, a.FieldName, a.FieldShortName, a.FieldCode, a.FieldDesc, a.DataTypeMasterId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.Quantum, CONCAT(c.Unitdescription,' (',c.Unit,')') AS Unit, a.Remarks, b.DataTypePrefix, b.DataLength, b.AliasName, b.DataStandardName, (SELECT GROUP_CONCAT(c.FieldGroupId SEPARATOR ',') FROM pfms_field_group_linked c WHERE c.FieldMasterId = a.FieldMasterId AND c.IsActive=1) AS FieldGroupIds  , c.UnitDescription  FROM pfms_field_master a LEFT JOIN pfms_data_type_master b ON a.DataTypeMasterId=b.DataTypeMasterId LEFT JOIN pfms_unit_master c ON a.UnitMasterId = c.UnitMasterId WHERE a.IsActive = 1 ORDER BY a.FieldMasterId, a.FieldName ASC";
+	private static final String FIELDMASTER="SELECT a.FieldMasterId, a.FieldName, a.FieldShortName, a.FieldCode, a.FieldDesc, a.DataTypeMasterId, a.TypicalValue, a.FieldMinValue, a.FieldMaxValue, a.InitValue, a.FieldOffSet, a.Quantum, c.Unit, a.Remarks, b.DataTypePrefix, b.DataLength, b.AliasName, b.DataStandardName, (SELECT GROUP_CONCAT(c.FieldGroupId SEPARATOR ',') FROM pfms_field_group_linked c WHERE c.FieldMasterId = a.FieldMasterId AND c.IsActive=1) AS FieldGroupIds  \r\n"
+			+ "FROM pfms_field_master a LEFT JOIN pfms_data_type_master b ON a.DataTypeMasterId=b.DataTypeMasterId LEFT JOIN pfms_unit_master c ON a.UnitMasterId = c.UnitMasterId WHERE a.IsActive = 1 ORDER BY a.FieldMasterId, a.FieldName ASC";
 	@Override
 	public List<Object[]> fieldMasterList() throws Exception {
 		try {
@@ -1582,7 +1584,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	private static final String ICDCONNECTORPINLIST = "SELECT a.ICDConnectorId, a.ICDConnectionId, a.ConnectorNo, a.SystemType, a.SubSystemId, c.LevelName, c.LevelCode, b.ConnectorPinId, b.PinNo, b.InterfaceId, b.Constraints, b.Periodicity, b.Description, d.InterfaceCode, d.InterfaceName, a.ConnectorId, e.PartNo, e.ConnectorMake, e.StandardName, e.Protection, e.RefInfo, e.Remarks, e.PinCount \r\n"
+	private static final String ICDCONNECTORPINLIST = "SELECT a.ICDConnectorId, a.ICDConnectionId, a.ConnectorNo, a.SystemType, a.SubSystemId, c.LevelName, c.LevelCode, b.ConnectorPinId, b.PinNo, b.InterfaceId, b.Constraints, b.Periodicity, b.Description, d.InterfaceCode, d.InterfaceName, a.ConnectorId, e.PartNo, e.ConnectorMake, e.StandardName, e.Protection, e.RefInfo, e.Remarks, e.PinCount, b.GroupName \r\n"
 			+ "FROM pfms_icd_connection_connectors a JOIN pfms_icd_connector_pins b ON a.ICDConnectorId=b.ICDConnectorId JOIN pfms_product_tree c ON a.SubSystemId=c.MainId LEFT JOIN pfms_igi_interfaces d ON b.InterfaceId=d.InterfaceId LEFT JOIN pfms_igi_connector e ON e.ConnectorId=a.ConnectorId \r\n"
 			+ "WHERE a.IsActive=1 AND b.IsActive=1 AND a.ICDConnectionId=:ICDConnectionId";
 	@Override
@@ -1644,23 +1646,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String ICDCONNECTORPINMAPLIST = "SELECT a.ConnectorPinMapId, a.ICDConnectionId, a.ConnectorPinIdFrom, a.ConnectorPinIdTo, a.PinFunction, a.SignalName, a.ConnectionCode, a.CableMaxLength, a.InterfaceLoss, a.CableBendingRadius, a.Remarks,\r\n"
-			+ "	b.ConnectorPinId AS 'PinIdE1', b.ICDConnectorId AS 'ConnectorIdE1', b.PinNo AS 'PinNoE1', c.ConnectorPinId AS 'PinIdE2', c.ICDConnectorId AS 'ConnectorIdE2', c.PinNo AS 'PinNoE2', \r\n"
-			+ "	d.ConnectorNo AS 'ConnectorNoE1', e.ConnectorNo AS 'ConnectorNoE2', d.SubSystemId AS 'SubSystemIdE1', e.SubSystemId AS 'SubSystemIdE2',\r\n"
-			+ "	f.LevelName AS 'LevelNameE1', f.LevelCode 'LevelCodeE1', g.LevelName AS 'LevelNameE2', g.LevelCode AS 'LevelCodeE2',\r\n"
-			+ "	a.InterfaceId, b.Constraints, b.Periodicity, b.Description, h.InterfaceName, h.InterfaceCode, i.InterfaceType, k.InterfaceContent \r\n"
-			+ "FROM pfms_icd_connector_pin_mapping a \r\n"
-			+ "LEFT JOIN pfms_icd_connector_pins b ON a.ConnectorPinIdFrom = b.ConnectorPinId\r\n"
-			+ "LEFT JOIN pfms_icd_connector_pins c ON a.ConnectorPinIdTo = c.ConnectorPinId\r\n"
-			+ "LEFT JOIN pfms_icd_connection_connectors d ON d.ICDConnectorId = b.ICDConnectorId\r\n"
-			+ "LEFT JOIN pfms_icd_connection_connectors e ON e.ICDConnectorId = c.ICDConnectorId\r\n"
-			+ "LEFT JOIN pfms_product_tree f ON f.MainId = d.SubSystemId\r\n"
-			+ "LEFT JOIN pfms_product_tree g ON g.MainId = e.SubSystemId\r\n"
-			+ "LEFT JOIN pfms_igi_interfaces h ON a.InterfaceId = h.InterfaceId\r\n"
-			+ "LEFT JOIN pfms_igi_interface_types i ON i.InterfaceTypeId = h.InterfaceTypeId\r\n"
-			+ "LEFT JOIN pfms_icd_connections j ON j.ICDConnectionId = a.ICDConnectionId AND j.ICDDocId=:ICDDocId\r\n"
-			+ "LEFT JOIN pfms_igi_interface_content k ON k.InterfaceContentId = h.InterfaceContentId \r\n"
-			+ "WHERE a.IsActive=1";
+	private static final String ICDCONNECTORPINMAPLIST = "CALL pfms_icd_con_map_list(:ICDDocId)";
 	@Override
 	public List<ICDPinMapDTO> getICDConnectorPinMapListByICDDocId(String icdDocId) throws Exception {
 	    try {
@@ -1676,8 +1662,6 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		            int i = 0;
 		            dto.setConnectorPinMapId(((Number) row[i++]).longValue());
 		            dto.setICDConnectionId(((Number) row[i++]).longValue());
-		            dto.setConnectorPinIdFrom(((Number) row[i++]).longValue());
-		            dto.setConnectorPinIdTo(((Number) row[i++]).longValue());
 		            dto.setPinFunction((String) row[i++]);
 		            dto.setSignalName((String) row[i++]);
 		            dto.setConnectionCode((String) row[i++]);
@@ -1686,12 +1670,14 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		            dto.setCableBendingRadius(((Number) row[i++]).doubleValue());
 		            dto.setRemarks((String) row[i++]);
 		            
-		            dto.setPinIdE1(((Number) row[i++]).longValue());
-		            dto.setConnectorIdE1(((Number) row[i++]).longValue());
-		            dto.setPinNoE1((String) row[i++]);
-		            dto.setPinIdE2(((Number) row[i++]).longValue());
-		            dto.setConnectorIdE2(((Number) row[i++]).longValue());
-		            dto.setPinNoE2((String) row[i++]);
+		            dto.setConPinMappedIdE1s((String) row[i++]);
+		            dto.setPinIdE1s((String) row[i++]);
+		            dto.setConnectorIdE1s((String) row[i++]);
+		            dto.setPinNoE1s((String) row[i++]);
+		            dto.setConPinMappedIdE2s((String) row[i++]);
+		            dto.setPinIdE2s((String) row[i++]);
+		            dto.setConnectorIdE2s((String) row[i++]);
+		            dto.setPinNoE2s((String) row[i++]);
 		            
 		            dto.setConnectorNoE1(((Number) row[i++]).intValue());
 		            dto.setConnectorNoE2(((Number) row[i++]).intValue());
@@ -1779,6 +1765,32 @@ public class DocumentsDaoImpl implements DocumentsDao{
 			return 0L;
 		}
 	}
+
+	@Override
+	public long addICDConnectorMappedPins(ICDConnectorMappedPins mappedPins) {
+		try {
+			manager.persist(mappedPins);
+			manager.flush();
+			return mappedPins.getConPinMappedId();
+		}catch (Exception e) {
+			logger.error(new Date() +"Inside DocumentsDaoImpl addICDConnectorMappedPins "+ e);
+			e.printStackTrace();
+			return 0L;
+		}
+	}
+
+	private static final String DELETEICDCONNECTORMAPPEDPINBYCONNECTORPINMAPID = "DELETE FROM pfms_icd_connector_mapped_pins WHERE ConnectorPinMapId=:ConnectorPinMapId";
+	@Override
+	public int deleteICDConnectorMappedPinByConnectorPinMapId(Long connectorPinMapId) throws Exception {
+		try {
+			Query query=manager.createNativeQuery(DELETEICDCONNECTORMAPPEDPINBYCONNECTORPINMAPID);
+			query.setParameter("ConnectorPinMapId", connectorPinMapId);
+			return query.executeUpdate();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 	
 	/* ************************************************ ICD Document End***************************************************** */
 	
@@ -1859,7 +1871,16 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 
-	private static final String GETIRSDOCUMENTSPECSLIST = "SELECT a.IRSSpecificationId, a.IRSDocId, a.ConnectorPinMapId, a.LogicalInterfaceId, '' AS InfoName, a.ActionAtDest, b.ConnectionCode, c.MsgCode, c.MsgName FROM pfms_irs_document_specifications a, pfms_icd_connector_pin_mapping b, pfms_igi_logical_interfaces c WHERE a.IsActive=1 AND a.ConnectorPinMapId = b.ConnectorPinMapId AND a.LogicalInterfaceId=c.LogicalInterfaceId AND a.IRSDocId=:IRSDocId";
+	private static final String GETIRSDOCUMENTSPECSLIST = "SELECT a.IRSSpecificationId, a.IRSDocId, a.ConnectorPinMapId, a.LogicalInterfaceId, '' AS InfoName, a.ActionAtDest, b.ConnectionCode, c.MsgCode, c.MsgName,\r\n"
+			+ "	GROUP_CONCAT(DISTINCT f.PinNo SEPARATOR ', ') AS PinsFrom, GROUP_CONCAT(DISTINCT g.PinNo SEPARATOR ', ') AS PinsTo\r\n"
+			+ "FROM pfms_irs_document_specifications a\r\n"
+			+ "LEFT JOIN pfms_icd_connector_pin_mapping b ON a.ConnectorPinMapId = b.ConnectorPinMapId\r\n"
+			+ "LEFT JOIN pfms_igi_logical_interfaces c ON a.LogicalInterfaceId=c.LogicalInterfaceId\r\n"
+			+ "LEFT JOIN pfms_icd_connector_mapped_pins d ON a.ConnectorPinMapId = d.ConnectorPinMapId AND d.ConnectorPinType='A' AND d.IsActive=1\r\n"
+			+ "LEFT JOIN pfms_icd_connector_mapped_pins e ON a.ConnectorPinMapId = e.ConnectorPinMapId AND e.ConnectorPinType='B' AND e.IsActive=1\r\n"
+			+ "LEFT JOIN pfms_icd_connector_pins f ON d.ConnectorPinId = f.ConnectorPinId LEFT JOIN pfms_icd_connector_pins g ON e.ConnectorPinId = g.ConnectorPinId\r\n"
+			+ "WHERE a.IsActive=1 AND a.IRSDocId=:IRSDocId \r\n"
+			+ "GROUP BY a.IRSSpecificationId, a.IRSDocId, a.ConnectorPinMapId, a.LogicalInterfaceId, a.ActionAtDest, b.ConnectionCode, c.MsgCode, c.MsgName";
 	@Override
 	public List<Object[]> getIRSDocumentSpecificationsList(String irsDocId)throws Exception {
 		try {
@@ -1900,12 +1921,19 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	private static final String GETDATACARRYINGCONNECTIONS = "SELECT a.ConnectorPinMapId, a.ConnectionCode, a.ICDConnectionId, a.InterfaceId FROM pfms_icd_connector_pin_mapping a, pfms_igi_interfaces b, pfms_icd_connections c WHERE a.IsActive=1 AND a.InterfaceId=b.InterfaceId AND a.ICDConnectionId=c.ICDConnectionId AND b.InterfaceContentId IN (SELECT c.InterfaceContentId FROM pfms_igi_interface_content c WHERE c.IsDataCarrying='Y' AND c.IsActive=1) AND c.ICDDocId=:ICDDocId";
+	private static final String GETDATACARRYINGCONNECTIONS = "SELECT a.ConnectorPinMapId, a.ConnectionCode, a.ICDConnectionId, a.InterfaceId\r\n"
+			+ "FROM pfms_icd_connector_pin_mapping a JOIN pfms_igi_interfaces b ON a.InterfaceId = b.InterfaceId JOIN pfms_icd_connections c ON a.ICDConnectionId = c.ICDConnectionId\r\n"
+			+ "WHERE a.IsActive = 1 AND b.InterfaceContentId IN (SELECT d.InterfaceContentId FROM pfms_igi_interface_content d WHERE d.IsDataCarrying = 'Y' AND d.IsActive = 1)\r\n"
+			+ "	AND EXISTS ( SELECT 1 FROM pfms_icd_connector_mapped_pins e LEFT JOIN pfms_icd_connector_pins f ON e.ConnectorPinId = f.ConnectorPinId\r\n"
+			+ "		LEFT JOIN pfms_icd_connection_connectors g ON g.ICDConnectorId = f.ICDConnectorId LEFT JOIN pfms_product_tree h ON h.MainId = g.SubSystemId AND h.IsActive = 1\r\n"
+			+ "		WHERE a.ConnectorPinMapId = e.ConnectorPinMapId AND b.IsActive=1 AND h.SystemMainId IN (:SystemMainIdOne, :SystemMainIdTwo) ) AND c.ICDDocId=:ICDDocId";
 	@Override
-	public List<Object[]> getDataCarryingConnectionList(String icdDocId)throws Exception {
+	public List<Object[]> getDataCarryingConnectionList(String icdDocId, String systemMainIdOne, String systemMainIdTwo)throws Exception {
 		try {
 			Query query=manager.createNativeQuery(GETDATACARRYINGCONNECTIONS);
 			query.setParameter("ICDDocId", icdDocId);
+			query.setParameter("SystemMainIdOne", systemMainIdOne);
+			query.setParameter("SystemMainIdTwo", systemMainIdTwo);
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();

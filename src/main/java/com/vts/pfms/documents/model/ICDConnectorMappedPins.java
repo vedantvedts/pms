@@ -16,28 +16,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name="pfms_icd_connector_pin_mapping")
-public class ICDConnectorPinMapping implements Serializable {
+@Table(name = "pfms_icd_connector_mapped_pins")
+public class ICDConnectorMappedPins implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long ConPinMappedId;
 	private Long ConnectorPinMapId;
-	private Long ICDConnectionId;
-//	private Long ConnectorPinIdFrom;
-//	private Long ConnectorPinIdTo;
-	private String PinFunction;
-	private String SignalName;
-	private Long InterfaceId;
-	private String ConnectionCode;
-	private Integer CableMaxLength;
-	private Integer InterfaceLoss;
-	private Double CableBendingRadius;
-	private String Remarks;
+	private String ConnectorPinType;
+	private Long ConnectorPinId;
 	private String CreatedBy;
 	private String CreatedDate;
-	private String ModifiedBy;
-	private String ModifiedDate;
 	private int IsActive;
 }

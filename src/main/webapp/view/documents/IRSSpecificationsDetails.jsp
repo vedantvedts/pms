@@ -1,4 +1,3 @@
-<%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.documents.model.IRSArrayMaster"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Arrays"%>
@@ -116,9 +115,9 @@
 	String documentNo = (String)request.getAttribute("documentNo");
 	String projectId = (String)request.getAttribute("projectId");
 	String irsSpecificationId = (String)request.getAttribute("irsSpecificationId");
+	String icdDocId = (String)request.getAttribute("icdDocId");
 	List<IGILogicalInterfaces> logicalInterfaceList = (List<IGILogicalInterfaces>)request.getAttribute("logicalInterfaceList"); 
 	List<IGILogicalChannel> logicalChannelList = (List<IGILogicalChannel>)request.getAttribute("logicalChannelList"); 
-	List<Object[]> dataCarryingConnectionList = (List<Object[]>)request.getAttribute("dataCarryingConnectionList"); 
 	List<Object[]> irsSpecificationsList = (List<Object[]>)request.getAttribute("irsSpecificationsList"); 
 	IRSDocumentSpecifications irsSpecifications = (IRSDocumentSpecifications)request.getAttribute("irsDocSpecifications"); 
 	
@@ -155,22 +154,21 @@
 	int slno1 = 1;
 %>
 
-	<% 
-    String ses = (String) request.getParameter("result");
-    String ses1 = (String) request.getParameter("resultfail");
-    if (ses1 != null) { %>
-    <div align="center">
-        <div class="alert alert-danger" role="alert">
-            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+	<% String ses = (String) request.getParameter("result"); 
+       String ses1 = (String) request.getParameter("resultfail");
+       if (ses1 != null) { %>
+        <div align="center">
+            <div class="alert alert-danger" role="alert">
+                <%= ses1 %>
+            </div>
         </div>
-    </div>
-<% }if (ses != null) { %>
-    <div align="center">
-        <div class="alert alert-success" role="alert">
-            <%=StringEscapeUtils.escapeHtml4(ses) %>
+    <% } if (ses != null) { %>
+        <div align="center">
+            <div class="alert alert-success" role="alert">
+                <%= ses %>
+            </div>
         </div>
-    </div>
-<% } %>
+    <% } %>
     
     <div class="container-fluid">
        
@@ -179,7 +177,7 @@
             	<div class="row">
                		<div class="col-md-7" align="left">
 	                    <h5 id="text" style="margin-left: 1%; font-weight: 600">
-	                      Specification Details - <%=documentNo!=null?StringEscapeUtils.escapeHtml4(documentNo): " - "  %>
+	                      Specification Details - <%=documentNo %>
 	                    </h5>
                 	</div>
                 	<div class="col-md-1 right" >
@@ -220,6 +218,7 @@
         			<input type="hidden" name="documentNo" value="<%=documentNo %>" />
         			<input type="hidden" name="projectId" value="<%=projectId %>" />
         			<input type="hidden" name="irsSpecificationId" value="<%=irsSpecificationId %>" />
+        			<input type="hidden" name="icdDocId" id="icdDocId" value="<%=icdDocId %>" />
 	        		<div class="card">
 	        			<div class="card-header left" style="background-color: #055C9D;">
       						<h5 class="text-white" style="font-weight: bold;">Specification Details</h5>
@@ -228,22 +227,15 @@
 	        				<div class="form-group">
 	        					<div class="row">
 	        						<div class="col-md-2">
-	        							<label class="form-label">Connection<span class="mandatory">*</span></label>
-		        						<select class="form-control selectdee connectorPinMapId" name="connectorPinMapId" id="connectorPinMapId"
-		        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required <%if(irsSpecifications!=null) {%>disabled<%} %> >
-											<option value="" disabled selected>Choose...</option>
-									        <% for(Object[] obj : dataCarryingConnectionList){ %>
-									        	<option value="<%=obj[0] %>" <%if(irsSpecifications!=null && irsSpecifications.getConnectorPinMapId()==Long.parseLong(obj[0].toString())) {%>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %></option>
-									        <%} %>
-										</select>
-        							</div>
-	        						<div class="col-md-2">
 	        							<label class="form-label">Logical Channel<span class="mandatory">*</span></label>
-		        						<select class="form-control selectdee logicalInterfaceId" name="logicalChannelId" id="logicalChannelId" data-placeholder="---------Select------------" required <%if(irsSpecifications!=null) {%>disabled<%} %>>
+		        						<select class="form-control selectdee logicalInterfaceId" name="logicalChannelId" id="logicalChannelId" onchange="getDataCarryingConnectionList()"
+		        						data-placeholder="---------Select------------" required <%if(irsSpecifications!=null) {%>disabled<%} %>>
 											<option value="0" selected disabled>----select----</option>
 									        <% for(IGILogicalChannel channel : logicalChannelList){ %>
-									        	<option value="<%=channel.getLogicalChannelId() %>" <%if(logicalChannelId.equals(channel.getLogicalChannelId())) {%>selected<%} %>>
-									        		<%=channel.getLogicalChannel()!=null?StringEscapeUtils.escapeHtml4(channel.getLogicalChannel()): " - "%> <%=" ("+(channel.getChannelCode()!=null?StringEscapeUtils.escapeHtml4(channel.getChannelCode()): " - ")+")" %>
+									        	<option value="<%=channel.getLogicalChannelId() %>" <%if(logicalChannelId.equals(channel.getLogicalChannelId())) {%>selected<%} %>
+									        	data-sourceid="<%=channel.getSourceId() %>"
+									        	data-destinationid="<%=channel.getDestinationId() %>">
+									        	<%=channel.getLogicalChannel()+" ("+channel.getChannelCode()+")" %>
 									        	</option>
 									        <%} %>
 										</select>
@@ -257,10 +249,17 @@
 												for(IGILogicalInterfaces iface : logicalInterfaceListByType){ %>
 										        	<option value="<%=iface.getLogicalInterfaceId() %>" <%if(irsSpecifications.getLogicalInterfaceId().equals(iface.getLogicalInterfaceId())) {%>selected<%} %>>
 										        		<%-- <%=iface.getMsgName()+" ("+iface.getMsgCode()+")" %> --%>
-										        		<%=iface.getMsgName()!=null?StringEscapeUtils.escapeHtml4(iface.getMsgName()): " - " %>
+										        		<%=iface.getMsgName() %>
 										        	</option>
 										        <%} %>
 									        <%} %>
+										</select>
+        							</div>
+        							<div class="col-md-2">
+	        							<label class="form-label">Connection<span class="mandatory">*</span></label>
+		        						<select class="form-control connectorPinMapId" name="connectorPinMapId" id="connectorPinMapId"
+		        						data-placeholder="---------Select------------" data-live-search="true" data-container="body" required <%if(irsSpecifications!=null) {%>disabled<%} %> >
+											<option value="" disabled selected>Choose...</option>
 										</select>
         							</div>
         							<div class="col-md-6">
@@ -337,7 +336,7 @@
 						               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
 						                			 %>
 														<option value="<%=fieldGroup.getFieldGroupId()%>" <%if(groupId==(fieldGroup.getFieldGroupId())) {%>selected<%} %> >
-															<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "%> <%=" ("+(fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - ")+")" %>
+															<%=fieldGroup.getGroupName()+" ("+fieldGroup.getGroupCode()+")" %>
 														</option>
 													<%} %>
 												</select>
@@ -349,42 +348,42 @@
 						               				<%for(Object[] obj : fieldMasterList ){
 						                			 %>
 														<option value="<%=obj[0]%>" <%if(desc[2]!=null && Long.parseLong(desc[2].toString())==Long.parseLong(obj[0].toString())) {%>selected<%} %> >
-															<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - " %>
+															<%=obj[1] %>
 														</option>
 													<%} %>
 												</select>
-												<input type="hidden" class="hiddenFieldMasterId" name="fieldMasterId" value="<%=desc[2] != null ? StringEscapeUtils.escapeHtml4(desc[2].toString()) : "" %>"/>
+												<input type="hidden" class="hiddenFieldMasterId" name="fieldMasterId" value="<%=desc[2] != null ? desc[2] : "" %>"/>
 											</td>	
 											<td>
-												<input type="text" class="form-control dataType" name="dataType" id="dataTypeEdit_<%=slno1 %>" <%if(desc[27]!=null) {%> value="<%=StringEscapeUtils.escapeHtml4(desc[27].toString()) %>" <%} %> readonly>
+												<input type="text" class="form-control dataType" name="dataType" id="dataTypeEdit_<%=slno1 %>" <%if(desc[27]!=null) {%> value="<%=desc[27] %>" <%} %> readonly>
 											</td>	
 											<td>
-												<input type="text" class="form-control typicalValue" name="typicalValue" id="typicalValueEdit_<%=slno1 %>" value="<%=desc[13]!=null?StringEscapeUtils.escapeHtml4(desc[13].toString()): ""  %>" maxlength="255" readonly>
+												<input type="text" class="form-control typicalValue" name="typicalValue" id="typicalValueEdit_<%=slno1 %>" value="<%=desc[13] %>" maxlength="255" readonly>
 											</td>
 											<td>
-												<input type="text" class="form-control minValue" name="minValue" id="minValueEdit_<%=slno1 %>" value="<%=desc[14]!=null?StringEscapeUtils.escapeHtml4(desc[14].toString()): ""  %>" maxlength="255" readonly>
+												<input type="text" class="form-control minValue" name="minValue" id="minValueEdit_<%=slno1 %>" value="<%=desc[14] %>" maxlength="255" readonly>
 											</td>
 											<td>
-												<input type="text" class="form-control maxValue" name="maxValue" id="maxValueEdit_<%=slno1 %>" value="<%=desc[15]!=null?StringEscapeUtils.escapeHtml4(desc[15].toString()): ""  %>" maxlength="255" readonly>
+												<input type="text" class="form-control maxValue" name="maxValue" id="maxValueEdit_<%=slno1 %>" value="<%=desc[15] %>" maxlength="255" readonly>
 											</td>
 											<td>
-												<input type="text" class="form-control initValue" name="initValue" id="initValueEdit_<%=slno1 %>" value="<%=desc[16]!=null?StringEscapeUtils.escapeHtml4(desc[16].toString()): ""  %>" maxlength="255" readonly>
+												<input type="text" class="form-control initValue" name="initValue" id="initValueEdit_<%=slno1 %>" value="<%=desc[16] %>" maxlength="255" readonly>
 											</td>
 											<td>
-												<input type="text" class="form-control quantum" name="quantum" id="quantumEdit_<%=slno1 %>" value="<%=desc[6]!=null?StringEscapeUtils.escapeHtml4(desc[6].toString()): ""  %>" maxlength="255" readonly>
+												<input type="text" class="form-control quantum" name="quantum" id="quantumEdit_<%=slno1 %>" value="<%=desc[6] %>" maxlength="255" readonly>
 											</td>
 											<td>
-												<input type="text" class="form-control unit" name="unit" id="unitEdit_<%=slno1 %>" value="<%=desc[18]!=null?StringEscapeUtils.escapeHtml4(desc[18].toString()): ""  %>" maxlength="255" readonly>
+												<input type="text" class="form-control unit" name="unit" id="unitEdit_<%=slno1 %>" value="<%=desc[18] %>" maxlength="255" readonly>
 											</td>	
 											<td>
-												<input type="text" class="form-control description" name="description" id="descriptionEdit_<%=slno1 %>" value="<%=desc[5]!=null?StringEscapeUtils.escapeHtml4(desc[5].toString()): ""  %>" maxlength="255" readonly>
+												<input type="text" class="form-control description" name="description" id="descriptionEdit_<%=slno1 %>" value="<%=desc[5] %>" maxlength="255" readonly>
 											</td>	
 											<td>
-												<input type="text" class="form-control remarks" name="remarks" id="remarksEdit_<%=slno1 %>" value="<%=desc[7]!=null?StringEscapeUtils.escapeHtml4(desc[7].toString()): ""  %>" maxlength="500" readonly>
+												<input type="text" class="form-control remarks" name="remarks" id="remarksEdit_<%=slno1 %>" value="<%=desc[7] %>" maxlength="500" readonly>
 											</td>	
 											<%if(groupId!=temp && groupId!=0) { temp = groupId;%>
 												<td style="border-bottom: none;">
-													<input form="inlineupdateform_<%=slno1 %>" type="text" class="form-control groupVariable" name="groupVariable" id="groupVariableEdit_<%=slno1 %>" value="<%=desc[26]!=null?StringEscapeUtils.escapeHtml4(desc[26].toString()):"" %>" maxlength="255" <%if(desc[12]!=null && Long.parseLong(desc[12].toString())==0) {%>readonly<%} %> required>
+													<input form="inlineupdateform_<%=slno1 %>" type="text" class="form-control groupVariable" name="groupVariable" id="groupVariableEdit_<%=slno1 %>" value="<%=desc[26]!=null?desc[26]:"" %>" maxlength="255" <%if(desc[12]!=null && Long.parseLong(desc[12].toString())==0) {%>readonly<%} %> required>
 												</td>	
 												<td style="border-bottom: none;">
 													<select form="inlineupdateform_<%=slno1 %>" class="form-control selectitem arrayMasterId" name="arrayMasterId" id="arrayMasterIdEdit_<%=slno1 %>" data-live-search="true" data-container="body" required>
@@ -393,7 +392,7 @@
 							               				<%for(IRSArrayMaster arr : arrayMasterList){
 							                			 %>
 															<option value="<%=arr.getArrayMasterId()%>" <%if(desc[20]!=null && Long.parseLong(desc[20].toString())==(arr.getArrayMasterId())) {%>selected<%} %> >
-																<%=arr.getArrayName()!=null?StringEscapeUtils.escapeHtml4(arr.getArrayName()): " - " %> (<%=arr.getArrayValue()!=null?StringEscapeUtils.escapeHtml4(arr.getArrayValue().toString()): " - " %>)
+																<%=arr.getArrayName() %> (<%=arr.getArrayValue() %>)
 															</option>
 														<%} %>
 													</select>
@@ -420,7 +419,7 @@
 												</td>
 											<%} else if(groupId==0) { temp = groupId;%>
 												<td style="border-bottom: none;">
-													<input form="inlineupdateform_<%=slno1 %>" type="text" class="form-control groupVariable" name="groupVariable" id="groupVariableEdit_<%=slno1 %>" value="<%=desc[26]!=null?StringEscapeUtils.escapeHtml4(desc[26].toString()):"" %>" maxlength="255" <%if(desc[12]!=null && Long.parseLong(desc[12].toString())==0) {%>readonly<%} %> required>
+													<input form="inlineupdateform_<%=slno1 %>" type="text" class="form-control groupVariable" name="groupVariable" id="groupVariableEdit_<%=slno1 %>" value="<%=desc[26]!=null?desc[26]:"" %>" maxlength="255" <%if(desc[12]!=null && Long.parseLong(desc[12].toString())==0) {%>readonly<%} %> required>
 												</td>	
 												<td style="border-bottom: none;">
 													<select form="inlineupdateform_<%=slno1 %>" class="form-control selectitem arrayMasterId" name="arrayMasterId" id="arrayMasterIdEdit_<%=slno1 %>" data-live-search="true" data-container="body" required>
@@ -429,7 +428,7 @@
 							               				<%for(IRSArrayMaster arr : arrayMasterList){
 							                			 %>
 															<option value="<%=arr.getArrayMasterId()%>" <%if(desc[20]!=null && Long.parseLong(desc[20].toString())==(arr.getArrayMasterId())) {%>selected<%} %> >
-																<%=arr.getArrayName()!=null?StringEscapeUtils.escapeHtml4(arr.getArrayName()): " - " %> (<%=arr.getArrayValue()!=null?StringEscapeUtils.escapeHtml4(arr.getArrayValue().toString()): " - " %>)
+																<%=arr.getArrayName() %> (<%=arr.getArrayValue() %>)
 															</option>
 														<%} %>
 													</select>
@@ -527,7 +526,7 @@
 							               				<%for(FieldGroupMaster fieldGroup : fieldGroupList){
 							                			 %>
 															<option value="<%=fieldGroup.getFieldGroupId()%>">
-																<%=fieldGroup.getGroupName()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupName()): " - "%> <%=" ("+(fieldGroup.getGroupCode()!=null?StringEscapeUtils.escapeHtml4(fieldGroup.getGroupCode()): " - ")+")" %>
+																<%=fieldGroup.getGroupName()+" ("+fieldGroup.getGroupCode()+")" %>
 															</option>
 														<%} %>
 													</select>
@@ -574,7 +573,7 @@
 							               				<%for(IRSArrayMaster arr : arrayMasterList){
 							                			 %>
 															<option value="<%=arr.getArrayMasterId()%>" >
-																<%=arr.getArrayName()!=null?StringEscapeUtils.escapeHtml4(arr.getArrayName()): " - " %> (<%=arr.getArrayValue()!=null?StringEscapeUtils.escapeHtml4(arr.getArrayValue().toString()): " - " %>)
+																<%=arr.getArrayName() %> (<%=arr.getArrayValue() %>)
 															</option>
 														<%} %>
 													</select>
@@ -625,9 +624,9 @@
 	                    		%>
 	                    			<tr>
 	                    				<td class="center"><%=++slno %></td>
-	                    				<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
-	                    				<td><%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()): " - " %></td>
-	                    				<td><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()): " - " %></td>
+	                    				<td><%=obj[6] %></td>
+	                    				<td><%=obj[7] %></td>
+	                    				<td><%=obj[5] %></td>
 	                    				<td class="center">
 	                    					<form action="#" id="inlineapprform<%=slno%>">
 							      			 
@@ -756,17 +755,17 @@
         fieldGroupMap["<%= entry.getKey() %>"] = [
             <% for (Object[] field : entry.getValue()) { %>
                 {
-                	value: "<%= field[0]!=null?field[0].toString(): " - " %>",
-                    text: "<%= field[1]!=null?field[1].toString(): " - " %>",
-                    datatype: "<%= field[16]!=null?field[16].toString(): " - " %>",
-                    typicalval: "<%= field[6]!=null?field[6].toString(): " - " %>",
-                    minval: "<%= field[7]!=null?field[7].toString(): " - " %>",
-                    maxval: "<%= field[8]!=null?field[8].toString(): " - " %>",
-                    initval: "<%= field[9] !=null?field[9].toString(): " - "%>",
-                    quantum: "<%= field[11] !=null?field[11].toString(): " - "%>",
-                    unit: "<%= field[12]!=null?field[12].toString(): " - " %>",
-                    description: "<%= field[4]!=null?field[4].toString(): " - " %>",
-                    remarks: "<%= field[13]!=null?field[13].toString(): " - " %>"
+                	value: "<%= field[0] %>",
+                    text: "<%= field[1] %>",
+                    datatype: "<%= field[16] %>",
+                    typicalval: "<%= field[6] %>",
+                    minval: "<%= field[7] %>",
+                    maxval: "<%= field[8] %>",
+                    initval: "<%= field[9] %>",
+                    quantum: "<%= field[11] %>",
+                    unit: "<%= field[12] %>",
+                    description: "<%= field[4] %>",
+                    remarks: "<%= field[13] %>"
                 },
             <% } %>
         ];
@@ -1067,6 +1066,44 @@
 	   	 return confirm('Are You Sure to Update?');
 	    }
 	  }	
+	
+	$('#connectorPinMapId').select2();
+	getDataCarryingConnectionList();
+	
+	function getDataCarryingConnectionList(){
+		
+		var icdDocId = $('#icdDocId').val();
+		var selectedLogicalChannelId = $('#logicalChannelId option:selected');
+		var sourceid = selectedLogicalChannelId.data('sourceid');
+		var destinationid = selectedLogicalChannelId.data('destinationid');
+		$('#connectorPinMapId').empty();
+		$.ajax({
+            type: "GET",
+            url: "GetDataCarryingConnectionList.htm",
+            data: {
+            	icdDocId : icdDocId,
+            	systemMainIdOne: sourceid,
+            	systemMainIdTwo: destinationid
+            },
+            datatype: 'json',
+            success: function(result) {
+                var values = JSON.parse(result); 
+				if(values!=null) {
+					for(var i=0; i<values.length; i++) {
+						var data = values[i];
+	                    var optionValue = data[0];
+	                    var optionText = data[1] ; 
+	                    var option = $("<option></option>").attr("value", optionValue).text(optionText);
+	                    $('#connectorPinMapId').append(option); 
+					}
+					$('#connectorPinMapId').select2();
+				}
+            },
+            error: function() {
+                alert('An error occurred while fetching the Data Carrying Connection List');
+            }
+        });
+	}
 </script>	
 </body>
 </html>

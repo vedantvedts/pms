@@ -921,8 +921,13 @@ public class HeaderController {
     @RequestMapping(value = "ForcePasswordChange.htm", method = RequestMethod.GET)
 	public String ForcePasswordChange(HttpServletRequest req, HttpSession ses) throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
+		String sessionKey = (String) ses.getAttribute("LOGIN_AES_KEY");
+		String sessionIv = (String) ses.getAttribute("LOGIN_AES_IV");
 		logger.info(new Date() + "Inside ForcePasswordChange.htm "+UserId);
+		
 		req.setAttribute("ForcePwd", "Y");
+		req.setAttribute("sessionKey", sessionKey);
+ 		req.setAttribute("sessionIv", sessionIv);
 		return "admin/PasswordChange";
 	}
     
