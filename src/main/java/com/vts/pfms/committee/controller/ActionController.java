@@ -1754,7 +1754,9 @@ private boolean isValidFileType(MultipartFile file) {
 							try { 
 							String AssigneeName=req.getParameter("Assignee");
 							
+                            String status = req.getParameter("status");
                             
+                            req.setAttribute("status", status);
 							req.setAttribute("Assignee", service.SearchDetails(req.getParameter("ActionMainId"),req.getParameter("ActionAssignId")).get(0));
 							req.setAttribute("SubList", service.SubList(req.getParameter("ActionAssignId")));
 							req.setAttribute("AssigneeName", AssigneeName);
@@ -4574,6 +4576,7 @@ private boolean isValidFileType(MultipartFile file) {
           			String projectid=req.getParameter("projectid");
           			String committeeid=req.getParameter("committeeid");
           			String meettingid=req.getParameter("meettingid");
+          			String status = req.getParameter("status");
           			
           			List<Object[]> projectdetailslist=service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
           			
@@ -4620,8 +4623,10 @@ private boolean isValidFileType(MultipartFile file) {
       
           			List<Object[]> projapplicommitteelist=service.ProjectApplicableCommitteeList(projectid);
           		
-          			List<Object[]> meetinglist=service.MeettingList(committeeid,projectid,scheduleid);
+          			List<Object[]> meetinglist=service.MeettingList(committeeid,projectid,scheduleid,status);
           			
+          			if(status==null)req.setAttribute("status", "N");
+          			else req.setAttribute("status", status);
           			req.setAttribute("scheduleid", scheduleid);
           			req.setAttribute("projectid",projectid);
           			req.setAttribute("committeeid",committeeid);

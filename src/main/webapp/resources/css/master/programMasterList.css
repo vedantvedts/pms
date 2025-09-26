@@ -1,11 +1,12 @@
 @charset "ISO-8859-1";
 
 .masterTableDiv{
-	width: 70%;margin-left: 18rem;
+	width: 80%;
+	margin: 0 auto;
 }
 
 #myTable{
-	width:100%
+	width:100%;
 	}
 	
 	.selectTd{
@@ -13,19 +14,19 @@
 	}
 	
 	.programmeCodeTd{
-		width:"17%"
+		width:"17%";
 	}
 	
 	.programmeName{
-		width:"28%"
+		width:"28%";
 	}
 	
 	.programmeDirector{
-		width:"30%"
+		width:"30%";
 	}
 	
 	.sanctionedOn{
-		width:"15%"
+		width:"15%";
 	}
 	
 	

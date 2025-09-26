@@ -33,6 +33,7 @@ int meettingcount=1;
 String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
 String scheduleid =(String)request.getAttribute("scheduleid");
+String status = (String)request.getAttribute("status");
 %>
 
 <% 
@@ -99,6 +100,17 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 											         <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(scheduleid)){ %>selected<%} %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString())+"-"+meettingcount:" - "%></option>
 											        <%meettingcount++;} }%>   
 							  	                  </select>				   						
+											</td> 
+											<td>
+					   							<label class="control-label td-label"> Status: </label>
+					   						</td>
+					   						<td class="td-width">
+                                                   <select class="form-control selectdee " name="status" id="Assignee" required="required"  data-live-search="true" onchange="submitForm();" >
+                                                          <option value="N" <%if("N".equalsIgnoreCase(status)){ %> selected="selected" <%} %>>All</option>
+														  <option value="A" <%if("A".equalsIgnoreCase(status)){ %> selected="selected" <%} %>>Not Started</option>	
+														  <option value="I" <%if("I".equalsIgnoreCase(status)){ %> selected="selected" <%} %>>In-Progress</option>	
+														  <option value="C" <%if("C".equalsIgnoreCase(status)){ %> selected="selected" <%} %> >Closed</option>		
+													</select>				   					
 											</td> 	   									
 					   					</tr>   					   				
 					   				</table>
@@ -148,6 +160,7 @@ String scheduleid =(String)request.getAttribute("scheduleid");
 																	           <input type="hidden" name="ActionAssignId" value="<%=obj[12]%>"/>
 																	           <input type="hidden" name="ActionNo" value="<%=obj[0]%>"/>
 																	           <input type="hidden" name="text" value="M">
+																	           <input type="hidden" name="status" value=<%=status %>>
 																	           <input type="hidden" name="projectid" value="<%=projectid%>">
 																	           <input type="hidden" name="committeeid" value="<%=committeeid%>">
 																	           <input type="hidden" name="meettingid" value="<%=scheduleid%>">

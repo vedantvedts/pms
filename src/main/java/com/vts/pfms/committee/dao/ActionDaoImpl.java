@@ -1383,13 +1383,14 @@ public class ActionDaoImpl implements ActionDao{
 		return (List<Object[]>)query.getResultList();
 	}
 
-	public static final String MEETINGLIST="CALL Pfms_Meeting_Action_Reports(:projectid,:committeeid,:scheduleid)";
+	public static final String MEETINGLIST="CALL Pfms_Meeting_Action_Reports(:projectid,:committeeid,:scheduleid,:status)";
 	@Override
-	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid) throws Exception {
+	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid,String status) throws Exception {
 		Query query = manager.createNativeQuery(MEETINGLIST);
 		query.setParameter("committeeid",Long.parseLong(committeeid));
 		query.setParameter("projectid", Long.parseLong(projectid));
 		query.setParameter("scheduleid", Long.parseLong(scheduleid));
+		query.setParameter("status", status);		
 		return (List<Object[]>)query.getResultList();
 	}
 	

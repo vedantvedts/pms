@@ -419,8 +419,7 @@
 					<div class="row">
 					<div class="col-md-3"></div>
 					<div class="col-md-3">
-					<table class="subtables agp-27"
-						>
+					<table class="subtables agp-27">
 								<thead>
 								<tr>
 								<th class="agp-28">Committee</th>
@@ -431,7 +430,9 @@
 						<% 
 						int meetingCount=0;
 						if( meetingsHeld !=null && meetingsHeld.size()>0) {
-						for(Object[]obj:meetingsHeld.stream().limit(15).collect(Collectors.toList()) ){
+							int meetingsize = meetingsHeld.size();
+							int limit = meetingsize>15 ? meetingsize / 2 + ( meetingsize % 2 == 0 ? 0 : 1 ) : meetingsize;	
+						for(Object[]obj:meetingsHeld.stream().limit(limit).collect(Collectors.toList()) ){
 						%>
 						<tr>
 						<td> 
@@ -455,7 +456,10 @@
 
 					</table>
 					</div>
-					<% if( meetingsHeld !=null && meetingsHeld.stream().skip(10).collect(Collectors.toList()).size()>0) {%>
+					<%  if( meetingsHeld !=null && meetingsHeld.size()>0){
+						int meetingsize = meetingsHeld.size();
+						int limit1 = meetingsize>15 ? meetingsHeld.size()/2 + (meetingsHeld.size()%2==0?0:1) : meetingsize;	
+						if(meetingsHeld.stream().skip(limit1).collect(Collectors.toList()).size()>0) {%>
 					<div class="col-md-3">
 					<table class="subtables agp-27"
 						>
@@ -466,7 +470,7 @@
 								</tr>
 							</thead>
 						<tbody>
-						<%for(Object[]obj:meetingsHeld.stream().skip(15).collect(Collectors.toList()) ){
+						<%for(Object[]obj:meetingsHeld.stream().skip(limit1).collect(Collectors.toList()) ){
 						%>	
 						<tr>
 						<td>
@@ -490,7 +494,7 @@
 
 					</table>
 					</div>
-					<%} %>
+					<%}} %>
 					<div class="col-md-3"></div>
 					</div>
 				</div>
