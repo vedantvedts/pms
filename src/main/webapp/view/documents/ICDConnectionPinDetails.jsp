@@ -410,7 +410,8 @@
 																		<input type="text" class="form-control form-control-sm" name="description" id="description_E1_<%=slno %>" value="<%=obj[12] %>" >
 																	</td>
 																	<td>
-																		<input type="text" class="form-control form-control-sm" name="groupName" id="groupName_E1_<%=slno %>" <%if(obj[23]!=null){ %> value="<%=obj[23] %>" <%} %> >
+																		<input type="text" class="form-control form-control-sm" name="groupName" id="groupName_E1_<%=slno %>" <%if(obj[23]!=null){ %> value="<%=obj[23] %>" <%} %>
+																		 oninput="this.value.replace(/[^a-zA-Z0-9]/g, '')" onchange="validateGroupName(this)" title="Only alphabets and numbers allowed" >
 																	</td>
 																	<%if(e1Data!=null) {%>
 																		<td class="center">
@@ -651,7 +652,8 @@
 																		<input type="text" class="form-control form-control-sm" name="description" id="description_E2_<%=slno %>" value="<%=obj[12] %>" required>
 																	</td> --%>
 																	<td>
-																		<input type="text" class="form-control form-control-sm" name="groupName" id="groupName_E2_<%=slno %>" <%if(obj[23]!=null){ %> value="<%=obj[23] %>" <%} %> >
+																		<input type="text" class="form-control form-control-sm" name="groupName" id="groupName_E2_<%=slno %>" <%if(obj[23]!=null){ %> value="<%=obj[23] %>" <%} %> 
+																		oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')" title="Only alphabets and numbers allowed" >
 																	</td>
 																	<%if(e2Data!=null) {%>
 																		<td class="center">
@@ -1031,7 +1033,12 @@ function generatePinDetails(endNo) {
         					    '<td><input type="text" class="form-control form-control-sm" name="description" id="description_' + endNo +'_' + i + '" /></td>';
         					    
     					    }
-    					row+='<td><input type="text" class="form-control form-control-sm" name="groupName" id="groupName_' + endNo +'_' + i + '" /></td>';
+    					    row += '<td><input type="text" class="form-control form-control-sm" name="groupName" ' +
+    					       'id="groupName_' + endNo + '_' + i + '" ' +
+    					       'oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, \'\')" ' +
+    					       (endNo=='E1'? 'onchange="validateGroupName(this)"' : '') + 
+    					       'title="Only alphabets and numbers allowed" /></td>';
+
     					row+='</tr>';
     					$tbody.append(row);
     					
@@ -1147,6 +1154,44 @@ $(document).ready(function () {
 	    syncDropdowns('connectorPinIdTo', 'connectorPinIdFrom');
 	});
 });
+
+	function validateGroupName(inputElem) {
+		var $input = $(inputElem);
+	  	var currentGroupName = $input.val().trim();
+	  	if (!currentGroupName) return;
+
+		var otherGroupExists = $("input[name='groupName']").not($input)
+	                          .filter(function(){ return $(this).val().trim() !== ''; })
+	                          .length > 0;
+	  	if (!otherGroupExists) return;
+
+	  	var $currentRow = $input.closest('tr');
+	  	var currentInterface = ($currentRow.find("select[name='interfaceId']").val() || '').trim();
+
+	  	var $matchingPrev = $currentRow.prevAll('tr').filter(function(){
+	    	return (($(this).find("input[name='groupName']").val() || '').trim() === currentGroupName);
+	  	});
+
+	  	if ($matchingPrev.length === 0) return;
+
+	  	if (!currentInterface) {
+	    	alert("Please select Interface for this row before using a Group Name that already exists in previous rows.");
+	    	$currentRow.find("select[name='interfaceId']").focus();
+	    	return;
+	  	}
+
+	  	var hasSameInterface = $matchingPrev.filter(function(){
+	    	return (($(this).find("select[name='interfaceId']").val() || '').trim() === currentInterface);
+	  	}).length > 0;
+
+	  	if (!hasSameInterface) {
+		    alert("You can only reuse '" + currentGroupName + "' if a previous row with the same Group Name has the same Interface selected.");
+		    $input.val('');
+		    $input.focus();
+	  	}
+	}
+
+
 </script>	
 	
 </body>

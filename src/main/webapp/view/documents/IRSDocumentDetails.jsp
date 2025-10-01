@@ -1292,7 +1292,7 @@ function DownloadDocPDF(flag){
 						boolean isValidToGrp = toGrp.startsWith("J") && toGrp.length() > 1 && Character.isDigit(toGrp.charAt(1)) && toGrp.contains(".");
 			        	IGILogicalChannel channel = logicalChannelList.stream().filter(e -> e.getLogicalChannelId().equals(iface.getLogicalChannelId())).findFirst().orElse(null);
 			        	
-			        	List<Object[]> fieldDescList =  fieldDescriptionList.stream().filter(e -> iface.getLogicalInterfaceId()== Long.parseLong(e[1].toString())).collect(Collectors.toList());
+			        	//List<Object[]> fieldDescList =  fieldDescriptionList.stream().filter(e -> iface.getLogicalInterfaceId()== Long.parseLong(e[1].toString())).collect(Collectors.toList());
 			        	
                 %>
 	                {
@@ -1385,11 +1385,11 @@ function DownloadDocPDF(flag){
 	                                { text: 'Additional Info / Remarks', style: 'tableData', bold: true},
 	                                { text: '<%=(iface.getAdditionalInfo()!=null && !iface.getAdditionalInfo().isEmpty())? iface.getAdditionalInfo():"-" %>', style: 'tableData' },
 	                            ],
-	                            [
+	                            <%-- [
 	                            	{ text: '<%=++sn%>', style: 'tableData', bold: true, alignment: 'center',},
 	                                { text: 'Fields', style: 'tableData', bold: true},
 	                                { text: '<%for(Object[] field : fieldDescList) { %><%=field[8] %>, <%} %> ', style: 'tableData' },
-	                            ],
+	                            ], --%>
 	                        ]
 	                    },
 	                    layout: {

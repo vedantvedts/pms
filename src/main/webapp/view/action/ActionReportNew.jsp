@@ -21,11 +21,114 @@
 	<script src="${pdfmakefont}"></script>
 	<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
 	<script src="${htmltopdf}"></script>
-	<spring:url value="/resources/css/action/actionReportNew.css" var="actionReportNew" />
-	<link href="${actionReportNew}" rel="stylesheet" />
-	<spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
-	<link href="${actionCommon}" rel="stylesheet" />
 	
+<style type="text/css">
+.control-label {
+	font-size: 17px;
+	font-weight: bold;
+}
+
+.dropdownstable {
+	width: 100%;
+	float: right;
+	margin-top: -0.5rem;
+}
+.dropdownstable td{
+	padding: 3px;
+}
+
+.table thead {
+	text-align: center;
+	background-color: #2883c0;
+	color: white;
+	position: sticky;
+	top: 0; /* Keeps the header at the top */
+	z-index: 10; /* Ensure the header stays on top of the body */
+	/* background-color: white; */ /* For visibility */
+}
+
+.table-wrapper {
+    max-height: 800px; /* Set the max height for the table wrapper */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Enable vertical scrolling */
+}
+
+.table .btn-outline-info{
+	
+	background-color: white !important;
+	border: 3px solid #17a2b8;
+	padding: .275rem .5rem !important;
+}
+
+.table .btn-outline-info:hover {
+	color: black !important;
+	
+}
+
+.left {
+	text-align: left;
+}
+.center{
+	text-align: center;
+}
+.right{
+	text-align: right;
+}
+
+
+.cc-rockmenu {
+	color: fff;
+	padding: 0px 5px;
+	font-family: 'Lato', sans-serif;
+}
+
+.cc-rockmenu .rolling {
+	display: inline-block;
+	cursor: pointer;
+	width: 34px;
+	height: 30px;
+	text-align: left;
+	overflow: hidden;
+	transition: all 0.3s ease-out;
+	white-space: nowrap;
+}
+
+.cc-rockmenu .rolling:hover {
+	width: 108px;
+}
+
+.cc-rockmenu .rolling .rolling_icon {
+	float: left;
+	z-index: 9;
+	display: inline-block;
+	width: 28px;
+	height: 52px;
+	box-sizing: border-box;
+	margin: 0 5px 0 0;
+}
+
+.cc-rockmenu .rolling .rolling_icon:hover .rolling {
+	width: 312px;
+}
+
+.cc-rockmenu .rolling i.fa {
+	font-size: 20px;
+	padding: 6px;
+}
+
+.cc-rockmenu .rolling span {
+	display: block;
+	font-weight: bold;
+	padding: 2px 0;
+	font-size: 14px;
+	font-family: 'Muli', sans-serif;
+}
+
+.cc-rockmenu .rolling p {
+	margin: 0;
+}
+
+</style>
 </head>
 <body>
 	<%
@@ -152,7 +255,7 @@
 											</td> 	
 											<td>
 												<button type="button" class="btn btn-sm" onclick="downloadPDF()" formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="" data-original-title="PDF Download">
-										        	<i class="fa fa-download text-danger"></i>
+										        	<i style="color: #cc0000" class="fa fa-download"></i>
 									       		</button>
 											</td>   									
 					   					</tr>   					   				
@@ -166,6 +269,8 @@
 					<div class="card-body">
 					
             			<div class="table-wrapper table-responsive">
+            				<!-- <input type="text" id="searchBar" class="search-bar form-control" placeholder="Search..." style="float: right;width: auto;" />
+       						<br> -->
 							<table class="table table-condensed table-striped table-bordered table-hover" id="myTable">
 	                        	<thead class="center">
 	                        		<tr>
@@ -174,6 +279,7 @@
 										<th width="10%">PDC</th>	
 										<th width="20%">Assignee</th>
 										<th width="20%">Assignor</th>																						
+									 	<!-- <th width="20%">Mob No</th> -->
 									 	<th width="15%">Progress</th>
 									 	<th width="10%">Action</th>
 									</tr>
@@ -190,7 +296,11 @@
 									%>
 											<tr>
 												<td class="center"><%=++slno %></td>
-
+												<%-- <%if(i==0) {%>
+										    		<td rowspan="<%=values.size() %>" style="vertical-align: middle;">
+										    			<%=obj[1]%>, <%=obj[2]%>
+										    		</td>
+			         							<%} %> --%>
 			         								
 												<td class="center">
 													<button type="submit" class="btn btn-outline-info" onclick="showSubListDetails('<%=slno %>')" ><%=obj[0]!=null?StringEscapeUtils.escapeHtml4(obj[0].toString()):"" %></button>
@@ -200,14 +310,14 @@
 											  	<td><%=obj[19]!=null?StringEscapeUtils.escapeHtml4(obj[19].toString()):" - "%>, <%=obj[20]!=null?StringEscapeUtils.escapeHtml4(obj[20].toString()):" - "%></td>
 												<td class="center">
 													<%if(obj[12]!=null && !obj[12].toString().equalsIgnoreCase("0")){ %>
-										            	<div class="progress div-progress">
-										            		<div class="progress-bar progress-bar-striped width-<%=obj[12]%>" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
+										            	<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										            		<div class="progress-bar progress-bar-striped" role="progressbar" style=" width: <%=obj[12]%>%;  " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" >
 										            			<%=StringEscapeUtils.escapeHtml4(obj[12].toString()) %>
 										            		</div> 
 										            	</div> 
 										            <%}else{ %>
-									            		<div class="progress div-progress" >
-										            		<div class="progress-bar progressbar" role="progressbar">
+									            		<div class="progress" style="background-color:#cdd0cb !important;height: 1.4rem !important;">
+										            		<div class="progress-bar" role="progressbar" style=" width: 100%; background-color:#cdd0cb !important;color:black;font-weight: bold;  "  >
 										            			Not Yet Started .
 										            		</div>
 									            		</div> 
@@ -223,7 +333,7 @@
 											           	<input type="hidden" name="ActionAssignId" id="actionAssignId_<%=slno %>" value="<%=obj[14]%>"/>
 											           	<input type="hidden" name="ActionAssignid" id="actionAssignId_<%=slno %>" value="<%=obj[14]%>"/>
 											           	<input type="hidden" name="ActionNo" id="actionNo_<%=slno %>" value="<%=obj[0]%>"/>
-											           	<textarea name="ActionName" id="actionName_<%=slno %>" class="display-none"><%=actionName!=null?actionName:""%></textarea>
+											           	<textarea name="ActionName" id="actionName_<%=slno %>" style="display: none;"><%=actionName!=null?actionName:""%></textarea>
 											           	<input type="hidden" name="ProjectId" value="<%=obj[18]%>"/>
 											           	<input type="hidden" name="projectid" value="<%=projectId%>"/>
 											           	<input type="hidden" name="empId" value="<%=empId%>"/>
@@ -262,7 +372,7 @@
 											</tr>
 										<% ++i; } } } else{%>
 											<tr>
-												<td colspan="7" class="text-center">No Data Available</td>
+												<td colspan="7" style="text-align: center;">No Data Available</td>
 											</tr>
 										<%} %>
 								</tbody>
@@ -277,10 +387,10 @@
 	<!-- -------------------------------------------- Action Sub List Modal ------------------------------------------------------------- -->
 	<div class="modal fade" id="actionSubListDetailsModal" tabindex="-1" role="dialog" aria-labelledby="actionSubListDetailsModal" aria-hidden="true">
 		<div class="modal-dialog modal-lg modal-dialog-jump" role="document">
-			<div class="modal-content div-modal-content" >
-				<div class="modal-header div-modal-header" >
+			<div class="modal-content" style="width:135%;margin-left:-20%;">
+				<div class="modal-header" style="background: #055C9D;color: white;">
 		        	<h5 class="modal-title actionSubListHeader "></h5>
-			        <button type="button" class="close modal-clo-btn" data-dismiss="modal" aria-label="Close">
+			        <button type="button" class="close" style="text-shadow: none !important" data-dismiss="modal" aria-label="Close">
 			          <span class="text-light" aria-hidden="true">&times;</span>
 			        </button>
 		      	</div>
@@ -289,24 +399,24 @@
      					<div class="row">
 							<div class="col-md-12 " align="left">
 								<div>
-									<h5 class="customh5">Action: <span id="actionName" class="custom-span"></span></h5>
+									<h5 style="color: #346691;">Action: <span id="actionName" style="font-size: 17px;font-weight: 500;color: black;"></span></h5>
 									
-									<h5 class="customh5"="customh5">Assignor: <span id="assignorName" class="custom-span"></span></h5>
+									<h5 style="color: #346691;">Assignor: <span id="assignorName" style="font-size: 17px;font-weight: 500;color: black;"></span></h5>
 									
-									<h5 class="customh5"="customh5">Assignee: <span id="assigneeName" class="custom-span"></span></h5>
+									<h5 style="color: #346691;">Assignee: <span id="assigneeName" style="font-size: 17px;font-weight: 500;color: black;"></span></h5>
 									
 								</div>
 								<div class="table-responsive">
-    								<table class="table table-bordered table-hover table-striped table-condensed table-margin" id="myTable3" >
+    								<table class="table table-bordered table-hover table-striped table-condensed" id="myTable3" style="margin-top: 20px;">
 										<thead class="center">
 											<tr>
-												<th colspan="4" class="table-th" >Action Updated Details </th>									
+												<th colspan="4" style="background-color: #055C9D; color: white; text-align: center;font-size: 18px !important;border-left: 0px solid;text-transform: capitalize;" >Action Updated Details </th>									
 											</tr>	
 											<tr>					
 												<th>As On Date</th>
-												<th >Progress %</th>
-												<th >Remarks</th>								
-											 	<th >Attachment</th>
+												<th style="">Progress %</th>
+												<th style="">Remarks</th>								
+											 	<th style="">Attachment</th>
 											</tr>
 										</thead>
 										<tbody id="actionSubListTBody"></tbody>
@@ -368,7 +478,7 @@ function showSubListDetails(rowSlNo) {
 			for(var i =0 ; i<values.length; i++) {
 				x += '<tr>';
 				x += '<td class="center">'+(values[i][3]!=null? formatDateToDDMMYYYY(values[i][3]) : "-")+'</td>';
-				x += '<td><div class="progress div-progress-copy" ><div class="progress-bar progress-bar-striped width-'+values[i][2]+'" role="progressbar" style="%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">'+values[i][2]+'</div></div></td>';
+				x += '<td><div class="progress" style="background-color:#cdd0cb !important"><div class="progress-bar progress-bar-striped" role="progressbar" style="width:'+values[i][2]+'%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">'+values[i][2]+'</div></div></td>';
 				x += '<td>'+values[i][4]+'</td>';
 				x += '<td class="center">' +  (values[i][5] != null ? '<a href="ActionDataAttachDownload.htm?ActionSubId=' + values[i][6] + '" target="_blank"><i class="fa fa-download"></i></a>' : "-") +  '</td>';
 				x += '</tr>';
@@ -424,7 +534,7 @@ function downloadPDF(){
                                 { text: '', },
                                 
                                 { text: 'Assignee:',bold: true, }, 
-                                { text: '<%=assigneeName%>', }, 
+                                { text: '<%=assigneeName.replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', }, 
                                 { text: '', },
                                 
                                 { text: 'Type:',bold: true, }, 
@@ -486,8 +596,8 @@ function downloadPDF(){
 	                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%= obj[0] %>', style: 'tableData',alignment: 'left' },
 	                                { text: '<%=obj[6]!=null?fc.sdfTordf(obj[6].toString()):"-"%>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%=obj[1]%>, <%=obj[2]%>', style: 'tableData' },
-	                                { text: '<%=obj[19]%>, <%=obj[20]%>', style: 'tableData' },
+	                                { text: '<%=obj[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>, <%=obj[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', style: 'tableData' },
+	                                { text: '<%=obj[19].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>, <%=obj[20].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', style: 'tableData' },
 	                                { text: '<%=obj[12]!=null && !obj[12].toString().equalsIgnoreCase("0")?obj[12]+"%":"Not Yet Started"%>', style: 'tableData',alignment: 'center' },
 	                            ],
 	                        <% ++i; } } } else{%>
