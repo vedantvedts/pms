@@ -11,8 +11,6 @@ public class ICDPinMapDTO {
 
 	private Long ConnectorPinMapId;
 	private Long ICDConnectionId;
-	private Long ConnectorPinIdFrom;
-	private Long ConnectorPinIdTo;
 	private String PinFunction;
 	private String SignalName;
 	private String ConnectionCode;
@@ -21,12 +19,14 @@ public class ICDPinMapDTO {
 	private Double CableBendingRadius;
 	private String Remarks;
 	
-	private Long PinIdE1;
-	private Long ConnectorIdE1;
-	private String PinNoE1;
-	private Long PinIdE2;
-	private Long ConnectorIdE2; 
-	private String PinNoE2; 
+	private String ConPinMappedIdE1s;
+	private String PinIdE1s;
+	private String ConnectorIdE1s;
+	private String PinNoE1s;
+	private String ConPinMappedIdE2s;
+	private String PinIdE2s;
+	private String ConnectorIdE2s; 
+	private String PinNoE2s; 
 	
 	private Integer ConnectorNoE1; 
 	private Integer ConnectorNoE2;

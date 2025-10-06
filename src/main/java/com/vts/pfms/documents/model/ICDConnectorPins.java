@@ -30,6 +30,7 @@ public class ICDConnectorPins implements Serializable {
 	private String Constraints;
 	private String Periodicity;
 	private String Description;
+	private String GroupName;
 	private String CreatedBy;
 	private String CreatedDate;
 	private String ModifiedBy;

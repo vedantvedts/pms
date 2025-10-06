@@ -16,6 +16,7 @@ import com.vts.pfms.documents.model.ICDConnectionConnectors;
 import com.vts.pfms.documents.model.ICDConnectionInterfaces;
 import com.vts.pfms.documents.model.ICDConnectionPurpose;
 import com.vts.pfms.documents.model.ICDConnectionSystems;
+import com.vts.pfms.documents.model.ICDConnectorMappedPins;
 import com.vts.pfms.documents.model.ICDConnectorPinMapping;
 import com.vts.pfms.documents.model.ICDConnectorPins;
 import com.vts.pfms.documents.model.ICDDocumentConnections;
@@ -176,6 +177,8 @@ public interface DocumentsService {
 	public List<ICDSystemAttach> getICDSystemAttachListByICDDocId(String icdDocId);
 	public ICDSystemAttach getICDSystemAttachById(String systemAttachId) throws Exception;
 	public long addICDSystemAttach(ICDSystemAttach systemAttach, MultipartFile attachment, String labcode);
+	public long addICDConnectorMappedPins(ICDConnectorMappedPins mappedPins);
+	public int deleteICDConnectorMappedPinByConnectorPinMapId(Long connectorPinMapId) throws Exception;
 	
 	/* ************************************************ ICD Document End***************************************************** */
 	
@@ -189,7 +192,7 @@ public interface DocumentsService {
 	public int deleteIRSSpecifiactionById(String irsSpecificationId) throws Exception;
 	public long irsDocumentApprovalForward(String docId, String docType, String action, String remarks, String empId, String labcode, String userId) throws Exception;
 	public long irsDocumentUserRevoke(String irsDocId, String userId, String empId) throws Exception;
-	public List<Object[]> getDataCarryingConnectionList(String icdDocId)throws Exception;
+	public List<Object[]> getDataCarryingConnectionList(String icdDocId, String systemMainIdOne, String systemMainIdTwo)throws Exception;
 	public IRSDocumentSpecifications getIRSDocumentSpecificationsById(String irsSpecificationId) throws Exception;
 	public long addIRSFieldDescription(IRSFieldDescription irsFieldDescription);
 	public List<Object[]> getIRSFieldDescriptionList(String irsDocId)throws Exception;
