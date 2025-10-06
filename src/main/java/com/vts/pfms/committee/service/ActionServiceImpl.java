@@ -2206,9 +2206,9 @@ public List<Object[]> MeettingCount(String committeeid, String projectid) throws
 }
 
 @Override
-public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid) throws Exception {
+public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid,String status) throws Exception {
 	
-	return dao.MeettingList(committeeid,projectid,scheduleid);
+	return dao.MeettingList(committeeid,projectid,scheduleid,status);
 }
 
 @Override

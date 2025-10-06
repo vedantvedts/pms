@@ -32,6 +32,7 @@
   String projectid=(String)request.getAttribute("projectid");
   String committeeid=(String)request.getAttribute("committeeid");
   String meettingid=(String)request.getAttribute("meettingid");
+  String status = (String) request.getAttribute("status");
  %>
 
 
@@ -146,7 +147,7 @@
 				<%}else if(text!=null && text.equalsIgnoreCase("Q")){ %>
 				<a type="button" class="btn  btn-sm back" href="ActionPdcReport.htm"  >BACK</a>
 				<%}else if(text!=null && text.equalsIgnoreCase("M")){ %>
-				<a type="button" class="btn  btn-sm back" href="MeettingActionReports.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>"  >BACK</a>
+				<a type="button" class="btn  btn-sm back" href="MeettingActionReports.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&status=<%=status %>"  >BACK</a>
 				<%}else if(text!=null && text.equalsIgnoreCase("A")){ %>
 				<a type="button" class="btn  btn-sm back" href="MeettingAction.htm?projectid=<%=projectid %>&committeeid=<%=committeeid %>&meettingid=<%=meettingid %>&empId=<%=empId %>"  >BACK</a>
 				<%}else if(text!=null && text.equalsIgnoreCase("C")){ %>

@@ -140,7 +140,7 @@ public interface ActionDao {
 	public List<Object[]> getrfaRemarks(String rfaId,String Status)throws Exception;
 	public List<Object[]> ProjectApplicableCommitteeList(String projectid) throws Exception;
 	public List<Object[]> MeettingCount(String committeeid, String projectid)throws Exception;
-	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid)throws Exception;
+	public List<Object[]> MeettingList(String committeeid, String projectid, String scheduleid,String status)throws Exception;
 	public List<Object[]> MeettingActionList(String committeeid, String projectid, String scheduleid, String empId)throws Exception;
 	public List<Object[]> getAllEmployees(String flag)throws Exception;// new added
 	public List<Object[]> getRfaModalEmpList(String labCode)throws Exception;

@@ -1914,7 +1914,7 @@ public class CCMController {
 			req.setAttribute("committeeId", committeeId);
 			req.setAttribute("scheduleId", scheduleId);
 			req.setAttribute("ccmScheduleList", ccmScheduleList);
-			req.setAttribute("meetingActionList", actionservice.MeettingList(committeeId, "0", scheduleId));
+			req.setAttribute("meetingActionList", actionservice.MeettingList(committeeId, "0", scheduleId, "N"));
 			
 			return "ccm/CCMActionReport";
 		}catch (Exception e) {
