@@ -80,14 +80,14 @@
 									<div class="form-group">
 										<label>Limit :<span class="mandatory">*</span></label> <input
 											class="form-control field-w100 form-control numeric-only" type="number" name="limit"
-											required="required" >
+											id="limit" required="required" >
 									</div>
 								</div>
 
 								<div class="col-md-2">
 									<div class="form-group">
 										<label>Desig Cadre :<span class="mandatory">*</span></label> 
-										<select class="form-control" name="desigCadre">
+										<select class="form-control" name="desigCadre" id="desigCadre">
 											<option value="DRDS">DRDS</option>
 											<option value="DRTC">DRTC</option>
 											<option value="Others">Others</option>
@@ -121,6 +121,8 @@
 
 		 var desigcode = $('#desigcode').val().trim();
 		 var designation = $('#designation').val().trim();
+		 var limit = $('#limit').val().trim();
+		 var desigCadre = $('#desigCadre').val().trim();
 		 
 		   if (!desigcode) {
 		        alert('Designation Code is required.');
@@ -131,7 +133,16 @@
 		        alert('Designation Name is required.');
 		        return;
 		    }
-		 
+		    
+		    if(!limit){
+		    	alert('Limit is required');
+		    	return;
+		    }
+		    
+		    if(!desigCadre){
+		    	alert('Desig Cadre is required');
+		    	return;
+		    }
 		$.ajax({
 
 			type : "GET",

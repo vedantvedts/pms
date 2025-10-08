@@ -328,13 +328,25 @@
 						    int i=1;
 						    for (Object[] obj : values) {
 						    	
-						        if(obj[3] != null && Integer.parseInt(obj[3].toString()) == 3 && obj[7].toString().equalsIgnoreCase("A") || obj[7].toString().equalsIgnoreCase("D")){
-						        		//&& Integer.parseInt(obj[3].toString()) < 6 && obj[7]!=null && obj[7].toString().equalsIgnoreCase("A") || obj[7].toString().equalsIgnoreCase("D")) {
+						        if(((obj[3] != null && Integer.parseInt(obj[3].toString()) == 3) || ( obj[3] != null && Integer.parseInt(obj[3].toString()) == 5 )) && (obj[7].toString().equalsIgnoreCase("A") || obj[7].toString().equalsIgnoreCase("D"))){
 						            
 						            if(obj[10] != null && !obj[10].toString().equalsIgnoreCase(agenda)) {
 						                indexcount = 1;
 						                count++;
-						%>
+						                if(obj[3] != null && Integer.parseInt(obj[3].toString()) == 3 && count==1){
+						                	%>
+						<tr> 		
+						    <td style="border: 1px solid black; padding:5px; font-weight:bold; text-align: center;" colspan="4">
+						        AGENDA ACTIONS
+						    </td>
+						</tr>
+						<%}else if(obj[3] != null && Integer.parseInt(obj[3].toString()) == 5){%>
+						<tr>  		
+						    <td style="border: 1px solid black; padding:5px; font-weight:bold; text-align: center;" colspan="4">
+						        OTHER OUTCOMES ACTIONS
+						    </td>
+						</tr>	
+	               		<%}	%>
 						<tr>
 						    <td style="border: 1px solid black; font-weight:bold; padding:5px;"><%= ++index %></td>	  			
 						    <td style="border: 1px solid black; padding:5px; font-weight:bold; text-align: left;" colspan="3">
@@ -383,7 +395,7 @@
 			 if(ccmFlag==null) {
 			 for (Object[] committeemin : committeeminutes) { 
 				 if ( committeemin[0].toString().equals("6")) { %>
-	  		<h4>&nbsp;&nbsp;&nbsp;&nbsp; IV. &nbsp;&nbsp; Conclusions & Recommendations: </h4>
+	  		<h4>&nbsp;&nbsp;&nbsp;&nbsp; IV. &nbsp;&nbsp; Conclusions &amp; Recommendations: </h4>
 		  	<% for (Object[] speclist : speclists)
 							{
 								if (speclist[3].toString().equals(committeemin[0].toString())) 

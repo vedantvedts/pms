@@ -149,8 +149,11 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 					<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button> 
 		<button type="submit" class="btn btn-sm prints my-2 my-sm-0 fs-12px" formtarget="_blank">MINUTES</button>
 		<%} %>
-		<input type="hidden" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank"/> 
-		<input type="submit" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES" formaction="MOMTabularMinutesDownload.htm" formtarget="_blank"/>		
+		<% if(committeescheduleeditdata[26]!=null && committeescheduleeditdata[26].toString().equalsIgnoreCase("0")){ %> 
+		<input type="submit" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank"/>
+		<%}else{ %>
+		<input type="submit" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES" formaction="MOMTabularMinutesDownload.htm" formtarget="_blank"/><%} %>
+ 		
 		<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
 		<input type="hidden" name="membertype" value="<%=membertype%>">
 		<input type="hidden" name="committeescheduleid" value="<%=committeescheduleeditdata[6]%>">
