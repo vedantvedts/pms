@@ -1238,62 +1238,74 @@ public class CommitteeController {
 			String flow =req.getParameter("flow");
 			String labcode = (String)ses.getAttribute("labcode");
 			System.out.println("flow" +flow);
+			
+			String Subject=req.getParameter("subject").trim();
+			String Comment=req.getParameter("Comment").trim();
+			String officer1Role=req.getParameter("Rec1_Role").toUpperCase();
+			String officer2Role=req.getParameter("Rec2_Role").toUpperCase();
+			String officer3Role=req.getParameter("Rec3_Role").toUpperCase();
+			String approvingOfficerRole=req.getParameter("Approving_Role").toUpperCase();
 
 			long flagcount=0;
 			
 	
-//			if(InputValidator.isContainsHTMLTags(Subject)) {
-//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Subject' should not contain HTML Tags.!");
-//			}
-//			if(InputValidator.isContainsHTMLTags(Comment)) {
-//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Comment' should not contain HTML Tags.!");
-//			}
-//			if(!InputValidator.isContainsDescriptionPattern(officer1Role)) {
-//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer1 Role' should contains Alphabets, Numbers or special characters.!");
-//			}
-//			if(!InputValidator.isContainsDescriptionPattern(officer2Role)) {
-//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer2 Role' should contains Alphabets, Numbers or special characters.!");
-//			}
-//			if(!InputValidator.isContainsDescriptionPattern(officer3Role)) {
-//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer3 Role' should contains Alphabets, Numbers or special characters.!");
-//			}
-//			if(!InputValidator.isContainsDescriptionPattern(approvingOfficerRole)) {
-//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
-//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
-//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
-//				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Approving Officer Role' should contains Alphabets, Numbers or special characters.!");
-//			}
+			if(Subject!=null &&  InputValidator.isContainsHTMLTags(Subject)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Subject' should not contain HTML Tags.!");
+			}
+			if(Comment!=null && InputValidator.isContainsHTMLTags(Comment)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Comment' should not contain HTML Tags.!");
+			}
+			if(officer1Role!=null && !InputValidator.isContainsDescriptionPattern(officer1Role)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer1 Role' should contains Alphabets, Numbers or special characters.!");
+			}
+			if(officer2Role!=null && !InputValidator.isContainsDescriptionPattern(officer2Role)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer2 Role' should contains Alphabets, Numbers or special characters.!");
+			}
+			if(officer3Role!=null && !InputValidator.isContainsDescriptionPattern(officer3Role)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Officer3 Role' should contains Alphabets, Numbers or special characters.!");
+			}
+			if(approvingOfficerRole!=null && !InputValidator.isContainsDescriptionPattern(approvingOfficerRole)) {
+				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+				return redirectWithError(redir, "MeetingMinutesApproval.htm", "'Approving Officer Role' should contains Alphabets, Numbers or special characters.!");
+			}
 			
 			PmsEnote pe = req.getParameter("EnoteId")!=null && req.getParameter("EnoteId").equalsIgnoreCase("0")? new PmsEnote():  service.getPmsEnote(req.getParameter("EnoteId"));
-
+			
+			
+//			if(Stream.of(Subject , Comment, officer1Role,officer2Role,officer3Role,approvingOfficerRole)
+//					.anyMatch(field -> InputValidator.isContainsHTMLTags(field))) {
+//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+//			    redir.addAttribute("committeeMainId", req.getParameter("committeeMainId"));
+//			    redir.addAttribute("committeeId", req.getParameter("committeeId"));
+//			    redir.addAttribute("ccmFlag", req.getParameter("ccmFlag"));
+//				return  redirectWithError(redir, "MeetingMinutesApproval.htm", "Html Tags Not Allowed");
+//			}
 			if(flag!=null && flag.equalsIgnoreCase("UpdateForward")) {
-				String Subject=req.getParameter("subject").trim();
-				String Comment=req.getParameter("Comment").trim();
-				String officer1Role=req.getParameter("Rec1_Role").toUpperCase();
-				String officer2Role=req.getParameter("Rec2_Role").toUpperCase();
-				String officer3Role=req.getParameter("Rec3_Role").toUpperCase();
-				String approvingOfficerRole=req.getParameter("Approving_Role").toUpperCase();
+				
+				
 				pe.setRefNo(req.getParameter("RefNo"));
 				pe.setRefDate(pe.getRefDate()!=null ? pe.getRefDate(): java.sql.Date.valueOf(req.getParameter("RefDate")));
 				pe.setSubject(Subject);
@@ -2017,6 +2029,7 @@ public class CommitteeController {
 		try
 		{
 			String statusflag = req.getParameter("redirpageflag");
+			String prgmstatus = req.getParameter("prgmflag");
 			String AgendaItem[]=req.getParameterValues("agendaitem");
 			String Duration[]=req.getParameterValues("duration");
 			String ProjectId[]=req.getParameterValues("projectid");
@@ -2029,12 +2042,14 @@ public class CommitteeController {
 			}
 			
 			if (containsHTMLTags(AgendaItem)) {
-				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
+				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
+				if(prgmstatus!=null && prgmstatus.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
 			    if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
 				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Agenda' should not contain HTML Tags.!");
 			} 
 			if (containsHTMLTags(Remarks)) {
-				redir.addFlashAttribute("scheduleid",req.getParameter("scheduleid"));
+				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
+				if(prgmstatus!=null && prgmstatus.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 			    if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 			}
@@ -2465,13 +2480,14 @@ public class CommitteeController {
 			String status = req.getParameter("redirpageflag");
 			String ActionName=req.getParameter("NoteText");
 			String Remarks=req.getParameter("remarks");
-			if(InputValidator.isContainsHTMLTags(ActionName)) {
+			String minutesid = req.getParameter("minutesid");
+			if ((minutesid.equalsIgnoreCase("3") || minutesid.equalsIgnoreCase("5")) 
+					&& InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
 				redir.addAttribute("specname", req.getParameter("specname"));
 				redir.addAttribute("membertype",req.getParameter("membertype"));
 				redir.addAttribute("formname", req.getParameter("formname"));
 				redir.addAttribute("unit1",req.getParameter("unit1"));
-				System.out.println("======================================================="+status);
 			    if(status!=null && status.equalsIgnoreCase("ROD"))	return  redirectWithError(redir,"RODScheduleMinutes.htm","HTML elements should not be entered !");
 			    return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
 			}
@@ -2482,7 +2498,6 @@ public class CommitteeController {
 				redir.addAttribute("membertype",req.getParameter("membertype"));
 				redir.addAttribute("formname", req.getParameter("formname"));
 				redir.addAttribute("unit1",req.getParameter("unit1"));
-				System.out.println("======================================================="+status);
 				if(status!=null && status.equalsIgnoreCase("ROD"))	return  redirectWithError(redir,"RODScheduleMinutes.htm","HTML elements should not be entered !");
 			    return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
 			}
