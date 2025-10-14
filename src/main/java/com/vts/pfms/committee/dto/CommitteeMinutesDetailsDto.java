@@ -18,7 +18,21 @@ public class CommitteeMinutesDetailsDto {
 	private String StatusFlag;
 	private String Remarks;
 	private String AgendaSubHead;
+	private String AircraftId;
+	private String SubSystemId;
 	
+	public String getAircraftId() {
+		return AircraftId;
+	}
+	public void setAircraftId(String aircraftId) {
+		AircraftId = aircraftId;
+	}
+	public String getSubSystemId() {
+		return SubSystemId;
+	}
+	public void setSubSystemId(String subSystemId) {
+		SubSystemId = subSystemId;
+	}
 	public String getRemarks() {
 		return Remarks;
 	}

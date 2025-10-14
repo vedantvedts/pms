@@ -30,5 +30,7 @@ public class CommitteeScheduleMinutesDetails {
 	private String ModifiedBy;
 	private String ModifiedDate;
 	private String Remarks;
+	private Long AirCraftId;
+	private Long SubSystemId;
 
 }

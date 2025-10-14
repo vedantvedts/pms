@@ -1484,12 +1484,16 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = { "ExperAddAjax.htm" }, method = { RequestMethod.GET })
-	public @ResponseBody String ExperAddAjax(final HttpServletRequest req, final HttpSession ses, final RedirectAttributes redir)
+	public @ResponseBody ResponseEntity<String> ExperAddAjax(final HttpServletRequest req, final HttpSession ses, final RedirectAttributes redir)
 			throws Exception {
 		final String UserId = (String) ses.getAttribute("Username");
 		AdminController.logger.info(new Date() + "Inside ExperAddAjax.htm " + UserId);
 		 
 		Gson json = new Gson();
+		
+		if(InputValidator.isContainsHTMLTags(req.getParameter("expertname")) || InputValidator.isContainsHTMLTags(req.getParameter("organization"))) {
+			return new ResponseEntity<>("200",HttpStatus.EXPECTATION_FAILED);
+		}
 				
 		 Enumeration<String> parameterNames = req.getParameterNames();
 	        while (parameterNames.hasMoreElements()) {
@@ -1498,7 +1502,7 @@ public class AdminController {
 	            System.out.println(paramName+"-----");
 	            if (paramValue != null && paramValue.matches(".*<[^>]+>.*")) {
 	                // Contains HTML tag → return -1
-	                return json.toJson(-1);
+	                return ResponseEntity.ok(json.toJson(-1));
 	            }
 	        }
 		String expertNo = service.GenExpertNo();
@@ -1519,10 +1523,10 @@ public class AdminController {
 			
 			List<Object[]>expertList = service.GetExpertList().stream().filter(e->e[1].toString().equalsIgnoreCase(expertNo))
 										.collect(Collectors.toList());
-			return json.toJson(expertList);
+			return ResponseEntity.ok(json.toJson(expertList));
 		}catch (Exception e) {
 			e.printStackTrace();
-			return json.toJson( new ArrayList<>() );
+			return ResponseEntity.ok(json.toJson( new ArrayList<>() ));
 		}
 		
 	

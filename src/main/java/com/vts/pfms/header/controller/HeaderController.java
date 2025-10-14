@@ -703,6 +703,10 @@ public class HeaderController {
 			String projects = req.getParameter("projects");
 			String FavName = req.getParameter("addFav");
 			
+			if(InputValidator.isContainsHTMLTags(FavName)) {
+				redir.addAttribute("resultfail", "Favourite Name shold not contain html tag");
+				return "redirect:/MainDashBoard.htm";
+			}
 			
 			System.out.println("projects "+projects);
 	

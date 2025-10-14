@@ -53,6 +53,7 @@ import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeAircraft;
 import com.vts.pfms.committee.model.CommitteeCARS;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
@@ -69,12 +70,14 @@ import com.vts.pfms.committee.model.CommitteeMemberRep;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
+import com.vts.pfms.committee.model.CommitteeRepresentative;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSchedulesMomDraftRemarks;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
+import com.vts.pfms.committee.model.CommitteeSubSystem;
 import com.vts.pfms.committee.model.PfmsEmpRoles;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
@@ -897,6 +900,12 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeeminutesdetails.setCreatedBy(committeeminutesdetailsdto.getCreatedBy());
 		committeeminutesdetails.setCreatedDate(sdf1.format(new Date()));
 		committeeminutesdetails.setAgendaSubHead(committeeminutesdetailsdto.getAgendaSubHead());
+		if(committeeminutesdetailsdto.getAircraftId()!=null) {
+			committeeminutesdetails.setAirCraftId(Long.parseLong(committeeminutesdetailsdto.getAircraftId()));;
+		}
+		if(committeeminutesdetailsdto.getSubSystemId()!=null) {
+			committeeminutesdetails.setSubSystemId(Long.parseLong(committeeminutesdetailsdto.getSubSystemId()));;
+		}
 		
 		if(committeeminutesdetailsdto.getRemarks()=="" ) {
 			
@@ -949,6 +958,14 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeeminutesdetails.setModifiedDate(sdf1.format(new Date()));
 		committeeminutesdetails.setScheduleMinutesId(Long.parseLong(committeeminutesdetailsdto.getScheduleMinutesId()));
 		committeeminutesdetails.setRemarks(committeeminutesdetailsdto.getRemarks());
+		
+		if(committeeminutesdetailsdto.getAircraftId()!=null) {
+			committeeminutesdetails.setAirCraftId(Long.parseLong(committeeminutesdetailsdto.getAircraftId()));;
+		}
+		if(committeeminutesdetailsdto.getSubSystemId()!=null) {
+			committeeminutesdetails.setSubSystemId(Long.parseLong(committeeminutesdetailsdto.getSubSystemId()));;
+		}
+		
 
 		return dao.CommitteeMinutesUpdate(committeeminutesdetails);
 	}
@@ -4113,6 +4130,61 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	@Override
 	public List<Object[]> CommitteeScheduleMinutesforAction(String committeescheduleid) {
 		return dao.CommitteeScheduleMinutesforAction(committeescheduleid);
+	}
+
+	@Override
+	public Long addRepresentative(CommitteeRepresentative rep) {
+		return dao.addRepresentative(rep);
+	}
+
+	@Override
+	public CommitteeRepresentative getRepresentativeById(String repId) {
+		return dao.getRepresentativeById(repId);
+	}
+
+	@Override
+	public Long getRepNameDuplicateCount(String repName) {
+		return dao.getRepNameDuplicateCount(repName);
+	}
+
+	@Override
+	public Long getRepCodeDuplicateCount(String repCode) {
+		return dao.getRepCodeDuplicateCount(repCode);
+	}
+
+	@Override
+	public List<Object[]> getAircraftList(String committeeScheduleId) {
+		return dao.getAircraftList(committeeScheduleId);
+	}
+
+	@Override
+	public List<Object[]> getSubSystemList(String committeeScheduleId) {
+		return dao.getSubSystemList(committeeScheduleId);
+	}
+	
+	@Override
+	public Long addAircraft(CommitteeAircraft aircraft) {
+		return dao.addAircraft(aircraft);
+	}
+
+	@Override
+	public CommitteeAircraft getAircraftById(String aircraftId) {
+		return dao.getAircraftById(aircraftId);
+	}
+
+	@Override
+	public Long addSubSystem(CommitteeSubSystem sub) {
+		return dao.addSubSystem(sub);
+	}
+
+	@Override
+	public CommitteeSubSystem getSubSystemById(String subsystemId) {
+		return dao.getSubSystemById(subsystemId);
+	}
+
+	@Override
+	public List<Object[]> committeeScheduleMinutesforActionForMom(String committeescheduleid) {
+		return dao.committeeScheduleMinutesforActionForMom(committeescheduleid);
 	}
 	
 }
