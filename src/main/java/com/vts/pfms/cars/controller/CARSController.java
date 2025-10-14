@@ -1764,6 +1764,7 @@ private boolean isValidFileType(MultipartFile file) {
 			String[] taskDescription=req.getParameterValues("taskDesc");
 			String[] deliverables=req.getParameterValues("deliverables");
 			String[] Months=req.getParameterValues("months");
+			String[] remarks = req.getParameterValues("paymentTerms");
 			
 			
 			if (containsHTMLTags(taskDescription)) {
@@ -1771,6 +1772,12 @@ private boolean isValidFileType(MultipartFile file) {
 				redir.addAttribute("attributes", attributes);
 				redir.addAttribute("TabId",tab!=null?tab:"2");
 			    return redirectWithError(redir, "CARSInitiationDetails.htm", "'Task Description' should not contain HTML Tags.!");
+			}
+			if (containsHTMLTags(remarks)) {
+				redir.addAttribute("carsInitiationId", carsInitiationId);
+				redir.addAttribute("attributes", attributes);
+				redir.addAttribute("TabId",tab!=null?tab:"2");
+				return redirectWithError(redir, "CARSInitiationDetails.htm", "'Remarks' should not contain HTML Tags.!");
 			}
 			if (containsHTMLTags(deliverables)) {
 				redir.addAttribute("carsInitiationId", carsInitiationId);

@@ -560,7 +560,7 @@ $('#IsPlanned').change(function(){
 	});
 
 
-$(document).ready(function() {
+/* $(document).ready(function() {
 $('#DeliverablesOutput').multiselect({
 includeSelectAllOption: true,
 enableFiltering: true,
@@ -576,7 +576,7 @@ onChange: function(option, checked) {
   }
 }
 });
-});
+}); */
 
 
 

@@ -3911,10 +3911,7 @@ var editor_config = {
 	          name: 'align',
 	          items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']
 	        },
-	        {
-	          name: 'document',
-	          items: ['Print', 'PageBreak', 'Source']
-	        }
+	      
 	      ],
 	    removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar',
 		customConfig: '',

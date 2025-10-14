@@ -1,8 +1,10 @@
+<%@page import="java.util.List"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="org.apache.commons.text.StringEscapeUtils"%>
 <%@page import="com.vts.pfms.FormatConverter"%>
 <%@page import="com.ibm.icu.text.DecimalFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*,java.text.SimpleDateFormat,java.io.ByteArrayOutputStream,java.io.ObjectOutputStream"%>
+    pageEncoding="ISO-8859-1" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
@@ -14,6 +16,13 @@
 <spring:url value="/resources/css/action/actionCommon.css" var="actionCommon" />
 <link href="${actionCommon}" rel="stylesheet" />
  
+<!-- Pdfmake  -->
+	<spring:url value="/resources/pdfmake/pdfmake.min.js" var="pdfmake" />
+	<script src="${pdfmake}"></script>
+	<spring:url value="/resources/pdfmake/vfs_fonts.js" var="pdfmakefont" />
+	<script src="${pdfmakefont}"></script>
+	<spring:url value="/resources/pdfmake/htmltopdf.js" var="htmltopdf" />
+	<script src="${htmltopdf}"></script>
 
 <title>Action List</title>
 
@@ -34,6 +43,8 @@ String projectid=(String)request.getAttribute("projectid");
 String committeeid=(String)request.getAttribute("committeeid");
 String scheduleid =(String)request.getAttribute("scheduleid");
 String status = (String)request.getAttribute("status");
+
+String projectName = "", committeName = "", meetingName = "", statusName = "";
 %>
 
 <% 
@@ -75,7 +86,7 @@ String status = (String)request.getAttribute("status");
 										 for (Object[] obj : ProjectsList) {
 											 String projectshortName=(obj[17]!=null)?" ( "+obj[17].toString()+" ) ":"";			 
 										 %>
-												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ %>selected<%} %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
+												<option value="<%=obj[0]%>" <%if(obj[0].toString().equals(projectid)){ projectName = obj[4].toString()+projectshortName; %>selected<%} %> ><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()):" - "%> <%= projectshortName!=null?StringEscapeUtils.escapeHtml4(projectshortName):" - " %></option>
 										<%}} %>
 								             </select>       
 											</td>
@@ -86,7 +97,7 @@ String status = (String)request.getAttribute("status");
                                               <select class="form-control selectdee" id="committeeid" required="required" name="committeeid" onchange='submitForm();' >
 							   			        	<%if(projapplicommitteelist!=null && projapplicommitteelist.size()>0){
 							   			        	  for (Object[] obj : projapplicommitteelist) {%>
-											     <option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(committeeid)){ %>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%></option>
+											     <option value="<%=obj[0]%>"  <%if(obj[0].toString().equals(committeeid)){ committeName=obj[3].toString(); %>selected<%} %> ><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()):" - "%></option>
 											        <%}} %>   
 							  	             </select>
 											</td>
@@ -97,7 +108,7 @@ String status = (String)request.getAttribute("status");
                                                    <select class="form-control selectdee" id="meettingid" required="required" name="meettingid" onchange='submitForm();'>
 							   			        	<% if(meetingcount!=null && meetingcount.size()>0){
 							   			        	 for (Object[] obj : meetingcount) {%>
-											         <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(scheduleid)){ %>selected<%} %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString())+"-"+meettingcount:" - "%></option>
+											         <option value="<%=obj[0]%>" <%if(obj[0].toString().equals(scheduleid)){ meetingName=obj[3].toString()+" - "+meettingcount; %>selected<%} %>><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString())+"-"+meettingcount:" - "%></option>
 											        <%meettingcount++;} }%>   
 							  	                  </select>				   						
 											</td> 
@@ -106,12 +117,17 @@ String status = (String)request.getAttribute("status");
 					   						</td>
 					   						<td class="td-width">
                                                    <select class="form-control selectdee " name="status" id="Assignee" required="required"  data-live-search="true" onchange="submitForm();" >
-                                                          <option value="N" <%if("N".equalsIgnoreCase(status)){ %> selected="selected" <%} %>>All</option>
-														  <option value="A" <%if("A".equalsIgnoreCase(status)){ %> selected="selected" <%} %>>Not Started</option>	
-														  <option value="I" <%if("I".equalsIgnoreCase(status)){ %> selected="selected" <%} %>>In-Progress</option>	
-														  <option value="C" <%if("C".equalsIgnoreCase(status)){ %> selected="selected" <%} %> >Closed</option>		
+                                                          <option value="N" <%if("N".equalsIgnoreCase(status)){ statusName="All"; %> selected="selected" <%} %>>All</option>
+														  <option value="A" <%if("A".equalsIgnoreCase(status)){ statusName="Not Started"; %> selected="selected" <%} %>>Not Started</option>	
+														  <option value="I" <%if("I".equalsIgnoreCase(status)){ statusName="In-Progress"; %> selected="selected" <%} %>>In-Progress</option>	
+														  <option value="C" <%if("C".equalsIgnoreCase(status)){ statusName="Closed"; %> selected="selected" <%} %> >Closed</option>		
 													</select>				   					
-											</td> 	   									
+											</td> 	
+											<td>
+												<button type="button" class="btn btn-sm" onclick="downloadPDF()" formnovalidate="formnovalidate" data-toggle="tooltip" data-placement="top" title="pdf download" data-original-title="PDF Download">
+										        	<i class="fa fa-download text-danger"></i>
+									       		</button>
+											</td>    							
 					   					</tr>   					   				
 					   				</table>
 					   				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
@@ -256,6 +272,177 @@ $(document).ready(function(){
 
 	});
 });
+
+// PDF DOWNLOAD
+
+ function downloadPDF() {
+	
+	var docDefinition = {
+			info:{
+				title:'Meeting Action Report',
+			},
+			pageOrientation: 'landscape',
+			content: [
+				
+				/*********************************** MEETING ACTION REPORTS LIST START *********************************/
+				{
+					text: 'Meeting Action Report',
+                    style: 'chapterHeader',
+                    tocItem: false,
+                    id: 'chapter1',
+                    alignment: 'center',
+                },
+                
+				{
+                	table:{
+                		headerRows: 1,
+                		widths: ['7%', '15%', '5%', '10%', '14%', '7%', '10%', '10%', '5%', '7%', '10%'],
+                		body: [
+                            // Table header
+                            [
+                                { text: 'Project: ',bold: true,  },
+                                { text: '<%if(projectName.length()>0) {%><%=projectName %> <% }else{ %> - <% }%>',  },
+                                { text: '', },
+                                
+                                { text: 'Committee:',bold: true, }, 
+                                { text: '<%if(committeName.length()>0) {%><%=committeName %> <% }else{ %> - <% }%>',  }, 
+                                { text: '', },
+                                
+                                { text: 'Meeting:',bold: true, }, 
+                                { text: '<%if(meetingName.length()>0) {%><%=meetingName %> <% }else{ %> - <% }%>',  }, 
+                                { text: '', }, 
+                                
+                                { text: 'Status:',bold: true, }, 
+                                { text: '<%if(statusName.length()>0) {%><%=statusName %> <% }else{ %> - <% }%>',  }, 
+                            ],
+                        ]
+                	},
+                	layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return 0;
+                        },
+                        vLineWidth: function(i) {
+                            return 0;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    }
+				},
+				
+				{text: '\n'},
+                {
+					table:{
+						headerRows: 1,
+                        widths: ['6%', '21%', '10%','23%', '15%', '15%', '10%'],
+                        body : [
+                        	// Table Header
+                        	[
+                        		 { text: 'SN', style: 'tableHeader' },
+                                 { text: 'Action Id', style: 'tableHeader' },
+                                 { text: 'PDC', style: 'tableHeader' },
+                                 { text: 'Action Item', style: 'tableHeader'},
+                                 { text: 'Assignee', style: 'tableHeader' }, 
+                                 { text: 'Assignor', style: 'tableHeader' }, 
+                                 { text: 'Progress', style: 'tableHeader' }, 
+                        	],
+                        	<% if(meetinglist!=null && meetinglist.size()>0){ 
+                        			int slno = 0;
+                        			int i=0;
+                        			for(Object[] obj:meetinglist){                        			
+                        	%>
+	                        	[
+	                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%= obj[0] %>', style: 'tableData',alignment: 'left' },
+	                                { text: '<%=obj[6]!=null?sdf1.format(obj[6]):"-"%>', style: 'tableData',alignment: 'center' },
+	                                { text: '<%=obj[7].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', style: 'tableData' },
+	                                { text: '<%=obj[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>, <%=obj[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', style: 'tableData' },
+	                                { text: '<%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>, <%=obj[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', style: 'tableData' },
+	                                { text: '<%=obj[11]!=null && !obj[11].toString().equalsIgnoreCase("0")?obj[11]+"%":"Not Yet Started"%>', style: 'tableData',alignment: 'center' },
+	                            ],
+                        	<% ++i;}} else {%>
+                        		[{ text: 'No Data Available', style: 'tableData',alignment: 'center', colSpan: 7 },]
+                        	<%} %>
+                        ],
+					},
+					layout: {
+                        /* fillColor: function(rowIndex) {
+                            return (rowIndex % 2 === 0) ? '#f0f0f0' : null;
+                        }, */
+                        hLineWidth: function(i, node) {
+                            return (i === 0 || i === node.table.body.length) ? 1 : 0.5;
+                        },
+                        vLineWidth: function(i) {
+                            return 0.5;
+                        },
+                        hLineColor: function(i) {
+                            return '#aaaaaa';
+                        },
+                        vLineColor: function(i) {
+                            return '#aaaaaa';
+                        }
+                    },
+                }
+			],
+			styles: {
+				chapterHeader: { fontSize: 16, bold: true, margin: [0, 0, 0, 10] },
+                tableHeader: { fontSize: 12, bold: true, fillColor: '#f0f0f0', alignment: 'center', margin: [10, 5, 10, 5], fontWeight: 'bold' },
+                tableData: { fontSize: 11.5, margin: [0, 5, 0, 5] },
+            },
+            footer: function(currentPage, pageCount) {
+                /* if (currentPage > 2) { */
+                    return {
+                        stack: [
+                        	{
+                                canvas: [{ type: 'line', x1: 30, y1: 0, x2: 820, y2: 0, lineWidth: 1 }]
+                            },
+                            {
+                                columns: [
+                                    { text: '', alignment: 'left', margin: [30, 0, 0, 0], fontSize: 8 },
+                                    { text: currentPage.toString() + ' of ' + pageCount, alignment: 'right', margin: [0, 0, 30, 0], fontSize: 8 }
+                                ]
+                            },
+                            { text: '', alignment: 'center', fontSize: 8, margin: [0, 5, 0, 0], bold: true }
+                        ]
+                    };
+                /* }
+                return ''; */
+            },
+            /* header: function (currentPage) {
+                return {
+                    stack: [
+                        
+                        {
+                            columns: [
+                                {
+                                    // Center: Text
+                                    text: 'Restricted',
+                                    alignment: 'center',
+                                    fontSize: 10,
+                                    bold: true,
+                                    margin: [0, 10, 0, 0]
+                                },
+                            ]
+                        },
+                        
+                    ]
+                };
+            }, */
+			pageMargins: [30, 40, 20, 20],
+            
+            defaultStyle: { fontSize: 12, color: 'black', }
+        };
+		
+        const pdf = pdfMake.createPdf(docDefinition);
+        /* pdf.download("Meeting Action Report"); */
+        pdf.open();
+} 
 
 </script>
 

@@ -53,7 +53,7 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String USERNAMELIST="SELECT l.loginid, l.empid,l.username, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',e.labcode FROM login l , employee e WHERE e.isactive=1 AND l.isactive=1 AND l.EmpId=e.EmpId ORDER BY e.srno=0,e.srno"; 
 	private static final String LOGINEDITDATA="FROM Login WHERE LoginId=:LoginId";
 	private static final String USERMANAGELIST = "SELECT a.loginid, a.username, b.divisionname,c.formrolename, a.Pfms , CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname', d.designation ,lt.logindesc ,e.empno ,e.labcode FROM login a , division_master b , form_role c , employee e, employee_desig d,  login_type lt WHERE a.divisionid=b.divisionid AND a.formroleid=c.formroleid AND a.isactive=1 AND a.empid=e.empid AND e.desigid=d.desigid AND a.logintype=lt.logintype ";
-	private static final String USERNAMEPRESENTCOUNT ="select count(*) from login where username=:username and isactive='1'";
+	private static final String USERNAMEPRESENTCOUNT ="select count(*) from login where username=:username and isactive IN ('1','0')";
 	private static final String EMPLOYEELIST1="SELECT empid,CONCAT(IFNULL(CONCAT(title,' '),''), empname) AS 'empname' FROM employee e WHERE e.isactive='1' AND labcode=:labcode AND empid NOT IN (SELECT empid FROM login WHERE isactive=1) ORDER BY srno ";
 	private final static String CHECKUSER = "SELECT COUNT(LoginId) FROM pfms_login_role_security WHERE LoginId=:loginid";
 	private final static String UPDATEPFMSLOGINROLE="UPDATE pfms_login_role_security SET RoleId=:roleid WHERE LoginId=:loginid";

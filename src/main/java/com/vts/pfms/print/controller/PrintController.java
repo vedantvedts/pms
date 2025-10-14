@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -54,9 +55,12 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -4584,10 +4588,12 @@ public class PrintController {
 			String UserId = (String) ses.getAttribute("Username");
 			logger.info(new Date() +"Inside EditProjectSlides.htm.htm "+UserId);	
 			try {
-				if(InputValidator.isContainsHTMLTags(req.getParameter("Brief"))) {
-					return  redirectWithError(redir,"MainDashBoard.htm","Brief should not contain HTML elements !");
-				}
 				String projectid = (String)req.getParameter("ProjectId");
+				if(InputValidator.isContainsHTMLTags(req.getParameter("Brief"))) {
+					redir.addAttribute("projectid", projectid);
+					return  redirectWithError(redir,"PfmsProjectSlides.htm","Brief should not contain HTML elements !");
+				}
+				
 				
 				String LabCode = (String) ses.getAttribute("labcode");
 				String ProjectslideId = req.getParameter("ProjectslideId");
@@ -6690,4 +6696,59 @@ public class PrintController {
 	    return "redirect:/"+redirURL;
 	}
 	
+	
+	@RequestMapping(value = "techFilePreview.htm/{id}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<Resource> downloadPdfFromPasswordZip(
+			 @PathVariable("id") String id,
+	        HttpServletRequest req) throws Exception {
+
+	    Object[] filedata = service.TechWorkData(id);
+	    if (filedata == null) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    try {
+			String fileExt = FilenameUtils.getExtension(filedata[8].toString());
+			String tecdata = filedata[6].toString().replaceAll("[/\\\\]", ",");
+    		String[] fileParts = tecdata.split(",");
+    		String zipName = String.format(filedata[7].toString()+filedata[11].toString()+"-"+filedata[10].toString()+".zip");
+    		Path zipFilePath;
+    		if(fileParts.length == 4){
+    			zipFilePath = Paths.get(ApplicationFilesDrive, fileParts[0],fileParts[1],fileParts[2],fileParts[3],zipName);
+    		}else{
+    			zipFilePath = Paths.get(ApplicationFilesDrive, fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
+    		}
+			
+			 String path = req.getServletContext().getRealPath("/view/temp");
+			Zipper zip = new Zipper();
+	    	
+	        if (!Files.exists(zipFilePath)) {
+	            return ResponseEntity.notFound().build();
+	        }
+//	        // Extract zip to a temp folder
+	        String tempDirPath = req.getServletContext().getRealPath("/view/temp/" + UUID.randomUUID());
+	        File tempDir = new File(tempDirPath);
+	        tempDir.mkdirs();
+	        zip.unpack(zipFilePath.toString(), tempDirPath, filedata[9].toString());
+
+	        // Find the single PDF inside
+	        File[] pdfFiles = tempDir.listFiles((d, name) -> name.toLowerCase().endsWith(".pdf"));
+	        if (pdfFiles == null || pdfFiles.length == 0) {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	        }
+
+	        File pdfFile = pdfFiles[0];
+	        Resource resource = new UrlResource(pdfFile.toURI());
+
+	        return ResponseEntity.ok()
+	                .contentType(MediaType.APPLICATION_PDF)
+	                .header(HttpHeaders.CONTENT_DISPOSITION,
+	                        "inline; filename=\"" + pdfFile.getName() + "\"")
+	                .body(resource);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
 }

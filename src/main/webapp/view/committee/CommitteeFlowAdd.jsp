@@ -592,7 +592,7 @@ String ses=(String)request.getParameter("result");
 							for (i = 0; i < values.length; i++) 
 							{
 
-								s += '<option value="'+values[i][0]+'">'+values[i][1] + ', ' +values[i][3] + '</option>';
+								s += '<option value="'+values[i][0]+'">'+values[i][1].replaceAll("<","").replaceAll(">","") + ', ' +values[i][3].replaceAll("<","").replaceAll(">","") + '</option>';
 							} 
 							
 							$('#ApprovingOfficer').html(s);

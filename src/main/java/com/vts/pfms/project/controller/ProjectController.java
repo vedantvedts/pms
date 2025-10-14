@@ -2218,16 +2218,16 @@ public class ProjectController
 			String InitiationId = req.getParameter("IntiationId");
 			String Details = req.getParameter("details");
 			//		
-			if(InputValidator.isContainsHTMLTags(req.getParameter("ReqBrief"))) {
-				redir.addAttribute("IntiationId", InitiationId);
-				redir.addAttribute("details", Details);
-				return  redirectWithError(redir,"ProjectInitiationDetailsEdit.htm","Brief should not contain HTML elements !");
-			}
+			
 
 			String option = req.getParameter("sub");
 			if (option.equalsIgnoreCase("SUBMIT")) {
 
-				
+				if(InputValidator.isContainsHTMLTags(req.getParameter("ReqBrief"))) {
+					redir.addAttribute("IntiationId", InitiationId);
+					redir.addAttribute("details", Details);
+					return  redirectWithError(redir,"ProjectInitiationDetailsEdit.htm","Brief should not contain HTML elements !");
+				}
 				String Alert = "";
 
 				PfmsInitiationDetailDto pfmsinitiationdetaildto = new PfmsInitiationDetailDto();
@@ -5572,6 +5572,7 @@ public class ProjectController
 			String Deliverable=req.getParameter("Deliverable");
 			String projectTypeID=req.getParameter("projectTypeID");
 			String platformName=req.getParameter("platformName"); //srikant
+			String remarks = req.getParameter("remarks");
 			
 			if (Stream.of(pcode, pname, desc, unicode, projectshortcode, sano, LabParticipating)
 			        .anyMatch(field -> !InputValidator.isContainCapitalsSmallsNumericSymbolsSpace(field))) {
@@ -5581,7 +5582,7 @@ public class ProjectController
 					.anyMatch(field-> !InputValidator.isDecimalFormat(field))){
 			    return redirectWithError(redir, "ProjectList.htm", "Only numbers are allowed. You may enter up to 2 digits after the decimal.");				
 			}
-			if(Stream.of(Application,Scope,Deliverable,Objective)
+			if(Stream.of(Application,Scope,Deliverable,Objective,remarks)
 					.anyMatch(field-> InputValidator.isContainsHTMLTags(field))){
 				return redirectWithError(redir, "ProjectList.htm", "HTML tags are not permitted.");				
 			}
@@ -5705,7 +5706,16 @@ public class ProjectController
 			return "static/Error";
 		}	
 	}
-
+	
+	private boolean containsHTMLTags(String[] inputs) {
+	    
+	    for (String input : inputs) {
+	        if (InputValidator.isContainsHTMLTags(input)) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
 
 
 	@RequestMapping(value = "ProjectMasterAttachAdd.htm", method = {RequestMethod.POST,RequestMethod.GET})
@@ -5719,7 +5729,15 @@ public class ProjectController
 		try {
 			String filenames[] = req.getParameterValues("filename");
 			String ProjectId = req.getParameter("ProjectId");			
-
+			
+			if(containsHTMLTags(filenames)) {
+				redir.addAttribute("ProjectId", ProjectId);
+                return redirectWithError(
+                    redir,
+                    "ProjectMasterAttach.htm",
+                    "Html Tags are not allowed."
+                );
+			}
 			
 	        // 🔹 Validate file types for multiple uploads
 	        if (FileAttach != null) {

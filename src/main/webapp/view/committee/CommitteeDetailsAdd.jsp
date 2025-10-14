@@ -411,7 +411,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 											for (i = 0; i < values.length; i++) 
 											{
 												
-												s += '<option value="'+values[i][0]+'">'+values[i][1] + ', ' +values[i][3]+ '</option>';
+												s += '<option value="'+values[i][0]+'">'+values[i][1].replaceAll("<","").replaceAll(">","") + ', ' +values[i][3].replaceAll("<","").replaceAll(">","")+ '</option>';
 											} 
 											 
 											$('#chairperson').html(s);
@@ -457,7 +457,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 									for (i = 0; i < values.length; i++) 
 									{
 										
-										s += '<option value="'+values[i][0]+'">'+values[i][1] + ', ' +values[i][3]+ '</option>';
+										s += '<option value="'+values[i][0]+'">'+values[i][1].replaceAll("<","").replaceAll(">","") + ', ' +values[i][3].replaceAll("<","").replaceAll(">","")+ '</option>';
 									} 
 									 
 									$('#cochairperson').html(s);
@@ -505,7 +505,7 @@ String LabCode = (String)request.getAttribute("LabCode");
 										for (i = 0; i < values.length; i++) 
 										{
 											
-											s += '<option value="'+values[i][0]+'">'+values[i][1] + ', ' +values[i][3]+ '</option>';
+											s += '<option value="'+values[i][0]+'">'+values[i][1].replaceAll("<","").replaceAll(">","") + ', ' +values[i][3].replaceAll("<","").replaceAll(">","")+ '</option>';
 										} 
 										 
 										$('#secretary').html(s);

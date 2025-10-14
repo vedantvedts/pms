@@ -649,7 +649,7 @@ var filexcount=0;
 						s += '<option value="" selected disabled>Choose...</option>';
 								 for (i = 0; i < values.length; i++) {									
 									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + " (" +values[i][3]+")" 
+											+values[i][1].replaceAll("<","").replaceAll(">","") + " (" +values[i][3].replaceAll("<","").replaceAll(">","")+")" 
 											+ '</option>';
 								} 
 								$('#presenterid_'+$AddrowId).html(s);
@@ -679,7 +679,7 @@ var filexcount=0;
 						s += '<option value="" selected disabled>Choose...</option>';
 								 for (i = 0; i < values.length; i++) {									
 									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + " (" +values[i][3]+")" 
+											+values[i][1].replaceAll("<","").replaceAll(">","") + " (" +values[i][3].replaceAll("<","").replaceAll(">","")+")" 
 											+ '</option>';
 								} 
 								$('#presenterid_Edit_'+$AddrowId).html(s);

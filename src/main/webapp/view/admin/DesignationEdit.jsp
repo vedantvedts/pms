@@ -83,7 +83,7 @@
 									<div class="form-group">
 										<label>Limit :<span class="mandatory">*</span></label> <input
 											class="form-control field-w80 form-control numeric-only" type="number" name="limit"
-											required="required"
+											id="limit" required="required"
 											value="<%=designationdata[3]!=null?StringEscapeUtils.escapeHtml4(designationdata[3].toString()): ""%>">
 									</div>
 								</div>
@@ -92,7 +92,7 @@
 									<div class="form-group">
 										<label>SrNo :<span class="mandatory">*</span></label> <input
 											class="form-control field-w80 numeric-only " type="number"
-											name="desigsr" required="required"
+											name="desigsr" id="desigsr" required="required"
 											value="<%=designationdata[4]!=null?StringEscapeUtils.escapeHtml4(designationdata[4].toString()): ""%>">
 									</div>
 								</div>
@@ -100,7 +100,7 @@
 								<div class="col-md-2">
 									<div class="form-group">
 										<label>Desig Cadre :<span class="mandatory">*</span></label> 
-										<select class="form-control" name="desigCadre">
+										<select class="form-control" name="desigCadre" id="desigCadre">
 											<option value="DRDS" <%if(designationdata[5]!=null && designationdata[5].toString().equalsIgnoreCase("DRDS")) {%>selected<%} %> >DRDS</option>
 											<option value="DRTC" <%if(designationdata[5]!=null && designationdata[5].toString().equalsIgnoreCase("DRTC")) {%>selected<%} %>>DRTC</option>
 											<option value="Others" <%if(designationdata[5]!=null && designationdata[5].toString().equalsIgnoreCase("Others")) {%>selected<%} %>>Others</option>
@@ -143,6 +143,9 @@
 
 		 var desigcode = $('#desigcode').val().trim();
 		 var designation = $('#designation').val().trim();
+		 var limit = $('#limit').val().trim();
+		 var desigsr = $('#desigsr').val().trim();
+		 var desigCadre = $('#desigCadre').val().trim();
 		 
 		   if (!desigcode) {
 		        alert('Designation Code is required.');
@@ -151,6 +154,18 @@
 		    if (!designation) {
 		        alert('Designation Name is required.');
 		        return;
+		    }
+		    if(!limit){
+		    	alert('Limit is required');
+		    	return;
+		    }
+		    if(!desigsr){
+		    	alert('SrNo is required');
+		    	return;
+		    }
+		    if(!desigCadre){
+		    	alert('Desig Cadre is required');
+		    	return;
 		    }
 		 
 		$.ajax({

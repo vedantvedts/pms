@@ -3034,7 +3034,7 @@ private boolean isValidFileType(MultipartFile file) {
 	}
 
 	@RequestMapping(value = "ProjectModuleNameEdit.htm")
-	public @ResponseBody String ProjectModuleNameEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+	public @ResponseBody ResponseEntity<String> ProjectModuleNameEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside ProjectModuleNameEdit.htm "+UserId);		
 		try {
@@ -3042,16 +3042,19 @@ private boolean isValidFileType(MultipartFile file) {
 			String filerepmasterid = req.getParameter("filerepmasterid");
 			String levelname = req.getParameter("levelname").trim();
 			String levelType = req.getParameter("levelType");
+			if(InputValidator.isContainsHTMLTags(levelname)) {
+				return new ResponseEntity<String>("200",HttpStatus.EXPECTATION_FAILED);
+			}
 			int count = service.fileRepMasterEditSubmit(filerepmasterid, levelname, levelType);
 			Gson json = new Gson();
-			return json.toJson(count);
+			return ResponseEntity.ok(json.toJson(count));
 		}
 		catch (Exception e) 
 		{
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside ProjectModuleNameEdit.htm "+UserId, e); 
 			Gson json = new Gson();
-			return json.toJson(0);
+			return ResponseEntity.ok(json.toJson(0));
 		}
 	}
 
@@ -4700,7 +4703,7 @@ private boolean isValidFileType(MultipartFile file) {
 	}
 	
 	@RequestMapping(value = "PreProjectFolderNameEdit.htm")
-	public @ResponseBody String PreProjectFolderNameEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
+	public @ResponseBody ResponseEntity<String> PreProjectFolderNameEdit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir)throws Exception {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside PreProjectFolderNameEdit.htm "+UserId);		
 		long count = 0l;
@@ -4709,13 +4712,16 @@ private boolean isValidFileType(MultipartFile file) {
 			String filerepmasterid = req.getParameter("filerepmasterid");
 			String levelname = req.getParameter("levelname").trim();
 			String levelType = req.getParameter("levelType");
+			if(InputValidator.isContainsHTMLTags(levelname)) {
+				return new ResponseEntity<String>("200",HttpStatus.EXPECTATION_FAILED);
+			}
 			count = service.preProjectfileEditSubmit(filerepmasterid, levelname, levelType);
 		}
 		catch (Exception e) {
 			e.printStackTrace();  
 			logger.error(new Date() +" Inside PreProjectFolderNameEdit.htm "+UserId, e); 
 		}
-		return json.toJson(count);	
+		return ResponseEntity.ok(json.toJson(count));	
 	}
 	
 	

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -32,6 +33,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -123,6 +125,7 @@ import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeAircraft;
 import com.vts.pfms.committee.model.CommitteeCARS;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
@@ -132,8 +135,10 @@ import com.vts.pfms.committee.model.CommitteeMeetingDPFMFrozen;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
+import com.vts.pfms.committee.model.CommitteeRepresentative;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeSchedulesMomDraftRemarks;
+import com.vts.pfms.committee.model.CommitteeSubSystem;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.committee.service.CommitteeService;
@@ -2425,6 +2430,14 @@ public class CommitteeController {
 				MemberType=(String)md.get("membertype");
 			}
 
+			if(labcode.equalsIgnoreCase("ADE")) {
+				req.setAttribute("subsystemList", service.getSubSystemList(CommitteeScheduleId));
+				req.setAttribute("aircraftList", service.getAircraftList(CommitteeScheduleId));
+			}
+			else {
+				req.setAttribute("subsystemList", service.getSubSystemList(CommitteeScheduleId));
+				req.setAttribute("aircraftList", service.getAircraftList(CommitteeScheduleId));
+			}
 
 			List<Object[]> specialCommitteesList = printservice.SpecialCommitteesList(labcode);
 			req.setAttribute("SplCommitteeCodes", specialCommitteesList.stream().map(e -> e[1].toString()).collect(Collectors.toList()));
@@ -2471,8 +2484,8 @@ public class CommitteeController {
 	{
 
 		String UserId=(String)ses.getAttribute("Username");
-
-
+		String labcode = (String)ses.getAttribute("labcode");
+//		String labcode = "ADE";
 		logger.info(new Date() +"Inside CommitteeMinutesSubmit.htm "+UserId);
 		try
 		{
@@ -2481,6 +2494,11 @@ public class CommitteeController {
 			String ActionName=req.getParameter("NoteText");
 			String Remarks=req.getParameter("remarks");
 			String minutesid = req.getParameter("minutesid");
+
+			String aircraftid = req.getParameter("aircraftidedit");
+			String subsystemid = req.getParameter("subsystemidedit");
+			
+
 			if ((minutesid.equalsIgnoreCase("3") || minutesid.equalsIgnoreCase("5")) 
 					&& InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
@@ -2491,7 +2509,7 @@ public class CommitteeController {
 			    if(status!=null && status.equalsIgnoreCase("ROD"))	return  redirectWithError(redir,"RODScheduleMinutes.htm","HTML elements should not be entered !");
 			    return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
 			}
-			
+
 			if(InputValidator.isContainsHTMLTags(Remarks)) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
 				redir.addAttribute("specname", req.getParameter("specname"));
@@ -2524,7 +2542,14 @@ public class CommitteeController {
 			committeeminutesdetailsdto.setCreatedBy(UserId);
 			committeeminutesdetailsdto.setRemarks(Remarks);
 			committeeminutesdetailsdto.setAgendaSubHead(req.getParameter("OutComeAirHead"));
-
+			
+			if(labcode.equalsIgnoreCase("ADE") && aircraftid!=null && !aircraftid.isEmpty() && !aircraftid.equalsIgnoreCase("0") ) {
+				committeeminutesdetailsdto.setAircraftId(aircraftid);
+			}
+			if(labcode.equalsIgnoreCase("ADE") && subsystemid!=null  && !subsystemid.isEmpty() && !subsystemid.equalsIgnoreCase("0")) {
+				committeeminutesdetailsdto.setSubSystemId(subsystemid);
+			}
+			
 			long count = service.CommitteeMinutesInsert(committeeminutesdetailsdto);
 
 			String SpecName = req.getParameter("specname");
@@ -2625,15 +2650,23 @@ public class CommitteeController {
 		public String CommitteeMinutesEditSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception
 		{
 			String UserId=(String)ses.getAttribute("Username");
+			String labcode = (String)ses.getAttribute("labcode");
+//			String labcode = "ADE";
 			logger.info(new Date() +"Inside CommitteeMinutesEditSubmit.htm "+UserId);
 			try
-			{	
-				if(InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
+			{
+				String aircraftid = req.getParameter("aircraftidedit");
+				String subsystemid = req.getParameter("subsystemidedit");
+				String status = req.getParameter("redirpageflag");
+				String minutesid = req.getParameter("minutesidedits");
+				if ((minutesid.equalsIgnoreCase("3") || minutesid.equalsIgnoreCase("5")) 
+						&& InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
 					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
 					redir.addAttribute("specname", req.getParameter("specname"));
 					redir.addAttribute("membertype",req.getParameter("membertype"));
 					redir.addAttribute("formname", req.getParameter("formname"));
 					redir.addAttribute("unit1",req.getParameter("unit1"));				
+					if(status!=null && status.equalsIgnoreCase("ROD"))	return  redirectWithError(redir,"RODScheduleMinutes.htm","HTML elements should not be entered !");
 					return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
 				}
 				String ActionName=req.getParameter("NoteText");
@@ -2645,6 +2678,7 @@ public class CommitteeController {
 					redir.addAttribute("membertype",req.getParameter("membertype"));
 					redir.addAttribute("formname", req.getParameter("formname"));
 					redir.addAttribute("unit1",req.getParameter("unit1"));
+					if(status!=null && status.equalsIgnoreCase("ROD"))	return  redirectWithError(redir,"RODScheduleMinutes.htm","HTML elements should not be entered !");
 					return redirectWithError(redir, "CommitteeScheduleMinutes.htm", "'Remarks' should not contain HTML Tags.!");
 				}
 	
@@ -2657,8 +2691,15 @@ public class CommitteeController {
 				committeeminutesdetailsdto.setModifiedBy(UserId);
 				committeeminutesdetailsdto.setScheduleMinutesId(req.getParameter("schedulminutesid"));
 				committeeminutesdetailsdto.setRemarks(Remarks);
-	
-	
+				
+				if(labcode.equalsIgnoreCase("ADE") && aircraftid!=null && !aircraftid.isEmpty() && !aircraftid.equalsIgnoreCase("0") ) {
+					committeeminutesdetailsdto.setAircraftId(aircraftid);
+				}
+				if(labcode.equalsIgnoreCase("ADE") && subsystemid!=null  && !subsystemid.isEmpty() && !subsystemid.equalsIgnoreCase("0")) {
+					committeeminutesdetailsdto.setSubSystemId(subsystemid);
+				}
+				
+					
 				long count = service.CommitteeMinutesUpdate(committeeminutesdetailsdto);
 	
 				String SpecName = req.getParameter("specname");
@@ -11212,4 +11253,273 @@ private boolean isValidFileType(MultipartFile file) {
 		}
 	}
 	
+	public static boolean hasHtmlTags(HttpServletRequest req) {
+        Enumeration<String> parameterNames = req.getParameterNames();
+        while (parameterNames.hasMoreElements()) {
+            String paramName = parameterNames.nextElement();
+            String paramValue = req.getParameter(paramName);
+            if (paramValue != null && paramValue.trim().matches(".*<[^>]+>.*")) {
+                return true;
+            }
+        }
+        return false;
+	}
+	
+//	------------------------------------ Naveen R 10/10/25 Representative Add -------------------------------------------	
+	
+	@RequestMapping(value = "representativeAdd.htm" , method = {RequestMethod.GET})
+	public @ResponseBody String representativeAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside representativeAdd.htm " + UserId);
+		Gson json = new Gson();
+		CommitteeRepresentative rep1 = new CommitteeRepresentative();
+		try {
+			
+			 if (hasHtmlTags(req)) {
+		            return json.toJson(null); 
+		        }
+			
+			String repCode = req.getParameter("repCode");
+			String repName = req.getParameter("repName");
+			
+			CommitteeRepresentative rep = new CommitteeRepresentative();
+			rep.setRepCode(repCode);
+			rep.setRepName(repName);
+			rep.setCreatedBy(UserId);
+			rep.setCreatedDate(LocalDate.now().toString());
+			
+			long count = service.addRepresentative(rep);
+			rep1 = service.getRepresentativeById(count+"");
+			return json.toJson(rep1);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside representativeAdd.htm " + UserId, e);
+			return json.toJson(rep1);
+		}
+	}
+	
+	@RequestMapping(value = "RepNameDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String repNameDuplicateCheck(HttpSession ses,HttpServletRequest req) {
+		String UserId = (String)ses.getAttribute("Username");
+		String repName = req.getParameter("repName");
+		Long count = null;
+		logger.info(new Date() + " Inside RepNameDuplicateCheck.htm "+ UserId );
+		try {
+			count = service.getRepNameDuplicateCount(repName);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside RepNameDuplicateCheck.htm " + UserId);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	
+	@RequestMapping(value = "RepCodeDuplicateCheck.htm", method = RequestMethod.GET)
+	public @ResponseBody String repCodeDuplicateCheck(HttpSession ses,HttpServletRequest req) {
+		String UserId = (String)ses.getAttribute("Username");
+		String repCode =req.getParameter("repCode");
+		Long count = null;
+		logger.info(new Date() + " Inside RepCodeDuplicateCheck.htm "+ UserId );
+		try {
+			count = service.getRepCodeDuplicateCount(repCode);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + "Inside RepCodeDuplicateCheck.htm " + UserId);
+		}
+		Gson json = new Gson();
+		return json.toJson(count);
+	}
+	
+	@RequestMapping(value = "MinutesOfMeetingTabularMinutesDownload.htm")
+	public void minutesOfMeetingTabularMinutesDownload(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res,Model model) throws Exception
+	{
+
+		String UserId=(String)ses.getAttribute("Username");
+		String LabCode =(String) ses.getAttribute("labcode");
+		logger.info(new Date() +"Inside MinutesOfMeetingTabularMinutesDownload.htm "+UserId);
+		try
+		{
+			String UserView=null;
+			Map md=model.asMap();
+			if(req.getParameter("userview")!=null) {
+				UserView=(String)req.getParameter("userview");
+			}
+			
+			String committeescheduleid = req.getParameter("committeescheduleid");
+			Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
+			String projectid= committeescheduleeditdata[9].toString();
+			if(projectid!=null && Integer.parseInt(projectid)>0)
+			{
+				req.setAttribute("projectdetails", service.projectdetails(projectid));
+			}
+			String divisionid= committeescheduleeditdata[16].toString();
+			if(divisionid!=null && Integer.parseInt(divisionid)>0)
+			{
+				req.setAttribute("divisiondetails", service.DivisionData(divisionid));
+			}
+			String initiationid= committeescheduleeditdata[17].toString();
+			if(initiationid!=null && Integer.parseInt(initiationid)>0)
+			{
+				req.setAttribute("initiationdetails", service.Initiationdetails(initiationid));
+			}
+
+			List<Object[]> actionlist= service.MinutesViewAllActionList(committeescheduleid);
+			HashMap< String, ArrayList<Object[]>> actionsdata=new LinkedHashMap<String, ArrayList<Object[]>>();
+
+			for(Object obj[] : actionlist) {
+
+				ArrayList<Object[]> values=new ArrayList<Object[]>(); 
+				for(Object obj1[] : actionlist ) {
+					if(obj1[0].equals(obj[0])) {
+						values.add(obj1);
+					}
+				}
+				if(!actionsdata.containsKey(obj[0].toString())) {
+					actionsdata.put(obj[0].toString(), values);
+				}
+			} 
+
+			req.setAttribute("actionsdata",actionsdata );
+			req.setAttribute("userview",UserView);
+			req.setAttribute("committeeminutesspeclist",service.committeeScheduleMinutesforActionForMom(committeescheduleid));
+			req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
+			//req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
+			req.setAttribute("committeeminutes",service.CommitteeMinutesSpecdetails());
+			//req.setAttribute("committeeminutessub",service.CommitteeMinutesSub());
+			req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));
+			req.setAttribute("projectid", projectid);				
+			req.setAttribute("actionlist", service.MinutesViewAllActionList(committeescheduleid));
+			req.setAttribute("labdetails", service.LabDetails(committeescheduleeditdata[24].toString()));
+			req.setAttribute("isprint", "Y");
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(committeescheduleeditdata[24].toString()));
+			req.setAttribute("meetingcount",service.MeetingNo(committeescheduleeditdata));
+			req.setAttribute("labInfo", service.LabDetailes(LabCode));
+			req.setAttribute("ActionPlanSixMonths", service.ActionPlanSixMonths(projectid));
+			String filename=committeescheduleeditdata[11].toString().replace("/", "-");
+
+			req.setAttribute("flagforView", "M");			
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path);
+
+			req.setAttribute("ccmFlag", req.getParameter("ccmFlag"));
+ 
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/committee/MinutesOfMeetingTabularMinutes.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+
+			req.setAttribute("tableactionlist",  actionsdata);
+			CharArrayWriterResponse customResponse1 = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/committee/MinutesOfMeetingActionPointsTable.jsp").forward(req, customResponse1);
+			String html1 = customResponse1.getOutput();        
+
+			HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
+
+
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	       	        
+			PdfDocument pdfDocument2 = new PdfDocument(pdf2);
+			PdfMerger merger = new PdfMerger(pdfDocument);
+
+			merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
+
+			pdfDocument2.close();
+			pdfDocument.close();
+			merger.close();
+			pdf2.close();
+			pdf1.close();	       
+			pdfw.close();
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+			File f=new File(path +File.separator+ "merged.pdf");
+
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+
+
+			Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
+			Files.delete(pathOfFile2);		
+			pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);	
+			pathOfFile2= Paths.get(path +File.separator+ "merged.pdf"); 
+			Files.delete(pathOfFile2);	
+
+
+		}
+		catch (Exception e) {
+			e.printStackTrace(); logger.error(new Date() +"Inside MinutesOfMeetingTabularMinutesDownload.htm "+UserId,e);
+		}
+	}
+	
+	@RequestMapping(value = "aircraftAdd.htm" , method = {RequestMethod.GET})
+	public @ResponseBody String aircraftAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside aircraftAdd.htm " + UserId);
+		Gson json = new Gson();
+		CommitteeAircraft aircraft1 = new CommitteeAircraft();
+		try {
+			
+			 if (hasHtmlTags(req)) {
+		            return json.toJson(null); 
+		        }
+			
+			String aircraftname = req.getParameter("aircraft");
+			
+			CommitteeAircraft aircraft = new CommitteeAircraft();
+			aircraft.setAircraft(aircraftname);
+			aircraft.setCreatedBy(UserId);
+			aircraft.setCreatedDate(LocalDate.now().toString());
+			
+			long count = service.addAircraft(aircraft);
+			aircraft1 = service.getAircraftById(count+"");
+			return json.toJson(aircraft1);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside aircraftAdd.htm " + UserId, e);
+			return json.toJson(aircraft1);
+		}
+	}
+	
+	@RequestMapping(value = "subsystemAdd.htm" , method = {RequestMethod.GET})
+	public @ResponseBody String subsystemAdd(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+		String UserId = (String) ses.getAttribute("Username");
+		logger.info(new Date() + "Inside subsystemAdd.htm " + UserId);
+		Gson json = new Gson();
+		CommitteeSubSystem sub1 = new CommitteeSubSystem();
+		try {
+			
+			 if (hasHtmlTags(req)) {
+		            return json.toJson(null); 
+		        }
+			
+			String subsystem = req.getParameter("subsystem");
+			
+			CommitteeSubSystem sub = new CommitteeSubSystem();
+			sub.setSubSystem(subsystem);
+			sub.setCreatedBy(UserId);
+			sub.setCreatedDate(LocalDate.now().toString());
+			
+			long count = service.addSubSystem(sub);
+			sub1 = service.getSubSystemById(count+"");
+			return json.toJson(sub1);
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() + " Inside subsystemAdd.htm " + UserId, e);
+			return json.toJson(sub1);
+		}
+	}
 }

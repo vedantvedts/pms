@@ -52,6 +52,7 @@ import com.vts.pfms.mail.CustomJavaMailSender;
 import com.vts.pfms.mail.MailService;
 import com.vts.pfms.master.model.IndustryPartner;
 import com.vts.pfms.master.service.MasterService;
+import com.vts.pfms.utils.InputValidator;
 import com.vts.pfms.utils.PMSLogoUtil;
 
 @Controller
@@ -210,6 +211,12 @@ public class RODController {
 		try
 		{	
 			String projectId=req.getParameter("projectId");
+			String rodName = req.getParameter("rodName");
+			String rodShortName = req.getParameter("rodShortName");
+			if(InputValidator.isContainsHTMLTags(rodName) || InputValidator.isContainsHTMLTags(rodShortName)) {
+				redir.addAttribute("resultfail","Html Tags are not allowed");
+				return "redirect:/RecordofDiscussion.htm";
+			}
 
 			RODMaster master = new RODMaster();
 			master.setRODName(req.getParameter("rodName"));

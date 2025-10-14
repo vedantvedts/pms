@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
 
-import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -38,53 +38,58 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Transactional
     public void onAuthenticationSuccess(HttpServletRequest request,   HttpServletResponse response, Authentication authentication ) throws IOException  {
 
-
-        // Split into parts
-        String[] parts = license.split("\\.");
-        if (parts.length < 2) {
-            System.out.println("Invalid JWT format");
-            return;
-        }
-
-        // Decode the payload
-        String payloadJson = new String(Base64.getUrlDecoder().decode(parts[1]));
-
-       
+    	try {
+//
+//        // Split into parts
+//        String[] parts = license.split("\\.");
+//        if (parts.length < 2) {
+//            System.out.println("Invalid JWT format");
+//            return;
+//        }
+//
+//        // Decode the payload
+//        String payloadJson = new String(Base64.getUrlDecoder().decode(parts[1]));
+//
+//       
+//        
+//        JSONObject payload = new JSONObject(payloadJson);
+//
+//        System.out.println(payload);
+//        
+//        long iat = payload.getLong("iat");
+//        long exp = payload.getLong("exp");
+//        Date now = new Date(System.currentTimeMillis()); 
+//        
+//        Date issuedAt = new Date(iat * 1000); // Convert seconds to milliseconds
+//        Date expiresAt = new Date(exp * 1000);
+//    	
+//        String Issuer = payload.getString("Issuer");
+//        
         
-        JSONObject payload = new JSONObject(payloadJson);
-
-        System.out.println(payload);
-        
-        long iat = payload.getLong("iat");
-        long exp = payload.getLong("exp");
-        Date now = new Date(System.currentTimeMillis()); 
-        
-        Date issuedAt = new Date(iat * 1000); // Convert seconds to milliseconds
-        Date expiresAt = new Date(exp * 1000);
-    	
-        String Issuer = payload.getString("Issuer");
-        
-        
-        String username = request.getParameter("username"); // matches your login form
-        // Check if user is already blocked
-        if (loginAttemptService.isBlocked(username)) {
-        	System.out.println("Inside Login handlere");
-        	response.sendRedirect(request.getContextPath() +"/login?error=Too Many Attempt, Try After One min");
-
-            return;
-        }
-        
-        auditRepo.deactivateByUserName(username);
-        
-        System.out.println(expiresAt);
-        System.out.println(now);
-        System.out.println(Issuer);
+//        String username = request.getParameter("username"); // matches your login form
+//        // Check if user is already blocked
+//        if (loginAttemptService.isBlocked(username)) {
+//        	System.out.println("Inside Login handlere");
+//        	response.sendRedirect(request.getContextPath() +"/login?error=There have been several failed attempts. Please wait a while and try again later");
+//
+//            return;
+//        }
+//        
+//        auditRepo.deactivateByUserName(username);
+//        
+//        System.out.println(expiresAt);
+//        System.out.println(now);
+//        System.out.println(Issuer);
         
 //        if (expiresAt.before(now)) {
 //        	response.sendRedirect(request.getContextPath()+"/accessdenied");
 //        }else {
         	response.sendRedirect(request.getContextPath()+"/welcome");
 //        }
+        	
+    	}catch (Exception e) {
+			e.printStackTrace();
+		}
    }
     
     

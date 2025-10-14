@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -884,6 +885,11 @@ public class PFTSController {
 		             String itemFor=req.getParameter("itemfor");
 		             String vendorName=req.getParameter("vendor");
 	     			
+		             if(Stream.of(vendorName,itemFor)
+		            		 .anyMatch(field -> InputValidator.isContainsHTMLTags(field))) {
+		            	 return redirectWithError(redir, "ProcurementStatus.htm", "Html Tags are not allowed");
+		             }
+		             
 		             PftsFileOrder order = new PftsFileOrder();
 		             order.setOrderNo(orderNo);
 		             order.setOrderDate(new java.sql.Date(inputFormat.parse(orderDate).getTime()).toString());

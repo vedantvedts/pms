@@ -1,11 +1,7 @@
 package com.vts.pfms.login;
 
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,10 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
-import javax.imageio.ImageIO;
-
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,7 +199,7 @@ public class LoginController {
 		
 		logger.info(new Date() + "Inside login ");
 		if (error != null)
-			model.addAttribute("error", (error.equalsIgnoreCase("Invalid Captcha")||  error.equalsIgnoreCase("Too Many Attempt, Try After One min"))? error: "Your username and password is invalid.");
+			model.addAttribute("error", (error.equalsIgnoreCase("Invalid Captcha")||  error.equalsIgnoreCase("There have been several failed attempts. Please wait a while and try again later"))? error: "Your username and password is invalid.");
 
 		if (logout != null)
 			model.addAttribute("message", "You have been logged out successfully.");
@@ -264,49 +260,62 @@ public class LoginController {
 	}
     
 	
-	private String generateCaptchaImage(String captchaText) {
-	    try {
-	        int width = 150, height = 50;
-	        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+	private String generateCaptchaSvgBase64(String text) {
+	    int width = 150, height = 50;
+	    Random rnd = new Random();
 
-	        Graphics2D g = bufferedImage.createGraphics();
-	        g.setColor(Color.WHITE);
-	        g.fillRect(0, 0, width, height);
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("<?xml version='1.0' encoding='UTF-8'?>");
+	    sb.append("<svg xmlns='http://www.w3.org/2000/svg' ")
+	      .append("width='").append(width).append("' height='").append(height).append("' ")
+	      .append("viewBox='0 0 ").append(width).append(" ").append(height).append("'>");
 
-	        g.setFont(new Font("Arial", Font.BOLD, 28));
-	        g.setColor(Color.BLACK);
-	        g.drawString(captchaText, 25, 35);
+	    // background
+	    sb.append("<rect width='100%' height='100%' fill='white'/>");
 
-	        // add some noise
-	        g.setColor(Color.GRAY);
-	        for (int i = 0; i < 15; i++) {
-	            int x = (int) (Math.random() * width);
-	            int y = (int) (Math.random() * height);
-	            g.drawOval(x, y, 2, 2);
-	        }
-
-	        g.dispose();
-
-	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        ImageIO.write(bufferedImage, "png", baos);
-	        return Base64.getEncoder().encodeToString(baos.toByteArray());
-	    } catch (Exception e) {
-	        throw new RuntimeException("Failed to generate captcha image", e);
+	    // random noise lines
+	    for (int i = 0; i < 6; i++) {
+	        int x1 = rnd.nextInt(width), y1 = rnd.nextInt(height);
+	        int x2 = rnd.nextInt(width), y2 = rnd.nextInt(height);
+	        sb.append("<line x1='").append(x1).append("' y1='").append(y1)
+	          .append("' x2='").append(x2).append("' y2='").append(y2)
+	          .append("' stroke='gray' stroke-width='1' stroke-opacity='0.6'/>");
 	    }
+
+	    // characters with small random rotation/offset
+	    int len = text.length();
+	    for (int i = 0; i < len; i++) {
+	        char c = text.charAt(i);
+	        int fx = 12 + i * (width - 24) / Math.max(1, len) + rnd.nextInt(7) - 3;
+	        int fy = 30 + rnd.nextInt(9) - 4;
+	        int rot = rnd.nextInt(30) - 15;
+	        sb.append("<text x='").append(fx).append("' y='").append(fy)
+	          .append("' font-family='sans-serif' font-size='28' ")
+	          .append("transform='rotate(").append(rot).append(" ").append(fx).append(" ").append(fy).append(")'>")
+	          .append(c)
+	          .append("</text>");
+	    }
+
+	    // dots
+	    for (int i = 0; i < 20; i++) {
+	        int cx = rnd.nextInt(width), cy = rnd.nextInt(height);
+	        sb.append("<circle cx='").append(cx).append("' cy='").append(cy).append("' r='1' fill='gray'/>");
+	    }
+
+	    sb.append("</svg>");
+
+	    return Base64.getEncoder().encodeToString(sb.toString().getBytes(StandardCharsets.UTF_8));
 	}
-	
-	
+
 	@GetMapping("/refresh-captcha")
 	@ResponseBody
 	public Map<String, String> refreshCaptcha(HttpServletRequest req) {
-	    // generate new captcha
-	    String captcha = org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric(5);
+	    String captcha = RandomStringUtils.randomAlphanumeric(5);
 	    req.getSession().setAttribute("LOGIN_CAPTCHA", captcha);
-	    // convert to image
-	    String base64Captcha = generateCaptchaImage(captcha);
-	    // return as JSON
+
+	    String svgBase64 = generateCaptchaSvgBase64(captcha);
 	    Map<String, String> result = new HashMap<>();
-	    result.put("captcha", base64Captcha);
+	    result.put("captcha", "data:image/svg+xml;base64," + svgBase64);
 	    return result;
 	}
 	
