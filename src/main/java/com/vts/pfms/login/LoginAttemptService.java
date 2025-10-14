@@ -14,7 +14,7 @@ public class LoginAttemptService {
 	    }
 	 
 	 public boolean isBlocked(String username) {
-	        LocalDateTime oneMinuteAgo = LocalDateTime.now().minusMinutes(1);
+	        LocalDateTime oneMinuteAgo = LocalDateTime.now().minusMinutes(3);
 	        
 	        long failedAttempts = auditRepo.countByUserNameAndLoginDateTimeAfter(username, oneMinuteAgo);
 	       

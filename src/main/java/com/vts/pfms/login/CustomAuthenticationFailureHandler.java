@@ -33,26 +33,26 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         String username = request.getParameter("username"); // matches your login form
         
        
-
-        // Check if user is already blocked
-        if (loginAttemptService.isBlocked(username)) {
-        	System.out.println("Inside LogOut handlere");
-        	response.sendRedirect(request.getContextPath() +"/login?error=Too Many Attempt, Try After One min");
-
-            return;
-        }
-        
-        
-        String ip = request.getRemoteAddr();
-
-        AuditFailedStamping audit = new AuditFailedStamping();
-        audit.setUserName(username);
-        audit.setLoginDate(LocalDate.now());
-        audit.setLoginDateTime(LocalDateTime.now());
-        audit.setIpAddress(ip);
-        audit.setIsactive(1);
-
-        auditRepo.save(audit);
+//
+//        // Check if user is already blocked
+//        if (loginAttemptService.isBlocked(username)) {
+//        	System.out.println("Inside LogOut handlere");
+//        	response.sendRedirect(request.getContextPath() +"/login?error=There have been several failed attempts. Please wait a while and try again later");
+//
+//            return;
+//        }
+//        
+//        
+//        String ip = request.getRemoteAddr();
+//
+//        AuditFailedStamping audit = new AuditFailedStamping();
+//        audit.setUserName(username);
+//        audit.setLoginDate(LocalDate.now());
+//        audit.setLoginDateTime(LocalDateTime.now());
+//        audit.setIpAddress(ip);
+//        audit.setIsactive(1);
+//
+//        auditRepo.save(audit);
         
         
         // Default failure redirect

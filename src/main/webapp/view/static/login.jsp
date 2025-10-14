@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"    pageEncoding="ISO-8859-1" import="java.util.*,com.vts.*"%>
 <!DOCTYPE html>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 
@@ -159,19 +159,19 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 												<div class="form-row">
 													
 													<div class="form-group col-12 position-relative ${error != null ? 'has-error' : ''}">
-														<input type="text" name="username" placeholder="Username" class="form-control"  required>
+														<input type="text" name="username" placeholder="Username" class="form-control"  autocomplete="off" required>
 														<i class="fa fa-user fa-lg position-absolute"></i>
 													</div>
 													
 													<div class="form-group col-12 position-relative">
-														<input name="password" type="password" placeholder="Password" id="password" class="form-control" >
+														<input name="password" type="password" placeholder="Password" id="password" class="form-control" autocomplete="new-password">
 														<i class="fa fa-lock fa-lg position-absolute"></i>	
 													</div>
 														
 													<%-- <span style="font-family: 'Lato', sans-serif;font-size: 15px;color:red;margin-bottom: 10px;" id="error-alert">${error}</span>
 													<span style="font-family: 'Lato', sans-serif;font-size: 15px;color:green;margin-bottom: 10px;" id="success-alert">${success}</span> --%>
 													
-															<span class="salert" id="success-alert">${error}</span>
+															<span class="salert text-justify" id="success-alert">${error}</span>
 																		
 												</div>
 
@@ -308,7 +308,7 @@ $("#error-alert") .fadeTo(3000, 1000).slideUp(1000, function ( ) {
     	    fetch("${contextPath}/refresh-captcha")
     	        .then(response => response.json())
     	        .then(data => {
-    	            document.getElementById("captchaImage").src = "data:image/png;base64," + data.captcha;
+    	        	document.getElementById("captchaImage").src = data.captcha;
     	        })
     	        .catch(error => console.error("Error refreshing captcha:", error));
     	});
@@ -412,7 +412,7 @@ function loadCaptcha() {
     fetch("${contextPath}/refresh-captcha")
         .then(response => response.json())
         .then(data => {
-            document.getElementById("captchaImage").src ="data:image/png;base64," + data.captcha;
+            document.getElementById("captchaImage").src = data.captcha;
         })
         .catch(error => console.error("Error refreshing captcha:", error));
 }

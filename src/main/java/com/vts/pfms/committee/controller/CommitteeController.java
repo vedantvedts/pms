@@ -2494,9 +2494,11 @@ public class CommitteeController {
 			String ActionName=req.getParameter("NoteText");
 			String Remarks=req.getParameter("remarks");
 			String minutesid = req.getParameter("minutesid");
+
 			String aircraftid = req.getParameter("aircraftidedit");
 			String subsystemid = req.getParameter("subsystemidedit");
 			
+
 			if ((minutesid.equalsIgnoreCase("3") || minutesid.equalsIgnoreCase("5")) 
 					&& InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));

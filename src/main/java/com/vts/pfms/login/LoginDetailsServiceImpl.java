@@ -71,6 +71,8 @@ public class LoginDetailsServiceImpl implements UserDetailsService{
      		IpAddress="Not Available";	
      		e.printStackTrace();	
      		}
+     		
+     		System.out.println(IpAddress+"-------IpAddress");
      		try{
         LoginStamping stamping=new LoginStamping();
         stamping.setLoginId(login.getLoginId());

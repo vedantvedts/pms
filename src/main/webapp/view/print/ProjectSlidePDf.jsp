@@ -1349,7 +1349,7 @@ int pageCOunt=1;
 					if(projects.get(i)[22]!=null || projects.get(i)[23]!=null || projects.get(i)[24]!=null ||
 							projects.get(i)[25]!=null || projects.get(i)[27]!=null || projects.get(i)[29]!=null ||
 							projects.get(i)[26]!=null || projects.get(i)[30]!=null || projects.get(i)[31]!=null){
-							if(projects.get(i)[23].toString().equals("2")){ %>
+							if(projects.get(i)[23]!=null && projects.get(i)[23].toString().equals("2")){ %>
 								<div class="carousel-item " >
 									<div class="container-fluid" >
 										<div class="container-fluid"  >
@@ -1569,7 +1569,7 @@ int pageCOunt=1;
 								</div>
 								<p style=" page-break-before: always;"></p>	
 								<!-- ----------------------------------------- Slide One ------------------------------------------------------------ -->
-							<%}%><% if(projects.get(i)[23].toString().equals("1")){ %> 
+							<%}%><% if(projects.get(i)[23]!=null &&   projects.get(i)[23].toString().equals("1")){ %> 
 								<div class="carousel-item " >
 									<div class="container-fluid" >
 											<div class="container-fluid"  >

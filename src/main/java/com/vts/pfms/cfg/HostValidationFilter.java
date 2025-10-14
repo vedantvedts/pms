@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Set;
 
 public class HostValidationFilter implements Filter {
-    private static final Set<String> ALLOWED_HOSTS = Set.of("yourdomain.com", "localhost","192.168.1.150");
+    private static final Set<String> ALLOWED_HOSTS = Set.of("localhost","192.168.1.14");
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

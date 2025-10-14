@@ -4548,6 +4548,40 @@ public class PrintController {
 			}
 		}
 		
+		private boolean isValidImage(MultipartFile file) {
+		    if (file == null || file.isEmpty()) return true;
+
+		    String contentType = file.getContentType();
+		    String extension = FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
+
+		    return (extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png") )
+		            && (contentType.equalsIgnoreCase("image/jpeg")
+		                || contentType.equalsIgnoreCase("image/png")
+		               );
+		}
+
+		private boolean isValidPdfOrExcel(MultipartFile file) {
+		    if (file == null || file.isEmpty()) return true;
+
+		    String contentType = file.getContentType();
+		    String extension = FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
+
+		    return (extension.equals("pdf") || extension.equals("xls") || extension.equals("xlsx"))
+		            && (contentType.equalsIgnoreCase("application/pdf")
+		                || contentType.equalsIgnoreCase("application/vnd.ms-excel")
+		                || contentType.equalsIgnoreCase("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+		}
+
+		private boolean isValidVideo(MultipartFile file) {
+		    if (file == null || file.isEmpty()) return true;
+
+		    String contentType = file.getContentType();
+		    String extension = FilenameUtils.getExtension(file.getOriginalFilename()).toLowerCase();
+
+		    return (extension.equals("mp4") || extension.equals("avi") || extension.equals("mkv"))
+		            && contentType.startsWith("video/");
+		}
+		
 		@RequestMapping(value="EditProjectSlides.htm" , method = RequestMethod.POST)
 		public String EditProjectSlideData(HttpServletRequest req , RedirectAttributes redir , HttpSession ses , @RequestParam("Attachment1")MultipartFile imageattch , @RequestParam("Attachment2")MultipartFile pdfattach, @RequestParam("Attachment3")MultipartFile VideoFile)throws Exception
 		{
@@ -4567,6 +4601,23 @@ public class PrintController {
 				String brief = req.getParameter("Brief");
 				String slide = req.getParameter("silde");
 				String wayforward = req.getParameter("wayForward");
+				
+
+				  // File validation
+		        if (!imageattch.isEmpty() && !isValidImage(imageattch)) {
+		        	redir.addFlashAttribute("projectid", projectid);	
+		            return redirectWithError(redir, "PfmsProjectSlides.htm", "Attachment1 must be an image file (jpg, png, jpeg).");
+		        }
+
+		        if (!pdfattach.isEmpty() && !isValidPdfOrExcel(pdfattach)) {
+		        	redir.addFlashAttribute("projectid", projectid);	
+		            return redirectWithError(redir, "PfmsProjectSlides.htm", "Attachment2 must be a PDF or Excel file.");
+		        }
+
+		        if (!VideoFile.isEmpty() && !isValidVideo(VideoFile)) {
+		        	redir.addFlashAttribute("projectid", projectid);	
+		            return redirectWithError(redir, "PfmsProjectSlides.htm", "Attachment3 must be a video file (mp4, avi, mkv).");
+		        }
 				
 				ProjectSlideDto slidedata = new ProjectSlideDto();
 				slidedata.setSlideId(Long.parseLong(ProjectslideId));
@@ -5794,6 +5845,16 @@ public class PrintController {
 					logger.info(new Date() +"Inside TechImagesEdit.htm "+UserId);
 		    	try {
 		    		String TechImageId=req.getParameter("TechImageId");
+		    		// 🔹 Validate file types
+			        if (!isValidFileType(file)) {
+
+			        	redir.addFlashAttribute("projectid", req.getParameter("ProjectId"));
+						redir.addFlashAttribute("committeeid", req.getParameter("committeeid"));
+			        	
+			        	
+			        	return redirectWithError(redir, "ProjectBriefingPaper.htm",
+			                    "Invalid file type. Only  Image files are allowed.");
+			        }
 		    		int count=service.TechImagesEdit(file,TechImageId,env.getProperty("ApplicationFilesDrive"),req.getUserPrincipal().getName(),LabCode);
 		    	    if(count>0) {  
 		                redir.addAttribute("result", "Tech Image Update Successfully");
