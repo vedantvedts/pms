@@ -121,6 +121,19 @@
 	Map<Integer,String> treeMapLevTwo =(Map<Integer,String>)request.getAttribute("treeMapLevTwo");
 	List<Object[]> envisagedDemandlist = (List<Object[]>)request.getAttribute("envisagedDemandlist");
 	%>
+	
+		<%
+String scheme = request.getScheme();
+String serverName = request.getServerName();
+int serverPort = request.getServerPort();
+String contextPath = request.getContextPath();
+
+String baseUrl = scheme + "://" + serverName
+                 + (serverPort != 80 && serverPort != 443 ? ":" + serverPort : "")
+                 + contextPath;
+
+
+%>
 	<div id="presentation-slides" class="carousel slide " data-ride="carousel">
 
 		<div class="carousel-inner" align="center">
@@ -2809,28 +2822,15 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 								if (TechWorkDataList.get(z) != null && TechWorkDataList.get(z)[3] != null && Long.parseLong(TechWorkDataList.get(z)[3].toString()) > 0) { %>
 								<% Object[] TechWork = TechWorkDataList.get(z);
 								String fileExt = FilenameUtils.getExtension(TechWork[8].toString());
-								String tecdata = TechWorkDataList.get(z)[6].toString().replaceAll("[/\\\\]", ",");
-				        		String[] fileParts = tecdata.split(",");
-				        		String zipName = String.format(TechWorkDataList.get(z)[7].toString()+TechWorkDataList.get(z)[11].toString()+"-"+TechWorkDataList.get(z)[10].toString()+".zip");
-				        		Path techPath = null;
-				        		if(fileParts.length == 4){
-				        			techPath = Paths.get(filePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],zipName);
-				        		}else{
-				        			techPath = Paths.get(filePath, fileParts[0],fileParts[1],fileParts[2],fileParts[3],fileParts[4],zipName);
-				        		}
-								if (FileExtList.contains(fileExt) ) { %>
-								<% String path = request.getServletContext().getRealPath("/view/temp");
-								Zipper zip = new Zipper();
-								zip.unpack(techPath.toString(), path, TechWorkDataList.get(z)[9].toString());
-								File techattachfile = new File(path+File.separator+ TechWork[8]); %>
-								<%
-								if (fileExt.equalsIgnoreCase("pdf")) {%>
-								<iframe  src="data:application/pdf;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>#view=FitV" class="bp-43" id="pearl<%=ProjectDetail.get(z)[0]%>"></iframe>
-								<% } else { %>
-								<img data-enlargable class="bp-77" src="data:image/<%=fileExt%>;base64,<%=Base64.getEncoder().encodeToString(FileUtils.readFileToByteArray(techattachfile))%>">
-								<% } %>
-								<% techattachfile.delete(); 
-								} %><% }}
+								
+								if (fileExt.equalsIgnoreCase("pdf") ) { %>
+								<iframe 
+								  src="<%=baseUrl%>/techFilePreview.htm/<%=projectid %>"
+								  style="width:100%;height:70vh;"
+								  id="pearl<%=ProjectDetail.get(z)[0]%>">
+								</iframe>
+							
+								<%}}}
 								catch(Exception e){
 									
 								}

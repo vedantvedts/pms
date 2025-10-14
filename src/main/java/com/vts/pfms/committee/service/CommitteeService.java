@@ -18,6 +18,7 @@ import com.vts.pfms.committee.dto.CommitteeSubScheduleDto;
 import com.vts.pfms.committee.dto.EmpAccessCheckDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
+import com.vts.pfms.committee.model.CommitteeAircraft;
 import com.vts.pfms.committee.model.CommitteeCARS;
 import com.vts.pfms.committee.model.CommitteeDefaultAgenda;
 import com.vts.pfms.committee.model.CommitteeDivision;
@@ -28,8 +29,10 @@ import com.vts.pfms.committee.model.CommitteeMember;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
+import com.vts.pfms.committee.model.CommitteeRepresentative;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeSchedulesMomDraftRemarks;
+import com.vts.pfms.committee.model.CommitteeSubSystem;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.ProgrammeMaster;
 import com.vts.pfms.committee.model.ProgrammeProjects;
@@ -341,6 +344,17 @@ public interface CommitteeService {
 	
 //	---------------------------------- Naveen R 3/9/25 MOM Check ------------------------------------------
 	public List<Object[]> CommitteeScheduleMinutesforAction(String committeescheduleid);
+	public Long addRepresentative(CommitteeRepresentative rep);
+	public CommitteeRepresentative getRepresentativeById(String repId);
+	public Long getRepNameDuplicateCount(String repName);
+	public Long getRepCodeDuplicateCount(String repCode);
+	public List<Object[]> getAircraftList(String committeeScheduleId);
+	public List<Object[]> getSubSystemList(String committeeScheduleId);
+	public Long addAircraft(CommitteeAircraft aircraft);
+	public CommitteeAircraft getAircraftById(String aircraftId);
+	public Long addSubSystem(CommitteeSubSystem sub);
+	public CommitteeSubSystem getSubSystemById(String subsystemId);
+	public List<Object[]> committeeScheduleMinutesforActionForMom(String committeescheduleid);
 
 }
 

@@ -20,6 +20,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -2511,7 +2513,7 @@ private boolean isValidFileType(MultipartFile file) {
 	/* **************************** Programme Master - Naveen R - 16/07/2025 End **************************************** */
 
 	@RequestMapping(value = "RoleMasterDetailsSubmit.htm", method = {RequestMethod.GET})
-	public @ResponseBody String roleMasterDetailsSubmit(HttpServletRequest req, HttpSession ses) throws Exception{
+	public @ResponseBody ResponseEntity<String> roleMasterDetailsSubmit(HttpServletRequest req, HttpSession ses,RedirectAttributes redir) throws Exception{
 		String Username=(String)ses.getAttribute("Username");
 		logger.info(new Date() + " Inside RoleMasterDetailsSubmit.htm "+Username);
 		Gson json = new Gson();
@@ -2519,6 +2521,13 @@ private boolean isValidFileType(MultipartFile file) {
 		try {
 			String roleName = req.getParameter("roleName");
 			String roleCode = req.getParameter("roleCode");
+			
+			if(InputValidator.isContainsHTMLTags(roleName)) {
+				return new ResponseEntity<String>("200",HttpStatus.EXPECTATION_FAILED);
+			}
+			if(InputValidator.isContainsHTMLTags(roleCode)) {
+				return new ResponseEntity<String>("200",HttpStatus.EXPECTATION_FAILED);
+			}
 			
 			RoleMaster roleMaster = new RoleMaster();
 			roleMaster.setRoleName(roleName);
@@ -2536,7 +2545,7 @@ private boolean isValidFileType(MultipartFile file) {
 			e.printStackTrace();
 			logger.error(new Date() +" Inside RoleMasterDetailsSubmit.htm "+Username, e);
 		}
-		return json.toJson(data);
+		return ResponseEntity.ok(json.toJson(data));
 	}
 	
 	// 22/8/2025  Naveen R RoleName and RoleCode Duplicate Check start

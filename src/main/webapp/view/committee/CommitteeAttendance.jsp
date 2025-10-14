@@ -513,7 +513,7 @@ function employeename(){
 						 for (i = 0; i < values.length; i++) {
 							
 							s += '<option value="'+values[i][0]+",W,"+values[i][4]+'">'
-									+values[i][1] + " (" +values[i][3]+")" 
+									+values[i][1].replaceAll("<","").replaceAll(">","") + " (" +values[i][3].replaceAll("<","").replaceAll(">","")+")" 
 									+ '</option>';
 						} 
 						 

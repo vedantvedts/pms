@@ -42,6 +42,8 @@ String specname=(String)request.getAttribute("specname");
 SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
 
+String LabCode =(String) session.getAttribute("labcode");
+
 Object[] committeescheduleeditdata=(Object[])request.getAttribute("committeescheduleeditdata");
 List<Object[]> committeeagendalist=(List<Object[]>)request.getAttribute("committeeagendalist");
 
@@ -50,11 +52,19 @@ List<Object[]> minutesoutcomelist=(List<Object[]>)request.getAttribute("minuteso
 String committscheduleid=(String) request.getAttribute("committscheduleid");
 String membertype=(String) request.getAttribute("membertype");
 String filesize=(String) request.getAttribute("filesize");
+
 String committeeid=committeescheduleeditdata[0].toString();
-String projectid=committeescheduleeditdata[9].toString();
+String projectid = committeescheduleeditdata[9].toString();
+String divisionid = committeescheduleeditdata[16].toString();
+String initiationid = committeescheduleeditdata[17].toString();
+String carsInitiationId = committeescheduleeditdata[25].toString();
 String   committeecode    = committeescheduleeditdata[8].toString();
+String programmeId = committeescheduleeditdata[26].toString();
+String userview = (String) request.getAttribute("userview");
 String GenId="GenAdd";
 List<Object[]> minutesattachmentlist=(List<Object[]>)request.getAttribute("minutesattachmentlist");
+List<Object[]> aircraftList = (List<Object[]>)request.getAttribute("aircraftList");
+List<Object[]> subsystemList = (List<Object[]>)request.getAttribute("subsystemList");
 
 List<Object[]> committeescheduledata=(List<Object[]>)request.getAttribute("committeescheduledata");
 List<String> SplCommitteeCodes=(List<String>)request.getAttribute("SplCommitteeCodes");
@@ -150,9 +160,14 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 		<button type="submit" class="btn btn-sm prints my-2 my-sm-0 fs-12px" formtarget="_blank">MINUTES</button>
 		<%} %>
 		<% if(committeescheduleeditdata[26]!=null && committeescheduleeditdata[26].toString().equalsIgnoreCase("0")){ %> 
-		<input type="submit" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank"/>
+			<input type="submit" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES" formaction="MeetingTabularMinutesDownload.htm" formtarget="_blank"/>
+			<%if(Long.parseLong(projectid)==0 && Long.parseLong(divisionid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0 && Long.parseLong(programmeId)==0 && userview==null && LabCode.equalsIgnoreCase("ADE")){%>
+				<input type="submit" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES ACTIONS" formaction="MinutesOfMeetingTabularMinutesDownload.htm" formtarget="_blank"/> 
+			<%}%>
+				
 		<%}else{ %>
 		<input type="submit" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES" formaction="MOMTabularMinutesDownload.htm" formtarget="_blank"/><%} %>
+		
  		
 		<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
 		<input type="hidden" name="membertype" value="<%=membertype%>">
@@ -1492,7 +1507,7 @@ function showAttachmentModal(){
 										</td>
 										<td>
 											<form method="post" action="MinutesAttachmentDelete.htm">
-												<button class="fa fa-trash btn  mr-n30px" type="submit" onclick="return confirm('Are You Sure To Delete this File?');"></button>
+												<button class="fa fa-trash btn mr-n30px" type="submit" onclick="return confirm('Are You Sure To Delete this File?');"></button>
 												<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">
 												<input type="hidden" name="attachmentid" value="<%=minutesattachmentlist.get(0)[0] %>">
@@ -1592,6 +1607,8 @@ function showAttachmentModal(){
 							<input class="form-control" type="hidden" name="scheduleidedit" id="scheduleidedit" >
 							<input class="form-control" type="hidden" name="minutesidedits" id="minutesidedit" >
 							<input class="form-control" type="hidden" name="schedulminutesid" id="scheduleminutesidedit" >
+							<input class="form-control" type="hidden" name="aircraftidadd" id="aircraftidvalue">
+							<input class="form-control" type="hidden" name="subsystemidadd" id="subsystemidvalue" >
 							
 						</label>
 					</div>
@@ -1720,6 +1737,8 @@ function showAttachmentModal(){
 							<input class="form-control" type="hidden" name="scheduleidedit" id="scheduleideditair" >
 							<input class="form-control" type="hidden" name="minutesidedits" id="minutesideditair" >
 							<input class="form-control" type="hidden" name="schedulminutesid" id="scheduleminutesideditair" >
+							<input class="form-control" type="hidden" name="aircraftidedit" id="aircraftidedit" value="">
+							<input class="form-control" type="hidden" name="subsystemidedit" id="subsystemidedit" value=""  >
 							
 						</label>
 					</div>
@@ -1745,6 +1764,35 @@ function showAttachmentModal(){
   									<input  class="form-control w-100"  type="text" maxlength="255"  placeholder="Nil" name="remarks" id="remarksair">
                         		</div>
                         		</div>
+                        		
+                        		
+                        		 <%if(Long.parseLong(projectid)==0 && Long.parseLong(divisionid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0 && Long.parseLong(programmeId)==0 && userview==null && LabCode.equalsIgnoreCase("ADE")){%>
+                        			<div class="col-md-4" id="aircraftDiv">
+                        				<div class="form-group">
+		                        		<label class="">Aircraft</label>
+		  	                               <select  class="form-control selectdee" name="airc" id="aircraftid" onchange="handleAirCraftChange()"  data-live-search="true"  >
+		  	                               		<option value="" selected disabled="disabled">Choose...</option>
+		  	                               		<option value="0" >Add New </option>
+		                                        <%for(Object[] obj:aircraftList){ %>																				
+													<option value="<%=obj[0]%>"><%=obj[1]!=null?obj[1].toString(): " - "%></option>	
+												<%} %>
+											</select>
+										</div>
+                        			</div>                       			
+                        			<div class="col-md-4" id="subsystemDiv">
+                        				<div class="form-group">
+		                        		<label class="">Sub-System</label>
+		  	                               <select  class="form-control selectdee" name="subsystem" id="subsystemid" onchange="handleSubSystemChange()"  data-live-search="true"  >
+		  	                               		<option value="" selected disabled="disabled">Choose...</option>
+		  	                               		<option value="0" >Add New </option>
+		                                        <%for(Object[] obj:subsystemList){ %>																				
+													<option value="<%=obj[0]%>"><%=obj[1]!=null?obj[1].toString(): " - "%></option>	
+												<%} %>
+											</select>
+										</div>
+                        			</div>                       			
+                        				
+                        		<%} %> 
                         		  <div class="col-md-4" id="OutComeDiv">
                         		<div class="form-group">
                         		<label class="">Outcome Type </label>
@@ -1779,6 +1827,7 @@ function showAttachmentModal(){
 										<input type="hidden" name="committeename" value="<%=committeescheduleeditdata[8]%>">
 										<input type="hidden" name="OutComeAirHead"  id="OutComeAirHead" value="">
 										
+																				
 										<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
 											<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
 											<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
@@ -1898,7 +1947,75 @@ function showAttachmentModal(){
 	
 
 <%} %>
+<!-- Modal For Aircraft and Subsytem Add new-->
+<div class="modal fade bd-example-modal-lg" id="aircraftAddModal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content modalwidth">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"> Add  Aircraft </h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+	
+			
+					<div class="row">
+							<div class="col-md-4"></div>						
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label">AirCraft</label><span class="mandatory">*</span>
+									<input class="form-control" type="text" id="aircraftname" name="aircraft" maxlength="255" placeholder="Enter AirCraft" required>		
+								</div>
+							</div>							
+						</div>
+						
+						<div class="mt-2 mb-3" align="center">
+							<button class="btn submit" onclick="aircraftAdd()">SUBMIT</button>
+						</div>
 
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<div class="modal fade bd-example-modal-lg" id="subsystemAddModal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content modalwidth">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"> Add  Sub-System </h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+	
+			
+					<div class="row">
+							<div class="col-md-4"></div>						
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label">Sub-System</label><span class="mandatory">*</span>
+									<input class="form-control" type="text" id="subsystemname" name="subsystem" maxlength="255" placeholder="Enter Sub-System" required>		
+								</div>
+							</div>							
+						</div>
+						
+						<div class="mt-2 mb-3" align="center">
+							<button class="btn submit" onclick="subsystemAdd()">SUBMIT</button>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+		</div>
 
 <!-- Modal to give remarks and show remarks   -->
 	<div class="modal fade" id="chatModal" tabindex="-1" role="dialog"
@@ -2134,6 +2251,8 @@ function editcheck1(editfileid)
     		    $('#specair').show();
     		    $('#OutComeDiv').hide();
     		    $('#PresDiscHeader').hide();
+    		    $('#aircraftDiv').hide();
+    		    $('#subsystemDiv').hide();
     		    var minutesidadd = $("input[name='minutesid']",this).val();
     		    var specnameadd= $("input[name='specname']",this).val();
     		    var agendasubidadd= $("input[name='agendasubid']",this).val();
@@ -2224,7 +2343,16 @@ function editcheck1(editfileid)
     		    var formnameadd= $("input[name='formname']",this).val();
     		    var type=$("select[name='OutComesId']",this).val();
     		    var unit1idadd= $("input[name='unit1']",this).val();
-    		 
+    		 	
+    		    if(minutesidadd===3 || minutesidadd==='3'){
+        		    $('#aircraftDiv').show();
+        		    $('#subsystemDiv').show();
+    		    }else{
+
+        		    $('#aircraftDiv').hide();
+        		    $('#subsystemDiv').hide();
+    		    }
+    		    
     		    $("#minutesidair").val(minutesidadd);
     		    $("#specnameair").val(specnameadd);
     		    $("#agendasubidair").val(agendasubidadd);
@@ -2275,6 +2403,8 @@ function editcheck1(editfileid)
     					$("#remarksair").val('');
     					$("#OutComeAir").val(type);
     					$("#editorair").val('');
+    					$('#aircraftid').val('').change();      
+    		            $('#subsystemid').prop('selectedIndex', 0).change();;   
     					if(type=="D"){
     						document.getElementById('outcomeair').innerHTML = " / Decision";
      					}
@@ -2310,6 +2440,9 @@ function editcheck1(editfileid)
     		    $('#adding').show();
     		    $('#specadd').show();
     		    $('#specair').hide();
+    		    $('#aircraftDiv').hide();
+    		    $('#subsystemDiv').hide();
+    		    
     		    var minutesidadd = $("input[name='minutesid']",this).val();
     		    var specnameadd= $("input[name='specname']",this).val();
     		    var agendasubidadd= $("input[name='agendasubid']",this).val();
@@ -2401,6 +2534,8 @@ function editcheck1(editfileid)
 	       $('#specair').show();
 	       $('#OutComeDiv').hide();
 	       $('#PresDiscHeader').show();
+		    $('#aircraftDiv').hide();
+		    $('#subsystemDiv').hide();
 	       
   		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
   		 	var specnameadd= $("input[name='specname']",this).val();
@@ -2476,15 +2611,27 @@ function editcheck1(editfileid)
   	         $('#specair').show();
   	       $('#OutComeDiv').show();
   	     $('#PresDiscHeader').hide();
+
+		    	var minutesidadd = $("input[name='minutesid']",this).val();
     		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
     		 	var specnameadd= $("input[name='specname']",this).val();
     		 	var formnameadd= $("input[name='formname']",this).val();
     		 	var unit1idadd= $("input[name='unit1']",this).val();
+    		 	
+    		 	if(minutesidadd===3 || minutesidadd==='3'){
+        		    $('#aircraftDiv').show();
+        		    $('#subsystemDiv').show();
+    		    }else{
+
+        		    $('#aircraftDiv').hide();
+        		    $('#subsystemDiv').hide();
+    		    }
+    		 	
      		    $("#unit1idair").val(unit1idadd);
     		 	
     		 	$("#specnameair").val(specnameadd);
     		 	$("#formnameair").val(formnameadd);
-    		 	$("#unit1idair").val(unit1idadd);
+    		 	$("#unit1idair").val(unit1idadd); 
     		 	
     		    $.ajax({
     				type : "GET",
@@ -2532,6 +2679,9 @@ function editcheck1(editfileid)
     					$("#OutComeAir").val(values[10]);
     					$("#editorair").val(values[1]);
     					
+    					$('#aircraftid').val(values[11]).change();     
+    		            $('#subsystemid').val(values[12]).change();
+
     					
     	  			    
     					if(values[10]=="D"){
@@ -3016,6 +3166,171 @@ if (result.isConfirmed) {
 	
 	
 }
+
+
+
+function handleAirCraftChange() {
+	var acValue = $('#aircraftid').val();
+    if (!acValue){
+    	$('#aircraftid').val('');
+    	$('#aircraftidvalue').val('');
+    	$('#aircraftidedit').val(''); 
+    	return; 
+    }
+	
+	console.log(acValue)
+	if(acValue==="0" || acValue===0 ){
+		$('#aircraftAddModal').modal('show');
+		$('#aircraftidvalue').val(''); 
+    	$('#aircraftidedit').val('');
+	}else{
+		$('#aircraftidvalue').val(acValue);
+		$('#aircraftidedit').val(acValue);
+	}
+}
+
+function aircraftAdd() {
+	
+	const aircraft = $('#aircraftname').val();
+	console.log(aircraft);
+	
+	if(acValue === '' ){
+		alert("Please fill all the fields")
+		event.preventDefault();
+		return false;
+	}
+	
+	if(window.confirm("Are you sure to Submit?")){
+		$.ajax({
+			type:'GET',
+			url:'aircraftAdd.htm',
+			datatype:'json',
+			data:{
+				aircraft:aircraft,
+			},
+			success: function(result) {
+			    var ajaxresult = JSON.parse(result);
+
+			    if (ajaxresult.AircraftId != null) {
+			        alert('Aircraft Added Successfully!');
+
+			        // Create new option element
+			        var newOption = $("<option>", {
+			            value: ajaxresult.AircraftId,
+			            text: ajaxresult.Aircraft.replaceAll("<","").replaceAll(">","")
+			        });
+
+			        // Remove ADD NEW temporarily
+			        var $addNew = $('#aircraftid option[value="0"]').detach();
+
+			        // Add new option
+			        $('#aircraftid').append(newOption).trigger('change.select2');;
+
+			        // Append ADD NEW back to end
+			        $('#aircraftid').append($addNew);
+
+			        // Set selected value to new Rep
+			        $('#aircraftid').val(ajaxresult.AircraftId);
+
+			        // If using Select2, trigger update
+			        $('#aircraftid').trigger('change');
+
+			        // Clear modal inputs
+			        $('#aircraftname').val('');
+
+			        // Hide modal
+			        $('#aircraftAddModal').modal('hide');
+			    }
+			}
+		})
+		
+	}else{
+		event.preventDefault();
+		return false;
+	}
+	
+}
+function handleSubSystemChange() {
+	var subsystem = $('#subsystemid').val();
+	if (!subsystem){
+    	$('#subsystemid').val('');
+    	$('#subsystemidvalue').val(''); // clear the value that will be submitted
+    	$('#subsystemidedit').val(''); // if you use edit hidden input too
+    	return; // skip if null/empty
+    }
+	console.log(subsystem)
+	if(subsystem === '0' || subsystem === 0){
+		$('#subsystemidvalue').val(''); 
+    	$('#subsystemidedit').val(''); 
+		$('#subsystemAddModal').modal('show');
+	}else{
+		$('#subsystemidvalue').val(subsystem);
+		$('#subsystemidedit').val(subsystem);
+	}
+}
+
+function subsystemAdd() {
+	
+	const subsystem = $('#subsystemname').val();
+	
+	console.log(subsystem);
+	if(subsystem===''){
+		alert("Please fill all the fields")
+		event.preventDefault();
+		return false;
+	}
+	
+	if(window.confirm("Are you sure to Submit?")){
+		$.ajax({
+			type:'GET',
+			url:'subsystemAdd.htm',
+			datatype:'json',
+			data:{
+				subsystem:subsystem,
+			},
+			success: function(result) {
+			    var ajaxresult = JSON.parse(result);
+			    
+			    if (ajaxresult.SubSystemId != null) {
+			        alert('Sub System Added Successfully!');
+
+			        // Create new option element
+			        var newOption = $("<option>", {
+			            value: ajaxresult.SubSystemId,
+			            text: ajaxresult.SubSystem.replaceAll("<","").replaceAll(">","")
+			        });
+
+			        // Remove ADD NEW temporarily
+			        var $addNew = $('#subsystemid option[value="0"]').detach();
+
+			        // Add new option
+			        $('#subsystemid').append(newOption).trigger('change.select2');;
+
+			        // Append ADD NEW back to end
+			        $('#subsystemid').append($addNew);
+
+			        // Set selected value to new Rep
+			        $('#subsystemid').val(ajaxresult.SubSystemId);
+
+			        // If using Select2, trigger update
+			        $('#subsystemid').trigger('change');
+
+			        // Clear modal inputs
+			        $('#subsystemname').val('');
+
+			        // Hide modal
+			        $('#subsystemAddModal').modal('hide');
+			    }
+			}
+		})
+		
+	}else{
+		event.preventDefault();
+		return false;
+	}
+	
+}
+
 
 </script>
 

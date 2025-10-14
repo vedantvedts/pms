@@ -820,8 +820,9 @@ String logintype = (String)session.getAttribute("LoginType");
 										           	</td>
 									           	<tr>
 										           	<td class="width-60">
-											  			<select class="form-control selectdee" id="repids" name="repids" data-placeholder="Select Rep Types" multiple="multiple" >
+											  			<select class="form-control selectdee" id="repids" name="repids" onchange="handleRepChange()" data-placeholder="Select Rep Types" multiple="multiple" >
 															<option  disabled="disabled" value="0">Choose...</option>
+															<option value="0">ADD NEW</option>
 															<%	for (Object[] obj  : committeerepnotaddedlist) {%>
 														     	<option value="<%=obj[0]%>" ><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%>  </option>
 															<% } %>
@@ -1239,7 +1240,47 @@ String logintype = (String)session.getAttribute("LoginType");
 				</div>
 			</div>
 		</div>
+		<div class="modal fade bd-example-modal-lg" id="representativeAddModal"
+			tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+			aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content modalwidth">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel"> Add  Representative </h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+	
+			
+					<div class="row">
+							<div class="col-md-2"></div>						
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label">Rep Code</label><span class="mandatory">*</span>
+									<input class="form-control" type="text" id="repCode" name="repCode" maxlength="255" placeholder="Enter Rep Code" required>		
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="control-label"> Rep Name</label><span class="mandatory">*</span>
+									<input class="form-control" type="text" id="repName1" name="repName1" maxlength="1000" placeholder="Enter Rep Name" required>	
+								</div>
+							</div>
+							
+						</div>
+						
+						<div class="mt-2" align="center">
+						<button class="btn submit" onclick="reperesentativeAdd()">SUBMIT</button>
+						</div>
 
+					</div>
+
+				</div>
+			</div>
+		</div>
 
 
 
@@ -1288,7 +1329,7 @@ function industryPartenerAdd(){
 			        // Create new option element
 			        var newOption = $("<option>", {
 			            value: ajaxresult.IndustryPartnerId,
-			            text: ajaxresult.IndustryName+"( " + ajaxresult.IndustryCity  +" )"
+			            text: ajaxresult.IndustryName.replaceAll("<","").replaceAll(">","")+"( " + ajaxresult.IndustryCity.replaceAll("<","").replaceAll(">","")  +" )"
 			        });
 
 			        // Remove ADD NEW temporarily
@@ -1358,7 +1399,7 @@ function employeename(){
 						s += '<option value="">--Select--</option>';
 						for (i = 0; i < values.length; i++) 
 						{
-							s += '<option value="'+values[i][0]+'">' +values[i][1].trim() + ", " +values[i][3]+""  + '</option>';
+							s += '<option value="'+values[i][0]+'">' +values[i][1].trim().replaceAll("<","").replaceAll(">","")+ ", " +values[i][3].replaceAll("<","").replaceAll(">","")+""  + '</option>';
 						} 
 						 
 						$('#ExternalMember').html(s);
@@ -1446,7 +1487,7 @@ function replacerepdd(){
 				for (i = 0; i < values.length; i++) {
 						
 					s += '<option value="'+values[i][0]+'">'
-						+values[i][2] + " (" +values[i][1]+")" 
+						+values[i][2].replaceAll("<","").replaceAll(">","") + " (" +values[i][1].replaceAll("<","").replaceAll(">","")+")" 
 						+ '</option>';
 				} 
 					 
@@ -1495,7 +1536,7 @@ function replacerepdd(){
 						s += '<option value="">'+"--Select--"+ '</option>';
 								 for (i = 0; i < values.length; i++) {									
 									s += '<option value="'+values[i][0]+'">'
-											+values[i][1] + ", " +values[i][3]
+											+values[i][1].replaceAll("<","").replaceAll(">","") + ", " +values[i][3].replaceAll("<","").replaceAll(">","")
 											+ '</option>';
 								} 
 								 
@@ -1536,7 +1577,7 @@ function replacerepdd(){
 					s += '<option value="">'+"--Select--"+ '</option>';
 							 for (i = 0; i < values.length; i++) {									
 								s += '<option value="'+values[i][0]+'">'
-										+values[i][1]+", " +  values[i][3]
+										+values[i][1].replaceAll("<","").replaceAll(">","")+", " +  values[i][3].replaceAll("<","").replaceAll(">","")
 										+ '</option>';
 							} 
 							 <%if(secretary!=null){ %>
@@ -1576,7 +1617,7 @@ function replacerepdd(){
 					s += '<option value="">'+"--Select--"+ '</option>';
 							 for (i = 0; i < values.length; i++) {									
 								s += '<option value="'+values[i][0]+'">'
-										+values[i][1]+", " +  values[i][3]
+										+values[i][1].replaceAll("<","").replaceAll(">","")+", " +  values[i][3].replaceAll("<","").replaceAll(">","")
 										+ '</option>';
 							} 
 							 
@@ -1802,7 +1843,7 @@ function industrypartnerrepname(){
 						 for (i = 0; i < values.length; i++) {
 							
 							s += '<option value="'+values[i][0]+'">'
-									+values[i][1] + " (" +values[i][3]+")" 
+									+values[i][1].replaceAll("<","").replaceAll(">","") + " (" +values[i][3].replaceAll("<","").replaceAll(">","")+")" 
 									+ '</option>';
 						} 
 						 s=s+'<option value="0">ADD NEW </option>'
@@ -1996,7 +2037,7 @@ function formCheck(frmid)
 					console.log(ajaxresult)
 					var html="";
 					for(var i=0;i<ajaxresult.length;i++){
-						html = html+"<option value='"+ajaxresult[i][0]+"'> "+  ajaxresult[i][2]+ ", "+ajaxresult[i][3]+"</option>"
+						html = html+"<option value='"+ajaxresult[i][0]+"'> "+  ajaxresult[i][2].replaceAll("<","").replaceAll(">","")+ ", "+ajaxresult[i][3].replaceAll("<","").replaceAll(">","")+"</option>"
 						value.push(ajaxresult[i][0]);
 					}
 					ExpertMemberIdshtm =ExpertMemberIdshtm+html
@@ -2034,8 +2075,133 @@ $(document).on('shown.bs.modal', function () {
 	  });
 	});
 
+<!-- Prudhvi 27/03/2024 end -->
+
+function handleRepChange() {
+	var repvalue = $('#repids').val();
+	
+	/* console.log(repvalue) */
+	if(repvalue[0] === '0' || repvalue[0] === 0){
+		$('#representativeAddModal').modal('show');
+	}
+}
+
+function reperesentativeAdd() {
+	
+	const repCode = $('#repCode').val();
+	const repName = $('#repName1').val();
+	
+	if(repCode===''||repName===''){
+		alert("Please fill all the fields")
+		event.preventDefault();
+		return false;
+	}
+	
+	if(window.confirm("Are you sure to Submit?")){
+		$.ajax({
+			type:'GET',
+			url:'representativeAdd.htm',
+			datatype:'json',
+			data:{
+				repName:repName,
+				repCode:repCode,
+			},
+			success: function(result) {
+			    var ajaxresult = JSON.parse(result);
+
+			    if (ajaxresult.RepId != null) {
+			        alert('Representative Added Successfully!');
+
+			        // Create new option element
+			        var newOption = $("<option>", {
+			            value: ajaxresult.RepId,
+			            text: ajaxresult.RepName.replaceAll("<","").replaceAll(">","")
+			        });
+
+			        // Remove ADD NEW temporarily
+			        var $addNew = $('#repids option[value="0"]').detach();
+
+			        // Add new option
+			        $('#repids').append(newOption);
+
+			        // Append ADD NEW back to end
+			        $('#repids').append($addNew);
+
+			        // Set selected value to new Rep
+			        $('#repids').val(ajaxresult.RepId);
+
+			        // If using Select2, trigger update
+			        $('#repids').trigger('change');
+
+			        // Clear modal inputs
+			        $('#repCode').val('');
+			        $('#repName1').val('');
+
+			        // Hide modal
+			        $('#representativeAddModal').modal('hide');
+			    }
+			}
+		})
+		
+	}else{
+		event.preventDefault();
+		return false;
+	}
+	
+}
+function handleInputChangerepName(value) {
+    if (value.length >=2) {
+        $.ajax({
+            type: "GET",
+            url: "RepNameDuplicateCheck.htm",
+            data: {
+				repName:value,
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+                //Check if the Programme code already exists
+                if (ajaxresult >= 1) {
+                	 $('#repName1').val('');
+                    alert('Representative Name Already Exists');
+                }
+               
+            },
+            error: function() {
+                alert('An error occurred while checking the Representative Name.');
+            }
+        });
+    }
+}
+
+function handleInputChangerepCode(value) {
+    if (value.length >=2) {
+        $.ajax({
+            type: "GET",
+            url: "RepCodeDuplicateCheck.htm",
+            data: {
+                repCode: value,
+            },
+            datatype: 'json',
+            success: function(result) {
+                var ajaxresult = JSON.parse(result); 
+                //Check if the Rep code already exists
+                if (ajaxresult >= 1) {
+                	 $('#repCode').val('');
+                    alert('Representative Code Already Exists');
+                }
+               
+            },
+            error: function() {
+                alert('An error occurred while checking the Representative code.');
+            }
+        });
+    }
+}
+		
+
 </script>
-<!-- Prudhvi 27/03/2024 end -->	
+	
 </body>
 
 </html>

@@ -9,6 +9,7 @@ import com.vts.pfms.committee.dto.CommitteeScheduleDto;
 import com.vts.pfms.committee.dto.MeetingCheckDto;
 import com.vts.pfms.committee.model.CommitteScheduleMinutesDraft;
 import com.vts.pfms.committee.model.Committee;
+import com.vts.pfms.committee.model.CommitteeAircraft;
 import com.vts.pfms.committee.model.CommitteeCARS;
 import com.vts.pfms.committee.model.CommitteeConstitutionApproval;
 import com.vts.pfms.committee.model.CommitteeConstitutionHistory;
@@ -25,12 +26,14 @@ import com.vts.pfms.committee.model.CommitteeMemberRep;
 import com.vts.pfms.committee.model.CommitteeMinutesAttachment;
 import com.vts.pfms.committee.model.CommitteeMomAttachment;
 import com.vts.pfms.committee.model.CommitteeProject;
+import com.vts.pfms.committee.model.CommitteeRepresentative;
 import com.vts.pfms.committee.model.CommitteeSchedule;
 import com.vts.pfms.committee.model.CommitteeScheduleAgenda;
 import com.vts.pfms.committee.model.CommitteeScheduleAgendaDocs;
 import com.vts.pfms.committee.model.CommitteeScheduleMinutesDetails;
 import com.vts.pfms.committee.model.CommitteeSchedulesMomDraftRemarks;
 import com.vts.pfms.committee.model.CommitteeSubSchedule;
+import com.vts.pfms.committee.model.CommitteeSubSystem;
 import com.vts.pfms.committee.model.PfmsNotification;
 import com.vts.pfms.committee.model.PmsEnote;
 import com.vts.pfms.committee.model.PmsEnoteTransaction;
@@ -361,5 +364,16 @@ public interface CommitteeDao {
 	public Long addCommitteeCARS(CommitteeCARS committeeCARS) throws Exception;
 //	---------------------------------- Naveen R 3/9/25 MOM Check ------------------------------------------
 	public List<Object[]> CommitteeScheduleMinutesforAction(String committeescheduleid);
+	public Long addRepresentative(CommitteeRepresentative rep);
+	public CommitteeRepresentative getRepresentativeById(String repId);
+	public Long getRepNameDuplicateCount(String repName);
+	public Long getRepCodeDuplicateCount(String repCode);
+	public List<Object[]> getAircraftList(String committeeScheduleId);
+	public List<Object[]> getSubSystemList(String committeeScheduleId);
+	public Long addAircraft(CommitteeAircraft aircraft);
+	public CommitteeAircraft getAircraftById(String aircraftId);
+	public Long addSubSystem(CommitteeSubSystem sub);
+	public CommitteeSubSystem getSubSystemById(String subsystemId);
+	public List<Object[]> committeeScheduleMinutesforActionForMom(String committeescheduleid);
 
 }

@@ -1646,7 +1646,7 @@ function employeename(){
 						 for (i = 0; i < values.length; i++) {
 							
 							s += '<option value="'+values[i][0]+",W,"+values[i][4]+'">'
-									+values[i][1] + ", " +values[i][3] 
+									+values[i][1].replaceAll("<","").replaceAll(">","") + ", " +values[i][3].replaceAll("<","").replaceAll(">","") 
 									+ '</option>';
 						} 
 						 
@@ -1696,7 +1696,7 @@ function specialname(ele){
 						 for (i = 0; i < values.length; i++) {
 							
 							s += '<option value="'+values[i][0]+",SPL,"+values[i][4]+'">'
-									+values[i][1] + ", " +values[i][3] 
+									+values[i][1].replaceAll("<","").replaceAll(">","") + ", " +values[i][3].replaceAll("<","").replaceAll(">","") 
 									+ '</option>';
 						} 
 						 
@@ -1860,7 +1860,7 @@ function industrypartnerrepname(){
 						 for (i = 0; i < values.length; i++) {
 							
 							s += '<option value="'+values[i][0]+",IP,"+values[i][4]+'">'
-									+values[i][1] + ", " +values[i][3]
+									+values[i][1].replaceAll("<","").replaceAll(">","") + ", " +values[i][3].replaceAll("<","").replaceAll(">","")
 									+ '</option>';
 						} 
 						 s=s+'<option value="0">ADD NEW </option>'
@@ -2031,7 +2031,7 @@ function formCheck(frmid)
 					console.log(ajaxresult)
 					var html="";
 					for(var i=0;i<ajaxresult.length;i++){
-						html = html+"<option value='"+ajaxresult[i][0]+"'> "+  ajaxresult[i][2]+ ", "+ajaxresult[i][3]+"</option>"
+						html = html+"<option value='"+ajaxresult[i][0]+"'> "+  ajaxresult[i][2].replaceAll("<","").replaceAll(">","")+ ", "+ajaxresult[i][3].replaceAll("<","").replaceAll(">","")+"</option>"
 						value.push(ajaxresult[i][0]);
 					}
 					ExpertMemberIdshtm =ExpertMemberIdshtm+html
@@ -2046,6 +2046,9 @@ function formCheck(frmid)
 						$('#organization').val('');
 						$('#expertAddModal').modal('hide');
 					}
+				},
+				error : function(error) {
+					alert('Html Tags Not Allowed');
 				}
 			})
 			
@@ -2100,7 +2103,7 @@ function industryPartenerAdd(){
 			        // Create new option element
 			        var newOption = $("<option>", {
 			            value: ajaxresult.IndustryPartnerId,
-			            text: ajaxresult.IndustryName+"( " + ajaxresult.IndustryCity  +" )"
+			            text: ajaxresult.IndustryName.replaceAll("<","").replaceAll(">","")+"( " + ajaxresult.IndustryCity.replaceAll("<","").replaceAll(">","")  +" )"
 			        });
 
 			        // Remove ADD NEW temporarily
