@@ -1252,6 +1252,91 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
      </div>   <!-- Agenda collapse end -->     
  </div><!-- Agenda Panel end --> 
 
+<!-- Other Remarks For ADE Naveen R 16/10/25 start -->
+
+	<%if(Long.parseLong(projectid)==0 && Long.parseLong(divisionid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0 && Long.parseLong(programmeId)==0 && userview==null && LabCode.equalsIgnoreCase("ADE")){%>
+		<div class="panel panel-info">
+	    	<div class="panel-heading">
+	        	<h4 class="panel-title">
+	         		<span class="fs-14px">7. Other Remarks </span>
+	        	</h4>
+	       	<div class="introductionDivStyle">
+			 	<table class="text-center">
+	     			<thead>
+		             	<tr>
+		                 	<th ></th>       
+		             	</tr>
+		         	</thead>
+		         	<tbody>
+		         	
+		         	
+				       <%
+				      if(!dis.isEmpty()){
+				    	  for(Object[] hlo:dis){
+				      if("7".equalsIgnoreCase(hlo[0].toString())){
+				       %> 
+	      	
+	      				<tr>
+	
+				      		<td class="tdMaxStyle"> 
+				      			<form  id="myForm71" action="MinutesSpecEdit.htm" method="post">
+				                	
+				                		<input type="hidden" name="specname" value="OtherRemarks">
+				                		<input type="hidden" name="scheduleid"	value="<%=hlo[7] %>" />
+										<input type="hidden" name="minutesid"	value="<%=hlo[0] %>" />
+										<input type="hidden" name="scheduleminutesid" 	value="<%=hlo[1] %>" /> 
+					                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
+				                    	<input type="hidden" name="formname" value="rmmyForm2" /> 
+	
+				          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle"  id="rmmyForm2" onclick="FormNameEdit('myForm71')" value="EDIT"/>
+				          			
+				       			</form>
+				      		</td>
+				      		
+	      				</tr>
+	      	
+	       				 <%}}}%> 
+	       				 
+	       			</tbody>
+	      	
+	      		</table>
+	      		<br>
+	      		
+	       </div>
+	       
+	       
+	        <div class="itemSpecAddStyle">
+				
+				<form name="myForm7" id="myForm7" action="ItemSpecAdd.htm" method="post" 
+	
+					<% if(!dis.isEmpty()){
+					    	  for(Object[] hlo:dis){
+					      if("7".equalsIgnoreCase(hlo[0].toString())){
+					       %>hidden="hiddden" 
+					        <%}}}%> 
+					> 
+	
+					<input type="hidden" name="specname" value="OtherRemarks">
+					<input class="form-control" type="hidden" name="minutesid" value="7" readonly="readonly">
+					<input class="form-control" type="hidden" name="agendasubid" value="0" readonly="readonly">
+					<input class="form-control" type="hidden" name="scheduleagendaid" value="0" readonly="readonly">
+					<input class="form-control" type="hidden" name="minutesunitid" value="0" readonly="readonly">
+					<input type="hidden" name="formname" value="rmmyForm2" /> 
+		
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
+					<input type="submit" class="btn btn-info btn-sm infoSubmitInputStyle" id="rmmyForm2" name="sub" onclick="FormName('myForm7')" value="ADD"/>
+				
+				</form>
+				
+	   		</div> 
+	   		
+	     </div><!-- panel- heading end -->
+		       
+	   </div>   
+	<%} %>
+
+<!-- Other Remarks For ADE Naveen R 16/10/25 End -->
+
 <!--  New code end-->
 
 <!-- CCM part MOM  -->
@@ -1465,6 +1550,9 @@ function showAttachmentModal(){
 				<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">	
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<input type="hidden" name="minutesback" value="minutesback"/>
+				<%if(Long.parseLong(projectid)==0 && Long.parseLong(divisionid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0 && Long.parseLong(programmeId)==0 && userview==null && LabCode.equalsIgnoreCase("ADE")){%>
+				<input type="hidden" name="nonproject" value="Y" >
+				<%} %>
 				<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
 					<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata[6] %>">
 					<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
@@ -2718,6 +2806,8 @@ function editcheck1(editfileid)
   		 $('#editing').show();
   		$('#specadd').show();
 	    $('#specair').hide();
+	    $('#aircraftDiv').hide();
+	    $('#subsystemDiv').hide();
   		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
   		 	var specnameadd= $("input[name='specname']",this).val();
   		 	var formnameadd= $("input[name='formname']",this).val();

@@ -52,6 +52,9 @@ String committeeMainId = (String) request.getAttribute("committeeMainId");
 String committeeId = (String) request.getAttribute("committeeId");
 
 String dmcFlag = (String) request.getAttribute("dmcFlag");
+
+String nonproject = (String) request.getAttribute("nonproject");
+
 %>
 
 
@@ -223,6 +226,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 										type="hidden" name="ScheduleSpec" id="ScheduleSpec"> <input
 										type="hidden" name="specname" id="specnameadd"> <input
 										type="hidden" name="minutesback" value="<%=MinutesBack %>">
+										<input type="hidden" name="nonproject" value="<%= (nonproject != null) ? nonproject : "N" %>" />
 										<%if(ccmFlag!=null && ccmFlag.equalsIgnoreCase("Y")) {%>
 											<input type="hidden" name="ccmScheduleId" value="<%=committeescheduleeditdata!=null?committeescheduleeditdata[6]:"" %>">
 											<input type="hidden" name="committeeMainId" value="<%=committeeMainId %>">
@@ -381,6 +385,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 		<input type="hidden" name="committeeSchId" id="committeeSchId" value="" /> 	
 		<input type="hidden" name="minutesback" value="<%=MinutesBack%>" /> 
 		<input type="hidden" name="specValueId" id="specValueId" value="">
+		<input type="hidden" name="nonproject" value="<%= (nonproject != null) ? nonproject : "N" %>" />
 		<%if(rodflag!=null) {%>
 			<input type="hidden" name="rodflag" value="Y">	
 		<%} %>
@@ -503,6 +508,7 @@ String dmcFlag = (String) request.getAttribute("dmcFlag");
 							<input type="hidden" name="minutesback" value="<%=MinutesBack%>" /> 
 							<input type="hidden" name="specnamevalue" id="specValue" value="">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+							<input type="hidden" name="nonproject" value="<%= (nonproject != null) ? nonproject : "N" %>" />
 							<%if(rodflag!=null) {%>
 								<input type="hidden" name="rodflag" value="Y">	
 							<%} %>
@@ -894,7 +900,7 @@ function fetchAssigneeOptions(empIdsToRemove,$AssigneeLabCode,projectid) {
 				var result = JSON.parse(result);
 				var values = Object.keys(result).map(function(e) {
 					return result[e]
-				});
+					});
 				
 				var s = '';
 				s += '<option value="">Choose ...</option>';
@@ -907,7 +913,7 @@ function fetchAssigneeOptions(empIdsToRemove,$AssigneeLabCode,projectid) {
 		                var desig = values[i][3];
 
 		                if (!empIdsToRemove.includes(empid)) {
-		                    s += '<option value="' + empid + '">' + empName + ', ' + desig + '</option>';
+		                    s += '<option value="' + empid + '">' + empName.replaceAll("<","").replaceAll(">","").replaceAll("/","") + ', ' + desig.replaceAll("<","").replaceAll(">","").replaceAll("/","") + '</option>';
 		                }
 		            }
 				
@@ -1003,7 +1009,7 @@ function showEmployee(){
 	    <%for(Object[] obj2:Alllablist){%>
         var optionValue = '<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()):""%>';
 	    var optionText = '<%=obj2[3]!=null?StringEscapeUtils.escapeHtml4(obj2[3].toString()):" - "%>';
-        var option = $("<option></option>").attr("value", optionValue).text(optionText);
+        var option = $("<option></option>").attr("value", optionValue).text(optionText.replaceAll("<","").replaceAll(">","").replaceAll("/",""));
         if (assigneeLab == optionValue) {
             option.prop('selected', true);
         }
@@ -1048,7 +1054,7 @@ function showEmployee(){
                    var optionValue = values[i][0];
                    var optionText = values[i][1] + ', ' + values[i][3];
                    var isSelected = (assigneeId == optionValue) ? 'selected' : '';
-                   options += '<option value="' + optionValue + '" ' + isSelected + '>' + optionText + '</option>';
+                   options += '<option value="' + optionValue + '" ' + isSelected + '>' + optionText.replaceAll("<","").replaceAll(">","").replaceAll("/","") + '</option>';
                }
 
                $('#AssigneeUpdate').html(options);
@@ -1080,7 +1086,7 @@ function showEmployee(){
               for (var i = 0; i < values.length; i++) {
                   var optionValue = values[i][0];
                   var optionText = values[i][1] + ', ' + values[i][3];
-                  options += '<option value="' + optionValue + '">' + optionText + '</option>';
+                  options += '<option value="' + optionValue + '">' + optionText.replaceAll("<","").replaceAll(">","").replaceAll("/","") + '</option>';
               }
 
               $('#AssigneeUpdate').html(options);

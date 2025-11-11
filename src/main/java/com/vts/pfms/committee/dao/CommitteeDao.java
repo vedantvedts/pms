@@ -71,6 +71,7 @@ public interface CommitteeDao {
 	public Long CommitteeMinutesInsert(CommitteeScheduleMinutesDetails committeescheduleminutesdetails) throws Exception;
 	public Object[] CommitteeMinutesSpecDesc(CommitteeScheduleMinutesDetails committeescheduleminutesdetails) throws Exception;
 	public Object[] CommitteeMinutesSpecEdit(CommitteeScheduleMinutesDetails committeescheduleminutesdetails) throws Exception;
+	public Object[] CommitteeMinutesSpecEditForAde(CommitteeScheduleMinutesDetails committeeminutesdetails);
 	public Long CommitteeMinutesUpdate(CommitteeScheduleMinutesDetails committeescheduleminutesdetails) throws Exception;
 	public List<Object[]> CommitteeScheduleAgendaPriority(String Committeescheduleid) throws Exception;
 	public long CommitteeScheduleAgendaUpdate(CommitteeScheduleAgenda scheduleagenda) throws Exception;
@@ -375,5 +376,6 @@ public interface CommitteeDao {
 	public Long addSubSystem(CommitteeSubSystem sub);
 	public CommitteeSubSystem getSubSystemById(String subsystemId);
 	public List<Object[]> committeeScheduleMinutesforActionForMom(String committeescheduleid);
+	public Object[] CommitteeScheduleEditDataforMom(String committeescheduleid);
 
 }

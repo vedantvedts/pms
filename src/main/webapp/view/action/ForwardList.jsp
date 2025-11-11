@@ -114,7 +114,7 @@
 															<td class="center"><%=count%></td>
 															<td><%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()):" - " %></td>
 															<td>
-															<input type="hidden" id="td<%=obj[0].toString()%>" value='"<%=obj[5].toString()%>"'>
+															<textarea id="td<%=obj[0].toString()%>" style="display: none;"><%=obj[5].toString()%></textarea>
 															<%if(obj[5]!=null && obj[5].toString().length()<75) {%>
 															<%=StringEscapeUtils.escapeHtml4(obj[5].toString()) %>
 															<%}else{ %>
@@ -285,7 +285,7 @@
 		});
 	});
 	
-	
+	 
 	function showAction(a,b){
 		/* var y=JSON.stringify(a); */
 		var y=$('#td'+a).val();

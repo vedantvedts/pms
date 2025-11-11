@@ -104,7 +104,7 @@
 					                    	<input type="hidden" name="committeeid" value="<%=committeeId%>" /> 
 					                    	<input type="hidden" name="programmeId" value="<%=programmeId%>" /> 
 					                    	<input type="hidden" name="committeeMainId" value="<%=committeeMainId%>" /> 
-					                    	<input type="hidden" name="committeename" value="PMC" /> 
+					                    	<input type="hidden" name="committeename" value="PMG" /> 
 					                    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 					                    	<input type="button" class="btn  btn-sm add float-right" onclick="Add1('myfrm1')" value="ADD SCHEDULE" > 	
 				                    	</div>                   	

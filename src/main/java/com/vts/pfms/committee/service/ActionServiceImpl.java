@@ -2711,7 +2711,185 @@ public List<Object[]> getProjects(String empId) throws Exception {
 
 @Override
 public int ActionAssignerEdit(ActionAssign assign) throws Exception {
-	// TODO Auto-generated method stub
 	return dao.ActionAssignerEdit(assign);
 }
+
+	@Override
+	public long insertActionMainFornonProject(ActionMainDto main, ActionAssignDto assign) {
+		try {
+			logger.info(new Date() +" Inside Action Service Implementation insertActionMainFornonProject");
+			Object[] committeShortname = null;
+			Object[] schedule = null;
+			Object[] lab=null;
+			String actionNo = "";
+			String meetingcount = null;
+			long mainid = 0;
+			int actioncount = 0;
+			int subcount = 0;
+			
+
+			lab=dao.LabDetails();
+			if(main.getScheduleMinutesId()!=null && !main.getScheduleMinutesId().equalsIgnoreCase("0")) {
+				committeShortname = dao.CommitteeShortName(main.getScheduleMinutesId());
+				if(committeShortname!=null && committeShortname[1]!=null) {
+					actionNo=committeShortname[1].toString()+"/";
+				}
+			}
+			if(main.getScheduleId()!=null && !main.getScheduleId().equalsIgnoreCase("0")) {
+				schedule = committeeDao.CommitteeScheduleEditData(main.getScheduleId());
+				if(schedule!=null && schedule[11]!=null) {
+					String[] countofmeeting = schedule[11].toString().split("/");
+					meetingcount = countofmeeting[4]!=null?countofmeeting[4]:"1";
+					actionNo+=meetingcount+"/";
+				}
+			}
+			if(main.getMeetingDate()!=null) {
+				Date meetingdate= new SimpleDateFormat("yyyy-MM-dd").parse(main.getMeetingDate().toString());
+				actionNo+=sdf2.format(meetingdate).toString().toUpperCase().replace("-", "")+"/";
+			}
+			
+			if(main.getScheduleMinutesId()!=null && !main.getScheduleMinutesId().equalsIgnoreCase("0")) {
+				List<Object[]> mainIds = dao.getMainIds(main.getScheduleMinutesId());
+				if(mainIds.size()>0) {
+					mainid = Long.parseLong(mainIds.get(0)[0].toString());
+					String[] xyz = mainIds.get(0)[2].toString().split("/");
+					String[] abc = xyz[xyz.length-1].split("-");
+					if(abc.length>1) {
+						actioncount = Integer.parseInt(abc[0].toString());
+						subcount = Integer.parseInt(abc[1].toString());
+					}
+					else actioncount = dao.ActionGenCount(main.getProjectId(), main.getType())+1;
+				}
+				else actioncount = dao.ActionGenCount(main.getProjectId(), main.getType())+1;
+			}
+			else actioncount = dao.ActionGenCount(main.getProjectId(), main.getType())+1;
+			
+			ActionMain actionmain = new ActionMain();
+			
+			if(main.getActionLinkId()!=null && !main.getActionLinkId().isEmpty() &&  main.getActionLinkId()!=""  ) {
+				actionmain.setActionLinkId(Long.parseLong(main.getActionLinkId()));
+			}else {
+				actionmain.setActionLinkId(0L);
+			}
+			if( main.getMainId()!=null && !main.getMainId().isEmpty() &&   main.getMainId()!=""  ) {
+				if("0".equalsIgnoreCase(main.getMainId())) {
+					actionmain.setMainId(Long.parseLong(main.getActionParentId()));
+				}else {
+					actionmain.setMainId(Long.parseLong(main.getMainId()));
+				}
+				
+			}else {
+				actionmain.setMainId(0l);
+			}
+			actionmain.setActivityId(Long.parseLong(main.getActivityId()));
+			actionmain.setActionType(main.getActionType());
+			actionmain.setType(main.getType());
+			actionmain.setActionItem(main.getActionItem());
+			actionmain.setActionDate(java.sql.Date.valueOf(main.getMeetingDate()));
+			actionmain.setCategory(main.getCategory());
+			actionmain.setPriority(main.getPriority());
+			//actionmain.setActionStatus(main.getActionStatus());
+			actionmain.setProjectId(Long.parseLong(main.getProjectId()));
+			actionmain.setScheduleMinutesId(Long.parseLong(main.getScheduleMinutesId()));
+			actionmain.setCreatedBy(main.getCreatedBy());
+			actionmain.setCreatedDate(sdf1.format(new Date()));
+			actionmain.setIsActive(1);
+			if( main.getActionParentId()!=null && !main.getActionParentId().isEmpty() &&  main.getActionParentId()!=""  ) {
+				actionmain.setParentActionId(Long.parseLong(main.getActionParentId()));
+			}else{
+				actionmain.setParentActionId(0l);
+			}
+			actionmain.setActionLevel(main.getActionLevel());
+			
+			
+			long result=0l;
+			if(mainid>0) {
+				result=mainid;
+			}else {
+			result=	dao.ActionMainInsert(actionmain);
+			}
+
+			if(assign.getMultipleAssigneeList().size()>0) {
+				for(int i=0;i<assign.getMultipleAssigneeList().size();i++) {
+					ActionAssign actionassign = new ActionAssign();
+						
+					//count=count+1;
+					String actionCount=(actioncount)+"-"+(subcount+i+1);
+
+					if(lab!=null && main.getLabName()!=null) {
+				    	 actionassign.setActionNo(actionNo+actionCount);
+					}else {
+						return 0L;
+					}
+					
+					actionassign.setActionMainId(result);
+					actionassign.setPDCOrg(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
+					actionassign.setEndDate(java.sql.Date.valueOf(sdf.format(rdf.parse(assign.getPDCOrg()))));
+					actionassign.setAssigneeLabCode(assign.getAssigneeLabCode());
+					actionassign.setAssignee(Long.parseLong(assign.getMultipleAssigneeList().get(i)));
+					actionassign.setAssignorLabCode(assign.getAssignorLabCode());
+					actionassign.setAssignor(assign.getAssignor());
+					actionassign.setRevision(0);
+//					actionassign.setActionFlag("N");		
+					actionassign.setActionStatus("A");
+					actionassign.setCreatedBy(main.getCreatedBy());
+					actionassign.setCreatedDate(sdf1.format(new Date()));
+					actionassign.setIsActive(1);
+					actionassign.setProgress(0);
+					long assignid=  dao.ActionAssignInsert(actionassign);
+					if(result>0) {
+						Object[] data=dao.ActionNotification(String.valueOf(result) ,String.valueOf(assignid)).get(0);
+						PfmsNotification notification=new PfmsNotification();
+						notification.setEmpId(Long.parseLong(data[2].toString()));
+						notification.setNotificationby(Long.parseLong(data[5].toString()));
+						notification.setNotificationDate(sdf1.format(new Date()));
+						notification.setScheduleId(0L);
+						notification.setCreatedBy(main.getCreatedBy());
+						notification.setCreatedDate(sdf1.format(new Date()));
+						notification.setIsActive(1);
+						if("I".equalsIgnoreCase(actionmain.getType())) {
+							notification.setNotificationUrl("ActionIssue.htm");
+							 notification.setNotificationMessage("An Issue No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
+						} else {
+							notification.setNotificationUrl("AssigneeList.htm");
+							notification.setNotificationMessage("An Action No "+data[7]+" Assigned by "+data[3]+", "+data[4]+".");
+						}
+						notification.setStatus("MAR");
+			            dao.ActionNotificationInsert(notification);
+					}else {
+					return 0L;
+					}
+					}	
+			}
+		
+			if( main.getActionAttachment()!=null &&  !main.getActionAttachment().isEmpty()) {
+				
+				Random random = new Random();
+				
+				int randomInt = random.nextInt();
+				
+				ActionMainAttachment attachment = new ActionMainAttachment();
+				 int dotIndex = main.getActionAttachment().getOriginalFilename().lastIndexOf(".");
+				String fileName = main.getActionAttachment().getOriginalFilename().substring(0,dotIndex)+"_"+randomInt;
+				
+				attachment.setActionMainId(result);
+				attachment.setFileName(fileName+"."+FilenameUtils.getExtension(main.getActionAttachment().getOriginalFilename()) );
+				attachment.setCreatedBy(main.getCreatedBy());
+				attachment.setCreatedDate(LocalDate.now().toString());
+				attachment.setIsActive(1);
+				
+				Path subPath = Paths.get(uploadpath, main.getLabName(), "ActionMain Attachment");
+				saveFile1(subPath, fileName+"."+FilenameUtils.getExtension(main.getActionAttachment().getOriginalFilename()), main.getActionAttachment());
+				
+				dao.saveActionMainAttachment(attachment);
+			}
+
+			return result;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			logger.error(new Date() +" Inside Action Service Implementation insertActionMainFornonProject, "+e.getMessage());
+			return 0L;
+		}	
+	}
 }

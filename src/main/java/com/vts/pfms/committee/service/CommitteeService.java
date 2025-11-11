@@ -78,6 +78,7 @@ public interface CommitteeService {
  	public Long CommitteeMinutesInsert(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception;	
  	public Object[] CommitteeMinutesSpecDesc(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception;
  	public Object[] CommitteeMinutesSpecEdit(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception;
+ 	public Object[] CommitteeMinutesSpecEditForAde(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception;
  	public Long CommitteeMinutesUpdate(CommitteeMinutesDetailsDto committeeminutesdetailsdto)throws Exception;
  	public Long ScheduleMinutesUnitUpdate(CommitteeMinutesDetailsDto detailsdto) throws Exception;
  	public int ScheduleMinutesUnitUpdate(String UnitId,String Unit,String UserId) throws Exception;
@@ -355,6 +356,8 @@ public interface CommitteeService {
 	public Long addSubSystem(CommitteeSubSystem sub);
 	public CommitteeSubSystem getSubSystemById(String subsystemId);
 	public List<Object[]> committeeScheduleMinutesforActionForMom(String committeescheduleid);
+	public Object[] CommitteeScheduleEditDataforMom(String committeescheduleid);
+	
 
 }
 

@@ -203,7 +203,7 @@ FormatConverter fc = new FormatConverter();
 												<tr>
 													<td class="center"><%=++slno%></td>
 										    		<td class="style7">
-										    			<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):StringEscapeUtils.escapeHtml4(obj[2].toString())%>
+										    			<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):"-"%>
 										    			<%=obj[5]!=null?(StringEscapeUtils.escapeHtml4(obj[5].toString())+", "+(obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()):"-")):"-" %>
 										    		</td>
 			         								<td class="center" colspan="7">No Data Available</td>

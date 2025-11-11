@@ -111,7 +111,7 @@
 					<div class="card-header">						
 						<div class="row">										
 							<div class="col-md-8">
-								<h3 class="headerBgColor">Programme Management Council (PMC)</h3>
+								<h3 class="headerBgColor">Programme Management Group (PMG)</h3>
 							</div>	
 							<div class="col-md-1 right">
 								<label class="form-label">Programme:</label>

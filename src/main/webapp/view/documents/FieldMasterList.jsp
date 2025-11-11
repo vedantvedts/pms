@@ -17,11 +17,11 @@
 .form-label {
 	font-weight: bold;
 }
-
-html, body {
-  overflow-x: hidden;
+ 
+.container-fluid{
+  overflow-x: hidden!important;
 }
-
+ 
 /* Container for the tabs */
 
 

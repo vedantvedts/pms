@@ -2631,13 +2631,15 @@ public class CommitteeController {
 	{
 		Object[] DisDesc = null;
 		String UserId=(String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeMinutesSpecEdit.htm "+UserId);
 		try
 		{
 			String Username = (String) ses.getAttribute("Username");
 			CommitteeMinutesDetailsDto committeeminutesdetailsdto = new CommitteeMinutesDetailsDto();
 			committeeminutesdetailsdto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
-			DisDesc = service.CommitteeMinutesSpecEdit(committeeminutesdetailsdto);
+			if(labcode.equalsIgnoreCase("ADE")) DisDesc = service.CommitteeMinutesSpecEditForAde(committeeminutesdetailsdto);
+			else DisDesc = service.CommitteeMinutesSpecEdit(committeeminutesdetailsdto);
 		}
 		catch (Exception e) {
 			e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMinutesSpecEdit.htm "+UserId,e);
@@ -4245,13 +4247,14 @@ public class CommitteeController {
 			req.setAttribute("projectid",projectid);
 			req.setAttribute("initiationid",initiationid);
 			req.setAttribute("ProjectsList", projectdetailslist);
-			req.setAttribute("CommitteeAutoScheduleList", CommitteeAutoScheduleList);	
-
+			req.setAttribute("CommitteeAutoScheduleList", CommitteeAutoScheduleList);
+			
+			return "committee/CommitteeAutoScheduleList";
 		}catch(Exception e) {	    		
 			logger.error(new Date() +" Inside CommitteeAutoScheduleList.htm "+UserId, e);
 			e.printStackTrace();
+			return "static/Error";
 		}	
-		return "committee/CommitteeAutoScheduleList";
 	}
 
 
@@ -10790,9 +10793,9 @@ private boolean isValidFileType(MultipartFile file) {
 			}
 			
 			if(committeeId==null) {
-				committeeId = String.valueOf(ccmservice.getCommitteeIdByCommitteeCode("PMC"));
+				committeeId = String.valueOf(ccmservice.getCommitteeIdByCommitteeCode("PMG"));
 				if(committeeId.equals("0")) {
-					redir.addAttribute("resultfail","The PMC Committee has not yet been created");
+					redir.addAttribute("resultfail","The PMG Committee has not yet been created");
 					return "redirect:/CommitteeList.htm";
 				}
 			}
@@ -10888,9 +10891,9 @@ private boolean isValidFileType(MultipartFile file) {
 			}
 			
 			if(committeeId==null) {
-				committeeId = String.valueOf(ccmservice.getCommitteeIdByCommitteeCode("PMC"));
+				committeeId = String.valueOf(ccmservice.getCommitteeIdByCommitteeCode("PMG"));
 				if(committeeId.equals("0")) {
-					redir.addAttribute("resultfail","The PMC Committee has not yet been created");
+					redir.addAttribute("resultfail","The PMG Committee has not yet been created");
 					return "redirect:/CommitteeList.htm";
 				}
 			}
@@ -10900,7 +10903,7 @@ private boolean isValidFileType(MultipartFile file) {
 				if(committeeMainId.equals("0")) {
 					redir.addAttribute("programmeId", programmeId);
 					redir.addAttribute("committeeId", committeeId);
-					redir.addAttribute("resultfail","The PMC Committee has not yet been constituted");
+					redir.addAttribute("resultfail","The PMG Committee has not yet been constituted");
 					return "redirect:/PrgmCommitteeConstitution.htm";
 				}
 			}
@@ -11154,7 +11157,7 @@ private boolean isValidFileType(MultipartFile file) {
 		try
 		{
 			String committeescheduleid = req.getParameter("committeescheduleid");
-			Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
+			Object[] committeescheduleeditdata=service.CommitteeScheduleEditDataforMom(committeescheduleid);
 			String projectid= committeescheduleeditdata[9].toString();
 			if(projectid!=null && Integer.parseInt(projectid)>0)
 			{
@@ -11416,20 +11419,32 @@ private boolean isValidFileType(MultipartFile file) {
 
 			HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
 
+			req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));
+			CharArrayWriterResponse customResponse2 = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/committee/MinutesOfMeetingAttendence.jsp").forward(req, customResponse2);
+			String html2 = customResponse2.getOutput();
+			
+			HtmlConverter.convertToPdf(html2, new FileOutputStream(path + File.separator + filename + "2.pdf"));
 
+			
 			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
 			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
 			PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+			PdfReader pdf3=new PdfReader(path+File.separator+filename+"2.pdf");
 
 			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	       	        
 			PdfDocument pdfDocument2 = new PdfDocument(pdf2);
+			PdfDocument pdfDocument3 = new PdfDocument(pdf3);
 			PdfMerger merger = new PdfMerger(pdfDocument);
 
 			merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
-
+			merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
+			
+			pdfDocument3.close();
 			pdfDocument2.close();
 			pdfDocument.close();
 			merger.close();
+			pdf3.close();
 			pdf2.close();
 			pdf1.close();	       
 			pdfw.close();
@@ -11453,6 +11468,8 @@ private boolean isValidFileType(MultipartFile file) {
 
 			Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
 			Files.delete(pathOfFile2);		
+			pathOfFile2 = Paths.get(path + File.separator + filename + "2.pdf"); 
+			Files.delete(pathOfFile2);
 			pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
 			Files.delete(pathOfFile2);	
 			pathOfFile2= Paths.get(path +File.separator+ "merged.pdf"); 

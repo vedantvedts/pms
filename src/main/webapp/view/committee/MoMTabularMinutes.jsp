@@ -50,17 +50,29 @@
 		String ccmFlag = (String)request.getAttribute("ccmFlag");
 	%>
 	<style type="text/css">
+	
+	#container{
+		 font-family: Arial, Helvetica, sans-serif!important;
+	}
+	.fs-12{
+		font-size: 12px;
+	} 
+	.fs-11{
+		font-size: 11px;
+	}
 		@page {             
           size: 790px 1120px;
           margin-top: 49px;
           margin-left: 39px;
           margin-right: 39px;
           margin-buttom: 49px; 	
-          border: 1px solid black;    
+          border: 1px solid black;
+          font-family: Arial, Helvetica, sans-serif!important; 
           @bottom-right {          		
              content: "Page " counter(page) " of " counter(pages);
              margin-bottom: 30px;
              margin-right: 10px;
+        	font-size: 11px;     
           }
           @top-right {
           		<%if( Long.parseLong(projectid)>0){%>
@@ -74,31 +86,31 @@
              <%}%>
              margin-top: 30px;
              margin-right: 10px;
-               font-size: 13px;
+               font-size: 11px;
           }
           @top-left {
           	margin-top: 30px;
             margin-left: 10px;
             content: "<%=no[0]!=null?no[0].toString(): " - "%>/<%=no[1]!=null?no[1].toString(): " - "%>/<%=no[2]!=null?no[2].toString(): " - " %><%if(meetingcount>0){ %>#<%=meetingcount %><%} %>/<%=no[3]!=null?no[3].toString(): " - "%>";
-             font-size: 13px;
+             font-size: 11px;
           }      
           
           @top-center { 
-           font-size: 13px;
+           font-size: 11px;
           margin-top: 30px;
           content: "<%=committeescheduleeditdata[15]!=null?committeescheduleeditdata[15].toString(): " - "%>"; 
           
           }
           
            @bottom-center { 
-             font-size: 13px;
+             font-size: 11px;
 	          margin-bottom: 30px;
 	          content: "<%=committeescheduleeditdata[15]!=null?committeescheduleeditdata[15].toString(): " - "%>"; 
           
           } 
           
           @bottom-left { 
-             font-size: 13px;
+             font-size: 11px;
 	          margin-bottom: 30px;
 	          content: "<%=LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))%>"; 
           } 
@@ -119,16 +131,16 @@
 	        <p style="margin:0; padding:0;">Kanchanbagh P.O., <br> Hyderabad - 58 </p>
 	      </td> --%>
 	      
-	       <td width="30%" align="left" style="border-right:1px solid black; padding:5px; padding-left: 10px;">
-	        <img style="width: 3cm; height: 3cm;" src="data:image/png;base64,<%=lablogo%>"><br>
-	        <h4 style=" margin:0; padding:0;"><%=labdetails[2]!=null?labdetails[2].toString(): " - " %> (<%=labdetails[1]!=null?labdetails[1].toString(): " - "%>)</h4>
-	        <p style="margin:0; padding:0;"><%=labdetails[4]!=null?labdetails[4].toString(): " - " %></p>
-	        <p style="margin:0; padding:0;"><%=labdetails[5]!=null?labdetails[5].toString(): " - " %> - <%=labdetails[6]!=null?labdetails[6].toString(): " - " %> </p>
+	       <td width="33%" align="left" style="border-right:1px solid black; padding:5px; padding-left: 10px;">
+	        <img style="width: 2cm; height: 2cm;" src="data:image/png;base64,<%=lablogo%>"><br>
+	        <h4 class="fs-12" style=" margin:0; padding:0;"><%=labdetails[2]!=null?labdetails[2].toString(): " - " %> (<%=labdetails[1]!=null?labdetails[1].toString(): " - "%>)</h4>
+	        <p class="fs-11" style="margin:0; padding:0;"><%=labdetails[4]!=null?labdetails[4].toString(): " - " %></p>
+	        <p class="fs-11" style="margin:0; padding:0;"><%=labdetails[5]!=null?labdetails[5].toString(): " - " %> - <%=labdetails[6]!=null?labdetails[6].toString(): " - " %> </p>
 	      </td> 
 	
 	      <!-- Right column -->
-	      <td width="70%" align="left" style="padding:5px;">
-	        <p>1.Meeting Title : <span style="font-weight: bold;"> <%=committeescheduleeditdata[7]!=null?committeescheduleeditdata[7].toString().toUpperCase():" - "%>  (<%=committeescheduleeditdata[8]!=null?committeescheduleeditdata[8].toString().toUpperCase():" - " %><%if(meetingcount>0){ %>&nbsp;&nbsp;#<%=meetingcount %><%} %>)</span> </p>
+	      <td class="fs-11" width="67%" align="left" style="padding:5px;">
+	        <p>1.Meeting Title : <span style="font-weight: bold;"> <%=committeescheduleeditdata[7]!=null?committeescheduleeditdata[7].toString().toUpperCase():" - "%>  (<%=committeescheduleeditdata[8]!=null?committeescheduleeditdata[8].toString().toUpperCase():" - " %>)</span> </p>
 	        <p>2.Venue&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : <%=committeescheduleeditdata[12]!=null?committeescheduleeditdata[12].toString(): " - " %> </p>
 	        <p>3.Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=committeescheduleeditdata[2]!=null?sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())): " - " %> </p>
 	        <p>4.Time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=committeescheduleeditdata[3]!=null?committeescheduleeditdata[3].toString(): " - "%> </p>
@@ -137,7 +149,7 @@
 	    </tr>
 	  </table>
 	  <div>
-	  	<p style="text-decoration: underline; font-weight: bold;">Ref: Committee formation Letter No:&nbsp;&nbsp; <%=committeescheduleeditdata[11]!=null?committeescheduleeditdata[11].toString(): " - " %>&nbsp;&nbsp; Dated: <%=committeescheduleeditdata[2]!=null?sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())): " - " %> </p>
+	  	<p class="fs-12" style="text-decoration: underline; font-weight: bold;">Ref: Committee formation Letter No:&nbsp;&nbsp; <%=committeescheduleeditdata[27]!=null?committeescheduleeditdata[27].toString(): " - " %>&nbsp;&nbsp; Dated: <%=committeescheduleeditdata[2]!=null?sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())): " - " %> </p>
 	  </div>
 	  
 	  <!-------------------------------------------------Introduction And Opening Remarks ----------------------------------->
@@ -159,29 +171,31 @@
 		%>
 		
 	   <!-- <h4 style="margin-bottom:10; padding:0;">&nbsp;&nbsp;&nbsp;&nbsp; I. &nbsp;&nbsp;	 Introduction & Opening Remarks: </h4> --> 
-	   <h4 style="margin-bottom:10; padding:0;">&nbsp;&nbsp;&nbsp;&nbsp; I. &nbsp;&nbsp;	 <%=title %>: </h4> 
+	   <h4 class="fs-12" style="margin-bottom:10; padding:0;">&nbsp;&nbsp;&nbsp;&nbsp; I. &nbsp;&nbsp;	 <%=title %>: </h4> 
 		  <%
+		  	List<Object[]> introandopeningremarks = speclists.stream().filter(obj -> obj[3]!=null && (obj[3].toString().equalsIgnoreCase("1") || obj[3].toString().equalsIgnoreCase("2") )).toList();
 				for (Object[] committeemin : committeeminutes) {
 				if (committeemin[0].toString().equals("1") || committeemin[0].toString().equals("2")) {
 			%>
 			 
-	  		<span style="font-weight: bold; margin:0; padding:0; padding-left: 40px; " > <%=committeemin[0]!=null?committeemin[0].toString(): " - "%>. &nbsp;&nbsp; <%=committeemin[1]!=null?committeemin[1].toString(): " - "%> </span>
+	  		
 	  		<% int count = 0;
 
-				for (Object[] speclist : speclists)
-				{
+				for (Object[] speclist : introandopeningremarks)
+				{ 
 					if (speclist[3].toString().equals(committeemin[0].toString()) && speclist[1]!=null && !speclist[1].toString().trim().isEmpty()) 
 					{
 						count++;
 				%>	
-				 <div style="padding-left: 70px"><%=speclist[1]!=null?speclist[1].toString(): " - "%></div> 
+				<span class="fs-12" style="font-weight: bold; margin:0; padding:0; padding-left: 40px; " > <%=committeemin[0]!=null?committeemin[0].toString(): " - "%>. &nbsp;&nbsp; <%=committeemin[1]!=null?committeemin[1].toString(): " - "%> </span>
+				 <div class="fs-11" style="padding-left: 70px"><%=speclist[1]!=null?speclist[1].toString(): " - "%></div> 
 	  		<%	break;		
 							}
 						}
 						if (count == 0) 
 						{%>
-						<p style="padding-left: 70px;">NIL<p>
-					
+						<br>
+					 
 	  		<%}}} %>
 	  </div>
 	  
@@ -217,12 +231,12 @@
 		%>
 	  <div>
 	  	<table style="border:1px solid black; border-collapse: collapse; width: 100%" >
-	  		<thead>
+	  		<thead class="fs-12">
 	  			<tr>
 	  				<th colspan="2" style="border-bottom: 1px solid black; padding:5px; text-align: left;">&nbsp;&nbsp;&nbsp; II. &nbsp;&nbsp;Participants List (Committee Members and Invitees):</th>
 	  			</tr>
 	  		</thead>
-	  		<tbody>	  		
+	  		<tbody class="fs-11">	  		
 	  		 <%if(memPresent > 0){ %>
 			 <% 
 			 	for(int i=0;i<invitedlist.size();i++)
@@ -305,17 +319,19 @@
 	  <div align="left">
 	  	<h4>&nbsp;&nbsp;&nbsp;&nbsp; III. &nbsp;&nbsp; Deliberations and Action Points </h4>
 	  </div>
-	  <div>
+	  <div> 
+	  	<p class="fs-12">Item Code/Type : A: Action, C: Comment, D: Decision, R: Recommendation</p>
 	  	<table style="border:1px solid black; border-collapse: collapse; width: 100%" >
-	  		<thead>
+	  		<thead class="fs-12"> 
 	  			<tr>
-	  				<th width="10%" style="border: 1px solid black; padding:5px;">S.No</th>
-	  				<th width="42%" style="border: 1px solid black; padding:5px; text-align: left;">Decisions/Action Points</th>
-	  				<th width="33%" style="border: 1px solid black; padding:5px; text-align: left;">Action By</th>
-	  				<th width="15%" style="border: 1px solid black; padding:5px; text-align: left;">PDC</th>
+	  				<th width="5%" style="border: 1px solid black; padding:5px;">S.No</th>
+	  				<th width="1%" style="border: 1px solid black; padding:5px;">Type</th>
+	  				<th width="59%" style="border: 1px solid black; padding:5px; text-align: left;">Decisions/Action Points</th>
+	  				<th width="23%" style="border: 1px solid black; padding:5px; text-align: left;">Action By</th>
+	  				<th width="12%" style="border: 1px solid black; padding:5px; text-align: left;">PDC</th>
 	  			</tr>
 	  		</thead>
-	  		<tbody>
+	  		<tbody class="fs-11">
 	  		<% int count=0,index=0, indexcount=1;
 				String agenda="";
 				
@@ -328,40 +344,45 @@
 						    int i=1;
 						    for (Object[] obj : values) {
 						    	
-						        if(((obj[3] != null && Integer.parseInt(obj[3].toString()) == 3) || ( obj[3] != null && Integer.parseInt(obj[3].toString()) == 5 )) && (obj[7].toString().equalsIgnoreCase("A") || obj[7].toString().equalsIgnoreCase("D"))){
+						        if(((obj[3] != null && Integer.parseInt(obj[3].toString()) == 3) || ( obj[3] != null && Integer.parseInt(obj[3].toString()) == 5 )) && (obj[7].toString().equalsIgnoreCase("A") || obj[7].toString().equalsIgnoreCase("C") || obj[7].toString().equalsIgnoreCase("D"))){
 						            
 						            if(obj[10] != null && !obj[10].toString().equalsIgnoreCase(agenda)) {
 						                indexcount = 1;
 						                count++;
-						                if(obj[3] != null && Integer.parseInt(obj[3].toString()) == 3 && count==1){
+						                /* if(obj[3] != null && Integer.parseInt(obj[3].toString()) == 3 && count==1){ */
 						                	%>
-						<tr> 		
+						<%-- <tr> 		
 						    <td style="border: 1px solid black; padding:5px; font-weight:bold; text-align: center;" colspan="4">
 						        AGENDA ACTIONS
 						    </td>
 						</tr>
 						<%}else if(obj[3] != null && Integer.parseInt(obj[3].toString()) == 5){%>
 						<tr>  		
-						    <td style="border: 1px solid black; padding:5px; font-weight:bold; text-align: center;" colspan="4">
-						        OTHER OUTCOMES ACTIONS
+						    <td style="border: 1px solid black; padding:5px; font-weight:bold;" colspan="4">
+						        Other Outcomes/Action points
 						    </td>
 						</tr>	
-	               		<%}	%>
+	               		<%}	%> --%>
 						<tr>
-						    <td style="border: 1px solid black; font-weight:bold; padding:5px;"><%= ++index %></td>	  			
-						    <td style="border: 1px solid black; padding:5px; font-weight:bold; text-align: left;" colspan="3">
-						        <%= obj[10] != null ? obj[10].toString() : "-" %>
+						    <td class="fs-12" style="border: 1px solid black; font-weight:bold; padding:5px;"><%= ++index %></td>	  			
+						    <td class="fs-12" style="border: 1px solid black; padding:5px; font-weight:bold; text-align: left;" colspan="4">
+						       <%if(Integer.parseInt(obj[3].toString())==3) {
+						    	   String project = obj[10]!=null?obj[10].toString().substring(0,obj[10].toString().indexOf("(")).trim():"";
+						    	   %> <%= obj[10] != null ?"Presented by/Discussed by : "+ project +" / "+(obj[16]!=null?obj[16].toString().trim():"-") : "-" %>
+						       <%} else if(Integer.parseInt(obj[3].toString())==5){ %>Other outcome/Action Points       <%} %>
 						    </td>
 						</tr>
 						<%
-			                agenda = obj[10].toString();
+			                agenda = obj[10].toString(); 
 			            }
 						%>
 						<tr>
 						    <%if(i==1){ %>
-							    <td rowspan="<%=values.size() %>"  style="border: 1px solid black; padding:5px; text-align: center;"><%= index + "." + indexcount++ %></td>	  			
+							    <td rowspan="<%=values.size() %>"  style="border: 1px solid black; padding:5px; text-align: center;"><%= index + "." + indexcount++ %></td>
+							    <td rowspan="<%=values.size() %>" style="border: 1px solid black; padding:5px; text-align: center;"><%= obj[7]!=null?obj[7].toString():" - " %></td>	  			
 							    <td rowspan="<%=values.size() %>"  style="border: 1px solid black; padding:5px; text-align: left;">
 							        <% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("A")) { %> <%=obj[1]!=null?obj[1].toString(): " - "%> <%} %>
+							        <% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("C")) { %> <%=obj[1]!=null?obj[1].toString(): " - "%> <%} %>
 									<% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("D")) { %> <%=obj[1]!=null?obj[1].toString(): " - "%> <%} %>
 							    </td>
 						    <%} %>	
@@ -375,13 +396,13 @@
 						}
 				 if(count==0){%>
 					<tr>
-						<td class="std" style="text-align :center;border:1px solid black;"  colspan="4">No Minutes details Added</td>
+						<td class="std" style="text-align :center;border:1px solid black;padding:7px;"  colspan="5">No Minutes details Added</td>
 					</tr>
 				<%}}
 				else {
 				%>
 					<tr>
-						<td class="std" style="text-align :center;border:1px solid black;"  colspan="4">No Minutes details Added</td>
+						<td class="std" style="text-align :center;border:1px solid black;padding:7px;"  colspan="5">No Minutes details Added</td>
 					</tr>
 				<%}%>
 	  		</tbody>
@@ -390,7 +411,7 @@
 	  
 	   <!----------------------------------------------------------------- Conclusions & Recommendations ------------------------------------------->
 	  
-	  <div align="left">
+	  <%-- <div align="left">
 	  	<%
 			 if(ccmFlag==null) {
 			 for (Object[] committeemin : committeeminutes) { 
@@ -404,19 +425,23 @@
 									%>
 			<div style="padding-left: 40px;"> <%if(speclist[1]!=null && !speclist[1].toString().trim().equalsIgnoreCase("")){%> <%=speclist[1]!=null?speclist[1].toString(): " - "%>  <%}else{ %> - <%} %></div>
 				<%}} } } }} %>
-	  </div>
+	  </div> --%>
 	  
 	  <!------------------------------------------------------------------ Final -------------------------------------------------------->
-	  <div style="width: 650px;margin-left: 15px; ">
-			<div align="left" >
+	  <div style="width: 650px;margin-left: 15px; margin-top:35px; ">
+			<div align="left" class="fs-11" >
 				These minutes are issued with the approval of the Chairperson.
 			</div>
-			<div align="left" style="padding-right: 0rem;padding-bottom: 0rem; margin-right: 0px">
+			<div align="left" style="padding-right: 0rem;padding-bottom: 0rem; margin-right: 0px" class="fs-12">
 				<!-- <br>Date :&emsp;&emsp;&emsp;&emsp;&emsp;  <br>Time :&emsp;&emsp;&emsp;&emsp;&emsp; -->
 				<%if(membersec!=null){ %>
 					<div align="right" style="padding-right: 0rem;padding-bottom: 2rem;">
 						<br><br><%if(membersec[6]!=null){%><%= membersec[6].toString().substring(membersec[6].toString().indexOf(".")+1) %><%} %>
 						<br>(Member Secretary)
+					</div>
+					<div align="left" >
+						<b>To</b>
+						<p>All Participants</p>
 					</div>
 				<%} %>
 			</div>

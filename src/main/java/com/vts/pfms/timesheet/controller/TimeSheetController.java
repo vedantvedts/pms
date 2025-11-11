@@ -35,6 +35,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,6 +51,7 @@ import com.vts.pfms.FormatConverter;
 import com.vts.pfms.admin.service.AdminService;
 import com.vts.pfms.committee.service.CommitteeService;
 import com.vts.pfms.header.service.HeaderService;
+import com.vts.pfms.master.model.Employee;
 import com.vts.pfms.ms.dao.EmployeeRepo;
 import com.vts.pfms.project.service.ProjectService;
 import com.vts.pfms.timesheet.dto.TimeSheetDTO;
@@ -1837,4 +1839,432 @@ public class TimeSheetController {
 			e.printStackTrace();
 		}
 	}
+	
+//	Naveen R 25/10/2025 All Employee Replort Module Start
+	
+	@RequestMapping(value = "TimeSheetAllEmployeeReport.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public String getAllEmpReportPage(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) {
+		String UserId = (String)ses.getAttribute("Username");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date()+" Inside TimeSheetAllEmployeeReport.htm "+UserId);
+		try {
+
+			String[] empIds = req.getParameterValues("allEmpIds");
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			LocalDate now = LocalDate.now();
+			if(fromDate==null || toDate==null) {
+				fromDate = now.withDayOfMonth(1).toString();
+				toDate = now.toString();
+			}else {
+				fromDate = fc.rdfTosdf(fromDate);
+				toDate = fc.rdfTosdf(toDate);
+			}
+			Map<String, List<Object[]>> allEmpReportList = new HashMap<String, List<Object[]>>();
+			List<Long> empIdno = new ArrayList<Long>();
+			if(empIds!=null)
+				for (String empIdP : empIds) {
+					empIdno.add(Long.parseLong(empIdP));
+					allEmpReportList.put(empIdP,service.getEmployeeNewTimeSheetList(empIdP, fromDate, toDate));
+				}
+			
+			
+			req.setAttribute("empIds", empIds);
+			req.setAttribute("fromDate", fromDate);
+			req.setAttribute("toDate", toDate); 
+			req.setAttribute("roleWiseEmployeeList", service.getRoleWiseEmployeeList(labcode, LoginType, EmpId));
+			req.setAttribute("allEmpReportList", allEmpReportList);
+			req.setAttribute("allEmployeeList", employeerepo.findAll());			
+			req.setAttribute("viewFlag", req.getParameter("viewFlag"));
+			req.setAttribute("empIdno", empIdno);
+			
+			return "timesheet/TimeSheetAllEmployeeReport";
+		}catch (Exception e) {
+			logger.error(new Date()+ "Inside TimeSheetAllEmployeeReport.htm "+UserId, e);
+			e.printStackTrace();
+			return "static/Error";
+		}
+	}
+	
+	@RequestMapping(value = "AllEmployeesReportPdfGeneration.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public void generateAllEmpReportPdf(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date()+" Inside AllEmployeesReportPdfGeneration.htm "+UserId);
+		try {
+
+			String[] empIds = req.getParameterValues("allEmpIds");
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			LocalDate now = LocalDate.now();
+			if(fromDate==null || toDate==null) {
+				fromDate = now.withDayOfMonth(1).toString();
+				toDate = now.toString();
+			}else {
+				fromDate = fc.rdfTosdf(fromDate);
+				toDate = fc.rdfTosdf(toDate);
+			}
+			Map<String, List<Object[]>> allEmpReportList = new HashMap<String, List<Object[]>>();
+			List<Long> empIdno = new ArrayList<Long>();
+			if(empIds!=null)
+				for (String empIdP : empIds) {
+					empIdno.add(Long.parseLong(empIdP));
+					allEmpReportList.put(empIdP,service.getEmployeeNewTimeSheetList(empIdP, fromDate, toDate));
+				}
+			req.setAttribute("empIds", empIds);
+			req.setAttribute("fromDate", fromDate);
+			req.setAttribute("toDate", toDate); 
+			req.setAttribute("roleWiseEmployeeList", service.getRoleWiseEmployeeList(labcode, LoginType, EmpId));
+			req.setAttribute("allEmpReportList", allEmpReportList);
+			req.setAttribute("allEmployeeList", employeerepo.findAll());	
+			req.setAttribute("empIdno", empIdno);
+			
+			String path=req.getServletContext().getRealPath("/view/temp");
+			String filename = "All Employee Report";
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/timesheet/TimeSheetAllEmpReportPdfDownload.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"));
+
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+
+			PdfDocument pdfDocument = new PdfDocument(pdf1);
+
+			pdfDocument.close();
+			pdf1.close();	       
+
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+
+			File f = new File(path + File.separator + filename + ".pdf");
+			try (OutputStream out = res.getOutputStream();
+			     FileInputStream in = new FileInputStream(f)) {
+
+			    byte[] buffer = new byte[4096];
+			    int length;
+			    while ((length = in.read(buffer)) > 0) {
+			        out.write(buffer, 0, length);
+			    }
+			    out.flush(); 
+			}
+
+			Files.deleteIfExists(Paths.get(path + File.separator + filename + ".pdf"));
+
+			
+			
+		}catch (Exception e) {
+			logger.error(new Date()+ "Inside AllEmployeesReportPdfGeneration.htm "+UserId, e);
+			e.printStackTrace();
+		}
+	}
+	@RequestMapping(value="AllEmployeeReportViewExcel.htm", method= {RequestMethod.GET, RequestMethod.POST})
+	public void allEmpReportExceldownload(HttpServletRequest req, HttpSession ses,HttpServletResponse res) throws Exception {
+		String UserId = (String)ses.getAttribute("Username");
+		String EmpId = ((Long)ses.getAttribute("EmpId")).toString();
+		String LoginType = (String)ses.getAttribute("LoginType");
+		String labcode = (String)ses.getAttribute("labcode");
+		logger.info(new Date() + " Inside AllEmployeeReportViewExcel.htm "+UserId);
+		try {
+			String viewFlag = req.getParameter("viewFlag");
+			
+			String fromDate = req.getParameter("fromDate");
+			String toDate = req.getParameter("toDate");
+			String[] empIds = req.getParameterValues("allEmpIds");
+			LocalDate now = LocalDate.now();
+			
+			if(fromDate==null || toDate==null) {
+				fromDate = now.withDayOfMonth(1).toString();
+				toDate = now.toString();
+			}else {
+				fromDate = fc.rdfTosdf(fromDate);
+				toDate = fc.rdfTosdf(toDate);
+			}
+			List<Object[]> employeeList = service.getRoleWiseEmployeeList(labcode, LoginType, EmpId);
+			Map<String, List<Object[]>> allEmpReportList = new HashMap<String, List<Object[]>>();
+			List<Long> empIdno = new ArrayList<Long>();
+			if(empIds!=null)
+				for (String empIdP : empIds) {
+					empIdno.add(Long.parseLong(empIdP));
+					allEmpReportList.put(empIdP,service.getEmployeeNewTimeSheetList(empIdP, fromDate, toDate));
+				}
+			
+			int rowNo=0;
+			// Creating a worksheet
+			Workbook workbook = new XSSFWorkbook();
+
+			Sheet sheet = workbook.createSheet("All_Employee_Report");
+			sheet.setColumnWidth(0, 2000);
+			sheet.setColumnWidth(1, 5000);
+			sheet.setColumnWidth(2, 7000);
+			sheet.setColumnWidth(3, 6000);
+			sheet.setColumnWidth(4, 6000);
+			sheet.setColumnWidth(5, 8000);
+			sheet.setColumnWidth(6, 5000);
+			sheet.setColumnWidth(7, 7000);
+			sheet.setColumnWidth(8, 6000);
+
+			XSSFFont font = ((XSSFWorkbook) workbook).createFont();
+			font.setFontName("Times New Roman");
+			font.setFontHeightInPoints((short) 14);
+			font.setBold(true);
+			
+			XSSFFont font2 = ((XSSFWorkbook) workbook).createFont();
+			font2.setFontName("Times New Roman");
+			font2.setFontHeightInPoints((short) 11);
+			font2.setBold(true);
+			
+			// style for file header
+			CellStyle file_header_Style = workbook.createCellStyle();
+			file_header_Style.setLocked(true);
+			file_header_Style.setFont(font);
+			file_header_Style.setWrapText(true);
+			file_header_Style.setAlignment(HorizontalAlignment.CENTER);
+			file_header_Style.setVerticalAlignment(VerticalAlignment.CENTER);
+			
+			// style for table header
+			CellStyle t_header_style = workbook.createCellStyle();
+			t_header_style.setLocked(true);
+			t_header_style.setFont(font2);
+			t_header_style.setWrapText(true);
+			t_header_style.setAlignment(HorizontalAlignment.CENTER);
+			t_header_style.setVerticalAlignment(VerticalAlignment.CENTER);
+			
+			// style for table cells
+			CellStyle t_body_style = workbook.createCellStyle();
+			t_body_style.setWrapText(true);
+			t_body_style.setAlignment(HorizontalAlignment.LEFT);
+			t_body_style.setVerticalAlignment(VerticalAlignment.TOP);
+
+			// style for table cells with center align
+			CellStyle t_body_style2 = workbook.createCellStyle();
+			t_body_style2.setWrapText(true);
+			t_body_style2.setAlignment(HorizontalAlignment.CENTER);
+			t_body_style2.setVerticalAlignment(VerticalAlignment.TOP);
+			
+			// style for table cells with right align
+			CellStyle t_body_style3 = workbook.createCellStyle();
+			t_body_style3.setWrapText(true);
+			t_body_style3.setAlignment(HorizontalAlignment.RIGHT);
+			t_body_style3.setVerticalAlignment(VerticalAlignment.TOP);
+			
+			CellStyle t_body_style4 = workbook.createCellStyle();
+			t_body_style4.setWrapText(true);
+			t_body_style4.setAlignment(HorizontalAlignment.CENTER);
+			t_body_style4.setVerticalAlignment(VerticalAlignment.CENTER);
+			
+			// File header Row
+			Row file_header_row = sheet.createRow(rowNo++);
+			sheet.addMergedRegion(new CellRangeAddress(0, 0,0, 8));   // Merging Header Cells 
+			Cell cell= file_header_row.createCell(0);
+			cell.setCellValue("All Employee Report (From : "+fc.SqlToRegularDate(fromDate)+" To : "+fc.SqlToRegularDate(toDate)+")");
+			file_header_row.setHeightInPoints((3*sheet.getDefaultRowHeightInPoints()));
+			cell.setCellStyle(file_header_Style);
+			
+			CellStyle file_header_Style2 = workbook.createCellStyle();
+			file_header_Style2.setLocked(true);
+			file_header_Style2.setFont(font2);
+			file_header_Style2.setWrapText(true);
+			file_header_Style2.setAlignment(HorizontalAlignment.RIGHT);
+			file_header_Style2.setVerticalAlignment(VerticalAlignment.CENTER);	
+
+			CellStyle file_header_Style3 = workbook.createCellStyle();
+			file_header_Style3.setLocked(true);
+			file_header_Style3.setFont(font2);
+			file_header_Style3.setWrapText(true);
+			file_header_Style3.setAlignment(HorizontalAlignment.LEFT);
+			file_header_Style3.setVerticalAlignment(VerticalAlignment.CENTER);	
+
+			
+			// Table in file header Row
+			Row t_header_row = sheet.createRow(rowNo++);
+			cell= t_header_row.createCell(0); 
+			cell.setCellValue("SN"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(1); 
+			cell.setCellValue("Date"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(2); 
+			cell.setCellValue("Activity No"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(3); 
+			cell.setCellValue("Activity Type"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(4); 
+			cell.setCellValue("Project"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(5); 
+			cell.setCellValue("Assigner"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(6); 
+			cell.setCellValue("Keywords"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(7); 
+			cell.setCellValue("Work Done"); 
+			cell.setCellStyle(t_header_style);
+			
+			cell= t_header_row.createCell(8); 
+			cell.setCellValue("Work Done on"); 
+			cell.setCellStyle(t_header_style);
+			
+
+			if (allEmpReportList != null && !allEmpReportList.isEmpty()) {
+			    int slno = 0;
+
+			    for (Map.Entry<String, List<Object[]>> map : allEmpReportList.entrySet()) {
+
+			        String empIdKey = map.getKey();
+			        List<Object[]> values = map.getValue();
+
+			        Object[] emp = employeeList.stream()
+                            .filter(e -> empIdKey.equalsIgnoreCase(String.valueOf(e[0])))
+                            .findFirst().orElse(null);
+			        
+			        // === EMPLOYEE HEADER ROW ===
+			        Row empHeaderRow = sheet.createRow(rowNo++);
+			        sheet.addMergedRegion(new CellRangeAddress(empHeaderRow.getRowNum(), empHeaderRow.getRowNum(), 0, 8));
+
+			        Cell empCell = empHeaderRow.createCell(0);
+			        
+			        String empName = emp != null ?((emp[1] != null ? emp[1] : "") + " " +  (emp[5] != null ? emp[5] : "") + ", " +  (emp[6] != null ? emp[6] : "")) : "-";
+			        
+			        empCell.setCellValue("Employee : " + empName );
+			        empCell.setCellStyle(t_header_style);
+			        empHeaderRow.setHeightInPoints((2.5f * sheet.getDefaultRowHeightInPoints()));
+
+			     // === If no data for this employee ===
+			        if (values == null || values.isEmpty()) {
+			            Row noDataRow = sheet.createRow(rowNo++);
+			            sheet.addMergedRegion(new CellRangeAddress(noDataRow.getRowNum(), noDataRow.getRowNum(), 0, 8));
+			            
+			            Cell noDataCell = noDataRow.createCell(0);
+			            noDataCell.setCellValue("No Data Available");
+			            noDataCell.setCellStyle(t_body_style2); // you can use your preferred style here
+			            continue; // skip rest of the logic for this employee
+			        }
+
+			        // === Group by Date ===
+			        Map<String, List<Object[]>> dateMap = new LinkedHashMap<>();
+
+			        for (Object[] obj : values) {
+			            String dateStr = obj[2] != null ? fc.sdfTordf(obj[2].toString()) : "-";
+			            dateMap.computeIfAbsent(dateStr, k -> new ArrayList<>()).add(obj);
+			        }
+
+			        // === For each date within this employee ===
+			        for (Map.Entry<String, List<Object[]>> dateEntry : dateMap.entrySet()) {
+			            String dateStr = dateEntry.getKey();
+			            List<Object[]> dateValues = dateEntry.getValue();
+
+			            int dateStartRow = rowNo;
+
+			            for (Object[] obj : dateValues) {
+			                Row t_body_row = sheet.createRow(rowNo++);
+
+			                cell = t_body_row.createCell(2);
+			                cell.setCellValue(obj[16] != null ? obj[16].toString() : "-");
+			                cell.setCellStyle(t_body_style2);
+
+			                cell = t_body_row.createCell(3);
+			                cell.setCellValue(obj[5] != null ? obj[5].toString() : "-");
+			                cell.setCellStyle(t_body_style);
+
+			                cell = t_body_row.createCell(4);
+			                cell.setCellValue(obj[8] != null ? obj[8].toString() : "-");
+			                cell.setCellStyle(t_body_style2);
+
+			                cell = t_body_row.createCell(5);
+			                cell.setCellValue(obj[10]!=null ? obj[10] + ", " + (obj[11] != null ? obj[11] : "-") : "Not Available");
+			                cell.setCellStyle(t_body_style);
+
+			                cell = t_body_row.createCell(6);
+			                cell.setCellValue(obj[13] != null ? obj[13].toString() : "-");
+			                cell.setCellStyle(t_body_style2);
+
+			                cell = t_body_row.createCell(7);
+			                cell.setCellValue(obj[14] != null ? obj[14].toString() : "-");
+			                cell.setCellStyle(t_body_style);
+
+			                cell = t_body_row.createCell(8);
+			                cell.setCellValue(obj[15] != null ?
+			                    (obj[15].toString().equalsIgnoreCase("A") ? "AN" :
+			                     (obj[15].toString().equalsIgnoreCase("F") ? "FN" : "Full day")) : "-");
+			                cell.setCellStyle(t_body_style2);
+			            }
+
+			            int dateEndRow = rowNo - 1;
+
+			            // merge SN & Date for this specific date group
+			            if (dateEndRow > dateStartRow) {
+			                sheet.addMergedRegion(new CellRangeAddress(dateStartRow, dateEndRow, 0, 0));
+			                sheet.addMergedRegion(new CellRangeAddress(dateStartRow, dateEndRow, 1, 1));
+			            }
+
+			            // write SN and Date once (top row of date group)
+			            Row topRow = sheet.getRow(dateStartRow);
+
+			            // SN
+			            cell = topRow.createCell(0);
+			            cell.setCellValue(++slno);
+			            cell.setCellStyle(t_body_style4);
+
+			            // Date
+			            cell = topRow.createCell(1);
+			            cell.setCellValue(dateStr);
+			            cell.setCellStyle(t_body_style4);
+			        }
+
+			        // Blank row after each employee
+			        rowNo++;
+			    }
+			}
+ 
+			
+			
+			String path = req.getServletContext().getRealPath("/view/temp");
+			String fileLocation = path.substring(0, path.length() - 1) + "temp.xlsx";
+
+			FileOutputStream outputStream = new FileOutputStream(fileLocation);
+			workbook.write(outputStream);
+			workbook.close();
+			
+			
+			String filename="All_Employee_Report";
+			
+     
+	        res.setContentType("Application/octet-stream");
+	        res.setHeader("Content-disposition","attachment;filename="+filename+".xlsx");
+	        File f=new File(fileLocation);
+	         
+	        
+	        FileInputStream fis = new FileInputStream(f);
+	        DataOutputStream os = new DataOutputStream(res.getOutputStream());
+	        res.setHeader("Content-Length",String.valueOf(f.length()));
+	        byte[] buffer = new byte[1024];
+	        int len = 0;
+	        while ((len = fis.read(buffer)) >= 0) {
+	            os.write(buffer, 0, len);
+	        } 
+	        os.close();
+	        fis.close();
+			
+			
+		}catch (Exception e) {
+			logger.error(new Date() +" Inside AllEmployeeReportViewExcel.htm "+UserId, e);
+			e.printStackTrace();
+		}
+	}
+	
+//	Naveen R 25/10/2025 All EMployee Replort Module END
 }
