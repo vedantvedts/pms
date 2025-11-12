@@ -528,7 +528,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			}
 			Date ScheduledDate= (new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
 			if(ProjectName.equalsIgnoreCase("PRGM")) {
-				committeeschedule.setMeetingId(LabName.trim()+"/7826/"+CommitteeName.trim()+"/MTG/"+sdf5.format(ScheduledDate).toString());
+				committeeschedule.setMeetingId(LabName.trim()+"/7826/"+CommitteeName.trim()+"/Mtg/"+sdf5.format(ScheduledDate).toString());
 			}
 			else committeeschedule.setMeetingId(LabName.trim()+"/"+ProjectName.trim()+"/"+CommitteeName.trim()+"/"+sdf2.format(ScheduledDate).toString().toUpperCase().replace("-", "")+"/"+(SerialNo+1));			
 			

@@ -1287,6 +1287,7 @@ public class CommitteeDaoImpl  implements CommitteeDao
 		query.setParameter("committeeid", committeeid); 
 		query.setParameter("divisionid", divisionid);
 		query.setParameter("initiationid", initiationid);
+		query.setParameter("projectstatus", projectstatus);
 		List<Object[]> CommitteeAutoScheduleList=(List<Object[]>)query.getResultList();
 		return CommitteeAutoScheduleList;
 	}
@@ -4122,7 +4123,7 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 			+ "(SELECT d.classification FROM pfms_security_classification d WHERE a.confidential=d.classificationid) AS 'classification',a.divisionid  ,"
 			+ "a.initiationid ,a.pmrcdecisions,a.kickoffotp ,(SELECT minutesattachmentid "
 			+ "FROM committee_minutes_attachment WHERE scheduleid=a.scheduleid) AS 'attachid', "
-			+ "b.periodicNon,a.MinutesFrozen,a.briefingpaperfrozen,a.labcode, a.CARSInitiationId, a.ProgrammeId ,d.ReferenceNo "
+			+ "b.periodicNon,a.MinutesFrozen,a.briefingpaperfrozen,a.labcode, a.CARSInitiationId, a.ProgrammeId ,d.ReferenceNo, d.FormationDate "
 			+ "FROM committee_schedule a,committee b ,committee_meeting_status c,committee_main d WHERE a.scheduleflag=c.MeetingStatus AND "
 			+ "a.scheduleid=:committeescheduleid AND a.committeeid=b.committeeid AND d.committeeId = b.committeeid AND d.ProgrammeId = a.ProgrammeId;";
 

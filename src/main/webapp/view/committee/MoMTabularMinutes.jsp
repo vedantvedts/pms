@@ -149,7 +149,7 @@
 	    </tr>
 	  </table>
 	  <div>
-	  	<p class="fs-12" style="text-decoration: underline; font-weight: bold;">Ref: Committee formation Letter No:&nbsp;&nbsp; <%=committeescheduleeditdata[27]!=null?committeescheduleeditdata[27].toString(): " - " %>&nbsp;&nbsp; Dated: <%=committeescheduleeditdata[2]!=null?sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())): " - " %> </p>
+	  	<p class="fs-12" style="text-decoration: underline; font-weight: bold;">Ref: Committee formation Letter No:&nbsp;&nbsp; <%=committeescheduleeditdata[27]!=null?committeescheduleeditdata[27].toString(): " - " %>&nbsp;&nbsp; Dated: <%=committeescheduleeditdata[28]!=null?sdf.format(sdf1.parse(committeescheduleeditdata[28].toString())): " - " %> </p>
 	  </div>
 	  
 	  <!-------------------------------------------------Introduction And Opening Remarks ----------------------------------->
