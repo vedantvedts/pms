@@ -188,7 +188,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                 <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700; height: 65px">
                 <%for(Object[] obj1 : AssigneeList){
                 	if(obj1[0].toString().equalsIgnoreCase(RfaPrint[0].toString())){%>
-                   <div style="padding-bottom:0px !important;font-weight: normal;">&nbsp;&nbsp;<%=obj1[1]!=null?obj1[1].toString():" - " %><%if(obj1[2]!=null  && obj1[2].toString().length()>0) {%>  ,<%=obj1[2].toString() %> <%} %>  <%if(RfaPrint[22].toString().equalsIgnoreCase("E")){ %>(<%=obj1[4]!=null?obj1[4].toString():" - "%>)<%} %> </div>
+                   <div style="padding-bottom:0px !important;font-weight: normal;">&nbsp;&nbsp;<%=obj1[1]!=null?obj1[1].toString():" - " %><%if(obj1[2]!=null  && obj1[2].toString().length()>0) {%>  ,<%=obj1[2].toString() %> <%} %>  <%if(RfaPrint[22].toString().equalsIgnoreCase("E") || RfaPrint[22].toString().equalsIgnoreCase("F")){ %>(<%=obj1[4]!=null?obj1[4].toString():" - "%>)<%} %> </div>
                 <%} }%>  
                 </td>        
               </tr> 

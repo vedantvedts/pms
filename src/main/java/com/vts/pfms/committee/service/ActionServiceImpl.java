@@ -1710,14 +1710,18 @@ public class ActionServiceImpl implements ActionService {
 		if(RfaCount<9) {
 			if(rfa.getTypeOfRfa().equalsIgnoreCase("I")) {
 		    RfaNo = LabCode + "/" + project + "/" + RfaTypeName + "/" + ("0"+(RfaCount+1));
-			}else {
-				RfaNo = LabCode + "/" + project + "/" +rfa.getVendorCode()+"/"   + RfaTypeName + "/" + ("0"+(RfaCount+1))+" (EXT)";
+			}else if(rfa.getTypeOfRfa().equalsIgnoreCase("E")){
+				RfaNo = LabCode + "/" + project + "/" +rfa.getVendorCode()+"/"   + RfaTypeName + "/" + ("0"+(RfaCount+1))+" (EXT TO)";
+			}else if(rfa.getTypeOfRfa().equalsIgnoreCase("F")) {
+				RfaNo = LabCode + "/" + project + "/" +rfa.getVendorCode()+"/"   + RfaTypeName + "/" + ("0"+(RfaCount+1))+" (EXT FROM)";
 			}
 		}else {
 			if(rfa.getTypeOfRfa().equalsIgnoreCase("I")) {
 			RfaNo = LabCode + "/" + project + "/" + RfaTypeName + "/" + (RfaCount+1);
-			}else {
-				RfaNo = LabCode + "/" + project + "/"+rfa.getVendorCode()+  "/" + RfaTypeName + "/" + (RfaCount+1)+" (EXT)";
+			}else if(rfa.getTypeOfRfa().equalsIgnoreCase("E")){
+				RfaNo = LabCode + "/" + project + "/"+rfa.getVendorCode()+  "/" + RfaTypeName + "/" + (RfaCount+1)+" (EXT TO)";
+			}else if(rfa.getTypeOfRfa().equalsIgnoreCase("F")) {
+				RfaNo = LabCode + "/" + project + "/"+rfa.getVendorCode()+  "/" + RfaTypeName + "/" + (RfaCount+1)+" (EXT FROM)";
 			}
 		}
 
@@ -2289,7 +2293,7 @@ public long RfaActionForward(String rfaStatus, String projectid, String UserId, 
 		trans.add(tr);
 	  }
 	}else {
-		if(rfaStatus.equalsIgnoreCase("AV")&& TypeOfRfa!=null && TypeOfRfa.equalsIgnoreCase("E")) {
+		if(rfaStatus.equalsIgnoreCase("AV")&& TypeOfRfa!=null && (TypeOfRfa.equalsIgnoreCase("E") || TypeOfRfa.equalsIgnoreCase("F"))) {
 			rfaEmpId=obj[7].toString();
 			Url="RfaAction.htm";
 			System.out.println("rfaEmpId--"+rfaEmpId);

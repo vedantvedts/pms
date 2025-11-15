@@ -93,13 +93,14 @@ String DesgId = ((String)session.getAttribute("DesgId"));
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
 			                            <select class="form-control selectdee " id="type"  name="type" required="required" onchange="showVendor()">
 										   <option value="I">Internal</option>
-										   <option value="E">External</option>
+										   <option value="E">To External</option>
+										   <option value="F">From External</option>
 			  							</select>
 			  							
 		                        </div>
 		                    </div>
 		                    
-		                      <div class="col-md-5" id="vendorDiv" style="">
+		                      <div class="col-md-5" id="vendorDiv">
 		                     <div class="form-group">
 		                            <label class="control-label"> Vendor</label>
 		                            <span class="mandatory" style="color: #cd0a0a;">*</span>
@@ -509,7 +510,7 @@ var labcode = '<%=labcode+"/"+labcode%>'
 function showVendor(){
 	
 	var seltype = $('#type').val();
-	if(seltype==='E'){
+	if(seltype==='E' || seltype==='F'){
 	$('#vendorDiv').css('display', 'block');
 	$("#vendor").attr("required", true);
  	$('#vendor').val('')

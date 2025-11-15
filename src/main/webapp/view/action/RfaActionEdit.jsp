@@ -135,7 +135,7 @@ String projectType=(String)request.getAttribute("projectType");
 		                    </div> 
 		                   </div>
 		                    <div class="row">
-		                    <%if(RfaAction[15].toString().equalsIgnoreCase("E")){ %>
+		                    <%if(RfaAction[15].toString().equalsIgnoreCase("E") || RfaAction[15].toString().equalsIgnoreCase("F")){ %>
 		                        <div class="col-md-4" id="vendorDiv" style="">
 		                     <div class="form-group">
 		                            <label class="control-label"> Vendor</label>
@@ -434,7 +434,7 @@ String projectType=(String)request.getAttribute("projectType");
 		}
 	  $( document ).ready(function() {
 		  
-		  <%if(RfaAction[15].toString().equalsIgnoreCase("E")){ %>
+		  <%if(RfaAction[15].toString().equalsIgnoreCase("E") || RfaAction[15].toString().equalsIgnoreCase("F")){ %>
 		  chooseEmp()
 		  <%}%>
 		  var assignEmp = <%=request.getAttribute("AssignEmp") %>;

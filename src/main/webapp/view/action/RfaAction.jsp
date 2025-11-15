@@ -345,7 +345,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 											   </button>
 											   <input type="hidden" name="rfaoptionby" value="ARC" >
 											<%} %>
-											 <%if((obj[14].toString().equalsIgnoreCase("AV") && obj[18].toString().equalsIgnoreCase("E")) ){ %>
+											 <%if((obj[14].toString().equalsIgnoreCase("AV") && (obj[18].toString().equalsIgnoreCase("E") || obj[18].toString().equalsIgnoreCase("F"))) ){ %>
 											 	<button type="button" class="editable-click btn btn-sm btn-info"  style="" 
 												onclick="closeModal('<%=obj[0].toString() %>','<%=obj[3] %>','<%=obj[2].toString() %>','<%=obj[18] %>','<%=obj[13] %>','<%=obj[19] %>')"
 													data-toggle="tooltip" data-placement="top" id="rfaCancelBtn" title="" data-original-title="CLOSE RFA">
