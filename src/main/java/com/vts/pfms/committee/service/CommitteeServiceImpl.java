@@ -590,6 +590,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			scheduleagenda.setCreatedBy(AgendaDto.getCreatedBy());
 			scheduleagenda.setCreatedDate(sdf1.format(new Date()));
 			scheduleagenda.setIsActive(Integer.parseInt(AgendaDto.getIsActive()));
+			scheduleagenda.setGroupName(AgendaDto.getGroupName());
 //			if(AgendaDto.getDocId()!=null) {
 //				scheduleagenda.setDocId(Long.parseLong(AgendaDto.getDocId()));
 //			}else
@@ -654,6 +655,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		scheduleagenda.setPresentorLabCode(scheduleagendadto.getPresentorLabCode());
 		scheduleagenda.setPresenterId(Long.parseLong(scheduleagendadto.getPresenterId()));
 		scheduleagenda.setDuration(Integer.parseInt(scheduleagendadto.getDuration()));
+		scheduleagenda.setGroupName(scheduleagendadto.getGroupName());
 		
 //		if(scheduleagendadto.getDocId()!=null) {
 //			scheduleagenda.setDocId(Long.parseLong(scheduleagendadto.getDocId()));
@@ -4196,13 +4198,18 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	}
 
 	@Override
-	public List<Object[]> committeeScheduleMinutesforActionForMom(String committeescheduleid) {
-		return dao.committeeScheduleMinutesforActionForMom(committeescheduleid);
+	public List<Object[]> committeeScheduleMinutesforActionForMomADE(String committeescheduleid) {
+		return dao.committeeScheduleMinutesforActionForMomADE(committeescheduleid);
 	}
 
 	@Override
 	public Object[] CommitteeScheduleEditDataforMom(String committeescheduleid) {
 		return dao.CommitteeScheduleEditDataforMom(committeescheduleid);
+	}
+
+	@Override
+	public List<Object[]> PrgmAgendaList(String scheduleid) {
+		return dao.PrgmAgendaList(scheduleid);
 	}
 	
 }

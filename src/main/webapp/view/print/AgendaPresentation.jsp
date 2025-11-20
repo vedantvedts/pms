@@ -358,19 +358,24 @@
 								<%if(scheduletype.equalsIgnoreCase("P")) {%>	
 									<td>
 										<form action="#" method="post" id="myfrm_<%=count %>" target="_blank"
-											class="agp-21">
+											class="<%= (obj[5] != null && !obj[5].toString().equals("0") && !obj[5].toString().equals("-1")) ? "agp-21" : "agp-21 mr-5" %>">
 				
 											<% if(scheduledata[23].toString().equalsIgnoreCase("Y")){%>
 												<input type="submit" class="btn btn-sm back" 
 												formaction="MeetingBriefingPaper.htm" value="Briefing" formmethod="get" data-toggle="tooltip" 
 												data-placement="bottom" title="Briefing Paper">
 											<%}%>
-				
+											
+											<%if(obj[5]!=null && !obj[5].toString().equalsIgnoreCase("0") && !obj[5].toString().equalsIgnoreCase("-1")){ %>
 											<button type="submit" class="btn btn-sm agp-22"
 												formaction="PrgmBriefingPresentation.htm" formmethod="post" formtarget="_blank" data-toggle="tooltip"
 												data-placement="bottom" title="Presentation">
 												<img src="view/images/presentation.png" class="agp-23">
 											</button>
+											<%}
+											else if(obj[5]==null || (obj[5].toString().equalsIgnoreCase("0") || obj[5].toString().equalsIgnoreCase("-1"))){%>
+											-
+											<%} %>
 											<input type="hidden" name="scheduleid" value="<%=scheduleid%>">
 											<input type="hidden" name="committeeid" value="<%=committeeid%>">
 											<input type="hidden" name="projectid" value="<%=obj[5] %>">

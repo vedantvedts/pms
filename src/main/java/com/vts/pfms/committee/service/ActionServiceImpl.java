@@ -2896,4 +2896,9 @@ public int ActionAssignerEdit(ActionAssign assign) throws Exception {
 			return 0L;
 		}	
 	}
+
+	@Override
+	public List<Object[]> assigneeListForFromExternal() {
+		return dao.assigneeListForFromExternal();
+	}
 }

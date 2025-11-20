@@ -22,6 +22,7 @@ public class CommitteeScheduleAgendaDto {
 //	private byte[] AgendaAttachment;
 //	private String DocId;
 	private String[] DocLinkIds;
+	private String groupName;
 	
 	
 	

@@ -260,7 +260,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                  <td colspan="8" style="text-align: center;font-weight: 700; border: 1px solid black; width: 83px" name="labcode"><%=LabList[2]!=null?LabList[2].toString():" - " %> <br> <%=LabList[3]!=null?LabList[3].toString():" - " %> <br> <%=LabList[4]!=null?LabList[4].toString():" - " %> - <%=LabList[5]!=null?LabList[5].toString():" - "%> </td>
               </tr>
               <tr>
-                <td colspan="6" style="border: 1px solid black; text-align: left; font-weight: 700; height: 50px">&nbsp;&nbsp;RFA No : <span style="font-weight: normal;"><%=RfaPrint[3]!=null?RfaPrint[1].toString():" - " %> </span></td>
+                <td colspan="6" style="border: 1px solid black; text-align: left; font-weight: 700; height: 50px">&nbsp;&nbsp;RFA No : <span style="font-weight: normal;"><%=RfaPrint[3]!=null?RfaPrint[3].toString():" - " %> </span></td>
                 <td colspan="4"style="border: 1px solid black; text-align: left; font-weight: 700; height: 50px">&nbsp;&nbsp;RFA Date : <span style="font-weight: normal;"><%=RfaPrint[4]!=null ?new FormatConverter().SqlToRegularDate(  RfaPrint[4].toString()) :" - "%></span></td>
               </tr>
               <tr>

@@ -22,7 +22,7 @@
   <%
   SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
   SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd");
-  
+  List<Object[]> empLists = new ArrayList<>();
   Object[] scheduledata=(Object[])request.getAttribute("scheduledata");
   List<Object[]> prgmProjectList =  (List<Object[]>)request.getAttribute("prgmProjectList");
   List<Object[]> committeeAgendaList =  (List<Object[]>)request.getAttribute("committeeAgendaList");
@@ -84,12 +84,13 @@
 			    								<table class="table table-bordered table-hover  table-condensed mt-20px" id="mainTableEdit">
 													<thead>
 														<tr>
-															<th colspan="9" class="thHeaderStyle">Agenda Details</th>									
+															<th colspan="10" class="thHeaderStyle">Agenda Details</th>									
 														</tr>	
 														<tr>			
 															<th>Priority</th>		
 															<th>Agenda Item</th>
 															<th>Remarks</th>
+															<th>Group Name</th>
 															<th>Lab</th>	
 														 	<th>Presenter</th>
 														 	<th>Duration </th>
@@ -111,6 +112,9 @@
 																</td>
 																<td> 
 																	<input form="inlineeditform_<%=count%>" type="text" class="form-control" name="remarks" value="<%=obj[6].toString()%>"  maxlength="255" >
+																</td>
+																<td> 
+																	<input form="inlineeditform_<%=count%>" type="text" class="form-control" name="groupname" value="<%=obj[15]!=null?obj[15].toString():""%>"  maxlength="255" placeholder="Enter Group Name">
 																</td>
 																<td>
 												         		 	<select form="inlineeditform_<%=count%>" class="form-control items PresLabCode width-200px" name="PresLabCode" id="PresLabCode_<%=count %>" required="required" onchange="AgendaPresentors('<%=count %>')"  data-live-search="true" data-container="body">
@@ -198,21 +202,23 @@
 				List<String> agendaAddedProjectIds = committeeAgendaList!=null? committeeAgendaList.stream().map(e -> e[5].toString()).collect(Collectors.toList()): new ArrayList<>();
 				prgmProjectList = prgmProjectList.stream().filter(e -> !agendaAddedProjectIds.contains(e[0].toString())).collect(Collectors.toList());
 				
-				if(prgmProjectList!=null && prgmProjectList.size()>0) { %>
+				 %>
 					<div class="card-body">
 		      			<form action="CommitteeAgendaSubmit.htm" method="post">
-		        			<div >
+		        			<div>
 		          				<div class="float-right"><span class="fs-15px text-primary">Duration in Minutes</span></div>
+		          				<%if(prgmProjectList!=null && prgmProjectList.size()>0) { %>
 		          				<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover w-100 mt-30px" id="mainTable">
 									<thead>  
 										<tr>
 											<th width="20%">Agenda Item</th>
-											<th width="20%">Remarks</th>
+											<th width="10%">Remarks</th>
+											<th width="10%">Group Name</th>
 											<th width="10%">Lab</th>
 											<th width="20%">Presenter</th>
 											<th width="5%">Duration </th>
 											<th width="20%">Attach File </th> 
-											<th width="5%">Remove</th>
+											<th width="5%">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -220,7 +226,8 @@
 											
 											for(Object[] obj : prgmProjectList) {
 												
-												List<Object[]> empList = labEmpListMap.get(obj[7].toString()); %>
+												List<Object[]> empList = labEmpListMap.get(obj[7].toString());
+												empLists=empList; %>
 											<tr>
 												<td>
 													<input type="text" class="form-control" name="agendaitem" value="<%=obj[3] %> (<%=obj[1] %>)" maxlength="500" required="required" />
@@ -231,6 +238,9 @@
 												<td>
 													<input type="text" class="form-control" name="remarks" value="NIL" maxlength="255" required="required" />
 												</td>
+												<td>
+													<input type="text" class="form-control" name="groupname" value="" maxlength="255" placeholder="Enter Group Name" />
+												</td>	
 												<td>
 								         		 	<select class="form-control items PresLabCode width-200px" name="PresLabCode" id="PresLabCode_<%=count %>" required="required" onchange="AgendaPresentors('<%=count %>')"  data-live-search="true" data-container="body">
 														<option disabled="disabled"  selected value="">Lab Name</option>
@@ -260,13 +270,73 @@
 													</table>										
 												</td>
 												<td class="center">
+													<button type="button" class="btn btn-success btn-clone"><i class="fa fa-plus" ></i></button>
 													<button type="button" class="btn btn-danger btn-remove"> <i class="fa fa-minus"></i> </button>
 												</td>
 											</tr>
 										<% count++; } %>	
 									</tbody>	
 								</table>
-	
+								<%} %>
+								<table class="table  table-bordered table-hover table-striped table-condensed  info shadow-nohover w-100 mt-30px" id="subHeadTable">
+								<thead>
+									<tr>
+										<th width="20%">Agenda Item</th>
+										<th width="10%">Remarks</th>
+										<th width="10%">Group Name</th>
+										<th width="10%">Lab</th>
+										<th width="20%">Presenter</th>
+										<th width="5%">Duration </th>
+										<th width="20%">Attach File </th> 
+										<th class="text-center" width="5%"><button type="button" class="btn btn-success btn_clone_new"><i class="fa fa-plus" ></i></button></th>
+									</tr>
+								</thead>
+								<tbody>
+									
+											<tr class="tr_clone_DH">
+												<td>
+													<input type="text" class="form-control" name="agendaitem" value="" maxlength="500" required="required" placeholder="Enter Agenda Item" />
+													<input type="hidden" name="projectid" value="-1">
+												</td>
+												<td>
+													<input type="text" class="form-control" name="remarks" value="" maxlength="255" required="required" placeholder="Enter Remarks" />
+												</td>
+												<td>
+													<input type="text" class="form-control" name="groupname" value="" maxlength="255" placeholder="Enter Group Name" />
+												</td>	
+												<td>
+								         		 	<select class="form-control items PresLabCode width-200px" name="PresLabCode" id="PresLabCode_DH_0" required="required" onchange="AgendaPresentorsForDH('0')"  data-live-search="true" data-container="body">
+														<option disabled="disabled"  selected value="">Lab Name</option>
+													    <% for (Object[] lab : allLabList) {%>
+														    <option value="<%=lab[3]%>" ><%=lab[3]!=null?StringEscapeUtils.escapeHtml4(lab[3].toString()): " - "%></option>
+													    <%} %>
+													    <!-- <option value="@EXP">Expert</option> -->
+													</select>
+								         		</td>
+												<td>
+													<select class="form-control items presenterid presenterIdFontStyle" name="presenterid" id="presenterid_DH_0"  required="required" data-live-search="true" data-container="body" onchange="getEmployeeForDH(this)">
+										        		<option disabled="disabled" selected value="">Choose...</option>
+												        <% for(Object[] emp : empLists){ %>
+												        	<option value="<%=emp[0] %>" ><%=emp[1]!=null?StringEscapeUtils.escapeHtml4(emp[1].toString()): " - " %>(<%=emp[3]!=null?StringEscapeUtils.escapeHtml4(emp[3].toString()): " - " %>)</option>
+												        <%} %>
+													</select>
+												</td>
+												<td>
+													<input type="number" name="duration" class="form-control" min="1" value="" placeholder="Minutes" required/>
+												</td>
+												<td class="text-left width-15per">
+													<button type="button" class=" btn btn-sm btnfileattachment" name="add" onclick="openMainModal('0','0',' ','<%=projectid %>','0','add')" > <i class="btn btn-sm fa fa-plus text-success paddingStyle"></i></button> 
+													<br>
+													<table class="attachlist" id="attachlistdiv_0">
+														
+													</table>										
+												</td>
+												<td class="center">
+													<button type="button" class="btn btn-danger btn-remove-clone-new"> <i class="fa fa-minus"></i> </button>
+												</td>
+											</tr>
+								</tbody>
+								</table>
 			          			<div align="center">
 						            <input type="submit"  class="btn  btn-sm submit" value="SUBMIT" onclick="return allfilessizecheck('addagendafrm'); "/> <!-- return confirm('Are You Sure To Add This Agenda(s) ?') -->
 			          			</div>
@@ -278,7 +348,6 @@
 			    			<input type="hidden" name="prgmflag" value="Y">
 		      			</form>
 		    		</div>
-		    	<% }%>	
 		    		
 				<!-- Draft Table -->
 				<table class="table table-bordered draftTableStyle" id="draftTable">
@@ -286,6 +355,7 @@
 				    	<tr>
 				      		<th>Agenda Item</th>
 					      	<th>Remarks</th>
+							<th>Group Name</th>
 					      	<th>Lab</th>
 					      	<th>Presenter</th>
 					      	<th>Duration</th>
@@ -546,6 +616,37 @@ function AgendaPresentors($AddrowId){
 		});
 	}
 }
+
+function AgendaPresentorsForDH($AddrowId){
+	$('#presenterid_DH_'+$AddrowId).trigger('change');
+	var $PresLabCode = $('#PresLabCode_DH_'+$AddrowId).val();
+	if($PresLabCode !=""){
+		$.ajax({		
+		type : "GET",
+		url : "CommitteeAgendaPresenterList.htm",
+		data : {
+			PresLabCode : $PresLabCode,
+		},
+		datatype : 'json',
+		success : function(result) {
+
+			var result = JSON.parse(result);	
+			var values = Object.keys(result).map(function(e) {
+									 return result[e]
+						});
+							
+			var s = '<option value="" selected disabled>Choose...</option>';
+			for (i = 0; i < values.length; i++) {	
+				s += '<option value="'+values[i][0]+'">'
+					+values[i][1].replaceAll("<","").replaceAll(">","") + " (" +values[i][3].replaceAll("<","").replaceAll(">","")+")" 
+					+ '</option>';
+			} 
+			$('#presenterid_DH_'+$AddrowId).html(s);
+		}
+		});
+	}
+}
+
 
 var mainAgendaId="";
 var attachRepIds = [];
@@ -920,11 +1021,8 @@ var table1=$("#myTable").DataTable({
 	    }
 });
 function getEmployee(ele){
-
 	
 	var empid=ele.value;
-	
-
 
 	var labocode= $("#PresLabCode_"+ ele.id.split("_")[1]).val()
 	$.ajax({
@@ -975,6 +1073,62 @@ function getEmployee(ele){
 	})
 	
 }
+function getEmployeeForDH(ele){
+
+	var empid=ele.value;
+
+	var labocode= $("#PresLabCode_DH_"+ ele.id.split("_")[2]).val();
+
+	$.ajax({
+		type:'GET',
+		url:'checkMeetingEmpWise.htm',
+		datatype:'json',
+		data:{
+			empid:empid,
+			labocode:labocode,
+			scheduleid:<%=scheduleid%>
+		},
+		success:function(result){
+			var ajaxresult = JSON.parse(result);
+			
+			if(ajaxresult.length>0){
+				table1.destroy();
+				
+				
+				
+				var html=''
+				for(var i=0;i<ajaxresult.length;i++){
+					html+='<tr><td>'+ (i+1)   +'</td>'
+					html+='<td>'+ajaxresult[i].MeetingId   +'</td>'
+					html+='<td>'+ ajaxresult[i].MeetingVenue  +'</td>'
+					html+='<td>'+ ajaxresult[i].ScheduleStartTime  +'</td>'
+					html+='<td>'+ ajaxresult[i].description  +'</td></tr>'
+				}		
+				
+				$('#meetingbody').html(html);
+			
+				
+				 
+				 table1=$("#myTable").DataTable({		 
+					 "lengthMenu": [5,10,25, 50, 75, 100 ],
+					 "pagingType": "simple",
+					 "pageLength": 5,
+					 "language": {
+					      "emptyTable": "Files not Found"
+					    }
+				}); 
+				 $('#meetingModal').modal('show');
+				
+				
+			}
+			
+			
+		}
+	})
+	
+}
+
+let index = 1000;
 
 $(document).on("click", ".btn-remove", function () {
     let row = $(this).closest("tr");
@@ -985,13 +1139,15 @@ $(document).on("click", ".btn-remove", function () {
     // Move row to draft table
     $("#draftTable tbody").append(row);
     $("#draftTable").show();
+    toggleSubmitButton();
 });
+
 
 $(document).on("click", ".btn-add", function () {
     let row = $(this).closest("tr");
     // Change button back to "Remove"
     row.find("td:last").html(
-        '<button type="button" class="btn btn-danger btn-remove"><i class="fa fa-minus"></i></button>'
+        '<button type="button" class="btn btn-success btn-clone"><i class="fa fa-plus"></i></button>  <button type="button" class="btn btn-danger btn-remove"><i class="fa fa-minus"></i></button>'
     );
     // Move row back to main table
     $("#mainTable tbody").append(row);
@@ -1000,11 +1156,173 @@ $(document).on("click", ".btn-add", function () {
         $("#draftTable").hide();
     }
 });
+$(document).on("click", ".btn-clone", function () {
+
+    let row = $(this).closest("tr");
+
+    // Destroy Select2 BEFORE cloning
+    row.find("select.select2-hidden-accessible").each(function () {
+        $(this).select2("destroy");
+    });
+
+    let clone = row.clone(false, false);
+    //let index = row.closest("table").find("tr").length;
+
+    // Restore Select2 on original row
+    row.find("select").select2({
+        width: "100%",
+        dropdownParent: $('body')
+    });
+
+    // Update IDs & onchange handlers in clone
+    clone.find("select, input").each(function () {
+        let oldId = $(this).attr("id");
+        if (oldId) {
+            let baseId = oldId.split("_")[0];
+            $(this).attr("id", baseId + "_" + index);
+        }
+        
+        if (["groupname", "duration"].includes($(this).attr("name"))) {
+            $(this).val("");
+        }
+
+        // Clear selects
+        if ($(this).is("select")) {
+            $(this).val("");  
+        }
+        
+        let onchange = $(this).attr("onchange");
+        if (onchange) {
+            let newOnchange = onchange.replace(/\('\d+'\)/, "('" + index++ + "')");
+            $(this).attr("onchange", newOnchange);
+        }
+    });
+
+    // Replace last button
+    clone.find("td:last").html(`
+        <button type="button" class="btn btn-danger btn-remove-clone">
+            <i class="fa fa-minus"></i>
+        </button>
+    `);
+
+    // Insert cloned row
+    row.after(clone);
+
+    // Fresh Select2 ONLY for cloned row
+    clone.find("select").select2({
+        width: "100%",
+        dropdownParent: $('body')
+    });
+});
+
+
+$(document).on("click", ".btn-remove-clone", function () {
+ 	let row = $(this).closest("tr");
+ 	row.remove();
+ 	toggleSubmitButton();
+});
+ 
+$("#subHeadTable").on('click', '.btn_clone_new', function () {
+
+    let index1 = $('.tr_clone_DH').length;
+
+    var $tr = $('.tr_clone_DH').last();
+
+    // Destroy Select2 before cloning
+    $tr.find("select.select2-hidden-accessible").each(function () {
+        $(this).select2('destroy');
+    });
+
+    var clone = $tr.clone();
+
+    // Restore Select2 on original row
+    $tr.find("select").select2({
+        width: '100%',
+        dropdownParent: $('body'),
+    });
+
+    // Update IDs and attributes
+    clone.find("select, input").each(function () {
+        let oldId = $(this).attr("id");
+        if (oldId) {
+            let baseId = oldId.split("_")[0];
+            $(this).attr("id", baseId + "_DH_" + index1);
+        }
+
+        let onchange = $(this).attr("onchange");
+        if (onchange) {
+            let newOnchange = onchange.replace(/\('\d+'\)/, "('" + index1 + "')");
+            $(this).attr("onchange", newOnchange);
+        }
+    });
+
+    // Insert cloned row
+    $tr.after(clone);
+
+    // Reinitialize Select2 for cloned row
+    clone.find("select").select2({
+        width: '100%',
+        dropdownParent: $('body'),
+    });
+
+    clone.find("input").not('[type="hidden"][name="projectid"]').val("");
+});
+
+ 
+ $("#subHeadTable").on('click','.btn-remove-clone-new' ,function() {
+		
+	 var cl=$('.tr_clone_DH').length;
+	 	
+	 if(cl>1){
+	    var $tr = $(this).closest('.tr_clone_DH');
+	   
+	    var $clone = $tr.remove();
+	    $tr.after($clone);
+	    
+	 }else if(cl===1){
+		 var row = $(this).closest('.tr_clone_DH');
+		 
+		 row.find("td:last").html(
+	        '<button type="button" class="btn btn-success btn-add-subheadtable"><i class="fa fa-plus"></i></button>'
+	    );
+	    // Move row to draft table
+	    $("#draftTable tbody").append(row);
+	    $("#draftTable").show();
+	    $("#subHeadTable").hide();
+	    toggleSubmitButton();
+	 }
+	    
+});
+ 
+$('#draftTable').on('click','.btn-add-subheadtable', function(){
+	var row = $(this).closest('.tr_clone_DH');
+	
+	row.find("td:last").html(
+        '<button type="button" class="btn btn-danger btn-remove-clone-new"> <i class="fa fa-minus"></i> </button>'
+    );
+    // Move row back to main table
+    $("#subHeadTable tbody").append(row);
+    $("#subHeadTable").show();
+    // Hide draft table if empty
+    if ($("#draftTable tbody tr").length === 0) {
+        $("#draftTable").hide();
+    }
+    toggleSubmitButton();
+});
+ 
+ 
+/* 
+$(document).on("click", ".btn-remove-clone-new", function () {
+ 	let row = $(this).closest("tr");
+ 	row.remove();
+ 	toggleSubmitButton();
+});  */
+
 
 function toggleSubmitButton() {
-    if ($("#mainTable tbody tr").length === 0) {
+    if ($("#mainTable tbody tr").length === 0 && $("#subHeadTable tbody tr").length === 0) {
         $(".submit").prop("disabled", true);
-    } else {
+    } else{
         $(".submit").prop("disabled", false);
     }
 }

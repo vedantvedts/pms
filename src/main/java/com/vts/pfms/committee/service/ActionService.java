@@ -176,4 +176,5 @@ public interface ActionService {
 	
 	// Naveen 22/10/25 Non Project Action No Change
 	public long insertActionMainFornonProject(ActionMainDto mainDto, ActionAssignDto assign);
+	public List<Object[]> assigneeListForFromExternal();
 }

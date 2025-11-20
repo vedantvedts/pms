@@ -107,6 +107,7 @@ background-color: transparent;
 	  SimpleDateFormat sdf3=new SimpleDateFormat("yyyy-MM-dd");
 
 List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplList");
+List<Object[]> AssignEmployeeForExternal =(List<Object[]>) request.getAttribute("ExternalFromAssignEmployee");
 List<Object[]> RfaActionList=(List<Object[]>) request.getAttribute("RfaActionList");
 List<Object[]> ProjectList=(List<Object[]>)request.getAttribute("ProjectList");
 List<Object[]> preProjectList = (List<Object[]>) request.getAttribute("preProjectList");
@@ -250,7 +251,15 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 											<td style="text-align: center;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()):" - " %></td>
 											<td style="text-align: center;"><%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - " %></td>
 											<td>
-											<%if(AssigneeList!=null ){ 
+											<%
+											if(obj[18]!=null && obj[18].toString().equalsIgnoreCase("F") && AssignEmployeeForExternal!=null){
+												
+												for(Object[] obj1 : AssignEmployeeForExternal){
+													if(obj1[0].toString().equalsIgnoreCase(obj[0].toString())){
+													%>
+											      <p style="margin-bottom:0px !important;"> <%=  (obj1[1] != null ? StringEscapeUtils.escapeHtml4(obj1[1].toString())  : " - ") + ","+ (obj1[2] != null ? StringEscapeUtils.escapeHtml4(obj1[2].toString())  : " - ")%> (<%=obj1[4]!=null?StringEscapeUtils.escapeHtml4(obj1[4].toString()):" - " %>) </p>
+											      <%}}											}
+											else if(AssigneeList!=null ){ 
 												for(Object[] obj1 : AssigneeList){
 													if(obj1[0].toString().equalsIgnoreCase(obj[0].toString())){
 													%>
@@ -345,7 +354,7 @@ List<String> toUserStatus  = Arrays.asList("AA","RC","RV","REV","RE");
 											   </button>
 											   <input type="hidden" name="rfaoptionby" value="ARC" >
 											<%} %>
-											 <%if((obj[14].toString().equalsIgnoreCase("AV") && (obj[18].toString().equalsIgnoreCase("E") || obj[18].toString().equalsIgnoreCase("F"))) ){ %>
+											 <%if((obj[14].toString().equalsIgnoreCase("AV") && (obj[18].toString().equalsIgnoreCase("E") )) ){ %>
 											 	<button type="button" class="editable-click btn btn-sm btn-info"  style="" 
 												onclick="closeModal('<%=obj[0].toString() %>','<%=obj[3] %>','<%=obj[2].toString() %>','<%=obj[18] %>','<%=obj[13] %>','<%=obj[19] %>')"
 													data-toggle="tooltip" data-placement="top" id="rfaCancelBtn" title="" data-original-title="CLOSE RFA">

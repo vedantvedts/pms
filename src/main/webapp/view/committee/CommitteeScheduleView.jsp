@@ -49,7 +49,9 @@
 	Object[] initiationdetails = (Object[]) request.getAttribute("initiationdetails");
 	CARSInitiation carsInitiationDetails = (CARSInitiation) request.getAttribute("carsInitiationDetails");
 	ProgrammeMaster prgmMasterDetails = (ProgrammeMaster) request.getAttribute("prgmMasterDetails");
-
+	
+	
+	String labcode = (String) session.getAttribute("labcode");
 	List<String> SplCommitteeCodes = (List<String>) request.getAttribute("SplCommitteeCodes");
 	%>
 
@@ -345,6 +347,9 @@
 									<th>SN</th>
 									<th>Agenda Item</th>
 									<th>Reference</th>
+									<%if( Long.parseLong(programmeId)>0){ %>
+									<th>Group Name</th>
+									<%} %>
 									<th>Remarks</th>
 									<th>Presenter</th>
 									<th>Duration (Mins)</th>
@@ -364,6 +369,9 @@
 									<td><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></td>
 									<td><%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %>
 									</td>
+									<%if( Long.parseLong(programmeId)>0){ %>
+										<td><%=(obj[15]!=null && obj[15].toString().length()>0)?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - " %></td>
+									<%} %>
 									<td><%=obj[6]!=null?StringEscapeUtils.escapeHtml4(obj[6].toString()): " - " %></td>
 									<td><%=obj[10]!=null?StringEscapeUtils.escapeHtml4(obj[10].toString()): " - "%>,
 										<%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %>

@@ -62,6 +62,7 @@ List<Object[]> PriorityList=(List<Object[]>)request.getAttribute("PriorityList")
 List<Object[]> EmployeeList=(List<Object[]>)request.getAttribute("EmployeeList");
 List<Object[]> AssigneeList=(List<Object[]>) request.getAttribute("AssigneeEmplList"); 
 List<Object[]> vendorList=(List<Object[]>)request.getAttribute("vendorList");
+String labcode=(String)session.getAttribute("labcode");
 String Project="";
 String assigneeLab=(String)request.getAttribute("assigneeLab");
 String projectType=(String)request.getAttribute("projectType");
@@ -395,9 +396,16 @@ String projectType=(String)request.getAttribute("projectType");
 		        e.preventDefault();
 		});
 	  
+	  var currlabcode = '<%=labcode%>'
 	  function chooseEmp(){
 			var labCode=$('#vendor').val().split("/")[1];
 			var vendortype=$('#vendor').val().split("/")[0];
+			var type = '<%=RfaAction[15].toString()%>';
+			console.log(type);
+			
+			/*if(type==='F'){ 
+				labCode = currlabcode;
+			} */
 			
 			$.ajax({
 					
@@ -428,6 +436,7 @@ String projectType=(String)request.getAttribute("projectType");
 						$('#assignee').html(s);
 					 /* $('#ApprovingOfficer').val(''+value).trigger('change'); */ 
 						var assignEmp = <%=request.getAttribute("AssignEmp") %>
+					 	console.log(assignEmp,"Assignee");
 						$('#assignee').val(assignEmp).trigger('change');
 					}
 				});

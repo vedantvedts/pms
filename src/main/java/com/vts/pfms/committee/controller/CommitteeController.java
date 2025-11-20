@@ -1950,6 +1950,8 @@ public class CommitteeController {
 			String initiationid=committeescheduleeditdata[17].toString();
 			String carsInitiationId=committeescheduleeditdata[25].toString();
 			String programmeId=committeescheduleeditdata[26]!=null?committeescheduleeditdata[26].toString():"0";
+			
+			List<Object[]> committeeagendalist =service.AgendaList(CommitteeScheduleId);
 
 			Long committeemainid=null;
 			if(Long.parseLong(initiationid)>0) {
@@ -1986,6 +1988,7 @@ public class CommitteeController {
 			if(Long.parseLong(programmeId)>0)
 			{
 				req.setAttribute("prgmMasterDetails", service.getProgrammeMasterById(programmeId));
+				committeeagendalist = service.PrgmAgendaList(CommitteeScheduleId);
 			}
 			
 			if(Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I")) 
@@ -1999,7 +2002,7 @@ public class CommitteeController {
 			req.setAttribute("userview",UserView);			
 			req.setAttribute("ReturnData", service.AgendaReturnData(CommitteeScheduleId));
 			req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
-			req.setAttribute("committeeagendalist", service.AgendaList(CommitteeScheduleId));
+			req.setAttribute("committeeagendalist", committeeagendalist);
 			req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(CommitteeScheduleId));	
 			req.setAttribute("employeelist", service.EmployeeList(LabCode));
 			req.setAttribute("pfmscategorylist", service.PfmsCategoryList());
@@ -2041,6 +2044,8 @@ public class CommitteeController {
 			String Remarks[]= req.getParameterValues("remarks");
 			String presenters[]=req.getParameterValues("presenterid");
 			String PresLabCode[]=req.getParameterValues("PresLabCode");
+			String groupNames[]=req.getParameterValues("groupname");
+			
 			ArrayList<String[]> docids = new ArrayList<String[]>();
 			for(int i=0 ; i<AgendaItem.length ;i++) {
 				docids.add( req.getParameterValues("attachid_"+i));
@@ -2057,6 +2062,12 @@ public class CommitteeController {
 				if(prgmstatus!=null && prgmstatus.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 			    if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
+			}
+			if (containsHTMLTags(groupNames)) {
+				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
+				if(prgmstatus!=null && prgmstatus.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
+				if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
+				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
 			}
 			List<CommitteeScheduleAgendaDto> scheduleagendadtos=new ArrayList<CommitteeScheduleAgendaDto>();
 			for(int i=0;i<AgendaItem.length;i++) 
@@ -2076,6 +2087,7 @@ public class CommitteeController {
 				//				scheduleagendadto.setAttachmentName(FileAttach[i].getOriginalFilename());
 				scheduleagendadto.setDocLinkIds(docids.get(i));
 				scheduleagendadtos.add(scheduleagendadto);
+				scheduleagendadto.setGroupName(groupNames[i]);
 			}
 
 			long count=service.CommitteeAgendaSubmit(scheduleagendadtos);
@@ -2117,6 +2129,7 @@ public class CommitteeController {
 			String presentorid=req.getParameter("presenterid");
 			String duration=req.getParameter("duration");
 			String PresLabCode=req.getParameter("PresLabCode");
+			String groupName=req.getParameter("groupname");
 			
 			if (InputValidator.isContainsHTMLTags(agendaitem)) {
 				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
@@ -2130,6 +2143,14 @@ public class CommitteeController {
 				if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 			}
+			if (InputValidator.isContainsHTMLTags(groupName)) {
+				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
+				if(prgmflag1!=null && prgmflag1.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
+				if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
+				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
+			}
+			
+//			System.out.println(groupName+"===================================");
 			
 			//			String docid=req.getParameter("editattachid");
 			CommitteeScheduleAgendaDto scheduleagendadto = new CommitteeScheduleAgendaDto();
@@ -2144,6 +2165,7 @@ public class CommitteeController {
 			scheduleagendadto.setRemarks(remarks);
 			scheduleagendadto.setModifiedBy(UserId);
 			scheduleagendadto.setDocLinkIds( req.getParameterValues("attachid"));
+			scheduleagendadto.setGroupName(groupName);
 			//			scheduleagendadto.setAgendaAttachment(FileAttach.getBytes());
 			//			scheduleagendadto.setAttachmentName(FileAttach.getOriginalFilename());
 			//			scheduleagendadto.setDocId(docid);
@@ -10932,7 +10954,7 @@ private boolean isValidFileType(MultipartFile file) {
 			Object[] scheduledata = service.CommitteeScheduleEditData(scheduleid);
 			req.setAttribute("scheduledata", scheduledata);
 			req.setAttribute("prgmProjectList", service.prgmProjectList(scheduledata!=null?scheduledata[26].toString():"0"));
-			req.setAttribute("committeeAgendaList", service.AgendaList(scheduleid));
+			req.setAttribute("committeeAgendaList", service.PrgmAgendaList(scheduleid));
 			req.setAttribute("agendaDocList",service.AgendaLinkedDocList(scheduleid));
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("labEmpList",service.PreseneterForCommitteSchedule("A"));
@@ -11384,7 +11406,7 @@ private boolean isValidFileType(MultipartFile file) {
 
 			req.setAttribute("actionsdata",actionsdata );
 			req.setAttribute("userview",UserView);
-			req.setAttribute("committeeminutesspeclist",service.committeeScheduleMinutesforActionForMom(committeescheduleid));
+			req.setAttribute("committeeminutesspeclist",service.committeeScheduleMinutesforActionForMomADE(committeescheduleid));
 			req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
 			//req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
 			req.setAttribute("committeeminutes",service.CommitteeMinutesSpecdetails());

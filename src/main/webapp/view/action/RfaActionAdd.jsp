@@ -506,6 +506,7 @@ function validateFile(input) {
 
 var labcode = '<%=labcode+"/"+labcode%>'
 
+var currlabcode = '<%=labcode%>'
 
 function showVendor(){
 	
@@ -533,6 +534,11 @@ $( document ).ready(function() {
 function chooseEmp(seltype){
 	var labCode=$('#vendor').val().split("/")[1];
 	var vendortype=$('#vendor').val().split("/")[0];
+	var type = $('#type').val();
+	
+	if(type==='F'){
+		labCode = currlabcode;
+	}
 
 	$.ajax({
 			
@@ -583,7 +589,7 @@ function chooseEmp(seltype){
 				}
 				
 				$('#assignee').html();
-				$('#assignee').html(s);
+				$('#assignee').html(s); 
 			 /* $('#ApprovingOfficer').val(''+value).trigger('change'); */ 
 			
 			}

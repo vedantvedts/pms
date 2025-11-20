@@ -375,7 +375,8 @@ public interface CommitteeDao {
 	public CommitteeAircraft getAircraftById(String aircraftId);
 	public Long addSubSystem(CommitteeSubSystem sub);
 	public CommitteeSubSystem getSubSystemById(String subsystemId);
-	public List<Object[]> committeeScheduleMinutesforActionForMom(String committeescheduleid);
+	public List<Object[]> committeeScheduleMinutesforActionForMomADE(String committeescheduleid);
 	public Object[] CommitteeScheduleEditDataforMom(String committeescheduleid);
+	public List<Object[]> PrgmAgendaList(String CommitteeScheduleId);
 
 }

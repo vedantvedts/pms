@@ -1203,7 +1203,7 @@ private boolean isValidFileType(MultipartFile file) {
 					}
 					
 				}
-				
+			String projectId  = req.getParameter("ProjectId");
 			String nonproject = req.getParameter("nonproject");
 				
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
@@ -1211,7 +1211,7 @@ private boolean isValidFileType(MultipartFile file) {
 			ActionMainDto mainDto=new ActionMainDto();
 			mainDto.setMainId(req.getParameter("MainActionId"));
 			mainDto.setActionItem(req.getParameter("Item"));
-			mainDto.setProjectId(req.getParameter("ProjectId"));
+			mainDto.setProjectId(projectId);
 			mainDto.setActionLinkId(req.getParameter("OldActionNo"));
 			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
 			mainDto.setType(req.getParameter("Type"));
@@ -3373,6 +3373,7 @@ private boolean isValidFileType(MultipartFile file) {
 				req.setAttribute("UserId", UserId);
 				req.setAttribute("Status", Status);
 				req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
+				req.setAttribute("ExternalFromAssignEmployee", service.assigneeListForFromExternal());
 				req.setAttribute("projectType", projectType);
 
 				
@@ -3506,7 +3507,7 @@ private boolean isValidFileType(MultipartFile file) {
 				String rfaid=req.getParameter("Did");
 				Object[] RfaActionEdit = service.RfaActionEdit(rfaid);
 				Object[] rfaAttachDownload = service.RfaAttachmentDownload(rfaid);
-				
+				String rfaType = RfaActionEdit[15].toString();
 				req.setAttribute("rfaAttachDownload", rfaAttachDownload);
 				req.setAttribute("RfaAction", RfaActionEdit);
 				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, LoginType, LabCode));
@@ -3518,6 +3519,9 @@ private boolean isValidFileType(MultipartFile file) {
 				
 				
 		        List<Object[]> AssigneeList =service.AssigneeEmpList();
+		        if(rfaType.equalsIgnoreCase("F")) {
+		        	AssigneeList = service.assigneeListForFromExternal();
+		        }
 		        List<String> AssignEmp=new ArrayList<>();
 		        String assigneeLab =LabCode;
 		        for(Object[] obj :AssigneeList) {
@@ -3529,9 +3533,12 @@ private boolean isValidFileType(MultipartFile file) {
 		        
 		        
 		        List<Object[]> employeeList = service.EmployeeList(LabCode);
+		        System.out.println(assigneeLab+"======================="+LabCode);
 		        if(!assigneeLab.equalsIgnoreCase(LabCode)) {
-		        List<Object[]> employeeList1 = service.EmployeeList(assigneeLab);
-		        employeeList.addAll(employeeList1);
+		        if(rfaType.equalsIgnoreCase("E")) {
+			        List<Object[]> employeeList1 = service.EmployeeList(assigneeLab);
+			        employeeList.addAll(employeeList1);
+		        }
 		        }
 				req.setAttribute("EmployeeList", employeeList);
 		        List<Object[]> RfaCCList =service.RfaCCList();
@@ -3765,7 +3772,12 @@ private boolean isValidFileType(MultipartFile file) {
 		        String projectCode=rfadetails[2];
 		        String result=printname.replace('/', '-');
 			    Object[] RfaPrintData = service.RfaPrintData(rfaid);
-			    			  
+
+			    String rfaType = RfaPrintData[22].toString();
+			    List<Object[]> AssigneeList =service.AssigneeEmpList();
+		        if(rfaType.equalsIgnoreCase("F")) {
+		        	AssigneeList = service.assigneeListForFromExternal();
+		        }
 				req.setAttribute("RfaPrint", RfaPrintData);
 				req.setAttribute("ProjectList", service.ProjectList());		
 				req.setAttribute("ProjectTypeList",service.ProjectTypeList());
@@ -3773,7 +3785,7 @@ private boolean isValidFileType(MultipartFile file) {
 				req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 			    req.setAttribute("LabDetails", service.RfaLabDetails(LabCode)); 
 			    req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode)); 
-			    req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
+			    req.setAttribute("AssigneeEmplList", AssigneeList);
 			    req.setAttribute("RfaNoTypeList", service.getRfaNoTypeList());
 			    
 			    List<String> assignorCC =service.CCAssignorList(rfaid); 
