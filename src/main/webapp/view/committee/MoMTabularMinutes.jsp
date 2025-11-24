@@ -140,7 +140,7 @@
 	
 	      <!-- Right column -->
 	      <td class="fs-11" width="67%" align="left" style="padding:5px;">
-	        <p>1.Meeting Title : <span style="font-weight: bold;"> <%=committeescheduleeditdata[7]!=null?committeescheduleeditdata[7].toString().toUpperCase():" - "%>  (<%=committeescheduleeditdata[8]!=null?committeescheduleeditdata[8].toString().toUpperCase():" - " %>)</span> </p>
+	        <p>1.Meeting Title : <span style="font-weight: bold;"> <%=committeescheduleeditdata[7]!=null?committeescheduleeditdata[7].toString().toUpperCase():" - "%> </span> </p>
 	        <p>2.Venue&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : <%=committeescheduleeditdata[12]!=null?committeescheduleeditdata[12].toString(): " - " %> </p>
 	        <p>3.Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=committeescheduleeditdata[2]!=null?sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())): " - " %> </p>
 	        <p>4.Time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=committeescheduleeditdata[3]!=null?committeescheduleeditdata[3].toString(): " - "%> </p>
@@ -204,8 +204,21 @@
 	 	<%if(invitedlist.size()>0){ %>
 		<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO","CH"));
 		   ArrayList<String> members = new ArrayList<String>();
+		   /* invitedlist.sort((obj,obj1) -> {
+			  String code1 = (String) obj[3];
+			  String code2 = (String) obj1[3];
+			  
+			    List<String> priority = Arrays.asList("CC", "CS");
+
+			    boolean c1 = priority.contains(code1);
+			    boolean c2 = priority.contains(code2);
+
+			    if (c1 && c2) return code2.compareTo(code1);
+			    if (c1) return -1;
+			    if (c2) return 1; 
+			    return code2.compareTo(code1); 
+		   }); */
 		   
-		   Map<Object,List<Object[]>> membersname = invitedlist.stream().filter(row->row[4].toString().equalsIgnoreCase("P")).collect(Collectors.groupingBy(row -> row[3]));
 		   
 		int memPresent=0,memAbscent=0,ParPresent=0,parAbscent=0;
 		int j=0;
@@ -253,9 +266,14 @@
 				{
 			 	if(invitedlist.get(i)[4].toString().equals("P") && membertypes.contains( invitedlist.get(i)[3].toString()) )
 			 	{ j++;
-			 		if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ) membersec=invitedlist.get(i); 
-			 		if(invitedlist.get(i)[6].toString()!=null && invitedlist.get(i)[7].toString()!=null)	members.add(invitedlist.get(i)[6].toString()+", "+invitedlist.get(i)[7].toString());
-			 		//if(invitedlist.get(i)[6].toString()!=null && invitedlist.get(i)[7].toString()!=null)	members.add(invitedlist.get(i)[12].toString()+". "+ invitedlist.get(i)[6].toString()+", "+invitedlist.get(i)[7].toString());
+			 		String name = (invitedlist.get(i)[6]!=null?invitedlist.get(i)[6].toString():"")+", "+(invitedlist.get(i)[7]!=null?invitedlist.get(i)[7].toString():"");
+			 		if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){
+			 			membersec=invitedlist.get(i);
+			 			name+= " (Member Secretary)";
+			 		}else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")){
+			 			name+=" (Chairperson)";
+			 		}
+			 		members.add(name);
 			 		}
 			 	}} %>
 	  		<%if(memAbscent > 0){ %>
@@ -299,12 +317,12 @@
 			 	  int rightsize = members.size()-leftsize;
 			 	  List<String> leftlist = new ArrayList<String>(members.subList(0, leftsize));
 			 	  List<String> rightlist = new ArrayList<String>(members.subList(leftsize,members.size()));
-			 	  int ji=leftsize;
+			 	  int rightsn=leftsize;
 			 	  for(int i=0;i<leftsize || i<rightsize;i++){
 			 	%>
 			 	<tr>
 			 		<td width="50%" align="left" style="padding-left: 30px; padding:5px; border:1px solid black; "><%=(i+1)+". " + leftlist.get(i) %></td>
-	  				<td width="50%" align="left" style="padding-left: 30px; padding:5px; border:1px solid black; "><%if(i<rightsize){ %><%=++ji +". "+ rightlist.get(i) %> <%} %></td>
+	  				<td width="50%" align="left" style="padding-left: 30px; padding:5px; border:1px solid black; "><%if(i<rightsize){ %><%=++rightsn +". "+ rightlist.get(i) %> <%} %></td>
 			 	</tr>
 			 	<%} %> 
 			 	
@@ -317,23 +335,24 @@
 	   <!----------------------------------------------------------------- Deliberations and Action Points ------------------------------------------------->
 	  
 	  <div align="left">
-	  	<h4>&nbsp;&nbsp;&nbsp;&nbsp; III. &nbsp;&nbsp; Deliberations and Action Points </h4>
+	  	<h4>&nbsp;&nbsp;&nbsp;&nbsp; III. &nbsp;&nbsp; Presentation / Deliberations  </h4>
 	  </div>
 	  <div> 
-	  	<p class="fs-12">Item Code/Type : A: Action, C: Comment, D: Decision, R: Recommendation</p>
+	  <p class="fs-12" style="text-align: left;">Presentation/ Discussion were made on the progress of activities were conducted one by one. During this presentation the Chairperson provided the Following directions.</p>
+	  	<p class="fs-12">Item Code/Type : A: Action, C: Discussion, D: Decision, P: Presentation</p>
 	  	<table style="border:1px solid black; border-collapse: collapse; width: 100%" >
 	  		<thead class="fs-12"> 
 	  			<tr>
 	  				<th width="5%" style="border: 1px solid black; padding:5px;">S.No</th>
 	  				<th width="1%" style="border: 1px solid black; padding:5px;">Type</th>
-	  				<th width="59%" style="border: 1px solid black; padding:5px; text-align: left;">Decisions/Action Points</th>
+	  				<th width="59%" style="border: 1px solid black; padding:5px; text-align: left;">Directions/Action Points</th>
 	  				<th width="23%" style="border: 1px solid black; padding:5px; text-align: left;">Action By</th>
 	  				<th width="12%" style="border: 1px solid black; padding:5px; text-align: left;">PDC</th>
 	  			</tr>
 	  		</thead>
 	  		<tbody class="fs-11">
 	  		<% int count=0,index=0, indexcount=1;
-				String agenda="";
+				Long agenda=0L;
 				
 				Map<String, List<Object[]>> actionslist = speclists!=null && speclists.size()>0?speclists.stream()
 						  .collect(Collectors.groupingBy(array -> array[1].toString() , LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
@@ -345,8 +364,8 @@
 						    for (Object[] obj : values) {
 						    	
 						        if(((obj[3] != null && Integer.parseInt(obj[3].toString()) == 3) || ( obj[3] != null && Integer.parseInt(obj[3].toString()) == 5 )) && (obj[7].toString().equalsIgnoreCase("A") || obj[7].toString().equalsIgnoreCase("C") || obj[7].toString().equalsIgnoreCase("D"))){
-						            
-						            if(obj[10] != null && !obj[10].toString().equalsIgnoreCase(agenda)) {
+						            if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("9") && obj[7]!=null && obj[7].toString().equalsIgnoreCase("C")) continue;
+						            if(obj[18] != null && Long.parseLong(obj[18].toString())!=agenda ) {
 						                indexcount = 1;
 						                count++;
 						                /* if(obj[3] != null && Integer.parseInt(obj[3].toString()) == 3 && count==1){ */
@@ -367,19 +386,37 @@
 						    <td class="fs-12" style="border: 1px solid black; font-weight:bold; padding:5px;"><%= ++index %></td>	  			
 						    <td class="fs-12" style="border: 1px solid black; padding:5px; font-weight:bold; text-align: left;" colspan="4">
 						       <%if(Integer.parseInt(obj[3].toString())==3) {
-						    	   String project = obj[10]!=null?obj[10].toString().substring(0,obj[10].toString().indexOf("(")).trim():"";
-						    	   %> <%= obj[10] != null ?"Presented by/Discussed by : "+ project +" / "+(obj[16]!=null?obj[16].toString().trim():"-") : "-" %>
+						    	   String project = "";
+						    	   if (obj[10] != null) {
+						    	       String temp = obj[10].toString();
+						    	       int idx = temp.indexOf("(");
+						    	       if (idx > 0) {
+						    	           project = temp.substring(0, idx).trim();
+						    	       } else {
+						    	           project = temp.trim(); 
+						    	       }
+						    	   } 
+						    	   String groupname = "-";
+						    	   if(obj[19]!=null){
+						    		   groupname=obj[19].toString();
+						    	   }
+						    	   %>
+						    	   <%= obj[10] != null ?"Presentation by/Discussion by : "+ (obj[16]!=null?obj[16].toString().trim():"-")+" / "+ project+" ("+ groupname +")" : "-" %>
 						       <%} else if(Integer.parseInt(obj[3].toString())==5){ %>Other outcome/Action Points       <%} %>
 						    </td>
-						</tr>
+						</tr> 
 						<%
-			                agenda = obj[10].toString(); 
+			                agenda = Long.parseLong(obj[18].toString()); 
 			            }
 						%>
 						<tr>
 						    <%if(i==1){ %>
 							    <td rowspan="<%=values.size() %>"  style="border: 1px solid black; padding:5px; text-align: center;"><%= index + "." + indexcount++ %></td>
-							    <td rowspan="<%=values.size() %>" style="border: 1px solid black; padding:5px; text-align: center;"><%= obj[7]!=null?obj[7].toString():" - " %></td>	  			
+							    <td rowspan="<%=values.size() %>" style="border: 1px solid black; padding:5px; text-align: center;">
+										<% if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("7")) { %> P <%} 
+										else { %><%= obj[7]!=null?obj[7].toString():""%><%}%>
+										
+								</td>	  			
 							    <td rowspan="<%=values.size() %>"  style="border: 1px solid black; padding:5px; text-align: left;">
 							        <% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("A")) { %> <%=obj[1]!=null?obj[1].toString(): " - "%> <%} %>
 							        <% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("C")) { %> <%=obj[1]!=null?obj[1].toString(): " - "%> <%} %>
@@ -436,7 +473,7 @@
 				<!-- <br>Date :&emsp;&emsp;&emsp;&emsp;&emsp;  <br>Time :&emsp;&emsp;&emsp;&emsp;&emsp; -->
 				<%if(membersec!=null){ %>
 					<div align="right" style="padding-right: 0rem;padding-bottom: 2rem;">
-						<br><br><%if(membersec[6]!=null){%><%= membersec[6].toString().substring(membersec[6].toString().indexOf(".")+1) %><%} %>
+						<br><br><%if(membersec[6]!=null){%><%= membersec[6].toString() + (membersec[7]!=null?", "+membersec[7].toString():"") %><%} %>
 						<br>(Member Secretary)
 					</div>
 					<div align="left" >

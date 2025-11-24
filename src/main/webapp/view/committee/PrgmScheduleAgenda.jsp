@@ -34,6 +34,7 @@
   Map<String, List<Object[]>> labEmpListMap = labEmpList.stream().collect(Collectors.groupingBy(e -> e[4].toString()));
   String scheduleid=scheduledata[6].toString();
   String projectid=scheduledata[9].toString();
+  List<String> groupNames = Arrays.asList("Software","Hardware","QA");
  %>
  
 <% 
@@ -114,7 +115,13 @@
 																	<input form="inlineeditform_<%=count%>" type="text" class="form-control" name="remarks" value="<%=obj[6].toString()%>"  maxlength="255" >
 																</td>
 																<td> 
-																	<input form="inlineeditform_<%=count%>" type="text" class="form-control" name="groupname" value="<%=obj[15]!=null?obj[15].toString():""%>"  maxlength="255" placeholder="Enter Group Name">
+																<select form="inlineeditform_<%=count%>" class="form-control items PresLabCode width-200px" name="groupname" id="groupName_<%=count%>"  required="required" data-live-search="true" data-container="body">
+																		<option disabled="disabled"  selected value="">Group Name</option>
+																		<% for(String gn : groupNames){ %>
+																			<option value="<%=gn%>" <%if(obj[15]!=null && obj[15].toString().equalsIgnoreCase(gn)){ %>selected="selected" <%} %> ><%=StringEscapeUtils.escapeHtml4(gn) %></option>
+																		<%} %>	
+																	</select> 
+																	<%-- <input form="inlineeditform_<%=count%>" type="text" class="form-control" name="groupname" value="<%=obj[15]!=null?obj[15].toString():""%>"  maxlength="255" placeholder="Enter Group Name">--%> 
 																</td>
 																<td>
 												         		 	<select form="inlineeditform_<%=count%>" class="form-control items PresLabCode width-200px" name="PresLabCode" id="PresLabCode_<%=count %>" required="required" onchange="AgendaPresentors('<%=count %>')"  data-live-search="true" data-container="body">
@@ -239,7 +246,13 @@
 													<input type="text" class="form-control" name="remarks" value="NIL" maxlength="255" required="required" />
 												</td>
 												<td>
-													<input type="text" class="form-control" name="groupname" value="" maxlength="255" placeholder="Enter Group Name" />
+												 <select class="form-control items PresLabCode width-200px" name="groupname" id="groupName_<%=count%>" required="required" data-live-search="true" data-container="body" >
+														<option disabled="disabled"  selected value="">Group Name</option>
+														<% for(String gn : groupNames){ %>
+															<option value="<%=gn%>" ><%=StringEscapeUtils.escapeHtml4(gn) %></option>
+														<%} %>	
+													</select> 
+												<%-- <input type="text" class="form-control" name="groupname" value="" maxlength="255" placeholder="Enter Group Name" /> --%> 												
 												</td>	
 												<td>
 								         		 	<select class="form-control items PresLabCode width-200px" name="PresLabCode" id="PresLabCode_<%=count %>" required="required" onchange="AgendaPresentors('<%=count %>')"  data-live-search="true" data-container="body">
@@ -302,7 +315,13 @@
 													<input type="text" class="form-control" name="remarks" value="" maxlength="255" required="required" placeholder="Enter Remarks" />
 												</td>
 												<td>
-													<input type="text" class="form-control" name="groupname" value="" maxlength="255" placeholder="Enter Group Name" />
+												 <select class="form-control items PresLabCode width-200px" name="groupname" id="groupName_DH_0" required="required" data-live-search="true" data-container="body" >
+														<option disabled="disabled"  selected value="">Group Name</option>
+														<% for(String gn : groupNames){ %>
+															<option value="<%=gn%>" ><%=StringEscapeUtils.escapeHtml4(gn) %></option>
+														<%} %>	
+													</select> 
+													<%--	<input type="text" class="form-control" name="groupname" value="" maxlength="255" placeholder="Enter Group Name" />  --%>
 												</td>	
 												<td>
 								         		 	<select class="form-control items PresLabCode width-200px" name="PresLabCode" id="PresLabCode_DH_0" required="required" onchange="AgendaPresentorsForDH('0')"  data-live-search="true" data-container="body">
@@ -558,7 +577,6 @@ var filexcount=0;
 	{	
 		filexcount=0;
 		var fileidarr=[];
-		$(".filex").each(function() {			
             if (this.id) {            	
             	fileidarr.push(this.id);
             }
@@ -1182,7 +1200,7 @@ $(document).on("click", ".btn-clone", function () {
             $(this).attr("id", baseId + "_" + index);
         }
         
-        if (["groupname", "duration"].includes($(this).attr("name"))) {
+        if (["duration"].includes($(this).attr("name"))) {
             $(this).val("");
         }
 

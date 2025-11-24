@@ -108,7 +108,7 @@ String toDateR = fc.sdfTordf(toDate);
 											<div class="col-md-3 right empIdPdiv">
 												<select class="form-control empIdP selectdee"
 													multiple="multiple" name="allEmpIds"
-													data-placeholder="Select Employees" >
+													data-placeholder="Select Employees" required="required">
 													<%
 													if (employeeList != null && employeeList.size() > 0) {
 														for (Object[] obj : employeeList) {
@@ -117,8 +117,8 @@ String toDateR = fc.sdfTordf(toDate);
 														<%if (empIdno != null && empIdno.size() > 0 && empIdno.contains(obj[0])) {%>
 														selected <%}%>>
 														<%=(obj[1] != null
-		? StringEscapeUtils.escapeHtml4(obj[1].toString())
-		: (obj[2] != null ? StringEscapeUtils.escapeHtml4(obj[2].toString()) : ""))%>
+															? StringEscapeUtils.escapeHtml4(obj[1].toString())
+															: (obj[2] != null ? StringEscapeUtils.escapeHtml4(obj[2].toString()) : ""))%>
 														<%=obj[5] != null ? StringEscapeUtils.escapeHtml4(obj[5].toString()) : ""%>,
 														<%=obj[6] != null ? StringEscapeUtils.escapeHtml4(obj[6].toString()) : ""%>
 													</option>
@@ -142,7 +142,7 @@ String toDateR = fc.sdfTordf(toDate);
 											<div class="col-md-2">
 												<input type="text" class="form-control " name="toDate"
 													id="toDate"
-													value="<%=toDateR != null ? StringEscapeUtils.escapeHtml4(toDateR) : ""%>"">
+													value="<%=toDateR != null ? StringEscapeUtils.escapeHtml4(toDateR) : ""%>" >
 											</div>
 											<div class="col-md-2 ">
 												<button type="submit" class="btn btn-sm submit">

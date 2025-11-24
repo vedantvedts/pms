@@ -437,9 +437,10 @@ public class ActionServiceImpl implements ActionService {
 			long mainid=0l;
 			Object[] comishortname= null;
 			Object[] schedule = null;
+			Long projectId = Long.parseLong(main.getProjectId());
 			try
 			{
-				lab=dao.LabDetails();
+				lab=dao.LabDetails(); 
 				
 				if(main.getScheduleId()!=null && !main.getScheduleId().equalsIgnoreCase("0") && !main.getActionType().equalsIgnoreCase("R")) {
 					schedule = committeeDao.CommitteeScheduleEditData(main.getScheduleId());
@@ -460,36 +461,36 @@ public class ActionServiceImpl implements ActionService {
 							
 							count=Integer.parseInt(abc[0]);
 							subcount=Integer.parseInt(abc[1]);
-						}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("CCM")) {
+						}else if(projectId <= 0 && comishortname[1].toString().equalsIgnoreCase("CCM")) {
 							count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
-						}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
+						}else if(projectId <= 0 && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 							count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
-						}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
+						}else if(projectId <= 0 && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
 							count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 						}else {
 							count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
 						}
 						
-					}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("CCM")) {
+					}else if(projectId <= 0 && comishortname[1].toString().equalsIgnoreCase("CCM")) {
 						count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
-					}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname[1].toString().equalsIgnoreCase("DMC")) {
+					}else if(projectId <= 0 && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 						count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
-					}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
+					}else if(projectId <= 0 && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
 						count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 					}else {
 						count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
 					}
-				}else if(main.getProjectId().equalsIgnoreCase("0")&& comishortname!=null  && comishortname[1].toString().equalsIgnoreCase("CCM")) {
+				}else if(projectId <= 0 && comishortname!=null  && comishortname[1].toString().equalsIgnoreCase("CCM")) {
 					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
-				}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("DMC")) {
+				}else if(projectId <= 0 && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
-				}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
+				}else if(projectId <= 0 && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
 					count=dao.getActionCountByCommittee(main.getProjectId(),main.getType(), comishortname[1].toString())+1;
 				}else {
 					count=dao.ActionGenCount(main.getProjectId(),main.getType())+1;
 				}
 				
-				if(!main.getProjectId().equalsIgnoreCase("0"))
+				if(projectId > 0)
 				{
 					ProjectCode=dao.ProjectCode(main.getProjectId());
 				}
@@ -502,7 +503,7 @@ public class ActionServiceImpl implements ActionService {
 			}
 			String Project=null;
 			
-			if(!main.getProjectId().equalsIgnoreCase("0")) {
+			if(projectId > 0) {
 				if(main.getActionType().equalsIgnoreCase("S")) 
 				{
 					
@@ -520,11 +521,11 @@ public class ActionServiceImpl implements ActionService {
 				}else {
 					Project="/"+ProjectCode+"/MIL/";
 				}
-			}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("CCM")) {
+			}else if(projectId <= 0 && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("CCM")) {
 				Project="/"+comishortname[1]+"/";
-			}else if(main.getProjectId().equalsIgnoreCase("0") && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("DMC")) {
+			}else if(projectId <= 0 && comishortname!=null && comishortname[1].toString().equalsIgnoreCase("DMC")) {
 				Project="/"+comishortname[1]+"/";
-			}else if(main.getProjectId().equalsIgnoreCase("0") && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
+			}else if(projectId <= 0 && schedule!=null && !schedule[26].toString().equalsIgnoreCase("0")) {
 				ProgrammeMaster programmeMaster = committeeDao.getProgrammeMasterById(schedule[26].toString());
 				Project= "/"+programmeMaster.getPrgmCode()+"/"+comishortname[1]+"/";
 			}else{
@@ -2387,68 +2388,57 @@ public List<Object[]> RfaProjectwiseList(String empId, String projectType, Strin
 
 @Override
 public List<Object[]> getmodifieddate(String userId, int pid)throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getmodifieddate(userId,pid);
 }
 
 @Override
 public List<Object[]> getProjectByDirectorID(String empId)throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getProjectByDirectorID(empId);
 }
 
 @Override
 public List<Object[]> getRecentWeeklyUpdateDate(String string)throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getRecentWeeklyUpdateDate(string);
 	
 }
 
 @Override
 public List<Object[]> getRiskDetails(String LabCode, int pid)throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getRiskDetails(LabCode,pid);
 }
 
 @Override
 public List<Object[]> getMilestoneDate( int pid)throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getMilestoneDate(pid);
 }
 
 @Override
 public List<Object[]> getMeetingDate(int pid)throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getMeetingDate(pid);
 }
 
 @Override
 public List<Object[]> getProdurementDate(int pid)throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getProdurementDate(pid);
 }
 
 @Override
 public List<Object[]> getAllRecentUpdateList(String projectId)throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getAllRecentUpdateList(projectId);
 }
 
 @Override
 public Object getEmpnameById(int EmpId)throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getEmpnameById(EmpId);
 }
 
 @Override
 public Object getProjectCodeById(int ProjectId)throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getProjectCodeById(ProjectId);
 }
 
 @Override
 public Object getProjectShortNameById(int ProjectId)throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getProjectShortNameById(ProjectId);
 }
 
@@ -2605,7 +2595,6 @@ public long oldRfaUploadEditSubmit(OldRfaUploadDto rfadto) throws Exception {
   }
 @Override
 public List<Object[]> getMeetingList(long ProjectId, String fromDate, String toDate) throws Exception {
-	// TODO Auto-generated method stub
 	return dao.getMeetingList(ProjectId,fromDate,toDate);
 }
 
