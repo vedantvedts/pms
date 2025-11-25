@@ -115,6 +115,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 	private  SimpleDateFormat sdf= fc.getRegularDateFormat();     //new SimpleDateFormat("dd-MM-yyyy");
 	private  SimpleDateFormat sdf2=	fc.getDateMonthShortName();   //new SimpleDateFormat("dd-MMM-yyyy");
 	private SimpleDateFormat sdf3=	fc.getSqlDateFormat();			//	new SimpleDateFormat("yyyy-MM-dd");
+	private SimpleDateFormat sdf5 = new SimpleDateFormat("ddMMyyyy");
 	private static final Logger logger=LogManager.getLogger(CommitteeServiceImpl.class);
 	
 	@Value("${ApplicationFilesDrive}")
@@ -526,7 +527,10 @@ public class CommitteeServiceImpl implements CommitteeService{
 				ProjectName="GEN";
 			}
 			Date ScheduledDate= (new java.sql.Date(sdf.parse(committeescheduledto.getScheduleDate()).getTime()));
-			committeeschedule.setMeetingId(LabName.trim()+"/"+ProjectName.trim()+"/"+CommitteeName.trim()+"/"+sdf2.format(ScheduledDate).toString().toUpperCase().replace("-", "")+"/"+(SerialNo+1));
+			if(ProjectName.equalsIgnoreCase("PRGM")) {
+				committeeschedule.setMeetingId(LabName.trim()+"/7826/"+CommitteeName.trim()+"/Mtg/"+sdf5.format(ScheduledDate).toString());
+			}
+			else committeeschedule.setMeetingId(LabName.trim()+"/"+ProjectName.trim()+"/"+CommitteeName.trim()+"/"+sdf2.format(ScheduledDate).toString().toUpperCase().replace("-", "")+"/"+(SerialNo+1));			
 			
 			return dao.CommitteeScheduleAddSubmit(committeeschedule);
 		}catch (Exception e) {
@@ -586,6 +590,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 			scheduleagenda.setCreatedBy(AgendaDto.getCreatedBy());
 			scheduleagenda.setCreatedDate(sdf1.format(new Date()));
 			scheduleagenda.setIsActive(Integer.parseInt(AgendaDto.getIsActive()));
+			scheduleagenda.setGroupName(AgendaDto.getGroupName());
 //			if(AgendaDto.getDocId()!=null) {
 //				scheduleagenda.setDocId(Long.parseLong(AgendaDto.getDocId()));
 //			}else
@@ -650,6 +655,7 @@ public class CommitteeServiceImpl implements CommitteeService{
 		scheduleagenda.setPresentorLabCode(scheduleagendadto.getPresentorLabCode());
 		scheduleagenda.setPresenterId(Long.parseLong(scheduleagendadto.getPresenterId()));
 		scheduleagenda.setDuration(Integer.parseInt(scheduleagendadto.getDuration()));
+		scheduleagenda.setGroupName(scheduleagendadto.getGroupName());
 		
 //		if(scheduleagendadto.getDocId()!=null) {
 //			scheduleagenda.setDocId(Long.parseLong(scheduleagendadto.getDocId()));
@@ -942,6 +948,16 @@ public class CommitteeServiceImpl implements CommitteeService{
 		committeeminutesdetails.setScheduleMinutesId(Long.parseLong(committeeminutesdetailsdto.getScheduleMinutesId()));
 		
 		return dao.CommitteeMinutesSpecEdit(committeeminutesdetails);
+	}
+	
+	@Override
+	public Object[] CommitteeMinutesSpecEditForAde(CommitteeMinutesDetailsDto committeeminutesdetailsdto) throws Exception {
+		
+		logger.info(new Date() +"Inside SERVICE CommitteeMinutesSpecEdit ");
+		CommitteeScheduleMinutesDetails committeeminutesdetails = new CommitteeScheduleMinutesDetails();
+		committeeminutesdetails.setScheduleMinutesId(Long.parseLong(committeeminutesdetailsdto.getScheduleMinutesId()));
+		
+		return dao.CommitteeMinutesSpecEditForAde(committeeminutesdetails);
 	}
 	
 	@Override
@@ -4121,7 +4137,6 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	
 	@Override
 	public Long addCommitteeCARS(CommitteeCARS committeeCARS) throws Exception {
-		
 		return dao.addCommitteeCARS(committeeCARS);
 	}
 
@@ -4183,8 +4198,18 @@ public Long UpdateMomAttach(Long scheduleId) throws Exception {
 	}
 
 	@Override
-	public List<Object[]> committeeScheduleMinutesforActionForMom(String committeescheduleid) {
-		return dao.committeeScheduleMinutesforActionForMom(committeescheduleid);
+	public List<Object[]> committeeScheduleMinutesforActionForMomADE(String committeescheduleid) {
+		return dao.committeeScheduleMinutesforActionForMomADE(committeescheduleid);
+	}
+
+	@Override
+	public Object[] CommitteeScheduleEditDataforMom(String committeescheduleid) {
+		return dao.CommitteeScheduleEditDataforMom(committeescheduleid);
+	}
+
+	@Override
+	public List<Object[]> PrgmAgendaList(String scheduleid) {
+		return dao.PrgmAgendaList(scheduleid);
 	}
 	
 }

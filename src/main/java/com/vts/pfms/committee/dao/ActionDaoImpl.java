@@ -2233,5 +2233,25 @@ public class ActionDaoImpl implements ActionDao{
 		String projectCode=(String)query.getSingleResult();	
 		return projectCode;
 	}
+
+	private static final String ASSIGNEELISTFORFROMEXTERNAL = """
+			SELECT a.rfaid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.empname) AS 'empname',d.designation, 
+			a.assigneeid ,e.labcode, a.labcode FROM  pfms_rfa_assign a,pfms_rfa_action b,employee e,employee_desig d 
+			 WHERE a.rfaid=b.rfaid AND a.AssigneeId=e.empid AND e.desigid=d.desigid AND a.isactive='1' 
+			 UNION 
+			SELECT a.rfaid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.expertname) AS 'empname',''AS'designation', 
+			a.assigneeid ,e.organization, a.labcode AS 'Labcode' FROM  pfms_rfa_assign a,pfms_rfa_action b,expert e,employee_desig d 
+			 WHERE a.rfaid=b.rfaid AND a.AssigneeId=e.expertid AND e.desigid=d.desigid AND a.isactive='1' AND a.labcode=e.organization
+			""";
+	@Override
+	public List<Object[]> assigneeListForFromExternal() {
+		try {
+			Query query = manager.createNativeQuery(ASSIGNEELISTFORFROMEXTERNAL);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 }

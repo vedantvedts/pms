@@ -173,4 +173,8 @@ public interface ActionService {
 	public List<Object[]> TotalActions()throws Exception;
 	public List<Object[]> getProjects(String empId)throws Exception;
 	public int ActionAssignerEdit(ActionAssign assign)throws Exception;
+	
+	// Naveen 22/10/25 Non Project Action No Change
+	public long insertActionMainFornonProject(ActionMainDto mainDto, ActionAssignDto assign);
+	public List<Object[]> assigneeListForFromExternal();
 }

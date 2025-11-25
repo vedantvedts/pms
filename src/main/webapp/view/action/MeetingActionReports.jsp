@@ -188,7 +188,7 @@ String projectName = "", committeName = "", meetingName = "", statusName = "";
 																		<td>
 															               <%if(obj[7]!=null && obj[7].toString().length()>100){ %>
 															               <%=StringEscapeUtils.escapeHtml4(obj[7].toString()).substring(0, 100) %>
-														                   <input type="hidden" value='"<%=obj[7].toString()%>"' id="td<%=obj[10].toString()%>">
+														                   <textarea id="td<%=obj[10].toString()%>" style="display: none;"><%=obj[7].toString()%></textarea>
 														                   <span class="custom-sapn" onclick="showAction('<%=obj[10].toString()%>','<%=obj[0].toString()%>')">show more..</span>
 															               <%}else{ %>
 															               <%=obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):" - " %>
@@ -361,9 +361,9 @@ $(document).ready(function(){
 	                                { text: '<%= ++slno %>', style: 'tableData',alignment: 'center' },
 	                                { text: '<%= obj[0] %>', style: 'tableData',alignment: 'left' },
 	                                { text: '<%=obj[6]!=null?sdf1.format(obj[6]):"-"%>', style: 'tableData',alignment: 'center' },
-	                                { text: '<%=obj[7].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', style: 'tableData' },
-	                                { text: '<%=obj[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>, <%=obj[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', style: 'tableData' },
-	                                { text: '<%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>, <%=obj[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>', style: 'tableData' },
+	                                { text: htmlToPdfmake('<%=obj[7].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'), style: 'tableData' },
+	                                { text: htmlToPdfmake('<%=obj[1].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>, <%=obj[2].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'), style: 'tableData' },
+	                                { text: htmlToPdfmake('<%=obj[3].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>, <%=obj[4].toString().replaceAll("'", "\\\\'").replaceAll("\"", "\\\\\"").replaceAll("\n", "<br>").replaceAll("\r", "")%>'), style: 'tableData' },
 	                                { text: '<%=obj[11]!=null && !obj[11].toString().equalsIgnoreCase("0")?obj[11]+"%":"Not Yet Started"%>', style: 'tableData',alignment: 'center' },
 	                            ],
                         	<% ++i;}} else {%>

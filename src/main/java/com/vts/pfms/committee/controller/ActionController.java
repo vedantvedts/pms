@@ -1139,6 +1139,13 @@ private boolean isValidFileType(MultipartFile file) {
 			}
 			req.setAttribute("committeescheduledata",service.CommitteeActionList(CommitteeScheduleId));
 			
+			String nonProject = req.getParameter("nonproject"); 
+			if(nonProject!=null && nonProject.equalsIgnoreCase("Y")) {
+				req.setAttribute("nonproject", nonProject);
+			}else {
+				req.setAttribute("nonproject", "N");
+			}
+			
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -1171,7 +1178,8 @@ private boolean isValidFileType(MultipartFile file) {
 			
 			String UserId = (String) ses.getAttribute("Username");
 			String LabCode = (String)ses.getAttribute("labcode");
-			logger.info(new Date() +"Inside CommitteeActionSubmit.htm "+UserId);		
+//			String LabCode = "ADE";
+			logger.info(new Date() +"Inside CommitteeActionSubmit.htm "+UserId);
 			try {
 				String multipleAssignee=req.getParameter("multipleAssignee");
 				System.out.println("multipleAssignee"+multipleAssignee);
@@ -1195,13 +1203,15 @@ private boolean isValidFileType(MultipartFile file) {
 					}
 					
 				}
+			String projectId  = req.getParameter("ProjectId");
+			String nonproject = req.getParameter("nonproject");
 				
 			String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 			
 			ActionMainDto mainDto=new ActionMainDto();
 			mainDto.setMainId(req.getParameter("MainActionId"));
 			mainDto.setActionItem(req.getParameter("Item"));
-			mainDto.setProjectId(req.getParameter("ProjectId"));
+			mainDto.setProjectId(projectId);
 			mainDto.setActionLinkId(req.getParameter("OldActionNo"));
 			mainDto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
 			mainDto.setType(req.getParameter("Type"));
@@ -1245,7 +1255,14 @@ private boolean isValidFileType(MultipartFile file) {
 			assign.setPDCOrg(req.getParameter("DateCompletion"));
 			assign.setMeetingDate(req.getParameter("meetingdate"));
 			assign.setMultipleAssigneeList(emp);
-			long count =service.ActionMainInsert(mainDto,assign);
+			long count = 0;
+			
+//			if(LabCode.equalsIgnoreCase("ADE") && nonproject!=null && nonproject.equalsIgnoreCase("Y")) {
+//				count = service.insertActionMainFornonProject(mainDto,assign);
+//			}
+//			else {
+				count = service.ActionMainInsert(mainDto,assign);
+//			}
 			
 			
 			if (count > 0) {
@@ -1257,6 +1274,7 @@ private boolean isValidFileType(MultipartFile file) {
 			redir.addAttribute("specname", req.getParameter("specname"));
 			redir.addAttribute("minutesback", req.getParameter("minutesback"));
 			redir.addAttribute("committeescheduledata",service.CommitteeActionList(req.getParameter("ScheduleId")));
+			redir.addAttribute("nonproject",nonproject);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -3355,6 +3373,7 @@ private boolean isValidFileType(MultipartFile file) {
 				req.setAttribute("UserId", UserId);
 				req.setAttribute("Status", Status);
 				req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
+				req.setAttribute("ExternalFromAssignEmployee", service.assigneeListForFromExternal());
 				req.setAttribute("projectType", projectType);
 
 				
@@ -3488,7 +3507,7 @@ private boolean isValidFileType(MultipartFile file) {
 				String rfaid=req.getParameter("Did");
 				Object[] RfaActionEdit = service.RfaActionEdit(rfaid);
 				Object[] rfaAttachDownload = service.RfaAttachmentDownload(rfaid);
-				
+				String rfaType = RfaActionEdit[15].toString();
 				req.setAttribute("rfaAttachDownload", rfaAttachDownload);
 				req.setAttribute("RfaAction", RfaActionEdit);
 				req.setAttribute("ProjectList", service.LoginProjectDetailsList(EmpId, LoginType, LabCode));
@@ -3500,6 +3519,9 @@ private boolean isValidFileType(MultipartFile file) {
 				
 				
 		        List<Object[]> AssigneeList =service.AssigneeEmpList();
+		        if(rfaType.equalsIgnoreCase("F")) {
+		        	AssigneeList = service.assigneeListForFromExternal();
+		        }
 		        List<String> AssignEmp=new ArrayList<>();
 		        String assigneeLab =LabCode;
 		        for(Object[] obj :AssigneeList) {
@@ -3511,9 +3533,12 @@ private boolean isValidFileType(MultipartFile file) {
 		        
 		        
 		        List<Object[]> employeeList = service.EmployeeList(LabCode);
+		        System.out.println(assigneeLab+"======================="+LabCode);
 		        if(!assigneeLab.equalsIgnoreCase(LabCode)) {
-		        List<Object[]> employeeList1 = service.EmployeeList(assigneeLab);
-		        employeeList.addAll(employeeList1);
+		        if(rfaType.equalsIgnoreCase("E")) {
+			        List<Object[]> employeeList1 = service.EmployeeList(assigneeLab);
+			        employeeList.addAll(employeeList1);
+		        }
 		        }
 				req.setAttribute("EmployeeList", employeeList);
 		        List<Object[]> RfaCCList =service.RfaCCList();
@@ -3747,7 +3772,12 @@ private boolean isValidFileType(MultipartFile file) {
 		        String projectCode=rfadetails[2];
 		        String result=printname.replace('/', '-');
 			    Object[] RfaPrintData = service.RfaPrintData(rfaid);
-			    			  
+
+			    String rfaType = RfaPrintData[22].toString();
+			    List<Object[]> AssigneeList =service.AssigneeEmpList();
+		        if(rfaType.equalsIgnoreCase("F")) {
+		        	AssigneeList = service.assigneeListForFromExternal();
+		        }
 				req.setAttribute("RfaPrint", RfaPrintData);
 				req.setAttribute("ProjectList", service.ProjectList());		
 				req.setAttribute("ProjectTypeList",service.ProjectTypeList());
@@ -3755,7 +3785,7 @@ private boolean isValidFileType(MultipartFile file) {
 				req.setAttribute("EmployeeList", service.EmployeeList(LabCode));
 			    req.setAttribute("LabDetails", service.RfaLabDetails(LabCode)); 
 			    req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode)); 
-			    req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
+			    req.setAttribute("AssigneeEmplList", AssigneeList);
 			    req.setAttribute("RfaNoTypeList", service.getRfaNoTypeList());
 			    
 			    List<String> assignorCC =service.CCAssignorList(rfaid); 
@@ -5004,7 +5034,8 @@ private boolean isValidFileType(MultipartFile file) {
         			redir.addFlashAttribute("ScheduleId", CommitteeScheduleId);
         			redir.addFlashAttribute("minutesback", req.getParameter("minutesback"));
         			redir.addFlashAttribute("specname", req.getParameter("specnamevalue"));
-
+        			redir.addAttribute("nonproject", req.getParameter("nonproject"));
+        			
         			//rod Handling
         			String rodflag = req.getParameter("rodflag");
         			if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {
@@ -5381,7 +5412,8 @@ private boolean isValidFileType(MultipartFile file) {
         			redir.addFlashAttribute("ScheduleId", CommitteeScheduleId);
         			redir.addFlashAttribute("minutesback", req.getParameter("minutesback"));
         			redir.addFlashAttribute("specname", req.getParameter("specValueId"));
-
+        			redir.addAttribute("nonproject", req.getParameter("nonproject"));
+        			
         			//rod Handling
         			String rodflag = req.getParameter("rodflag");
         			if(rodflag!=null && rodflag.equalsIgnoreCase("Y")) {

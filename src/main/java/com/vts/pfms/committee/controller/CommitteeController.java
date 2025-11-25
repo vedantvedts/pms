@@ -1950,6 +1950,8 @@ public class CommitteeController {
 			String initiationid=committeescheduleeditdata[17].toString();
 			String carsInitiationId=committeescheduleeditdata[25].toString();
 			String programmeId=committeescheduleeditdata[26]!=null?committeescheduleeditdata[26].toString():"0";
+			
+			List<Object[]> committeeagendalist =service.AgendaList(CommitteeScheduleId);
 
 			Long committeemainid=null;
 			if(Long.parseLong(initiationid)>0) {
@@ -1986,6 +1988,7 @@ public class CommitteeController {
 			if(Long.parseLong(programmeId)>0)
 			{
 				req.setAttribute("prgmMasterDetails", service.getProgrammeMasterById(programmeId));
+				committeeagendalist = service.PrgmAgendaList(CommitteeScheduleId);
 			}
 			
 			if(Logintype.equalsIgnoreCase("A") || Logintype.equalsIgnoreCase("Z") || Logintype.equalsIgnoreCase("C")|| Logintype.equalsIgnoreCase("I")) 
@@ -1999,7 +2002,7 @@ public class CommitteeController {
 			req.setAttribute("userview",UserView);			
 			req.setAttribute("ReturnData", service.AgendaReturnData(CommitteeScheduleId));
 			req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
-			req.setAttribute("committeeagendalist", service.AgendaList(CommitteeScheduleId));
+			req.setAttribute("committeeagendalist", committeeagendalist);
 			req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(CommitteeScheduleId));	
 			req.setAttribute("employeelist", service.EmployeeList(LabCode));
 			req.setAttribute("pfmscategorylist", service.PfmsCategoryList());
@@ -2041,6 +2044,8 @@ public class CommitteeController {
 			String Remarks[]= req.getParameterValues("remarks");
 			String presenters[]=req.getParameterValues("presenterid");
 			String PresLabCode[]=req.getParameterValues("PresLabCode");
+			String groupNames[]=req.getParameterValues("groupname");
+			
 			ArrayList<String[]> docids = new ArrayList<String[]>();
 			for(int i=0 ; i<AgendaItem.length ;i++) {
 				docids.add( req.getParameterValues("attachid_"+i));
@@ -2057,6 +2062,12 @@ public class CommitteeController {
 				if(prgmstatus!=null && prgmstatus.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 			    if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
+			}
+			if (containsHTMLTags(groupNames)) {
+				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
+				if(prgmstatus!=null && prgmstatus.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
+				if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
+				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
 			}
 			List<CommitteeScheduleAgendaDto> scheduleagendadtos=new ArrayList<CommitteeScheduleAgendaDto>();
 			for(int i=0;i<AgendaItem.length;i++) 
@@ -2076,6 +2087,7 @@ public class CommitteeController {
 				//				scheduleagendadto.setAttachmentName(FileAttach[i].getOriginalFilename());
 				scheduleagendadto.setDocLinkIds(docids.get(i));
 				scheduleagendadtos.add(scheduleagendadto);
+				scheduleagendadto.setGroupName(groupNames[i]);
 			}
 
 			long count=service.CommitteeAgendaSubmit(scheduleagendadtos);
@@ -2117,6 +2129,7 @@ public class CommitteeController {
 			String presentorid=req.getParameter("presenterid");
 			String duration=req.getParameter("duration");
 			String PresLabCode=req.getParameter("PresLabCode");
+			String groupName=req.getParameter("groupname");
 			
 			if (InputValidator.isContainsHTMLTags(agendaitem)) {
 				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
@@ -2130,6 +2143,14 @@ public class CommitteeController {
 				if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'Remarks' should not contain HTML Tags.!");
 			}
+			if (InputValidator.isContainsHTMLTags(groupName)) {
+				redir.addAttribute("scheduleid",req.getParameter("scheduleid"));
+				if(prgmflag1!=null && prgmflag1.equalsIgnoreCase("Y")) return redirectWithError(redir, "PrgmScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
+				if(statusflag!=null && statusflag.equalsIgnoreCase("ROD")) return redirectWithError(redir, "RODScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
+				return redirectWithError(redir, "CommitteeScheduleAgenda.htm", "'GroupName' should not contain HTML Tags.!");
+			}
+			
+//			System.out.println(groupName+"===================================");
 			
 			//			String docid=req.getParameter("editattachid");
 			CommitteeScheduleAgendaDto scheduleagendadto = new CommitteeScheduleAgendaDto();
@@ -2144,6 +2165,7 @@ public class CommitteeController {
 			scheduleagendadto.setRemarks(remarks);
 			scheduleagendadto.setModifiedBy(UserId);
 			scheduleagendadto.setDocLinkIds( req.getParameterValues("attachid"));
+			scheduleagendadto.setGroupName(groupName);
 			//			scheduleagendadto.setAgendaAttachment(FileAttach.getBytes());
 			//			scheduleagendadto.setAttachmentName(FileAttach.getOriginalFilename());
 			//			scheduleagendadto.setDocId(docid);
@@ -2631,13 +2653,15 @@ public class CommitteeController {
 	{
 		Object[] DisDesc = null;
 		String UserId=(String)ses.getAttribute("Username");
+		String labcode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside CommitteeMinutesSpecEdit.htm "+UserId);
 		try
 		{
 			String Username = (String) ses.getAttribute("Username");
 			CommitteeMinutesDetailsDto committeeminutesdetailsdto = new CommitteeMinutesDetailsDto();
 			committeeminutesdetailsdto.setScheduleMinutesId(req.getParameter("scheduleminutesid"));
-			DisDesc = service.CommitteeMinutesSpecEdit(committeeminutesdetailsdto);
+			if(labcode.equalsIgnoreCase("ADE")) DisDesc = service.CommitteeMinutesSpecEditForAde(committeeminutesdetailsdto);
+			else DisDesc = service.CommitteeMinutesSpecEdit(committeeminutesdetailsdto);
 		}
 		catch (Exception e) {
 			e.printStackTrace(); logger.error(new Date() +"Inside CommitteeMinutesSpecEdit.htm "+UserId,e);
@@ -4245,13 +4269,14 @@ public class CommitteeController {
 			req.setAttribute("projectid",projectid);
 			req.setAttribute("initiationid",initiationid);
 			req.setAttribute("ProjectsList", projectdetailslist);
-			req.setAttribute("CommitteeAutoScheduleList", CommitteeAutoScheduleList);	
-
+			req.setAttribute("CommitteeAutoScheduleList", CommitteeAutoScheduleList);
+			
+			return "committee/CommitteeAutoScheduleList";
 		}catch(Exception e) {	    		
 			logger.error(new Date() +" Inside CommitteeAutoScheduleList.htm "+UserId, e);
 			e.printStackTrace();
+			return "static/Error";
 		}	
-		return "committee/CommitteeAutoScheduleList";
 	}
 
 
@@ -10790,9 +10815,9 @@ private boolean isValidFileType(MultipartFile file) {
 			}
 			
 			if(committeeId==null) {
-				committeeId = String.valueOf(ccmservice.getCommitteeIdByCommitteeCode("PMC"));
+				committeeId = String.valueOf(ccmservice.getCommitteeIdByCommitteeCode("PMG"));
 				if(committeeId.equals("0")) {
-					redir.addAttribute("resultfail","The PMC Committee has not yet been created");
+					redir.addAttribute("resultfail","The PMG Committee has not yet been created");
 					return "redirect:/CommitteeList.htm";
 				}
 			}
@@ -10888,9 +10913,9 @@ private boolean isValidFileType(MultipartFile file) {
 			}
 			
 			if(committeeId==null) {
-				committeeId = String.valueOf(ccmservice.getCommitteeIdByCommitteeCode("PMC"));
+				committeeId = String.valueOf(ccmservice.getCommitteeIdByCommitteeCode("PMG"));
 				if(committeeId.equals("0")) {
-					redir.addAttribute("resultfail","The PMC Committee has not yet been created");
+					redir.addAttribute("resultfail","The PMG Committee has not yet been created");
 					return "redirect:/CommitteeList.htm";
 				}
 			}
@@ -10900,7 +10925,7 @@ private boolean isValidFileType(MultipartFile file) {
 				if(committeeMainId.equals("0")) {
 					redir.addAttribute("programmeId", programmeId);
 					redir.addAttribute("committeeId", committeeId);
-					redir.addAttribute("resultfail","The PMC Committee has not yet been constituted");
+					redir.addAttribute("resultfail","The PMG Committee has not yet been constituted");
 					return "redirect:/PrgmCommitteeConstitution.htm";
 				}
 			}
@@ -10929,7 +10954,7 @@ private boolean isValidFileType(MultipartFile file) {
 			Object[] scheduledata = service.CommitteeScheduleEditData(scheduleid);
 			req.setAttribute("scheduledata", scheduledata);
 			req.setAttribute("prgmProjectList", service.prgmProjectList(scheduledata!=null?scheduledata[26].toString():"0"));
-			req.setAttribute("committeeAgendaList", service.AgendaList(scheduleid));
+			req.setAttribute("committeeAgendaList", service.PrgmAgendaList(scheduleid));
 			req.setAttribute("agendaDocList",service.AgendaLinkedDocList(scheduleid));
 			req.setAttribute("filesize",file_size);
 			req.setAttribute("labEmpList",service.PreseneterForCommitteSchedule("A"));
@@ -11154,7 +11179,7 @@ private boolean isValidFileType(MultipartFile file) {
 		try
 		{
 			String committeescheduleid = req.getParameter("committeescheduleid");
-			Object[] committeescheduleeditdata=service.CommitteeScheduleEditData(committeescheduleid);
+			Object[] committeescheduleeditdata=service.CommitteeScheduleEditDataforMom(committeescheduleid);
 			String projectid= committeescheduleeditdata[9].toString();
 			if(projectid!=null && Integer.parseInt(projectid)>0)
 			{
@@ -11381,7 +11406,7 @@ private boolean isValidFileType(MultipartFile file) {
 
 			req.setAttribute("actionsdata",actionsdata );
 			req.setAttribute("userview",UserView);
-			req.setAttribute("committeeminutesspeclist",service.committeeScheduleMinutesforActionForMom(committeescheduleid));
+			req.setAttribute("committeeminutesspeclist",service.committeeScheduleMinutesforActionForMomADE(committeescheduleid));
 			req.setAttribute("committeescheduleeditdata", committeescheduleeditdata);
 			//req.setAttribute("CommitteeAgendaList", service.CommitteeAgendaList(committeescheduleid));
 			req.setAttribute("committeeminutes",service.CommitteeMinutesSpecdetails());
@@ -11416,20 +11441,32 @@ private boolean isValidFileType(MultipartFile file) {
 
 			HtmlConverter.convertToPdf(html1,new FileOutputStream(path+File.separator+filename+"1.pdf")); 
 
+			req.setAttribute("committeeinvitedlist", service.CommitteeAtendance(committeescheduleid));
+			CharArrayWriterResponse customResponse2 = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/committee/MinutesOfMeetingAttendence.jsp").forward(req, customResponse2);
+			String html2 = customResponse2.getOutput();
+			
+			HtmlConverter.convertToPdf(html2, new FileOutputStream(path + File.separator + filename + "2.pdf"));
 
+			
 			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
 			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
 			PdfReader pdf2=new PdfReader(path+File.separator+filename+"1.pdf");
+			PdfReader pdf3=new PdfReader(path+File.separator+filename+"2.pdf");
 
 			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	       	        
 			PdfDocument pdfDocument2 = new PdfDocument(pdf2);
+			PdfDocument pdfDocument3 = new PdfDocument(pdf3);
 			PdfMerger merger = new PdfMerger(pdfDocument);
 
 			merger.merge(pdfDocument2, 1, pdfDocument2.getNumberOfPages());
-
+			merger.merge(pdfDocument3, 1, pdfDocument3.getNumberOfPages());
+			
+			pdfDocument3.close();
 			pdfDocument2.close();
 			pdfDocument.close();
 			merger.close();
+			pdf3.close();
 			pdf2.close();
 			pdf1.close();	       
 			pdfw.close();
@@ -11453,6 +11490,8 @@ private boolean isValidFileType(MultipartFile file) {
 
 			Path pathOfFile2= Paths.get( path+File.separator+filename+"1.pdf"); 
 			Files.delete(pathOfFile2);		
+			pathOfFile2 = Paths.get(path + File.separator + filename + "2.pdf"); 
+			Files.delete(pathOfFile2);
 			pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
 			Files.delete(pathOfFile2);	
 			pathOfFile2= Paths.get(path +File.separator+ "merged.pdf"); 

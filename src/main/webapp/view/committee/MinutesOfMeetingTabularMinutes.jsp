@@ -1,3 +1,4 @@
+<%@page import="java.util.Arrays"%>
 <%@page import="java.util.LinkedHashMap"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@page import="java.util.Map"%>
@@ -24,17 +25,9 @@
 		List<Object[]> committeeminutes = (List<Object[]>) request.getAttribute("committeeminutes");
 		List<Object[]> invitedlist = (List<Object[]>) request.getAttribute("committeeinvitedlist");
 		Object[] labdetails = (Object[]) request.getAttribute("labdetails");
-		HashMap< String, ArrayList<Object[]>> actionlist = (HashMap< String, ArrayList<Object[]>>) request.getAttribute("actionsdata");
-		List<Object[]> actionlists = (List<Object[]>) request.getAttribute("actionlist");
-		List<Object[]> committeeagendalist=(List<Object[]>)request.getAttribute("committeeagendalist");
 		int addcount=0; 
-		 
-		String projectid= committeescheduleeditdata[9].toString();
-		String divisionid= committeescheduleeditdata[16].toString();
-		String initiationid= committeescheduleeditdata[17].toString();
-		Object[] projectdetails=(Object[])request.getAttribute("projectdetails");
-		Object[] divisiondetails=(Object[])request.getAttribute("divisiondetails");
-		Object[] initiationdetails=(Object[])request.getAttribute("initiationdetails");
+		ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO","CH"));
+		
 		int meetingcount= (int) request.getAttribute("meetingcount");
 		
 		String[] no=committeescheduleeditdata[11].toString().split("/");
@@ -43,11 +36,8 @@
 		SimpleDateFormat sdf=fc.getRegularDateFormat();
 		SimpleDateFormat sdf1=fc.getSqlDateFormat();
 		
-		String isprint=(String)request.getAttribute("isprint");
-		String lablogo=(String)request.getAttribute("lablogo");
 		Object[] membersec=null; 
-		LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
-		
+		String OtherRemarks = null;
 		String ccmFlag = (String)request.getAttribute("ccmFlag");
 	%>
 <style type="text/css">
@@ -104,7 +94,15 @@
 	          content: "<%=LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))%>"; 
           } 
           }
-	</style>
+    .remarks-container {
+        display: flex;
+        align-items: center; /* vertically align text */
+    }
+
+    .other-remarks {
+        padding-left: 10px; /* optional: internal padding for content */
+    }
+ 	</style>
 </head>
 <body>
 	<div id="container" align="center" style="margin: 15px;">
@@ -171,39 +169,38 @@
 	  
 	  <div align="left">
 	  <!-- <h4> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I.</h4> -->
-	  	<%
-	  		StringBuilder title1 = new StringBuilder();
-			for (Object[] committeemin : committeeminutes) {
-			if (committeemin[0].toString().equals("1") || committeemin[0].toString().equals("2")) {
-				title1.append(committeemin[1].toString()+"-");
-			}}
-			String[] titlearr = title1.toString().split("-");
-			String title = "";
-			for(int i=0;i<titlearr.length;i++){
-				title+=titlearr[i];
-				if(i!=titlearr.length-1) title+=" & ";
-			}
-		%>
-		
 	   <!-- <h4 style="margin-bottom:10; padding:0;">&nbsp;&nbsp;&nbsp;&nbsp; I. &nbsp;&nbsp;	 Introduction & Opening Remarks: </h4> --> 
 	   <%-- <h4 style="margin-bottom:10; padding:0;">&nbsp;&nbsp;&nbsp;&nbsp; I. &nbsp;&nbsp;	 <%=title %>: </h4> --%> 
 		  <%
+			int countuh=1;
 				for (Object[] committeemin : committeeminutes) {
-				if (committeemin[0].toString().equals("1") || committeemin[0].toString().equals("2")) {
+				if (committeemin[0].toString().equals("1") || committeemin[0].toString().equals("3")) { 
 			%>
 			 
-	  		<span style="font-weight: bold; margin:0; padding:0; padding-left: 15px; " > <%=committeemin[0]!=null?committeemin[0].toString(): " - "%>. &nbsp;&nbsp; <%=committeemin[1]!=null?committeemin[1].toString(): " - "%> </span>
+	  		<span style="font-weight: bold; margin:0; padding:0; padding-left: 15px; " > <%=countuh++%>. &nbsp;&nbsp; <%=committeemin[1]!=null?committeemin[1].toString(): " - "%> </span>
 	  		<% int count = 0;
-
+				String agenda = "";
 				for (Object[] speclist : speclists)
 				{
-					if (speclist[3].toString().equals(committeemin[0].toString()) && speclist[1]!=null && !speclist[1].toString().trim().isEmpty()) 
+					if(speclist[3].toString().equals("7")) OtherRemarks = speclist[1].toString();
+					if (speclist[3].toString().equals(committeemin[0].toString()) && committeemin[0].toString().equals("1") && speclist[1]!=null && !speclist[1].toString().trim().isEmpty()) 
 					{
 						count++;
 				%>	
-				 <div style="padding-left: 40px"><%=speclist[1]!=null?speclist[1].toString(): " - "%></div> 
-	  		<%	break;		
+				 <div style="padding-left: 40px"><%=speclist[1]!=null?speclist[1].toString(): " - "%></div>
+	  		<%		
 							}
+					else if(speclist[3].toString().equals(committeemin[0].toString()) && committeemin[0].toString().equals("3") && speclist[10]!=null && !speclist[10].toString().trim().isEmpty() && !agenda.equalsIgnoreCase(speclist[10].toString())){
+						count++;
+						agenda = speclist[10].toString();
+						%>	
+						 <div style="padding-left: 40px; margin:10px;">
+							 <ul>
+							    <li><%= speclist[10] != null ? speclist[10].toString() : "-" %></li>
+							</ul>
+						</div>
+			  		<%		
+					}
 						}
 						if (count == 0) 
 						{%>
@@ -271,6 +268,89 @@
 					
 			<%} }%>
 	  	</div>
+	  	<div >
+	  	<%if(invitedlist.size()>0){ %>
+		<% 
+			
+			int memPresent=0,memAbscent=0,ParPresent=0,parAbscent=0;
+			int j=0;
+			for(Object[] temp : invitedlist){
+			
+				if(temp[4].toString().equals("P") &&  membertypes.contains( temp[3].toString()) )
+				{ 
+					memPresent++;
+				}
+				else if(temp[4].toString().equals("N") &&  membertypes.contains( temp[3].toString()) )
+				{
+					memAbscent++;
+				}
+				else if( temp [4].toString().equals("P") && !membertypes.contains( temp[3].toString()) )
+				{ 
+					ParPresent++;
+				}
+				else if( temp [4].toString().equals("N") && !membertypes.contains( temp[3].toString()) )
+				{ 
+					parAbscent++;
+				}
+			}
+		%>
+	  	<% 
+	  	/* Members Present List */
+				if(memPresent>0){ for(int i=0;i<invitedlist.size();i++)
+					{
+				 	if(invitedlist.get(i)[4].toString().equals("P") && membertypes.contains( invitedlist.get(i)[3].toString()) )
+				 	{ 
+				 		if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); }}}
+				}
+	  	/* Members Absent List */
+				if(memAbscent>0){ 
+					for(int i=0;i<invitedlist.size();i++) {
+				 	if(invitedlist.get(i)[4].toString().equals("N")&& membertypes.contains( invitedlist.get(i)[3].toString()) )
+				 	{
+				 		if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i); 
+				 		} }}
+				}
+				/* Participatients Present List */
+				if(ParPresent>0){ 
+					for(int i=0;i<invitedlist.size();i++)
+					{
+					 	if(invitedlist.get(i)[4].toString().equals("P") && !membertypes.contains( invitedlist.get(i)[3].toString()) )
+					 	{
+					 		if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i);}}
+					 	}
+				}
+				/* Participatients Absent List */
+				if(parAbscent>0){ 
+					for(int i=0;i<invitedlist.size();i++) {
+					 	if(invitedlist.get(i)[4].toString().equals("N")&& !membertypes.contains( invitedlist.get(i)[3].toString()) )
+					 	{
+					 		if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i);
+					 	}}
+					 }
+				}
+	  	}
+				 		%>
+		<div style="width: 650px;margin-left: 15px; ">
+			<!-- <div align="left" >
+				These minutes are issued with the approval of the Chairperson.
+			</div> -->
+			<div align="left" style="padding-right: 0rem;padding-bottom: 0rem; margin-right: 0px">
+				<!-- <br>Date :&emsp;&emsp;&emsp;&emsp;&emsp;  <br>Time :&emsp;&emsp;&emsp;&emsp;&emsp; -->
+				<%if(membersec!=null){ %>
+					<div align="right" style="padding-right: 0rem;padding-bottom: 2rem;">
+						<br><br><%if(membersec[6]!=null){%><%= membersec[6].toString().substring(membersec[6].toString().indexOf(".")+1) %><%} %>
+						<br>(Member Secretary)
+					</div>
+				<%} %>
+			</div> 
+				<div class="remarks-container">
+				    <div ><b>Other Remarks:</b></div>
+				    <div class="other-remarks"><%= OtherRemarks != null ? OtherRemarks : "NIL" %></div>
+				</div>
+						 
+			<!-- <div align="left" ><b>NOTE : </b>Action item details are enclosed as Annexure - AI.</div>		 -->
+		</div> 
+	</div>	
 	  
 	  
 	 </div>

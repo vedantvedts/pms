@@ -102,7 +102,7 @@
 															<td>
 															<%if(obj[5]!=null && obj[5].toString().length()>100){ %>
 																<%=StringEscapeUtils.escapeHtml4(obj[5].toString()).substring(0, 100) %>
-																<input type="hidden" value='"<%=obj[5].toString()%>"' id="td<%=obj[0].toString()%>">
+																<textarea style="display: none!important;" id="td<%=obj[0].toString()%>"><%=obj[5].toString()%></textarea>
 																 <span class="modified-span" onclick="showAction('<%=obj[0].toString()%>','<%=obj[9].toString()%>')">show more..</span>
 															<%}else { %>
 																<%=obj[5]!=null?StringEscapeUtils.escapeHtml4(obj[5].toString()):" - " %>

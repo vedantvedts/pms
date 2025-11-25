@@ -31,4 +31,5 @@ public class CommitteeScheduleAgenda {
 	private int IsActive;
 	private Long ParentScheduleAgendaId;
 	private String FileName;
+	private String GroupName;
 }

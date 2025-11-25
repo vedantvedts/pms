@@ -188,7 +188,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                 <td colspan="8" style="border: 1px solid black; text-align: left; font-weight: 700; height: 65px">
                 <%for(Object[] obj1 : AssigneeList){
                 	if(obj1[0].toString().equalsIgnoreCase(RfaPrint[0].toString())){%>
-                   <div style="padding-bottom:0px !important;font-weight: normal;">&nbsp;&nbsp;<%=obj1[1]!=null?obj1[1].toString():" - " %><%if(obj1[2]!=null  && obj1[2].toString().length()>0) {%>  ,<%=obj1[2].toString() %> <%} %>  <%if(RfaPrint[22].toString().equalsIgnoreCase("E")){ %>(<%=obj1[4]!=null?obj1[4].toString():" - "%>)<%} %> </div>
+                   <div style="padding-bottom:0px !important;font-weight: normal;">&nbsp;&nbsp;<%=obj1[1]!=null?obj1[1].toString():" - " %><%if(obj1[2]!=null  && obj1[2].toString().length()>0) {%>  ,<%=obj1[2].toString() %> <%} %>  <%if(RfaPrint[22].toString().equalsIgnoreCase("E") || RfaPrint[22].toString().equalsIgnoreCase("F")){ %>(<%=obj1[4]!=null?obj1[4].toString():" - "%>)<%} %> </div>
                 <%} }%>  
                 </td>        
               </tr> 
@@ -260,7 +260,7 @@ List<String> approvedIdStatus  = Arrays.asList("AP","ARC");
                  <td colspan="8" style="text-align: center;font-weight: 700; border: 1px solid black; width: 83px" name="labcode"><%=LabList[2]!=null?LabList[2].toString():" - " %> <br> <%=LabList[3]!=null?LabList[3].toString():" - " %> <br> <%=LabList[4]!=null?LabList[4].toString():" - " %> - <%=LabList[5]!=null?LabList[5].toString():" - "%> </td>
               </tr>
               <tr>
-                <td colspan="6" style="border: 1px solid black; text-align: left; font-weight: 700; height: 50px">&nbsp;&nbsp;RFA No : <span style="font-weight: normal;"><%=RfaPrint[3]!=null?RfaPrint[1].toString():" - " %> </span></td>
+                <td colspan="6" style="border: 1px solid black; text-align: left; font-weight: 700; height: 50px">&nbsp;&nbsp;RFA No : <span style="font-weight: normal;"><%=RfaPrint[3]!=null?RfaPrint[3].toString():" - " %> </span></td>
                 <td colspan="4"style="border: 1px solid black; text-align: left; font-weight: 700; height: 50px">&nbsp;&nbsp;RFA Date : <span style="font-weight: normal;"><%=RfaPrint[4]!=null ?new FormatConverter().SqlToRegularDate(  RfaPrint[4].toString()) :" - "%></span></td>
               </tr>
               <tr>

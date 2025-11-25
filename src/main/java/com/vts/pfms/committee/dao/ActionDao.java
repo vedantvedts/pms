@@ -204,4 +204,5 @@ public interface ActionDao {
 	public List<Object[]> getProjects(String empId)throws Exception;
 	public int ActionAssignerEdit(ActionAssign assign)throws Exception;
 	public String getProjectCode(Long projectId, String projectType)throws Exception;
+	public List<Object[]> assigneeListForFromExternal();
 }
