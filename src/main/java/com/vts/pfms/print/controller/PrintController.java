@@ -6751,4 +6751,244 @@ public class PrintController {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	    }
 	}
+
+	@RequestMapping(value = "LabAllProjectReport.htm" , method = RequestMethod.GET)
+	public void LabAllProjectReport(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+	{
+		long startTime = System.currentTimeMillis();
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String) ses.getAttribute("labcode");
+		String Logintype = (String) ses.getAttribute("LoginType");
+		logger.info(new Date() + "Inside GetAllProjectSlide.htm " + UserId);
+		try {
+	
+		List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+		
+		List<String>projectIds = projectslist.stream().map(e->e[0].toString())
+								.collect(Collectors.toList());
+		
+		List<Object[]> getAllProjectSlidedata = new ArrayList<>();
+
+		List<Object[]> getAllProjectdata = new ArrayList<>();
+
+		List<Object[]> getAllProjectSlidesdata = new ArrayList<>();
+
+		if (projectIds != null && projectIds.size() > 0)
+
+			for (String id : projectIds) {
+
+				List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id);  // freezing data
+				Object[] projectslidedata = (Object[]) service.GetProjectSildedata(id);  //[7] id project id
+				getAllProjectSlidesdata.add(projectslidedata);
+				Object[] projectdata = (Object[]) service.GetProjectdata(id); //[0] is project id ------ all vals
+				getAllProjectdata.add(projectdata);
+				if (getoneProjectSlidedata.size() > 0) {
+					for (Object[] objects : getoneProjectSlidedata) {
+						getAllProjectSlidedata.add(objects);
+					}
+				}
+
+			}
+
+		Comparator<Object[]> dateComparator = new Comparator<Object[]>() {
+
+			@Override
+
+			public int compare(Object[] o1, Object[] o2) {
+
+				Date date1 = (Date) o1[5];
+
+				Date date2 = (Date) o2[5];
+
+				return date1.compareTo(date2);
+
+			}
+
+		};
+
+		List<Object[]>projectPMRCMeetings = service.getProjectMeetings("PMRC");
+		List<Object[]>ebPMRCMeetings = service.getProjectMeetings("EB");
+		List<Object[]>projectSPRCMeetings = service.getProjectMeetings("SPRC");
+
+		List<Object[]>projectClosureReport = service.getProjectClosureReport();
+		
+		List<Object[]>projectList = service.getprojectListProjectDirectorWise();
+
+			if (getAllProjectdata.size() > 1) {
+				Collections.sort(getAllProjectdata, dateComparator);
+				Collections.sort(getAllProjectSlidedata, dateComparator);
+			}
+			Collections.reverse(getAllProjectdata);
+
+			String labcode = ses.getAttribute("labcode").toString();
+
+			req.setAttribute("getAllProjectdata", getAllProjectdata);
+			req.setAttribute("projectPMRCMeetings", projectPMRCMeetings);
+			req.setAttribute("ebMeetings", ebPMRCMeetings);
+			req.setAttribute("projectSPRCMeetings", projectSPRCMeetings);
+			req.setAttribute("projectList", projectList);
+			req.setAttribute("projectClosureReport", projectClosureReport);
+
+			req.setAttribute("labInfo", service.LabDetailes(labcode));
+
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
+
+			req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+
+			req.setAttribute("filepath", ApplicationFilesDrive);
+
+			req.setAttribute("getAllProjectSlidedata", getAllProjectSlidedata);
+			req.setAttribute("getAllProjectSlidesdata", getAllProjectSlidesdata);
+
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			req.getRequestDispatcher("/view/print/LabAllProjectReport.jsp").forward(req, customResponse);
+			String html = customResponse.getOutput();
+
+			ConverterProperties converterProperties = new ConverterProperties();
+			FontProvider dfp = new DefaultFontProvider(true, true, true);
+			converterProperties.setFontProvider(dfp);
+			String filename="ProjectPara";
+			String path=req.getServletContext().getRealPath("/view/temp");
+			HtmlConverter.convertToPdf(html,new FileOutputStream(path+File.separator+filename+".pdf"),converterProperties);
+			PdfWriter pdfw=new PdfWriter(path +File.separator+ "merged.pdf");
+			PdfReader pdf1=new PdfReader(path+File.separator+filename+".pdf");
+			PdfDocument pdfDocument = new PdfDocument(pdf1, pdfw);	
+			pdfDocument.close();
+			pdf1.close();	       
+			pdfw.close();
+			res.setContentType("application/pdf");
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf"); 
+			File f=new File(path+"/"+filename+".pdf");
+
+			OutputStream out = res.getOutputStream();
+			FileInputStream in = new FileInputStream(f);
+			byte[] buffer = new byte[4096];
+			int length;
+			while ((length = in.read(buffer)) > 0) {
+				out.write(buffer, 0, length);
+			}
+			in.close();
+			out.flush();
+			out.close();
+			Path pathOfFile2= Paths.get( path+File.separator+filename+".pdf"); 
+			Files.delete(pathOfFile2);	
+		
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+			//logger.error(new Date() + " Inside GetAllProjectSlide.htm " + UserId, e);
+
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("Time Needed "+(end-startTime));
+
+	
+	}
+
+	
+	@RequestMapping(value = "LabAllProjectExcel.htm" , method = RequestMethod.GET)
+	public String LabAllProjectExcel(HttpServletRequest req , RedirectAttributes redir, HttpServletResponse res , HttpSession ses)throws Exception
+	{
+		long startTime = System.currentTimeMillis();
+		String UserId = (String) ses.getAttribute("Username");
+		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
+		String LabCode = (String) ses.getAttribute("labcode");
+		String Logintype = (String) ses.getAttribute("LoginType");
+		logger.info(new Date() + "Inside GetAllProjectSlide.htm " + UserId);
+		try {
+	
+		List<Object[]> projectslist =service.LoginProjectDetailsList(EmpId,Logintype,LabCode);
+		
+		List<String>projectIds = projectslist.stream().map(e->e[0].toString())
+								.collect(Collectors.toList());
+		
+		List<Object[]> getAllProjectSlidedata = new ArrayList<>();
+
+		List<Object[]> getAllProjectdata = new ArrayList<>();
+
+		List<Object[]> getAllProjectSlidesdata = new ArrayList<>();
+
+		if (projectIds != null && projectIds.size() > 0)
+
+			for (String id : projectIds) {
+
+				List<Object[]> getoneProjectSlidedata = service.GetAllProjectSildedata(id);  // freezing data
+				Object[] projectslidedata = (Object[]) service.GetProjectSildedata(id);  //[7] id project id
+				getAllProjectSlidesdata.add(projectslidedata);
+				Object[] projectdata = (Object[]) service.GetProjectdata(id); //[0] is project id ------ all vals
+				getAllProjectdata.add(projectdata);
+				if (getoneProjectSlidedata.size() > 0) {
+					for (Object[] objects : getoneProjectSlidedata) {
+						getAllProjectSlidedata.add(objects);
+					}
+				}
+
+			}
+
+		Comparator<Object[]> dateComparator = new Comparator<Object[]>() {
+
+			@Override
+
+			public int compare(Object[] o1, Object[] o2) {
+
+				Date date1 = (Date) o1[5];
+
+				Date date2 = (Date) o2[5];
+
+				return date1.compareTo(date2);
+
+			}
+
+		};
+
+		List<Object[]>projectPMRCMeetings = service.getProjectMeetings("PMRC");
+		List<Object[]>ebPMRCMeetings = service.getProjectMeetings("EB");
+		List<Object[]>projectSPRCMeetings = service.getProjectMeetings("SPRC");
+
+		List<Object[]>projectClosureReport = service.getProjectClosureReport();
+		
+		List<Object[]>projectList = service.getprojectListProjectDirectorWise();
+
+			if (getAllProjectdata.size() > 1) {
+				Collections.sort(getAllProjectdata, dateComparator);
+				Collections.sort(getAllProjectSlidedata, dateComparator);
+			}
+			Collections.reverse(getAllProjectdata);
+
+			String labcode = ses.getAttribute("labcode").toString();
+
+			req.setAttribute("getAllProjectdata", getAllProjectdata);
+			req.setAttribute("projectPMRCMeetings", projectPMRCMeetings);
+			req.setAttribute("ebMeetings", ebPMRCMeetings);
+			req.setAttribute("projectSPRCMeetings", projectSPRCMeetings);
+			req.setAttribute("projectList", projectList);
+			req.setAttribute("projectClosureReport", projectClosureReport);
+
+			req.setAttribute("labInfo", service.LabDetailes(labcode));
+
+			req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(labcode));
+
+			req.setAttribute("Drdologo", LogoUtil.getDRDOLogoAsBase64String());
+
+			req.setAttribute("filepath", ApplicationFilesDrive);
+
+			req.setAttribute("getAllProjectSlidedata", getAllProjectSlidedata);
+			req.setAttribute("getAllProjectSlidesdata", getAllProjectSlidesdata);
+
+		
+		
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+			//logger.error(new Date() + " Inside GetAllProjectSlide.htm " + UserId, e);
+
+		}
+		long end = System.currentTimeMillis();
+		System.out.println("Time Needed "+(end-startTime));
+
+		return "print/AllReportExcel";
+	}
 }

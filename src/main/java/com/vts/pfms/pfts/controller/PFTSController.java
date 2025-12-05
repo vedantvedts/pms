@@ -92,6 +92,7 @@ public class PFTSController {
 		String EmpId = ((Long) ses.getAttribute("EmpId")).toString();
 		String Logintype= (String)ses.getAttribute("LoginType");
 		String projectId =req.getParameter("projectid");
+		String projectCode = req.getParameter("projectCode");
 		String UserId = (String) ses.getAttribute("Username");
 		String LabCode = (String)ses.getAttribute("labcode");
 		logger.info(new Date() +"Inside ProcurementStatus.htm "+UserId);		
@@ -113,9 +114,11 @@ public class PFTSController {
 			req.setAttribute("fileStatusList",service.getFileStatusList(projectId));
 			req.setAttribute("pftsStageList", service.getpftsStageList());
 			req.setAttribute("pftsMilestoneList", service.getpftsMilestoneList());
-			req.setAttribute("projectId",projectId);
-			String projectcode = service.ProjectData(projectId)[1].toString();
-			req.setAttribute("projectcode",projectcode);
+			req.setAttribute("projectId",projectId);			
+			if(projectCode==null) {
+				projectCode = service.ProjectData(projectId)[1].toString();
+			}
+			req.setAttribute("projectcode",projectCode);
 		}catch (Exception e) 
 		{			
 			e.printStackTrace(); 
@@ -170,7 +173,8 @@ public class PFTSController {
 		    }
 	        req.setAttribute("demandList",demandList);
 	        req.setAttribute("projectId",projectId);
-			return "pfts/AddNewDemandFile";
+	        req.setAttribute("projectCode", projectcode);
+	        return "pfts/AddNewDemandFile";
 		}catch (Exception e) 
 		{			
 			e.printStackTrace(); 
@@ -186,7 +190,9 @@ public class PFTSController {
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside AddDemandFileSubmit.htm "+UserId);		
 		try {
-			String projectId=req.getParameter("projectId");
+			String projectCode=req.getParameter("projectCode");
+			Object[] projectData = service.ProjectDataByPrjCode(projectCode);
+			String projectId=projectData[0].toString();
 			PFTSFile pf=new PFTSFile();
 			pf.setDemandNo(req.getParameter("DemandNo"));
 			pf.setDemandType("I");
@@ -209,6 +215,7 @@ public class PFTSController {
 			}
 			
 			redir.addAttribute("projectid",projectId);
+			redir.addAttribute("projectCode",projectCode);
 			return  "redirect:/ProcurementStatus.htm";
 		}catch (Exception e) 
 		{			

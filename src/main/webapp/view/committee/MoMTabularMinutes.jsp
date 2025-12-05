@@ -473,12 +473,15 @@
 				<!-- <br>Date :&emsp;&emsp;&emsp;&emsp;&emsp;  <br>Time :&emsp;&emsp;&emsp;&emsp;&emsp; -->
 				<%if(membersec!=null){ %>
 					<div align="right" style="padding-right: 0rem;padding-bottom: 2rem;">
+						<b style="margin-right: 50px!important;">Approved By</b>
 						<br><br><%if(membersec[6]!=null){%><%= membersec[6].toString() + (membersec[7]!=null?", "+membersec[7].toString():"") %><%} %>
 						<br>(Member Secretary)
 					</div>
 					<div align="left" >
 						<b>To</b>
 						<p>All Participants</p>
+						<p>Copy To :</p>
+						<p>Programme Director,AD</p>
 					</div>
 				<%} %>
 			</div>

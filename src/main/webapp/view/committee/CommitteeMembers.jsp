@@ -58,6 +58,7 @@ List<Object[]> committeeMemberreplist=(List<Object[]>)request.getAttribute("comm
 
 String LabCode = (String)request.getAttribute("LabCode");
 
+String LoginType =(String) session.getAttribute("LoginType");
 
 Object[]CommitteMainEnoteList = (Object[])request.getAttribute("CommitteMainEnoteList");
 %>
@@ -432,7 +433,8 @@ String logintype = (String)session.getAttribute("LoginType");
 						              	 </form>
 				             		</td>	
 				             		<td>
-				             		<%if( proposedmainid==null){ %>             		
+				             		<%if( proposedmainid==null ){
+				             			if(LabCode.equalsIgnoreCase("LRDE") && (LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("P"))){%>             		
 										<form  method="post" action="CommitteeDetails.htm">
 											<button  type="submit" class="btn btn-sm add">CONSTITUTE NEW COMMITTEE</button>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
@@ -444,14 +446,15 @@ String logintype = (String)session.getAttribute("LoginType");
 										</form>
 											
 											
-									<%}else if(!proposedmainid.equals(committeemainid)  ){ %>
+									<%}}else if(!proposedmainid.equals(committeemainid)  ){ 
+									if(LabCode.equalsIgnoreCase("LRDE") && (LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("P"))) {%>
 										<form  method="post" action="CommitteeMainMembers.htm">
 											<button  type="submit" class="btn btn-sm add">PROPOSED COMMITTEE</button>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 											<input type="hidden" name="committeemainid" value="<%=proposedcommitteemainid[0]%>"> 											
 										</form>
 					             		
-				             		<%} %>
+				             		<%} }%>
 				             		</td>
 			             		
 										

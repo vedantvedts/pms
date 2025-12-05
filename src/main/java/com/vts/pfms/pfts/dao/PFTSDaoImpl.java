@@ -459,4 +459,15 @@ public  class PFTSDaoImpl implements PFTSDao{
 			}
 	}
 	
+	private static final String PROJECTDATABYPRJCODE="SELECT projectid, projectcode, projectname FROM project_master WHERE projectcode=:projectcode";
+	
+	@Override
+	public Object[] ProjectDataByPrjCode(String projectcode) throws Exception {
+		
+		Query query=manager.createNativeQuery(PROJECTDATABYPRJCODE);	   
+		query.setParameter("projectcode",projectcode);
+		Object[] Project=(Object[])query.getSingleResult();	
+		
+		return Project;
+	}
 }

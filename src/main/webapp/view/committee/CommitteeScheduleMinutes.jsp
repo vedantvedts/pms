@@ -22,6 +22,13 @@
 <title>COMMITTEE SCHEDULE MINUTES</title>
 <script src="${ckeditor}"></script>
 <link href="${contentCss}" rel="stylesheet" />
+<style>
+.swal2-container {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+</style>
 </head>
 <body>
 
@@ -166,7 +173,12 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 			<%}%>
 				
 		<%}else{ %>
-		<input type="submit" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES" formaction="MOMTabularMinutesDownload.htm" formtarget="_blank"/><%} %>
+		
+		<button type="button" class="btn  btn-sm btn-secondary emailBtnStyle"  onclick="sendEmailForProgrammeMom(<%=committeescheduleeditdata[6]%>)">
+		<i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button>
+		<input type="submit" class="btn  btn-sm view minutesBtnStyle" value="TABULAR MINUTES" formaction="MOMTabularMinutesDownload.htm" formtarget="_blank"/>
+		
+		<%} %>
 		
  		
 		<input type="hidden" name="isFrozen" value="<%=committeescheduleeditdata[22]%>">
@@ -3422,6 +3434,55 @@ function subsystemAdd() {
 }
 
 
+function sendEmailForProgrammeMom(a){
+	
+	Swal.fire({
+        title: 'Are you sure to send the mail?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, send it!',
+        position: "end",
+        toast: false,
+    }).then((result) => {
+        if (result.isConfirmed) {
+        	$('body').css("filter", "blur(1.0px)");
+       	 $('#spinner').show();
+       	 $('#main1').hide();
+       	 $('#main2').hide();
+       	var committeescheduleid= a;
+       	
+        	$.ajax({
+       		type:'GET',
+       		url:'SendProgrammeMinutesOfMeeting.htm',
+       		data:{
+       			committeescheduleid:committeescheduleid,
+       		},
+       		datatype:'json',
+       		success:function (result){
+       				
+       			console.log( result);
+
+       			if(result.length>0){
+       				 $('#main1').show();
+       				 $('#main2').show();
+       				 $('#spinner').hide();
+       				 $('body').css("filter", "none");
+       				 Swal.fire({
+       			        title: "Success!",
+       			        text: "MoM sent to the Participating members",
+       			        icon: "success",
+       			        confirmButtonText: "OK",
+       			        timer:2800,
+       			     	position: "center"
+       			    });
+       			}
+       		}
+       	}) 
+        }
+    });
+}
 </script>
 
 </body>
