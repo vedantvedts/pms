@@ -1868,4 +1868,27 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		query.setParameter("successorId",successor);
 		return query.executeUpdate();
 	}
+
+	@Override
+	public Object[] getprojectDetails(String projectId) throws Exception {
+		Query query = manager.createNativeQuery("SELECT * from project_master WHERE ProjectId=:projectId");
+		query.setParameter("projectId", Long.parseLong(projectId));
+		List<Object[]> list =  (List<Object[]>) query.getResultList();
+		if(list.size()>0) {
+			return list.get(0);
+		}
+		return null;
+	}
+
+	private static final String FILEREPUPLOADDETAILS= "SELECT b.FileRepUploadId, b.FileRepId, b.FileName, b.ReportType FROM file_rep_new a LEFT JOIN file_rep_upload b ON a.FileRepId = b.FileRepId ORDER BY FileRepUploadId DESC LIMIT 1;"; 
+	@Override
+	public Object[] getFileRepUploadDetails(String projectId) throws Exception {
+		Query query = manager.createNativeQuery(FILEREPUPLOADDETAILS);
+//		query.setParameter("projectId", Long.parseLong(projectId));
+		List<Object[]> list =  (List<Object[]>) query.getResultList();
+		if(list.size()>0) {
+			return list.get(0);
+		}
+		return null;
+	}
 }

@@ -1,3 +1,5 @@
+<%@page import="lombok.val"%>
+<%@page import="java.util.Objects"%>
 <%@page import="java.util.Comparator"%>
 <%@page import="java.io.IOException"%>
 <%@page import="java.io.IOError"%>
@@ -57,6 +59,9 @@
 	.fs-12{
 		font-size: 12px;
 	} 
+	.fs-14{
+		font-size: 14px;
+	} 
 	.fs-11{
 		font-size: 11px;
 	}
@@ -68,7 +73,7 @@
           margin-buttom: 49px; 	
           border: 1px solid black;
           font-family: Arial, Helvetica, sans-serif!important; 
-          @bottom-right {          		
+          <%-- @bottom-right {          		
              content: "Page " counter(page) " of " counter(pages);
              margin-bottom: 30px;
              margin-right: 10px;
@@ -113,7 +118,7 @@
              font-size: 11px;
 	          margin-bottom: 30px;
 	          content: "<%=LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))%>"; 
-          } 
+          }  --%>
           }
 	</style>
 <meta charset="UTF-8">
@@ -171,7 +176,7 @@
 		%>
 		
 	   <!-- <h4 style="margin-bottom:10; padding:0;">&nbsp;&nbsp;&nbsp;&nbsp; I. &nbsp;&nbsp;	 Introduction & Opening Remarks: </h4> --> 
-	   <h4 class="fs-12" style="margin-bottom:10; padding:0;">&nbsp;&nbsp;&nbsp;&nbsp; I. &nbsp;&nbsp;	 <%=title %>: </h4> 
+	   <h4 style="margin-bottom:10; padding:0;">&nbsp;&nbsp;&nbsp;&nbsp; I. &nbsp;&nbsp;	 <%=title %>: </h4> 
 		  <%
 		  	List<Object[]> introandopeningremarks = speclists.stream().filter(obj -> obj[3]!=null && (obj[3].toString().equalsIgnoreCase("1") || obj[3].toString().equalsIgnoreCase("2") )).toList();
 				for (Object[] committeemin : committeeminutes) {
@@ -187,7 +192,7 @@
 					{
 						count++;
 				%>	
-				<span class="fs-12" style="font-weight: bold; margin:0; padding:0; padding-left: 40px; " > <%=committeemin[0]!=null?committeemin[0].toString(): " - "%>. &nbsp;&nbsp; <%=committeemin[1]!=null?committeemin[1].toString(): " - "%> </span>
+				<%-- <span class="fs-12" style="font-weight: bold; margin:0; padding:0; padding-left: 40px; " > <%=committeemin[0]!=null?committeemin[0].toString(): " - "%>. &nbsp;&nbsp; <%=committeemin[1]!=null?committeemin[1].toString(): " - "%> </span> --%>
 				 <div class="fs-11" style="padding-left: 70px"><%=speclist[1]!=null?speclist[1].toString(): " - "%></div> 
 	  		<%	break;		
 							}
@@ -246,7 +251,7 @@
 	  	<table style="border:1px solid black; border-collapse: collapse; width: 100%" >
 	  		<thead class="fs-12">
 	  			<tr>
-	  				<th colspan="2" style="border-bottom: 1px solid black; padding:5px; text-align: left;">&nbsp;&nbsp;&nbsp; II. &nbsp;&nbsp;Participants List (Committee Members and Invitees):</th>
+	  				<th colspan="2" style="border-bottom: 1px solid black; padding:5px; text-align: left; font-size: 0.9rem!important; font-weight: bold!important;">&nbsp;&nbsp;&nbsp; II. &nbsp;&nbsp;Participants List (Committee Members and Invitees):</th>
 	  			</tr>
 	  		</thead>
 	  		<tbody class="fs-11">	  		
@@ -345,24 +350,47 @@
 	  			<tr>
 	  				<th width="5%" style="border: 1px solid black; padding:5px;">S.No</th>
 	  				<th width="1%" style="border: 1px solid black; padding:5px;">Type</th>
-	  				<th width="59%" style="border: 1px solid black; padding:5px; text-align: left;">Directions/Action Points</th>
-	  				<th width="23%" style="border: 1px solid black; padding:5px; text-align: left;">Action By</th>
+	  				<th width="60%" style="border: 1px solid black; padding:5px; text-align: left;">Directions/Action Points</th>
+	  				<th width="22%" style="border: 1px solid black; padding:5px; text-align: left;">Action By</th>
 	  				<th width="12%" style="border: 1px solid black; padding:5px; text-align: left;">PDC</th>
 	  			</tr>
 	  		</thead>
-	  		<tbody class="fs-11">
+	  		<tbody class="fs-12">
 	  		<% int count=0,index=0, indexcount=1;
 				Long agenda=0L;
 				
 				Map<String, List<Object[]>> actionslist = speclists!=null && speclists.size()>0?speclists.stream()
-						  .collect(Collectors.groupingBy(array -> array[1].toString() , LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
+						  .collect(Collectors.groupingBy(array -> array[0].toString() , LinkedHashMap::new, Collectors.toList())) : new HashMap<>();
 						 
 					if (actionslist!=null && actionslist.size() > 0) {
 						for (Map.Entry<String, List<Object[]>> map : actionslist.entrySet()) {
-						    List<Object[]> values = map.getValue();
-						    int i=1;
+							int i=1;
+						    List<Object[]> values = map.getValue();						    
+						    List<String> divisionNames = values.stream().map(row ->{
+													    	if(row[20]!=null && row[21]!=null && row[22]!=null){
+													    		return row[21].toString();
+													    	}
+													    	return null;
+													    })
+													    .filter(Objects::nonNull)
+													    .distinct()
+													    .collect(Collectors.toList());
+						    
+						    List<Object[]> employeeNames = values.stream()
+						    		.filter( row -> row[20]==null && (Integer.parseInt(row[3].toString()) == 3 || Integer.parseInt(row[3].toString()) == 5 ) )
+						    		.map( row -> {
+						    			if(row[13]!=null && row[12]!=null){
+						    				return new Object[] {row[13].toString(), row[12].toString()};
+						    			}else return null;
+						    		})
+						    		.filter(Objects::nonNull)
+						    		.collect(Collectors.toList());
+						    String names = String.join(", ", divisionNames);						    
+						    int employeeCount = -1;
+						    
 						    for (Object[] obj : values) {
-						    	
+						    	String pdc = obj[12] !=null ? obj[12].toString(): null;
+					            int rowSpan = divisionNames!=null && divisionNames.size() > 0 ? 1 + employeeNames.size() : values.size() ;
 						        if(((obj[3] != null && Integer.parseInt(obj[3].toString()) == 3) || ( obj[3] != null && Integer.parseInt(obj[3].toString()) == 5 )) && (obj[7].toString().equalsIgnoreCase("A") || obj[7].toString().equalsIgnoreCase("C") || obj[7].toString().equalsIgnoreCase("D"))){
 						            if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("9") && obj[7]!=null && obj[7].toString().equalsIgnoreCase("C")) continue;
 						            if(obj[18] != null && Long.parseLong(obj[18].toString())!=agenda ) {
@@ -396,12 +424,12 @@
 						    	           project = temp.trim(); 
 						    	       }
 						    	   } 
-						    	   String groupname = "-";
-						    	   if(obj[19]!=null){
+						    	   String groupname = "";
+						    	   if(obj[19]!=null && obj[19].toString().length()>0){
 						    		   groupname=obj[19].toString();
 						    	   }
 						    	   %>
-						    	   <%= obj[10] != null ?"Presentation by/Discussion by : "+ (obj[16]!=null?obj[16].toString().trim():"-")+" / "+ project+" ("+ groupname +")" : "-" %>
+						    	   <%= obj[10] != null ?"Presentation by/Discussion by : "+ (obj[16]!=null?obj[16].toString().trim():"-")+" / "+ project+ (groupname.length()>0 ? " ("+ groupname +")" : "") : "-" %>
 						       <%} else if(Integer.parseInt(obj[3].toString())==5){ %>Other outcome/Action Points       <%} %>
 						    </td>
 						</tr> 
@@ -410,27 +438,47 @@
 			            }
 						%>
 						<tr>
-						    <%if(i==1){ %>
-							    <td rowspan="<%=values.size() %>"  style="border: 1px solid black; padding:5px; text-align: center;"><%= index + "." + indexcount++ %></td>
-							    <td rowspan="<%=values.size() %>" style="border: 1px solid black; padding:5px; text-align: center;">
+						<%if(i==1){ %>
+							    <td rowspan="<%=rowSpan %>"  style="border: 1px solid black; padding:5px; text-align: center;"><%= index + "." + indexcount++ %></td>
+							    <td rowspan="<%=rowSpan %>" style="border: 1px solid black; padding:5px; text-align: center;">
 										<% if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("7")) { %> P <%} 
 										else { %><%= obj[7]!=null?obj[7].toString():""%><%}%>
-										
 								</td>	  			
-							    <td rowspan="<%=values.size() %>"  style="border: 1px solid black; padding:5px; text-align: left;">
+							    <td rowspan="<%=rowSpan %>"  style="border: 1px solid black; padding:5px; text-align: left;">
 							        <% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("A")) { %> <%=obj[1]!=null?obj[1].toString(): " - "%> <%} %>
 							        <% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("C")) { %> <%=obj[1]!=null?obj[1].toString(): " - "%> <%} %>
 									<% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("D")) { %> <%=obj[1]!=null?obj[1].toString(): " - "%> <%} %>
 							    </td>
-						    <%} %>	
-						    <td style="border: 1px solid black; padding:5px; text-align: left;"><%= obj[13] != null ? obj[13].toString() : " - " %></td>	  			
-						    <td style="border: 1px solid black; padding:5px; text-align: left;"><%= obj[12] != null ? fc.SqlToRegularDate(obj[12].toString()) : " - " %></td>	  			
+								<%} %>
+						    <%-- <td rowspan="1" style="border: 1px solid black; padding:5px; text-align: left;"><%= obj[13] != null ? obj[13].toString() : " - " %></td>	  			
+						    <td rowspan="1" style="border: 1px solid black; padding:5px; text-align: left;"><%= obj[12] != null ? fc.SqlToRegularDate(obj[12].toString()) : " - " %></td>	   --%>
+						    <% if (divisionNames!=null && divisionNames.size()<= 0) { %>
+						        <td style="border:1px solid black;padding:5px; text-align:left;">
+						            <%= obj[13] != null ? obj[13] : "-" %>
+						        </td>
+						        <td style="border:1px solid black;padding:5px; text-align:left;">
+						            <%= pdc != null ? fc.SqlToRegularDate(pdc) : "-" %>
+						        </td>
+						    <% } %>
+						    <% if(divisionNames!=null && divisionNames.size()>0){ %>
+						        <td style="border:1px solid black;padding:5px; text-align:left;">
+						           	<%if(employeeCount<0){ %><%= names  %><%}
+						           	else if(employeeNames!=null && employeeNames.size()>0) {%>
+						           		<%=employeeNames.get(employeeCount)[0].toString()  %>
+						           	<%}%>
+						        </td>
+						        <td style="border:1px solid black;padding:5px; text-align:left;">
+						        <%= pdc != null ? fc.SqlToRegularDate(pdc) : "-"  %>
+						        </td>
+						    <% } %>			
 						</tr>
 						<%
 								i=0;
+						employeeCount++;
 						        }
+						        if(divisionNames!=null && divisionNames.size()>0 && employeeNames!=null && (employeeNames.size()<=employeeCount || employeeNames.size()==0)) break;
 						    }
-						}
+					}
 				 if(count==0){%>
 					<tr>
 						<td class="std" style="text-align :center;border:1px solid black;padding:7px;"  colspan="5">No Minutes details Added</td>

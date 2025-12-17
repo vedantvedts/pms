@@ -2244,9 +2244,33 @@ public class ActionDaoImpl implements ActionDao{
 			 WHERE a.rfaid=b.rfaid AND a.AssigneeId=e.expertid AND e.desigid=d.desigid AND a.isactive='1' AND a.labcode=e.organization
 			""";
 	@Override
-	public List<Object[]> assigneeListForFromExternal() {
+	public List<Object[]> assigneeListForFromExternal() throws Exception{
 		try {
 			Query query = manager.createNativeQuery(ASSIGNEELISTFORFROMEXTERNAL);
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Object[]> divisionList() throws Exception {
+		try {
+			Query query = manager.createNativeQuery("SELECT * FROM division_master");
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static final String DIVISIONEMPLOYEESLIST = "SELECT e.EmpId, CONCAT(IFNULL(CONCAT(e.Title,' '),''), e.Empname) AS 'empname', b.designation FROM division_master d LEFT JOIN employee e ON e.divisionId = d.divisionId LEFT JOIN employee_desig b ON b.desigId = e.desigId WHERE d.DivisionId = :divisionId;";
+	@Override
+	public List<Object[]> getDivisionEmployeesList(String divisionId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(DIVISIONEMPLOYEESLIST);
+			query.setParameter("divisionId", Long.parseLong(divisionId));
 			return (List<Object[]>)query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();

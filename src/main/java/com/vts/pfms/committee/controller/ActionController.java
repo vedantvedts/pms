@@ -1091,7 +1091,7 @@ private boolean isValidFileType(MultipartFile file) {
 			String CommitteeScheduleId=null;
 			String specname=null;
 			String MinutesBack=null;
-			
+			String programmeId = req.getParameter("programmeId");
 			if(req.getParameter("ScheduleId")!=null) {
 				
 				CommitteeScheduleId=req.getParameter("ScheduleId");
@@ -1123,6 +1123,8 @@ private boolean isValidFileType(MultipartFile file) {
 			}
 			/* ------------------ end ----------------------- */
 			String projectid =committeescheduleeditdata[9].toString();
+			
+			List<Object[]> divisionList = service.divisionList();
 		
 			req.setAttribute("minutesback", MinutesBack);
 			req.setAttribute("specname", specname);
@@ -1130,6 +1132,8 @@ private boolean isValidFileType(MultipartFile file) {
 			req.setAttribute("AllLabList", service.AllLabList());
 			req.setAttribute("labcode", LabCode);
 			req.setAttribute("EmpNameList", service.EmployeeList(LabCode));
+			req.setAttribute("divisionList", divisionList);
+			req.setAttribute("programmeId",programmeId);
 			if(Long.parseLong(projectid)>0)
 			{
 				req.setAttribute("EmployeeList", service.ProjectEmpList(projectid));
@@ -1183,6 +1187,9 @@ private boolean isValidFileType(MultipartFile file) {
 			try {
 				String multipleAssignee=req.getParameter("multipleAssignee");
 				System.out.println("multipleAssignee"+multipleAssignee);
+				String programmeId = req.getParameter("programmeId");
+				
+				
 				//06-11
 				List<Object[]> allEmployees = new ArrayList<>();
 				if(multipleAssignee!=null) {
@@ -1194,6 +1201,16 @@ private boolean isValidFileType(MultipartFile file) {
 				{
 					emp=allEmployees.stream().map(i -> i[0].toString()).collect(Collectors.toList());
 				}
+				
+				String multipleDivisionAssignee = req.getParameter("multipleDivisionAssignee");
+				List<Object[]> divisionEmployees = new ArrayList<Object[]>();
+				if(multipleDivisionAssignee!=null) {
+					divisionEmployees = service.getDivisionEmployeesList(multipleDivisionAssignee);
+				}
+				if(divisionEmployees.size()>0) {
+					emp = divisionEmployees.stream().map(i -> i[0].toString()).collect(Collectors.toList());
+				}
+				
 				String[]a=req.getParameterValues("Assignee");
 				if(a!=null) {
 					for(String s:a) {
@@ -1275,6 +1292,7 @@ private boolean isValidFileType(MultipartFile file) {
 			redir.addAttribute("minutesback", req.getParameter("minutesback"));
 			redir.addAttribute("committeescheduledata",service.CommitteeActionList(req.getParameter("ScheduleId")));
 			redir.addAttribute("nonproject",nonproject);
+			redir.addAttribute("programmeId",programmeId);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -5753,4 +5771,20 @@ private boolean isValidFileType(MultipartFile file) {
 		    redir.addAttribute("resultfail", message);
 		    return "redirect:/"+redirURL;
 		}
+		
+		 @RequestMapping(value="getDivisionEmployees.htm",method=RequestMethod.GET)
+   		public @ResponseBody String getDivisionEmployeesList(HttpServletRequest req,HttpSession ses) throws Exception {
+   			String UserId=(String)ses.getAttribute("Username");
+   			Gson json = new Gson();
+   			List<Object[]> divisionEmployees=new ArrayList<>();
+   			logger.info(new Date()+"Inside getDivisionEmployees.htm "+UserId);
+   			try {
+   				String divisionId=req.getParameter("divisionId");
+   				divisionEmployees=service.getDivisionEmployeesList(divisionId); 
+   			}
+   			catch(Exception e) {
+   				e.printStackTrace();
+   			}
+   			return json.toJson(divisionEmployees);
+   		}
 }

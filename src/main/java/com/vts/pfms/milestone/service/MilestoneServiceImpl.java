@@ -10,6 +10,7 @@ import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -627,14 +628,18 @@ public class MilestoneServiceImpl implements MilestoneService {
 		Date enddate = fc.getSqlDateFormat().parse(dto.getEndDate());
 		Date progressDate=fc.getSqlDateFormat().parse(progressdate);
 		
+		LocalDate today = LocalDate.now();
+		LocalDate endDateLocalDate = enddate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		LocalDate progressLocalDate = progressDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
 		dto.setCreatedDate(fc.getSqlDateFormat().format(new Date()));
 		if("100".equalsIgnoreCase(dto.getProgressStatus())) {
-		dto.setDateOfCompletion(progressdate);
-		if(enddate.after(progressDate)) {
-		dto.setActivityStatusId("3");
-		}else {
-			dto.setActivityStatusId("5");
-		}
+			dto.setDateOfCompletion(progressdate);
+			if(endDateLocalDate.isEqual(progressLocalDate) || endDateLocalDate.isAfter(progressLocalDate)) {
+				dto.setActivityStatusId("3");	
+			}else {
+				dto.setActivityStatusId("5");
+			}
 		}
 		else if("0".equalsIgnoreCase(dto.getProgressStatus())) {
 			dto.setActivityStatusId("1");
@@ -2149,6 +2154,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 			
 			Zipper zip=new Zipper();
 			String Pass=dao.FilePass(upload.getUserId());
+			String reportType = upload.getReportType();
 			
 			if(fileType.equalsIgnoreCase("mainLevel")) {
 				Object[] repData = dao.RepMasterData(upload.getFileRepMasterId());
@@ -2180,6 +2186,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		            uploadNew.setCreatedBy(upload.getUserId());
 		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		            uploadNew.setIsActive(1);
+		            uploadNew.setReportType(reportType);
 					long count = dao.FileUploadInsertNew(uploadNew);
 					
 					 if(count>0) {
@@ -2212,6 +2219,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		            uploadNew.setCreatedBy(upload.getUserId());
 		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		            uploadNew.setIsActive(1);
+		            uploadNew.setReportType(reportType);
 					long count1 = dao.FileUploadInsertNew(uploadNew);
 					
 					 if(count1>0) {
@@ -2251,6 +2259,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		            uploadNew.setCreatedBy(upload.getUserId());
 		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		            uploadNew.setIsActive(1);
+		            uploadNew.setReportType(reportType);
 					long count = dao.FileUploadInsertNew(uploadNew);
 					
 					 if(count>0) {
@@ -2283,6 +2292,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 		            uploadNew.setCreatedBy(upload.getUserId());
 		            uploadNew.setCreatedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 		            uploadNew.setIsActive(1);
+		            uploadNew.setReportType(reportType);
 					long count1 = dao.FileUploadInsertNew(uploadNew);
 					
 					 if(count1>0) {
@@ -2792,5 +2802,15 @@ public class MilestoneServiceImpl implements MilestoneService {
 	@Override
 	public long  saveMilestoneSub(MilestoneActivitySub attach) throws Exception {
 		return dao.MilestoneActivitySubInsert(attach);
+	}
+
+	@Override
+	public Object[] getprojectDetails(String projectId) throws Exception {
+		return dao.getprojectDetails(projectId);
+	}
+
+	@Override
+	public Object[] getFileRepUploadDetails(String projectId) throws Exception {
+		return dao.getFileRepUploadDetails(projectId);
 	}
 }

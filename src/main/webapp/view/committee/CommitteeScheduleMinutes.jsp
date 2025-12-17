@@ -1562,6 +1562,7 @@ function showAttachmentModal(){
 				<input type="hidden" name="ScheduleId" value="<%=committeescheduleeditdata[6] %>">	
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 				<input type="hidden" name="minutesback" value="minutesback"/>
+				<input type="hidden" name="programmeId" value="<%= programmeId%>"> 
 				<%if(Long.parseLong(projectid)==0 && Long.parseLong(divisionid)==0 && Long.parseLong(initiationid)==0 && Long.parseLong(carsInitiationId)==0 && Long.parseLong(programmeId)==0 && userview==null && LabCode.equalsIgnoreCase("ADE")){%>
 				<input type="hidden" name="nonproject" value="Y" >
 				<%} %>

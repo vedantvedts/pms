@@ -3991,16 +3991,19 @@ private static final String ENOTEAPPROVELIST="SELECT MAX(a.EnoteId) AS EnoteId,M
 	
 //	---------------------------------- Naveen R 3/9/25 MOM Check ------------------------------------------
 
-	private static final String AGENDAACTIONLIST = " SELECT DISTINCT a.ScheduleMinutesId, a.Details, a.ScheduleId, a.MinutesId, a.ScheduleSubId, a.MinutesSubOfSubId, a.MinutesSubId, a.idarck, \r\n"
-			+ "a.remarks, b.outcomename, CASE WHEN a.MinutesId = 3 THEN c.agendaitem ELSE 'Other Outcomes' END AS agenda, a.agendasubhead, e.PDCOrg, \r\n"
-			+ "CASE  WHEN e.AssigneeLabCode = '@EXP' THEN CONCAT(IFNULL(CONCAT(j.Title, ' '), IFNULL(CONCAT(j.Salutation, ' '), '')), \r\n"
-			+ "j.ExpertName, ', ', g.Designation) ELSE CONCAT(IFNULL(CONCAT(f.Title, ' '), IFNULL(CONCAT(f.Salutation, ' '), '')), f.EmpName, ', ', g.Designation) \r\n"
-			+ "END AS Assignees, e.ActionNo, c.AgendaPriority , (SELECT CONCAT(IFNULL(CONCAT(z.Title, ' '), IFNULL(CONCAT(z.Salutation, ' '), '')), z.EmpName, ', ', w.Designation) \r\n"
-			+ "FROM employee z LEFT JOIN employee_desig w ON w.DesigId=z.DesigId WHERE z.empId = c.PresenterId ) AS Presenter, c.PresenterID, c. ScheduleAgendaId , c.GroupName \r\n"
-			+ "FROM committee_schedules_minutes_details a JOIN committee_schedules_minutes_outcome b ON a.idarck = b.idarck JOIN committee_schedules_agenda c 						\r\n"
-			+ "ON c.scheduleagendaid = a.minutessubid LEFT JOIN action_main d ON a.ScheduleMinutesId = d.ScheduleMinutesId LEFT JOIN action_assign e ON \r\n"
-			+ "d.ActionMainId = e.ActionMainId AND e.isActive = 1 LEFT JOIN employee f ON e.Assignee = f.EmpId LEFT JOIN employee_desig g ON g.DesigId = f.DesigId LEFT JOIN expert j \r\n"
-			+ "ON e.Assignee = j.ExpertId WHERE a.scheduleid = :InScheduleId ORDER BY CASE WHEN MinutesId = 3 THEN 1 ELSE 3 END, AgendaPriority, minutesSubOfSubId, agenda, ScheduleMinutesId ,idarck, ActionNo; ";
+	private static final String AGENDAACTIONLIST = """
+			SELECT DISTINCT a.ScheduleMinutesId, a.Details, a.ScheduleId, a.MinutesId, a.ScheduleSubId, a.MinutesSubOfSubId, a.MinutesSubId, a.idarck, 
+			a.remarks, b.outcomename, CASE WHEN a.MinutesId = 3 THEN c.agendaitem ELSE 'Other Outcomes' END AS agenda, a.agendasubhead, e.PDCOrg, 
+			CASE  WHEN e.AssigneeLabCode = '@EXP' THEN CONCAT(IFNULL(CONCAT(j.Title, ' '), IFNULL(CONCAT(j.Salutation, ' '), '')), 
+			j.ExpertName, ', ', g.Designation) ELSE CONCAT(IFNULL(CONCAT(f.Title, ' '), IFNULL(CONCAT(f.Salutation, ' '), '')), f.EmpName, ', ', g.Designation) 
+			END AS Assignees, e.ActionNo, c.AgendaPriority , (SELECT CONCAT(IFNULL(CONCAT(z.Title, ' '), IFNULL(CONCAT(z.Salutation, ' '), '')), z.EmpName, ', ', w.Designation) 
+			FROM employee z LEFT JOIN employee_desig w ON w.DesigId=z.DesigId WHERE z.empId = c.PresenterId ) AS Presenter, c.PresenterID, c. ScheduleAgendaId , c.GroupName, divi.divisionId ,divi.divisionName, divi.divisionCode
+			FROM committee_schedules_minutes_details a JOIN committee_schedules_minutes_outcome b ON a.idarck = b.idarck JOIN committee_schedules_agenda c 	
+			ON c.scheduleagendaid = a.minutessubid LEFT JOIN action_main d ON a.ScheduleMinutesId = d.ScheduleMinutesId LEFT JOIN action_assign e ON 
+			d.ActionMainId = e.ActionMainId AND e.isActive = 1 LEFT JOIN employee f ON e.Assignee = f.EmpId LEFT JOIN employee_desig g ON g.DesigId = f.DesigId LEFT JOIN expert j 
+			ON e.Assignee = j.ExpertId LEFT JOIN division_master divi ON divi.divisionid = f.divisionId 
+			WHERE a.scheduleid = :InScheduleId ORDER BY CASE WHEN MinutesId = 3 THEN 1 ELSE 3 END, AgendaPriority, minutesSubOfSubId, agenda, ScheduleMinutesId ,idarck, ActionNo IS NULL; 			
+			""";
 	@Override
 	public List<Object[]> CommitteeScheduleMinutesforAction(String committeescheduleid) {
 		Query query=manager.createNativeQuery(AGENDAACTIONLIST); 
