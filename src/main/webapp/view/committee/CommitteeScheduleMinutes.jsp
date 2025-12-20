@@ -802,7 +802,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 										                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 									                    	<input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>R<%=form18 %>" />
 															<input class="form-control" type="hidden" name="unit1" value="#5Out<%=scheduleagendaid %>" readonly="readonly">				
-									          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" onclick="FormNameEditA('myForm<%=temp %>R<%=form13 %>')" value="EDIT"/>
+									          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" onclick="FormNameActionsEdit('myForm<%=temp %>R<%=form13 %>')" value="EDIT"/>
 									          			
 									       			</form>
 									      		</td>
@@ -832,7 +832,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	        					<h4 class="panel-title">
 	          						<span class="fs-14px">3.<%=unitcount %>.3.<%=unit13 %>.</span>  </h4>
 	          						<div class="mt-n22px ml-55px">
-	          							<select class="width-165px" name="OutComesId" id="OutComesId" required="required"  data-live-search="true">
+	          							<select class="width-165px" name="OutComesId" id="OutComesId" required="required"  data-live-search="true" onChange="changeAgendaOptions(this.value)">
 	                                        <%for(Object[] obj:minutesoutcomelist){ %>	
 												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
@@ -843,13 +843,14 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						
 	          						</div>
 	          						<div class="mt-n26px ml-240px">
-	          						<input type="submit" class="btn btn-info btn-sm outComeInfoSubmitStyle" name="sub"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" value="ADD" onclick="FormNameA('myForm<%=form6 %><%=temp %>R<%=form18 %>')"/>
+	          						<input type="submit" class="btn btn-info btn-sm outComeInfoSubmitStyle" name="sub"  id="rm<%=form7 %><%=temp %>R<%=form18 %>" value="ADD" onclick="FormNameActions('myForm<%=form6 %><%=temp %>R<%=form18 %>')"/>
 	          						
 
 	        					    </div>
 	        					    <input type="hidden" name="specname" value="Agenda-<%=Unit %>-Outcomes">
 	        					    <input class="form-control" type="hidden" name="agendasubid" value="9" readonly="readonly">
 									<input class="form-control" type="hidden" name="minutesid" value="3" readonly="readonly">
+									<input class="form-control" type="hidden" id="agendaOptions" name="agendaOptions" value="A" readonly="readonly">									
 									<input class="form-control" type="hidden" name="scheduleagendaid" value="<%=scheduleagendaid %>" readonly="readonly">
 	        					    <input class="form-control" type="hidden" name="committeescheduleid" value="<%=committscheduleid %>" readonly="readonly">
 								    <input type="hidden" name="formname" value="rm<%=form7 %><%=temp %>R<%=form18 %>" />
@@ -1086,7 +1087,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 									                    <input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" />  
 								                        <input type="hidden" name="formname" value="rm<%=form1 %>" /> 
 														<input class="form-control" type="hidden" name="unit1" value="5" readonly="readonly">
-								          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle" id="rm<%=form1 %>"   onclick="FormNameEditA('myForm<%=form1 %>')" value="EDIT"/>
+								          			<input type="submit" class="btn btn-warning btn-sm warningSubmitInputStyle" id="rm<%=form1 %>"   onclick="FormNameActionsEdit('myForm<%=form1 %>')" value="EDIT"/>
 								          			
 								       			</form>
 								      		</td>
@@ -1117,18 +1118,19 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	        					<h4 class="panel-title">
 	          						<span class="fs-14px">5.<%=unitcount1 %>.</span>  </h4>
 	          						<div class="mt-n22px ml-25px">
-		          						<select class="width-165px" name="OutComesId" id="Assignee" required="required"  data-live-search="true">
+		          						<select class="width-165px" name="OutComesId" id="Assignee" required="required"  data-live-search="true" onChange="changeOtherOutcomesOptions(this.value)">
 		                                    <%for(Object[] obj:minutesoutcomelist){ %>	
 												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
 										</select>
 	          						</div>
 	          						<div class="mt-n26px ml-200px">
-	          						<input type="submit" class="btn btn-info btn-sm outComeInfoSubmitStyle" name="sub"  id="rm<%=form1 %>" value="ADD" onclick="FormNameA('myForm<%=form1 %>')"/>
+	          						<input type="submit" class="btn btn-info btn-sm outComeInfoSubmitStyle" name="sub"  id="rm<%=form1 %>" value="ADD" onclick="FormNameActions('myForm<%=form1 %>')"/>
 	        					    </div>
 	        					       <input class="form-control" type="hidden" name="agendasubid" value="0" readonly="readonly">
 									    <input class="form-control" type="hidden" name="minutesid" value="5" readonly="readonly">
 									   <input class="form-control" type="hidden" name="scheduleagendaid" value="0" readonly="readonly">
+									   <input class="form-control" type="hidden" id="otherOutcomesOptions" name="otherOutcomesOptions" value="A" readonly="readonly">
 	        		                   <input type="hidden" name="specname" value="Other OutComes">
 	        					    <input class="form-control" type="hidden" name="committeescheduleid" value="<%=committscheduleid %>" readonly="readonly">
 								    
@@ -1452,7 +1454,8 @@ int unitcount=1;  long unit=1; String Unit=null; int countloop=100; int form=145
 	          						<span class="fs-14px"><%if(dmcFlag!=null) {%> 1<%} else{%> 3<%} %>.<%=unit13 %>.</span>  </h4>
 	          						<div class="mt-n22px ml-55px">
 	          							<select class="width-165px" name="OutComesId" id="OutComesId" required="required"  data-live-search="true">
-	                                        <%for(Object[] obj:minutesoutcomelist){ %>	
+	                                        <%for(Object[] obj:minutesoutcomelist){
+	                                        	%>	
 												<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
 											<%} %>
 										</select>
@@ -1710,6 +1713,7 @@ function showAttachmentModal(){
 							<input class="form-control" type="hidden" name="schedulminutesid" id="scheduleminutesidedit" >
 							<input class="form-control" type="hidden" name="aircraftidadd" id="aircraftidvalue">
 							<input class="form-control" type="hidden" name="subsystemidadd" id="subsystemidvalue" >
+							<input class="form-control" type="hidden" id ="outcomesIdforEdit" name="outcomesId">
 							
 						</label>
 					</div>
@@ -1747,6 +1751,18 @@ function showAttachmentModal(){
 									  <input class="form-check-input" type="radio" name="darc" id="comments" value="C">
 									  <label class="form-check-label" for="comments">Comments</label>
 									</div>
+									<div class="form-check form-check-inline">
+									  <input class="form-check-input" type="radio" name="darc" id="action" value="A">
+									  <label class="form-check-label" for="Action">Action</label>
+									</div>
+									<div class="form-check form-check-inline">
+									  <input class="form-check-input" type="radio" name="darc" id="issue" value="I">
+									  <label class="form-check-label" for="Issue">Issue</label>
+									</div>
+									<div class="form-check form-check-inline">
+									  <input class="form-check-input" type="radio" name="darc" id="risk" value="K">
+									  <label class="form-check-label" for="Risk">Risk</label>
+									</div>
   								
   								</div>
  
@@ -1755,6 +1771,17 @@ function showAttachmentModal(){
   									<input  class="form-control width-80Per"  type="text" maxlength="255"  placeholder="Nil" name="remarks" id="remarks">
   								
                         		</div>
+                        		<div id="OutComeDivforspecadd" class="w-25">
+                        		<div class="form-group">
+                        		<label class="">Outcome Type </label>
+  	                               <select  class="form-control" name="darc" id="OutComespecadd" required="required" onChange="changeAgendaOptionsForEdit(this.value)"  data-live-search="true"  >
+                                        <%for(Object[] obj:minutesoutcomelist){ %>	
+											<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%></option>	
+															
+										<%} %>
+									</select>
+								</div>
+								</div>
   
 								<div align="center" class="mt-n25px">
 									<br>
@@ -1763,8 +1790,9 @@ function showAttachmentModal(){
 																	
  										<input type="submit" name="sub" class="btn  btn-sm submit" form="specadd"  id="adding" value="SUBMIT"  />
 								  		<input type="submit" name="sub" class="btn  btn-sm submit" form="specadd" id="editing"  value="SUBMIT" formaction="CommitteeMinutesEditSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
+										<input type="submit" name="sub" class="btn  btn-sm submit deleteBgBorderStyle" form="specadd" id="deletingspecadd"  value="DELETE" formaction="CommitteeMinutesDeleteSubmit.htm" onclick="return confirm('Are you sure To Submit?')"/>
 										<input type="submit" name="sub" hidden="hidden" form="specadd" id="hiddensubmit">
-										<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">	
+										<input type="hidden" name="scheduleid" value="<%=committeescheduleeditdata[6] %>">
 										<input type="hidden" name="schedulesubid" value="1" readonly="readonly">
 										<input type="hidden" name="membertype" value="<%=membertype %>" readonly="readonly">
 										<input type="hidden" name="committeename" value="<%=committeescheduleeditdata[8]%>">
@@ -2354,6 +2382,8 @@ function editcheck1(editfileid)
     		    $('#PresDiscHeader').hide();
     		    $('#aircraftDiv').hide();
     		    $('#subsystemDiv').hide();
+    		    $('#OutComeDivforspecadd').hide();
+    			$('#deletingspecadd').hide();
     		    var minutesidadd = $("input[name='minutesid']",this).val();
     		    var specnameadd= $("input[name='specname']",this).val();
     		    var agendasubidadd= $("input[name='agendasubid']",this).val();
@@ -2437,6 +2467,8 @@ function editcheck1(editfileid)
     		    $('#specair').show();
     		    $('#OutComeDiv').hide();
     		    $('#PresDiscHeader').hide();
+    		    $('#OutComeDivforspecadd').hide();
+    			$('#deletingspecadd').hide();
     		    var minutesidadd = $("input[name='minutesid']",this).val();
     		    var specnameadd= $("input[name='specname']",this).val();
     		    var agendasubidadd= $("input[name='agendasubid']",this).val();
@@ -2543,6 +2575,8 @@ function editcheck1(editfileid)
     		    $('#specair').hide();
     		    $('#aircraftDiv').hide();
     		    $('#subsystemDiv').hide();
+    		    $('#OutComeDivforspecadd').hide();
+    			$('#deletingspecadd').hide();
     		    
     		    var minutesidadd = $("input[name='minutesid']",this).val();
     		    var specnameadd= $("input[name='specname']",this).val();
@@ -2637,6 +2671,8 @@ function editcheck1(editfileid)
 	       $('#PresDiscHeader').show();
 		    $('#aircraftDiv').hide();
 		    $('#subsystemDiv').hide();
+		    $('#OutComeDivforspecadd').hide();
+			$('#deletingspecadd').hide();
 	       
   		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
   		 	var specnameadd= $("input[name='specname']",this).val();
@@ -2712,6 +2748,8 @@ function editcheck1(editfileid)
   	         $('#specair').show();
   	       $('#OutComeDiv').show();
   	     $('#PresDiscHeader').hide();
+  	    $('#OutComeDivforspecadd').hide();
+  		$('#deletingspecadd').hide();
 
 		    	var minutesidadd = $("input[name='minutesid']",this).val();
     		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
@@ -2821,6 +2859,8 @@ function editcheck1(editfileid)
 	    $('#specair').hide();
 	    $('#aircraftDiv').hide();
 	    $('#subsystemDiv').hide();
+	    $('#OutComeDivforspecadd').hide();
+		$('#deletingspecadd').hide();
   		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
   		 	var specnameadd= $("input[name='specname']",this).val();
   		 	var formnameadd= $("input[name='formname']",this).val();
@@ -3061,8 +3101,6 @@ function sendEmail(a){
 		
 		success:function (result){
 				
-			console.log( result);
-
 			if(result.length>0){
 				 $('#main1').show();
 				 $('#main2').show();
@@ -3095,8 +3133,6 @@ function sendEmails(a){
 			
 			success:function (result){
 					
-				console.log( typeof result);
-				console.log(result)
 				if(result.length>0){
 					 $('#main1').show();
 					 $('#main2').show();
@@ -3156,7 +3192,6 @@ function sendDraftMoM(a){
 
 var scheduleId="0";
 function showModal(a){
-	console.log(a)
 	$.ajax({
 	
 		type:'GET',
@@ -3206,12 +3241,9 @@ $('#chatModal').modal('show');
 
 
 function submitRemarks(){
-	console.log(scheduleId)
 	
 	
 	var remarks = $('#RemarksEdit').val().trim();
-	console.log(remarks)
-	
 	if(remarks.length==0){
 		Swal.fire({
 			  icon: "error",
@@ -3223,7 +3255,6 @@ function submitRemarks(){
 		event.preventDefault();
 		return false;
 	}
-	console.log(remarks +"remarks")
 	
 	Swal.fire({
 title: 'Are you sure?',
@@ -3281,7 +3312,6 @@ function handleAirCraftChange() {
     	return; 
     }
 	
-	console.log(acValue)
 	if(acValue==="0" || acValue===0 ){
 		$('#aircraftAddModal').modal('show');
 		$('#aircraftidvalue').val(''); 
@@ -3295,7 +3325,6 @@ function handleAirCraftChange() {
 function aircraftAdd() {
 	
 	const aircraft = $('#aircraftname').val();
-	console.log(aircraft);
 	
 	if(acValue === '' ){
 		alert("Please fill all the fields")
@@ -3361,7 +3390,6 @@ function handleSubSystemChange() {
     	$('#subsystemidedit').val(''); // if you use edit hidden input too
     	return; // skip if null/empty
     }
-	console.log(subsystem)
 	if(subsystem === '0' || subsystem === 0){
 		$('#subsystemidvalue').val(''); 
     	$('#subsystemidedit').val(''); 
@@ -3376,7 +3404,6 @@ function subsystemAdd() {
 	
 	const subsystem = $('#subsystemname').val();
 	
-	console.log(subsystem);
 	if(subsystem===''){
 		alert("Please fill all the fields")
 		event.preventDefault();
@@ -3462,8 +3489,6 @@ function sendEmailForProgrammeMom(a){
        		},
        		datatype:'json',
        		success:function (result){
-       				
-       			console.log( result);
 
        			if(result.length>0){
        				 $('#main1').show();
@@ -3484,6 +3509,329 @@ function sendEmailForProgrammeMom(a){
         }
     });
 }
+
+function FormNameActions(formId){
+	
+	$("#"+formId).submit(function(event){
+	    event.preventDefault();
+	    $('#editing').hide();
+	    $('#adding').show();
+	    $('#specadd').show();
+	    $('#specair').hide();
+	    $('#aircraftDiv').hide();
+	    $('#subsystemDiv').hide();
+		$('#OutComeDivforspecadd').hide();
+		$('#deletingspecadd').hide();
+	    
+	    var minutesidadd = $("input[name='minutesid']",this).val();
+	    var specnameadd= $("input[name='specname']",this).val();
+	    var agendasubidadd= $("input[name='agendasubid']",this).val();
+	    var scheduleagendaidadd= $("input[name='scheduleagendaid']",this).val();
+	    var unit1idadd= $("input[name='unit1id']",this).val();
+	    var formnameadd= $("input[name='formname']",this).val();
+	    
+	    var unit1Val;
+	    
+	    if(minutesidadd=="3"){
+	 		unit1Val="#5Out"
+	 		console.log(unit1Val)
+	 	}else if(minutesidadd=="5"){
+	 		unit1Val="5"
+	 		console.log(unit1Val)
+	 	}
+	    
+	    $("#minutesidadd").val(minutesidadd);
+	    $("#specnameadd").val(specnameadd);
+	    $("#agendasubidadd").val(agendasubidadd);
+	    $("#scheduleagendaidadd").val(scheduleagendaidadd);
+	    $("#formnameadd").val(formnameadd);
+	    $("#unit1idadd").val(unit1Val);
+	    
+	    $.ajax({
+			type : "GET",
+			url : "CommitteeMinutesSpecAdd.htm",
+			data : {
+				
+				minutesid : minutesidadd,
+				specname:specnameadd,
+				agendasubid:agendasubidadd,
+				scheduleagendaid:scheduleagendaidadd,
+				unit1:unit1idadd,
+				formname:formnameadd,
+				
+			},
+			datatype : 'json',
+			success : function(result) {
+				
+				var result = JSON.parse(result);
+				var values = Object.keys(result).map(function(e) {
+					  return result[e]
+					});
+
+					if(scheduleagendaidadd==0){
+					document.getElementById('iditemsubspecofsub').innerHTML = "" ;
+					}	
+					
+					if(scheduleagendaidadd!=0){
+					document.getElementById('iditemsubspecofsub').innerHTML = " / " + values[4]; 
+					}
+					
+
+					if(agendasubidadd==0){
+						
+						document.getElementById('iditemsubspec').innerHTML = "";
+    				}
+					if(agendasubidadd!=0){
+					
+					document.getElementById('iditemsubspec').innerHTML = " / " + values[3]; 
+					}
+
+					 $("#decision").prop("checked", false); 
+					 $("#action").prop("checked", false); 
+					 $("#recommendation").prop("checked", false); 
+					 $("#comments").prop("checked", false); 
+					 $("#issue").prop("checked", false); 
+					 $("#risk").prop("checked", false); 
+					if(minutesidadd===3 || minutesidadd==='3'){
+						var options;
+						var type = $('#agendaOptions').val();
+						 
+						if(type=="D"){
+		 		             $("#decision").prop("checked", true); 
+		 		             options = "Decision";
+						}
+						if(type=="A"){
+		 		             $("#action").prop("checked", true); 
+		 		             options = "Action";
+						}
+						if(type=="R"){
+							options = "Recommendation";
+		 		             $("#recommendation").prop("checked", true); 
+						}
+						if(type=="C"){ 
+							options = "Comment";
+				            $("#comments").prop("checked", true); 
+						}
+						if(type=="I"){
+		 		             $("#issue").prop("checked", true); 
+							options = "Issue";
+						}
+						if(type=="K"){
+		 		             $("#risk").prop("checked", true); 
+							options = "Risk";
+						}
+						document.getElementById('iditemunit').innerHTML = " / " +options;
+					}
+					if(minutesidadd===5 || minutesidadd==='5'){
+						var options;
+						var type = $('#otherOutcomesOptions').val();
+						 
+						if(type=="D"){
+		 		             $("#decision").prop("checked", true); 
+		 		             options = "Decision";
+						}
+						if(type=="A"){
+		 		             $("#action").prop("checked", true); 
+		 		             options = "Action";
+						}
+						if(type=="R"){
+							options = "Recommendation";
+		 		             $("#recommendation").prop("checked", true); 
+						}
+						if(type=="C"){ 
+							options = "Comment";
+				            $("#comments").prop("checked", true); 
+						}
+						if(type=="I"){
+		 		             $("#issue").prop("checked", true); 
+							options = "Issue";
+						}
+						if(type=="K"){
+		 		             $("#risk").prop("checked", true); 
+							options = "Risk";
+						}
+						document.getElementById('iditemunit').innerHTML = " / " +options;
+					}
+					
+				document.getElementById('iditemspec').innerHTML = values[1];
+		
+				
+				CKEDITOR.instances['summernote'].setData();
+				$("#remarks").val('');
+				$('#OutComeDivforspecadd').hide();
+				$('#deletingspecadd').hide();
+				/* drcdiv */
+				
+						 
+	  		         	 $("#drcdiv").hide();
+	  		        
+	  		         	 
+	  		         if(formId=="myForm34" || formId=="myForm35" || formId=="myForm36"){
+	  	  				CKEDITOR.instances['summernote'].setReadOnly(true);
+	   	  		        }else{
+	   	  		       CKEDITOR.instances['summernote'].setReadOnly(false);
+	   	  		        }    
+		
+			}
+		});
+	   
+	  });
+  
+}
+function FormNameActionsEdit(formId){
+	
+	$("#"+formId).submit(function(event){
+		event.preventDefault();
+		  $('#adding').hide();
+		 $('#editing').show();
+		 $('#deletingair').show();
+		 $('#specadd').show();
+         $('#specair').hide();
+       $('#OutComeDiv').show();
+     $('#PresDiscHeader').hide();
+	    $('#aircraftDiv').hide();
+		    $('#subsystemDiv').hide();
+
+	    	var minutesidadd = $("input[name='minutesid']",this).val();
+		    var itemidadd = $("input[name='scheduleminutesid']",this).val();
+		 	var specnameadd= $("input[name='specname']",this).val();
+		 	var formnameadd= $("input[name='formname']",this).val();
+		 	var unit1idadd= $("input[name='unit1']",this).val();
+		 	
+		 	
+		 	$("#specnameadd").val(specnameadd);
+		 	$("#formnameadd").val(formnameadd);
+		 	$("#unit1idadd").val(unit1idadd); 
+		 	
+		    $.ajax({
+				type : "GET",
+				url : "CommitteeMinutesSpecEdit.htm",
+				data : {
+					scheduleminutesid : itemidadd,
+					specname:specnameadd,
+					forname:formnameadd,
+					
+				},
+				datatype : 'json',
+				success : function(result) {
+					
+					var result = JSON.parse(result);
+					var values = Object.keys(result).map(function(e) {
+						  return result[e]
+						});
+			
+			$("#scheduleidedit").val(values[2]);	
+  			$("#minutesidedit").val(values[0]);
+  		    $("#scheduleminutesidedit").val(values[3]);
+  		    
+  		  document.getElementById('iditemsubspec').innerHTML = '';
+  		    
+				document.getElementById('iditemsubspecofsub').innerHTML =  values[4]; 
+				
+				if(minutesidadd=='3'){
+					document.getElementById('iditemsubspec').innerHTML = " / " + values[8] +" / "+values[7] ; 
+				}
+			
+
+				document.getElementById('iditemspecair').innerHTML = values[4];
+
+				var options;
+				var type = values[10];
+				
+				 $("#decision").prop("checked", false); 
+				 $("#action").prop("checked", false); 
+				 $("#recommendation").prop("checked", false); 
+				 $("#comments").prop("checked", false); 
+				 $("#issue").prop("checked", false); 
+				 $("#risk").prop("checked", false); 
+				 
+				if(type=="D"){
+ 		             $("#decision").prop("checked", true); 
+ 		             options = "Decision";
+				}
+				if(type=="A"){
+ 		             $("#action").prop("checked", true); 
+ 		             options = "Action";
+				}
+				if(type=="R"){
+					options = "Recommendation";
+ 		             $("#recommendation").prop("checked", true); 
+				}
+				if(type=="C"){ 
+					options = "Comment";
+		            $("#comments").prop("checked", true); 
+				}
+				if(type=="I"){
+ 		             $("#issue").prop("checked", true); 
+					options = "Issue";
+				}
+				if(type=="K"){
+ 		             $("#risk").prop("checked", true); 
+					options = "Risk";
+				}
+				
+				document.getElementById('iditemunit').innerHTML = " / " +options;
+				
+				document.getElementById('iditemspec').innerHTML = ''
+		
+				
+				CKEDITOR.instances['summernote'].setData(values[1]);
+				$("#remarks").val(values[9]);
+				$('#OutComespecadd').val(type);
+				$('#OutComeDivforspecadd').show();
+				$('#deletingspecadd').show();
+	  		    $("#drcdiv").hide();
+	  		         	 
+		    	if(formId=="myForm34" || formId=="myForm35" || formId=="myForm36"){
+  					CKEDITOR.instances['summernote'].setReadOnly(true);
+  		        }else{
+	  		       CKEDITOR.instances['summernote'].setReadOnly(false);
+  		        }    
+		
+			}
+		});
+	   
+	  });
+  
+}
+function changeAgendaOptions(value){
+	document.getElementById("agendaOptions").value = value;
+}
+function changeOtherOutcomesOptions(value){
+	document.getElementById("otherOutcomesOptions").value = value;
+}
+function changeAgendaOptionsForEdit(value){
+	document.getElementById("outcomesIdforEdit").value = value;
+	 $("#decision").prop("checked", false); 
+	 $("#action").prop("checked", false); 
+	 $("#recommendation").prop("checked", false); 
+	 $("#comments").prop("checked", false); 
+	 $("#issue").prop("checked", false); 
+	 $("#risk").prop("checked", false); 
+	if(value=="D"){
+         $("#decision").prop("checked", true); 
+	}
+	if(value=="A"){
+         $("#action").prop("checked", true); 
+	}
+	if(value=="R"){
+         $("#recommendation").prop("checked", true); 
+	}
+	if(value=="C"){ 
+       $("#comments").prop("checked", true); 
+	}
+	if(value=="I"){
+         $("#issue").prop("checked", true); 
+	}
+	if(value=="K"){
+         $("#risk").prop("checked", true); 
+	}
+}
+$(document).ready(function () {
+    $('#OutComeDivforspecadd').hide();
+	$('#deletingspecadd').hide();
+});
+
 </script>
 
 </body>

@@ -4947,9 +4947,12 @@ private boolean isValidFileType(MultipartFile file) {
           			String projectid= req.getParameter("projectid");
           			String projectType= req.getParameter("projectType");
           			String rfatypeid=req.getParameter("rfatypeid");
+          			String rfatype = req.getParameter("rfatype");
+          			String employeeId = req.getParameter("employeeId");
+          			String rfaStatus = req.getParameter("rfaStatus");
           			String fdate = req.getParameter("fdate");
           			String tdate = req.getParameter("tdate");
-          			
+          			rfatype = rfatype!=null ? rfatype : "I";
           			FormatConverter fc=new FormatConverter();
       				SimpleDateFormat sdf=fc.getRegularDateFormat();
       				SimpleDateFormat sdf1=fc.getSqlDateFormat();
@@ -4970,7 +4973,7 @@ private boolean isValidFileType(MultipartFile file) {
           	        }
           			
       				if(rfatypeid==null) {
-      					rfatypeid = "-"; // if rfatype is null selected the first one default
+      					rfatypeid = "-"; 
       				}
       				 LocalDate currentDate = LocalDate.now();
       				if(fdate==null)
@@ -4990,8 +4993,14 @@ private boolean isValidFileType(MultipartFile file) {
       				{	
       					tdate=sdf1.format(sdf.parse(tdate));				
       				}
+
+      				List<Object[]>RfaActionList = new ArrayList<Object[]>();
+      				if(LabCode.equalsIgnoreCase("ADE")) {
+      					RfaActionList = service.getRfaActionsOnRFAtype(projectType,projectid,rfatypeid,rfatype,employeeId,fdate,tdate,rfaStatus);
+      				}else {
+      					RfaActionList = service.rfaTotalActionList(projectType, projectid, rfatypeid, fdate, tdate);
+      				}
       				
-      				List<Object[]>RfaActionList = service.rfaTotalActionList(projectType,projectid,rfatypeid,fdate,tdate);
       				req.setAttribute("ProjectList", ProjectList);		
       				req.setAttribute("preProjectList", preProjectList);		
       				req.setAttribute("RfaNoTypeList", RfaNoTypeList);
@@ -5000,6 +5009,10 @@ private boolean isValidFileType(MultipartFile file) {
       				req.setAttribute("projectid", projectid);
       				req.setAttribute("projectType", projectType);
       				req.setAttribute("rfatypeid", rfatypeid);
+      				req.setAttribute("employeeList", service.EmployeeList(LabCode));
+      				req.setAttribute("employeeId", employeeId);
+      				req.setAttribute("rfaStatus", rfaStatus);
+      				req.setAttribute("rfatype", rfatype);
       				req.setAttribute("fdate", fdate);
       				req.setAttribute("tdate", tdate);
           		}
@@ -5108,10 +5121,20 @@ private boolean isValidFileType(MultipartFile file) {
         			String rfatypeid=req.getParameter("rfatypeid");
         			String fdate = req.getParameter("reportFromdate");
         			String tdate = req.getParameter("reportTodate");
+          			String rfatype = req.getParameter("rfatype");
+          			String rfaStatus = req.getParameter("rfaStatus");
+          			String employeeId = req.getParameter("employeeId");
+          			rfatype = rfatype!=null ? rfatype : "I";
         			
         			List<Object[]> ProjectList = service.LoginProjectDetailsList(EmpId, LoginType, LabCode);
         			List<Object[]> preProjectList = reqservice.getPreProjectList(LoginType, LabCode, EmpId);
-        			List<Object[]>RfaActionReportList = service.rfaTotalActionList(projectType,projectid,rfatypeid,fdate,tdate);
+        			
+        			List<Object[]> RfaActionReportList = new ArrayList<Object[]>();
+      				if(LabCode.equalsIgnoreCase("ADE")) {
+      					RfaActionReportList = service.getRfaActionsOnRFAtype(projectType,projectid,rfatypeid,rfatype,employeeId,fdate,tdate,rfaStatus);
+      				}else {
+      					RfaActionReportList = service.rfaTotalActionList(projectType, projectid, rfatypeid, fdate, tdate);
+      				}
         			
         			req.setAttribute("RfaActionReportList", RfaActionReportList);
         			req.setAttribute("AssigneeEmplList", service.AssigneeEmpList());
@@ -5120,8 +5143,11 @@ private boolean isValidFileType(MultipartFile file) {
         			req.setAttribute("projectType", projectType);
         			req.setAttribute("projectid", projectid);
     				req.setAttribute("rfatypeid", rfatypeid);
+      				req.setAttribute("employeeId", employeeId);
+      				req.setAttribute("rfatype", rfatype);
     				req.setAttribute("fdate", fdate);
     				req.setAttribute("tdate", tdate);
+    				req.setAttribute("rfaStatus", rfaStatus);
     				req.setAttribute("lablogo", LogoUtil.getLabLogoAsBase64String(LabCode));
     				
         			

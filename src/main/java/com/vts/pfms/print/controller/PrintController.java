@@ -3149,7 +3149,7 @@ public class PrintController {
 			System.out.println("setMilestoneDetailsToResponse --- "+projectid);
 
 			if(projectid!=null) {
-				List<Object[]> main=headservice.MilestoneActivityList(projectid);
+				List<Object[]> main=headservice.GanttChartList(projectid);
 				List<Object[]> MilestoneActivityA0=new ArrayList<Object[]>();
 				List<Object[]> MilestoneActivityB0=new ArrayList<Object[]>();
 				List<Object[]> MilestoneActivityC0=new ArrayList<Object[]>();

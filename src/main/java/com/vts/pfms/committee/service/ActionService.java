@@ -179,4 +179,6 @@ public interface ActionService {
 	public List<Object[]> assigneeListForFromExternal()throws Exception;
 	public List<Object[]> divisionList()throws Exception;
 	public List<Object[]> getDivisionEmployeesList(String divisionId) throws Exception;
+	public List<Object[]> getRfaActionsOnRFAtype(String projectType, String projectid, String rfatypeid, String rfaType,String empId, String fdate, String tdate,String rfaStatus) throws Exception;
+	
 }

@@ -903,21 +903,29 @@ public class MilestoneController {
 			mainDto.setWeightage(req.getParameter("Weightage"));
 			mainDto.setCreatedBy(UserId);
 			
+			String activityType = req.getParameter("ActivityType");
 			
 			System.out.println("Valid To -" +req.getParameter("ValidTo"));
 			
-			MilestoneActivityLevel level = service.getMilestoneActivityLevelById(req.getParameter("ActivityId"));
 			
-			System.out.println(level.getEndDate());
-		   
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-			LocalDate date = LocalDate.parse(req.getParameter("ValidTo"), formatter);
-			LocalDate date1 = LocalDate.parse(level.getEndDate().toString());
-			
-			long daysBetween = ChronoUnit.DAYS.between(date1, date);
-			if(daysBetween!=0) {
-				updateTheLinkMilstoneTimeLine(req.getParameter("ActivityId"),daysBetween,UserId);
+			if(activityType!=null && !activityType.equalsIgnoreCase("M")) {
+				
+			  MilestoneActivityLevel level = service.getMilestoneActivityLevelById(req.getParameter("ActivityId"));
+			 
+			  System.out.println(level.getEndDate());
+			  
+			  
+			  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			  LocalDate date = LocalDate.parse(req.getParameter("ValidTo"), formatter);
+			  LocalDate date1 = LocalDate.parse(level.getEndDate().toString());
+			  
+			  long daysBetween = ChronoUnit.DAYS.between(date1, date); if(daysBetween!=0) {
+				  updateTheLinkMilstoneTimeLine(req.getParameter("ActivityId"),daysBetween, UserId); 
+			  }
+			  
 			}
+			
+			
 	
 			int count =service.MilestoneActivityUpdate(mainDto);
 

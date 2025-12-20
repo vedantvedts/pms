@@ -1,5 +1,6 @@
 	package com.vts.pfms.milestone.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -535,16 +536,19 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		return trans.getActivityTransactionId();
 	}
 	@Override
-	public int ActivityMainSum(String Id,String ActivityId) throws Exception {
-		try {
-			Query query = manager.createNativeQuery(MILESUM);
-			query.setParameter("projectid", Long.parseLong(ActivityId));
-			query.setParameter("id", Long.parseLong(Id));
-			return (Integer)query.getSingleResult();
-		}catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
+	public int ActivityMainSum(String Id, String ActivityId) {
+	    try {
+	        Query query = manager.createNativeQuery(MILESUM);
+	        query.setParameter("projectid", Long.parseLong(ActivityId));
+	        query.setParameter("id", Long.parseLong(Id));
+
+	        BigDecimal result = (BigDecimal) query.getSingleResult();
+	        return result != null ? result.intValue() : 0;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
 	}
 
 	@Override

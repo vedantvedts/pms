@@ -2903,4 +2903,9 @@ public int ActionAssignerEdit(ActionAssign assign) throws Exception {
 	public List<Object[]> getDivisionEmployeesList(String divisionId) throws Exception {
 		return dao.getDivisionEmployeesList(divisionId);
 	}
+	
+	@Override
+	public List<Object[]> getRfaActionsOnRFAtype(String projectType,String projectid, String rfatypeid,String rfaType,String empId, String fdate, String tdate,String rfaStatus) throws Exception {
+		return dao.getRfaActionsOnRFAtype(projectType,projectid,rfatypeid,rfaType,empId,fdate,tdate,rfaStatus);
+	}
 }

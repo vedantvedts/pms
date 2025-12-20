@@ -2507,7 +2507,7 @@ public class CommitteeController {
 
 		String UserId=(String)ses.getAttribute("Username");
 		String labcode = (String)ses.getAttribute("labcode");
-//		String labcode = "ADE";
+//		String labcode = "PGAD";
 		logger.info(new Date() +"Inside CommitteeMinutesSubmit.htm "+UserId);
 		try
 		{
@@ -2521,16 +2521,16 @@ public class CommitteeController {
 			String subsystemid = req.getParameter("subsystemidedit");
 			
 
-			if ((minutesid.equalsIgnoreCase("3") || minutesid.equalsIgnoreCase("5")) 
-					&& InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
-				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-				redir.addAttribute("specname", req.getParameter("specname"));
-				redir.addAttribute("membertype",req.getParameter("membertype"));
-				redir.addAttribute("formname", req.getParameter("formname"));
-				redir.addAttribute("unit1",req.getParameter("unit1"));
-			    if(status!=null && status.equalsIgnoreCase("ROD"))	return  redirectWithError(redir,"RODScheduleMinutes.htm","HTML elements should not be entered !");
-			    return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
-			}
+//			if (!labcode.equalsIgnoreCase("PGAD") && (minutesid.equalsIgnoreCase("3") ||  minutesid.equalsIgnoreCase("5")) 
+//					&& InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
+//				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+//				redir.addAttribute("specname", req.getParameter("specname"));
+//				redir.addAttribute("membertype",req.getParameter("membertype"));
+//				redir.addAttribute("formname", req.getParameter("formname"));
+//				redir.addAttribute("unit1",req.getParameter("unit1"));
+//			    if(status!=null && status.equalsIgnoreCase("ROD"))	return  redirectWithError(redir,"RODScheduleMinutes.htm","HTML elements should not be entered !");
+//			    return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
+//			}
 
 			if(InputValidator.isContainsHTMLTags(Remarks)) {
 				redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
@@ -2576,12 +2576,13 @@ public class CommitteeController {
 
 			String SpecName = req.getParameter("specname");
 			String CommitteeName= req.getParameter("committeename");
-
+			String unit1 = req.getParameter("unit1");
+			if(minutesid.equalsIgnoreCase("3") && unit1.length()<6) unit1+=req.getParameter("scheduleagendaid");
 
 			if (count > 0) {
-				redir.addAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
-				redir.addAttribute("unit1",req.getParameter("unit1"));
-				redir.addAttribute("unit1",req.getParameter("unit2"));
+				redir.addFlashAttribute("result", CommitteeName + " Schedule Minutes (" + SpecName + ") Added Successfully");
+				redir.addFlashAttribute("unit1",unit1);
+				redir.addFlashAttribute("unit2",req.getParameter("unit2"));
 
 
 
@@ -2675,7 +2676,7 @@ public class CommitteeController {
 		{
 			String UserId=(String)ses.getAttribute("Username");
 			String labcode = (String)ses.getAttribute("labcode");
-//			String labcode = "ADE";
+//			String labcode = "PGAD";
 			logger.info(new Date() +"Inside CommitteeMinutesEditSubmit.htm "+UserId);
 			try
 			{
@@ -2683,16 +2684,16 @@ public class CommitteeController {
 				String subsystemid = req.getParameter("subsystemidedit");
 				String status = req.getParameter("redirpageflag");
 				String minutesid = req.getParameter("minutesidedits");
-				if ((minutesid.equalsIgnoreCase("3") || minutesid.equalsIgnoreCase("5")) 
-						&& InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
-					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
-					redir.addAttribute("specname", req.getParameter("specname"));
-					redir.addAttribute("membertype",req.getParameter("membertype"));
-					redir.addAttribute("formname", req.getParameter("formname"));
-					redir.addAttribute("unit1",req.getParameter("unit1"));				
-					if(status!=null && status.equalsIgnoreCase("ROD"))	return  redirectWithError(redir,"RODScheduleMinutes.htm","HTML elements should not be entered !");
-					return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
-				}
+//				if (!labcode.equalsIgnoreCase("PGAD") &&  (minutesid.equalsIgnoreCase("3") || minutesid.equalsIgnoreCase("5")) 
+//						&& InputValidator.isContainsHTMLTags(req.getParameter("NoteText"))) {
+//					redir.addAttribute("committeescheduleid", req.getParameter("scheduleid"));
+//					redir.addAttribute("specname", req.getParameter("specname"));
+//					redir.addAttribute("membertype",req.getParameter("membertype"));
+//					redir.addAttribute("formname", req.getParameter("formname"));
+//					redir.addAttribute("unit1",req.getParameter("unit1"));				
+//					if(status!=null && status.equalsIgnoreCase("ROD"))	return  redirectWithError(redir,"RODScheduleMinutes.htm","HTML elements should not be entered !");
+//					return  redirectWithError(redir,"CommitteeScheduleMinutes.htm","HTML elements should not be entered !");
+//				}
 				String ActionName=req.getParameter("NoteText");
 				String Remarks=req.getParameter("remarks");
 				
