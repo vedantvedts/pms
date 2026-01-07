@@ -140,11 +140,21 @@ String programmeId = (String) request.getAttribute("programmeId");
 									<span class="font-size14">
 										<%=(ccmFlag!=null&&ccmFlag.equalsIgnoreCase("Y")?"3":(dmcFlag!=null&&dmcFlag.equalsIgnoreCase("Y")?"1":obj[7]!=null?StringEscapeUtils.escapeHtml4(obj[7].toString()):" - ") )+"."+(count++) +". "%> <%-- <%=obj[4] %> --%>  
 									<input type="hidden" id="Data<%=obj[0].toString()%>" value="<%=obj[1].toString()%>">
-									<%if(obj[1]!=null && obj[1].toString().length()>50) {%>
-									<%=StringEscapeUtils.escapeHtml4(obj[1].toString().substring(0,50)) %><span class="cursor-pointer" onclick='showModal("<%=obj[0].toString()%>")'>&nbsp;( view more)</span>
-									<%}else {%>
-									<%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()):" - " %>
-									<%} %>	
+									<span class="font-size14">
+											<%
+											String content = obj[1] != null ? obj[1].toString() : " - ";
+											content = content.replaceAll("(?i)</?(p|div|strong)[^>]*>", "");
+											%>											
+											<%= content.length() > 50 ? content.substring(0,50) : content %>
+											
+											<% if(content.length() > 45) { %>
+											<span class="cursor-pointer"
+											      onclick='showModal("<%=obj[0].toString()%>")'>
+											   &nbsp;(view more)
+											</span>
+											<%} %>
+										</span>
+
 										<br>
 										<%if("3".equalsIgnoreCase(obj[7].toString())){%><%-- / <%=obj[5] %> / --%>
 									<%-- 	<%=obj[6] %> --%> <%} %> 
@@ -174,13 +184,12 @@ String programmeId = (String) request.getAttribute("programmeId");
 											<%} %> onclick="FormName('myFormgen<%=obj[0] %>')"
 											value="Assign"
 										 />
-
 									</form>
 								</div>
 							</div>
 						</div>
 						<%next=prev;}  // assign the previous value to next one%> 
-</div>
+					</div>
 					</div>
 					<!-- Big card-body end -->
 

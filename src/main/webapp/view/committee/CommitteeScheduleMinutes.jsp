@@ -769,15 +769,40 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	     				<div class="panel panel-info">
 	      					<div class="panel-heading">
 	        					<h4 class="panel-title">
-	          						<span class="fs-14px">3.<%=unitcount %>.3.<%=unit13 %>.
+	        					<%
+								String editorContent = hlod[5] != null ? hlod[5].toString() : " - ";
+								
+								editorContent = editorContent.replaceAll("(?i)</?(p|div|strong)[^>]*>", "");
+								
+								String textOnly = editorContent.replaceAll("(?i)</?(p|div|strong)[^>]*>", "");
+								%>
+	        					<span class="fs-14px">
+								    3.<%=unitcount %>.3.<%=unit13 %>.
+								
+								    <% if(textOnly.length() > 30) { %>
+								        <%= editorContent.substring(0, Math.min(editorContent.length(), 20)) %>...
+								    <% } else { %>
+								        <%= editorContent %>
+								    <% } %>
+								</span>
+								
+								<span class="showModalStyle"
+								      onclick="showModal('<%=hlod[5].toString()%>')">
+								    (
+								    <%= hlod[8] != null ? StringEscapeUtils.escapeHtml4(hlod[8].toString()) : " - " %>
+								    )
+								</span>
+	        					
+	          						<%-- <span class="fs-14px">3.<%=unitcount %>.3.<%=unit13 %>.
 	          						<!-- newly added by sankha  on 12/10 -->
 	          						<%if(hlod[5].toString().length()>30) {%>    
 										<%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()).substring(0,20) +"...":" - "%>
 									<%}else{ %>
 										    <%=hlod[5]!=null?StringEscapeUtils.escapeHtml4(hlod[5].toString()): " - " %>
-									<%} %></span>
+									<%} %></span> --%>
 									<!-- end -->      						
-	          						<span class="showModalStyle" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8]!=null?StringEscapeUtils.escapeHtml4(hlod[8].toString()): " - " %>)</span>  </h4>
+	          						<%-- <span class="showModalStyle" onclick="showModal('<%=hlod[5].toString()%>')"> (<%=hlod[8]!=null?StringEscapeUtils.escapeHtml4(hlod[8].toString()): " - " %>)</span> --%>  
+	          						</h4> 
 	       						<div  class="introductionDivStyle">
 								 	<table class="text-center">
 						     			<thead>
@@ -1056,8 +1081,34 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
    				<div class="col-md-11 ml-10px"  align="left">
      				<div class="panel panel-info">
       					<div class="panel-heading">
-       						
-	        					<h4 class="panel-title">
+       						<%
+								String editorHtml = hlo[5] != null ? hlo[5].toString() : " - ";
+								
+								editorHtml = editorHtml.replaceAll("(?i)</?(p|div|strong)[^>]*>", "");
+								
+								String plainText = editorHtml.replaceAll("(?i)</?(p|div|strong)[^>]*>", "");
+							%>
+							<h4 class="panel-title">
+							    <span class="fs-14px">
+							        5.<%=unitcount1 %>
+							
+							        <% if (plainText.length() > 40) { %>
+							            <%= editorHtml.substring(0, Math.min(editorHtml.length(), 35)) %>....
+							            <span class="showModalStyle"
+							                  onclick='showModal("<%=StringEscapeUtils.escapeHtml4(hlo[5].toString())%>")'>
+							                (<%= hlo[8] != null ? StringEscapeUtils.escapeHtml4(hlo[8].toString()) : " - " %>)
+							            </span>
+							        <% } else { %>
+							            <%= editorHtml %>&nbsp;
+							            <span class="showModalStyle">
+							                (<%= hlo[8] != null ? StringEscapeUtils.escapeHtml4(hlo[8].toString()) : " - " %>)
+							            </span>
+							        <% } %>
+							    </span>
+							</h4>
+							
+								       						
+	        					<%-- <h4 class="panel-title">
 	          						<span class="fs-14px">5.<%=unitcount1 %> 
 	          						<!-- Newly added by sankha 12-10-2023 -->
 	          						<%if(hlo[5].toString().length()>40) {%>
@@ -1066,7 +1117,7 @@ List<CommitteeSchedule> dmcScheduleList = (List<CommitteeSchedule>) request.getA
 	          						<%=hlo[5]!=null?StringEscapeUtils.escapeHtml4(hlo[5].toString()): " - "%>&nbsp;<span class="showModalStyle">(<%=hlo[8]!=null?StringEscapeUtils.escapeHtml4(hlo[8].toString()): " - " %> )</span>
 	          						<%} %></span>
 	          						<!-- end  -->
-	          						  </h4>
+	          						  </h4> --%>
 	          				
        						<div class="introductionDivStyle">
 							 	<table class="text-center">

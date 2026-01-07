@@ -48,7 +48,7 @@
 		String lablogo=(String)request.getAttribute("lablogo");
 		Object[] membersec=null; 
 		LabMaster labInfo=(LabMaster)request.getAttribute("labInfo");
-		
+		String labcode = (String)session.getAttribute("labcode");
 		String ccmFlag = (String)request.getAttribute("ccmFlag");
 	%>
 	<style type="text/css">
@@ -128,7 +128,7 @@
 
 	<div id="container" align="center" style="margin: 15px;">
 	  <table style=" border:1px solid black;  border-collapse: collapse; width:100%;">
-	    <tr>
+	    <tr style="font-weight: bold;">
 	      <!-- Left column with right border -->
 	     <%--  <td width="30%" align="left" style="border-right:1px solid black; padding:5px; padding-left: 10px;">
 	        <img style="width: 3cm; height: 3cm;" src="data:image/png;base64,<%=lablogo%>"><br>
@@ -145,7 +145,7 @@
 	
 	      <!-- Right column -->
 	      <td class="fs-11" width="67%" align="left" style="padding:5px;">
-	        <p>1.Meeting Title : <span style="font-weight: bold;"> <%=committeescheduleeditdata[7]!=null?committeescheduleeditdata[7].toString().toUpperCase():" - "%> </span> </p>
+	        <p>1.Meeting Title : <span > <%=committeescheduleeditdata[7]!=null?committeescheduleeditdata[7].toString().toUpperCase():" - "%> </span> </p>
 	        <p>2.Venue&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; : <%=committeescheduleeditdata[12]!=null?committeescheduleeditdata[12].toString(): " - " %> </p>
 	        <p>3.Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=committeescheduleeditdata[2]!=null?sdf.format(sdf1.parse(committeescheduleeditdata[2].toString())): " - " %> </p>
 	        <p>4.Time&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <%=committeescheduleeditdata[3]!=null?committeescheduleeditdata[3].toString(): " - "%> </p>
@@ -193,7 +193,7 @@
 						count++;
 				%>	
 				<%-- <span class="fs-12" style="font-weight: bold; margin:0; padding:0; padding-left: 40px; " > <%=committeemin[0]!=null?committeemin[0].toString(): " - "%>. &nbsp;&nbsp; <%=committeemin[1]!=null?committeemin[1].toString(): " - "%> </span> --%>
-				 <div class="fs-11" style="padding-left: 70px"><%=speclist[1]!=null?speclist[1].toString(): " - "%></div> 
+				 <div class="fs-11" style="text-align: left;padding-left: 30px;"><%=speclist[1]!=null?speclist[1].toString(): " - "%></div> 
 	  		<%	break;		
 							}
 						}
@@ -209,6 +209,7 @@
 	 	<%if(invitedlist.size()>0){ %>
 		<% ArrayList<String> membertypes=new ArrayList<String>(Arrays.asList("CC","CS","PS","CI","CW","CO","CH"));
 		   ArrayList<String> members = new ArrayList<String>();
+		   String memberSec ="";
 		   /* invitedlist.sort((obj,obj1) -> {
 			  String code1 = (String) obj[3];
 			  String code2 = (String) obj1[3];
@@ -275,10 +276,18 @@
 			 		if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){
 			 			membersec=invitedlist.get(i);
 			 			name+= " (Member Secretary)";
+			 			memberSec = name;
 			 		}else if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CC")){
 			 			name+=" (Chairperson)";
+			 			members.add(name);
 			 		}
-			 		members.add(name);
+			 		else{
+			 			if(!labcode.equalsIgnoreCase(invitedlist.get(i)[11].toString())){
+			 				name = name.concat(" ("+invitedlist.get(i)[16].toString()+")");
+			 			}
+			 			//System.out.println("==========="+labcode+"======"+invitedlist.get(i)[11].toString()+"==========="+name);
+			 			 members.add(name);	
+			 		}
 			 		}
 			 	}} %>
 	  		<%if(memAbscent > 0){ %>
@@ -297,7 +306,14 @@
 			 	if(invitedlist.get(i)[4].toString().equals("P") && !membertypes.contains( invitedlist.get(i)[3].toString()) )
 			 	{ j++;
 			 	//if(invitedlist.get(i)[6].toString()!=null && invitedlist.get(i)[7].toString()!=null) members.add(invitedlist.get(i)[12].toString()+". "+ invitedlist.get(i)[6].toString()+", "+invitedlist.get(i)[7].toString());
-			 	if(invitedlist.get(i)[6].toString()!=null && invitedlist.get(i)[7].toString()!=null) members.add( invitedlist.get(i)[6].toString()+", "+invitedlist.get(i)[7].toString());
+			 	if(invitedlist.get(i)[6].toString()!=null && invitedlist.get(i)[7].toString()!=null){
+			 		String name = (invitedlist.get(i)[6]!=null?invitedlist.get(i)[6].toString():"")+", "+(invitedlist.get(i)[7]!=null?invitedlist.get(i)[7].toString():"");
+			 		if(!labcode.equalsIgnoreCase(invitedlist.get(i)[11].toString())){
+		 				name = name.concat(" ("+invitedlist.get(i)[16].toString()+")");
+		 			}
+		 			//System.out.println("==========="+labcode+"======"+invitedlist.get(i)[11].toString()+"==========="+name);
+			 		members.add(name);
+			 	}
 			 		
 			 	}}} %>
 	  			<%if(parAbscent > 0){ %>
@@ -318,6 +334,7 @@
 			 	<%} %> --%>
 			 	
 			 	  <%
+			 	  members.add(memberSec);
 			 	  int leftsize = members.size() / 2 + (members.size() % 2 == 0 ? 0 : 1);
 			 	  int rightsize = members.size()-leftsize;
 			 	  List<String> leftlist = new ArrayList<String>(members.subList(0, leftsize));
@@ -343,7 +360,7 @@
 	  	<h4>&nbsp;&nbsp;&nbsp;&nbsp; III. &nbsp;&nbsp; Presentation / Deliberations  </h4>
 	  </div>
 	  <div> 
-	  <p class="fs-12" style="text-align: left;">Presentation/ Discussion were made on the progress of activities were conducted one by one. During this presentation the Chairperson provided the Following directions.</p>
+	  <p class="fs-12" style="text-align: left;padding-left:30px;">Presentation/ Discussion were made on the progress of activities one by one. During this presentation the Chairperson provided the Following directions.</p>
 	  	<p class="fs-12">Item Code/Type : A: Action, C: Discussion, D: Decision, P: Presentation</p>
 	  	<table style="border:1px solid black; border-collapse: collapse; width: 100%" >
 	  		<thead class="fs-12"> 
@@ -444,10 +461,16 @@
 										<% if(obj[5]!=null && obj[5].toString().equalsIgnoreCase("7")) { %> P <%} 
 										else { %><%= obj[7]!=null?obj[7].toString():""%><%}%>
 								</td>	  			
-							    <td rowspan="<%=rowSpan %>"  style="border: 1px solid black; padding:5px; text-align: left;">
-							        <% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("A")) { %> <%=obj[1]!=null?obj[1].toString(): " - "%> <%} %>
-							        <% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("C")) { %> <%=obj[1]!=null?obj[1].toString(): " - "%> <%} %>
-									<% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("D")) { %> <%=obj[1]!=null?obj[1].toString(): " - "%> <%} %>
+							    <td rowspan="<%=rowSpan %>"  style="border: 1px solid black; padding:10px; text-align: left;">
+							    <%
+								String editorContent = obj[1]!=null?obj[1].toString(): " - ";
+								
+								editorContent = editorContent.replaceAll("(?i)</?(p|div|strong)[^>]*>", "");
+								
+								%>
+							        <% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("A")) { %> <%=editorContent%> <%} %>
+							        <% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("C")) { %> <%=editorContent%> <%} %>
+									<% if(obj[7]!=null && obj[7].toString().equalsIgnoreCase("D")) { %> <%=editorContent%> <%} %>
 							    </td>
 								<%} %>
 						    <%-- <td rowspan="1" style="border: 1px solid black; padding:5px; text-align: left;"><%= obj[13] != null ? obj[13].toString() : " - " %></td>	  			
@@ -521,7 +544,7 @@
 				<!-- <br>Date :&emsp;&emsp;&emsp;&emsp;&emsp;  <br>Time :&emsp;&emsp;&emsp;&emsp;&emsp; -->
 				<%if(membersec!=null){ %>
 					<div align="right" style="padding-right: 0rem;padding-bottom: 2rem;">
-						<b style="margin-right: 50px!important;">Approved By</b>
+						<b style="margin-right: 50px!important;">Signed By</b>
 						<br><br><%if(membersec[6]!=null){%><%= membersec[6].toString() + (membersec[7]!=null?", "+membersec[7].toString():"") %><%} %>
 						<br>(Member Secretary)
 					</div>

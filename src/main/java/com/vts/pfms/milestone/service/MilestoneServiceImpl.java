@@ -559,7 +559,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 				}
 				mileActivity.setWeightage(Integer.parseInt(dto.getWeightage()));
 				mileActivity.setModifiedBy(dto.getCreatedBy());
-				mileActivity.setModifiedDate(dto.getCreatedDate());
+				mileActivity.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 				mileActivity.setActivityName(dto.getActivityName());
 				mileActivity.setOicEmpId(dto.getOicEmpId()!=null?Long.parseLong(dto.getOicEmpId()):0L);
 				mileActivity.setOicEmpId1(dto.getOicEmpId1()!=null?Long.parseLong(dto.getOicEmpId1()):0L);
@@ -580,7 +580,7 @@ public class MilestoneServiceImpl implements MilestoneService {
 				}
 				activityLevel.setWeightage(Integer.parseInt(dto.getWeightage()));
 				activityLevel.setModifiedBy(dto.getCreatedBy());
-				activityLevel.setModifiedDate(dto.getCreatedDate());
+				activityLevel.setModifiedDate(fc.getSqlDateAndTimeFormat().format(new Date()));
 				activityLevel.setActivityName(dto.getActivityName());
 				activityLevel.setOicEmpId(dto.getOicEmpId()!=null?Long.parseLong(dto.getOicEmpId()):0L);
 				activityLevel.setOicEmpId1(dto.getOicEmpId1()!=null?Long.parseLong(dto.getOicEmpId1()):0L);

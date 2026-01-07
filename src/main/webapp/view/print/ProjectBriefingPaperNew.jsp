@@ -579,7 +579,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 				</thead>
 				<tbody>
 					<%if(lastpmrcminsactlist.get(z).size()==0){ %>
-						<tr><td colspan="6" class="text-center" > Nil</td></tr>
+						<tr><td colspan="7" class="text-center" > Nil</td></tr>
 					<%}
 						else if(lastpmrcminsactlist.get(z).size()>0)
 							{int i=1;String key2="";
@@ -588,7 +588,6 @@ String isCCS = (String)request.getAttribute("isCCS");
 									if( obj[3].toString().equalsIgnoreCase("R") && (obj[10]==null || !obj[10].toString().equals("C") || (obj[10].toString().equals("C") && obj[14]!=null && before6months.isBefore(LocalDate.parse(obj[14].toString()) ) )) ){ %>
 						<tr>
 							<td class="text-center"><%=i %></td>
-							
 							<td>
 							
 							
@@ -711,8 +710,15 @@ String isCCS = (String)request.getAttribute("isCCS");
 								<tr><td colspan="7"  class="text-center" > Nil</td></tr>
 								<%}
 								else if(lastpmrcactions.size()>0)
-								{int i=1;String key="";
-								for(Object[] obj:lastpmrcactions.get(z)){ %>
+								{
+									Map<String,List<Object[]>> list = lastpmrcactions.get(z)!=null ? lastpmrcactions.get(z).stream()
+										.collect(Collectors.groupingBy(array -> array[0].toString(), LinkedHashMap::new,Collectors.toList())) : new HashMap<>();
+							int i = 1;String key="";
+							for(Map.Entry<String, List<Object[]>> map : list.entrySet()){
+								int j=1;
+								List<Object[]> values = map.getValue();
+								int rowSpan = values.size();
+							for (Object[] obj : values) { %>
 								<tr>
 									<td  class="text-center"><%=i %></td>
 									<td>
@@ -730,7 +736,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 								</span> 
 								<%}%>
 									</td>
-									<td  class="text-justify"><%=StringEscapeUtils.escapeHtml4( obj[2].toString() ) %></td>
+									<%if(j++==1){ %><td rowspan="<%=rowSpan%>" class="text-justify"> <%=obj[2].toString()%> </td> <%} %>
 									<td class="text-center">
 									<%	String actionstatus = obj[9].toString();
 										int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
@@ -760,8 +766,9 @@ String isCCS = (String)request.getAttribute("isCCS");
 									<%} %>
 								</td>	
 									<td> 
-										<%=obj[11] %>, <%=obj[12] %> </td>
-										<td  class="text-center" > 
+										<%=obj[11] %>, <%=obj[12] %> 
+										</td>
+									<td  class="text-center" > 
 										<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
 										<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
 										<span class="completed">CO</span>
@@ -787,7 +794,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 									<td class="text-justify"><%if(obj[16]!=null){%><%= StringEscapeUtils.escapeHtml4(obj[16].toString()) %><%} %></td>			
 								</tr>			
 							<%i++;
-							}} %>
+							}}} %>
 							</tbody>
 									
 						</table> 
@@ -888,6 +895,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 										<th  class="width30">MS</th>
 										<th  class="width60">L</th>
 										<th  class="width350">System/ Subsystem/ Activities</th>
+										<th class="width120" >Start Date</th>
 										<th  class="width120">ADC<br> PDC</th>
 										<th  class="width60"> Progress</th>
 										<th  class="width50"> Status(DD)</th>
@@ -967,8 +975,6 @@ String isCCS = (String)request.getAttribute("isCCS");
 														&nbsp;&nbsp;<%=StringEscapeUtils.escapeHtml4(obj[15].toString()) %>
 													<%} %>
 												</td>
-												<td class="text-center">
-												<!-- ADC  -->
 												<% 
 													LocalDate StartDate = LocalDate.parse(obj[7].toString());
 													LocalDate EndDate = LocalDate.parse(obj[8].toString());
@@ -979,6 +985,10 @@ String isCCS = (String)request.getAttribute("isCCS");
 													LocalDate Today = LocalDate.now();
 													
 												%>
+												<td class="text-center" ><%= obj[7]!=null? sdf.format(sdf1.parse(obj[7].toString())) : " - " %></td>
+												<td class="text-center">
+												<!-- ADC  -->
+												
 												<% if ((obj[19].toString().equalsIgnoreCase("3") || obj[19].toString().equalsIgnoreCase("5")) && obj[24] != null) { %>	
 															<span 
 																<%if(Progess==0){ %>
@@ -1107,6 +1117,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 								<th  class="width30">MS</th>
 								<th  class="width60">L</th>
 								<th  class="width350">System/ Subsystem/ Activities</th>
+								<th class="width120" >Start Date</th>
 								<th  class="width150"> PDC</th>
 								<th  class="width60"> Progress</th>
 								<th  class="width50"> Status(DD)</th>
@@ -1170,7 +1181,6 @@ String isCCS = (String)request.getAttribute("isCCS");
 												<%milcountE++;
 												} %>
 											</td>
-
 											<td class="<%if(obj[21].toString().equals("0")) {%>font-weight-bold<%}%>">
 													<%if(obj[21].toString().equals("0")) {%>
 														<%=StringEscapeUtils.escapeHtml4(obj[10].toString()) %>
@@ -1186,6 +1196,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 														&nbsp;&nbsp;<%=StringEscapeUtils.escapeHtml4(obj[15].toString()) %>
 													<%} %>
 												</td>
+												<td class="text-center" ><%= obj[7]!=null? sdf.format(sdf1.parse(obj[7].toString())) : " - " %></td>
 											<td class="text-align-center">
 												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
 													<%= sdf.format(sdf1.parse(obj[8].toString()))%><br> 
@@ -2105,6 +2116,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 									<th class="width20">MS</th>
 									<th class="width50">L</th>
 									<th class="width275">Action Plan </th>	
+									<th class="width120" >Start Date</th>
 									<th class="width110" >PDC</th>	
 									
 									<%if(!session.getAttribute("labcode").toString().equalsIgnoreCase("ADE")) {%>
@@ -2189,6 +2201,7 @@ String isCCS = (String)request.getAttribute("isCCS");
 													&nbsp;&nbsp;<%=StringEscapeUtils.escapeHtml4(obj[14].toString()) %>
 												<%} %>
 											</td>
+											<td class="text-center" ><%= obj[7]!=null? sdf.format(sdf1.parse(obj[7].toString())) : " - " %></td>
 											<td  class="text-center">
 												
 												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[29].toString())) ){ %> 

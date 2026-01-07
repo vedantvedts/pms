@@ -894,7 +894,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 								<th  style="width: 120px; ">ADC<br>PDC</th>
 						<!-- 		<th  style="width: 80px; "> ADC</th> -->
 								<th  style="width: 210px; "> Responsibility</th>
-								<!-- <th  style="width: 80px; ">Status</th> -->
+								<th  style="width: 80px; ">Status</th> 
 								<th  style="width: 205px; ">Remarks</th>			
 							</tr>
 						</thead>
@@ -904,8 +904,14 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 								<tr><td colspan="7"  style="text-align: center;" > Nil</td></tr>
 								<%}
 								else if(lastpmrcactions.size()>0)
-								{int i=1;String key="";
-								for(Object[] obj:lastpmrcactions.get(z) ){ %>
+								{Map<String,List<Object[]>> list = lastpmrcactions.get(z)!=null ? lastpmrcactions.get(z).stream()
+										.collect(Collectors.groupingBy(array -> array[0].toString(), LinkedHashMap::new,Collectors.toList())) : new HashMap<>();
+							int i = 1;String key="";
+							for(Map.Entry<String, List<Object[]>> map : list.entrySet()){
+								int j=1;
+								List<Object[]> values = map.getValue();
+								int rowSpan = values.size();
+							for (Object[] obj : values) { %>
 								<tr>
 									<td  style="text-align: center;"><%=i %></td>
 									<td <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="font-weight: bold;"<%} %>>	
@@ -920,7 +926,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 								<%=committee.getCommitteeShortName()!=null?StringEscapeUtils.escapeHtml4(committee.getCommitteeShortName()).trim().toUpperCase():" - "+"-"+key!=null?StringEscapeUtils.escapeHtml4(key):" - "+"/"+obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()).split("/")[4]:" - " %>
 								<%}%> </span>
 								</td>
-									<td  style="text-align: justify ;"><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %></td>
+									<%if(j++==1){ %><td rowspan="<%=rowSpan%>" class="text-justify"> <%=obj[2].toString()%> </td> <%} %>
 					
 																	<td style="text-align: center;">
 									<%	String actionstatus = obj[9].toString();
@@ -951,11 +957,33 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<%} %>
 								</td>
 									<td > <%=obj[11]!=null?StringEscapeUtils.escapeHtml4(obj[11].toString()): " - " %><%-- , <%=obj[12] %> --%> </td>
-
+									<td  class="text-center" > 
+										<% if(lastdate!=null && actionstatus.equalsIgnoreCase("C") ){ %>
+										<%if(actionstatus.equals("C") && (pdcorg.isAfter(lastdate) || pdcorg.equals(lastdate))){%>
+										<span class="completed">CO</span>
+										<%}else if(actionstatus.equals("C") && pdcorg.isBefore(lastdate)){ %>	
+										<span class="completeddelay">CD (<%= ChronoUnit.DAYS.between(pdcorg, lastdate) %>) </span>
+										<%} %>	
+										<%}else{ %>
+										<%if(actionstatus.equals("F")  && (pdcorg.isAfter(lastdate) || pdcorg.isEqual(lastdate) )){ %>
+										<span class="ongoing">RC</span>												
+										<%}else if(actionstatus.equals("F")  && pdcorg.isBefore(lastdate)) { %>
+										<span class="delay">FD</span>
+										<%}else if(actionstatus.equals("A") && progress==0){  %>
+										<span class="assigned">AA <%if(pdcorg.isBefore(today)){ %> (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>) <%} %></span>
+									    <%} else if(pdcorg.isAfter(today) || pdcorg.isEqual(today)){  %>
+										<span class="ongoing">OG</span>
+										<%}else if(pdcorg.isBefore(today)){  %>
+										<span class="delay">DO (<%= ChronoUnit.DAYS.between(pdcorg, today)  %>)  </span>
+										<%} %>					
+										<%} %>
+										
+						
+									</td>	
 									<td  style="text-align: justify ;"><%if(obj[16]!=null){%><%=StringEscapeUtils.escapeHtml4(obj[16].toString()) %><%} %></td>			
 								</tr>			
 							<%i++;
-							}} %>
+							}}} %>
 							</tbody>
 									
 						</table> 
@@ -1039,6 +1067,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 										<th  style="width: 30px; ">MS</th>
 										<th  style="width: 60px; ">L</th>
 										<th  style="width: 400px; ">System/ Subsystem/ Activities</th>
+										<th style="width: 120px; " >Start Date</th>
 										<th  style="width: 100px; "> ADC <br> PDC</th>
 									<!-- 	<th  style="width: 150px; "> ADC</th> -->
 										<th  style="width: 60px; "> Progress</th>
@@ -1130,6 +1159,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 													&nbsp;&nbsp;<%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - " %>
 												<%} %>
 											</td>
+												<td style="text-align: center" ><%= obj[7]!=null? sdf.format(sdf1.parse(obj[7].toString())) : " - " %></td>
 											<td style="text-align: center">
 											<% 
 												LocalDate StartDate = LocalDate.parse(obj[7].toString());
@@ -1213,6 +1243,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<th  style="width: 30px; ">MS</th>
 									<th  style="width: 30px; ">L</th>
 									<th  style="width: 400px; ">System/ Subsystem/ Activities</th>
+									<th style="width: 120px;'" >Start Date</th>
 									<th  style="width: 100px; "> PDC</th>
 									<th  style="width: 60px; "> Progress</th>
 <!-- 									<th  style="width: 50px; "> Status</th>
@@ -1301,6 +1332,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 													&nbsp;&nbsp;<%=obj[15]!=null?StringEscapeUtils.escapeHtml4(obj[15].toString()): " - " %>
 												<%} %>
 											</td>
+											<td style="text-align: center" ><%= obj[7]!=null? sdf.format(sdf1.parse(obj[7].toString())) : " - " %></td>
 											<td style="text-align: center;">
 												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[9].toString())) ){ %> 
 												<span style="color:black;font-weight: bold;"><%= sdf.format(sdf1.parse(obj[8].toString()))%></span>	<br> 
@@ -2183,7 +2215,8 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 									<th style="width: 20px; ">MS</th>
 									<th style="width: 20px; ">L</th>
 									<th style="width: 325px;">Action Plan </th>	
-									<th style="width: 100px;" >PDC</th>	
+									<th style="width: 120px;" >Start Date</th>
+									<th style="width: 120px;" >PDC</th>	
 								<%if(!session.getAttribute("labcode").toString().equalsIgnoreCase("ADE")) {%>
 									<th style="width: 210px;">Responsibility </th>
 									<% } %>
@@ -2278,6 +2311,7 @@ List<Object[]> envisagedDemandlist = (List<Object[]> )request.getAttribute("envi
 													&nbsp;&nbsp;<%=obj[14]!=null?StringEscapeUtils.escapeHtml4(obj[14].toString()): " - " %>
 												<%} %>
 											</td>
+											<td style="text-align:center" ><%= obj[7]!=null? sdf.format(sdf1.parse(obj[7].toString())) : " - " %></td>
 											<td  style="text-align:center">
 											
 												<%if(! LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[29].toString())) ){ %> 

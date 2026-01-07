@@ -7427,8 +7427,6 @@ private boolean isValidFileType(MultipartFile file) {
 				CommitteeMeetingDPFMFrozen dpfm = service.getFrozenDPFMMinutes(committeescheduleid);
 				//CommitteeProjectBriefingFrozen CPF=service.getFrozenCommitteeMOM(committeescheduleid);
 
-
-
 				res.setContentType("application/pdf"); res.setHeader("Content-Disposition",
 						"inline; name="+ dpfm.getDPFMFileName()+".pdf; filename"+dpfm.getDPFMFileName()); 
 				Path filepath = Paths.get(uploadpath, LabCode, "DPFM", dpfm.getDPFMFileName());
@@ -7552,7 +7550,19 @@ private boolean isValidFileType(MultipartFile file) {
 				List<Object[]> procurementStatusList=(List<Object[]>)service.ProcurementStatusList(projectid);
 				List<Object[]> procurementOnDemand=null;
 				List<Object[]> procurementOnSanction=null;
-
+				
+			    List<List<Object[]>> overallfinance = new ArrayList<>();
+			    List<String> Pmainlist = printservice.ProjectsubProjectIdList(projectid);
+			    List<Object[]> ProjectDetails = new ArrayList<>();
+			    
+		    	for(String proId: Pmainlist) {
+		    		List<Object[]> projDetails = printservice.ProjectDetails(proId);
+		    		ProjectDetails.add(!projDetails.isEmpty() ? projDetails.get(0) : new Object[0]);
+		    		overallfinance.add(printservice.getrOverallFinance(proId));
+		    	}
+		    	req.setAttribute("projectidlist", Pmainlist);
+		    	req.setAttribute("overallfinance", overallfinance);
+		    	req.setAttribute("ProjectDetails", ProjectDetails);
 
 				if(procurementStatusList!=null){
 					Map<Object, List<Object[]>> map = procurementStatusList.stream().collect(Collectors.groupingBy(c -> c[9])); 
