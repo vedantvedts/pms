@@ -75,7 +75,7 @@ String labCode  = (String) session.getAttribute("labcode");
 <div class="col-md-3">
 		<div class="form-group">
                  <label>Division Name:<span class="mandatory">*</span></label>
-                  <input  class="form-control form-control alphanum-no-leading-space text-uppercase input-font w-80"  type="text" name="dName" id="divisionName" required="required" maxlength="100"  > 
+                  <input  class="form-control form-control alphanum-no-leading-space input-font w-80"  type="text" name="dName" id="divisionName" required="required" maxlength="100"  > 
 		</div>
 </div>
 

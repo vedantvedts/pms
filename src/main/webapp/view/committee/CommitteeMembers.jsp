@@ -833,7 +833,7 @@ String logintype = (String)session.getAttribute("LoginType");
 													</td>
 													<td class="width-20"> 		  					
 														<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-										     	  		<button class="btn  btn-sm submit" type="submit"  onclick="return confirm('Are you Sure to Add this Representatives(s)');" >SUBMIT</button>
+										     	  		<button class="btn  btn-sm submit" type="submit"  onclick="return handleRepClick()" >SUBMIT</button>
 										     	  		<%} %>
 										     	   </td>
 									     	   </tr>							
@@ -1463,7 +1463,21 @@ function memberrepdelete(memrepid){
 					});
 				}
 			}
+function handleRepClick() {
+    var repSelect = $('#repids').val(); 
 
+    if (!repSelect || repSelect.length === 0) {
+        alert("Please Select Representative");
+        return false;
+    }
+
+    if (repSelect.includes("0")) {
+        alert("Please Remove Add New Option");
+        return false;
+    }
+
+    return confirm('Are you sure to Add this Representative(s)?');
+}
 
 
 function replacerepdd(){

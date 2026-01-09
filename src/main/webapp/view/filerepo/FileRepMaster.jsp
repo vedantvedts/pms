@@ -415,6 +415,9 @@
 
 
 <script type="text/javascript">
+
+var labcode = "<%= labcode %>";
+console.log(labcode);
 	function enableInlineEdit(id) {
 		document.getElementById("span_" + id).style.display = "none";
 		document.getElementById("input_" + id).style.display = "inline-block";
@@ -766,6 +769,7 @@
 
 <script type="text/javascript">
 
+
 $(document).ready(function(){
 	  const storedParentId = localStorage.getItem("showSubfolderAfterReload");
       if (storedParentId) {
@@ -793,6 +797,7 @@ function showUpload(type,name,id) {
     $('#modalTitle').text('Upload Document for '+name);
     toggleUploadType("Y");
 }
+
 
 function toggleUploadType(value) {
     const inputField = document.getElementById("FileNameInput");
@@ -830,8 +835,10 @@ function toggleUploadType(value) {
     if (value === "Y") {
         inputField.classList.remove("d-none");
         inputField.required = true;
-        reportDiv.classList.remove("d-none");
-        reportType.required = true;
+        if(labcode && labcode==="PGAD"){
+        	reportDiv.classList.remove("d-none");
+        	reportType.required = true;
+        }
         dropdown.classList.add("d-none");
         dropdown.required = false;
     	$('#isnewver').prop('checked', true);
@@ -842,8 +849,10 @@ function toggleUploadType(value) {
         dropdown.required = true;
         inputField.classList.add("d-none");
         inputField.required = false;
-        reportDiv.classList.add("d-none");
-        reportType.required = false;
+        if(labcode && labcode==="PGAD"){
+	       reportDiv.classList.add("d-none");
+	       reportType.required = false;
+        }
 		$('#isnewver').prop('checked', false);
 		$('#isnonewver').prop('checked', true);
 		$('#isnonewver').prop('disabled', false);
@@ -875,6 +884,7 @@ function toggleUploadType(value) {
             	        .attr('data-release', name[5])
             	    );
             	});
+            	$('#FileNameSelect').show();
             },
             error: function(err) {
                 alert("Failed to load document names.");
@@ -894,7 +904,7 @@ function submitUpload() {
     const selectTab = $('input[name="isNewUpload"]:checked').val();
     const selectDropdown = $('#FileNameSelect').val();
     const file = fileInput.files[0];
-    const reportTypeText = reportType.value.trim();
+    const reportTypeText = labcode && labcode==="PGAD" ? reportType.value.trim() : "";
     const docName = textInput.value.trim();
     const folderId = $('#folderId').val();
     const fileType = $('#fileType').val();
@@ -958,14 +968,14 @@ function submitUpload() {
 	        textInput.value = ""; 
 	        return;
 	    }
-	    if(!reportTypeText){
+	    if(labcode && labcode==="PGAD" && !reportTypeText){
 	    	 Swal.fire({
 		            icon: 'error',
 		            title: 'Missing Report Type',
 		            text: 'Please enter a Report Type.',
 		            allowOutsideClick: false
 		        });
-	    	 	reportType.value = ""; 
+	    	 	if(labcode && labcode==="PGAD")reportType.value = ""; 
 		        return;
 	    }
     }

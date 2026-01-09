@@ -1638,7 +1638,8 @@ public class CommitteeController {
 			if(committeeactivelist.size()==0)
 			{
 				redir.addAttribute("resultfail", "No Committee is Constituted, Constitute a Non-Project Committee ");
-				redir.addFlashAttribute("id","N");			 
+//				redir.addFlashAttribute("id","N");
+				return "redirect:/MainDashBoard.htm";
 			}			
 			req.setAttribute("CommitteeList", committeeactivelist);
 		}
