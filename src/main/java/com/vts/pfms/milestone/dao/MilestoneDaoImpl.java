@@ -1,5 +1,6 @@
 	package com.vts.pfms.milestone.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +53,7 @@ public class MilestoneDaoImpl implements MilestoneDao {
 	private static final String PROJECTMASTER="SELECT a.ProjectId, a.ProjectCode, a.ProjectName, a.ProjectShortName FROM project_master a WHERE a.IsActive='1'";
 	private static final String EMPLOYEELISTALL="select a.empid,a.empname,b.designation,a.Title,a.Salutation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId ORDER BY a.srno=0,a.srno";
     private static final String MILESTONECOUNT="Select count(*) from milestone_activity where isactive='1' and projectid=:ProjectId";
-	private static final String MA="select a.milestoneactivityid,b.projectname,a.startdate,a.enddate,a.activityname,a.milestoneno,c.empname,d.empname as emp,a.oicempid,a.oicempid1,a.projectid,a.progressstatus,a.revisionno,a.acceptedby,a.accepteddate,a.activitytype,a.Weightage,e.activitytype as type, c.LabCode AS 'LabCode1', d.LabCode AS 'LabCode2' from milestone_activity a,project_master b, employee c,employee d, milestone_activity_type e where a.activitytype=e.activitytypeid and a.projectid=b.projectid and a.oicempid=c.empid and a.oicempid1=d.empid and a.milestoneactivityid=:id";
+	private static final String MA="select a.milestoneactivityid,b.projectname,a.startdate,a.enddate,a.activityname,a.milestoneno,c.empname,d.empname as emp,a.oicempid,a.oicempid1,a.projectid,a.progressstatus,a.revisionno,a.acceptedby,a.accepteddate,a.activitytype,a.Weightage,e.activitytype as type, c.LabCode AS 'LabCode1', d.LabCode AS 'LabCode2',(SELECT COALESCE(a.ModifiedDate, a.CreatedDate) > MAX(c.CreatedDate) FROM `milestone_activity_rev` c WHERE c.MilestoneActivityId=:id)AS 'IsChange' from milestone_activity a,project_master b, employee c,employee d, milestone_activity_type e where a.activitytype=e.activitytypeid and a.projectid=b.projectid and a.oicempid=c.empid and a.oicempid1=d.empid and a.milestoneactivityid=:id";
 	private static final String MILEACTIVITYLEVEL="CALL Pfms_Milestone_Level_List(:id,:levelid)";
     private static final String MAREVISION="SELECT MAX(revisionno) FROM milestone_activity_rev WHERE milestoneactivityid=:id ";
 	private static final String MADETAILS="FROM MilestoneActivity WHERE MilestoneActivityId=:Id";
@@ -535,16 +536,19 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		return trans.getActivityTransactionId();
 	}
 	@Override
-	public int ActivityMainSum(String Id,String ActivityId) throws Exception {
-		try {
-			Query query = manager.createNativeQuery(MILESUM);
-			query.setParameter("projectid", Long.parseLong(ActivityId));
-			query.setParameter("id", Long.parseLong(Id));
-			return (Integer)query.getSingleResult();
-		}catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
+	public int ActivityMainSum(String Id, String ActivityId) {
+	    try {
+	        Query query = manager.createNativeQuery(MILESUM);
+	        query.setParameter("projectid", Long.parseLong(ActivityId));
+	        query.setParameter("id", Long.parseLong(Id));
+
+	        BigDecimal result = (BigDecimal) query.getSingleResult();
+	        return result != null ? result.intValue() : 0;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return 0;
+	    }
 	}
 
 	@Override
@@ -1867,5 +1871,28 @@ public class MilestoneDaoImpl implements MilestoneDao {
 		Query query = manager.createNativeQuery(PREDECESSORDELETE);
 		query.setParameter("successorId",successor);
 		return query.executeUpdate();
+	}
+
+	@Override
+	public Object[] getprojectDetails(String projectId) throws Exception {
+		Query query = manager.createNativeQuery("SELECT * from project_master WHERE ProjectId=:projectId");
+		query.setParameter("projectId", Long.parseLong(projectId));
+		List<Object[]> list =  (List<Object[]>) query.getResultList();
+		if(list.size()>0) {
+			return list.get(0);
+		}
+		return null;
+	}
+
+	private static final String FILEREPUPLOADDETAILS= "SELECT b.FileRepUploadId, b.FileRepId, b.FileName, b.ReportType FROM file_rep_new a LEFT JOIN file_rep_upload b ON a.FileRepId = b.FileRepId ORDER BY FileRepUploadId DESC LIMIT 1;"; 
+	@Override
+	public Object[] getFileRepUploadDetails(String projectId) throws Exception {
+		Query query = manager.createNativeQuery(FILEREPUPLOADDETAILS);
+//		query.setParameter("projectId", Long.parseLong(projectId));
+		List<Object[]> list =  (List<Object[]>) query.getResultList();
+		if(list.size()>0) {
+			return list.get(0);
+		}
+		return null;
 	}
 }

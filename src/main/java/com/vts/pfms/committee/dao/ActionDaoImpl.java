@@ -2244,7 +2244,7 @@ public class ActionDaoImpl implements ActionDao{
 			 WHERE a.rfaid=b.rfaid AND a.AssigneeId=e.expertid AND e.desigid=d.desigid AND a.isactive='1' AND a.labcode=e.organization
 			""";
 	@Override
-	public List<Object[]> assigneeListForFromExternal() {
+	public List<Object[]> assigneeListForFromExternal() throws Exception{
 		try {
 			Query query = manager.createNativeQuery(ASSIGNEELISTFORFROMEXTERNAL);
 			return (List<Object[]>)query.getResultList();
@@ -2253,5 +2253,63 @@ public class ActionDaoImpl implements ActionDao{
 			return null;
 		}
 	}
+
+	@Override
+	public List<Object[]> divisionList() throws Exception {
+		try {
+			Query query = manager.createNativeQuery("SELECT * FROM division_master");
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private static final String DIVISIONEMPLOYEESLIST = "SELECT DISTINCT e.EmpId, CONCAT(IFNULL(CONCAT(e.Title,' '),''), e.Empname) AS 'empname', b.designation FROM division_master d LEFT JOIN employee e ON e.divisionId = d.divisionId LEFT JOIN employee_desig b ON b.desigId = e.desigId WHERE d.DivisionId = :divisionId AND e.EmpId IS NOT NULL";
+	@Override
+	public List<Object[]> getDivisionEmployeesList(String divisionId) throws Exception {
+		try {
+			Query query = manager.createNativeQuery(DIVISIONEMPLOYEESLIST);
+			query.setParameter("divisionId", Long.parseLong(divisionId));
+			return (List<Object[]>)query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
+	private static final String RFAACTIONSONRFATYPE = """
+			SELECT DISTINCT a.RfaId, a.RfaNo,a.RfaDate,d.Priority,a.projectId,a.Statement,a.Description,a.Reference, 
+			c.RfaStatusDetails,insp.CompletionDate,insp.Observation,insp.Clarification,insp.ActionRequired, 
+			a.rfastatus,a.rfaRaisedByName AS 'industryPartner', 
+			CONCAT(COALESCE(emp.title, ''), ' ', emp.empname, ', ', desig.designation) AS raisedBy 
+			FROM pfms_rfa_action a JOIN pfms_rfa_assign z ON z.RfaId = a.RfaId
+			JOIN pfms_rfa_status c ON a.RfaStatus = c.RfaStatus 
+			JOIN pfms_rfa_priority d ON a.PriorityId = d.PriorityId 
+			LEFT JOIN pfms_rfa_inspection insp ON insp.rfaid = a.rfaid 
+			LEFT JOIN login l ON l.username = a.createdBy 
+			LEFT JOIN employee emp ON l.empId = emp.empId 
+			LEFT JOIN employee_desig desig ON emp.desigid = desig.desigid 
+			WHERE a.projectid =:projectid AND a.projectType =:projectType AND a.RfaNo LIKE :rfatypeid 
+			AND a.TypeOfRfa = :rfatype  AND (:empId IS NULL OR :empId =z.AssigneeId) AND (( :rfaStatus = 'ALL' AND a.RfaStatus NOT IN ('RFC', 'ARC'))OR( :rfaStatus <> 'ALL' AND a.RfaStatus = :rfaStatus))
+			AND a.RfaDate BETWEEN :fdate AND :tdate ORDER BY a.rfaid
+			""";
+	@Override
+	public List<Object[]> getRfaActionsOnRFAtype(String projectType,String projectid,String rfatypeid,String rfatype,String empId, String fdate, String tdate,String rfaStatus) throws Exception {
+		Query query = manager.createNativeQuery(RFAACTIONSONRFATYPE);
+		rfatypeid="%"+rfatypeid+"%";
+		query.setParameter("projectType", projectType);
+		query.setParameter("projectid", projectid);
+		query.setParameter("rfatypeid", rfatypeid);
+		query.setParameter("rfatype", rfatype);
+		Long empIdLong = null;
+		if (empId != null && !empId.trim().isEmpty() && !"null".equalsIgnoreCase(empId)) {
+		    empIdLong = Long.valueOf(empId);
+		}
+		query.setParameter("empId", empIdLong);
+		query.setParameter("fdate", fdate);
+		query.setParameter("tdate", tdate);
+		query.setParameter("rfaStatus", rfaStatus);
+		return (List<Object[]>)query.getResultList();
+	}	
 }

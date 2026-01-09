@@ -487,7 +487,7 @@ public class PrintDaoImpl implements PrintDao {
 		return (List<Object[]>)query.getResultList();
 	}
 
-	private static final String SCHEDULELIST="SELECT cs.scheduledate,cs.scheduleflag,cms.meetingstatusid,cs.meetingid,cs.scheduledate<DATE(SYSDATE()),(SELECT COUNT(*)+1 FROM  committee_schedule css ,committee_meeting_status mss WHERE css.committeeid=c.committeeid AND css.projectid=cs.projectid AND css.isactive=1 AND  mss.meetingstatus=css.scheduleflag AND mss.meetingstatusid > 6 AND css.scheduledate<cs.scheduledate) AS countid,cs.scheduleid FROM committee_schedule cs, committee c,committee_meeting_status cms WHERE c.committeeid=cs.committeeid  AND c.committeeShortName IN ('PMRC','EB') AND cs.scheduleflag=cms.meetingstatus AND cs.projectid=:ProjectId AND YEAR(cs.scheduledate)=:InYear AND MONTH(cs.scheduledate)=:InMonth";
+	private static final String SCHEDULELIST="SELECT cs.scheduledate,cs.scheduleflag,cms.meetingstatusid,cs.meetingid,cs.scheduledate<DATE(SYSDATE()),(SELECT COUNT(*)+1 FROM  committee_schedule css ,committee_meeting_status mss WHERE css.committeeid=c.committeeid AND css.projectid=cs.projectid AND css.isactive=1 AND  mss.meetingstatus=css.scheduleflag AND mss.meetingstatusid > 6 AND css.scheduledate<cs.scheduledate) AS countid,cs.scheduleid FROM committee_schedule cs, committee c,committee_meeting_status cms WHERE c.committeeid=cs.committeeid  AND c.committeeShortName IN ('PMRC','EB') AND cs.scheduleflag=cms.meetingstatus AND cs.projectid=:ProjectId AND YEAR(cs.scheduledate)=:InYear AND MONTH(cs.scheduledate)=:InMonth AND cms.meetingstatusid > 6";
 	
 	@Override
 	public List<Object[]> getMeetingSchedules(String ProjectId, String Month, String Year) throws Exception {
@@ -1554,5 +1554,44 @@ public class PrintDaoImpl implements PrintDao {
 				return new ArrayList<>();
 			}
 					
+		}
+		
+		
+		private static final String PROJECTMEETING = "SELECT p.projectid,p.projectcode,p.ProjectName,c.scheduledate,c.ScheduleId, MONTH(c.scheduledate)AS'schedulemonth',YEAR(c.scheduledate)AS'scheduleyear' ,c.ScheduleFlag  FROM  project_master p ,committee_schedule c WHERE c.projectid = p.projectid AND \r\n"
+				+ "c.CommitteeId = (SELECT committeeId FROM committee WHERE CommitteeShortName = :CommitteeShortName LIMIT 1) \r\n"
+				+ "AND c.isactive='1' ORDER BY p.projectid";
+		
+		@Override
+		public List<Object[]> getProjectMeetings(String CommitteeShortName) throws Exception {
+			
+			Query query = manager.createNativeQuery(PROJECTMEETING);
+			query.setParameter("CommitteeShortName", CommitteeShortName);
+			
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		private static final String PROJECTS = "SELECT p.projectid, p.projectname, p.projectcode,\r\n"
+				+ "CONCAT(IFNULL(CONCAT(e.title,' '),IFNULL(CONCAT(e.salutation,' '),'')), e.empname) AS 'empname' ,b.ProjectTypeShort,\r\n"
+				+ "p.ProjectDirector , e.MobileNo,e.DronaEmail,e.InternetEmail,d.designation FROM project_master p , employee e, project_type b,employee_desig d, project_main pm\r\n"
+				+ "WHERE e.empid = p.ProjectDirector AND b.ProjectTypeId=p.ProjectType AND e.desigid=d.desigid AND pm.ProjectMainId=p.ProjectMainId ORDER BY p.ProjectDirector";
+		
+		@Override
+		public List<Object[]> getprojectListProjectDirectorWise() throws Exception {
+			Query query = manager.createNativeQuery(PROJECTS);
+	
+			
+			return (List<Object[]>)query.getResultList();
+		}
+		
+		private static final String CLOSUREREPORT ="SELECT p.projectid,p.projectname,p.projectcode,c.ClosureId,c.ClosureStatusCode,t.TechnicalClosureId,t.StatusCode,c.ClosureCategory,p.pdc\r\n"
+				+ "FROM project_master p LEFT JOIN pfms_closure c ON p.projectid =c.projectid \r\n"
+				+ "LEFT JOIN pfms_closure_technical t ON c.ClosureId=t.ClosureId";
+		@Override
+		public List<Object[]> getProjectClosureReport() throws Exception {
+		
+			Query query = manager.createNativeQuery(CLOSUREREPORT);			
+			
+			
+			return (List<Object[]>)query.getResultList();
 		}
 	}

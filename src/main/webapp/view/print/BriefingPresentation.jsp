@@ -794,8 +794,14 @@ String baseUrl = scheme + "://" + serverName
 								<td colspan="7" class="text-center">Nil</td>
 							</tr>
 							<% } else if (lastpmrcactions.size() > 0) {
+								Map<String,List<Object[]>> list = lastpmrcactions.get(z)!=null ? lastpmrcactions.get(z).stream()
+										.collect(Collectors.groupingBy(array -> array[0].toString(), LinkedHashMap::new,Collectors.toList())) : new HashMap<>();
 							int i = 1;String key="";
-							for (Object[] obj : lastpmrcactions.get(z)) {
+							for(Map.Entry<String, List<Object[]>> map : list.entrySet()){
+								int j=1;
+								List<Object[]> values = map.getValue();
+								int rowSpan = values.size();
+							for (Object[] obj : values) {
 							%>
 							<tr>
 								<td class="text-center"><%=i%></td>
@@ -814,7 +820,7 @@ String baseUrl = scheme + "://" + serverName
 								<%}%> 
 								<!--  -->
 								</td>
-								<td class="text-justify"> <%=StringEscapeUtils.escapeHtml4(obj[2].toString())%> </td>
+								<%if(j++==1){ %><td rowspan="<%=rowSpan%>" class="text-justify"> <%=obj[2].toString()%> </td> <%} %>
 								<td class="text-center">
 									<%	String actionstatus = obj[9].toString();
 										int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
@@ -874,7 +880,7 @@ String baseUrl = scheme + "://" + serverName
 
 								
 							</tr>
-							<% i++; }
+							<% i++; }}
 							} %>
 						</tbody>
 
@@ -1000,6 +1006,7 @@ String baseUrl = scheme + "://" + serverName
 								<th class="width20">MS</th>
 								<th class="width70">L</th>
 								<th class="width350">System/ Subsystem/ Activities</th>
+								<th class="width100" >Start Date</th>
 								<th class="width100">ADC<br>PDC</th>
 								<!-- <th style="width: 150px;">ADC</th> -->
 								<th class="width70">Progress</th>
@@ -1093,6 +1100,7 @@ String baseUrl = scheme + "://" + serverName
 																	&nbsp;&nbsp;<%= StringEscapeUtils.escapeHtml4(obj[14].toString())%> <% } else if (obj[21].toString().equals("5")) { %>
 																	&nbsp;&nbsp;<%=StringEscapeUtils.escapeHtml4(obj[15].toString())%> <% } %>
 							</td>
+							<td class="text-center" ><%= obj[7]!=null? sdf.format(sdf1.parse(obj[7].toString())) : " - " %></td>
 							<td class="text-center">
 
 								
@@ -1235,6 +1243,7 @@ String baseUrl = scheme + "://" + serverName
 								<th class="width30">MS</th>
 								<th class="width70">L</th>
 								<th class="width450">System/ Subsystem/ Activities</th>
+								<th class="width100" >Start Date</th>
 								<th class="width150">PDC</th>
 								<th class="width60">Progress</th>
 								<th class="width50">Status(DD)</th>
@@ -1325,6 +1334,7 @@ String baseUrl = scheme + "://" + serverName
 										&nbsp;&nbsp;<%=StringEscapeUtils.escapeHtml4(obj[15].toString()) %>
 									<%} %>
 							</td>
+							<td class="text-center" ><%= obj[7]!=null? sdf.format(sdf1.parse(obj[7].toString())) : " - " %></td>
 							<% 
 								LocalDate StartDate = LocalDate.parse(obj[7].toString());
 								LocalDate EndDate = LocalDate.parse(obj[8].toString());
@@ -2363,6 +2373,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 								<th class="width20">MS</th>
 								<th class="width50">L</th>
 								<th class="width265">Action Plan</th>
+								<th class="width100" >Start Date</th>
 								<th class="width110">PDC</th>
 								<%if(!session.getAttribute("labcode").toString().equalsIgnoreCase("ADE")) {%>
 									<th class="width200">Responsibility </th>
@@ -2452,6 +2463,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 									<%}else if (obj[26].toString().equals("5")) { %>&nbsp;&nbsp;<%= StringEscapeUtils.escapeHtml4(obj[14].toString())%>
 									<%}%>
 								</td>
+								<td class="text-center" ><%= obj[7]!=null? sdf.format(sdf1.parse(obj[7].toString())) : " - " %></td>
 								<td class="text-center">
 									<%
 									if (!LocalDate.parse(obj[8].toString()).isEqual(LocalDate.parse(obj[29].toString())) ) {%>

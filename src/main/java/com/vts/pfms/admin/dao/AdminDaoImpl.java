@@ -62,7 +62,7 @@ public class AdminDaoImpl implements AdminDao{
 	private static final String DIVISIONADDCHECK="SELECT SUM(IF(DivisionCode =:divisionCode,1,0))   AS 'dCode',SUM(IF(DivisionName = :divisionName,1,0)) AS 'dName' FROM division_master where isactive=1 ";
 	private static final String DIVISIONGROUPLIST="SELECT a.groupid,a.groupname,a.labcode FROM division_group a WHERE a.isactive=1";
 	private static final String DIVISIONHEADLIST="SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname',a.labcode,b.designation FROM employee a , employee_desig b WHERE a.isactive=1 AND a.desigid=b.desigid";
-	private static final String DIVISIONEDITDATA="SELECT d.divisionid,d.divisioncode, d.divisionname, d.divisionheadid, d.groupid, d.IsActive, d.DivisionShortName FROM division_master d WHERE d.divisionid=:divisionid ";	//srikant
+	private static final String DIVISIONEDITDATA="SELECT d.divisionid,d.divisioncode, d.divisionname, d.divisionheadid, d.groupid, d.IsActive, d.DivisionShortName, e.labcode AS 'Division Head Labcode' FROM division_master d LEFT JOIN employee e ON e.empId = d.divisionheadid WHERE d.divisionid=:divisionid ";	//srikant
 	private static final String DESIGNATIONDATA="SELECT desigid,desigcode,designation,desiglimit,DesigSr,DesigCadre FROM employee_desig WHERE desigid=:desigid";
 	private static final String DESIGNATIONLIST="SELECT desigid,desigcode,designation,desiglimit,DesigSr,DesigCadre FROM employee_desig ORDER BY DesigSr";
 	private static final String DESIGNATIONCODECHECK="SELECT COUNT(desigcode),'desigcode' FROM employee_desig WHERE desigcode=:desigcode";
@@ -1225,9 +1225,6 @@ public class AdminDaoImpl implements AdminDao{
 			e.printStackTrace();
 			return new ArrayList<>();
 		}
-		
-		
-
 	}
 	
 	public static final String CHECKDIVISIONMASTER="SELECT de.EmpId,de.isactive FROM division_master dm, division_employee de WHERE dm.DivisionId =de.DivisionId  AND de.isactive=1 AND de.DivisionId=:divId ORDER BY de.empid ASC";
