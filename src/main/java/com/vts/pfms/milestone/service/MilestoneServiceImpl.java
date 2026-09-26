@@ -624,6 +624,10 @@ public class MilestoneServiceImpl implements MilestoneService {
 				activityLevel.setOicEmpId(dto.getOicEmpId()!=null?Long.parseLong(dto.getOicEmpId()):0L);
 				activityLevel.setOicEmpId1(dto.getOicEmpId1()!=null?Long.parseLong(dto.getOicEmpId1()):0L);
 				activityLevel.setIsAutoWeightage("N");
+				if(dto.getSeniorityNo() != null && !dto.getSeniorityNo().isBlank()) {
+					activityLevel.setSrNo(Long.parseLong(dto.getSeniorityNo()));
+				}
+				
 				dao.MilestoneActivityLevelInsert(activityLevel);
 				result = 1;
 			}
@@ -4012,5 +4016,11 @@ public class MilestoneServiceImpl implements MilestoneService {
 			return List.of();
 		}
 	}
+
+	@Override
+	public int updatemilestoneActivitySubRemarksUpdate(String activitySubId, String progressRemarks,
+			String progressVal,String activityId) throws Exception{
 	
+		return dao.updatemilestoneActivitySubRemarksUpdate(activitySubId,progressRemarks,progressVal,activityId);
+	}
 }

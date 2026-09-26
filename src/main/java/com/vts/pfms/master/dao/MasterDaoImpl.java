@@ -38,7 +38,7 @@ public class MasterDaoImpl implements MasterDao {
 
 	private SimpleDateFormat sdf1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	private static final String OFFICERLIST="SELECT a.emp_id, a.emp_no, CONCAT(IFNULL(CONCAT(a.title,' '),(IFNULL(CONCAT(a.salutation, ' '), ''))), a.emp_name) AS 'empname' , b.designation, a.ext_no, a.email, (SELECT c.division_name FROM division_master c WHERE a.division_id= c.division_id LIMIT 1) AS 'divisionname', a.desig_id, a.division_id, a.sr_no, a.is_active,a.lab_code FROM employee a,employee_desig b WHERE a.desig_id= b.desig_id AND a.emp_status IN ('P')  ORDER BY a.sr_no=0,a.sr_no";
+	private static final String OFFICERLIST="SELECT a.emp_id, a.emp_no, CONCAT(IFNULL(CONCAT(a.title,' '),(IFNULL(CONCAT(a.salutation, ' '), ''))), a.emp_name) AS 'empname' , b.designation, a.ext_no, a.email, (SELECT c.division_name FROM division_master c WHERE a.division_id= c.division_id LIMIT 1) AS 'divisionname', a.desig_id, a.division_id, a.sr_no, a.is_active,a.lab_code FROM employee a,employee_desig b WHERE a.desig_id= b.desig_id AND a.emp_status IN ('P')  ORDER BY a.sr_no IS NULL, a.sr_no=0, a.sr_no";
 	private static final String DESIGNATIONLIST="SELECT desig_id, desig_code, designation, desig_limit FROM employee_desig ORDER BY desig_sr";
 	private static final String OFFICERDIVISIONLIST="SELECT division_id, division_name FROM division_master where is_active='1'";
 	private static final String OFFICEREDITDATA="select emp_id,emp_no,emp_name,desig_id,ext_no,email,division_id, drona_email, internet_email,mobile_no , title , salutation, superior_officer, emp_status from employee  where emp_id=:empid"; 
@@ -53,12 +53,12 @@ public class MasterDaoImpl implements MasterDao {
 
 	private static final String DIVISIONLIST="SELECT division_id,division_code,division_name FROM division_master WHERE isactive=1";
 	private static final String DIVISIONEMPLIST="SELECT de.divisionemployeeid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.emp_name) AS 'empname',ed.designation,de.divisionid,e.lab_code  FROM division_employee de,employee e, employee_desig ed WHERE de.isactive=1 AND e.is_active=1 AND e.emp_status IN ('P') AND  de.empid=e.emp_id AND e.desig_id=ed.desig_id AND de.divisionid=:divisionid";
-	private static final String DIVISIONNONEMPLIST ="SELECT e.emp_id, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.emp_name) AS 'empname',ed.designation,e.lab_code  FROM employee e,employee_desig ed  WHERE e.is_active=1 AND e.emp_status IN ('P') AND e.desig_id=ed.desig_id AND e.emp_id NOT IN  (SELECT de.empid FROM division_employee de WHERE de.isactive=1 AND divisionid=:divisionid) AND e.emp_status NOT IN ('N') ORDER BY e.sr_no ASC ,ed.desig_sr ASC";
+	private static final String DIVISIONNONEMPLIST ="SELECT e.emp_id, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.emp_name) AS 'empname',ed.designation,e.lab_code  FROM employee e,employee_desig ed  WHERE e.is_active=1 AND e.emp_status IN ('P') AND e.desig_id=ed.desig_id AND e.emp_id NOT IN  (SELECT de.empid FROM division_employee de WHERE de.isactive=1 AND divisionid=:divisionid) AND e.emp_status NOT IN ('N') ORDER BY a.sr_no IS NULL, a.sr_no=0, a.sr_no ASC ,ed.desig_sr ASC";
 	private static final String DIVISIONDATA ="SELECT division_id, division_code,division_name FROM division_master WHERE division_id=:divisionid";
 
 
 	private final static String OFFICERDETALIS="SELECT a.emp_id, a.emp_no,CONCAT(IFNULL(CONCAT(a.title,' '),(IFNULL(CONCAT(a.salutation, ' '), ''))), a.emp_name) AS 'empname' , b.designation, a.ext_no, a.email, (SELECT c.division_name FROM division_master c WHERE a.division_id= c.division_id LIMIT 1) AS 'divisionname', a.desig_id, a.division_id, a.sr_no FROM employee a,employee_desig b WHERE a.desig_id= b.desig_id AND a.is_active='1' AND a.emp_id=:officerid"; 
-	private final static String LISTOFSENIORITYNUMBER="SELECT sr_no, emp_id FROM employee WHERE sr_no !=0 ORDER BY sr_no ASC ";
+	private final static String LISTOFSENIORITYNUMBER="SELECT sr_no, emp_id FROM employee WHERE sr_no !=0 ORDER BY sr_no IS NULL, sr_no=0, sr_no ASC ";
 
 	private static final String ACTIVITYLIST="SELECT activitytypeid, activitytype, IsTimeSheet, ActivityCode FROM milestone_activity_type WHERE isactive=1";
 	private static final String ACTIVITYNAMECHECK="SELECT COUNT(ActivityTypeId) AS 'count','ActivityType' FROM milestone_activity_type WHERE CASE WHEN ActivityTypeId<>0 THEN ActivityTypeId!=:ActivityTypeId END AND ActivityType=:ActivityType AND IsActive=1";
@@ -68,7 +68,7 @@ public class MasterDaoImpl implements MasterDao {
 	private static final String GROUPDATA = "SELECT dg.group_id,dg.group_code,dg.group_name,dg.group_head_id,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.emp_name) AS 'empname',ed.designation,dg.is_active,dg.td_id,e.lab_code AS 'Group Head Labcode' FROM division_group dg,employee e, employee_desig ed WHERE e.is_active=1 AND dg.group_head_id=e.emp_id AND e.desig_id=ed.desig_id AND  dg.group_id=:groupid";
 
 	private static final String LABLIST="select labmasterid,labcode,labname,labunitcode,labaddress,labcity,labpin FROM lab_master";
-	private static final String EMPLOYEELIST="SELECT emp_id, CONCAT(IFNULL(CONCAT(title,' '),''), emp_name) AS 'empname', lab_code, desig_id FROM employee WHERE is_active=1 ORDER BY sr_no ";
+	private static final String EMPLOYEELIST="SELECT emp_id, CONCAT(IFNULL(CONCAT(title,' '),''), emp_name) AS 'empname', lab_code, desig_id FROM employee WHERE is_active=1 ORDER BY sr_no IS NULL, sr_no=0, sr_no ";
 	private static final String LABMASTEREDITDATA="select labmasterid,labcode,labname,labunitcode,labaddress,labcity,labpin,labtelno,labfaxno,labemail,labauthority,labauthorityid,labrfpemail,lablogo,labid from lab_master where labmasterid= :labmasterid";
 	private static final String LABSLIST="SELECT lab_id,cluster_id,lab_name,lab_code FROM cluster_lab";
 	private static final String EMPNOCHECKAJAX="SELECT emp_id, CONCAT(IFNULL(CONCAT(title,' '),''), emp_name) AS 'empname' , emp_no FROM employee WHERE emp_no=:empno"; 
@@ -636,7 +636,7 @@ public class MasterDaoImpl implements MasterDao {
 		return TDList;
 	}
 
-	private static final String TDHEADLIST="SELECT e.emp_id,CONCAT(IFNULL(e.title,''), e.emp_name)AS 'empname',ed.designation FROM employee e, employee_desig ed WHERE  e.desig_id=ed.desig_id AND e.is_active=1 AND e.lab_code=:labcode AND e.emp_status NOT IN ('N') ORDER BY e.sr_no=0, e.sr_no";
+	private static final String TDHEADLIST="SELECT e.emp_id,CONCAT(IFNULL(e.title,''), e.emp_name)AS 'empname',ed.designation FROM employee e, employee_desig ed WHERE  e.desig_id=ed.desig_id AND e.is_active=1 AND e.lab_code=:labcode AND e.emp_status NOT IN ('N') ORDER BY  e.sr_no IS NULL, e.sr_no=0, e.sr_no";
 	@Override
 	public List<Object[]> TDHeadList(String LabCode) throws Exception 
 	{		

@@ -69,10 +69,9 @@
 
 				<div class="card shadow-nohover">
 
-					<div class="card-header cardHeader"
-						>
-						<b class="text-white fontsize20 "> Activity Update: <%=EditData[3]!=null?StringEscapeUtils.escapeHtml4(EditData[3].toString()): " - " %></b><b
-							class="text-white right" ><%=projectdetails[1]!=null?StringEscapeUtils.escapeHtml4(projectdetails[1].toString()): " - "%></b>
+					<div class="card-header cardHeader">
+					<b class="text-white fontsize20 "> Activity Update: <%=EditData[3]!=null?StringEscapeUtils.escapeHtml4(EditData[3].toString()): " - " %></b><b
+					class="text-white right" ><%=projectdetails[1]!=null?StringEscapeUtils.escapeHtml4(projectdetails[1].toString()): " - "%></b>
 					</div>
 
 					<div class="card-body">
@@ -118,7 +117,6 @@
 							</div>
 						
 							</div>
-
 							<div class="form-group formgroup" align="center"
 								>
 								<input type="submit" class="btn btn-primary btn-sm submit "
@@ -140,11 +138,7 @@
 					</div>
 
 
-
-
-
-					<div class="card-footer"
-						>
+					<div class="card-footer">
 
 
 					</div>
@@ -317,6 +311,7 @@
 								<th >Attachment</th>
 								<!-- <th style="">Upload</th> -->
 								<!-- <th style="">Action</th> -->
+								<%if("DLRL".equalsIgnoreCase(LabCode)){ %><th>Action</th><%} %>
 							</tr>
 						</thead>
 						<tbody>
@@ -359,9 +354,15 @@
 
 
 								</td>
-
-
-
+								<%if("DLRL".equalsIgnoreCase(LabCode)){ %>
+									<td>
+								             <button class="btn btn-sm btn-bg" type="button" data-toggle="modal" data-target="#exampleModal" onclick='actionEditform("<%= sdf.format(obj[2]) %>", 
+								                            "<%= StringEscapeUtils.escapeEcmaScript(obj[1].toString()) %>", 
+								                            "<%= StringEscapeUtils.escapeEcmaScript(obj[3].toString()) %>", 
+								                            "<%= obj[0] %>")'>
+								             <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+									</td>
+								<%} %>
 							</tr>
 
 							<% count++; } %>
@@ -371,7 +372,47 @@
 
 			</div>
 
-
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content md-content" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+              <div class="modal-body">
+						<div class="row" >
+							<div class="col-md-3">
+								<label class="custom-label">Progress % :</label>
+								</div>
+								<div class="col-md-4 margin-leftN6" >
+								<input type="number" class="form-control item_name progressVal" max="100" min="0"
+									name="progressVal" id="progressVal" readonly="readonly">
+								</div>
+						 </div>
+						<div class="row mt-4">
+						<div class="col-md-3" >
+								<label class="custom-label"> Remarks : </label> 
+								</div>
+								<div class="col-md-8 margin-leftN6" >
+							<textarea class="form-control progressVal" rows="5"  maxlength="255"
+							name="progressRemarks" id="progressRemarks">
+							</textarea>
+							</div>
+							</div>
+							<br>
+							<div align="center">
+							<input type="hidden" id="ActivitySubId" value="">
+							<button class="btn btn-sm submit" onclick="updateRemarks()">SUBMIT</button>
+							</div>
+						<br>
+					
+					
+					</div>
+		</div>
+	</div>
+</div>
 
 
 
@@ -467,6 +508,17 @@ function editcheck(editfileid)
 }
 
 
+function actionEditform(pdate,progress,premarks,ActivitySubId){
+    $('#exampleModal .modal-title').html('<span class="sapn-color">Progress Date : ' + pdate);
+	$('#exampleModal').modal('show');
+	$('#progressVal').val(progress);
+	$('#progressRemarks').val(premarks);
+ 	$('#ActivitySubId').val(ActivitySubId);
+ 	/*$('#ActionSubId').val(subid);
+	$('#ActionMainId').val(mainid);
+	$('#projectid').val(project);
+	$('#subaction').val(subaction); */
+}
 
 </script>
 
@@ -538,51 +590,41 @@ function changeempdd()
 	}
 		
 </script>
-
-	<script>
-
-
+<script>
 function SubmitSBack(){
 	$('#progressid').prop("min",false);
-	
-	
 }
-
-
 
 </script>
 
-
-
-
-	<script>
-var from ="<%=sdf.format(EditData[1]) %>".split("-")
-var dt = new Date(from[2], from[1] - 1, from[0])
-var to ="<%=sdf.format(EditData[2]) %>".split("-")
-var dt1 = new Date(to[2], to[1] - 1, to[0])
-$('#DateCompletion').daterangepicker({
-	"singleDatePicker" : true,
-	"linkedCalendars" : false,
-	"showCustomRangeLabel" : true,
-	"cancelClass" : "btn-default",
-	"minDate":new Date(),
-	showDropdowns : true,
-	locale : {
-		format : 'DD-MM-YYYY'
-	}
-});
-$('#progressDate').daterangepicker({
-	"singleDatePicker" : true,
-	"linkedCalendars" : false,
-	"showCustomRangeLabel" : true,
-	"cancelClass" : "btn-default",
-	"minDate": new Date('<%=startdate%>'),
-	"maxDate":new Date('<%=enddate%>'),
-	showDropdowns : true,
-	locale : {
-		format : 'DD-MM-YYYY'
-	}
-});
+<script>
+		var from ="<%=sdf.format(EditData[1]) %>".split("-")
+		var dt = new Date(from[2], from[1] - 1, from[0])
+		var to ="<%=sdf.format(EditData[2]) %>".split("-")
+		var dt1 = new Date(to[2], to[1] - 1, to[0])
+		$('#DateCompletion').daterangepicker({
+			"singleDatePicker" : true,
+			"linkedCalendars" : false,
+			"showCustomRangeLabel" : true,
+			"cancelClass" : "btn-default",
+			"minDate":new Date(),
+			showDropdowns : true,
+			locale : {
+				format : 'DD-MM-YYYY'
+			}
+		});
+		$('#progressDate').daterangepicker({
+			"singleDatePicker" : true,
+			"linkedCalendars" : false,
+			"showCustomRangeLabel" : true,
+			"cancelClass" : "btn-default",
+			"minDate": new Date('<%=startdate%>'),
+			"maxDate":new Date('<%=enddate%>'),
+			showDropdowns : true,
+			locale : {
+				format : 'DD-MM-YYYY'
+			}
+		});
 
 	
 
@@ -590,7 +632,6 @@ $(document).ready(function() {
 	   $('#StatusId').on('change', function() {
 			var from = $("#StatusId").val();
 			if ( from == '3' || from == '5'){
-		       
 				$('#DateCompletion').prop("disabled",false);
 			}else{
 				$('#DateCompletion').prop("disabled",true);
@@ -656,6 +697,39 @@ $(document).ready(function() {
 		
 		
 
+		function updateRemarks(){
+			
+			var progressVal = $('#progressVal').val();
+			var progressRemarks = $('#progressRemarks').val();
+			var ActivitySubId = $('#ActivitySubId').val();
+			
+			if(confirm('Are you sure to update the value?')){
+			
+			$.ajax({
+				type:'get',
+				url:'milestoneActivitySubRemarksUpdate.htm',
+				datatype:'json',
+				data:{
+					progressVal:progressVal,
+					progressRemarks:progressRemarks,
+					ActivitySubId:ActivitySubId,
+					activityId:'<%=EditMain.getActivityId() %>'
+				},
+			success : function(result) {
+				
+				console.log(result +" "+ typeof result)
+				if(result==="1"){
+					alert("Updation successful")
+                    location.reload();
+				}
+			}
+				
+			})
+			}
+			console.log("progressVal"+progressVal)
+			console.log("progressRemarks"+progressRemarks)
+			console.log("ActivitySubId"+ActivitySubId)
+		}
 
 </script>
 

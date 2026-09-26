@@ -23,6 +23,7 @@ public class MileEditDto {
 	private byte[] FilePath;
 	private String CreatedBy;
 	private String CreatedDate;
+	private String SeniorityNo;
 	
 	/*
 	 * @Author Sankha
@@ -175,6 +176,12 @@ public class MileEditDto {
 	}
 	public void setFilePath(byte[] filePath) {
 		FilePath = filePath;
+	}
+	public String getSeniorityNo() {
+		return SeniorityNo;
+	}
+	public void setSeniorityNo(String seniorityNo) {
+		SeniorityNo = seniorityNo;
 	}
 	
     

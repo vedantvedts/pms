@@ -289,7 +289,7 @@ Kindly note that only the Project Director, the Admin, and the OICs of the Paren
 <div class="row container-fluid" id="row_M">
                              <div class="col-md-1 " ><br><label class="control-label">Type</label>  <br>  <b >Main</b>                    		
                         	</div>
-                    		<div class="col-md-5 " ><br>
+                    		<div class="col-md-4 " ><br>
                     		<label class="control-label"> Activity Name:</label> <br> 
                     		 <textarea rows="1" cols="50" class="form-control mp2"  <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"    maxlength="1000" required="required"><%=getMA[4]!=null?getMA[4].toString(): "" %></textarea> 
                         	</div>
@@ -309,6 +309,10 @@ Kindly note that only the Project Director, the Admin, and the OICs of the Paren
 
                     		 
                         	</div>
+                        		<div class="col-md-1 " align="center" ><br>
+                    		<label class="control-label">Seniority No <br> </label>
+                    		<%-- <input type="number" class="form-control width95" name="SeniorityNo" id="SeniorityNo<%=getMA[0] %>M<%=getMA[10] %>" min="1" value="<%=getMA.length>30 && getMA[30]!=null?StringEscapeUtils.escapeHtml4(getMA[30].toString()): "" %>"  >
+                        	 --%></div>
                         	<div class="col-md-2 " ><br>
 	                        	<%if(RevisionCount==0) { %>
 	                    		<label class="control-label">Activity Type  </label>
@@ -417,12 +421,6 @@ renderEmployeeList('2','M', '<%=getMA[9]!=null?StringEscapeUtils.escapeHtml4(get
 </div>
 <div class="col-md-12">
 <%
-// CHANGED: Level B and below used to be fetched eagerly here in a nested loop querying
-// the DB 5 levels deep for every Level-A activity - this is what made the page slow with
-// ~120 activities. Now only Level A is fetched (already done, one query, in the controller).
-// Levels B-E are fetched on demand, one level at a time, via MilestoneActivityLevelFetch.htm,
-// the first time the user expands a given node - see the lazy-loading engine script near the
-// bottom of this page.
 if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
 	int countA=1;
 	for(Object[] ActivityA:MilestoneActivityA){
@@ -434,15 +432,12 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
 
 				<div class="row container-fluid" id="row_A_<%=ActivityA[0]%>">
 					<div class="col-md-1 " ><label class="control-label ml-1" ></label><br> <b class="ml-1">A-<%=countA %></b><br>
-					     <!-- CHANGED: always shown now (whether or not this node turns out to have children) since
-					          knowing that up front would need the same eager per-node query we're trying to avoid.
-					          Expanding a leaf just shows "No sub-activities." -->
 					     <button type="button" id="btn_A_<%=ActivityA[0]%>" class="btn btn-sm btn-primary py-0 px-2 mt-1"
 					     	onclick="toggleAjaxChildren(this,'children_A_<%=ActivityA[0]%>','A','<%=ActivityA[0]%>','<%=sdf.format(ActivityA[2])%>','<%=sdf.format(ActivityA[3])%>','<%=aAncestorOic%>',['A_<%=ActivityA[0]%>'])">
 					     	<i class="fa fa-plus" aria-hidden="true"></i>
 					     </button>
 					</div>
-				  <div class="col-md-5 " ><br>
+				  <div class="col-md-4 " ><br>
                 	 <textarea rows="1" cols="50" class="form-control mp2" <%if(RevisionCount>0){ %>  <%} %> name="ActivityName" id="ActivityName"    maxlength="1000" required="required"><%=ActivityA[4]!=null?ActivityA[4].toString(): " - " %></textarea>
                 	</div>
 
@@ -455,6 +450,10 @@ if(MilestoneActivityA!=null&&MilestoneActivityA.size()>0){
                 	</div>
                		<div class="col-md-1 " align="center" ><br>
            				<input type="number" class="form-control width95"  name="Weightage" id="Weightage<%=getMA[0] %>A<%=ActivityA[0] %>" required="required" min="0" max="100" value="<%=ActivityA[6]!=null?StringEscapeUtils.escapeHtml4(ActivityA[6].toString()): "" %>" >
+               		</div>
+               		<div class="col-md-1 " align="center" ><br>
+           				<%-- TODO: confirm ActivityA[30] is really the Seniority No column for this query -- see chat --%>
+           				<input type="number" class="form-control width95"  name="SeniorityNo" id="SeniorityNo<%=getMA[0] %>A<%=ActivityA[0] %>" min="1" value="<%=ActivityA.length>30 && ActivityA[30]!=null?StringEscapeUtils.escapeHtml4(ActivityA[30].toString()): "" %>" >
                		</div>
                		<div class="col-md-2 " ><br>
                			<%if(RevisionCount==0) { %>
@@ -939,10 +938,11 @@ function buildEditRow(letter, node, parentId, ancestorOic, chain, displayIndex, 
 		+ '<form method="POST" action="MilestoneActivityEditSubmit.htm" id="form' + parentId + letter + node.id + '">'
 		+ '<div class="row container-fluid" id="row_' + letter + '_' + node.id + '">'
 		+ '<div class="col-md-1"><b class="ml-1">' + letter + '-' + displayIndex + '</b><br>' + expandBtn + '</div>'
-		+ '<div class="col-md-5"><textarea rows="1" cols="50" class="form-control mp2" name="ActivityName" maxlength="1000" required="required">' + escapeHtml(node.activityName) + '</textarea></div>'
+		+ '<div class="col-md-4"><textarea rows="1" cols="50" class="form-control mp2" name="ActivityName" maxlength="1000" required="required">' + escapeHtml(node.activityName) + '</textarea></div>'
 		+ '<div class="col-md-1" align="center"><input class="form-control width120" name="ValidFrom" id="DateCompletion' + uid + '" value="' + escapeHtml(node.validFrom) + '" required="required"></div>'
 		+ '<div class="col-md-1" align="center"><input class="form-control width120" name="ValidTo" id="DateCompletion2' + uid + '" value="' + escapeHtml(node.validTo) + '" required="required"></div>'
 		+ '<div class="col-md-1" align="center"><input type="number" class="form-control width95" name="Weightage" id="Weightage' + parentId + letter + node.id + '" required="required" min="0" max="100" value="' + escapeHtml(node.weightage) + '"></div>'
+		+ '<div class="col-md-1" align="center"><input type="number" class="form-control width95" name="SeniorityNo" id="SeniorityNo' + parentId + letter + node.id + '" min="1" value="' + escapeHtml(node.seniorityNo) + '"></div>'
 		+ '<div class="col-md-2">' + typeSelect + '</div>'
 		+ '<div class="col-md-1">' + actionsHtml + '</div>'
 		+ '</div>'

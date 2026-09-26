@@ -216,7 +216,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
                                                      <%}%>
                                                     </td>
                                                     <td>
-                                                    <%if(Long.parseLong(fileStatus[7].toString())!=25){ %>
+                                                    <%if(Long.parseLong(fileStatus[7].toString())!=pftsStageList.size()){ %>
                                                      <%if(fileStatus[10]!=null && fileStatus[10].toString().equals("I")) {%> 
                                                      <button class="btn btn-sm" data-toggle="tooltip" data-placement="top" title="Demand Status" onclick="openEditform('<%=fileStatus[0]%>','<%=fileStatus[1]%>',<%=fileStatus[7]%>,'<%=fileStatus[4]%>','<%=fileStatus[10]%>')"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                                    <%}else{ %>
@@ -236,7 +236,7 @@ milestoneStatus.add(new Object[]{13, "Available for Integration"});
 	                                                   <input type="hidden" name="projectId" value=<%=projectId%> />
 	                                                   <input type="hidden" name="demandNo" value="<%=fileStatus[1]%>" />
 	                                                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-	                                                   <%if(Long.parseLong(fileStatus[7].toString())!=25){ %>                                         
+	                                                   <%if(Long.parseLong(fileStatus[7].toString())!= pftsStageList.size()){ %>                                         
 	                                                   <button class="btn btn-sm" data-toggle="tooltip" title="Demand Inactive" onclick="return confirm('Are You Sure To InActive ?')"><i class="fa fa-times" aria-hidden="true"></i></button>
 	                                                  <%--  <button class="btn btn-sm" type="button" onclick="openPDCform('<%=fileStatus[0]%>')">
                                                   	  	<i class="fa fa-calendar" aria-hidden="true"></i>

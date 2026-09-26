@@ -39,6 +39,7 @@ public class ProjectHealth {
 	private Long MilPending;
 	private Long MilDelayed;
 	private Long MilCompleted;
+	private Long MilUpcoming;
 	private Long ActionPending;
 	private Long ActionForwarded;
 	private Long ActionDelayed;

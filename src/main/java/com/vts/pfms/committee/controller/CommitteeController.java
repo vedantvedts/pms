@@ -818,8 +818,25 @@ public class CommitteeController {
 			/* ------------------ start ----------------------- */
 			req.setAttribute("industryPartnerList",  masterservice.getIndustryPartnerList());
 			/* ------------------ end ----------------------- */
+			String isApprovedByDirector = "N";
 			if( Long.parseLong(projectid)>0) {
-				req.setAttribute("projectdata", service.projectdetails(projectid));
+				Object[] projectDetails = service.projectdetails(projectid);
+
+				if(CommitteMainEnoteList != null && projectDetails != null) {
+					String projectDirector = projectDetails[17] != null ? projectDetails[17].toString() : null;
+					
+					String rc1 = CommitteMainEnoteList[7] != null ? CommitteMainEnoteList[7].toString() : "";
+					String rc2 = CommitteMainEnoteList[9] != null ? CommitteMainEnoteList[9].toString() : "";
+					String rc3 = CommitteMainEnoteList[11] != null ? CommitteMainEnoteList[11].toString() : "";
+					String apr = CommitteMainEnoteList[13] != null ? CommitteMainEnoteList[13].toString() : "";
+					
+					if(rc1.equalsIgnoreCase(projectDirector) || rc2.equalsIgnoreCase(projectDirector) || rc3.equalsIgnoreCase(projectDirector) || apr.equalsIgnoreCase(projectDirector)) {
+						isApprovedByDirector = "Y";
+					}
+				
+				}
+				
+				req.setAttribute("projectdata", projectDetails);
 			}
 			if( Long.parseLong(divisionid)>0) {
 				req.setAttribute("divisiondata", service.DivisionData(divisionid) );
@@ -830,6 +847,7 @@ public class CommitteeController {
 			if(Long.parseLong(carsInitiationId)>0) {
 				req.setAttribute("carsInitiationData", carsservice.getCARSInitiationById(Long.parseLong(carsInitiationId)) );
 			}
+			req.setAttribute("isApprovedByDirector",isApprovedByDirector);
 
 
 

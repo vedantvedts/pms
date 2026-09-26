@@ -665,6 +665,7 @@ public class MilestoneController {
 	            node.put("labCode1", row[28] != null ? row[28].toString() : "");
 	            node.put("labCode2", row[29] != null ? row[29].toString() : "");
 	            node.put("changed", row[26] != null && "1".equals(row[26].toString()));
+	            node.put("seniorityNo", row[30] != null ? row[30].toString() : "");
 	 
 	            Set<String> chainIncludingSelf = new HashSet<String>(ancestorOicIds);
 	            chainIncludingSelf.add(firstOicId);
@@ -1045,11 +1046,12 @@ public class MilestoneController {
 			mainDto.setStartDate(req.getParameter("ValidFrom"));
 			mainDto.setEndDate(req.getParameter("ValidTo"));
 			mainDto.setWeightage(req.getParameter("Weightage"));
+			mainDto.setSeniorityNo(req.getParameter("SeniorityNo"));
 			mainDto.setCreatedBy(UserId);
 			
 			String activityType = req.getParameter("ActivityType");
 			
-			System.out.println("Valid To -" +req.getParameter("ValidTo"));
+			System.out.println("Valid To -" +req.getParameter("ValidTo")+"================="+req.getParameter("SeniorityNo"));
 			
 			
 			if(activityType!=null && !activityType.equalsIgnoreCase("M")) {
@@ -4660,13 +4662,13 @@ private boolean isValidFileType(MultipartFile file) {
 			Map<Long, List<Object[]>> progressListMap = new HashMap<Long, List<Object[]>>();
 			
 			if (mainList != null && !mainList.isEmpty()) {
-				mainList = mainList.stream().filter(e -> e[1].toString().equalsIgnoreCase(finalProjectId) ).collect(Collectors.toList());
+				mainList = mainList.stream().filter(e -> e[1] != null && e[1].toString().equalsIgnoreCase(finalProjectId) ).collect(Collectors.toList());
 				
 				totalAssignedMainList.addAll(mainList.stream()
-											.filter(e -> !LocalDate.parse(e[6].toString()).isBefore(fromDateL) && !LocalDate.parse(e[7].toString()).isAfter(toDateL) )
+											.filter(e -> e[6] !=null &&  e[7] != null && !LocalDate.parse(e[6].toString()).isBefore(fromDateL) && !LocalDate.parse(e[7].toString()).isAfter(toDateL) )
 											.collect(Collectors.toList()));
 				
-				Map<String, List<Object[]>> groupedByParentIdAndLevel = subList.stream().collect(Collectors.groupingBy(e -> e[1].toString() + "_" + e[2].toString()));
+				Map<String, List<Object[]>> groupedByParentIdAndLevel = subList.stream().collect(Collectors.groupingBy(e -> (e[1] != null ? e[1].toString() : "")+ "_"+ (e[2] != null ? e[2].toString() : "")));
 
 				for(Object[] objmain : mainList ) {
 
@@ -6125,6 +6127,31 @@ private boolean isValidFileType(MultipartFile file) {
 	        result.add(m);
 	    }
 	    return result;
+	}
+	
+
+	//DLRL changes
+	@RequestMapping(value = "milestoneActivitySubRemarksUpdate.htm", method = RequestMethod.GET)
+	public @ResponseBody String milestoneActivitySubRemarksUpdate(HttpSession ses, HttpServletRequest req) throws Exception 
+	{
+		
+		Gson json = new Gson();
+		try {
+			
+			String progressVal = req.getParameter("progressVal");
+			String progressRemarks = req.getParameter("progressRemarks");
+			String ActivitySubId = req.getParameter("ActivitySubId");
+			String activityId = req.getParameter("activityId");
+		
+			
+			int count = service.updatemilestoneActivitySubRemarksUpdate(ActivitySubId,progressRemarks,progressVal,activityId);
+			
+			return json.toJson(count);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }

@@ -145,7 +145,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String PROJECTINTATTACHFILENAMEPATH="select a.filenamepath from pfms_initiation_attachment a where a.isactive='1' and a.initiationattachmentid=:initiationattachmentid ";
 	private static final String PROJECTINTCOSTDELETE="update pfms_initiation_cost set isactive='0' ,modifiedby=:modifiedby, modifieddate=:modifieddate where initiationcostid=:initiationcostid ";
 	private static final String PROJECTACTIONLIST="select projectauthorityid,status,statusaction from pfms_project_authority_actionlist where projectauthorityid=:projectauthorityid";
-	private static final String EMPLOYEELIST="select a.emp_id,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.emp_name) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.is_active='1' AND a.desig_id=b.desig_id AND a.lab_code=:LabCode ORDER BY a.sr_no=0,a.sr_no";
+	private static final String EMPLOYEELIST="select a.emp_id,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.emp_name) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.is_active='1' AND a.desig_id=b.desig_id AND a.lab_code=:LabCode ORDER BY a.sr_no IS NULL, a.sr_no=0, a.sr_no";
 	private static final String PFMSINITIATIONREFESUM= "SELECT SUM(a.itemcost) AS 'recost'  FROM pfms_initiation_cost a, budget_item_sanc b  WHERE a.budgetsancid=b.sanctionitemid AND a.isactive=1 AND a.initiationid=:initiationid AND b.refe=:refe";
 	private static final String PROJECTSTATUSLIST="SELECT b.project_type_short,c.classification,a.projecttitle,a.projectshortname,a.projectcost,a.projectduration,d.statusdetail,a.initiationid FROM pfms_initiation a,project_type b, pfms_security_classification c,pfms_project_authority_actionlist d WHERE (CASE WHEN :logintype IN ('Z','Y','A','E') THEN a.LabCode=:LabCode ELSE a.empid=:empid END ) AND a.classificationId=c.classification_id AND a.ProjectTypeId=b.project_type_id AND a.projectstatus=d.Status";
 	private static final String PROJECTAPPROVALTRACKING="SELECT a.projectapprovalid,a.empid,c.empname,d.designation,e.division_name,a.actiondate,a.remarks,b.statusdetail FROM project_approval a, pfms_project_authority_actionlist b,employee c,employee_desig d,division_master e WHERE a.projectstatus=b.Status AND a.empid=c.empid  AND c.desigid=d.desigid AND c.divisionid=e.division_id AND a.initiationid=:initiationid";
@@ -179,7 +179,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	private static final String AUTHORITYATTACHMENT="SELECT a.authorityid,a.initiationid,a.authorityname,a.letterdate,a.letterno,c.attachmentname,b.emp_name,c.initiationauthorityfileid FROM pfms_initiation_authority a,employee b,pfms_initiation_authority_file c WHERE a.initiationid=:initiationid AND a.authorityname=b.emp_id AND a.authorityid=c.authorityid";
 	private static final String AUTHORITYUPDATE="UPDATE pfms_initiation_authority SET authorityname=:authorityname, letterdate=:letterdate,letterno=:letterno, modifiedby=:modifiedby,modifieddate=:modifieddate WHERE initiationid=:initiationid";
 	private static final String PROJECTMAINLIST="SELECT a.project_main_id,b.project_type_id,b.project_type,a.project_code,a.project_name, a.project_description, a.unit_code, a.sanction_no, a.sanction_date, a.total_sanction_cost, a.pdc, a.revision_no,a.objective,a.deliverable, a.project_director FROM project_main a, project_type b WHERE a.project_type_id=b.project_type_id AND a.is_active='1' AND b.is_active='1' ORDER BY a.sanction_date DESC";
-	private static final String OFFICERLIST="SELECT a.emp_id, a.emp_no, a.emp_name, b.designation, a.ext_no, a.email, c.division_name, a.desig_id, a.division_id,a.lab_code FROM employee a,employee_desig b, division_master c WHERE a.desig_id= b.desig_id AND a.division_id= c.division_id AND a.is_active='1' AND a.emp_status IN ('P','R') ORDER BY a.sr_no=0,a.sr_no ASC ";
+	private static final String OFFICERLIST="SELECT a.emp_id, a.emp_no, a.emp_name, b.designation, a.ext_no, a.email, c.division_name, a.desig_id, a.division_id,a.lab_code FROM employee a,employee_desig b, division_master c WHERE a.desig_id= b.desig_id AND a.division_id= c.division_id AND a.is_active='1' AND a.emp_status IN ('P','R') ORDER BY a.sr_no IS NULL, a.sr_no=0, a.sr_no ASC ";
 	private static final String PROJECTMAINEDITDATA="SELECT a.project_main_id,b.project_type_id,b.project_type,a.project_code,a.project_name, a.project_description, a.unit_code, a.sanction_no, a.sanction_date, a.sanction_cost_re, a.sanction_cost_fe, a.total_sanction_cost, a.pdc,a.project_director,a.proj_sanc_authority,a.board_reference,a.is_main_wc,a.work_center, a.revision_no,a.objective,a.deliverable, a.lab_participating,a.category_id,a.scope ,a.end_user  ,a.application , a.project_short_name, a.platform_id FROM project_main a, project_type b WHERE a.project_type_id=b.project_type_id AND a.project_main_id=:promainid AND a.is_active='1' AND b.is_active='1' ORDER BY a.project_type_id, a.project_main_id"; 
 	private static final String PROJECTLIST1="SELECT a.projectid,b.projectmainid,b.projectcode AS id,a.projectcode,a.projectname, a.projectdescription, a.unitcode, a.sanctionno, a.sanctiondate, a.totalsanctioncost, a.pdc, a.revisionno,a.objective,a.deliverable,a.labcode FROM project_main b, project_master a, project_type c WHERE c.projecttypeid=b.projecttypeid AND a.projectmainid=b.projectmainid AND a.isactive='1' AND b.isactive='1' ORDER BY a.sanctiondate DESC";
 	private static final String PROJECTTYPEMAINLIST="SELECT b.project_main_id,b.project_code as id from  project_main b WHERE  b.is_active='1' ";
@@ -3889,7 +3889,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
 
 	//private static final String EMPLISTS=" SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.isactive='1' AND a.DesigId=b.DesigId AND a.LabCode=:LabCode AND empid NOT IN (SELECT empid FROM pfms_initiation_req_members WHERE InitiationId =:InitiationId AND isactive = 1)ORDER BY a.srno=0,a.srno";
-	private static final String EMPLISTS=" SELECT a.emp_id,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.emp_name) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.is_active='1' AND a.desig_id=b.desig_id AND a.lab_code=:LabCode AND a.emp_id NOT IN (SELECT empid FROM pfms_initiation_req_members WHERE ReqInitiationId =:ReqInitiationId AND isactive = 1)ORDER BY a.sr_no=0,a.sr_no";
+	private static final String EMPLISTS=" SELECT a.emp_id,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.emp_name) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.is_active='1' AND a.desig_id=b.desig_id AND a.lab_code=:LabCode AND a.emp_id NOT IN (SELECT empid FROM pfms_initiation_req_members WHERE ReqInitiationId =:ReqInitiationId AND isactive = 1)ORDER BY a.sr_no IS NULL, a.sr_no=0, a.sr_no";
 
 	@Override
 	public List<Object[]> EmployeeList(String labCode, String reqInitiationId) throws Exception {
@@ -3911,7 +3911,7 @@ public class ProjectDaoImpl implements ProjectDao {
 	}
 
 	//private static final String REQMEMLIST = " SELECT a.empid,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.empname) AS 'empname' ,b.designation,a.labcode,b.desigid FROM employee a,employee_desig b,pfms_initiation_req_members c WHERE a.isactive='1' AND a.DesigId=b.DesigId AND  a.empid = c.empid AND c.initiationid =:initiationid AND c.isactive =1 ORDER BY b.desigid ASC";
-	private static final String REQMEMLIST = "SELECT a.emp_id,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.emp_name) AS 'empname' ,b.designation,a.lab_code,b.desig_id,c.ReqMemeberId FROM employee a,employee_desig b,pfms_initiation_req_members c WHERE a.is_active='1' AND a.desig_id=b.desig_id AND  a.emp_id = c.empid AND c.ReqInitiationId =:ReqInitiationId AND c.isactive =1 ORDER BY a.sr_no ASC";
+	private static final String REQMEMLIST = "SELECT a.emp_id,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.emp_name) AS 'empname' ,b.designation,a.lab_code,b.desig_id,c.ReqMemeberId FROM employee a,employee_desig b,pfms_initiation_req_members c WHERE a.is_active='1' AND a.desig_id=b.desig_id AND  a.emp_id = c.empid AND c.ReqInitiationId =:ReqInitiationId AND c.isactive =1 ORDER BY a.sr_no IS NULL, a.sr_no=0, a.sr_no ASC";
 
 	@Override
 	public List<Object[]> reqMemberList(String reqInitiationId) throws Exception {
@@ -4015,7 +4015,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		List<Object[]>paraDetails=(List<Object[]>)query.getResultList();
 		return paraDetails;
 	}
-	private static final String EMPLISTS1="SELECT a.emp_id,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.emp_name) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.is_active='1' AND a.Desig_Id=b.Desig_Id AND a.Lab_Code=:LabCode AND a.emp_id NOT IN (SELECT empid FROM pfms_doc_members WHERE TestPlanInitiationId =:TestPlanInitiationId AND SpecsInitiationId=:SpecsInitiationId AND isactive = 1) ORDER BY a.sr_no=0,a.sr_no";
+	private static final String EMPLISTS1="SELECT a.emp_id,CONCAT(IFNULL(CONCAT(a.title,' '),''), a.emp_name) AS 'empname' ,b.designation FROM employee a,employee_desig b WHERE a.is_active='1' AND a.Desig_Id=b.Desig_Id AND a.Lab_Code=:LabCode AND a.emp_id NOT IN (SELECT empid FROM pfms_doc_members WHERE TestPlanInitiationId =:TestPlanInitiationId AND SpecsInitiationId=:SpecsInitiationId AND isactive = 1) ORDER BY a.sr_no IS NULL, a.sr_no=0, a.sr_no";
 	@Override
 	public List<Object[]> EmployeeList1(String labCode, String testPlanInitiationId,String SpecsInitiationId) throws Exception {
 		Query query = manager.createNativeQuery(EMPLISTS1);
@@ -4532,7 +4532,7 @@ public class ProjectDaoImpl implements ProjectDao {
 		return (List<Object[]>)query.getResultList();
 	}
 
-	private static final String PROJECTTEAMLISTBYLABCODE="SELECT a.emp_id, CONCAT(IFNULL(CONCAT(a.title,' '),(IFNULL(CONCAT(a.salutation, ' '), ''))), a.emp_name) AS 'EmpName', b.Designation FROM employee a LEFT JOIN employee_desig b ON a.desig_id=b.desig_id WHERE a.is_active=1 AND a.lab_code=:LabCode AND a.emp_id NOT IN (SELECT c.EmpId FROM project_employee c WHERE c.ProjectId=:ProjectId AND c.IsActive=1) AND a.emp_status NOT IN ('N') ORDER BY a.sr_no=0,a.sr_no"; 
+	private static final String PROJECTTEAMLISTBYLABCODE="SELECT a.emp_id, CONCAT(IFNULL(CONCAT(a.title,' '),(IFNULL(CONCAT(a.salutation, ' '), ''))), a.emp_name) AS 'EmpName', b.Designation FROM employee a LEFT JOIN employee_desig b ON a.desig_id=b.desig_id WHERE a.is_active=1 AND a.lab_code=:LabCode AND a.emp_id NOT IN (SELECT c.EmpId FROM project_employee c WHERE c.ProjectId=:ProjectId AND c.IsActive=1) AND a.emp_status NOT IN ('N') ORDER BY a.sr_no IS NULL, a.sr_no=0, a.sr_no"; 
 	@Override
 	public List<Object[]> getProjectTeamListByLabCode(String labCode, String projectId) {
 		try {

@@ -207,4 +207,5 @@ public interface MilestoneService {
 	public List<ProjectInfrastructureUtilization> getActiveInfrastructure(Long resourceUtilizationId) throws Exception;
 	public List<ProjectTrainingUtilization> getActiveTraining(Long resourceUtilizationId) throws Exception;
 	public List<ProjectEconomicImpact> getEconomicImpactForBriefing(String proid) throws Exception;
+	public int updatemilestoneActivitySubRemarksUpdate(String activitySubId, String progressRemarks, String progressVal,String activityId) throws Exception;
 }

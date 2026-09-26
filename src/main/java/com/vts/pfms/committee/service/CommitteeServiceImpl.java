@@ -1231,74 +1231,147 @@ public class CommitteeServiceImpl implements CommitteeService{
 	
 	@Override
 	public Long CommitteeInvitationCreate(CommitteeInvitationDto committeeinvitationdto) throws Exception {
-		logger.info(new Date() +"Inside SERVICE CommitteeInvitationCreate ");
-		
-		long ret=0;
-		long slno=1;
-		Object[] maxslno=dao.InvitationMaxSerialNo(committeeinvitationdto.getCommitteeScheduleId());
-		if(maxslno[1]!=null && Long.parseLong(maxslno[1].toString())>0) 
-		{
-			slno=Long.parseLong(maxslno[1].toString());
-		}
+	    logger.info(new Date() + " Inside SERVICE CommitteeInvitationCreate");
+	    
+	    long ret = 0;
+	    
+	    // Parse schedule ID safely
+	    String rawScheduleId = committeeinvitationdto.getCommitteeScheduleId();
+	    Long scheduleId = (rawScheduleId != null && !rawScheduleId.isBlank()) ? Long.parseLong(rawScheduleId) : 0L;
 
-		Long scheduleId = committeeinvitationdto.getCommitteeScheduleId() != null && !committeeinvitationdto.getCommitteeScheduleId().isBlank() ? Long.parseLong(committeeinvitationdto.getCommitteeScheduleId()) : 0;
-		
-		for(int i=0;i<committeeinvitationdto.getEmpIdList().size();i++) {
-			
-			CommitteeInvitation committeeinvitation= new CommitteeInvitation();
-			
-			String MemberType[]=committeeinvitationdto.getEmpIdList().get(i).split(",");
-			committeeinvitation.setCommitteeScheduleId(Long.parseLong(committeeinvitationdto.getCommitteeScheduleId()));
-			
-			committeeinvitation.setCreatedBy(committeeinvitationdto.getCreatedBy());
-			committeeinvitation.setAttendance("P");
-			committeeinvitation.setCreatedDate(sdf1.format(new Date()));
-			committeeinvitation.setEmpId(Long.parseLong(MemberType[0]));
-			committeeinvitation.setRevisionNo(committeeinvitationdto.getRevisionNo());
-			committeeinvitation.setParentInvitationId(0L);
-			committeeinvitation.setIsActive(1L);
-			if(committeeinvitationdto.getReptype()!= null && !committeeinvitationdto.getReptype().equals("0")) 
-			{
-				committeeinvitation.setMemberType(committeeinvitationdto.getReptype()+"_NORMAL");
-			}
-			else 
-			{
-				committeeinvitation.setMemberType(MemberType[1]);
-			}
-			committeeinvitation.setDesigId(MemberType[2]);
-			
-			if(!committeeinvitationdto.getLabCodeList().isEmpty()) {
-				committeeinvitation.setLabCode(committeeinvitationdto.getLabCodeList().get(i));
-			}
-			
-			// Check weather this employee is already invited as committee member 
-			if(!MemberType[1].equalsIgnoreCase("SPL") && dao.CommitteeInvitationCheck(committeeinvitation).size()>0)
-			{
-				continue;
-			}
-			else
-			{
-				if(committeeinvitationdto.getInviteFlag()!=null && committeeinvitationdto.getInviteFlag().equalsIgnoreCase("Y")) {
-					if(MemberType[1].equalsIgnoreCase("CC")) {
-						committeeinvitation.setSerialNo(1);
-					}else if(MemberType[1].equalsIgnoreCase("CS")) {
-						committeeinvitation.setSerialNo(committeeinvitationdto.getEmpIdList().size());
-					}else {
-						committeeinvitation.setSerialNo(MemberType.length>3 && Integer.parseInt(MemberType[3])>0?Integer.parseInt(MemberType[3]):++slno);
-					}
-				}else {
-					committeeinvitation.setSerialNo(++slno);
-					
-				}
+	    // Fetch initial max serial number from DB
+	    long currentSl = 0;
+	    Object[] maxslno = dao.InvitationMaxSerialNo(String.valueOf(scheduleId));
+	    if (maxslno != null && maxslno.length > 1 && maxslno[1] != null) {
+	        try {
+	            currentSl = Long.parseLong(maxslno[1].toString());
+	        } catch (NumberFormatException e) {
+	            currentSl = 0;
+	        }
+	    }
 
-				
-				ret=dao.CommitteeInvitationCreate(committeeinvitation);
-			}
-			
-		}
-		updateInvitationBasedonScheduleId(scheduleId,committeeinvitationdto.getEmpIdList().size()+1);		
-		
-		return ret; 
+	    List<String> empList = committeeinvitationdto.getEmpIdList();
+	    if (empList == null || empList.isEmpty()) {
+	        return ret;
+	    }
+
+	    List<String> labCodeList = committeeinvitationdto.getLabCodeList();
+	    boolean isInviteFlagY = "Y".equalsIgnoreCase(committeeinvitationdto.getInviteFlag());
+
+	    // Helper holder for valid candidates
+	    class Candidate {
+	        CommitteeInvitation invitation;
+	        String role;
+	        int customSl;
+
+	        Candidate(CommitteeInvitation invitation, String role, int customSl) {
+	            this.invitation = invitation;
+	            this.role = role;
+	            this.customSl = customSl;
+	        }
+	    }
+
+	    // STEP 1: Filter out invalid/duplicate records first
+	    List<Candidate> validCandidates = new ArrayList<>();
+
+	    for (int i = 0; i < empList.size(); i++) {
+	        String[] memberType = empList.get(i).split(",");
+	        if (memberType.length < 3) {
+	            continue; 
+	        }
+
+	        CommitteeInvitation invitation = new CommitteeInvitation();
+	        invitation.setCommitteeScheduleId(scheduleId);
+	        invitation.setCreatedBy(committeeinvitationdto.getCreatedBy());
+	        invitation.setAttendance("P");
+	        invitation.setCreatedDate(sdf1.format(new Date()));
+	        invitation.setEmpId(Long.parseLong(memberType[0].trim()));
+	        invitation.setRevisionNo(committeeinvitationdto.getRevisionNo());
+	        invitation.setParentInvitationId(0L);
+	        invitation.setIsActive(1L);
+
+	        if (committeeinvitationdto.getReptype() != null && !committeeinvitationdto.getReptype().equals("0")) {
+	            invitation.setMemberType(committeeinvitationdto.getReptype() + "_NORMAL");
+	        } else {
+	            invitation.setMemberType(memberType[1].trim());
+	        }
+
+	        invitation.setDesigId(memberType[2].trim());
+
+	        if (labCodeList != null && i < labCodeList.size()) {
+	            invitation.setLabCode(labCodeList.get(i));
+	        }
+
+	        // Duplicate check - if skipped here, no serial number is wasted
+	        if (!"SPL".equalsIgnoreCase(memberType[1].trim()) && dao.CommitteeInvitationCheck(invitation).size() > 0) {
+	            continue;
+	        }
+
+	        String role = memberType[1].trim();
+	        int customSl = (memberType.length > 3) ? parseInteger(memberType[3].trim()) : 0;
+
+	        validCandidates.add(new Candidate(invitation, role, customSl));
+	    }
+
+	    if (validCandidates.isEmpty()) {
+	        return ret;
+	    }
+
+	    // STEP 2: Sort candidates in strict priority order
+	    List<Candidate> orderedCandidates = new ArrayList<>();
+
+	    if (isInviteFlagY) {
+	        List<Candidate> ccList = new ArrayList<>();
+	        List<Candidate> chList = new ArrayList<>();
+	        List<Candidate> customList = new ArrayList<>();
+	        List<Candidate> defaultList = new ArrayList<>();
+	        List<Candidate> csList = new ArrayList<>();
+
+	        for (Candidate c : validCandidates) {
+	            if ("CC".equalsIgnoreCase(c.role)) {
+	                ccList.add(c);
+	            } else if ("CS".equalsIgnoreCase(c.role)) {
+	                csList.add(c);
+	            } else if ("CH".equalsIgnoreCase(c.role)) {
+	                chList.add(c);
+	            } else if (c.customSl > 0) {
+	                customList.add(c);
+	            } else {
+	                defaultList.add(c);
+	            }
+	        }
+
+	        // Sort custom sequence members by customSl ascending
+	        customList.sort((a, b) -> Integer.compare(a.customSl, b.customSl));
+
+	        // Assemble hierarchy: CC -> CH -> Custom -> Default -> CS
+	        orderedCandidates.addAll(ccList);
+	        orderedCandidates.addAll(chList);
+	        orderedCandidates.addAll(customList);
+	        orderedCandidates.addAll(defaultList);
+	        orderedCandidates.addAll(csList);
+	    } else {
+	        orderedCandidates.addAll(validCandidates);
+	    }
+
+	    // STEP 3: Assign gapless sequential serial numbers and save
+	    for (Candidate candidate : orderedCandidates) {
+	        currentSl++;
+	        candidate.invitation.setSerialNo((int) currentSl);
+	        ret = dao.CommitteeInvitationCreate(candidate.invitation);
+	    }
+
+	    updateInvitationBasedonScheduleId(scheduleId, (int) currentSl); 
+
+	    return ret;
+	}
+
+	private int parseInteger(String str) {
+	    try {
+	        return Integer.parseInt(str);
+	    } catch (NumberFormatException e) {
+	        return 0;
+	    }
 	}
 	
 	public void updateInvitationBasedonScheduleId(Long scheduleId,long srno) {

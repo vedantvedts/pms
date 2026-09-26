@@ -213,7 +213,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		}
 	}
 	
-	private static final String IGIDOCUMENTMEMBERLIST = "SELECT a.emp_id, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.Emp_Name) AS 'EmpName',b.Designation,a.Lab_Code,b.Desig_Id,c.IGIMemeberId FROM employee a,employee_desig b,pfms_igi_document_members c WHERE a.is_active='1' AND a.Desig_Id=b.Desig_Id AND a.Emp_Id = c.EmpId AND c.DocId =:DocId AND c.DocType=:DocType AND c.IsActive =1 ORDER BY a.Sr_No=0, a.Sr_No";
+	private static final String IGIDOCUMENTMEMBERLIST = "SELECT a.emp_id, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.Emp_Name) AS 'EmpName',b.Designation,a.Lab_Code,b.Desig_Id,c.IGIMemeberId FROM employee a,employee_desig b,pfms_igi_document_members c WHERE a.is_active='1' AND a.Desig_Id=b.Desig_Id AND a.Emp_Id = c.EmpId AND c.DocId =:DocId AND c.DocType=:DocType AND c.IsActive =1 ORDER BY a.sr_no IS NULL, a.sr_no=0, a.sr_no";
 	@Override
 	public List<Object[]> getDocumentMemberList(String docId, String docType) throws Exception {
 		try {
@@ -228,7 +228,7 @@ public class DocumentsDaoImpl implements DocumentsDao{
 		
 	}
 	
-	private static final String DOCEMPLISTBYIGIDOCID="SELECT a.Emp_Id, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.Emp_Name) AS 'EmpName', b.Designation FROM employee a,employee_desig b WHERE a.Is_Active='1' AND a.Desig_Id=b.Desig_Id AND a.Lab_Code=:LabCode AND a.Emp_Id NOT IN (SELECT empid FROM pfms_igi_document_members WHERE DocId =:DocId AND DocType=:DocType AND IsActive = 1) ORDER BY a.Sr_No=0,a.Sr_No";
+	private static final String DOCEMPLISTBYIGIDOCID="SELECT a.Emp_Id, CONCAT(IFNULL(CONCAT(a.Title,' '),(IFNULL(CONCAT(a.Salutation, ' '), ''))), a.Emp_Name) AS 'EmpName', b.Designation FROM employee a,employee_desig b WHERE a.Is_Active='1' AND a.Desig_Id=b.Desig_Id AND a.Lab_Code=:LabCode AND a.Emp_Id NOT IN (SELECT empid FROM pfms_igi_document_members WHERE DocId =:DocId AND DocType=:DocType AND IsActive = 1) ORDER BY a.sr_no IS NULL, a.sr_no=0, a.sr_no";
 	@Override
 	public List<Object[]> getDocmployeeListByDocId(String labCode, String docId, String docType) throws Exception {
 		try {
