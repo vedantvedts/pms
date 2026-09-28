@@ -60,6 +60,8 @@ String LabCode = (String)request.getAttribute("LabCode");
 
 String LoginType =(String) session.getAttribute("LoginType");
 
+String isApprovedByDirector = (String) request.getAttribute("isApprovedByDirector");	
+
 Object[]CommitteMainEnoteList = (Object[])request.getAttribute("CommitteMainEnoteList");
 %>
 
@@ -172,7 +174,7 @@ String logintype = (String)session.getAttribute("LoginType");
 					                        <tr >
 												<td class="w-25 border-0">
 													 <div class="input select" id="cplab-col">
-														<select class="form-control selectdee labNameWidth" name="CpLabCode" tabindex="-1" required="required" id="CpLabCode" onchange="chairpersonfetch('1')">
+														<select class="form-control selectdee labNameWidth" name="CpLabCode" tabindex="-1" required="required" id="CpLabCode" onchange="chairpersonfetch('1')" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 															<option disabled="disabled"  selected value="">Lab Name</option>
 														    <% for (Object[] obj : AllLabList) {%>
 															    <option <%if(chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -184,7 +186,7 @@ String logintype = (String)session.getAttribute("LoginType");
 												</td>										
 												<td class="border-0">
 												<div class="input select">
-														<select class="form-control selectdee" name="chairperson" id="chairperson" data-live-search="true" required="required"   data-placeholder="Select Chairperson" >
+														<select class="form-control selectdee" name="chairperson" id="chairperson" data-live-search="true" required="required"   data-placeholder="Select Chairperson" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %> >
 												             
 														</select>	
 														<input type="hidden" name="cpmemberid" value="<%=chairperson[0]%>"> 										
@@ -202,7 +204,7 @@ String logintype = (String)session.getAttribute("LoginType");
 					                        <tr >
 												<td class="w-25 border-0">
 													 <div class="input select" id="cplab-col">
-														<select class="form-control selectdee labNameWidth" name="msLabCode" tabindex="-1" required="required" id="mSLabCode" onchange="msfetch('1')">
+														<select class="form-control selectdee labNameWidth" name="msLabCode" tabindex="-1" required="required" id="mSLabCode" onchange="msfetch('1')" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 															<option disabled="disabled"  selected value="">Lab Name</option>
 														    <% for (Object[] obj : AllLabList) {%>
 															    <option <%if(secretary!=null&& secretary[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -214,7 +216,7 @@ String logintype = (String)session.getAttribute("LoginType");
 												</td>										
 												<td class="border-0">
 												<div class="input select">
-														<select class="form-control selectdee" name="Secretary" id="secretary" data-live-search="true" required="required"   data-placeholder="Select Member secretary" >
+														<select class="form-control selectdee" name="Secretary" id="secretary" data-live-search="true" required="required"   data-placeholder="Select Member secretary" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 												             
 														</select>	
 														<%if(secretary!=null){ %>
@@ -229,7 +231,7 @@ String logintype = (String)session.getAttribute("LoginType");
 									<div class="col-md-3">
 									<div class="form-group">
 										<label class="control-label">Member Secretary (Proxy)</label>
-										<select class="form-control selectdee mt-n5" id="proxysecretary" required="required" name="proxysecretary">
+										<select class="form-control selectdee mt-n5" id="proxysecretary" required="required" name="proxysecretary" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 				    						<option value="0"  selected >None</option>
 				    						<% for (Object[] obj : EmployeeList1) {%>
 												<option value="<%=obj[0]%>" <%if(proxysecretary!=null && proxysecretary[5].toString().equals(obj[0].toString())){ %>selected<%} %> ><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - " %></option>
@@ -247,7 +249,7 @@ String logintype = (String)session.getAttribute("LoginType");
 					                        <tr >
 												<td class="w-25 border-0">
 													 <div class="input select" id="cplab-col">
-														<select class="form-control selectdee labNameWidth" name="ccplabocode" tabindex="-1" id="ccplabocode" onchange="ccchairpersonfetch('1')">
+														<select class="form-control selectdee labNameWidth" name="ccplabocode" tabindex="-1" id="ccplabocode" onchange="ccchairpersonfetch('1')" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 															<option disabled="disabled"  selected value="">SELECT</option>
 														    <% for (Object[] obj : AllLabList) {%>
 															    <option <%if(co_chairperson!=null &&   co_chairperson[9].toString().equals(obj[3].toString())){ %>selected <%} %>value="<%=obj[3]%>"><%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%></option>
@@ -259,7 +261,7 @@ String logintype = (String)session.getAttribute("LoginType");
 												</td>										
 												<td class="border-0">
 												<div class="input select">
-														<select class="form-control selectdee" name="co_chairperson" id="co_chairperson" data-live-search="true"    data-placeholder="Select co-chairPerson" >
+														<select class="form-control selectdee" name="co_chairperson" id="co_chairperson" data-live-search="true"    data-placeholder="Select co-chairPerson" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 												             
 														</select>	
 												<%if(co_chairperson!=null){ %>
@@ -281,7 +283,7 @@ String logintype = (String)session.getAttribute("LoginType");
 							<label class="control-label">Reference No.</label>
 							
 												
-							<input type="text" class="form-control"   name="Reference No." value="<%= committeedata[11] != null ? StringEscapeUtils.escapeHtml4(committeedata[11].toString()) : "--" %>" >
+							<input type="text" class="form-control"   name="Reference No." value="<%= committeedata[11] != null ? StringEscapeUtils.escapeHtml4(committeedata[11].toString()) : "--" %>" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 							
 							</div>
 							</div>
@@ -289,7 +291,7 @@ String logintype = (String)session.getAttribute("LoginType");
 							<div class="col-md-4">
 				         	<div class="form-group">
 				            	<label class="control-label" >Formation Date</label>
-				  				<input type="date" class="form-control"  data-date-format="dd/mm/yyyy" id="Formationdate" name="Formationdates"  value="<%= committeedata[12] != null ? StringEscapeUtils.escapeHtml4(committeedata[12].toString()) : '-' %>"  >
+				  				<input type="date" class="form-control"  data-date-format="dd/mm/yyyy" id="Formationdate" name="Formationdates"  value="<%= committeedata[12] != null ? StringEscapeUtils.escapeHtml4(committeedata[12].toString()) : '-' %>"  <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 				        	</div>
 				        </div>
 							
@@ -298,8 +300,10 @@ String logintype = (String)session.getAttribute("LoginType");
 								<div class="col-md-12" align="center">
 					              	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />                  	
 									<input type="hidden" name="committeemainid" value="<%=committeemainid%>"> 
-									<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-				                	<button class=" btn btn-primary btn-sm submit" type="submit"  onclick="Add('committeeeditfrm')" >SUBMIT</button>
+									<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR")))  ){ %>
+				                	<button class=" btn btn-primary btn-sm submit" type="submit"  onclick="Add('committeeeditfrm')" 
+				                		<%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>
+				                	>SUBMIT</button>
 				                	<%} %>
 				              </div> 
 			              </div>
@@ -342,7 +346,8 @@ String logintype = (String)session.getAttribute("LoginType");
 			              	for(Object[]obj:tempcommitteemembersall){%>
 			              	<tr>
 			              	<td class="d-flex justify-content-center align-items-center">
-			            <input type="number" class="form-control w-50" name="newslno" value="<%=obj[11] %>" min="1" max="<%=tempcommitteemembersall.size()%>"> 
+			            <input type="number" class="form-control w-50" name="newslno" value="<%=obj[11] %>" min="1" max="<%=tempcommitteemembersall.size()%>" 
+			            <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>> 
 			              	<input type="hidden" name="memberId" value="<%=obj[0].toString() %>">
 			              	</td>
 			              	<td><%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - " %>,<%=obj[4]!=null?StringEscapeUtils.escapeHtml4(obj[4].toString()): " - " %></td>
@@ -370,9 +375,10 @@ String logintype = (String)session.getAttribute("LoginType");
 														<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> 
 												        <input type="hidden" name="committeemainid" value="<%=committeemainid%>">
 												      <%--   <input type="hidden" name="committeememberid" value="<%=obj[0] %>" /> --%> 
-												        <%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
+												        <%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR")))){ %>
 														<button class="fa fa-trash btn btn-danger bg-white border border-white" type="submit"
 															formaction="CommitteeMemberDelete.htm" formmethod="POST" name="committeememberid" value="<%=obj[0] %>"
+															<%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>
 														  onclick="return confirm('Are You Sure To Delete this Member?');" ></button>
 														<%} %>
 									
@@ -386,7 +392,10 @@ String logintype = (String)session.getAttribute("LoginType");
 			              	<td colspan=1 class="d-flex justify-content-center align-items-center">
 			              	<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
 			              	<input type="hidden" name="${_csrf.parameterName}"	value="${_csrf.token}" /> 
-			              	<button class="btn btn-sm edit" onclick="return slnocheck('serialnoupdate');">UPDATE</button>
+							<button class="btn btn-sm edit" onclick="return slnocheck('serialnoupdate');" 
+								<%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>
+							>UPDATE</button>
+			              	
 			              	</td>
 			              	<td colspan=3></td>
 			              	</tr>
@@ -436,7 +445,9 @@ String logintype = (String)session.getAttribute("LoginType");
 				             		<%if( proposedmainid==null ){
 				             			if(LabCode.equalsIgnoreCase("LRDE") && (LoginType.equalsIgnoreCase("A") || LoginType.equalsIgnoreCase("P"))){%>             		
 										<form  method="post" action="CommitteeDetails.htm">
-											<button  type="submit" class="btn btn-sm add">CONSTITUTE NEW COMMITTEE</button>
+											<button  type="submit" class="btn btn-sm add"
+											<%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>
+											>CONSTITUTE NEW COMMITTEE</button>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 											<input type="hidden" name="committeeid" value="<%=committeeid%>">
 											<input type="hidden" name="projectid" value="<%=projectid %>" >	
@@ -461,7 +472,9 @@ String logintype = (String)session.getAttribute("LoginType");
 								<%if( Long.parseLong(divisionid)>0 || Long.parseLong(projectid)>0 || Long.parseLong(initiationid)>0 || Long.parseLong(carsInitiationId)>0){ %>
 								 	<td>
 										<form  method="post" action="ProjectCommitteeDescriptionTOREdit.htm">
-											<button  type="submit" class="btn btn-sm edit">DESCRIPTION</button>
+											<button  type="submit" class="btn btn-sm edit"
+											<%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>
+											>DESCRIPTION</button>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 											<input type="hidden" name="committeemainid" value="<%=committeemainid%>">		
 											<input type="hidden" name="operation" value="approve">								
@@ -517,7 +530,9 @@ String logintype = (String)session.getAttribute("LoginType");
 											<td>
 											<%if(Long.parseLong(divisionid)>0 || Long.parseLong(projectid)>0 ||Long.parseLong(initiationid)>0){ %>
 											<form  method="post" action="ProjectCommitteeDescriptionTOREdit.htm">
-											<button  type="submit" class="btn btn-sm edit">DESCRIPTION</button>
+											<button  type="submit" class="btn btn-sm edit"
+											<%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>
+											>DESCRIPTION</button>
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />     
 											<input type="hidden" name="committeemainid" value="<%=committeemainid%>">		
 											<input type="hidden" name="operation" value="approve">								
@@ -649,7 +664,7 @@ String logintype = (String)session.getAttribute("LoginType");
 														<tr class="tr_clone">
 															<td>
 																<div class="input select">
-																	<select class="form-control selectdee internalMembers" name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple>
+																	<select class="form-control selectdee internalMembers" name="InternalMemberIds" data-live-search="true" required  data-placeholder="Select Members" multiple <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 													                <%for(Object[] obj:EmployeeList){ %>																							
 																		<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>																				
 																	<%} %>
@@ -664,7 +679,9 @@ String logintype = (String)session.getAttribute("LoginType");
 											
 										<div class="col-md-2 align-self-center">	
 										<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>				
-											<button class="btn  btn-sm submit" name="submit" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');"  >SUBMIT</button>
+											<button class="btn  btn-sm submit" name="submit" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');"  
+												<%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>											
+											>SUBMIT</button>
 											<%} %>							
 										</div>									
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -682,7 +699,7 @@ String logintype = (String)session.getAttribute("LoginType");
 											<thead>  
 												<tr >
 													<th colspan="2" >External Members (Within DRDO) 
-													<button class="btn bg-primary float-right addExpertButtonColor" type="button" id="externalAdd">ADD NEW </button> </th>
+													<button class="btn bg-primary float-right addExpertButtonColor" type="button" id="externalAdd" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>ADD NEW </button> </th>
 													
 												</tr>
 											</thead>								
@@ -690,7 +707,7 @@ String logintype = (String)session.getAttribute("LoginType");
 												<tr class="tr_clone1">
 													<td class="trCloneWidth">
 														 <div class="input select">
-															 <select class="form-control selectdee" name="Ext_LabCode" tabindex="-1" required  id="Ext_LabCode" onchange="employeename()">
+															 <select class="form-control selectdee" name="Ext_LabCode" tabindex="-1" required  id="Ext_LabCode" onchange="employeename()" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 																<option disabled="true"  selected value="">Lab Name</option>
 																    <% for (Object[] obj : AllLabList) {
 																    if(!LabCode.equals(obj[3].toString())){%>
@@ -703,7 +720,7 @@ String logintype = (String)session.getAttribute("LoginType");
 													</td>										
 													<td class="externalMemberIdWidth">
 														<div class="input select">
-															<select class="form-control selectdee" name="ExternalMemberIds" id="ExternalMember" data-live-search="true"   data-placeholder="Select Members" multiple>
+															<select class="form-control selectdee" name="ExternalMemberIds" id="ExternalMember" data-live-search="true"   data-placeholder="Select Members" multiple <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 
 															</select>															
 														</div>														
@@ -714,7 +731,9 @@ String logintype = (String)session.getAttribute("LoginType");
 									</div>
 									<div class="col-md-2 align-self-center">					
 										<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-										<button class="btn  btn-sm submit" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >SUBMIT</button>
+										<button class="btn  btn-sm submit" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" 
+											<%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>
+										>SUBMIT</button>
 										<%} %>							
 									</div>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -730,7 +749,7 @@ String logintype = (String)session.getAttribute("LoginType");
 											<thead>  
 												<tr>
 													<th>Expert Member (Outside DRDO)
-													<button class="btn bg-primary float-right addExpertButtonColor" type="button" id="expertAdd">ADD EXPERT </button> </th>
+													<button class="btn bg-primary float-right addExpertButtonColor" type="button" id="expertAdd" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>ADD EXPERT </button> </th>
 											
 												</tr>
 											</thead>								
@@ -738,7 +757,7 @@ String logintype = (String)session.getAttribute("LoginType");
 												<tr class="tr_clone2">
 													<td >
 														<div class="input select ">
-															<select class="selectdee expertMemberIdWidth" name="ExpertMemberIds" id="ExpertMemberIds"   data-live-search="true" data-placeholder="Select Members" required multiple>
+															<select class="selectdee expertMemberIdWidth" name="ExpertMemberIds" id="ExpertMemberIds"   data-live-search="true" data-placeholder="Select Members" required multiple <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 												            	<%for(Object[] obj:expertlist){ %>																									
 																	<option value="<%=obj[0]%>"><%=obj[1]!=null?StringEscapeUtils.escapeHtml4(obj[1].toString()): " - "%>, <%=obj[2]!=null?StringEscapeUtils.escapeHtml4(obj[2].toString()): " - "%></option>	
 																													
@@ -752,7 +771,9 @@ String logintype = (String)session.getAttribute("LoginType");
 									</div>
 									<div class="col-md-2 align-self-center">					
 										<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-										<button class="btn  btn-sm submit" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >SUBMIT</button>
+										<button class="btn  btn-sm submit" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" 
+											<%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>
+										>SUBMIT</button>
 										<%} %>							
 									</div>	
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />											
@@ -774,7 +795,7 @@ String logintype = (String)session.getAttribute("LoginType");
 								<tr class="tr_clone1">
 									<td class="trCloneWidth">							
 										<div class="input select">
-											<select class="form-control selectdee" name="industryPartnerId" tabindex="-1"   id="industryPartnerId" onchange="industrypartnerrepname()" required>
+											<select class="form-control selectdee" name="industryPartnerId" tabindex="-1"   id="industryPartnerId" onchange="industrypartnerrepname()" required <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 												<option disabled="true"  selected value="">Industry Partner</option>
 													<% for (IndustryPartner partner : industryPartnerList) {
 													%>
@@ -792,7 +813,7 @@ String logintype = (String)session.getAttribute("LoginType");
 									</td>
 									<td class="externalMemberIdWidth">
 										<div class="input select ">
-											<select class="form-control selectdee" name="industryPartnerRep" id="industryPartnerRep" data-live-search="true"   data-placeholder="Select Members" multiple onchange ="addIndusRep()">
+											<select class="form-control selectdee" name="industryPartnerRep" id="industryPartnerRep" data-live-search="true"   data-placeholder="Select Members" multiple onchange ="addIndusRep()" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 											</select>
 										</div>
 									</td>						
@@ -801,7 +822,9 @@ String logintype = (String)session.getAttribute("LoginType");
 									</div>
 									<div class="col-md-2 align-self-center">					
 										<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-										<button class="btn  btn-sm submit" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" >SUBMIT</button>
+										<button class="btn  btn-sm submit" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add this Member(s)');" 
+										<%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>
+										>SUBMIT</button>
 										<%} %>							
 									</div>	
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />											
@@ -824,7 +847,7 @@ String logintype = (String)session.getAttribute("LoginType");
 								<tr class="tr_clone1">
 									<td class="externalMemberIdWidth">
 										<div class="input select ">
-											<select class="form-control selectdee" name="RepIds" data-live-search="true" data-placeholder="Select Rep" multiple required="required" >
+											<select class="form-control selectdee" name="RepIds" data-live-search="true" data-placeholder="Select Rep" multiple required="required" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 												<option value="0" disabled="disabled" >Select Rep </option>
 												<option value="1">IAF REP </option>
 												<option value="2">DFA REP </option>
@@ -835,7 +858,9 @@ String logintype = (String)session.getAttribute("LoginType");
 							</table>
 									</div>
 									<div class="col-md-2 align-self-center">					
-										<button class="btn  btn-sm submit" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add ?');" >SUBMIT</button>
+										<button class="btn  btn-sm submit" name="submit" value="add" type="submit" onclick="return confirm('Are you Sure to Add ?');" 
+											<%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>
+										>SUBMIT</button>
 									</div>	
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />											
 									<input type="hidden" name="committeemainid" value="<%=committeemainid%>"> 
@@ -856,7 +881,7 @@ String logintype = (String)session.getAttribute("LoginType");
 										           	</td>
 									           	<tr>
 										           	<td class="width-60">
-											  			<select class="form-control selectdee" id="repids" name="repids" onchange="handleRepChange()" data-placeholder="Select Rep Types" multiple="multiple" >
+											  			<select class="form-control selectdee" id="repids" name="repids" onchange="handleRepChange()" data-placeholder="Select Rep Types" multiple="multiple" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %>>
 															<option  disabled="disabled" value="0">Choose...</option>
 															<option value="0">ADD NEW</option>
 															<%	for (Object[] obj  : committeerepnotaddedlist) {%>
@@ -866,7 +891,7 @@ String logintype = (String)session.getAttribute("LoginType");
 													</td>
 													<td class="width-20"> 		  					
 														<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-										     	  		<button class="btn  btn-sm submit" type="submit"  onclick="return handleRepClick()" >SUBMIT</button>
+										     	  		<button class="btn  btn-sm submit" type="submit"  onclick="return handleRepClick()" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %> >SUBMIT</button>
 										     	  		<%} %>
 										     	   </td>
 									     	   </tr>							
@@ -892,7 +917,7 @@ String logintype = (String)session.getAttribute("LoginType");
 														<td><span> <%=obj[3]!=null?StringEscapeUtils.escapeHtml4(obj[3].toString()): " - "%> </span></td>
 														<td>
 															<%if(status.equals("A") || (status.equals("P") && (approvaldata[5].toString().equals("RTDO") || approvaldata[5].toString().equals("CCR"))) ){ %>
-															<button class="fa fa-trash btn btn-danger bg-white border border-white" type="button" onclick="memberrepdelete('<%=obj[0] %>');" ></button>
+															<button class="fa fa-trash btn btn-danger bg-white border border-white" type="button" onclick="memberrepdelete('<%=obj[0] %>');" <%if("LRDE".equalsIgnoreCase(LabCode) && "Y".equalsIgnoreCase(isApprovedByDirector) && !"A".equalsIgnoreCase(logintype)){ %> disabled="disabled" <%} %> ></button>
 															<%} %>
 														</td>
 													</tr>

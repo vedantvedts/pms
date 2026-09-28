@@ -125,6 +125,10 @@
 	
 
 	List<List<Object[]>> sunsetmilestones = (List<List<Object[]>>) request.getAttribute("sunsetmilestones");
+	List<Object[]> pftsStatusList = (List<Object[]>) request.getAttribute("pftsStatusList");
+	if(pftsStatusList == null){
+		pftsStatusList = new ArrayList<>();
+	}
 
 	%>
 	
@@ -2028,7 +2032,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
  -->											<th class="std bp-65" colspan="4" > Nomenclature</th>
 										 	<th class="std bp-64" > Est. Cost</th>
 											<th class="std bp-64" > Status</th>
-											<th class="std bp-65" colspan="3" s>Remarks</th>
+											<th class="std bp-65" colspan="3">Remarks</th>
 										</tr>
 										    <% int k=0;
 										    if(procurementOnDemand.get(z)!=null &&  procurementOnDemand.get(z).size()>0){
@@ -2041,7 +2045,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 												<td class="std border border-dark"  ><%=obj[1]%><br><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
 <%-- 												<td class="std"  style=" border: 1px solid black;"><%=sdf.format(sdf1.parse(obj[3].toString()))%></td>
  --%>												<td class="std" colspan="4" ><%=obj[8]%></td>
-												<td class="std text-right" s> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
+												<td class="std text-right"> <%=format.format(new BigDecimal(obj[5].toString())).substring(1)%></td>
 												<td class="std border border-dark"  > <%=obj[10]%> </td>
 												<td class="std border border-dark" colspan="3" ><%=obj[11]%> </td>		
 											</tr>		
@@ -2082,7 +2086,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 											<tr>
 												<td class="std border border-dark"  ><%=a%></td>
 												<td class="std border border-dark" colspan="4"  ><%=obj[3]%></td>
-												<td class="std border border-dark text-right" "> <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
+												<td class="std border border-dark text-right"> <%=format.format(new BigDecimal(obj[2].toString())).substring(1)%></td>
 												<td class="std border border-dark"  > <%=obj[6]%> </td>
 												<td class="std border border-dark" colspan="4"><%=obj[4]%> </td>		
 											</tr>		
@@ -2110,7 +2114,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 											 </tr>
 										
 										  	 <tr>	
-										  	 	 <th class="std border border-dark width30" rowspan="1" ">SN</th>
+										  	 	 <th class="std border border-dark width30" rowspan="1">SN</th>
 										  	 	 <th class="std border border-dark width150" >Demand No <br>Demand  Date</th>
 										  	 	<!--  <th class="std" style="border: 1px solid black;" >Demand  Date</th> -->
 												 <th class="std border border-dark" colspan="2" > Nomenclature</th>
@@ -2287,7 +2291,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 											<th class="width40">SN</th>
 											<th class="width280">Item Name</th>
 											<th class="width155">Est/SO Cost <br><span class="currency font-weight-bold"  >(In &#8377; Lakhs)</span></th>
-										<%for(int i=0;i<=25;i++) {%>
+										<%for(int i=0;i<=pftsStatusList.size();i++) {%>
 										<th class="width35"><%=i %></th>
 										<%} %>
 									 	</tr>
@@ -2318,7 +2322,9 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 												<% int filestatus = Integer.parseInt(proc[13].toString());
 													int tempstatus = filestatus;
 												%>
-												<%for(int tdc=1;tdc<=25;tdc++){ %>
+												<%
+												int tdc = 1;
+												for(Object obj : pftsStatusList){ %>
 												
 													<%if(filestatus>11){  filestatus--;  } %>
 													<%if(filestatus>25){  filestatus--;  } %>
@@ -2332,7 +2338,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 														<td ></td>
 													<%} %>
 													
-												<%} %>
+												<%tdc++; } %>
 											</tr>
 									<%}if(envisagedDemandlist!=null && envisagedDemandlist.size()>0){
 										for(Object[] envi : envisagedDemandlist){psn++; %>
@@ -2341,20 +2347,62 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 												<td><%=envi[3] %></td>
 												<td class="text-right"><%=envi[2] %></td>
 												<td class="bp-69">*</td>
-												<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+												<%for(int index = 0; index < pftsStatusList.size(); index++){ %>
+												<td></td>
+												<%} %>
 												</tr>
 										<%}} %>
 
 										
 										<%if(psn ==0 && envisagedDemandlist.size()==0 ){ %>
 											<tr>
-										      <td colspan="29" class="text-center">Nil</td>
+										      <td colspan="<%= pftsStatusList.size() + 4%>" class="text-center">Nil</td>
 										   </tr>
 										<%} %>
 										
 								 	</tbody>
 								</table>
-								<table class="subtables bp-70"  >
+								<table class="subtables bp-70">
+								
+								<%
+								    if (pftsStatusList != null && !pftsStatusList.isEmpty()) {
+								    	pftsStatusList.add(0, new Object[]{"0","","Demand to be Initiated."});
+								        int total = pftsStatusList.size();
+								        int rowsPerColumn = (int) Math.ceil((double) total / 4);
+								
+								        int totalColumns = (int) Math.ceil((double) total / rowsPerColumn);
+								
+								        for (int row = 0; row < rowsPerColumn; row++) {
+								%>
+								            <tr>
+								<%
+								            for (int col = 0; col < totalColumns; col++) {
+								
+								                int index = col * rowsPerColumn + row;
+								
+								                if (index < total) {
+								
+								                    Object[] status = pftsStatusList.get(index);
+								%>
+								                    <td><%= status[0] %></td>
+								                    <td><%= status[2] %></td>
+								<%
+								                } else {
+								%>
+								                    <td></td>
+								                    <td></td>
+								<%
+								                }
+								            }
+								%>
+								            </tr>
+								<%
+								        }
+								    }
+								%>
+								
+								</table>
+								<!-- <table class="subtables bp-70"  >
 								    <tr>
 										<td>0</td>
 										<td>Demand to be Initiated</td>
@@ -2425,7 +2473,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 										<td></td>
 										<td></td>
 									</tr>
-								</table>
+								</table> -->
 					</div></div><% } %>
 			<!-- ---------------------------------------- Procurement status Report Div ----------------------------------------------------- -->
 
@@ -2797,7 +2845,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 								<td><%=obj[24]%><%-- (<%=obj[25] %>) --%></td>
 								
 								<%} %>
-								<td class="text-center""><%=obj[16]%>%</td>
+								<td class="text-center"><%=obj[16]%>%</td>
 								
 								<% 
 									LocalDate StartDate = LocalDate.parse(obj[7].toString());
@@ -2861,7 +2909,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 			
 			<!-- ---------------------------------------- P-13  GANTT chart of overall project Div ----------------------------------------------------- -->
 
-			<div class="carousel-item ">
+			<%-- <div class="carousel-item ">
 
 	
 				
@@ -2882,10 +2930,10 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 				<div class="content">
 				<jsp:include page="BpGrantChart.jsp" />
 				</div>
-			</div>
+			</div> --%>
 			<!-- ---------------------------------------- GANTT chart of overall project Div ----------------------------------------------------- -->
 			<!-- ---------------------------------------- P-14 Issues Div ----------------------------------------------------- -->
-			<div class="carousel-item ">
+			<%-- <div class="carousel-item ">
 					<div class="content-header row ">
 					<div class="col-md-1" ><img class="bp-18"   <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></div>
 					<div class="col-md-1 bp-19" align="left"  ><b class="bp-20"><%=ProjectCode %></b>
@@ -2985,7 +3033,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 						<!-- 		<td style="text-align: center;">
 
 								</td> -->
-								<td><%=obj[11]%><%-- <%=obj[12] %> --%></td>
+								<td><%=obj[11]%><%=obj[12] %></td>
 								<td class="text-center">
 									<%if(obj[4]!= null){ %> 
 														
@@ -3027,7 +3075,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 				</div>
 
 			</div>
-
+ --%>
 			<!-- ---------------------------------------- P-15a  Other Relevant Points Div ----------------------------------------------------- -->
 
 			<div class="carousel-item ">
@@ -3408,7 +3456,7 @@ for (int z = 0; z < projectidlist.size(); z++){  %>
 													%>
 													<tr class="collapse row<%=count%>">
 														<td class="width-2" class="center"></td>
-														<td class="width-5"">A-<%=countA%></td>
+														<td class="width-5">A-<%=countA%></td>
 														<%-- <td class="width-30px"><%=obj[1]%></td> --%>
 														<td class="bp-93"
 															><%=(objA[4].toString())%></td>

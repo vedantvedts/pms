@@ -393,6 +393,7 @@ public class RfpMainServiceImpl implements RfpMainService {
 				health.setMilPending(Long.parseLong(data[7].toString()));
 				health.setMilDelayed(Long.parseLong(data[8].toString()));
 				health.setMilCompleted(Long.parseLong(data[9].toString()));
+				health.setMilUpcoming(Long.parseLong(data[45].toString()));
 				health.setActionPending(Long.parseLong(data[10].toString()));
 				health.setActionForwarded(Long.parseLong(data[11].toString()));
 				health.setActionDelayed(Long.parseLong(data[12].toString()));

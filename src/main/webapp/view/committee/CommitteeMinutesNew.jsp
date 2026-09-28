@@ -856,7 +856,7 @@ for( Object[]obj:specialMembers){ %>
 							<th colspan="8" style="text-align: left; font-weight: 700;">3 (a) Record of Discussions and Action Points of Current Meeting.</th>
 						</tr>
 						<tr>
-							<td colspan="8" style="text-align: center ;padding: 5px;">Item Code/Type : A: Action, C: Comment, D: Decision, R: Recommendation,I:Issue,K:Risk</td>
+							<td colspan="8" style="text-align: center ;padding: 5px;">Item Code/Type : A: Action, C: Comment, D: Decision, R: Recommendation,I:Issue,K:Risk,P: Presentation,E : Discussion</td>
 						</tr>
 					</table>	
 					<%if(labcode.equalsIgnoreCase("ADE")) { %>
@@ -944,11 +944,11 @@ for( Object[]obj:specialMembers){ %>
 								<td class="std" style="text-align :center !important;border:1px solid black;vertical-align: top;"  ><p  style="text-align :center !important; "> <%=countcm%> </p></td>
 								<%if("DLRL".equalsIgnoreCase(labcode)){ %>
 								<td class="std" style="text-align :center !important;border:1px solid black; padding: 5px 5px 5px 5px ; vertical-align: top;" >							
-									<p style="text-align :center !important; ">	<%=speclists.get(i)[5]!=null ? ("7".equalsIgnoreCase(speclists.get(i)[5].toString()) ? "R" : ("8".equalsIgnoreCase(speclists.get(i)[5].toString()) ? "D" : speclists.get(i)[7].toString() )) : " - "%> 
+									<p style="text-align :center !important; ">	<%=speclists.get(i)[5]!=null ? ("7".equalsIgnoreCase(speclists.get(i)[5].toString()) ? "P" : ("8".equalsIgnoreCase(speclists.get(i)[5].toString()) ? "E" : speclists.get(i)[7].toString() )) : " - "%> 
 									</p> 				
 								</td>
 								<%}else{ %>
-									<td class="std" style="text-align :center !important;border:1px solid black; padding: 5px 5px 5px 5px ; vertical-align: top;" >							
+									<td class="std" style="text-align :center !important;border:1px solid black; padding: 5px 5px 5px 5px ; vertical-align: top;" >						
 									<p style="text-align :center !important; ">	<%=speclists.get(i)[7]!=null?speclists.get(i)[7].toString(): " - "%> 
 									</p> 	
 								<%} %>			

@@ -46,7 +46,7 @@ body{
 	String refNo = null;
 	String labcode = (String)session.getAttribute("labcode");
 
-	//labcode = "PGAD";
+	labcode = "PGAD";
 	FormatConverter sdf = new FormatConverter();
 	
 	List<Object[]> projectMeetingList = (List<Object[]>) request.getAttribute("projectMeetingList");

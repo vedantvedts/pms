@@ -147,6 +147,11 @@ List<List<ProjectUtilizationBriefingDto>> manpowerDetails = (List<List<ProjectUt
 List<List<ProjectUtilizationBriefingDto>> infrastructureDetails = (List<List<ProjectUtilizationBriefingDto>>)request.getAttribute("infrastructureDetails"); 
 List<List<ProjectUtilizationBriefingDto>> trainingDetails = (List<List<ProjectUtilizationBriefingDto>>)request.getAttribute("trainingDetails"); 
 List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEconomicImpact>>)request.getAttribute("econmicImpactDetails"); 
+List<Object[]> pftsStatusList = (List<Object[]>) request.getAttribute("pftsStatusList");
+if(pftsStatusList == null){
+	pftsStatusList = new ArrayList<>();
+}
+
 
 %>
 
@@ -2155,32 +2160,9 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 											<th style="width: 30px;">SN</th>
 											<th style="width: 280px;">Item Name</th>
 											<th style="width: 130px;">Est/SO Cost<br><span class="currency" style="font-weight: bold;" >(In &#8377; Lakhs)</span></th>
-											<th style="width: 20px;">0</th>
-											<th style="width: 20px;">1</th>
-											<th style="width: 20px;">2</th>
-											<th style="width: 20px;">3</th>
-											<th style="width: 20px;">4</th>
-											<th style="width: 20px;">5</th>
-											<th style="width: 20px;">6</th>
-											<th style="width: 20px;">7</th>
-											<th style="width: 20px;">8</th>
-											<th style="width: 20px;">9</th>
-											<th style="width: 20px;">10</th>
-											<th style="width: 20px;">11</th>
-											<th style="width: 20px;">12</th>
-											<th style="width: 20px;">13</th>
-											<th style="width: 20px;">14</th>
-											<th style="width: 20px;">15</th>
-											<th style="width: 20px;">16</th>
-											<th style="width: 20px;">17</th>
-											<th style="width: 20px;">18</th>
-											<th style="width: 20px;">19</th>
-											<th style="width: 20px;">20</th>
-											<th style="width: 20px;">21</th>
-											<th style="width: 20px;">22</th>
-											<th style="width: 20px;">23</th>
-											<th style="width: 20px;">24</th>
-											<th style="width: 20px;">25</th>
+											<%for(int i =0; i<= pftsStatusList.size(); i++){ %>
+												<th style="width: 20px;"><%=i %></th>
+											<%} %>
 									 	</tr>
 									</thead>
 									<tbody>
@@ -2210,7 +2192,7 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 												<% int filestatus = Integer.parseInt(proc[13].toString());
 													int tempstatus = filestatus;
 												%>
-												<%for(int tdc=1;tdc<=25;tdc++){ %>
+												<%for(int tdc=1;tdc<=pftsStatusList.size();tdc++){ %>
 												
 												<%if(filestatus>11){  filestatus--;  } %>
 												<%if(filestatus>25){  filestatus--;  } %>
@@ -2233,31 +2215,9 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 												<td><%=envi[3]!=null?(envi[3].toString()): " - " %></td>
 												<td style="text-align: right;"><%=envi[2]!=null?(envi[2].toString()): " - " %></td>
 												<td style="background-color: #F96E16;text-align: center; ">*</td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
+												<%for(int i = 0; i < pftsStatusList.size(); i++){ %>
+													<th></th>
+												<%} %>
 												</tr>
 										<%}} %>
 										
@@ -2271,7 +2231,44 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 								</table>
 								
 						<table class="subtables" style="align: left; margin-top: 10px; margin-bottom: 10px; margin-left: 25px;width:980px !important;  border-collapse:collapse;font-size: 12px;" >
-									<tr>
+						
+								<%
+								    if (pftsStatusList != null && !pftsStatusList.isEmpty()) {
+								    	pftsStatusList.add(0, new Object[]{"0","","Demand to be Initiated."});	
+								        int total = pftsStatusList.size();
+								        int rowsPerColumn = (int) Math.ceil((double) total / 4);
+								
+								        int totalColumns = (int) Math.ceil((double) total / rowsPerColumn);
+								
+								        for (int row = 0; row < rowsPerColumn; row++) {
+								%>
+								            <tr>
+								<%
+								            for (int col = 0; col < totalColumns; col++) {
+								
+								                int index = col * rowsPerColumn + row;
+								
+								                if (index < total) {
+								
+								                    Object[] status = pftsStatusList.get(index);
+								%>
+								                    <td><%= status[0] %></td>
+								                    <td><%= status[2] %></td>
+								<%
+								                } else {
+								%>
+								                    <td></td>
+								                    <td></td>
+								<%
+								                }
+								            }
+								%>
+								            </tr>
+								<%
+								        }
+								    }
+								%>
+									<!-- <tr>
 										<td>0</td>
 										<td>Demand to be Initiated</td>
 										<td>7</td>
@@ -2340,7 +2337,7 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 										<td>SAT / SoFT</td>
 										<td></td>
 										<td></td>
-									</tr>
+									</tr> -->
 								</table>						  
                
 									  
@@ -2719,10 +2716,10 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 			                Man-days utilised
 			            </th>
 			            <th rowspan="2" class="width60">
-			                (cummulative past years)
+			                (cumulative past years)
 			            </th>
 			            <th rowspan="2" class="width50">
-			                (cummulative Till date)
+			                (cumulative Till date)
 			            </th>
 			        </tr>
 			        <tr>
@@ -2780,10 +2777,10 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 				            	(4<sup>th</sup> Quarter)
 				            </th>
 				            <th rowspan="2" class="width60">
-				                (cummulative past years)
+				                (cumulative past years)
 				            </th>
 				            <th rowspan="2" class="width60">
-				                (cummulative Till date)
+				                (cumulative Till date)
 				            </th>
 				        </tr>
 				        <tr>
@@ -2850,10 +2847,10 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 				            	(4<sup>th</sup> Quarter)
 				            </th>
 				            <th rowspan="2" class="width60">
-				                (cummulative past years)
+				                (cumulative past years)
 				            </th>
 				            <th rowspan="2" class="width60">
-				                (cummulative Till date)
+				                (cumulative Till date)
 				            </th>
 				        </tr>
 				        <tr>

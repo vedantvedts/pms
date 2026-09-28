@@ -483,8 +483,6 @@ public class PrintServiceImpl implements PrintService {
 	        LocalDate date = dateStr != null ? LocalDate.parse(dateStr) : null;
 	        LocalDate compareDate = LocalDate.parse(i[27] != null ? i[27].toString() : i[7].toString());
 
-	        if (date == null || !date.isAfter(compareDate)) return false;
-	        if (!(date.isEqual(today) || date.isBefore(today))) return false;
 
 	        if (isMilestone) {
 	            // For Milestones() method
@@ -492,6 +490,8 @@ public class PrintServiceImpl implements PrintService {
 	                return true;
 	            } else return !levelId.equals("0") && progress == 100 && "Y".equalsIgnoreCase(String.valueOf(i[28]));
 	        } else {
+		        if (date == null || !date.isAfter(compareDate)) return false;
+		        if (!(date.isEqual(today) || date.isBefore(today))) return false;
 	            // For BreifingMilestoneDetails() method
 	            if (levelId.equals("0") && progress > 0) return true;
 	            else return !levelId.equals("0") && progress > 0 && "Y".equalsIgnoreCase(String.valueOf(i[29]));

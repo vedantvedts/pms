@@ -123,6 +123,7 @@ import com.vts.pfms.model.BriefingHeading;
 import com.vts.pfms.model.BriefingHeadingDetails;
 import com.vts.pfms.model.TotalDemand;
 import com.vts.pfms.pfmsserv.feign.FeignClientService;
+import com.vts.pfms.pfts.service.PFTSService;
 import com.vts.pfms.print.dto.PfmsBriefingFwdDto;
 import com.vts.pfms.print.model.CommitteeProjectBriefingFrozen;
 import com.vts.pfms.print.model.FavouriteSlidesModel;
@@ -150,6 +151,9 @@ public class PrintController {
 
 	@Autowired
 	PrintService service;
+	
+	@Autowired
+	PFTSService pftsService;
 	
 	FormatConverter fc=new FormatConverter();
 	
@@ -1514,6 +1518,7 @@ public class PrintController {
 	    	
 	    	String projectLabCode = service.ProjectDetails(projectid).get(0)[5].toString();
 	    	String CommitteeCode = committee.getCommitteeShortName().trim();
+	    	
 	    	
 	    	List<Object[]> projectattributes = new ArrayList<Object[]>();
 	    	List<List<Object[]>>  ebandpmrccount = new ArrayList<List<Object[]>>();
@@ -3268,6 +3273,7 @@ public class PrintController {
 		List<List<ProjectUtilizationBriefingDto>> infrastructure = new ArrayList<>();
 		List<List<ProjectUtilizationBriefingDto>> training = new ArrayList<>();
 		List<List<ProjectEconomicImpact>> econmicImpact  = new ArrayList<>();
+		
 
 	    try {
 
@@ -3377,6 +3383,7 @@ public class PrintController {
 	    	req.setAttribute("TechImages", TechImages);   
 	    	req.setAttribute("overallfinance", overallfinance);
 	    	req.setAttribute("projectidlist", Pmainlist);
+	    	req.setAttribute("pftsStatusList", pftsService.getpftsStageList());
 
 			req.setAttribute("sunsetmilestones", sunsetmilestones);
 			req.setAttribute("manpowerDetails", manpower);
@@ -6602,6 +6609,7 @@ public class PrintController {
 											pof.setSanctionCostRE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setSanctionCostRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:
@@ -6620,6 +6628,7 @@ public class PrintController {
 											pof.setSanctionCostFE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setSanctionCostFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:
@@ -6635,6 +6644,7 @@ public class PrintController {
 											pof.setExpenditureRE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setExpenditureRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:
@@ -6650,6 +6660,7 @@ public class PrintController {
 											pof.setExpenditureFE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setExpenditureFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:
@@ -6665,6 +6676,7 @@ public class PrintController {
 											pof.setOutCommitmentRE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setOutCommitmentRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:
@@ -6679,6 +6691,7 @@ public class PrintController {
 											pof.setOutCommitmentFE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setOutCommitmentFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:
@@ -6694,6 +6707,7 @@ public class PrintController {
 											pof.setBalanceRE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setBalanceRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:
@@ -6709,6 +6723,7 @@ public class PrintController {
 											pof.setBalanceFE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setBalanceFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:
@@ -6724,6 +6739,7 @@ public class PrintController {
 											pof.setDiplRE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setDiplRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:
@@ -6738,6 +6754,7 @@ public class PrintController {
 											pof.setDiplFE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setDiplFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:
@@ -6747,12 +6764,13 @@ public class PrintController {
 							
 									}
 									
-									if(j==13) {
+									if(j==12) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
 										case BLANK:
 											pof.setNotaionalBalFE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setNotaionalBalFE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:
@@ -6762,12 +6780,13 @@ public class PrintController {
 								
 									}
 									
-									if(j==12) {
+									if(j==13) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
 										case BLANK:
 											pof.setNotaionalBalRE(0.00);
 											break;
 										case NUMERIC:
+										case FORMULA:
 											pof.setNotaionalBalRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
 											break;
 										case STRING:

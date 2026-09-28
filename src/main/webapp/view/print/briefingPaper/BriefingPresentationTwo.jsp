@@ -80,10 +80,10 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 						                Man-days utilised
 						            </th>
 						            <th rowspan="2" class="width60">
-						                (cummulative past years)
+						                (cumulative  past years)
 						            </th>
 						            <th rowspan="2" class="width50">
-						                (cummulative Till date)
+						                (cumulative  Till date)
 						            </th>
 						        </tr>
 						        <tr>
@@ -141,10 +141,10 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 							            	(4<sup>th</sup> Quarter)
 							            </th>
 							            <th rowspan="2" class="width60">
-							                (cummulative past years)
+							                (cumulative  past years)
 							            </th>
 							            <th rowspan="2" class="width60">
-							                (cummulative Till date)
+							                (cumulative  Till date)
 							            </th>
 							        </tr>
 							        <tr>
@@ -211,10 +211,10 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 							            	(4<sup>th</sup> Quarter)
 							            </th>
 							            <th rowspan="2" class="width60">
-							                (cummulative past years)
+							                (cumulative  past years)
 							            </th>
 							            <th rowspan="2" class="width60">
-							                (cummulative Till date)
+							                (cumulative  Till date)
 							            </th>
 							        </tr>
 							        <tr>
@@ -347,7 +347,7 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 			
 				<!-- ---------------------------------------- P-13  GANTT chart of overall project Div ----------------------------------------------------- -->
 
-		<%-- 	<div class="carousel-item ">
+		<div class="carousel-item ">
 
 	
 				
@@ -368,10 +368,10 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 				<div class="content">
 				<jsp:include page="../BpGrantChart.jsp" />
 				</div>
-			</div> --%>
+			</div> 
 			<!-- ---------------------------------------- GANTT chart of overall project Div ----------------------------------------------------- -->
 			<!-- ---------------------------------------- P-14 Issues Div ----------------------------------------------------- -->
-			<%-- <div class="carousel-item ">
+			<div class="carousel-item ">
 					<div class="content-header row ">
 					<div class="col-md-1" ><img class="bp-18"   <%if(Drdologo!=null ){ %> src="data:image/*;base64,<%=Drdologo%>" alt="Logo"<%}else{ %> alt="File Not Found" <%} %> ></div>
 					<div class="col-md-1 bp-19" align="left"  ><b class="bp-20"><%=ProjectCode %></b>
@@ -512,4 +512,4 @@ List<List<ProjectEconomicImpact>> econmicImpactDetails = (List<List<ProjectEcono
 					<% } %>
 				</div>
 
-			</div> --%>
+			</div>
