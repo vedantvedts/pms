@@ -351,88 +351,92 @@ p{
 											 <td colspan="4" style=" width: 370px; padding: 5px; padding-left: 10px;border: 1px solid black;text-align: left;"> <%=projectattributes[5]!=null?(projectattributes[5].toString()): " - "%></td>
 										</tr>
 										<tr>
-											 <td rowspan="2" style="padding: 5px; padding-left: 10px;border: 1px solid black;">(h)</td>
-											 <th rowspan="2" style="width: 150px;padding: 5px; padding-left: 10px;border: 1px solid black;text-align: left;"><b>PDC</b></th>
-											 
-											<th colspan="2" style="text-align: center !important;border: 1px solid black;">Original&nbsp;</th>					
-											<%if( ProjectRevList.size()>0){ %>	
-												<th colspan="2" style="text-align: center !important;border: 1px solid black;">Revised</th>																			
-											<%}else{ %>													 
-										 		<th colspan="2" style="border: 1px solid black;text-align: left;" ></th>	
-										 	<%} %>
+										    <td rowspan="2" style="padding: 5px; padding-left: 10px;border: 1px solid black;">(h)</td>
+										    <th rowspan="2" style="width: 150px;padding: 5px; padding-left: 10px;border: 1px solid black;text-align: left;"><b>PDC</b></th>
+										
+										    <th colspan="2" style="text-align: center !important;border: 1px solid black;">Original&nbsp;</th>
+										    <% if (ProjectRevList.size() > 0) { %>
+										        <th colspan="2" style="text-align: center !important;border: 1px solid black;">Revised</th>
+										    <% } %>
 										</tr>
-								 		<tr>
-								 			<%if( ProjectRevList.size()>0 ){ %>								
-										 		<td colspan="2" style="text-align: center;border: 1px solid black;"><%= sdf.format(sdf1.parse(ProjectRevList.get(0)[12].toString()))%> </td>
-										 		<td colspan="2" style="text-align: center;border: 1px solid black;">
-											 		<%if(LocalDate.parse(projectattributes[6].toString()).isEqual(LocalDate.parse(ProjectRevList.get(0)[12].toString())) ){ %>
-											 			-
-											 		<%}else{ %>
-											 			<%= sdf.format(sdf1.parse(projectattributes[6].toString()))%>
-											 		<%} %>
-										 		
-										 		</td>
-											<%}else{ %>													 
-										 		<td colspan="2" style="text-align: center;border: 1px solid black;"><%= sdf.format(sdf1.parse(projectattributes[6].toString()))%></td>
-												<td style="border: 1px solid black;text-align: left;" colspan="2" ></td>
-										 	<%} %>
-										 		    
-								 		</tr>
-											 	
+										
 										<tr>
-											<td rowspan="3" style="width: 30px; padding: 5px; padding-left: 10px;border: 1px solid black;">(i)</td>
-											<th rowspan="3" style="padding-left: 10px;border: 1px solid black;text-align: left;"><b>Cost Breakup( &#8377; <span class="currency">Lakhs</span>)</b></th>
-											
-											<%if( ProjectRevList.size()>0 ){ %>
-													<td style="width: 10% !important;border: 1px solid black;text-align: left;" >RE Cost</td>
-													<td style="text-align: center;border: 1px solid black;text-align: right;"><%=ProjectRevList.get(0)[17]!=null?(ProjectRevList.get(0)[17].toString()): " - " %></td> 
-													<td colspan="2" style="text-align: center;border: 1px solid black;text-align: right;"><%=projectattributes[8]!=null?(projectattributes[8].toString()): " - " %></td>
-												</tr>
-												
-												
-												<tr>
-													<td style="width: 10% !important;border: 1px solid black;text-align: left;">FE Cost</td>		
-													<td style="text-align: center;border: 1px solid black;text-align: right;"><%=ProjectRevList.get(0)[16]!=null?(ProjectRevList.get(0)[16].toString()): " - " %></td>					
-													<td colspan="2" style="text-align: center;border: 1px solid black;text-align: right;"><%=projectattributes[9]!=null?(projectattributes[9].toString()): " - " %></td>
-												</tr>
-													
-												<tr>	
-													<td style="width: 10% !important;border: 1px solid black;text-align: left;">Total Cost</td>	
-													<td style="text-align: center;border: 1px solid black;text-align: right;"><%=ProjectRevList.get(0)[11]!=null?(ProjectRevList.get(0)[11].toString()): " - " %></td>
-											 		<td colspan="2" style="text-align: center;border: 1px solid black;text-align: right;"><%=projectattributes[7]!=null?(projectattributes[7].toString()): " - " %></td>
-												</tr> 
-														
-											<%}else{ %>
-													
-													<td style="width: 10% !important;border: 1px solid black;text-align: left;">RE Cost</td>
-													<td style="border: 1px solid black;text-align: right;"><%=projectattributes[8]!=null?(projectattributes[8].toString()): " - " %></td>
-													<td colspan="2" style=";border: 1px solid black;text-align: right;" ></td>
-												</tr>
-											
-												<tr>
-													<td style="width: 10% !important;border: 1px solid black;text-align: left;">FE Cost</td>		
-													<td style="border: 1px solid black;text-align: right;"><%=projectattributes[9]!=null?(projectattributes[9].toString()): " - " %></td>					
-													<td style="border: 1px solid black;text-align: right;" colspan="2"></td>
-												</tr>
-												
-												<tr>	
-													<td style="width: 10% !important;border: 1px solid black;text-align: left;" >Total Cost</td>	
-													<td style="border: 1px solid black;text-align: right;" ><%=projectattributes[7]!=null?(projectattributes[7].toString()): " - " %></td>
-													<td style="border: 1px solid black;text-align: right;" colspan="2"></td>			
-												</tr> 
-											<%} %>
-												
+										    <% if (ProjectRevList.size() > 0) { %>
+										        <td colspan="2" style="text-align: center;border: 1px solid black;"><%= sdf.format(sdf1.parse(ProjectRevList.get(0)[12].toString())) %></td>
+										        <td colspan="2" style="text-align: center;border: 1px solid black;">
+										            <% if (LocalDate.parse(projectattributes[6].toString()).isEqual(LocalDate.parse(ProjectRevList.get(0)[12].toString()))) { %>
+										                -
+										            <% } else { %>
+										                <%= sdf.format(sdf1.parse(projectattributes[6].toString())) %>
+										            <% } %>
+										        </td>
+										    <% } else { %>
+										        <td colspan="2" style="text-align: center;border: 1px solid black;"><%= sdf.format(sdf1.parse(projectattributes[6].toString())) %></td>
+										        <%-- empty Revised cell removed --%>
+										    <% } %>
+										</tr>
+										
+										<tr>
+										    <td rowspan="3" style="width: 30px; padding: 5px; padding-left: 10px;border: 1px solid black;">(i)</td>
+										    <th rowspan="3" style="padding-left: 10px;border: 1px solid black;text-align: left;"><b>Cost Breakup( &#8377; <span class="currency">Lakhs</span>)</b></th>
+										
+										    <% if (ProjectRevList.size() > 0) { %>
+										        <td style="width: 10% !important;border: 1px solid black;text-align: left;">RE Cost</td>
+										        <td style="border: 1px solid black;text-align: right;"><%= ProjectRevList.get(0)[17] != null ? ProjectRevList.get(0)[17].toString() : " - " %></td>
+										        <td colspan="2" style="border: 1px solid black;text-align: right;"><%= projectattributes[8] != null ? projectattributes[8].toString() : " - " %></td>
+										    </tr>
+										    <tr>
+										        <td style="width: 10% !important;border: 1px solid black;text-align: left;">FE Cost</td>
+										        <td style="border: 1px solid black;text-align: right;"><%= ProjectRevList.get(0)[16] != null ? ProjectRevList.get(0)[16].toString() : " - " %></td>
+										        <td colspan="2" style="border: 1px solid black;text-align: right;"><%= projectattributes[9] != null ? projectattributes[9].toString() : " - " %></td>
+										    </tr>
+										    <tr>
+										        <td style="width: 10% !important;border: 1px solid black;text-align: left;">Total Cost</td>
+										        <td style="border: 1px solid black;text-align: right;"><%= ProjectRevList.get(0)[11] != null ? ProjectRevList.get(0)[11].toString() : " - " %></td>
+										        <td colspan="2" style="border: 1px solid black;text-align: right;"><%= projectattributes[7] != null ? projectattributes[7].toString() : " - " %></td>
+										    </tr>
+										
+										    <% } else { %>
+										
+										        <td style="width: 10% !important;border: 1px solid black;text-align: left;">RE Cost</td>
+										        <td style="border: 1px solid black;text-align: right;"><%= projectattributes[8] != null ? projectattributes[8].toString() : " - " %></td>
+										    </tr>
+										    <tr>
+										        <td style="width: 10% !important;border: 1px solid black;text-align: left;">FE Cost</td>
+										        <td style="border: 1px solid black;text-align: right;"><%= projectattributes[9] != null ? projectattributes[9].toString() : " - " %></td>
+										    </tr>
+										    <tr>
+										        <td style="width: 10% !important;border: 1px solid black;text-align: left;">Total Cost</td>
+										        <td style="border: 1px solid black;text-align: right;"><%= projectattributes[7] != null ? projectattributes[7].toString() : " - " %></td>
+										    </tr>
+										
+										    <% } %>												
 																			 	
 										<tr>
 											<td  style="width: 20px; padding: 5px; padding-left: 10px;border: 1px solid black;">(j)</td>
 											<th style="width: 150px;padding: 5px; padding-left: 10px;border: 1px solid black;text-align: left;"><b>No. of Meetings held</b> </th>
 								 			<td colspan="4" style="border: 1px solid black;text-align: left;">
-												<% if(ebandpmrccount!=null && ebandpmrccount.size()>0){
-													List<Object[]> ebandpmrcsub = ebandpmrccount; 
-													for(Object[] ebandpmrc: ebandpmrcsub) { %>
-												 	<b><%=ebandpmrc[0]!=null?(ebandpmrc[0].toString()): " - " %> : </b>
-													<span><%=ebandpmrc[1]!=null?(ebandpmrc[1].toString()): " - " %></span> &emsp;&emsp;
-												<%} }%>
+												<%
+												    Map<String, Object> ebPmrcMap = new LinkedHashMap<String, Object>();
+												    ebPmrcMap.put("PMRB", 0);
+												    ebPmrcMap.put("EB", 0);
+												
+												    if (ebandpmrccount != null && !ebandpmrccount.isEmpty()) {
+												        List<Object[]> ebandpmrcsub = ebandpmrccount;
+												        if (ebandpmrcsub != null) {
+												            for (Object[] row : ebandpmrcsub) {
+												                if (row != null && row.length > 1 && row[0] != null) {
+												                    ebPmrcMap.put(row[0].toString().trim(), row[1] != null ? row[1] : 0);
+												                }
+												            }
+												        }
+												    }
+												
+												    for (Map.Entry<String, Object> e : ebPmrcMap.entrySet()) {
+												%>
+												    <b><%= e.getKey() %> : </b>
+												    <span><%= e.getValue() %></span> &emsp;&emsp;
+												<%  } %>
 											</td>
 										</tr>
 										<tr>
@@ -481,7 +485,7 @@ for(Object[] temp : invitedlist){
 	}
 	else if(temp[4].toString().equals("N") &&  membertypes.contains( temp[3].toString()) )
 	{
-		memAbscent++;
+		// memAbscent++;
 	}
 	else if( temp [4].toString().equals("P") && !membertypes.contains( temp[3].toString()) )
 	{ 
@@ -489,7 +493,7 @@ for(Object[] temp : invitedlist){
 	}
 	else if( temp [4].toString().equals("N") && !membertypes.contains( temp[3].toString()) )
 	{ 
-		parAbscent++;
+		// parAbscent++;
 	}
 }
 %>
@@ -683,7 +687,7 @@ for( Object[]obj:specialMembers){ %>
 	  
 	  <%if(parAbscent > 0){ %>
 	  
-	 <tr >
+	 <tr>
 			<th colspan="4" style="text-align: left; font-weight: 700; width: 650px;border: 1px solid black; padding: 5px; padding-left: 15px">Other Invitees&nbsp;/&nbsp;Participants Absent</th>
 		</tr>
 	
@@ -693,7 +697,7 @@ for( Object[]obj:specialMembers){ %>
 	int count1=0;
 	for(int i=0;i<invitedlist.size();i++)	
 	 {
-	 	if(invitedlist.get(i)[4].toString().equals("N")&& !membertypes.contains( invitedlist.get(i)[3].toString()) )
+	 	if(invitedlist.get(i)[4].toString().equals("N") && !membertypes.contains( invitedlist.get(i)[3].toString()) )
 	 	{count1++; j++; %>
 	 	 <tr > 	
 	 	  <td style="border: 1px solid black; padding: 5px;text-align: center"> <%=j%> </td>
@@ -972,7 +976,7 @@ for( Object[]obj:specialMembers){ %>
 							</table>	
    				
 
-		<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
+						<table style=" margin-left: 8px; width: 693px; margin-top:5px;font-size: 16px; border-collapse: collapse;border: 1px solid black" >
 								<thead >
 									<tr>
 										<th class="std"  style="width: 30px;"  >SN</th>
@@ -990,22 +994,23 @@ for( Object[]obj:specialMembers){ %>
 								
 								
 								<tbody>
-											<%if(lastpmrcactions.size()==0){ %>
+								<%if(lastpmrcactions.size()==0){ %>
 								<tr><td colspan="<%= "ADE".equalsIgnoreCase(labcode) ? "8" : "7" %>"  style="text-align: center;" > Nil</td></tr>
 								<%}
 								else if(lastpmrcactions.size()>0){
+									
 								Map<String,List<Object[]>> list = lastpmrcactions!=null ? lastpmrcactions.stream()
 										.collect(Collectors.groupingBy(array -> array[0].toString(), LinkedHashMap::new,Collectors.toList())) : new HashMap<>();
 							int i = 1;String key="";
 							for(Map.Entry<String, List<Object[]>> map : list.entrySet()){
 								int j=1;
-								List<Object[]> values = map.getValue();
+								List<Object[]> values = map.getValue().stream().filter(obj -> obj[9] != null && !obj[9].toString().equalsIgnoreCase("C")).collect(Collectors.toList());
 								int rowSpan = values.size();
 								for (Object[] obj : values) {
 									
-									if(obj[9] != null && "C".equalsIgnoreCase(obj[9].toString())){
+									/* if(obj[9] != null && "C".equalsIgnoreCase(obj[9].toString())){
 										continue;
-									}
+									} */
 								%>
 								<tr>
 									<td  class="std"  align="center"><%=i %></td>
@@ -1043,8 +1048,12 @@ for( Object[]obj:specialMembers){ %>
 							<span style="font-size: 14px;">	<%=splCommitee %> <%=key%>/<%=obj[1]!=null?obj[1].toString().split("/")[4]:" - " %></span>
 								<%}%> 
 								</td>
-								<%if(j++==1){ %><td rowspan="<%=rowSpan%>" class="std" style="text-align: left;"> <%=obj[2].toString()%> </td> <%} %>
-													<td class="std" style="text-align: center;">
+								<%if(j++==1){ %>
+									<td rowspan="<%=rowSpan%>" class="std" style="text-align: left;"> 
+									<%=obj[2].toString()%> 
+									</td> 
+								<%} %>
+									<td class="std" style="text-align: center;">
 									<%	String actionstatus = obj[9].toString();
 										int progress = obj[15]!=null ? Integer.parseInt(obj[15].toString()) : 0;
 										LocalDate pdcorg = LocalDate.parse(obj[3].toString());
@@ -1155,7 +1164,7 @@ for( Object[]obj:specialMembers){ %>
 									</tr> --%>
 									<tr>
 										<td style="text-align: justify;padding:8px 0 8px 30px;">
-											<%=num++ %>. <%=speclist[1]!=null?speclist[1].toString(): " - "%> 
+											<%-- <%=num++ %>. --%> <%=speclist[1]!=null?speclist[1].toString(): " - "%> 
 										</td>
 									</tr>
 									
