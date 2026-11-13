@@ -1167,10 +1167,10 @@ if(pftsStatusList == null){
 					<%if(wordFlag == null) {%> <h1 class="break"></h1> <%} else {%> <br class="break"> <%} %>
 						<div align="left" style="margin-left: 15px;"><b class="mainsubtitle">(c) Details of Technical/ User Reviews (if any).</b></div>
 							<div >
-							<%if(reviewMeetingListMap != null) {
+							<%if(reviewMeetingListMap != null && reviewMeetingListMap.size() >0 ) {
 								for(Map.Entry<String, List<Object[]>> entry : reviewMeetingListMap.entrySet()) { 
 								if(entry.getValue().size()>0) {%>
-									<div >
+									<div>
 										<table class="subtables" style="align: left; margin-top: 10px; margin-left: 25px; max-width: 300px; border-collapse: collapse; float: left;">
 											<thead>
 												<tr>
@@ -1192,8 +1192,10 @@ if(pftsStatusList == null){
 										</table>
 									</div>
 								<%} %>
-							<%}} %>
-							</div>	
+							<%}}else{ %>
+							NIL
+							<%} %>
+						</div>	
 						<div>
 						<%if(otherMeetingList!=null && otherMeetingList.size()>0) { %>
 						<div align="left"><b><%="Other Meetings" %></b></div>

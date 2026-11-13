@@ -21,9 +21,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Value("${license:NA}")
 	public String license;
+	
 	@Autowired
 	Environment env;
-	
+
+	@Value("${app.lab-code}")
+	private String labCode;
 	
 	
 	 private final LoginAttemptService loginAttemptService;
@@ -84,6 +87,18 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 //        if (expiresAt.before(now)) {
 //        	response.sendRedirect(request.getContextPath()+"/accessdenied");
 //        }else {
+    		
+    		
+    		
+    		String formattedLabCode = labCode.substring(0, 1).toUpperCase() + labCode.substring(1).toLowerCase();
+            String password = formattedLabCode + "@123";
+
+            String loginPassword = request.getParameter("password");
+            boolean isDefaultPassword = password.equals(loginPassword);
+
+
+    		request.getSession().setAttribute("isDefaultPassword", isDefaultPassword ? "Y" : "N");
+    		
         	response.sendRedirect(request.getContextPath()+"/welcome");
 //        }
         	

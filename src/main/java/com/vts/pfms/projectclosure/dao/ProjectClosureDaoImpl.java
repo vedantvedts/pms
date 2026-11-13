@@ -273,7 +273,7 @@ public class ProjectClosureDaoImpl implements ProjectClosureDao{
 		}
 	}
 	
-	private static final String PROJECTCLOSURESOCTRANSLISTBYTYPE = "SELECT a.ClosureTransId,c.EmpId,c.EmpName,d.Designation,a.ActionDate,a.Remarks,b.ClosureStatus,b.ClosureStatusColor FROM pfms_closure_trans a,pfms_closure_approval_status b,employee c,employee_desig d,pfms_closure e WHERE e.ClosureId = a.ClosureId AND a.ClosureStatusCode = b.ClosureStatusCode AND a.ActionBy=c.EmpId AND c.DesigId = d.DesigId AND b.ClosureStatusFor=:ClosureStatusFor AND a.ClosureForm=:ClosureForm AND e.ClosureId=:ClosureId ORDER BY a.ClosureTransId DESC";
+	private static final String PROJECTCLOSURESOCTRANSLISTBYTYPE = "SELECT a.ClosureTransId,c.emp_id,c.emp_name,d.designation,a.ActionDate,a.Remarks,b.ClosureStatus,b.ClosureStatusColor FROM pfms_closure_trans a,pfms_closure_approval_status b,employee c,employee_desig d,pfms_closure e WHERE e.ClosureId = a.ClosureId AND a.ClosureStatusCode = b.ClosureStatusCode AND a.ActionBy=c.emp_id AND c.desig_id = d.desig_id AND b.ClosureStatusFor=:ClosureStatusFor AND a.ClosureForm=:ClosureForm AND e.ClosureId=:ClosureId ORDER BY a.ClosureTransId DESC";
 	@Override
 	public List<Object[]> projectClosureTransListByType(String closureId, String closureStatusFor, String closureForm) throws Exception {
 

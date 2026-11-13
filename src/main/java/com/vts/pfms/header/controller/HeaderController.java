@@ -248,7 +248,7 @@ public class HeaderController {
 		logger.info(new Date() +"Inside UserManualDoc.htm "+UserId);		
 		try {
 
-			String path = req.getServletContext().getRealPath("/UserManual/" + "PFMS Work Flow.pdf");
+			String path = req.getServletContext().getRealPath("/UserManual/" + "User Manual-PFMS.pdf");
 //			Path filePath = Paths.get(uploadpath,"UserManual","PMS.pdf");
 //			String path = filePath.toString();
 			
@@ -435,7 +435,7 @@ public class HeaderController {
 	}
 	
 	@RequestMapping(value = "PasswordChanges.htm", method = RequestMethod.POST)
-	public String PasswordChangeSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir) throws Exception {
+	public String PasswordChangeSubmit(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res) throws Exception {
 
 		String UserId = (String) ses.getAttribute("Username");
 		logger.info(new Date() +"Inside PasswordChanges.htm "+UserId);		
@@ -461,10 +461,15 @@ public class HeaderController {
 			
 			int count=service.PasswordChange(OldPassword, NewPassword, UserId, LoginId, EmpId);
 		
-			if (count > 0)  {
-				redir.addAttribute("result", "Password Changed Successfully");
-				return "redirect:/MainDashBoard.htm";
-			} 
+//			if (count > 0)  {
+//				redir.addAttribute("result", "Password Changed Successfully");
+//				res.sendRedirect(req.getContextPath() + "/login");
+//				return "redirect:/MainDashBoard.htm";
+//			} 
+			if (count > 0) {
+			    redir.addFlashAttribute("result", "Password Changed Successfully, Please Login With New Password");
+			    return "redirect:/login?logout";
+			}
 			else  {
 				redir.addAttribute("resultfail", "Password Change Unsuccessful");
 				return "redirect:/PasswordChange.htm";

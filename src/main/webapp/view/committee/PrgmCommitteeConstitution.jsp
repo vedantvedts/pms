@@ -360,6 +360,13 @@
 										</form>
 									</td>
 									<td>
+										<form  method="post" action="CommitteeConstitutionAttendanceDownload.htm" target="_blank" >
+											<button  type="submit"  class="btn btn-sm preview"  ><i class="fa fa-download fs-90"></i>&nbsp; Attendance</button>
+											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />    												
+											<input type="hidden" name="committeemainid" value="<%=committeemainid%>">
+										</form>
+									</td>
+									<td>
 						               	<form  action="SendFormationLetter.htm" method="post" >  						             
 						                	<button type="submit" onclick="inviteform()" class=" btn btn-sm prints"  ><i class="fa fa-paper-plane-o" aria-hidden="true"></i>&nbsp; EMAIL</button>
 						              		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />  

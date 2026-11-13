@@ -1379,4 +1379,9 @@ public long previouseHeadingAdd(String scheduleidto, String scheduleidfrom, Stri
 			return Collections.emptyList();
 		}
 	}
+	
+	@Override
+	public Object[] getLastMeetingCreatedForProgramme(String programmeId,String committeId) throws Exception {
+		return dao.getLastMeetingCreated(programmeId, committeId);
+	}
 }

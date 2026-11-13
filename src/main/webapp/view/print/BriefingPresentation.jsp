@@ -986,11 +986,15 @@ String baseUrl = scheme + "://" + serverName
 				<div class="content">
 					<div align="center">
 						<div  class="mr-5 mt-2 bp-51" >
-							<button type="button" class="btn btn-sm " onclick="showMeetingModal()" data-toggle="tooltip" data-placement="right" title="Other Meetings"><i class="fa fa-info-circle fa-lg bp-3"  aria-hidden="true"></i></button>
+							<%if(reviewMeetingListMap != null && reviewMeetingListMap.size() > 0){ %>
+								<button type="button" class="btn btn-sm " onclick="showMeetingModal()" data-toggle="tooltip" data-placement="right" title="Other Meetings"><i class="fa fa-info-circle fa-lg bp-3"  aria-hidden="true"></i></button>
+							<%} %>
 						</div>
 						<form action="CommitteeMinutesNewDownload.htm" method="get" target="_blank">
 							<div class="row">
-							<%for(Map.Entry<String, List<Object[]>> entry : reviewMeetingListMap.entrySet()) { 
+							<% if(reviewMeetingListMap != null && reviewMeetingListMap.size() > 0){
+								for(Map.Entry<String, List<Object[]>> entry : reviewMeetingListMap.entrySet()) { 
+							
 								if(entry.getValue().size()>0) { %>
 									<div class="col-md-3 mt-4">
 										<table class="subtables bp-52" >
@@ -1014,6 +1018,26 @@ String baseUrl = scheme + "://" + serverName
 										</table>
 									</div>
 								<%} %>
+							<%}}else { %>
+								<div class="col-12 d-flex justify-content-center align-items-center py-5">
+								    <div class="text-center p-4 rounded shadow-sm" style="background-color: #f8faff; border: 1px solid #dce6f1; max-width: 420px; width: 100%;">
+								
+								        <div class="mb-3">
+								            <i class="fa fa-calendar-times-o"
+								               aria-hidden="true"
+								               style="font-size: 42px; color: #8295ad;"></i>
+								        </div>
+								
+								        <h5 class="mb-2" style="color: #344767; font-weight: 600;">
+								            No Meetings Available
+								        </h5>
+								
+								        <p class="mb-0" style="color: #7b8794; font-size: 14px;">
+								            There are no committee meetings to display at the moment.
+								        </p>
+								
+								    </div>
+								</div>
 							<%} %>
 							</div>
 						</form>

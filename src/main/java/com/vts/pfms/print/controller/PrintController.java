@@ -6773,6 +6773,21 @@ public class PrintController {
 									if(j==12) {
 										switch(sheet.getRow(i).getCell(j).getCellType()) {
 										case BLANK:
+											pof.setNotaionalBalRE(0.00);
+											break;
+										case NUMERIC:
+										case FORMULA:
+											pof.setNotaionalBalRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
+											break;
+										case STRING:
+											pof.setNotaionalBalRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
+											break;	 
+										}
+									}
+
+									if(j==13) {
+										switch(sheet.getRow(i).getCell(j).getCellType()) {
+										case BLANK:
 											pof.setNotaionalBalFE(0.00);
 											break;
 										case NUMERIC:
@@ -6784,21 +6799,6 @@ public class PrintController {
 											break;	 
 										}
 								
-									}
-									
-									if(j==13) {
-										switch(sheet.getRow(i).getCell(j).getCellType()) {
-										case BLANK:
-											pof.setNotaionalBalRE(0.00);
-											break;
-										case NUMERIC:
-										case FORMULA:
-											pof.setNotaionalBalRE(Double.valueOf(sheet.getRow(i).getCell(j).getNumericCellValue()));
-											break;
-										case STRING:
-											pof.setNotaionalBalRE(Double.valueOf(sheet.getRow(i).getCell(j).getStringCellValue().length()>0?sheet.getRow(i).getCell(j).getStringCellValue():"0.00"));
-											break;	 
-										}
 									}
 								}
 									

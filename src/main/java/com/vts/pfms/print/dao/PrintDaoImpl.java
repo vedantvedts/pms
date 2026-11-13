@@ -1849,4 +1849,23 @@ public class PrintDaoImpl implements PrintDao {
 					return 0;	
 				}
 			}
+
+			private static final String LASTMEETINGCREATEDPMG = """
+					SELECT cs.scheduleid, cs.meetingid,cs.scheduledate,cs.schedulestarttime,cs.scheduleflag, cs.MeetingVenue  
+					FROM committee_schedule cs, committee_meeting_status  cms WHERE cs.isactive=1 AND cms.meetingstatus=cs.scheduleflag 
+					AND cs.committeeid=:committeeId AND cs.ProgrammeId = :programmeId
+					ORDER BY cs.scheduledate DESC , cs.schedulestarttime DESC LIMIT 1
+					""";
+			@Override
+			public Object[] getLastMeetingCreatedForProgramme(String programmeId,String committeeId) throws Exception {
+				try {
+					Query query = manager.createNativeQuery(LASTMEETINGCREATEDPMG);
+					query.setParameter("programmeId", programmeId);			
+					query.setParameter("committeeId", committeeId);			
+					return (Object[])query.getSingleResult();
+				}catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
 	}

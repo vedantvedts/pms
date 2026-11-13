@@ -160,4 +160,5 @@ public interface PrintService {
 	public long previouseHeadingAdd(String scheduleidto, String scheduleidfrom, String[] headingIds, String userId) throws Exception;
 	public int updateRemarks(long long1, String remarks, String userId) throws Exception;
 	public List<Object[]> SunSetMilestones(String projectId) throws Exception;
+	Object[] getLastMeetingCreatedForProgramme(String programmeId, String committeId) throws Exception;
 }

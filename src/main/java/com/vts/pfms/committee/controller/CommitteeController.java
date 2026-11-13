@@ -13046,4 +13046,81 @@ private boolean isValidFileType(MultipartFile file) {
 		
 		return "0";
 	}
+	
+	@RequestMapping(value = "CommitteeConstitutionAttendanceDownload.htm", method = {RequestMethod.GET,RequestMethod.POST})
+	public void CommitteeConstitutionAttendanceDownload(HttpServletRequest req, HttpSession ses, RedirectAttributes redir,HttpServletResponse res) throws Exception
+	{
+		String UserId=(String)ses.getAttribute("Username");
+		logger.info(new Date() +"Inside CommitteeConstitutionAttendanceDownload.htm "+UserId);
+		String labcode = (String) ses.getAttribute("labcode");
+		
+		try
+		{
+			String committeemainid=req.getParameter("committeemainid");
+			Object[] committeemaindata= service.CommitteMainData(committeemainid);
+			String committeeid=committeemaindata[1].toString();
+			String programmeeid=committeemaindata[14].toString();
+			
+			Object[] lastMeetingCreatedForProgramme = printservice.getLastMeetingCreatedForProgramme(programmeeid, committeeid);
+
+			Object[] committeeedata=service.CommitteeDetails(committeeid);
+			
+			List<Object[]> committeeallmemberslist=service.CommitteeAllMembers(committeemainid);
+			
+			req.setAttribute("committeeallmemberslist",committeeallmemberslist );
+			req.setAttribute("committeeedata",committeeedata);
+			req.setAttribute("lastmeeting",lastMeetingCreatedForProgramme);
+			
+			String filename=committeeedata[1]+" Attendance Letter"+"("+  (committeemaindata[12]!=null?committeemaindata[12].toString():committeemaindata[5].toString())+ ")";
+			
+
+			String path=req.getServletContext().getRealPath("/view/temp");
+			req.setAttribute("path",path); 
+			CharArrayWriterResponse customResponse = new CharArrayWriterResponse(res);
+			
+			req.getRequestDispatcher("/view/committee/CommitteeConstitutionAttendancepgad.jsp").forward(req, customResponse);
+			
+			String html = customResponse.getOutput();
+			byte[] data = html.getBytes();
+			InputStream fis1=new ByteArrayInputStream(data);
+			PdfDocument pdfDoc = new PdfDocument(new PdfWriter(path+"/"+filename+".pdf"));	
+
+			Document document = new Document(pdfDoc, PageSize.A4);
+			//document.setMargins(50, 100, 150, 50);
+			document.setMargins(50, 50, 50, 50);
+			ConverterProperties converterProperties = new ConverterProperties();
+			FontProvider dfp = new DefaultFontProvider(true, true, true);
+			converterProperties.setFontProvider(dfp);
+			HtmlConverter.convertToPdf(fis1,pdfDoc,converterProperties);
+			document.close();
+			res.setContentType("application/pdf");
+			
+			res.setHeader("Content-disposition","inline;filename="+filename+".pdf");
+			
+			File f=new File(path+"/"+filename+".pdf");
+			FileInputStream fis = new FileInputStream(f);
+			DataOutputStream os = new DataOutputStream(res.getOutputStream());
+			res.setHeader("Content-Length",String.valueOf(f.length()));
+			byte[] buffer = new byte[1024];
+			int len = 0;
+			while ((len = fis.read(buffer)) >= 0) {
+				os.write(buffer, 0, len);
+			} 
+			fis.close();
+			os.close();
+
+
+
+			Path pathOfFile2= Paths.get(path+"/"+filename+".pdf"); 
+			Files.delete(pathOfFile2);		
+
+		}
+		catch (Exception e) {
+			e.printStackTrace(); 
+			logger.error(new Date() +"Inside CommitteeConstitutionAttendanceDownload.htm "+UserId,e);
+		} finally {
+		}
+
+
+	} 
 }

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,11 +24,13 @@ import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.vts.pfms.login.CustomAuthDetailsSource;
 //import com.vts.pfms.login.CaptchaFilter;
 import com.vts.pfms.login.CustomAuthenticationFailureHandler;
 import com.vts.pfms.login.CustomLogoutHandler;
 import com.vts.pfms.login.LoginDetailsServiceImpl;
 import com.vts.pfms.login.LoginSuccessHandler;
+import com.vts.pfms.login.RemoteAuthProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -52,8 +55,9 @@ public class SecurityConfiguration{
 	
 	
 	@Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		System.out.println();
+    SecurityFilterChain filterChain(HttpSecurity http,CustomAuthDetailsSource detailsSource,AuthenticationManager authenticationManager) throws Exception {
+		
+		http.authenticationManager(authenticationManager); 
         http.authorizeHttpRequests(request -> 
         		request.requestMatchers("/").hasAnyRole("USER", "ADMIN")
 	        		   .requestMatchers("/webjars/**", "/resources/**", "/view/**", "/LoginPage/*", "/pfms-dg/*", "/api/sync/**","/refresh-captcha", 
@@ -66,6 +70,7 @@ public class SecurityConfiguration{
         		)
         	.formLogin(login -> 
         			login.loginPage("/login")
+        				 .authenticationDetailsSource(detailsSource)   // <-- added
         			   	 .defaultSuccessUrl("/welcome")
         			   	 .failureUrl("/login?error=1")
         			   	 .permitAll()
@@ -127,23 +132,29 @@ public class SecurityConfiguration{
           return http.build();
     }
 	
+//	@Bean
+//	AuthenticationProvider authenticationProvider() throws Exception {
+//		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+//		daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+//		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+//		
+//		return daoAuthenticationProvider;
+//	}
+//	
+//	@Bean
+//	public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) throws Exception {
+//	    return http.getSharedObject(AuthenticationManagerBuilder.class)
+//	               .userDetailsService(userDetailsService)
+//	               .passwordEncoder(passwordEncoder)
+//	               .and()
+//	               .build();
+//	}
+//	
 	@Bean
-	AuthenticationProvider authenticationProvider() throws Exception {
-		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-		daoAuthenticationProvider.setUserDetailsService(userDetailsService());
-		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-		
-		return daoAuthenticationProvider;
+	AuthenticationManager authenticationManager(RemoteAuthProvider remoteAuthProvider) {
+	    return new ProviderManager(remoteAuthProvider);   // no parent, so no recursion
 	}
-	
-	@Bean
-	public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) throws Exception {
-	    return http.getSharedObject(AuthenticationManagerBuilder.class)
-	               .userDetailsService(userDetailsService)
-	               .passwordEncoder(passwordEncoder)
-	               .and()
-	               .build();
-	}
+
 	
 	@Bean
 	UserDetailsService userDetailsService() {

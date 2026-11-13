@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -126,6 +127,9 @@ public class LoginController {
 	@Value("${sis.target.origin}")
 	private String sisurl;
 	
+	@Value("${app.lab-code}")
+	private String labCode;
+	
 	@Autowired
     private Environment env;
 
@@ -224,8 +228,18 @@ public class LoginController {
 		System.out.println("Error-----"+error);
 		
 		logger.info(new Date() + "Inside login ");
-		if (error != null)
-			model.addAttribute("error", (error.equalsIgnoreCase("Invalid Captcha")||  error.equalsIgnoreCase("There have been several failed attempts. Please wait a while and try again later"))? error: "Your username and password is invalid.");
+//		if (error != null)
+//			model.addAttribute("error", (error.equalsIgnoreCase("Invalid Captcha")||  error.equalsIgnoreCase("There have been several failed attempts. Please wait a while and try again later"))? error: "Your username and password is invalid.");
+		
+		if (error != null) {
+	        Object ex = ses.getAttribute("SPRING_SECURITY_LAST_EXCEPTION");
+	        if (ex instanceof AuthenticationException ae) {
+	            model.addAttribute("error", ae.getMessage());
+	        }else {
+	        	model.addAttribute("error", "Your username and password is invalid.");
+	        }
+	        ses.removeAttribute("SPRING_SECURITY_LAST_EXCEPTION");   // show it only once
+	    }
 
 		if (logout != null)
 			model.addAttribute("message", "You have been logged out successfully.");
@@ -502,7 +516,13 @@ public class LoginController {
 		    ses.setAttribute("empNo", empNo);
 			ses.setAttribute("token",JwtUtil.generateToken(req.getUserPrincipal().getName()));
 		    long pwdCount = headerservice.PasswordChangeHystoryCount(LoginId);
-			if(pwdCount==0) 
+//			if(pwdCount==0)
+
+		    boolean isDefaultPassword = "Y".equalsIgnoreCase((String) req.getSession().getAttribute("isDefaultPassword"));
+
+	        System.out.println("isDefaultPassword = " + isDefaultPassword);
+	        System.out.println("isDefaultPassword == == "+ req.getSession().getAttribute("isDefaultPassword"));
+		    if(isDefaultPassword)
 			{
 				return "redirect:/ForcePasswordChange.htm";
 			}
@@ -521,7 +541,7 @@ public class LoginController {
      }
      
     }
-    
+        
     @RequestMapping(value = { "/welcome-react"}, method = RequestMethod.GET)
     public String welcomeFromReact(Model model,HttpServletRequest req,HttpSession ses) throws Exception {
     	

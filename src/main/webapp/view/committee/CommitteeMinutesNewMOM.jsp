@@ -525,12 +525,24 @@ for( Object[]obj:specialMembers){ %>
 	 <%
 	
 	 Set<String> empids = new LinkedHashSet<>();
+	 Set<String> expids = new LinkedHashSet<>();
+	 Set<String> ipids = new LinkedHashSet<>();
 	 if(memPresent > 0){ %>
 	 
 	 <% 
 	 	for(int i=0;i<invitedlist.size();i++)
 		{
-	 	if(invitedlist.get(i)[0] != null && empids.add(invitedlist.get(i)[0].toString())) {
+	 		
+	 	Set<String> target;
+	 	if("@EXP".equalsIgnoreCase(String.valueOf(invitedlist.get(i)[18]))){
+	 		target = expids;
+	 	}else if("@IP".equalsIgnoreCase(String.valueOf(invitedlist.get(i)[18]))){
+	 		target = ipids;
+	 	}else {
+	 		target = empids;
+	 	}
+	 		
+	 	if(invitedlist.get(i)[0] != null && target.add(invitedlist.get(i)[0].toString())) {
 	 	if(invitedlist.get(i)[4].toString().equals("P") && membertypes.contains( invitedlist.get(i)[3].toString()) )
 	 	{ j++;
 	 	if(invitedlist.get(i)[3].toString().equalsIgnoreCase("CS") ){ membersec=invitedlist.get(i);}

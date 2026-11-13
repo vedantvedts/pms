@@ -40,7 +40,7 @@ public class PFMSServFeignClientImpl implements FeignClientService {
 		if("Y".equalsIgnoreCase(IsIbasConnected)) {
 			return client.getDetailsOfSupplyOrder(token,inType,employeeNo);
 		}
-		return Collections.emptyList();
+		throw new RuntimeException("Ibas Server Not Connected");
 	}
 
 	@Override

@@ -155,6 +155,24 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 <!-- Login Page Content -->
 
  <div class="container m20" >
+ 
+<% 
+    String ses = (String) request.getParameter("result");
+    String ses1 = (String) request.getParameter("resultfail");
+    if (ses1 != null) { %>
+    <div align="center">
+        <div class="alert alert-danger" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses1) %>
+        </div>
+    </div>
+<% }if (ses != null) { %>
+    <div align="center">
+        <div class="alert alert-success" role="alert">
+            <%=StringEscapeUtils.escapeHtml4(ses) %>
+        </div>
+    </div>
+<% } %>
+ 
 		<div class="row">
 			<div class="col-md-12">
 			
@@ -265,6 +283,8 @@ console.log(replacementWord+" version: "+"<%= request.getAttribute("versionint")
 														<div class="col-md-5">
 															<div class="form-submit-button">
 																<input type="hidden"  name="${_csrf.parameterName}" value="${_csrf.token}"/>
+																<input type="hidden" name="clientTimestamp" id="clientTimestamp" />
+																<input type="hidden" name="clientTimeZone" id="clientTimeZone" />
 																<button type="submit" data-lang="LOGIN" class="btn btn-block btn-success f2s"  >Login</button>
 																<!-- <button type="submit" class="btn btn-link" formaction="fpwd/ForgotPassword.htm" > Forgot Password?</button> -->
 															</div>
@@ -496,6 +516,17 @@ function loadCaptcha() {
 }
 
 </script>
+<script nonce="<%= cspNonce %>">
+document.addEventListener("DOMContentLoaded", function () {
+  var form = document.getElementById("loginForm");
+  if (!form) return;
 
+  form.addEventListener("submit", function () {
+    document.getElementById("clientTimestamp").value = new Date().toISOString();
+    document.getElementById("clientTimeZone").value =
+        Intl.DateTimeFormat().resolvedOptions().timeZone;
+  });
+});
+</script>
 </body>
 </html>

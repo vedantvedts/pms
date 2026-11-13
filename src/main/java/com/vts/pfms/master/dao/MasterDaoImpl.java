@@ -53,7 +53,7 @@ public class MasterDaoImpl implements MasterDao {
 
 	private static final String DIVISIONLIST="SELECT division_id,division_code,division_name FROM division_master WHERE isactive=1";
 	private static final String DIVISIONEMPLIST="SELECT de.divisionemployeeid,CONCAT(IFNULL(CONCAT(e.title,' '),''), e.emp_name) AS 'empname',ed.designation,de.divisionid,e.lab_code  FROM division_employee de,employee e, employee_desig ed WHERE de.isactive=1 AND e.is_active=1 AND e.emp_status IN ('P') AND  de.empid=e.emp_id AND e.desig_id=ed.desig_id AND de.divisionid=:divisionid";
-	private static final String DIVISIONNONEMPLIST ="SELECT e.emp_id, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.emp_name) AS 'empname',ed.designation,e.lab_code  FROM employee e,employee_desig ed  WHERE e.is_active=1 AND e.emp_status IN ('P') AND e.desig_id=ed.desig_id AND e.emp_id NOT IN  (SELECT de.empid FROM division_employee de WHERE de.isactive=1 AND divisionid=:divisionid) AND e.emp_status NOT IN ('N') ORDER BY a.sr_no IS NULL, a.sr_no=0, a.sr_no ASC ,ed.desig_sr ASC";
+	private static final String DIVISIONNONEMPLIST ="SELECT e.emp_id, CONCAT(IFNULL(CONCAT(e.title,' '),''), e.emp_name) AS 'empname',ed.designation,e.lab_code  FROM employee e,employee_desig ed  WHERE e.is_active=1 AND e.emp_status IN ('P') AND e.desig_id=ed.desig_id AND e.emp_id NOT IN  (SELECT de.empid FROM division_employee de WHERE de.isactive=1 AND divisionid=:divisionid) AND e.emp_status NOT IN ('N') ORDER BY e.sr_no IS NULL, e.sr_no=0, e.sr_no ASC ,ed.desig_sr ASC";
 	private static final String DIVISIONDATA ="SELECT division_id, division_code,division_name FROM division_master WHERE division_id=:divisionid";
 
 

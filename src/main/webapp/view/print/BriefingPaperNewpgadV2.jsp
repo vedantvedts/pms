@@ -365,7 +365,7 @@ th, td
 	
 		<!-- <div align="center" ><h2 style="color: #145374 !important">for</h2></div> -->
 
-			<div align="center" ><h2 <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="color: #4C9100 !important;"<%}else{ %> style="color: #145374 !important" <%} %>><%=CommitteeCode!=null?(CommitteeCode): " - " %> #<%=Long.parseLong(committeeMetingsCount[1].toString()) %></h2></div>
+			<div align="center" ><h2 <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="color: #4C9100 !important;"<%}else{ %> style="color: #145374 !important" <%} %>><%=CommitteeCode!=null?(CommitteeCode): " - " %> #<%=Long.parseLong(committeeMetingsCount[1].toString()) + 1 %></h2></div>
 			
 			<div align="center" ><h2 <%if(text!=null && text.equalsIgnoreCase("p")) {%>style="color: #4C9100 !important;"<%}else{ %> style="color: #145374 !important" <%} %>>Project : <%= projectattributes.get(0)[0]!=null?projectattributes.get(0)[0].toString(): " - " %>
 			
@@ -589,7 +589,7 @@ th, td
 													List<Object[]> ebandpmrcsub = ebandpmrccount.get(z); 
 													for(Object[] ebandpmrc: ebandpmrcsub) { %>
 												 	<b><%=ebandpmrc[0]!=null?(ebandpmrc[0].toString()): " - " %> : </b>
-													<span><%=ebandpmrc[1] !=null ? ((ebandpmrc[0]!=null && ebandpmrc[0].toString().equalsIgnoreCase(CommitteeCode)) ? Long.parseLong(ebandpmrc[1].toString()) - 1 : Long.parseLong(ebandpmrc[1].toString())) : " - " %></span> &emsp;&emsp;
+													<span><%=ebandpmrc[1] !=null ? ((ebandpmrc[0]!=null && ebandpmrc[0].toString().equalsIgnoreCase(CommitteeCode)) ? Long.parseLong(ebandpmrc[1].toString()) : Long.parseLong(ebandpmrc[1].toString())) : " - " %></span> &emsp;&emsp;
 												<%} }%>
 											</td>
 										</tr>
